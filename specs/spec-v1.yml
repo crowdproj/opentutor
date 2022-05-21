@@ -1,0 +1,541 @@
+openapi: 3.0.4
+info:
+  title: OpenTutor
+  description: 'A simple opensource application that provides flashcards to learn foreign words'
+  contact:
+    email: ss.szuev@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost/v1
+tags:
+  - name: card
+    description: A learning card (word, translation, examples, etc)
+  - name: dictionary
+    description: A dictionary - collection of learning cards
+  - name: audio
+    description: Audio resource, wav
+
+paths:
+  /api/sounds/get:
+    get:
+      tags:
+        - audio
+      summary: Gets an audio-resource by its id (as a path)
+      operationId: getAudionResource
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAudioRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAudioResponse'
+
+  /api/dictionaries/search:
+    post:
+      tags:
+        - dictionary
+      summary: Gets dictionaries
+      operationId: getDictionaries
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetDictionariesRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetDictionariesResponse'
+
+  /api/cards/search:
+    post:
+      tags:
+        - card
+      summary: Gets cards by parameters
+      operationId: getCards
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetCardsRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCardsResponse'
+
+  /api/cards/get:
+    post:
+      tags:
+        - card
+      summary: Gets a card resource by the ID specified
+      operationId: getCard
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetCardRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetCardResponse'
+
+  /api/cards/create:
+    post:
+      tags:
+        - card
+      summary: Creates a new card
+      operationId: createCard
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateCardRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateCardResponse'
+
+  /api/cards/update:
+    post:
+      tags:
+        - card
+      summary: Update an existing card
+      operationId: updateCard
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateCardRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateCardResponse'
+
+  /api/cards/learn:
+    post:
+      tags:
+        - card
+      summary: Updates all the given cards in the underlying db (during learning process)
+      operationId: updateCards
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/LearnCardRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LearnCardResponse'
+
+  /api/cards/delete:
+    post:
+      tags:
+        - card
+      summary: Deletes the given card
+      operationId: deleteCard
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/DeleteCardRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteCardResponse'
+
+  /api/cards/reset:
+    post:
+      tags:
+        - card
+      summary: Resets the status of the given card
+      operationId: resetCardStatus
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ResetCardRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetCardResponse'
+
+components:
+  schemas:
+    GetAudioRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            resourceId:
+              type: string
+
+    GetAudioResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            resource:
+              type: string
+              format: byte
+
+    GetDictionariesRequest:
+      description: 'Request to read dictionaries'
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+
+    GetDictionariesResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: List of dictionaries
+          properties:
+            dictionaries:
+              type: array
+              items:
+                $ref: '#/components/schemas/DictionaryResource'
+
+    GetCardsRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            random:
+              description: '[true] to return randomized list'
+              type: boolean
+            unknown:
+              description: '[true] to return only unknown words, [false] or [undefined] if it does not matter'
+              type: boolean
+            length:
+              description: 'The desired size of result collection (undefined for defaults)'
+              type: integer
+              format: int32
+            dictionaryIds:
+              type: array
+              items:
+                type: string
+
+    GetCardsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: List of cards
+          properties:
+            cards:
+              type: array
+              items:
+                $ref: '#/components/schemas/CardResource'
+
+    GetCardRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            cardId:
+              type: string
+
+    GetCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
+
+    CreateCardRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
+
+    CreateCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+
+    UpdateCardRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
+
+    UpdateCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+
+    LearnCardRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            cards:
+              type: array
+              items:
+                $ref: '#/components/schemas/CardUpdateResource'
+
+    LearnCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+
+    DeleteCardRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            cardId:
+              type: string
+
+    DeleteCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+
+    ResetCardRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            cardId:
+              type: string
+
+    ResetCardResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+
+    BaseRequest:
+      type: object
+      description: The base request - abstraction that holds request type and request id
+      properties:
+        requestType:
+          type: string
+          description: The request type
+          example: create
+        requestId:
+          type: string
+          description: The request id
+      discriminator:
+        propertyName: requestType
+        mapping:
+          getAudio: '#/components/schemas/GetAudioRequest'
+          getDictionaries: '#/components/schemas/GetDictionariesRequest'
+          getCards: '#/components/schemas/GetCardsRequest'
+          getCard: '#/components/schemas/GetCardRequest'
+          createCard: '#/components/schemas/CreateCardRequest'
+          updateCard: '#/components/schemas/UpdateCardRequest'
+          learnCard: '#/components/schemas/LearnCardRequest'
+          deleteCard: '#/components/schemas/DeleteCardRequest'
+          resetCard: '#/components/schemas/ResetCardRequest'
+
+    DebugRequest:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/DebugResource'
+
+    BaseResponse:
+      type: object
+      description: The base response - abstraction that holds response type and request id
+      properties:
+        responseType:
+          type: string
+          description: The response type
+          example: create
+        requestId:
+          type: string
+          description: The response id
+        result:
+          $ref: '#/components/schemas/Result'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorResource'
+      discriminator:
+        propertyName: responseType
+        mapping:
+          getAudio: '#/components/schemas/GetAudioResponse'
+          getDictionaries: '#/components/schemas/GetDictionariesResponse'
+          getCards: '#/components/schemas/GetCardsResponse'
+          getCard: '#/components/schemas/GetCardResponse'
+          createCard: '#/components/schemas/CreateCardResponse'
+          updateCard: '#/components/schemas/UpdateCardResponse'
+          learnCard: '#/components/schemas/LearnCardResponse'
+          deleteCard: '#/components/schemas/DeleteCardResponse'
+          resetCard: '#/components/schemas/ResetCardResponse'
+
+    DictionaryResource:
+      description: 'A dictionary resource'
+      type: object
+      properties:
+        dictionaryId:
+          type: string
+        name:
+          type: string
+        sourceLang:
+          type: string
+        targetLang:
+          type: string
+        partOfSpeech:
+          type: array
+          items:
+            type: string
+        total:
+          type: integer
+          format: int64
+        learned:
+          type: integer
+          format: int64
+
+    CardResource:
+      description: 'A card resource'
+      type: object
+      properties:
+        cardId:
+          type: string
+        dictionaryId:
+          type: string
+        word:
+          type: string
+        transcription:
+          type: string
+        partOfSpeech:
+          type: string
+        translations:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        examples:
+          type: array
+          items:
+            type: string
+        sound:
+          type: string
+        answered:
+          type: integer
+          format: int32
+        details:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+
+    CardUpdateResource:
+      description: 'A card resource to update card stage details'
+      type: object
+      properties:
+        cardId:
+          type: string
+        details:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int32
+
+    ErrorResource:
+      type: object
+      description: Basic error object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    DebugResource:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/RunMode'
+        stub:
+          $ref: '#/components/schemas/DebugStub'
+
+    Result:
+      description: Type of result
+      type: string
+      enum:
+        - success
+        - error
+
+    DebugStub:
+      type: string
+      description: Stubs
+      enum:
+        - success
+        - error
+
+    RunMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
