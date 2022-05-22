@@ -12,4 +12,5 @@ pluginManagement {
 }
 
 include("openapi")
-
+include("common")
+include("mappers-v1")
