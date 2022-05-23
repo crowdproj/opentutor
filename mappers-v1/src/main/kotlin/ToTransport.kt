@@ -1,10 +1,8 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.AppContext
-import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
-import com.gitlab.sszuev.flashcards.api.v1.models.ErrorResource
-import com.gitlab.sszuev.flashcards.api.v1.models.GetCardResponse
-import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.Error
 import com.gitlab.sszuev.flashcards.model.common.Status
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
@@ -12,10 +10,47 @@ import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 fun AppContext.toGetCardResponse() = GetCardResponse(
-    requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (status == Status.OK) Result.SUCCESS else Result.ERROR,
-    errors = errors.toErrorResourceList(),
-    card = responseEntity.toCardResource()
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+    card = this.responseCardEntity.toCardResource()
+)
+
+fun AppContext.toGetCardsResponse() = GetCardsResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+    cards = this.responseCardEntityList.map { it.toCardResource() }
+)
+
+fun AppContext.toCreateCardResponse() = CreateCardResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+)
+
+fun AppContext.toUpdateCardResponse() = UpdateCardResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+)
+
+fun AppContext.toDeleteCardResponse() = DeleteCardResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+)
+
+fun AppContext.toLearnCardResponse() = LearnCardResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+)
+
+fun AppContext.toResetCardResponse() = ResetCardResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
 )
 
 private fun CardEntity.toCardResource(): CardResource = CardResource(
@@ -35,3 +70,7 @@ private fun Error.toErrorResource() = ErrorResource(
     field = field.takeIf { it.isNotBlank() },
     message = message.takeIf { it.isNotBlank() },
 )
+
+private fun Status.toResponseResult(): Result = if (this == Status.OK) Result.SUCCESS else Result.ERROR
+
+private fun Id.toResponseId(): String? = this.asString().takeIf { it.isNotBlank() }

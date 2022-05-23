@@ -2,7 +2,7 @@ package com.gitlab.sszuev.flashcards.model.common
 
 enum class Operation {
     NONE,
-    GET_AUDION,
+    GET_AUDIO_RESOURCE,
     GET_DICTIONARIES,
     GET_CARDS,
     GET_CARD,
