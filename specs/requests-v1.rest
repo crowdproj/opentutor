@@ -1,0 +1,41 @@
+## Examples of requests for spec V1
+
+### Create
+POST http://localhost:8080/v1/api/cards/create
+Content-Type: application/json
+
+{
+  "requestType": "createCard",
+  "requestId": "request=42",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  },
+  "card": {
+    "cardId": "42",
+    "dictionaryId": "100500",
+    "word": "XXX",
+    "transcription": "YYY",
+    "partOfSpeech": "POS",
+    "translations": [
+      [
+        "a",
+        "b"
+      ],
+      [
+        "c",
+        "d"
+      ]
+    ],
+    "examples": [
+      "g",
+      "h"
+    ],
+    "sound": null,
+    "answered": 42,
+    "details": {
+      "A": 2,
+      "B": 3
+    }
+  }
+}
