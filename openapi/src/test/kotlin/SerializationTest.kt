@@ -21,6 +21,7 @@ internal class SerializationTest {
             answered = 42,
             details = mapOf("A" to 2, "B" to 3),
         )
+
         private fun assertCard(json: String) {
             Assertions.assertTrue(json.contains("\"cardId\":\"42\""))
             Assertions.assertTrue(json.contains("\"dictionaryId\":\"100500\""))
@@ -31,6 +32,7 @@ internal class SerializationTest {
             Assertions.assertTrue(json.contains("\"examples\":[\"g\",\"h\"]"))
             Assertions.assertTrue(json.contains("\"details\":{\"A\":2,\"B\":3}}"))
             Assertions.assertTrue(json.contains("\"answered\":42"))
+            assertDebug(json)
         }
 
         private val dictionary = DictionaryResource(
@@ -42,6 +44,7 @@ internal class SerializationTest {
             total = 1,
             learned = 42
         )
+
         private fun assertDictionary(json: String) {
             Assertions.assertTrue(json.contains("\"dictionaryId\":\"42\""))
             Assertions.assertTrue(json.contains("\"name\":\"XXX\""))
@@ -56,6 +59,7 @@ internal class SerializationTest {
             cardId = "42",
             details = mapOf("A" to 2, "B" to 3),
         )
+
         private fun assertUpdate(json: String) {
             Assertions.assertTrue(json.contains("\"cardId\":\"42\""))
             Assertions.assertTrue(json.contains("\"A\":2"))
@@ -68,17 +72,32 @@ internal class SerializationTest {
             field = "VVV",
             message = "mmm"
         )
+
         private fun assertError(json: String) {
             Assertions.assertTrue(json.contains("\"code\":\"XXX\""))
             Assertions.assertTrue(json.contains("\"group\":\"QQQ\""))
             Assertions.assertTrue(json.contains("\"field\":\"VVV\""))
             Assertions.assertTrue(json.contains("\"message\":\"mmm\""))
         }
+
+        private val debug = DebugResource(
+            mode = RunMode.TEST,
+            stub = DebugStub.ERROR
+        )
+
+        private fun assertDebug(json: String) {
+            Assertions.assertTrue(json.contains("\"mode\":\"test\""))
+            Assertions.assertTrue(json.contains("\"stub\":\"error\""))
+        }
     }
 
     @Test
     fun `test serialization for CreateCardRequest`() {
-        val req1 = CreateCardRequest(card = card, requestId = "request=42")
+        val req1 = CreateCardRequest(
+            card = card,
+            requestId = "request=42",
+            debug = debug
+        )
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"createCard\""))
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
