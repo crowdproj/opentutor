@@ -1,24 +1,68 @@
 package com.gitlab.sszuev.flashcards.services.impl
 
-import com.gitlab.sszuev.flashcards.AppContext
-import com.gitlab.sszuev.flashcards.model.common.Error
-import com.gitlab.sszuev.flashcards.model.common.Mode
-import com.gitlab.sszuev.flashcards.model.common.Status
+import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.services.CardService
-import com.gitlab.sszuev.flashcards.services.errorResponse
-import com.gitlab.sszuev.flashcards.services.successResponse
-import com.gitlab.sszuev.flashcards.stubs.createStubEntity
+import kotlinx.datetime.Clock
 
+/**
+ * TODO: replace the logic will ChainOfResponsibility-based implementation.
+ */
 class CardServiceImpl : CardService {
-    override fun createCardEntity(context: AppContext): AppContext {
-        val response = when (context.workMode) {
-            Mode.PROD -> TODO()
-            Mode.TEST -> context.requestCardEntity
-            Mode.STUB -> createStubEntity()
+    private val stubs = StubsCardServiceImpl()
+
+    override fun createCard(context: CardContext): CardContext {
+        return exec(context) {
+            stubs.createCard(context)
         }
-        return when (context.status) {
-            Status.OK -> context.successResponse { responseCardEntity = response }
-            else -> context.errorResponse({ Error("unknown-error") })
+    }
+
+    override fun updateCard(context: CardContext): CardContext {
+        return exec(context) {
+            stubs.createCard(context)
+        }
+    }
+
+    override fun searchCards(context: CardContext): CardContext {
+        return exec(context) {
+            stubs.searchCards(context)
+        }
+    }
+
+    override fun getCard(context: CardContext): CardContext {
+        return exec(context) {
+            stubs.getCard(context)
+        }
+    }
+
+    override fun learnCard(context: CardContext): CardContext {
+        return exec(context) {
+            stubs.learnCard(context)
+        }
+    }
+
+    override fun resetCard(context: CardContext): CardContext {
+        return exec(context) {
+            stubs.resetCard(context)
+        }
+    }
+
+    override fun deleteCard(context: CardContext): CardContext {
+        return exec(context) {
+            stubs.deleteCard(context)
+        }
+    }
+
+    private fun exec(
+        context: CardContext,
+        stub: (CardContext) -> CardContext
+    ): CardContext {
+        context.timestamp = Clock.System.now()
+        return when (context.workMode) {
+            AppMode.PROD, AppMode.TEST -> TODO()
+            AppMode.STUB -> {
+                stub.invoke(context)
+            }
         }
     }
 }

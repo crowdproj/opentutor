@@ -1,15 +1,15 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
-import com.gitlab.sszuev.flashcards.AppContext
+import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
 import com.gitlab.sszuev.flashcards.api.v1.models.ErrorResource
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
-import com.gitlab.sszuev.flashcards.model.common.Error
-import com.gitlab.sszuev.flashcards.model.common.Operation
-import com.gitlab.sszuev.flashcards.model.common.RequestId
-import com.gitlab.sszuev.flashcards.model.common.Status
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -20,23 +20,23 @@ class ToTransportTest {
 
     @Test
     fun `test toGetCardResponse`() {
-        val context = AppContext(
-            requestId = RequestId("request=42"),
-            operation = Operation.GET_CARD,
+        val context = CardContext(
+            requestId = AppRequestId("request=42"),
+            operation = CardOperation.GET_CARD,
             responseCardEntity = CardEntity(
                 cardId = CardId("card=42"),
                 dictionaryId = DictionaryId("dictionary=42"),
                 word = "xxx"
             ),
             errors = mutableListOf(
-                Error(
+                AppError(
                     code = "42",
                     message = "XXX",
                     field = "YYY",
                     group = "GGG",
                 )
             ),
-            status = Status.FAIL
+            status = AppStatus.FAIL
         )
         val res = context.toGetCardResponse()
 
@@ -49,9 +49,9 @@ class ToTransportTest {
 
     @Test
     fun `test toGetCardsResponse`() {
-        val context = AppContext(
-            requestId = RequestId("request=42"),
-            operation = Operation.GET_CARDS,
+        val context = CardContext(
+            requestId = AppRequestId("request=42"),
+            operation = CardOperation.GET_CARDS,
             responseCardEntityList = listOf(
                 CardEntity(
                     cardId = CardId("A"),
@@ -65,20 +65,20 @@ class ToTransportTest {
                 ),
             ),
             errors = mutableListOf(
-                Error(
+                AppError(
                     code = "a",
                     message = "b",
                     field = "c",
                     group = "d",
                 ),
-                Error(
+                AppError(
                     code = "e",
                     message = "f",
                     field = "g",
                     group = "h",
                 )
             ),
-            status = Status.OK
+            status = AppStatus.OK
         )
         val res = context.toGetCardsResponse()
 
@@ -94,12 +94,12 @@ class ToTransportTest {
 
     @ParameterizedTest
     @EnumSource(
-        value = Operation::class,
+        value = CardOperation::class,
         names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "LEARN_CARD", "RESET_CARD"]
     )
-    fun `test toCreateUpdateCardResponse`(op: Operation) {
-        val context = AppContext(
-            requestId = RequestId(op.name),
+    fun `test toCreateUpdateCardResponse`(op: CardOperation) {
+        val context = CardContext(
+            requestId = AppRequestId(op.name),
             operation = op,
             responseCardEntity =
             CardEntity(
@@ -108,14 +108,14 @@ class ToTransportTest {
                 word = "xxx"
             ),
             errors = mutableListOf(),
-            status = Status.OK
+            status = AppStatus.OK
         )
         val res = when (op) {
-            Operation.UPDATE_CARD -> context.toUpdateCardResponse()
-            Operation.CREATE_CARD -> context.toCreateCardResponse()
-            Operation.DELETE_CARD -> context.toDeleteCardResponse()
-            Operation.LEARN_CARD -> context.toLearnCardResponse()
-            Operation.RESET_CARD-> context.toResetCardResponse()
+            CardOperation.UPDATE_CARD -> context.toUpdateCardResponse()
+            CardOperation.CREATE_CARD -> context.toCreateCardResponse()
+            CardOperation.DELETE_CARD -> context.toDeleteCardResponse()
+            CardOperation.LEARN_CARD -> context.toLearnCardResponse()
+            CardOperation.RESET_CARD-> context.toResetCardResponse()
             else -> throw IllegalArgumentException()
         }
 
@@ -124,7 +124,7 @@ class ToTransportTest {
         Assertions.assertNull(res.errors)
     }
 
-    private fun assertError(expected: Error, actual: ErrorResource) {
+    private fun assertError(expected: AppError, actual: ErrorResource) {
         Assertions.assertEquals(expected.code, actual.code)
         Assertions.assertEquals(expected.message, actual.message)
         Assertions.assertEquals(expected.field, actual.field)

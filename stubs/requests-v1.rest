@@ -1,0 +1,289 @@
+## Examples of requests for spec V1 (with stub-mode)
+
+### Create Card Success
+POST http://localhost:8080/v1/api/cards/create
+Content-Type: application/json
+
+{
+  "requestType": "createCard",
+  "requestId": "createCardSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "card": {
+    "cardId": "42",
+    "dictionaryId": "100500",
+    "word": "anticyclone",
+    "transcription": "æntɪˈsaɪkləʊn",
+    "partOfSpeech": "noun",
+    "translations": [
+      [
+        "антициклон"
+      ]
+    ],
+    "examples": [
+    ],
+    "sound": null,
+    "answered": 42,
+    "details": {
+      "A": 2,
+      "B": 3
+    }
+  }
+}
+
+### Create Card Error
+POST http://localhost:8080/v1/api/cards/create
+Content-Type: application/json
+
+{
+  "requestType": "createCard",
+  "requestId": "createCardError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  },
+  "card": {
+    "cardId": "42",
+    "dictionaryId": "100500",
+    "word": "weather",
+    "transcription": "ˈweðə",
+    "partOfSpeech": "verb",
+    "translations": [
+      [
+        "погода"
+      ]
+    ],
+    "examples": [
+      "We're seeing some bad weather over Canaveral."
+    ],
+    "sound": "/audio/en-ru-weather.wav",
+    "answered": 42,
+    "details": {
+      "C": 2,
+      "D": 3
+    }
+  }
+}
+
+### Update Card Success
+POST http://localhost:8080/v1/api/cards/update
+Content-Type: application/json
+
+{
+  "requestType": "updateCard",
+  "requestId": "updateCardSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "card": {
+    "cardId": "42",
+    "dictionaryId": "100500",
+    "word": "word",
+    "transcription": "word",
+    "partOfSpeech": "adjective",
+    "translations": [
+      [
+        "слово"
+      ]
+    ]
+  }
+}
+
+### Update Card Error
+POST http://localhost:8080/v1/api/cards/update
+Content-Type: application/json
+
+{
+  "requestType": "updateCard",
+  "requestId": "updateCardError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  },
+  "card": {
+    "cardId": "42",
+    "dictionaryId": "100500",
+    "word": "world",
+    "transcription": "wɜːld",
+    "partOfSpeech": "noun",
+    "translations": [
+      [
+        "мир"
+      ]
+    ]
+  }
+}
+
+### Search Cards Success
+POST http://localhost:8080/v1/api/cards/search
+Content-Type: application/json
+
+{
+  "requestType": "getCards",
+  "requestId": "getCardsSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "random": true,
+  "unknown": true,
+  "length": 42,
+  "dictionaryIds": [
+    "100500",
+    "4200",
+    "420",
+    "42",
+    "4",
+    "2"
+  ]
+}
+
+### Search Cards Error
+POST http://localhost:8080/v1/api/cards/search
+Content-Type: application/json
+
+{
+  "requestType": "getCards",
+  "requestId": "getCardsError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  },
+  "random": false,
+  "unknown": false,
+  "length": 2,
+  "dictionaryIds": [
+    "42"
+  ]
+}
+
+### Get Card Success
+POST http://localhost:8080/v1/api/cards/get
+Content-Type: application/json
+
+{
+  "requestType": "getCard",
+  "requestId": "getCardSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "cardId": "card-42"
+}
+
+### Get Card Error
+POST http://localhost:8080/v1/api/cards/get
+Content-Type: application/json
+
+{
+  "requestType": "getCard",
+  "requestId": "getCardError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  },
+  "cardId": "card-42"
+}
+
+### Learn Card Success
+POST http://localhost:8080/v1/api/cards/learn
+Content-Type: application/json
+
+{
+  "requestType": "learnCard",
+  "requestId": "learnCardSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "cards": [
+    {
+      "cardId": "42",
+      "details": {
+        "A": 2,
+        "B": 3
+      }
+    }
+  ]
+}
+
+### Learn Card Success
+POST http://localhost:8080/v1/api/cards/learn
+Content-Type: application/json
+
+{
+  "requestType": "learnCard",
+  "requestId": "learnCardError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  },
+  "cards": [
+    {
+      "cardId": "42",
+      "details": {
+        "a": 1,
+        "b": 2
+      }
+    }
+  ]
+}
+
+### Reset Card Success
+POST http://localhost:8080/v1/api/cards/reset
+Content-Type: application/json
+
+{
+  "cardId": "42",
+  "requestType": "resetCard",
+  "requestId": "resetCardSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Reset Card Error
+POST http://localhost:8080/v1/api/cards/reset
+Content-Type: application/json
+
+{
+  "cardId": "42",
+  "requestType": "resetCard",
+  "requestId": "resetCardError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  }
+}
+
+### Delete Card Success
+POST http://localhost:8080/v1/api/cards/delete
+Content-Type: application/json
+
+{
+  "cardId": "42",
+  "requestType": "deleteCard",
+  "requestId": "deleteCardSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  }
+}
+
+### Delete Card Error
+POST http://localhost:8080/v1/api/cards/delete
+Content-Type: application/json
+
+{
+  "cardId": "42",
+  "requestType": "deleteCard",
+  "requestId": "deleteCardError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error"
+  }
+}

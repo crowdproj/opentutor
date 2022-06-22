@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards
 
+import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.gitlab.sszuev.flashcards.api.apiV1
@@ -14,7 +15,6 @@ import io.ktor.server.plugins.callloging.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
-import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
 import org.slf4j.event.Level
@@ -41,6 +41,7 @@ fun Application.module() {
             disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             enable(SerializationFeature.INDENT_OUTPUT)
             writerWithDefaultPrettyPrinter()
+            setSerializationInclusion(JsonInclude.Include.NON_NULL)
         }
     }
 
@@ -53,10 +54,6 @@ fun Application.module() {
 
     val service = cardService()
     routing {
-        get("/") {
-            call.respondText("Hello, world!")
-        }
-
         apiV1(service)
 
         static("static") {

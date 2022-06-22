@@ -1,14 +1,13 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
-import com.gitlab.sszuev.flashcards.AppContext
+import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
-import com.gitlab.sszuev.flashcards.model.common.Mode
-import com.gitlab.sszuev.flashcards.model.common.Operation
-import com.gitlab.sszuev.flashcards.model.common.RequestId
-import com.gitlab.sszuev.flashcards.model.common.Stub
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.*
 
-fun AppContext.fromTransport(request: BaseRequest) = when (request) {
+fun CardContext.fromTransport(request: BaseRequest) = when (request) {
     is GetCardRequest -> fromGetCardRequest(request)
     is GetCardsRequest -> fromGetCardsRequest(request)
     is CreateCardRequest -> fromCreateCardRequest(request)
@@ -19,16 +18,16 @@ fun AppContext.fromTransport(request: BaseRequest) = when (request) {
     else -> throw IllegalArgumentException("Unknown request ${request.javaClass}")
 }
 
-fun AppContext.fromGetCardRequest(request: GetCardRequest) {
-    this.operation = Operation.GET_CARD
+fun CardContext.fromGetCardRequest(request: GetCardRequest) {
+    this.operation = CardOperation.GET_CARD
     this.requestId = request.requestId()
     this.requestCardEntityId = toCardId(request.cardId)
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
 }
 
-fun AppContext.fromGetCardsRequest(request: GetCardsRequest) {
-    this.operation = Operation.GET_CARD
+fun CardContext.fromGetCardsRequest(request: GetCardsRequest) {
+    this.operation = CardOperation.GET_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -40,47 +39,47 @@ fun AppContext.fromGetCardsRequest(request: GetCardsRequest) {
     )
 }
 
-fun AppContext.fromCreateCardRequest(request: CreateCardRequest) {
-    this.operation = Operation.CREATE_CARD
+fun CardContext.fromCreateCardRequest(request: CreateCardRequest) {
+    this.operation = CardOperation.CREATE_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
     this.requestCardEntity = request.card.toCardEntity()
 }
 
-fun AppContext.fromUpdateCardRequest(request: UpdateCardRequest) {
-    this.operation = Operation.UPDATE_CARD
+fun CardContext.fromUpdateCardRequest(request: UpdateCardRequest) {
+    this.operation = CardOperation.UPDATE_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
     this.requestCardEntity = request.card.toCardEntity()
 }
 
-fun AppContext.fromDeleteCardRequest(request: DeleteCardRequest) {
-    this.operation = Operation.DELETE_CARD
+fun CardContext.fromDeleteCardRequest(request: DeleteCardRequest) {
+    this.operation = CardOperation.DELETE_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
     this.requestCardEntityId = toCardId(request.cardId)
 }
 
-fun AppContext.fromLearnCardRequest(request: LearnCardRequest) {
-    this.operation = Operation.LEARN_CARD
+fun CardContext.fromLearnCardRequest(request: LearnCardRequest) {
+    this.operation = CardOperation.LEARN_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
     this.requestCardLearnList = request.cards?.map { it.toCardLearn() } ?: emptyList()
 }
 
-fun AppContext.fromResetCardRequest(request: ResetCardRequest) {
-    this.operation = Operation.RESET_CARD
+fun CardContext.fromResetCardRequest(request: ResetCardRequest) {
+    this.operation = CardOperation.RESET_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
     this.requestCardEntityId = toCardId(request.cardId)
 }
 
-private fun BaseRequest?.requestId() = this?.requestId?.let { RequestId(it) } ?: RequestId.NONE
+private fun BaseRequest?.requestId() = this?.requestId?.let { AppRequestId(it) } ?: AppRequestId.NONE
 
 private fun toCardId(id: String?) = id?.let { CardId(it) } ?: CardId.NONE
 
@@ -97,15 +96,15 @@ private fun CardUpdateResource?.toCardLearn(): CardLearn = CardLearn(
     details = this?.details ?: emptyMap()
 )
 
-private fun DebugResource?.transportToWorkMode(): Mode = when (this?.mode) {
-    RunMode.PROD -> Mode.PROD
-    RunMode.TEST -> Mode.TEST
-    RunMode.STUB -> Mode.STUB
-    null -> Mode.PROD
+private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
+    RunMode.PROD -> AppMode.PROD
+    RunMode.TEST -> AppMode.TEST
+    RunMode.STUB -> AppMode.STUB
+    null -> AppMode.PROD
 }
 
-private fun DebugResource?.transportToStubCase(): Stub = when (this?.stub) {
-    DebugStub.SUCCESS -> Stub.SUCCESS
-    DebugStub.ERROR -> Stub.ERROR
-    null -> Stub.NONE
+private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
+    DebugStub.SUCCESS -> AppStub.SUCCESS
+    DebugStub.ERROR -> AppStub.ERROR
+    null -> AppStub.NONE
 }

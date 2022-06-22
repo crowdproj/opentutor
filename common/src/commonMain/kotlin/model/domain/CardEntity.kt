@@ -4,4 +4,8 @@ data class CardEntity(
     val cardId: CardId = CardId.NONE,
     val dictionaryId: DictionaryId = DictionaryId.NONE,
     val word: String = "",
-)
+) {
+    companion object {
+        val DUMMY = CardEntity()
+    }
+}

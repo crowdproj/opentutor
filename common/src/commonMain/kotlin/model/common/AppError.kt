@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.model.common
 
-data class Error (
+data class AppError (
     val code: String = "",
     val group: String = "",
     val field: String = "",
