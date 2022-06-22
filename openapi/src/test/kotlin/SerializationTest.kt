@@ -107,6 +107,86 @@ internal class SerializationTest {
         Assertions.assertEquals(req1, req2)
     }
 
+
+    @Test
+    fun `test serialization for UpdateCardRequest`() {
+        val req1 = UpdateCardRequest(
+            card = card,
+            requestId = "request=42",
+            debug = debug
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"updateCard\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        assertCard(json)
+        val req2 = deserializeRequest<UpdateCardRequest>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+
+    @Test
+    fun `test serialization for GetCardsRequest`() {
+        val req1 = GetCardsRequest(
+            random = false,
+            unknown = true,
+            length = 42,
+            dictionaryIds = listOf("100500", "4200"),
+            requestId = "request=42",
+            debug = debug
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"getCards\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        val req2 = deserializeRequest<GetCardsRequest>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+
+    @Test
+    fun `test serialization for GetCardRequest`() {
+        val req1 = GetCardRequest(
+            cardId = "card-42",
+            requestId = "request=42",
+            debug = debug
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"getCard\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        val req2 = deserializeRequest<GetCardRequest>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+
+    @Test
+    fun `test serialization for ResetCardRequest`() {
+        val req1 = ResetCardRequest(
+            cardId = "card-42",
+            requestId = "request=42",
+            debug = debug
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"resetCard\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        val req2 = deserializeRequest<ResetCardRequest>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+
+    @Test
+    fun `test serialization for DeleteCardRequest`() {
+        val req1 = DeleteCardRequest(
+            cardId = "card-42",
+            requestId = "request=42",
+            debug = debug
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"deleteCard\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        val req2 = deserializeRequest<DeleteCardRequest>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+
     @Test
     fun `test serialization for GetDictionaryResponse`() {
         val res1 = GetDictionariesResponse(
@@ -128,7 +208,7 @@ internal class SerializationTest {
     }
 
     @Test
-    fun `test serialization for CardUpdateRequest`() {
+    fun `test serialization for LearnCardRequest`() {
         val req1 = LearnCardRequest(cards = listOf(update), requestId = "request=42")
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"learnCard\""))

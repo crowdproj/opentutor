@@ -1,15 +1,15 @@
 package com.gitlab.sszuev.flashcards.services
 
-import com.gitlab.sszuev.flashcards.AppContext
-import com.gitlab.sszuev.flashcards.model.common.Error
-import com.gitlab.sszuev.flashcards.model.common.Status
+import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
 
-fun AppContext.errorResponse(
-    buildError: () -> Error,
-    error: (Error) -> Error = { it -> it }
+fun CardContext.errorResponse(
+    buildError: () -> AppError,
+    error: (AppError) -> AppError = { it -> it }
 ) = apply {
-    status = Status.FAIL
+    status = AppStatus.FAIL
     errors.add(error(buildError()))
 }
 
-fun AppContext.successResponse(context: AppContext.() -> Unit) = apply(context).apply { status = Status.OK }
+fun CardContext.successResponse(context: CardContext.() -> Unit) = apply(context).apply { status = AppStatus.OK }

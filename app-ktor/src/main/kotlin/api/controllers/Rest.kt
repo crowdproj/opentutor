@@ -9,7 +9,23 @@ fun Route.cards(service: CardService) {
         post("create") {
             call.createCard(service)
         }
+        post("update") {
+            call.updateCard(service)
+        }
+        post("search") {
+            call.searchCards(service)
+        }
+        post("get") {
+            call.getCard(service)
+        }
+        post("learn") {
+            call.learnCard(service)
+        }
+        post("reset") {
+            call.resetCard(service)
+        }
+        post("delete") {
+            call.deleteCard(service)
+        }
     }
 }
-
-

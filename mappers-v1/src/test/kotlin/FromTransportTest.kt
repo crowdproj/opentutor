@@ -1,9 +1,9 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
-import com.gitlab.sszuev.flashcards.AppContext
+import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
-import com.gitlab.sszuev.flashcards.model.common.Mode
-import com.gitlab.sszuev.flashcards.model.common.Stub
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -22,12 +22,12 @@ class FromTransportTest {
                 stub = DebugStub.SUCCESS
             ),
         )
-        val context = AppContext()
+        val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = Stub.SUCCESS,
-            expectedMode = Mode.STUB,
+            expectedStub = AppStub.SUCCESS,
+            expectedMode = AppMode.STUB,
             expectedRequestId = "request=42",
             actual = context
         )
@@ -47,12 +47,12 @@ class FromTransportTest {
             unknown = true,
             dictionaryIds = listOf("a", "b", "c")
         )
-        val context = AppContext()
+        val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = Stub.ERROR,
-            expectedMode = Mode.PROD,
+            expectedStub = AppStub.ERROR,
+            expectedMode = AppMode.PROD,
             expectedRequestId = "req",
             actual = context
         )
@@ -79,12 +79,12 @@ class FromTransportTest {
             ),
             card = card
         )
-        val context = AppContext()
+        val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = Stub.SUCCESS,
-            expectedMode = Mode.TEST,
+            expectedStub = AppStub.SUCCESS,
+            expectedMode = AppMode.TEST,
             expectedRequestId = "req3",
             actual = context
         )
@@ -106,12 +106,12 @@ class FromTransportTest {
             ),
             card = card
         )
-        val context = AppContext()
+        val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = Stub.ERROR,
-            expectedMode = Mode.TEST,
+            expectedStub = AppStub.ERROR,
+            expectedMode = AppMode.TEST,
             expectedRequestId = "req4",
             actual = context
         )
@@ -128,12 +128,12 @@ class FromTransportTest {
                 stub = DebugStub.ERROR
             ),
         )
-        val context = AppContext()
+        val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = Stub.ERROR,
-            expectedMode = Mode.TEST,
+            expectedStub = AppStub.ERROR,
+            expectedMode = AppMode.TEST,
             expectedRequestId = "req5",
             actual = context
         )
@@ -163,12 +163,12 @@ class FromTransportTest {
                 stub = DebugStub.ERROR
             ),
         )
-        val context = AppContext()
+        val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = Stub.ERROR,
-            expectedMode = Mode.TEST,
+            expectedStub = AppStub.ERROR,
+            expectedMode = AppMode.TEST,
             expectedRequestId = "req6",
             actual = context
         )
@@ -191,12 +191,12 @@ class FromTransportTest {
                 stub = DebugStub.ERROR
             ),
         )
-        val context = AppContext()
+        val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = Stub.ERROR,
-            expectedMode = Mode.STUB,
+            expectedStub = AppStub.ERROR,
+            expectedMode = AppMode.STUB,
             expectedRequestId = "req7",
             actual = context
         )
@@ -204,10 +204,10 @@ class FromTransportTest {
     }
 
     private fun assertContext(
-        expectedStub: Stub,
-        expectedMode: Mode,
+        expectedStub: AppStub,
+        expectedMode: AppMode,
         expectedRequestId: String,
-        actual: AppContext
+        actual: CardContext
     ) {
         Assertions.assertEquals(expectedStub, actual.debugCase)
         Assertions.assertEquals(expectedMode, actual.workMode)

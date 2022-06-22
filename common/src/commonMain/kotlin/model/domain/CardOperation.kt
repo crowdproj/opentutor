@@ -1,9 +1,7 @@
-package com.gitlab.sszuev.flashcards.model.common
+package com.gitlab.sszuev.flashcards.model.domain
 
-enum class Operation {
+enum class CardOperation {
     NONE,
-    GET_AUDIO_RESOURCE,
-    GET_DICTIONARIES,
     GET_CARDS,
     GET_CARD,
     CREATE_CARD,
