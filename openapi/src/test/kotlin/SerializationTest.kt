@@ -82,12 +82,12 @@ internal class SerializationTest {
 
         private val debug = DebugResource(
             mode = RunMode.TEST,
-            stub = DebugStub.ERROR
+            stub = DebugStub.ERROR_UNKNOWN
         )
 
         private fun assertDebug(json: String) {
             Assertions.assertTrue(json.contains("\"mode\":\"test\""))
-            Assertions.assertTrue(json.contains("\"stub\":\"error\""))
+            Assertions.assertTrue(json.contains("\"stub\":\"error_unknown\""))
         }
     }
 

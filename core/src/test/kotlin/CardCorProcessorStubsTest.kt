@@ -1,18 +1,18 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.model.common.AppMode
-import com.gitlab.sszuev.flashcards.model.common.AppRequestId
-import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.common.AppStub
+import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubError
+import com.gitlab.sszuev.flashcards.stubs.stubErrorForCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.EnumSource
 import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -37,10 +37,10 @@ internal class CardCorProcessorStubsTest {
             Assertions.assertTrue(context.errors.isEmpty())
         }
 
-        private fun assertFail(context: CardContext) {
+        private fun assertFail(context: CardContext, expected: AppError = stubError) {
             Assertions.assertEquals(requestId, context.requestId.asString())
             Assertions.assertEquals(AppStatus.FAIL, context.status)
-            Assertions.assertEquals(listOf(stubError),  context.errors)
+            Assertions.assertEquals(listOf(expected), context.errors)
         }
     }
 
@@ -59,6 +59,27 @@ internal class CardCorProcessorStubsTest {
         context.requestCardEntity = stubCard
         processor.execute(context)
         assertFail(context)
+        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = AppStub::class,
+        names = [
+            "ERROR_CARD_WRONG_WORD",
+            "ERROR_CARD_WRONG_TRANSCRIPTION",
+            "ERROR_CARD_WRONG_TRANSLATION",
+            "ERROR_CARD_WRONG_EXAMPLES",
+            "ERROR_CARD_WRONG_PART_OF_SPEECH",
+            "ERROR_CARD_WRONG_DETAILS",
+            "ERROR_CARD_WRONG_AUDIO_RESOURCE",
+        ]
+    )
+    fun `test create-card specific fail`(case: AppStub) = runTest {
+        val context = testContext(CardOperation.CREATE_CARD, case)
+        context.requestCardEntity = stubCard
+        processor.execute(context)
+        assertFail(context, stubErrorForCode(case))
         Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
     }
 }

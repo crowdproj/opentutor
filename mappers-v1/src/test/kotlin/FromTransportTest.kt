@@ -40,7 +40,7 @@ class FromTransportTest {
             requestId = "req",
             debug = DebugResource(
                 mode = RunMode.PROD,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
             length = 42,
             random = true,
@@ -102,7 +102,7 @@ class FromTransportTest {
             requestId = "req4",
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
             card = card
         )
@@ -125,7 +125,7 @@ class FromTransportTest {
             cardId = "card5",
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
         )
         val context = CardContext()
@@ -160,7 +160,7 @@ class FromTransportTest {
             ),
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
         )
         val context = CardContext()
@@ -188,7 +188,7 @@ class FromTransportTest {
             cardId = "card7",
             debug = DebugResource(
                 mode = RunMode.STUB,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
         )
         val context = CardContext()

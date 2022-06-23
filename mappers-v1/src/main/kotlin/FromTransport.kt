@@ -105,6 +105,13 @@ private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
 
 private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.SUCCESS -> AppStub.SUCCESS
-    DebugStub.ERROR -> AppStub.UNKNOWN_ERROR
+    DebugStub.ERROR_UNKNOWN -> AppStub.UNKNOWN_ERROR
+    DebugStub.ERROR_CARD_WRONG_WORD -> AppStub.ERROR_CARD_WRONG_WORD
+    DebugStub.ERROR_CARD_WRONG_TRANSCRIPTION -> AppStub.ERROR_CARD_WRONG_TRANSCRIPTION
+    DebugStub.ERROR_CARD_WRONG_TRANSLATION -> AppStub.ERROR_CARD_WRONG_TRANSLATION
+    DebugStub.ERROR_CARD_WRONG_EXAMPLES -> AppStub.ERROR_CARD_WRONG_EXAMPLES
+    DebugStub.ERROR_CARD_WRONG_PART_OF_SPEECH -> AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH
+    DebugStub.ERROR_CARD_WRONG_DETAILS -> AppStub.ERROR_CARD_WRONG_DETAILS
+    DebugStub.ERROR_CARD_WRONG_AUDIO_RESOURCE -> AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE
     null -> AppStub.NONE
 }

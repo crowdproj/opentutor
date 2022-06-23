@@ -531,7 +531,14 @@ components:
       description: Stubs
       enum:
         - success
-        - error
+        - error_card_wrong_word
+        - error_card_wrong_transcription
+        - error_card_wrong_translation
+        - error_card_wrong_examples
+        - error_card_wrong_part_of_speech
+        - error_card_wrong_details
+        - error_card_wrong_audio_resource
+        - error_unknown
 
     RunMode:
       type: string

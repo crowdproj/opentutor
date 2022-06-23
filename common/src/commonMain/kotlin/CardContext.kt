@@ -24,6 +24,7 @@ data class CardContext(
     var requestCardFilter: CardFilter = CardFilter.EMPTY,
     // update/create request:
     var requestCardEntity: CardEntity = CardEntity.DUMMY,
+    var normalizedRequestCardEntity: CardEntity = CardEntity.DUMMY,
     // learn card
     var requestCardLearnList: List<CardLearn> = listOf(),
 

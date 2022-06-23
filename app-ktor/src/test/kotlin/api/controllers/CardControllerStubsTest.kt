@@ -29,7 +29,7 @@ class CardControllerStubsTest {
         )
         private val debugError = DebugResource(
             mode = RunMode.STUB,
-            stub = DebugStub.ERROR
+            stub = DebugStub.ERROR_UNKNOWN
         )
 
         private suspend inline fun <reified X : BaseResponse> testResponseSuccess(

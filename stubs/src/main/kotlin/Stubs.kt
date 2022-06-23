@@ -27,16 +27,22 @@ val stubLearnCardDetails = CardLearn(
     details = mapOf("stage-a" to 42, "stage-b" to 5, "stage-c" to 4)
 )
 
+fun stubErrorForCode(case: AppStub): AppError {
+    return stubError.copy(
+        code = case.name
+    )
+}
+
 fun toStatus(case: AppStub): AppStatus {
     return when (case) {
         AppStub.SUCCESS -> {
             AppStatus.OK
         }
-        AppStub.UNKNOWN_ERROR -> {
-            AppStatus.FAIL
+        AppStub.NONE -> {
+            AppStatus.INIT
         }
         else -> {
-            AppStatus.INIT
+            AppStatus.FAIL
         }
     }
 }
