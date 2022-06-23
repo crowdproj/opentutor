@@ -11,8 +11,9 @@ import com.gitlab.sszuev.flashcards.stubs.stubError
 import com.gitlab.sszuev.flashcards.stubs.toStatus
 import kotlin.random.Random
 
+@Deprecated("will be removed in favour of CoR Processor")
 internal class StubsCardServiceImpl : CardService {
-    override fun createCard(context: CardContext): CardContext {
+    override suspend fun createCard(context: CardContext): CardContext {
         context.status = toStatus(context.debugCase)
         return when (context.status) {
             AppStatus.OK -> context.successResponse { responseCardEntity = requestCardEntity }
@@ -20,7 +21,7 @@ internal class StubsCardServiceImpl : CardService {
         }
     }
 
-    override fun updateCard(context: CardContext): CardContext {
+    override suspend fun updateCard(context: CardContext): CardContext {
         context.status = toStatus(context.debugCase)
         return when (context.status) {
             AppStatus.OK -> context.successResponse { responseCardEntity = requestCardEntity }
@@ -28,7 +29,7 @@ internal class StubsCardServiceImpl : CardService {
         }
     }
 
-    override fun searchCards(context: CardContext): CardContext {
+    override suspend fun searchCards(context: CardContext): CardContext {
         context.status = toStatus(context.debugCase)
         return when (context.status) {
             AppStatus.OK -> context.successResponse {
@@ -61,10 +62,9 @@ internal class StubsCardServiceImpl : CardService {
             }
             else -> context.errorResponse({ stubError })
         }
-
     }
 
-    override fun getCard(context: CardContext): CardContext {
+    override suspend fun getCard(context: CardContext): CardContext {
         context.status = toStatus(context.debugCase)
         return when (context.status) {
             AppStatus.OK -> context.successResponse {
@@ -74,7 +74,7 @@ internal class StubsCardServiceImpl : CardService {
         }
     }
 
-    override fun learnCard(context: CardContext): CardContext {
+    override suspend fun learnCard(context: CardContext): CardContext {
         context.status = toStatus(context.debugCase)
         return when (context.status) {
             AppStatus.OK -> context.successResponse { }
@@ -82,7 +82,7 @@ internal class StubsCardServiceImpl : CardService {
         }
     }
 
-    override fun resetCard(context: CardContext): CardContext {
+    override suspend fun resetCard(context: CardContext): CardContext {
         context.status = toStatus(context.debugCase)
         return when (context.status) {
             AppStatus.OK -> context.successResponse { }
@@ -90,7 +90,7 @@ internal class StubsCardServiceImpl : CardService {
         }
     }
 
-    override fun deleteCard(context: CardContext): CardContext {
+    override suspend fun deleteCard(context: CardContext): CardContext {
         context.status = toStatus(context.debugCase)
         return when (context.status) {
             AppStatus.OK -> context.successResponse { }

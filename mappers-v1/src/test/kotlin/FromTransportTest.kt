@@ -51,7 +51,7 @@ class FromTransportTest {
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.PROD,
             expectedRequestId = "req",
             actual = context
@@ -110,7 +110,7 @@ class FromTransportTest {
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.TEST,
             expectedRequestId = "req4",
             actual = context
@@ -132,7 +132,7 @@ class FromTransportTest {
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.TEST,
             expectedRequestId = "req5",
             actual = context
@@ -167,7 +167,7 @@ class FromTransportTest {
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.TEST,
             expectedRequestId = "req6",
             actual = context
@@ -195,7 +195,7 @@ class FromTransportTest {
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.STUB,
             expectedRequestId = "req7",
             actual = context

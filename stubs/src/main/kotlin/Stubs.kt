@@ -32,11 +32,11 @@ fun toStatus(case: AppStub): AppStatus {
         AppStub.SUCCESS -> {
             AppStatus.OK
         }
-        AppStub.ERROR -> {
+        AppStub.UNKNOWN_ERROR -> {
             AppStatus.FAIL
         }
-        AppStub.NONE -> {
-            AppStatus.UNKNOWN
+        else -> {
+            AppStatus.INIT
         }
     }
 }

@@ -7,13 +7,15 @@ version = rootProject.version
 
 dependencies {
     val junitVersion: String by project
+    val kotlinCoroutinesVersion: String by project
 
-    implementation(project(":core"))
+    implementation(project(":corlib"))
     implementation(project(":common"))
     implementation(project(":stubs"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
 }
 
 tasks.test {

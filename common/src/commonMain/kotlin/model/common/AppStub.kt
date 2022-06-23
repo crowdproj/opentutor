@@ -1,7 +1,10 @@
 package com.gitlab.sszuev.flashcards.model.common
 
+/**
+ * Describes stub cases.
+ */
 enum class AppStub {
     NONE,
     SUCCESS,
-    ERROR,
+    UNKNOWN_ERROR,
 }

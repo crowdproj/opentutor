@@ -1,61 +1,61 @@
 package com.gitlab.sszuev.flashcards.services.impl
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.CardCorProcessor
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.services.CardService
 import kotlinx.datetime.Clock
 
 /**
  * TODO: replace the logic will ChainOfResponsibility-based implementation.
+ * @see CardCorProcessor
  */
 class CardServiceImpl : CardService {
+    private val processor = CardCorProcessor()
     private val stubs = StubsCardServiceImpl()
 
-    override fun createCard(context: CardContext): CardContext {
+    override suspend fun createCard(context: CardContext): CardContext = context.exec()
+
+    override suspend fun updateCard(context: CardContext): CardContext {
         return exec(context) {
-            stubs.createCard(context)
+            stubs.updateCard(context)
         }
     }
 
-    override fun updateCard(context: CardContext): CardContext {
-        return exec(context) {
-            stubs.createCard(context)
-        }
-    }
-
-    override fun searchCards(context: CardContext): CardContext {
+    override suspend fun searchCards(context: CardContext): CardContext {
         return exec(context) {
             stubs.searchCards(context)
         }
     }
 
-    override fun getCard(context: CardContext): CardContext {
+    override suspend fun getCard(context: CardContext): CardContext {
         return exec(context) {
             stubs.getCard(context)
         }
     }
 
-    override fun learnCard(context: CardContext): CardContext {
+    override suspend fun learnCard(context: CardContext): CardContext {
         return exec(context) {
             stubs.learnCard(context)
         }
     }
 
-    override fun resetCard(context: CardContext): CardContext {
+    override suspend fun resetCard(context: CardContext): CardContext {
         return exec(context) {
             stubs.resetCard(context)
         }
     }
 
-    override fun deleteCard(context: CardContext): CardContext {
+    override suspend fun deleteCard(context: CardContext): CardContext {
         return exec(context) {
             stubs.deleteCard(context)
         }
     }
 
-    private fun exec(
+    @Deprecated("Will be removed: switch to CoR processor")
+    private suspend fun exec(
         context: CardContext,
-        stub: (CardContext) -> CardContext
+        stub: suspend (CardContext) -> CardContext
     ): CardContext {
         context.timestamp = Clock.System.now()
         return when (context.workMode) {
@@ -64,5 +64,10 @@ class CardServiceImpl : CardService {
                 stub.invoke(context)
             }
         }
+    }
+
+    private suspend fun CardContext.exec(): CardContext {
+        processor.execute(this)
+        return this
     }
 }

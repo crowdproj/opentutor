@@ -105,6 +105,6 @@ private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
 
 private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.SUCCESS -> AppStub.SUCCESS
-    DebugStub.ERROR -> AppStub.ERROR
+    DebugStub.ERROR -> AppStub.UNKNOWN_ERROR
     null -> AppStub.NONE
 }

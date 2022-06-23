@@ -9,7 +9,7 @@ import kotlinx.datetime.Instant
  */
 data class CardContext(
     var operation: CardOperation = CardOperation.NONE,
-    var status: AppStatus = AppStatus.UNKNOWN,
+    var status: AppStatus = AppStatus.INIT,
     val errors: MutableList<AppError> = mutableListOf(),
 
     var workMode: AppMode = AppMode.PROD,

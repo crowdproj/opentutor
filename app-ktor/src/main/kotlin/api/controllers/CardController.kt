@@ -3,20 +3,18 @@ package com.gitlab.sszuev.flashcards.api.controllers
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.mappers.v1.*
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.services.CardService
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
+import kotlinx.datetime.Clock
 
 suspend fun ApplicationCall.createCard(service: CardService) {
-    val createCardRequest = receive<CreateCardRequest>()
-    respond(
-        CardContext().apply {
-            fromCreateCardRequest(createCardRequest)
-        }.let {
-            service.createCard(it)
-        }.toCreateCardResponse()
-    )
+    execute<CreateCardRequest>(CardOperation.CREATE_CARD) {
+        service.createCard(this)
+    }
 }
 
 suspend fun ApplicationCall.updateCard(service: CardService) {
@@ -25,7 +23,7 @@ suspend fun ApplicationCall.updateCard(service: CardService) {
         CardContext().apply {
             fromUpdateCardRequest(updateCardRequest)
         }.let {
-            service.createCard(it)
+            service.updateCard(it)
         }.toUpdateCardResponse()
     )
 }
@@ -83,4 +81,25 @@ suspend fun ApplicationCall.deleteCard(service: CardService) {
             service.deleteCard(it)
         }.toDeleteCardResponse()
     )
+}
+
+private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
+    operation: CardOperation? = null,
+    exec: CardContext.() -> Unit
+) {
+    val context = CardContext()
+    context.timestamp = Clock.System.now()
+    try {
+        val request = receive<R>()
+        context.fromTransport(request)
+        context.exec()
+        val response = context.toResponse()
+        respond(response)
+    } catch (ex: Throwable) {
+        operation?.also { context.operation = it }
+        context.status = AppStatus.FAIL
+        context.exec()
+        val response = context.toResponse()
+        respond(response)
+    }
 }
