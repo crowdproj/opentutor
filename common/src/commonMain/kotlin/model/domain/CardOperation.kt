@@ -2,7 +2,7 @@ package com.gitlab.sszuev.flashcards.model.domain
 
 enum class CardOperation {
     NONE,
-    GET_CARDS,
+    SEARCH_CARDS,
     GET_CARD,
     CREATE_CARD,
     UPDATE_CARD,

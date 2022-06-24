@@ -538,6 +538,8 @@ components:
         - error_card_wrong_part_of_speech
         - error_card_wrong_details
         - error_card_wrong_audio_resource
+        - error_cards_filter_wrong_length
+        - error_cards_filter_wrong_dictionary_id
         - error_unknown
 
     RunMode:

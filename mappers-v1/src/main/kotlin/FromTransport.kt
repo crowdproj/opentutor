@@ -27,7 +27,7 @@ fun CardContext.fromGetCardRequest(request: GetCardRequest) {
 }
 
 fun CardContext.fromGetCardsRequest(request: GetCardsRequest) {
-    this.operation = CardOperation.GET_CARD
+    this.operation = CardOperation.SEARCH_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -113,5 +113,7 @@ private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.ERROR_CARD_WRONG_PART_OF_SPEECH -> AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH
     DebugStub.ERROR_CARD_WRONG_DETAILS -> AppStub.ERROR_CARD_WRONG_DETAILS
     DebugStub.ERROR_CARD_WRONG_AUDIO_RESOURCE -> AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE
+    DebugStub.ERROR_CARDS_FILTER_WRONG_LENGTH -> AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH
+    DebugStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID -> AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID
     null -> AppStub.NONE
 }

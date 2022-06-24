@@ -1,13 +1,8 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.core.stubs.createCardErrorStub
-import com.gitlab.sszuev.flashcards.core.stubs.createCardSuccessStub
-import com.gitlab.sszuev.flashcards.core.stubs.createCardUnknownErrorStub
-import com.gitlab.sszuev.flashcards.core.validation.normalize
-import com.gitlab.sszuev.flashcards.core.validation.validateCardId
-import com.gitlab.sszuev.flashcards.core.validation.validateCardWord
-import com.gitlab.sszuev.flashcards.core.validation.validateDictionaryId
+import com.gitlab.sszuev.flashcards.core.stubs.*
+import com.gitlab.sszuev.flashcards.core.validation.*
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
@@ -28,14 +23,38 @@ class CardCorProcessor {
         private val businessChain = chain {
             initContext()
 
+            operation("Search cards", CardOperation.SEARCH_CARDS) {
+                chain {
+                    name = "search-cards :: handle stubs"
+                    test {
+                        this.workMode == AppMode.STUB && this.status == AppStatus.RUN
+                    }
+                    searchCardsSuccessStub()
+                    unknownErrorStub("Stub :: search-cards fail unknown")
+                    searchCardsErrorStub(AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH)
+                    searchCardsErrorStub(AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID)
+                }
+                chain {
+                    name = "search-cards :: validation"
+                    test {
+                        this.workMode != AppMode.STUB && this.status == AppStatus.RUN
+                    }
+                    worker(name = "Make a normalized copy of search-cards request") {
+                        this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
+                    }
+                    validateCardFilterLength { it.normalizedRequestCardFilter }
+                    validateCardFilterDictionaryIds { it.normalizedRequestCardFilter }
+                }
+            }
+
             operation("Create card", CardOperation.CREATE_CARD) {
                 chain {
-                    name = "Handle stubs"
+                    name = "create-card :: handle stubs"
                     test {
                         this.workMode == AppMode.STUB && this.status == AppStatus.RUN
                     }
                     createCardSuccessStub()
-                    createCardUnknownErrorStub()
+                    unknownErrorStub("Stub :: create-card fail unknown")
                     createCardErrorStub(AppStub.ERROR_CARD_WRONG_WORD)
                     createCardErrorStub(AppStub.ERROR_CARD_WRONG_TRANSLATION)
                     createCardErrorStub(AppStub.ERROR_CARD_WRONG_TRANSCRIPTION)
@@ -45,13 +64,16 @@ class CardCorProcessor {
                     createCardErrorStub(AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
                 }
                 chain {
-                    name = "Card validation"
-                    worker(name = "Make a normalized copy of request") {
+                    name = "create-card :: validation"
+                    test {
+                        this.workMode != AppMode.STUB && this.status == AppStatus.RUN
+                    }
+                    worker(name = "Make a normalized copy of get-card request") {
                         this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
                     }
-                    validateCardId { it.normalizedRequestCardEntity.cardId }
-                    validateDictionaryId { it.normalizedRequestCardEntity.dictionaryId }
-                    validateCardWord { it.normalizedRequestCardEntity }
+                    validateCardEntityCardId{ it.normalizedRequestCardEntity }
+                    validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
+                    validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
             }
         }

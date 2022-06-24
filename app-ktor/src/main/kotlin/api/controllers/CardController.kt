@@ -29,14 +29,9 @@ suspend fun ApplicationCall.updateCard(service: CardService) {
 }
 
 suspend fun ApplicationCall.searchCards(service: CardService) {
-    val getCardsRequest = receive<GetCardsRequest>()
-    respond(
-        CardContext().apply {
-            fromGetCardsRequest(getCardsRequest)
-        }.let {
-            service.searchCards(it)
-        }.toGetCardsResponse()
-    )
+    execute<GetCardsRequest>(CardOperation.SEARCH_CARDS) {
+        service.searchCards(this)
+    }
 }
 
 suspend fun ApplicationCall.getCard(service: CardService) {

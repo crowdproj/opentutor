@@ -22,11 +22,7 @@ class CardServiceImpl : CardService {
         }
     }
 
-    override suspend fun searchCards(context: CardContext): CardContext {
-        return exec(context) {
-            stubs.searchCards(context)
-        }
-    }
+    override suspend fun searchCards(context: CardContext): CardContext = context.exec()
 
     override suspend fun getCard(context: CardContext): CardContext {
         return exec(context) {

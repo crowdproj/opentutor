@@ -22,14 +22,27 @@ val stubCard = CardEntity(
     dictionaryId = DictionaryId(42.toString()),
 )
 
+val stubCards = IntRange(1, 3)
+    .flatMap { dictionaryId -> IntRange(1, 42).map { cardId -> dictionaryId to cardId } }
+    .map {
+        stubCard.copy(
+            cardId = CardId(it.second.toString()),
+            dictionaryId = DictionaryId(it.first.toString()),
+            word = "XXX-${it.first}-${it.second}"
+        )
+    }
+
 val stubLearnCardDetails = CardLearn(
     cardId = CardId(42.toString()),
     details = mapOf("stage-a" to 42, "stage-b" to 5, "stage-c" to 4)
 )
 
 fun stubErrorForCode(case: AppStub): AppError {
-    return stubError.copy(
-        code = case.name
+    return  AppError(
+        field = "field::$case",
+        message = "the-error-message-for-$case",
+        code = case.name,
+        group = "StubErrors",
     )
 }
 

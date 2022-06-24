@@ -11,7 +11,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
-    CardOperation.GET_CARDS -> this.toGetCardsResponse()
+    CardOperation.SEARCH_CARDS -> this.toGetCardsResponse()
     CardOperation.GET_CARD -> this.toGetCardResponse()
     CardOperation.CREATE_CARD -> this.toCreateCardResponse()
     CardOperation.UPDATE_CARD -> this.toUpdateCardResponse()

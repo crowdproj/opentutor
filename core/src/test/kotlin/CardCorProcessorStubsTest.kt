@@ -3,8 +3,11 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.stubs.stubCard
+import com.gitlab.sszuev.flashcards.stubs.stubCards
 import com.gitlab.sszuev.flashcards.stubs.stubError
 import com.gitlab.sszuev.flashcards.stubs.stubErrorForCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -21,6 +24,13 @@ internal class CardCorProcessorStubsTest {
     companion object {
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
+        private val testCard = stubCard.copy()
+        private val testCardFilter = CardFilter(
+            dictionaryIds = listOf(2, 4, 42).map { DictionaryId(it.toString()) },
+            length = 42,
+            random = true,
+            withUnknown = false,
+        )
 
         private fun testContext(op: CardOperation, case: AppStub): CardContext {
             val context = CardContext()
@@ -47,16 +57,16 @@ internal class CardCorProcessorStubsTest {
     @Test
     fun `test create-card success`() = runTest {
         val context = testContext(CardOperation.CREATE_CARD, AppStub.SUCCESS)
-        context.requestCardEntity = stubCard
+        context.requestCardEntity = testCard
         processor.execute(context)
         assertSuccess(context)
-        Assertions.assertEquals(stubCard, context.responseCardEntity)
+        Assertions.assertEquals(testCard, context.responseCardEntity)
     }
 
     @Test
     fun `test create-card fail`() = runTest {
         val context = testContext(CardOperation.CREATE_CARD, AppStub.UNKNOWN_ERROR)
-        context.requestCardEntity = stubCard
+        context.requestCardEntity = testCard
         processor.execute(context)
         assertFail(context)
         Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
@@ -77,9 +87,43 @@ internal class CardCorProcessorStubsTest {
     )
     fun `test create-card specific fail`(case: AppStub) = runTest {
         val context = testContext(CardOperation.CREATE_CARD, case)
-        context.requestCardEntity = stubCard
+        context.requestCardEntity = testCard
         processor.execute(context)
         assertFail(context, stubErrorForCode(case))
         Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+    }
+
+    @Test
+    fun `test search-cards success`() = runTest {
+        val context = testContext(CardOperation.SEARCH_CARDS, AppStub.SUCCESS)
+        context.requestCardFilter = testCardFilter
+        processor.execute(context)
+        assertSuccess(context)
+        Assertions.assertEquals(stubCards, context.responseCardEntityList)
+    }
+
+    @Test
+    fun `test search-cards fail`() = runTest {
+        val context = testContext(CardOperation.SEARCH_CARDS, AppStub.UNKNOWN_ERROR)
+        context.requestCardFilter = testCardFilter
+        processor.execute(context)
+        assertFail(context)
+        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = AppStub::class,
+        names = [
+            "ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID",
+            "ERROR_CARDS_FILTER_WRONG_LENGTH"
+        ]
+    )
+    fun `test search-cards specific fail`(case: AppStub) = runTest {
+        val context = testContext(CardOperation.SEARCH_CARDS, case)
+        context.requestCardFilter = testCardFilter
+        processor.execute(context)
+        assertFail(context, stubErrorForCode(case))
+        Assertions.assertTrue(context.responseCardEntityList.isEmpty())
     }
 }

@@ -1,7 +1,9 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.stubs.stubCard
+import com.gitlab.sszuev.flashcards.stubs.stubCards
 import com.gitlab.sszuev.flashcards.stubs.stubError
 import com.gitlab.sszuev.flashcards.stubs.stubLearnCardDetails
 import com.gitlab.sszuev.flashcards.testPost
@@ -66,6 +68,12 @@ class CardControllerStubsTest {
             Assertions.assertEquals(stubError.code, error.code)
             Assertions.assertEquals(stubError.group, error.group)
         }
+
+        private fun assertCard(actual: CardEntity, expected: CardResource) {
+            Assertions.assertEquals(actual.cardId.asString(), expected.cardId)
+            Assertions.assertEquals(actual.dictionaryId.asString(), expected.dictionaryId)
+            Assertions.assertEquals(actual.word, expected.word)
+        }
     }
 
     @Test
@@ -113,7 +121,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-search returns single card success`() = testApplication {
+    fun `test cards-search card success`() = testApplication {
         val requestBody = GetCardsRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -124,25 +132,11 @@ class CardControllerStubsTest {
         )
         val response = testPost("/v1/api/cards/search", requestBody)
         val responseBody = testResponseSuccess<GetCardsResponse>(requestBody.requestId, response)
-        Assertions.assertEquals(1, responseBody.cards!!.size)
-        val responseEntity = responseBody.cards!![0]
-        Assertions.assertNotSame(testCard, responseEntity)
-        Assertions.assertEquals(testCard, responseEntity)
-    }
-
-    @Test
-    fun `test cards-search returns many random cards success`() = testApplication {
-        val requestBody = GetCardsRequest(
-            requestId = "success-request",
-            debug = debugSuccess,
-            dictionaryIds = listOf("a", "b", "c", "d"),
-            length = 42,
-            random = true,
-            unknown = true,
-        )
-        val response = testPost("/v1/api/cards/search", requestBody)
-        val responseBody = testResponseSuccess<GetCardsResponse>(requestBody.requestId, response)
-        Assertions.assertEquals(42, responseBody.cards!!.size)
+        Assertions.assertEquals(stubCards.size, responseBody.cards!!.size)
+        responseBody.cards!!.forEachIndexed { index, cardResource ->
+            val card = stubCards[index]
+            assertCard(card, cardResource)
+        }
     }
 
     @Test
