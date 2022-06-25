@@ -46,14 +46,9 @@ suspend fun ApplicationCall.getCard(service: CardService) {
 }
 
 suspend fun ApplicationCall.learnCard(service: CardService) {
-    val learnCardRequest = receive<LearnCardRequest>()
-    respond(
-        CardContext().apply {
-            fromLearnCardRequest(learnCardRequest)
-        }.let {
-            service.learnCard(it)
-        }.toLearnCardResponse()
-    )
+    execute<LearnCardRequest>(CardOperation.LEARN_CARD) {
+        service.learnCard(this)
+    }
 }
 
 suspend fun ApplicationCall.resetCard(service: CardService) {

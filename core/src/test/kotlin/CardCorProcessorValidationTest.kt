@@ -4,10 +4,7 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -21,6 +18,8 @@ import java.util.*
 class CardCorProcessorValidationTest {
 
     companion object {
+        private const val parameterizedTestName =
+            "test: ${ParameterizedTest.INDEX_PLACEHOLDER} \"${ParameterizedTest.ARGUMENTS_WITH_NAMES_PLACEHOLDER}\""
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
         private val testCard = stubCard.copy()
@@ -29,6 +28,10 @@ class CardCorProcessorValidationTest {
             length = 42,
             random = false,
             withUnknown = true,
+        )
+        private val testCardLearn = CardLearn(
+            cardId = CardId("42"),
+            details = mapOf("stage42" to 42)
         )
 
         private fun testContext(op: CardOperation): CardContext {
@@ -41,7 +44,9 @@ class CardCorProcessorValidationTest {
 
         private fun error(context: CardContext): AppError {
             val errors = context.errors
-            Assertions.assertEquals(1, errors.size)
+            Assertions.assertEquals(1, errors.size) {
+                "Got errors: ${errors.map { it.field }}"
+            }
             return errors[0]
         }
 
@@ -57,7 +62,7 @@ class CardCorProcessorValidationTest {
         }
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = parameterizedTestName)
     @MethodSource("wrongIds")
     fun `test create-card - validate CardId`(id: String) = runTest {
         val context = testContext(CardOperation.CREATE_CARD)
@@ -67,9 +72,9 @@ class CardCorProcessorValidationTest {
         assertValidationError("card-id", error)
     }
 
-    @ParameterizedTest
+    @ParameterizedTest(name = parameterizedTestName)
     @MethodSource("wrongIds")
-    fun `test create-card - validate Card DictionaryId`(id: String) = runTest {
+    fun `test create-card - validate DictionaryId`(id: String) = runTest {
         val context = testContext(CardOperation.CREATE_CARD)
         context.requestCardEntity = testCard.copy(dictionaryId = DictionaryId(id))
         processor.execute(context)
@@ -78,7 +83,7 @@ class CardCorProcessorValidationTest {
     }
 
     @Test
-    fun `test create-card - validate Card Word`() = runTest {
+    fun `test create-card - validate word`() = runTest {
         val context = testContext(CardOperation.CREATE_CARD)
         context.requestCardEntity = testCard.copy(word = "")
         processor.execute(context)
@@ -137,5 +142,57 @@ class CardCorProcessorValidationTest {
         Assertions.assertEquals(2, errors.size)
         assertValidationError("card-filter-length", errors[0])
         assertValidationError("card-filter-dictionary-ids", errors[1])
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
+    @MethodSource("wrongIds")
+    fun `test learn-cards - validate CardIds`(id: String) = runTest {
+        val context1 = testContext(CardOperation.LEARN_CARD)
+        context1.requestCardLearnList = listOf(
+            testCardLearn.copy(cardId = CardId("1")),
+            testCardLearn.copy(),
+            testCardLearn.copy(cardId = CardId(id)),
+        )
+        processor.execute(context1)
+        val error = error(context1)
+        assertValidationError("card-learn-card-ids", error)
+
+        val context2 = testContext(CardOperation.LEARN_CARD)
+        context2.requestCardLearnList = listOf(
+            testCardLearn.copy(cardId = CardId(id)),
+            testCardLearn.copy(cardId = CardId(id)),
+        )
+        processor.execute(context2)
+        Assertions.assertEquals(2, context2.errors.size)
+        assertValidationError("card-learn-card-ids", context2.errors[0])
+        assertValidationError("card-learn-card-ids", context2.errors[1])
+    }
+
+    @Test
+    fun `test learn-cards - validate wrong stages`() = runTest {
+        val context = testContext(CardOperation.LEARN_CARD)
+        context.requestCardLearnList = listOf(
+            testCardLearn.copy(cardId = CardId("42"), details = mapOf(" " to 42, "xx".repeat(42) to 42)),
+            testCardLearn.copy(cardId = CardId("21"), details = mapOf("y".repeat(21) to 42, " x".repeat(2) to 42)),
+        )
+        processor.execute(context)
+        Assertions.assertEquals(3, context.errors.size)
+        context.errors.forEach {
+            assertValidationError("card-learn-stages", it)
+        }
+    }
+
+    @Test
+    fun `test learn-cards - validate wrong details`() = runTest {
+        val context = testContext(CardOperation.LEARN_CARD)
+        context.requestCardLearnList = listOf(
+            testCardLearn.copy(cardId = CardId("42"), details = mapOf("stage1" to 4200, "stage2" to 42)),
+            testCardLearn.copy(cardId = CardId("21"), details = mapOf("stage3" to -12, " stage4" to 0)),
+        )
+        processor.execute(context)
+        Assertions.assertEquals(3, context.errors.size)
+        context.errors.forEach {
+            assertValidationError("card-learn-details", it)
+        }
     }
 }

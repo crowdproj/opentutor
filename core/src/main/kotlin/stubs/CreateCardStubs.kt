@@ -12,7 +12,7 @@ import com.gitlab.sszuev.flashcards.stubs.stubError
 import com.gitlab.sszuev.flashcards.stubs.stubErrorForCode
 
 fun ChainDSL<CardContext>.createCardSuccessStub() = worker {
-    this.name = "Stub :: create-card success"
+    name = "Stub :: create-card success"
     test {
         this.debugCase == AppStub.SUCCESS && this.status == AppStatus.RUN
     }
@@ -23,13 +23,23 @@ fun ChainDSL<CardContext>.createCardSuccessStub() = worker {
 }
 
 fun ChainDSL<CardContext>.searchCardsSuccessStub() = worker {
-    this.name = "Stub :: search-cards success"
+    name = "Stub :: search-cards success"
     test {
         this.debugCase == AppStub.SUCCESS && this.status == AppStatus.RUN
     }
     process {
         this.status = AppStatus.OK
         this.responseCardEntityList = stubCards
+    }
+}
+
+fun ChainDSL<CardContext>.learnCardSuccessStub() = worker {
+    name = "Stub :: learn-card success"
+    test {
+        this.debugCase == AppStub.SUCCESS && this.status == AppStatus.RUN
+    }
+    process {
+        this.status = AppStatus.OK
     }
 }
 

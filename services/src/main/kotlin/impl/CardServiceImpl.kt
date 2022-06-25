@@ -30,11 +30,7 @@ class CardServiceImpl : CardService {
         }
     }
 
-    override suspend fun learnCard(context: CardContext): CardContext {
-        return exec(context) {
-            stubs.learnCard(context)
-        }
-    }
+    override suspend fun learnCard(context: CardContext): CardContext = context.exec()
 
     override suspend fun resetCard(context: CardContext): CardContext {
         return exec(context) {

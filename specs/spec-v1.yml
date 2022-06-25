@@ -540,6 +540,9 @@ components:
         - error_card_wrong_audio_resource
         - error_cards_filter_wrong_length
         - error_cards_filter_wrong_dictionary_id
+        - error_learn_card_wrong_card_id
+        - error_learn_card_wrong_stages
+        - error_learn_card_wrong_details
         - error_unknown
 
     RunMode:

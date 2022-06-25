@@ -3,11 +3,8 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.stubs.*
 import com.gitlab.sszuev.flashcards.core.validation.*
-import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
-import com.gitlab.sszuev.flashcards.model.common.AppMode
-import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 
@@ -24,21 +21,13 @@ class CardCorProcessor {
             initContext()
 
             operation("Search cards", CardOperation.SEARCH_CARDS) {
-                chain {
-                    name = "search-cards :: handle stubs"
-                    test {
-                        this.workMode == AppMode.STUB && this.status == AppStatus.RUN
-                    }
+                stubs("search-cards :: handle stubs") {
                     searchCardsSuccessStub()
                     unknownErrorStub("Stub :: search-cards fail unknown")
                     searchCardsErrorStub(AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH)
                     searchCardsErrorStub(AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID)
                 }
-                chain {
-                    name = "search-cards :: validation"
-                    test {
-                        this.workMode != AppMode.STUB && this.status == AppStatus.RUN
-                    }
+                validators("search-cards :: validation") {
                     worker(name = "Make a normalized copy of search-cards request") {
                         this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
                     }
@@ -48,11 +37,7 @@ class CardCorProcessor {
             }
 
             operation("Create card", CardOperation.CREATE_CARD) {
-                chain {
-                    name = "create-card :: handle stubs"
-                    test {
-                        this.workMode == AppMode.STUB && this.status == AppStatus.RUN
-                    }
+                stubs("create-card :: handle stubs") {
                     createCardSuccessStub()
                     unknownErrorStub("Stub :: create-card fail unknown")
                     createCardErrorStub(AppStub.ERROR_CARD_WRONG_WORD)
@@ -63,43 +48,32 @@ class CardCorProcessor {
                     createCardErrorStub(AppStub.ERROR_CARD_WRONG_DETAILS)
                     createCardErrorStub(AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
                 }
-                chain {
-                    name = "create-card :: validation"
-                    test {
-                        this.workMode != AppMode.STUB && this.status == AppStatus.RUN
-                    }
+                validators("create-card :: validation") {
                     worker(name = "Make a normalized copy of get-card request") {
                         this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
                     }
-                    validateCardEntityCardId{ it.normalizedRequestCardEntity }
+                    validateCardEntityCardId { it.normalizedRequestCardEntity }
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
             }
-        }
 
-        private fun ChainDSL<CardContext>.initContext() = worker {
-            worker {
-                this.name = "start context"
-                this.description = "prepare generic fields"
-                test {
-                    this.status == AppStatus.INIT
+            operation("Learn card", CardOperation.LEARN_CARD) {
+                stubs("learn-card :: handle stubs") {
+                    learnCardSuccessStub()
+                    unknownErrorStub("Stub :: learn-card fail unknown")
+                    createCardErrorStub(AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
+                    createCardErrorStub(AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
+                    createCardErrorStub(AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
                 }
-                process {
-                    this.status = AppStatus.RUN
+                validators("learn-card :: validation") {
+                    worker(name = "Make a normalized copy of learn-card request") {
+                        this.normalizedRequestCardLearnList = this.requestCardLearnList.map { it.normalize() }
+                    }
+                    validateCardLearnListCardIds { it.normalizedRequestCardLearnList }
+                    validateCardLearnListStages { it.normalizedRequestCardLearnList }
+                    validateCardLearnListDetails { it.normalizedRequestCardLearnList }
                 }
-            }
-        }
-
-        private fun ChainDSL<CardContext>.operation(
-            name: String,
-            operation: CardOperation,
-            configure: ChainDSL<CardContext>.() -> Unit,
-        ) = chain {
-            configure()
-            this.name = name
-            test {
-                this.operation == operation && status == AppStatus.RUN
             }
         }
     }

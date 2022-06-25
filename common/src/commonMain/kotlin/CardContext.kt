@@ -28,6 +28,7 @@ data class CardContext(
     var normalizedRequestCardEntity: CardEntity = CardEntity.DUMMY,
     // learn card
     var requestCardLearnList: List<CardLearn> = listOf(),
+    var normalizedRequestCardLearnList: List<CardLearn> = listOf(),
 
     // get single card response:
     var responseCardEntity: CardEntity = CardEntity.DUMMY,
