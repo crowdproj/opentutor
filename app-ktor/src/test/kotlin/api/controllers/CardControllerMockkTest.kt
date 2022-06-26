@@ -91,7 +91,6 @@ internal class CardControllerMockkTest {
         val responseBody = response.body<BaseResponse>()
         Assertions.assertEquals(1, responseBody.errors?.size)
         val error = responseBody.errors!![0]
-        println(error.message)
         Assertions.assertEquals("unknown", error.code)
         Assertions.assertEquals("exceptions", error.group)
         Assertions.assertNull(error.field)
