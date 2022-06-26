@@ -14,7 +14,6 @@ interface CardService {
      */
     suspend fun updateCard(context: CardContext): CardContext
 
-
     /**
      * Gets a deck of cards by parameters.
      */

@@ -531,6 +531,7 @@ components:
       description: Stubs
       enum:
         - success
+        - error_unexpected_field
         - error_wrong_card_id
         - error_card_wrong_word
         - error_card_wrong_transcription

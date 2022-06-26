@@ -41,29 +41,13 @@ class CardCorProcessor {
                 }
             }
 
-            operation(CardOperation.GET_CARD) {
-                stubs(CardOperation.GET_CARD) {
-                    stubSuccess(CardOperation.GET_CARD) {
-                        this.responseCardEntity = stubCard
-                    }
-                    stubError(CardOperation.GET_CARD)
-                    stubError(CardOperation.GET_CARD, AppStub.ERROR_WRONG_CARD_ID)
-                }
-                validators(CardOperation.GET_CARD) {
-                    worker(name = "Make a normalized copy of get-card-id") {
-                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
-                    }
-                    validateCardId { it.normalizedRequestCardEntityId }
-                }
-            }
-
             operation(CardOperation.CREATE_CARD) {
                 stubs(CardOperation.CREATE_CARD) {
                     stubSuccess(CardOperation.CREATE_CARD) {
                         this.responseCardEntity = stubCard
                     }
                     stubError(CardOperation.CREATE_CARD)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_WRONG_CARD_ID)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_UNEXPECTED_FIELD)
                     stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_WORD)
                     stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSLATION)
                     stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSCRIPTION)
@@ -73,10 +57,35 @@ class CardCorProcessor {
                     stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
                 }
                 validators(CardOperation.CREATE_CARD) {
-                    worker(name = "Make a normalized copy of get-card request") {
+                    worker(name = "Make a normalized copy of create-card card-entity") {
                         this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
                     }
-                    validateCardEntityCardId { it.normalizedRequestCardEntity }
+                    validateCardEntityHasNoCardId { it.normalizedRequestCardEntity }
+                    validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
+                    validateCardEntityWord { it.normalizedRequestCardEntity }
+                }
+            }
+
+            operation(CardOperation.UPDATE_CARD) {
+                stubs(CardOperation.UPDATE_CARD) {
+                    stubSuccess(CardOperation.UPDATE_CARD) {
+                        this.responseCardEntity = stubCard
+                    }
+                    stubError(CardOperation.UPDATE_CARD)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_WRONG_CARD_ID)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_WORD)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSLATION)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSCRIPTION)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_EXAMPLES)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_DETAILS)
+                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
+                }
+                validators(CardOperation.UPDATE_CARD) {
+                    worker(name = "Make a normalized copy of update-card card-entity") {
+                        this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
+                    }
+                    validateCardEntityHasValidCardId { it.normalizedRequestCardEntity }
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
@@ -97,6 +106,49 @@ class CardCorProcessor {
                     validateCardLearnListCardIds { it.normalizedRequestCardLearnList }
                     validateCardLearnListStages { it.normalizedRequestCardLearnList }
                     validateCardLearnListDetails { it.normalizedRequestCardLearnList }
+                }
+            }
+
+            operation(CardOperation.GET_CARD) {
+                stubs(CardOperation.GET_CARD) {
+                    stubSuccess(CardOperation.GET_CARD) {
+                        this.responseCardEntity = stubCard
+                    }
+                    stubError(CardOperation.GET_CARD)
+                    stubError(CardOperation.GET_CARD, AppStub.ERROR_WRONG_CARD_ID)
+                }
+                validators(CardOperation.GET_CARD) {
+                    worker(name = "Make a normalized copy of get-card-id") {
+                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
+                    }
+                    validateCardId { it.normalizedRequestCardEntityId }
+                }
+            }
+
+            operation(CardOperation.RESET_CARD) {
+                stubs(CardOperation.RESET_CARD) {
+                    stubSuccess(CardOperation.RESET_CARD)
+                    stubError(CardOperation.RESET_CARD)
+                    stubError(CardOperation.RESET_CARD, AppStub.ERROR_WRONG_CARD_ID)
+                }
+                validators(CardOperation.RESET_CARD) {
+                    worker(name = "Make a normalized copy of reset-card-id") {
+                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
+                    }
+                    validateCardId { it.normalizedRequestCardEntityId }
+                }
+            }
+            operation(CardOperation.DELETE_CARD) {
+                stubs(CardOperation.DELETE_CARD) {
+                    stubSuccess(CardOperation.DELETE_CARD)
+                    stubError(CardOperation.DELETE_CARD)
+                    stubError(CardOperation.DELETE_CARD, AppStub.ERROR_WRONG_CARD_ID)
+                }
+                validators(CardOperation.DELETE_CARD) {
+                    worker(name = "Make a normalized copy of delete-card-id") {
+                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
+                    }
+                    validateCardId { it.normalizedRequestCardEntityId }
                 }
             }
         }

@@ -40,11 +40,35 @@ internal class CardControllerMockkTest {
     }
 
     @Test
+    fun `test update-card service error`() {
+        testServiceError(
+            endpoint = "cards/update",
+            requestBody = UpdateCardRequest(requestId = "request=cards/update")
+        ) { this.updateCard(it) }
+    }
+
+    @Test
     fun `test learn-card service error`() {
         testServiceError(
             endpoint = "cards/learn",
             requestBody = LearnCardRequest(requestId = "request=cards/learn")
         ) { this.learnCard(it) }
+    }
+
+    @Test
+    fun `test reset-card service error`() {
+        testServiceError(
+            endpoint = "cards/reset",
+            requestBody = ResetCardRequest(requestId = "request=cards/reset")
+        ) { this.resetCard(it) }
+    }
+
+    @Test
+    fun `test delete-card service error`() {
+        testServiceError(
+            endpoint = "cards/delete",
+            requestBody = DeleteCardRequest(requestId = "request=cards/delete")
+        ) { this.deleteCard(it) }
     }
 
     private inline fun <reified X : BaseRequest> testServiceError(

@@ -2,7 +2,8 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
-import com.gitlab.sszuev.flashcards.mappers.v1.*
+import com.gitlab.sszuev.flashcards.mappers.v1.fromTransport
+import com.gitlab.sszuev.flashcards.mappers.v1.toResponse
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
@@ -23,14 +24,9 @@ suspend fun ApplicationCall.createCard(service: CardService) {
 }
 
 suspend fun ApplicationCall.updateCard(service: CardService) {
-    val updateCardRequest = receive<UpdateCardRequest>()
-    respond(
-        CardContext().apply {
-            fromUpdateCardRequest(updateCardRequest)
-        }.let {
-            service.updateCard(it)
-        }.toUpdateCardResponse()
-    )
+    execute<UpdateCardRequest>(CardOperation.UPDATE_CARD) {
+        service.updateCard(this)
+    }
 }
 
 suspend fun ApplicationCall.searchCards(service: CardService) {
@@ -52,25 +48,15 @@ suspend fun ApplicationCall.learnCard(service: CardService) {
 }
 
 suspend fun ApplicationCall.resetCard(service: CardService) {
-    val resetCardRequest = receive<ResetCardRequest>()
-    respond(
-        CardContext().apply {
-            fromResetCardRequest(resetCardRequest)
-        }.let {
-            service.resetCard(it)
-        }.toResetCardResponse()
-    )
+    execute<ResetCardRequest>(CardOperation.RESET_CARD) {
+        service.resetCard(this)
+    }
 }
 
 suspend fun ApplicationCall.deleteCard(service: CardService) {
-    val deleteCardRequest = receive<DeleteCardRequest>()
-    respond(
-        CardContext().apply {
-            fromDeleteCardRequest(deleteCardRequest)
-        }.let {
-            service.deleteCard(it)
-        }.toDeleteCardResponse()
-    )
+    execute<DeleteCardRequest>(CardOperation.DELETE_CARD) {
+        service.deleteCard(this)
+    }
 }
 
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(

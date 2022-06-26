@@ -106,6 +106,7 @@ private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
 private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.SUCCESS -> AppStub.SUCCESS
     DebugStub.ERROR_UNKNOWN -> AppStub.UNKNOWN_ERROR
+    DebugStub.ERROR_UNEXPECTED_FIELD -> AppStub.ERROR_UNEXPECTED_FIELD
     DebugStub.ERROR_WRONG_CARD_ID -> AppStub.ERROR_WRONG_CARD_ID
     DebugStub.ERROR_CARD_WRONG_WORD -> AppStub.ERROR_CARD_WRONG_WORD
     DebugStub.ERROR_CARD_WRONG_TRANSCRIPTION -> AppStub.ERROR_CARD_WRONG_TRANSCRIPTION
@@ -119,6 +120,5 @@ private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.ERROR_LEARN_CARD_WRONG_CARD_ID -> AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID
     DebugStub.ERROR_LEARN_CARD_WRONG_STAGES -> AppStub.ERROR_LEARN_CARD_WRONG_STAGES
     DebugStub.ERROR_LEARN_CARD_WRONG_DETAILS -> AppStub.ERROR_LEARN_CARD_WRONG_DETAILS
-
     null -> AppStub.NONE
 }
