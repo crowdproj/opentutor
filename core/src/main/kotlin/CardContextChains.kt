@@ -22,11 +22,10 @@ internal fun ChainDSL<CardContext>.initContext() = worker {
 }
 
 internal fun ChainDSL<CardContext>.operation(
-    name: String,
     operation: CardOperation,
     configure: ChainDSL<CardContext>.() -> Unit,
 ) = chain {
-    this.name = name
+    this.name = "${operation.title().uppercase()} ::: operation"
     test {
         this.operation == operation && status == AppStatus.RUN
     }
@@ -34,10 +33,10 @@ internal fun ChainDSL<CardContext>.operation(
 }
 
 internal fun ChainDSL<CardContext>.stubs(
-    name: String,
+    operation: CardOperation,
     configure: ChainDSL<CardContext>.() -> Unit
 ) = chain {
-    this.name = name
+    this.name = "${operation.title()} ::: stubs"
     test {
         this.workMode == AppMode.STUB && this.status == AppStatus.RUN
     }
@@ -45,12 +44,16 @@ internal fun ChainDSL<CardContext>.stubs(
 }
 
 internal fun ChainDSL<CardContext>.validators(
-    name: String,
+    operation: CardOperation,
     configure: ChainDSL<CardContext>.() -> Unit
 ) = chain {
-    this.name = name
+    this.name = "${operation.title()} ::: validation"
     test {
         this.workMode != AppMode.STUB && this.status == AppStatus.RUN
     }
     configure()
+}
+
+internal fun CardOperation.title(): String {
+    return this.name.lowercase().replace("_", "-")
 }

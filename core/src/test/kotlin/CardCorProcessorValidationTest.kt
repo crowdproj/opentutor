@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
+import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.*
 
@@ -19,7 +20,7 @@ class CardCorProcessorValidationTest {
 
     companion object {
         private const val parameterizedTestName =
-            "test: ${ParameterizedTest.INDEX_PLACEHOLDER} \"${ParameterizedTest.ARGUMENTS_WITH_NAMES_PLACEHOLDER}\""
+            "test: ${ParameterizedTest.INDEX_PLACEHOLDER}: \"${ParameterizedTest.ARGUMENTS_WITH_NAMES_PLACEHOLDER}\""
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
         private val testCard = stubCard.copy()
@@ -59,6 +60,13 @@ class CardCorProcessorValidationTest {
         @JvmStatic
         private fun wrongIds(): List<String> {
             return listOf(" ", "abc")
+        }
+
+        @JvmStatic
+        private fun operationsWithCardIdInRequest(): List<Arguments> {
+            val ops = listOf(CardOperation.GET_CARD)
+            val ids = wrongIds()
+            return ops.flatMap { op -> ids.map { Arguments.of(it, op) } }
         }
     }
 
@@ -194,5 +202,15 @@ class CardCorProcessorValidationTest {
         context.errors.forEach {
             assertValidationError("card-learn-details", it)
         }
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
+    @MethodSource(value = ["operationsWithCardIdInRequest"])
+    fun `test request with cardId - validate CardId`(id: String, op: CardOperation) = runTest {
+        val context = testContext(op)
+        context.requestCardEntityId = CardId(id)
+        processor.execute(context)
+        val error = error(context)
+        assertValidationError("card-id", error)
     }
 }

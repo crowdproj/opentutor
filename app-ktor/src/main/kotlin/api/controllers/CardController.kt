@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.api.controllers
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.mappers.v1.*
+import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.services.CardService
@@ -10,6 +11,10 @@ import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
+private val logger: Logger = LoggerFactory.getLogger("CardController")
 
 suspend fun ApplicationCall.createCard(service: CardService) {
     execute<CreateCardRequest>(CardOperation.CREATE_CARD) {
@@ -35,14 +40,9 @@ suspend fun ApplicationCall.searchCards(service: CardService) {
 }
 
 suspend fun ApplicationCall.getCard(service: CardService) {
-    val getCardRequest = receive<GetCardRequest>()
-    respond(
-        CardContext().apply {
-            fromGetCardRequest(getCardRequest)
-        }.let {
-            service.getCard(it)
-        }.toGetCardResponse()
-    )
+    execute<GetCardRequest>(CardOperation.GET_CARD) {
+        service.getCard(this)
+    }
 }
 
 suspend fun ApplicationCall.learnCard(service: CardService) {
@@ -80,16 +80,35 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     val context = CardContext()
     context.timestamp = Clock.System.now()
     try {
+        if (logger.isDebugEnabled) {
+            logger.debug("Request: $operation")
+        }
         val request = receive<R>()
         context.fromTransport(request)
         context.exec()
         val response = context.toResponse()
         respond(response)
     } catch (ex: Throwable) {
+        val msg = "Problem with request=${context.requestId.asString()} :: ${ex.message}"
+        if (logger.isDebugEnabled) {
+            logger.debug(msg, ex)
+        }
         operation?.also { context.operation = it }
         context.status = AppStatus.FAIL
-        context.exec()
+        context.errors.add(ex.asError(message = msg))
         val response = context.toResponse()
         respond(response)
     }
 }
+
+private fun Throwable.asError(
+    code: String = "unknown",
+    group: String = "exceptions",
+    message: String = this.message ?: "",
+) = AppError(
+    code = code,
+    group = group,
+    field = "",
+    message = message,
+    exception = this,
+)

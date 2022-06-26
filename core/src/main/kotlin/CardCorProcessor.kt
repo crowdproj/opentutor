@@ -1,12 +1,15 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.core.stubs.*
+import com.gitlab.sszuev.flashcards.core.stubs.stubError
+import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
 import com.gitlab.sszuev.flashcards.core.validation.*
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.stubs.stubCard
+import com.gitlab.sszuev.flashcards.stubs.stubCards
 
 /**
  * Main class fot business logic,
@@ -20,14 +23,16 @@ class CardCorProcessor {
         private val businessChain = chain {
             initContext()
 
-            operation("Search cards", CardOperation.SEARCH_CARDS) {
-                stubs("search-cards :: handle stubs") {
-                    searchCardsSuccessStub()
-                    unknownErrorStub("Stub :: search-cards fail unknown")
-                    searchCardsErrorStub(AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH)
-                    searchCardsErrorStub(AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID)
+            operation(CardOperation.SEARCH_CARDS) {
+                stubs(CardOperation.SEARCH_CARDS) {
+                    stubSuccess(CardOperation.SEARCH_CARDS) {
+                        this.responseCardEntityList = stubCards
+                    }
+                    stubError(CardOperation.SEARCH_CARDS)
+                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH)
+                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID)
                 }
-                validators("search-cards :: validation") {
+                validators(CardOperation.SEARCH_CARDS) {
                     worker(name = "Make a normalized copy of search-cards request") {
                         this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
                     }
@@ -36,19 +41,38 @@ class CardCorProcessor {
                 }
             }
 
-            operation("Create card", CardOperation.CREATE_CARD) {
-                stubs("create-card :: handle stubs") {
-                    createCardSuccessStub()
-                    unknownErrorStub("Stub :: create-card fail unknown")
-                    createCardErrorStub(AppStub.ERROR_CARD_WRONG_WORD)
-                    createCardErrorStub(AppStub.ERROR_CARD_WRONG_TRANSLATION)
-                    createCardErrorStub(AppStub.ERROR_CARD_WRONG_TRANSCRIPTION)
-                    createCardErrorStub(AppStub.ERROR_CARD_WRONG_EXAMPLES)
-                    createCardErrorStub(AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH)
-                    createCardErrorStub(AppStub.ERROR_CARD_WRONG_DETAILS)
-                    createCardErrorStub(AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
+            operation(CardOperation.GET_CARD) {
+                stubs(CardOperation.GET_CARD) {
+                    stubSuccess(CardOperation.GET_CARD) {
+                        this.responseCardEntity = stubCard
+                    }
+                    stubError(CardOperation.GET_CARD)
+                    stubError(CardOperation.GET_CARD, AppStub.ERROR_WRONG_CARD_ID)
                 }
-                validators("create-card :: validation") {
+                validators(CardOperation.GET_CARD) {
+                    worker(name = "Make a normalized copy of get-card-id") {
+                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
+                    }
+                    validateCardId { it.normalizedRequestCardEntityId }
+                }
+            }
+
+            operation(CardOperation.CREATE_CARD) {
+                stubs(CardOperation.CREATE_CARD) {
+                    stubSuccess(CardOperation.CREATE_CARD) {
+                        this.responseCardEntity = stubCard
+                    }
+                    stubError(CardOperation.CREATE_CARD)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_WRONG_CARD_ID)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_WORD)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSLATION)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSCRIPTION)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_EXAMPLES)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_DETAILS)
+                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
+                }
+                validators(CardOperation.CREATE_CARD) {
                     worker(name = "Make a normalized copy of get-card request") {
                         this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
                     }
@@ -58,15 +82,15 @@ class CardCorProcessor {
                 }
             }
 
-            operation("Learn card", CardOperation.LEARN_CARD) {
-                stubs("learn-card :: handle stubs") {
-                    learnCardSuccessStub()
-                    unknownErrorStub("Stub :: learn-card fail unknown")
-                    createCardErrorStub(AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
-                    createCardErrorStub(AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
-                    createCardErrorStub(AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
+            operation(CardOperation.LEARN_CARD) {
+                stubs(CardOperation.LEARN_CARD) {
+                    stubSuccess(CardOperation.LEARN_CARD)
+                    stubError(CardOperation.LEARN_CARD)
+                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
+                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
+                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
                 }
-                validators("learn-card :: validation") {
+                validators(CardOperation.LEARN_CARD) {
                     worker(name = "Make a normalized copy of learn-card request") {
                         this.normalizedRequestCardLearnList = this.requestCardLearnList.map { it.normalize() }
                     }

@@ -20,6 +20,7 @@ data class CardContext(
 
     // get/delete single card request:
     var requestCardEntityId: CardId = CardId.NONE,
+    var normalizedRequestCardEntityId: CardId = CardId.NONE,
     // get cards list request:
     var requestCardFilter: CardFilter = CardFilter.EMPTY,
     var normalizedRequestCardFilter: CardFilter = CardFilter.EMPTY,

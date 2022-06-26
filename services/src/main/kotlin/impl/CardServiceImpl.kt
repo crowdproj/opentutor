@@ -24,11 +24,7 @@ class CardServiceImpl : CardService {
 
     override suspend fun searchCards(context: CardContext): CardContext = context.exec()
 
-    override suspend fun getCard(context: CardContext): CardContext {
-        return exec(context) {
-            stubs.getCard(context)
-        }
-    }
+    override suspend fun getCard(context: CardContext): CardContext = context.exec()
 
     override suspend fun learnCard(context: CardContext): CardContext = context.exec()
 

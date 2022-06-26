@@ -7,42 +7,21 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.*
-
-fun CardEntity.normalize(): CardEntity {
-    return CardEntity(
-        cardId = CardId(this.cardId.normalizeAsString()),
-        dictionaryId = DictionaryId(this.dictionaryId.normalizeAsString()),
-        word = this.word.trim()
-    )
-}
-
-fun CardFilter.normalize(): CardFilter {
-    return CardFilter(
-        dictionaryIds = this.dictionaryIds.map { DictionaryId(it.normalizeAsString()) },
-        random = this.random,
-        length = this.length,
-        withUnknown = this.withUnknown,
-    )
-}
-
-fun CardLearn.normalize(): CardLearn {
-    return CardLearn(
-        cardId = CardId(this.cardId.normalizeAsString()),
-        details = this.details.mapKeys { it.key.trim() } // empty strings will be lost
-    )
-}
-
-private fun Id.normalizeAsString(): String {
-    return asString().trim()
-}
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 
 fun ChainDSL<CardContext>.validateCardEntityCardId(getCardEntity: (CardContext) -> CardEntity) = worker {
-    validateCardId { getCardEntity(it).cardId }
+    validateId("card-id") { getCardEntity(it).cardId }
 }
 
 fun ChainDSL<CardContext>.validateCardEntityDictionaryId(getCardEntity: (CardContext) -> CardEntity) = worker {
-    validateDictionaryId { getCardEntity(it).dictionaryId }
+    validateId("dictionary-id") { getCardEntity(it).dictionaryId }
+}
+
+fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = worker {
+    validateId("card-id") { getCardId(it) }
 }
 
 fun ChainDSL<CardContext>.validateCardEntityWord(getCard: (CardContext) -> CardEntity) = worker {
@@ -108,18 +87,12 @@ fun ChainDSL<CardContext>.validateCardLearnListDetails(getCardLearn: (CardContex
     score <= 0 || score > 42
 }
 
-private fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = worker {
-    validateIdIsNotBlank(workerName = "Test card-id length", fieldName = "card-id", getId = getCardId)
-    validateIdMatchPattern(workerName = "Test card-id pattern", fieldName = "card-id", getId = getCardId)
-}
-
-private fun ChainDSL<CardContext>.validateDictionaryId(getDictionaryId: (CardContext) -> DictionaryId) = worker {
-    validateIdIsNotBlank(workerName = "Test dictionary-id length", fieldName = "dictionary-id", getId = getDictionaryId)
-    validateIdMatchPattern(
-        workerName = "Test dictionary-id pattern",
-        fieldName = "dictionary-id",
-        getId = getDictionaryId
-    )
+private fun ChainDSL<CardContext>.validateId(
+    fieldName: String,
+    getId: (CardContext) -> Id
+) = chain {
+    validateIdIsNotBlank(workerName = "Test $fieldName length", fieldName = fieldName, getId = getId)
+    validateIdMatchPattern(workerName = "Test $fieldName pattern", fieldName = fieldName, getId = getId)
 }
 
 private fun ChainDSL<CardContext>.validateIdIsNotBlank(

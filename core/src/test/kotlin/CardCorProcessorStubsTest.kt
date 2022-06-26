@@ -77,6 +77,7 @@ internal class CardCorProcessorStubsTest {
     @EnumSource(
         value = AppStub::class,
         names = [
+            "ERROR_WRONG_CARD_ID",
             "ERROR_CARD_WRONG_WORD",
             "ERROR_CARD_WRONG_TRANSCRIPTION",
             "ERROR_CARD_WRONG_TRANSLATION",
@@ -160,4 +161,27 @@ internal class CardCorProcessorStubsTest {
         assertFail(context, stubErrorForCode(case))
     }
 
+    @Test
+    fun `test get-card success`() = runTest {
+        val context = testContext(CardOperation.GET_CARD, AppStub.SUCCESS)
+        context.requestCardEntityId = testCard.cardId
+        processor.execute(context)
+        assertSuccess(context)
+        Assertions.assertEquals(stubCard, context.responseCardEntity)
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = CardOperation::class,
+        names = [
+            "GET_CARD",
+        ]
+    )
+    fun `test get-card specific fail`(operation: CardOperation) = runTest {
+        val context = testContext(operation, AppStub.ERROR_WRONG_CARD_ID)
+        context.requestCardEntity = testCard
+        processor.execute(context)
+        assertFail(context, stubErrorForCode(AppStub.ERROR_WRONG_CARD_ID))
+        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+    }
 }
