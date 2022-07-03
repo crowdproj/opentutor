@@ -1,19 +1,20 @@
 package com.gitlab.sszuev.flashcards.stubs
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
+const val STUB_ERROR_GROUP = "StubErrors"
+
 val stubError = AppError(
     field = "the-error-field",
     exception = AssertionError("Test-error"),
     message = "the-error-message",
     code = "StubErrorCode",
-    group = "StubErrors",
+    group = STUB_ERROR_GROUP,
 )
 
 val stubCard = CardEntity(
@@ -38,24 +39,10 @@ val stubLearnCardDetails = CardLearn(
 )
 
 fun stubErrorForCode(case: AppStub): AppError {
-    return  AppError(
+    return AppError(
         field = "field::$case",
         message = "the-error-message-for-$case",
         code = case.name,
-        group = "StubErrors",
+        group = STUB_ERROR_GROUP,
     )
-}
-
-fun toStatus(case: AppStub): AppStatus {
-    return when (case) {
-        AppStub.SUCCESS -> {
-            AppStatus.OK
-        }
-        AppStub.NONE -> {
-            AppStatus.INIT
-        }
-        else -> {
-            AppStatus.FAIL
-        }
-    }
 }

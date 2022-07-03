@@ -49,7 +49,7 @@ internal fun ChainDSL<CardContext>.validators(
 ) = chain {
     this.name = "${operation.title()} ::: validation"
     test {
-        this.workMode != AppMode.STUB && this.status == AppStatus.RUN
+        this.status == AppStatus.RUN
     }
     configure()
 }

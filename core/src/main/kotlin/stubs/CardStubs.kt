@@ -25,7 +25,6 @@ fun ChainDSL<CardContext>.stubSuccess(
     }
 }
 
-
 fun ChainDSL<CardContext>.stubError(operation: CardOperation) = worker {
     this.name = "stub :: ${operation.title()} fail unknown"
     test {

@@ -36,10 +36,10 @@ class CardCorProcessorValidationTest {
             details = mapOf("stage42" to 42)
         )
 
-        private fun testContext(op: CardOperation): CardContext {
+        private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
             val context = CardContext()
             context.operation = op
-            context.workMode = AppMode.TEST
+            context.workMode = mode
             context.requestId = AppRequestId(requestId)
             return context
         }
@@ -72,7 +72,8 @@ class CardCorProcessorValidationTest {
         private fun wrongIdsToOperationsWithCardIdInRequest(): List<Arguments> {
             val ops = listOf(CardOperation.GET_CARD, CardOperation.RESET_CARD, CardOperation.DELETE_CARD)
             val ids = wrongIds()
-            return ops.flatMap { op -> ids.map { Arguments.of(it, op) } }
+            val modes = listOf(AppMode.TEST, AppMode.STUB)
+            return ops.flatMap { op -> modes.flatMap { m -> ids.map { Arguments.of(it, m, op) } } }
         }
 
         @JvmStatic
@@ -131,9 +132,16 @@ class CardCorProcessorValidationTest {
         assertValidationError("card-word", error)
     }
 
-    @Test
-    fun `test update-card - validate several fields`() = runTest {
-        val context = testContext(CardOperation.UPDATE_CARD)
+    @ParameterizedTest(name = parameterizedTestName)
+    @EnumSource(
+        value = AppMode::class,
+        names = [
+            "TEST",
+            "STUB",
+        ]
+    )
+    fun `test update-card - validate wrong several fields`(mode: AppMode) = runTest {
+        val context = testContext(CardOperation.UPDATE_CARD, mode)
         context.requestCardEntity = testCard.copy(
             dictionaryId = DictionaryId(""),
             word = "",
@@ -147,9 +155,16 @@ class CardCorProcessorValidationTest {
         assertValidationError("card-word", errors[2])
     }
 
-    @Test
-    fun `test create-card - validate several fields`() = runTest {
-        val context = testContext(CardOperation.CREATE_CARD)
+    @ParameterizedTest(name = parameterizedTestName)
+    @EnumSource(
+        value = AppMode::class,
+        names = [
+            "TEST",
+            "STUB",
+        ]
+    )
+    fun `test create-card - validate wrong several fields`(mode: AppMode) = runTest {
+        val context = testContext(CardOperation.CREATE_CARD, mode)
         context.requestCardEntity = testCard.copy(
             dictionaryId = DictionaryId("sss"),
             word = "",
@@ -205,6 +220,28 @@ class CardCorProcessorValidationTest {
     }
 
     @ParameterizedTest(name = parameterizedTestName)
+    @EnumSource(
+        value = AppMode::class,
+        names = [
+            "TEST",
+            "STUB",
+        ]
+    )
+    fun `test search-cards - validate wrong several fields`(mode: AppMode) = runTest {
+        val context = testContext(CardOperation.SEARCH_CARDS, mode)
+        context.requestCardFilter = testCardFilter.copy(
+            length = -42,
+            dictionaryIds = wrongIds().map { DictionaryId(it) }
+        )
+        processor.execute(context)
+        val errors = context.errors
+        Assertions.assertEquals(3, errors.size)
+        assertValidationError("card-filter-length", errors[0])
+        assertValidationError("card-filter-dictionary-ids", errors[1])
+        assertValidationError("card-filter-dictionary-ids", errors[2])
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
     @MethodSource("wrongIds")
     fun `test learn-cards - validate CardIds`(id: String) = runTest {
         val context1 = testContext(CardOperation.LEARN_CARD)
@@ -257,9 +294,29 @@ class CardCorProcessorValidationTest {
     }
 
     @ParameterizedTest(name = parameterizedTestName)
+    @EnumSource(
+        value = AppMode::class,
+        names = [
+            "TEST",
+            "STUB",
+        ]
+    )
+    fun `test learn-cards - validate wrong several fields`(mode: AppMode) = runTest {
+        val context = testContext(CardOperation.LEARN_CARD, mode)
+        context.requestCardLearnList = listOf(
+            testCardLearn.copy(
+                cardId = CardId("xxx"),
+                details = mapOf("stage1" to 4200, "xxx".repeat(42000) to -42)
+            ),
+        )
+        processor.execute(context)
+        Assertions.assertEquals(4, context.errors.size)
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
     @MethodSource(value = ["wrongIdsToOperationsWithCardIdInRequest"])
-    fun `test request-with-cardId - validate CardId`(id: String, op: CardOperation) = runTest {
-        val context = testContext(op)
+    fun `test request-with-cardId - validate CardId`(id: String, m: AppMode, op: CardOperation) = runTest {
+        val context = testContext(op, m)
         context.requestCardEntityId = CardId(id)
         processor.execute(context)
         val error = error(context)
