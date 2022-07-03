@@ -15,7 +15,7 @@ dependencies {
     val mockkVersion: String by project
 
     implementation(project(":openapi"))
-    implementation(project(":mappers-v1"))
+    implementation(project(":mappers"))
     implementation(project(":common"))
     implementation(project(":services"))
     implementation(project(":stubs"))

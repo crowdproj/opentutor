@@ -14,7 +14,7 @@ pluginManagement {
 
 include("openapi")
 include("common")
-include("mappers-v1")
+include("mappers")
 include("services")
 include("app-ktor")
 include("stubs")
