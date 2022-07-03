@@ -7,37 +7,35 @@ interface CardService {
     /**
      * Creates a card-entity.
      */
-    fun createCard(context: CardContext): CardContext
+    suspend fun createCard(context: CardContext): CardContext
 
     /**
      * Updates a card-entity.
      */
-    fun updateCard(context: CardContext): CardContext
-
+    suspend fun updateCard(context: CardContext): CardContext
 
     /**
      * Gets a deck of cards by parameters.
      */
-    fun searchCards(context: CardContext): CardContext
+    suspend fun searchCards(context: CardContext): CardContext
 
     /**
      * Gets card by id.
      */
-    fun getCard(context: CardContext): CardContext
+    suspend fun getCard(context: CardContext): CardContext
 
     /**
      * Updates card learning status (process learn info).
      */
-    fun learnCard(context: CardContext): CardContext
+    suspend fun learnCard(context: CardContext): CardContext
 
     /**
      * Resets the card status (any -> unknown).
      */
-    fun resetCard(context: CardContext): CardContext
+    suspend fun resetCard(context: CardContext): CardContext
 
     /**
      * Deletes the card.
      */
-    fun deleteCard(context: CardContext): CardContext
-
+    suspend fun deleteCard(context: CardContext): CardContext
 }

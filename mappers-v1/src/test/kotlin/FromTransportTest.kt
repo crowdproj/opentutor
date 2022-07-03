@@ -40,7 +40,7 @@ class FromTransportTest {
             requestId = "req",
             debug = DebugResource(
                 mode = RunMode.PROD,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
             length = 42,
             random = true,
@@ -51,7 +51,7 @@ class FromTransportTest {
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.PROD,
             expectedRequestId = "req",
             actual = context
@@ -102,7 +102,7 @@ class FromTransportTest {
             requestId = "req4",
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
             card = card
         )
@@ -110,7 +110,7 @@ class FromTransportTest {
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.TEST,
             expectedRequestId = "req4",
             actual = context
@@ -125,14 +125,14 @@ class FromTransportTest {
             cardId = "card5",
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
         )
         val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.TEST,
             expectedRequestId = "req5",
             actual = context
@@ -160,14 +160,14 @@ class FromTransportTest {
             ),
             debug = DebugResource(
                 mode = RunMode.TEST,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
         )
         val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.TEST,
             expectedRequestId = "req6",
             actual = context
@@ -188,14 +188,14 @@ class FromTransportTest {
             cardId = "card7",
             debug = DebugResource(
                 mode = RunMode.STUB,
-                stub = DebugStub.ERROR
+                stub = DebugStub.ERROR_UNKNOWN
             ),
         )
         val context = CardContext()
         context.fromTransport(req)
 
         assertContext(
-            expectedStub = AppStub.ERROR,
+            expectedStub = AppStub.UNKNOWN_ERROR,
             expectedMode = AppMode.STUB,
             expectedRequestId = "req7",
             actual = context

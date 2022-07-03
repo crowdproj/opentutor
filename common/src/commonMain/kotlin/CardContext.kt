@@ -9,7 +9,7 @@ import kotlinx.datetime.Instant
  */
 data class CardContext(
     var operation: CardOperation = CardOperation.NONE,
-    var status: AppStatus = AppStatus.UNKNOWN,
+    var status: AppStatus = AppStatus.INIT,
     val errors: MutableList<AppError> = mutableListOf(),
 
     var workMode: AppMode = AppMode.PROD,
@@ -20,12 +20,16 @@ data class CardContext(
 
     // get/delete single card request:
     var requestCardEntityId: CardId = CardId.NONE,
+    var normalizedRequestCardEntityId: CardId = CardId.NONE,
     // get cards list request:
     var requestCardFilter: CardFilter = CardFilter.EMPTY,
+    var normalizedRequestCardFilter: CardFilter = CardFilter.EMPTY,
     // update/create request:
     var requestCardEntity: CardEntity = CardEntity.DUMMY,
+    var normalizedRequestCardEntity: CardEntity = CardEntity.DUMMY,
     // learn card
     var requestCardLearnList: List<CardLearn> = listOf(),
+    var normalizedRequestCardLearnList: List<CardLearn> = listOf(),
 
     // get single card response:
     var responseCardEntity: CardEntity = CardEntity.DUMMY,

@@ -7,7 +7,19 @@ import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+
+fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
+    CardOperation.SEARCH_CARDS -> this.toGetCardsResponse()
+    CardOperation.GET_CARD -> this.toGetCardResponse()
+    CardOperation.CREATE_CARD -> this.toCreateCardResponse()
+    CardOperation.UPDATE_CARD -> this.toUpdateCardResponse()
+    CardOperation.DELETE_CARD -> this.toDeleteCardResponse()
+    CardOperation.LEARN_CARD -> this.toLearnCardResponse()
+    CardOperation.RESET_CARD -> this.toResetCardResponse()
+    CardOperation.NONE -> throw IllegalArgumentException("Not supported operation $op.")
+}
 
 fun CardContext.toGetCardResponse() = GetCardResponse(
     requestId = this.requestId.toResponseId(),

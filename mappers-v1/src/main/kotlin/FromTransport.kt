@@ -27,7 +27,7 @@ fun CardContext.fromGetCardRequest(request: GetCardRequest) {
 }
 
 fun CardContext.fromGetCardsRequest(request: GetCardsRequest) {
-    this.operation = CardOperation.GET_CARD
+    this.operation = CardOperation.SEARCH_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -105,6 +105,20 @@ private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
 
 private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.SUCCESS -> AppStub.SUCCESS
-    DebugStub.ERROR -> AppStub.ERROR
+    DebugStub.ERROR_UNKNOWN -> AppStub.UNKNOWN_ERROR
+    DebugStub.ERROR_UNEXPECTED_FIELD -> AppStub.ERROR_UNEXPECTED_FIELD
+    DebugStub.ERROR_WRONG_CARD_ID -> AppStub.ERROR_WRONG_CARD_ID
+    DebugStub.ERROR_CARD_WRONG_WORD -> AppStub.ERROR_CARD_WRONG_WORD
+    DebugStub.ERROR_CARD_WRONG_TRANSCRIPTION -> AppStub.ERROR_CARD_WRONG_TRANSCRIPTION
+    DebugStub.ERROR_CARD_WRONG_TRANSLATION -> AppStub.ERROR_CARD_WRONG_TRANSLATION
+    DebugStub.ERROR_CARD_WRONG_EXAMPLES -> AppStub.ERROR_CARD_WRONG_EXAMPLES
+    DebugStub.ERROR_CARD_WRONG_PART_OF_SPEECH -> AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH
+    DebugStub.ERROR_CARD_WRONG_DETAILS -> AppStub.ERROR_CARD_WRONG_DETAILS
+    DebugStub.ERROR_CARD_WRONG_AUDIO_RESOURCE -> AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE
+    DebugStub.ERROR_CARDS_FILTER_WRONG_LENGTH -> AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH
+    DebugStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID -> AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID
+    DebugStub.ERROR_LEARN_CARD_WRONG_CARD_ID -> AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID
+    DebugStub.ERROR_LEARN_CARD_WRONG_STAGES -> AppStub.ERROR_LEARN_CARD_WRONG_STAGES
+    DebugStub.ERROR_LEARN_CARD_WRONG_DETAILS -> AppStub.ERROR_LEARN_CARD_WRONG_DETAILS
     null -> AppStub.NONE
 }

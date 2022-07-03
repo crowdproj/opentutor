@@ -51,7 +51,7 @@ class ToTransportTest {
     fun `test toGetCardsResponse`() {
         val context = CardContext(
             requestId = AppRequestId("request=42"),
-            operation = CardOperation.GET_CARDS,
+            operation = CardOperation.SEARCH_CARDS,
             responseCardEntityList = listOf(
                 CardEntity(
                     cardId = CardId("A"),

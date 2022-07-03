@@ -1,7 +1,8 @@
 package com.gitlab.sszuev.flashcards.model.common
 
+/**
+ * Describes a status of operation in context.
+ */
 enum class AppStatus {
-    UNKNOWN,
-    OK,
-    FAIL,
+    INIT, RUN, OK, FAIL,
 }

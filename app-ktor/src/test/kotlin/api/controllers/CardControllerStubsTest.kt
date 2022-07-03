@@ -1,7 +1,9 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.stubs.stubCard
+import com.gitlab.sszuev.flashcards.stubs.stubCards
 import com.gitlab.sszuev.flashcards.stubs.stubError
 import com.gitlab.sszuev.flashcards.stubs.stubLearnCardDetails
 import com.gitlab.sszuev.flashcards.testPost
@@ -29,7 +31,7 @@ class CardControllerStubsTest {
         )
         private val debugError = DebugResource(
             mode = RunMode.STUB,
-            stub = DebugStub.ERROR
+            stub = DebugStub.ERROR_UNKNOWN
         )
 
         private suspend inline fun <reified X : BaseResponse> testResponseSuccess(
@@ -66,10 +68,16 @@ class CardControllerStubsTest {
             Assertions.assertEquals(stubError.code, error.code)
             Assertions.assertEquals(stubError.group, error.group)
         }
+
+        private fun assertCard(actual: CardEntity, expected: CardResource) {
+            Assertions.assertEquals(actual.cardId.asString(), expected.cardId)
+            Assertions.assertEquals(actual.dictionaryId.asString(), expected.dictionaryId)
+            Assertions.assertEquals(actual.word, expected.word)
+        }
     }
 
     @Test
-    fun `test cards-create success`() = testApplication {
+    fun `test create-card success`() = testApplication {
         val requestBody = CreateCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -80,7 +88,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-create error`() = testApplication {
+    fun `test create-card error`() = testApplication {
         val requestBody = CreateCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -91,7 +99,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-update success`() = testApplication {
+    fun `test update-card success`() = testApplication {
         val requestBody = UpdateCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -102,7 +110,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-update error`() = testApplication {
+    fun `test update-card error`() = testApplication {
         val requestBody = UpdateCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -113,7 +121,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-search returns single card success`() = testApplication {
+    fun `test search-cards card success`() = testApplication {
         val requestBody = GetCardsRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -124,29 +132,15 @@ class CardControllerStubsTest {
         )
         val response = testPost("/v1/api/cards/search", requestBody)
         val responseBody = testResponseSuccess<GetCardsResponse>(requestBody.requestId, response)
-        Assertions.assertEquals(1, responseBody.cards!!.size)
-        val responseEntity = responseBody.cards!![0]
-        Assertions.assertNotSame(testCard, responseEntity)
-        Assertions.assertEquals(testCard, responseEntity)
+        Assertions.assertEquals(stubCards.size, responseBody.cards!!.size)
+        responseBody.cards!!.forEachIndexed { index, cardResource ->
+            val card = stubCards[index]
+            assertCard(card, cardResource)
+        }
     }
 
     @Test
-    fun `test cards-search returns many random cards success`() = testApplication {
-        val requestBody = GetCardsRequest(
-            requestId = "success-request",
-            debug = debugSuccess,
-            dictionaryIds = listOf("a", "b", "c", "d"),
-            length = 42,
-            random = true,
-            unknown = true,
-        )
-        val response = testPost("/v1/api/cards/search", requestBody)
-        val responseBody = testResponseSuccess<GetCardsResponse>(requestBody.requestId, response)
-        Assertions.assertEquals(42, responseBody.cards!!.size)
-    }
-
-    @Test
-    fun `test cards-search error`() = testApplication {
+    fun `test search-cards error`() = testApplication {
         val requestBody = GetCardsRequest(
             requestId = "error-request",
             debug = debugError,
@@ -160,7 +154,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-get success`() = testApplication {
+    fun `test get-card success`() = testApplication {
         val requestBody = GetCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -170,12 +164,11 @@ class CardControllerStubsTest {
         val responseBody = testResponseSuccess<GetCardResponse>(requestBody.requestId, response)
         Assertions.assertNotNull(responseBody.card)
         val responseEntity = responseBody.card!!
-        Assertions.assertNotSame(testCard, responseEntity)
-        Assertions.assertEquals(testCard, responseEntity)
+        Assertions.assertNotSame(stubCard, responseEntity)
     }
 
     @Test
-    fun `test cards-get error`() = testApplication {
+    fun `test get-card error`() = testApplication {
         val requestBody = GetCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -209,7 +202,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-reset success`() = testApplication {
+    fun `test reset-card success`() = testApplication {
         val requestBody = ResetCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -220,7 +213,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-reset error`() = testApplication {
+    fun `test reset-card error`() = testApplication {
         val requestBody = ResetCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -231,7 +224,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-delete success`() = testApplication {
+    fun `test delete-card success`() = testApplication {
         val requestBody = DeleteCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -242,7 +235,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-delete error`() = testApplication {
+    fun `test delete-card error`() = testApplication {
         val requestBody = DeleteCardRequest(
             requestId = "error-request",
             debug = debugError,
