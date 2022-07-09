@@ -20,7 +20,7 @@ tags:
 
 paths:
   /api/sounds/get:
-    get:
+    post:
       tags:
         - audio
       summary: Gets an audio-resource by its id (as a path)
