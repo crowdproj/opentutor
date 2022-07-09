@@ -10,7 +10,7 @@ private val logger = LoggerFactory.getLogger(BaseConfig::class.java)
  * It implements the following order for looking-for operations:
  * - system properties,
  * - system environment variables
- * - client defined properties file
+ * - client defined properties file, i.e. [configResource]
  * - client default values
  */
 abstract class BaseConfig(
