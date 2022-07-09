@@ -36,6 +36,8 @@ dependencies {
     val testContainersVersion: String by project
     val mockkVersion: String by project
 
+    implementation(project(":config"))
+
     implementation("com.rabbitmq:amqp-client:$rabbitVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
 
