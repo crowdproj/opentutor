@@ -28,6 +28,10 @@ class TextToSpeechController(
             .asCoroutineDispatcher() + CoroutineName("thread-rabbitmq-controller")
     )
 
+    /**
+     * Runs job asynchronously.
+     * @return [Job]
+     */
     fun start() = scope.launch {
         processor.process(Dispatchers.IO)
     }

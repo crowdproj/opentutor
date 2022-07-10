@@ -10,7 +10,7 @@ import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withTimeoutOrNull
+import kotlinx.coroutines.withTimeout
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -20,6 +20,7 @@ import org.testcontainers.containers.RabbitMQContainer
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.seconds
 
+@Timeout(value = 420, unit = TimeUnit.SECONDS)
 internal class TextToSpeechControllerITest {
 
     companion object {
@@ -43,10 +44,10 @@ internal class TextToSpeechControllerITest {
         )
 
         private val testQueueConfig = QueueConfig(
-            routingKeyIn = "test-in",
-            routingKeyOut = "test-out",
+            routingKeyRequest = "test-in",
+            routingKeyResponsePrefix = "test-out=",
             exchangeName = "test-exchange",
-            queueName = "test-queue",
+            requestQueueName = "test-queue",
             consumerTag = "test-consumer-tag",
         )
 
@@ -55,14 +56,71 @@ internal class TextToSpeechControllerITest {
         fun afterClass() {
             container.stop()
         }
+
+        private fun sendRequest(resourceId: String): Pair<String?, ByteArray?> {
+            val responseRoutingKey = testQueueConfig.routingKeyResponsePrefix + resourceId
+            ConnectionFactory().apply {
+                host = testConnectionConfig.host
+                port = testConnectionConfig.port
+                username = testConnectionConfig.user
+                password = testConnectionConfig.password
+            }.newConnection().use { connection ->
+                connection.createChannel().use { channel ->
+                    var responseBody: ByteArray? = null
+                    var responseId: String? = null
+
+                    channel.exchangeDeclare(testQueueConfig.exchangeName, "direct")
+                    channel.queueDeclare(responseRoutingKey, false, false, false, null)
+                    channel.queueBind(responseRoutingKey, testQueueConfig.exchangeName, responseRoutingKey)
+                    val deliverCallback = DeliverCallback { consumerTag, delivery ->
+                        responseId = delivery.properties.messageId
+                        responseBody = delivery.body
+                        logger.debug("Received by $consumerTag: '$responseId', body=${responseBody?.contentToString()}")
+                    }
+                    channel.basicConsume(responseRoutingKey, true, deliverCallback, CancelCallback { })
+
+                    val props = AMQP.BasicProperties.Builder().messageId(resourceId).build()
+                    channel.basicPublish(testQueueConfig.exchangeName, testQueueConfig.routingKeyRequest, props, ByteArray(0))
+
+                    runBlocking {
+                        withTimeout(42.seconds) {
+                            while (responseId == null) {
+                                delay(100)
+                            }
+                        }
+                    }
+
+                    logger.debug("RESPONSE BODY: ${responseBody?.contentToString()}")
+                    return responseId to responseBody
+                }
+            }
+        }
+
+        private fun prepareRequestQueue() {
+            ConnectionFactory().apply {
+                host = testConnectionConfig.host
+                port = testConnectionConfig.port
+                username = testConnectionConfig.user
+                password = testConnectionConfig.password
+            }.newConnection().use { connection ->
+                connection.createChannel().use { channel ->
+                    channel.exchangeDeclare(testQueueConfig.exchangeName, "direct")
+                    channel.queueDeclare(testQueueConfig.requestQueueName, false, false, false, null)
+                    channel.queueBind(testQueueConfig.requestQueueName, testQueueConfig.exchangeName, testQueueConfig.routingKeyRequest)
+                }
+            }
+        }
     }
 
-    @Timeout(value = 420, unit = TimeUnit.SECONDS)
     @Test
-    fun `test handle messages`() {
+    fun `test handle request`() {
+        // need to prepare Rabbit MQ request queue since the controller starts asynchronously:
+        // the data will be lost if send message too quickly, before consumer creates required queue
+        prepareRequestQueue()
+
         val testRequestId = "TestRequestId=XXX"
         val testAnswer = ByteArray(42) { 42 }
-        val expectedResId = "response={$testRequestId}"
+        val expectedResId = "response-success={$testRequestId}"
         val mockkTTSService = mockk<TextToSpeechService>()
         every { mockkTTSService.getResource(any()) } returns testAnswer
 
@@ -71,44 +129,15 @@ internal class TextToSpeechControllerITest {
             queueConfig = testQueueConfig,
             connectionConfig = testConnectionConfig
         ).start()
-        logger.debug("Controller started.")
+        logger.debug("Controller started, send request.")
 
-        ConnectionFactory().apply {
-            host = testConnectionConfig.host
-            port = testConnectionConfig.port
-            username = testConnectionConfig.user
-            password = testConnectionConfig.password
-        }.newConnection().use { connection ->
-            connection.createChannel().use { channel ->
-                var actualResBody: ByteArray? = null
-                var actualResId: String? = null
-                channel.exchangeDeclare(testQueueConfig.exchangeName, testQueueConfig.exchangeType)
-                val queueOut = channel.queueDeclare().queue
-                channel.queueBind(queueOut, testQueueConfig.exchangeName, testQueueConfig.routingKeyOut)
-
-                val deliverCallback = DeliverCallback { consumerTag, delivery ->
-                    actualResId = delivery.properties.messageId
-                    actualResBody = delivery.body
-                    logger.debug("Received by $consumerTag: '$actualResId', body=${actualResBody?.contentToString()}")
-                }
-                channel.basicConsume(queueOut, true, deliverCallback, CancelCallback { })
-                val props = AMQP.BasicProperties.Builder().messageId(testRequestId).build()
-                channel.basicPublish(testQueueConfig.exchangeName, testQueueConfig.routingKeyIn, props, ByteArray(0))
-
-                runBlocking {
-                    withTimeoutOrNull(42.seconds) {
-                        while (actualResBody == null) {
-                            delay(10)
-                        }
-                    }
-                }
-
-                logger.debug("RESPONSE: ${actualResBody?.contentToString()}")
-                Assertions.assertNotNull(actualResBody)
-                Assertions.assertNotNull(actualResId)
-                Assertions.assertArrayEquals(testAnswer, actualResBody)
-                Assertions.assertEquals(expectedResId, actualResId)
-            }
-        }
+        val res = sendRequest(testRequestId)
+        val actualResBody: ByteArray? = res.second
+        val actualResId: String? = res.first
+        logger.debug("RESPONSE BODY: ${actualResBody?.contentToString()}")
+        Assertions.assertNotNull(actualResBody)
+        Assertions.assertNotNull(actualResId)
+        Assertions.assertArrayEquals(testAnswer, actualResBody)
+        Assertions.assertEquals(expectedResId, actualResId)
     }
 }

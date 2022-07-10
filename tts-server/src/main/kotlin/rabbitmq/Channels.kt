@@ -4,18 +4,18 @@ import com.rabbitmq.client.CancelCallback
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.DeliverCallback
 
-internal fun Channel.exchangeDeclare(queueConfig: QueueConfig): Channel {
+internal fun Channel.exchange(exchangeName: String, exchangeType: String): Channel {
     this.exchangeDeclare(
-        /* exchange = */ queueConfig.exchangeName,
-        /* type = */ queueConfig.exchangeType
+        /* exchange = */ exchangeName,
+        /* type = */ exchangeType
     )
     return this
 }
 
-internal fun Channel.queueDeclare(queueConfig: QueueConfig): Channel {
+internal fun Channel.queue(queueName: String): Channel {
     queueDeclare(
         /* queue = */
-        queueConfig.queueName,
+        queueName,
         /* durable = */
         false,
         /* exclusive = */
@@ -28,20 +28,21 @@ internal fun Channel.queueDeclare(queueConfig: QueueConfig): Channel {
     return this
 }
 
-internal fun Channel.queueBind(queueConfig: QueueConfig, routingKeyToListen: String): Channel {
-    queueBind(queueConfig.queueName, queueConfig.exchangeName, routingKeyToListen)
+internal fun Channel.bind(queueName: String, exchangeName: String, routingKey: String): Channel {
+    queueBind(queueName, exchangeName, routingKey)
     return this
 }
 
-internal fun Channel.basicConsume(
-    queueConfig: QueueConfig,
+internal fun Channel.consume(
+    queueName: String,
+    consumerTag: String,
     deliverCallback: DeliverCallback,
     cancelCallback: CancelCallback
 ): Channel {
     basicConsume(
-        /* queue = */ queueConfig.queueName,
+        /* queue = */ queueName,
         /* autoAck = */ true,
-        /* consumerTag = */ queueConfig.consumerTag,
+        /* consumerTag = */ consumerTag,
         /* deliverCallback = */ deliverCallback,
         /* cancelCallback = */ cancelCallback
     )

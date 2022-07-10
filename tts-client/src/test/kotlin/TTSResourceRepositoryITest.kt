@@ -11,8 +11,11 @@ import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.*
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.RabbitMQContainer
+import java.util.concurrent.CyclicBarrier
+import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
+@Timeout(value = 420, unit = TimeUnit.SECONDS)
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class TTSResourceRepositoryITest {
 
@@ -36,11 +39,11 @@ internal class TTSResourceRepositoryITest {
             password = "guest",
         )
 
+        private const val testRequestQueueName = "test-queue"
         private val testQueueConfig = QueueConfig(
-            routingKeyIn = "test-in",
-            routingKeyOut = "test-out",
+            routingKeyRequest = "test-in",
+            routingKeyResponsePrefix = "test-out",
             exchangeName = "test-exchange",
-            queueName = "test-queue",
             consumerTag = "test-consumer-tag",
         )
 
@@ -61,25 +64,31 @@ internal class TTSResourceRepositoryITest {
                 password = testConnectionConfig.password
             }.newConnection()
             channel = connection.createChannel()
-            channel.exchangeDeclare(testQueueConfig.exchangeName, testQueueConfig.exchangeType)
-            channel.queueDeclare(testQueueConfig.queueName, false, false, false, null)
-            channel.queueBind(testQueueConfig.queueName, testQueueConfig.exchangeName, testQueueConfig.routingKeyIn)
+            channel.exchangeDeclare(testQueueConfig.exchangeName, "direct")
+            channel.queueDeclare(testRequestQueueName, false, false, false, null)
+            channel.queueBind(
+                testRequestQueueName,
+                testQueueConfig.exchangeName,
+                testQueueConfig.routingKeyRequest
+            )
 
             val deliverCallback = DeliverCallback { consumerTag, delivery ->
                 val requestId = delivery.properties.messageId
-                logger.debug("Received by $consumerTag: '$requestId'")
-                val size = requestId.replace("^.*\\D(\\d+)$".toRegex(), "$1").toByte()
+                val responseRoutingKey = testQueueConfig.routingKeyResponsePrefix + requestId
+                logger.debug("[$consumerTag] -- received request '$requestId'.")
+                val size = extractSize(requestId)
                 val responseData = ByteArray(size.toInt()) { size }
                 val responseId = "test-request=$requestId"
                 val props = AMQP.BasicProperties.Builder().messageId(responseId).build()
                 runBlocking {
                     delay(minDelayMillis)
                 }
+                logger.debug("[$consumerTag] -- send the test data size=$size to $responseRoutingKey.")
                 channel.basicPublish(
-                    testQueueConfig.exchangeName, testQueueConfig.routingKeyOut, props, responseData
+                    testQueueConfig.exchangeName, responseRoutingKey, props, responseData
                 )
             }
-            channel.basicConsume(testQueueConfig.queueName, true, deliverCallback, CancelCallback { })
+            channel.basicConsume(testRequestQueueName, true, deliverCallback, CancelCallback { })
         }
 
         @Timeout(value = 420, unit = TimeUnit.SECONDS)
@@ -91,30 +100,66 @@ internal class TTSResourceRepositoryITest {
             connection.close()
             container.stop()
         }
+
+        private fun extractSize(requestId: String): Byte {
+            return requestId.replace("^.*\\D(\\d+)$".toRegex(), "$1").toByte()
+        }
+
+        private fun testRequestId(id: Byte): ResourceId {
+            return ResourceId("TestRequestId=$id")
+        }
+
+        private fun testMultithreadingRun(@Suppress("SameParameterValue") numThreads: Int, runnable: (Int) -> Unit) {
+            val service = Executors.newFixedThreadPool(numThreads)
+            val futures = (1..numThreads).map {
+                service.submit {
+                    runnable(it)
+                }
+            }
+            service.shutdown()
+            val error = AssertionError()
+            futures.forEach {
+                try {
+                    it.get()
+                } catch (ex: Throwable) {
+                    error.addSuppressed(ex)
+                }
+            }
+            if (error.suppressed.isNotEmpty()) {
+                throw error
+            }
+        }
+
+        private suspend fun testSendRequestSuccess(repository: TTSResourceRepository, testRequestId: ResourceId) {
+            val expectedDataSize = extractSize(testRequestId.asString())
+            val expectedDataArray = ByteArray(expectedDataSize.toInt()) { expectedDataSize }
+            val res = repository.getResource(testRequestId)
+            Assertions.assertArrayEquals(expectedDataArray, res.data) { "expected: $expectedDataSize." }
+            Assertions.assertTrue(res.errors.isEmpty())
+            Assertions.assertEquals(testRequestId, res.cardId)
+        }
     }
 
-    @Timeout(value = 420, unit = TimeUnit.SECONDS)
     @Test
-    fun `test get single resource success`() = runTest {
-        val testRequestId = ResourceId("TestRequestId=42")
-        val testAnswer = ByteArray(42) { 42 }
-        val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+    fun `test success get two resource sequentially`() = runTest {
+        val repository1: TTSResourceRepository = TTSResourceRepositoryImpl(
             connectionConfig = testConnectionConfig,
             queueConfig = testQueueConfig,
             requestTimeoutInMs = 42_000
         )
+        testSendRequestSuccess(repository1, testRequestId(1))
 
-        val res = repository.getResource(testRequestId)
-
-        Assertions.assertArrayEquals(testAnswer, res.data)
-        Assertions.assertTrue(res.errors.isEmpty())
-        Assertions.assertEquals(testRequestId, res.cardId)
+        val repository2: TTSResourceRepository = TTSResourceRepositoryImpl(
+            connectionConfig = testConnectionConfig,
+            queueConfig = testQueueConfig,
+            requestTimeoutInMs = 42_000
+        )
+        testSendRequestSuccess(repository2, testRequestId(2))
     }
 
-    @Timeout(value = 420, unit = TimeUnit.SECONDS)
     @Test
-    fun `test get resource timeout-cancel error`() = runTest {
-        val testRequestId = ResourceId("TestRequestId=42")
+    fun `test fail get resource timeout cancel`() = runTest {
+        val testRequestId = testRequestId(42)
         val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
             connectionConfig = testConnectionConfig,
             queueConfig = testQueueConfig,
@@ -131,4 +176,46 @@ internal class TTSResourceRepositoryITest {
         Assertions.assertEquals("exceptions", error.group)
         Assertions.assertInstanceOf(TimeoutCancellationException::class.java, error.exception)
     }
+
+    @Test
+    fun `test success get resources concurrently with dedicated connections`() {
+        val numThreads = 10
+        val ids = (1..numThreads / 2).flatMap { sequenceOf(it, it) }.toList()
+        val cyclicBarrier = CyclicBarrier(numThreads)
+        testMultithreadingRun(numThreads) {
+            val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+                connectionConfig = testConnectionConfig,
+                queueConfig = testQueueConfig,
+                requestTimeoutInMs = 42_000
+            )
+            val testRequestId = testRequestId(ids[it - 1].toByte())
+            cyclicBarrier.await()
+            logger.debug("Run in thread for request id=$testRequestId.")
+            runBlocking {
+                testSendRequestSuccess(repository, testRequestId)
+            }
+        }
+    }
+
+    @Test
+    fun `test success get resources concurrently with single connection`() {
+        val numThreads = 10
+        val ids = (1..numThreads / 2).flatMap { sequenceOf(it, it) }.toList()
+
+        val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+            connectionConfig = testConnectionConfig,
+            queueConfig = testQueueConfig,
+            requestTimeoutInMs = 42_000
+        )
+        val cyclicBarrier = CyclicBarrier(numThreads)
+        testMultithreadingRun(numThreads) {
+            val testRequestId = testRequestId(ids[it - 1].toByte())
+            cyclicBarrier.await()
+            logger.debug("Run in thread for request id=$testRequestId.")
+            runBlocking {
+                testSendRequestSuccess(repository, testRequestId)
+            }
+        }
+    }
+
 }

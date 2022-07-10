@@ -71,17 +71,37 @@ class TTSResourceRepositoryImpl(
     private suspend fun retrieveData(id: ResourceId): ByteArray {
         return connectionFactory.connection.createChannel().use { channel ->
             var res: ByteArray? = null
+            val responseRoutingKey = config.routingKeyResponsePrefix + id.asString()
+            if (logger.isDebugEnabled) {
+                logger.debug("Bind queue with routing-key='$responseRoutingKey'.")
+            }
             channel
-                .exchangeDeclare(config)
-                .queueDeclare(config)
-                .queueBind(config, config.routingKeyOut)
-                .basicConsume(config, channel.deliverCallback(
-                    publishMessage = { t, m ->
-                        res = handleResponse(t, m)
-                    }
-                ), cancelCallback())
-
-            channel.sendRequest(id.asString(), config.routingKeyIn)
+                .exchange(
+                    exchangeName = config.exchangeName,
+                    exchangeType = "direct",
+                )
+                .queue(queueName = responseRoutingKey)
+                .bind(
+                    queueName = responseRoutingKey,
+                    exchangeName = config.exchangeName,
+                    routingKey = responseRoutingKey
+                )
+                .consume(
+                    queueName = responseRoutingKey,
+                    consumerTag = config.consumerTag,
+                    deliverCallback = channel.deliverCallback(
+                        publishMessage = { t, m ->
+                            res = handleResponse(t, m)
+                        }
+                    ),
+                    cancelCallback = cancelCallback(),
+                )
+            // send request to in-queue
+            channel.sendRequest(
+                tag = config.consumerTag,
+                requestId = id.asString(),
+                targetRoutingKey = config.routingKeyRequest
+            )
             while (res == null && channel.isOpen) {
                 delay(timeMillis = 10)
             }
@@ -103,20 +123,21 @@ class TTSResourceRepositoryImpl(
         val responseBody = message.body
         if (logger.isDebugEnabled) {
             val responseId = message.properties.messageId
-            logger.info("[$tag]:: got response message with id={$responseId}, body length=${responseBody.size}.")
+            logger.debug("[$tag]:: got response message with id={$responseId}, body length=${responseBody.size}.")
         }
         return responseBody
     }
 
     private fun Channel.sendRequest(
+        tag: String,
         requestId: String,
         targetRoutingKey: String,
     ) {
         if (logger.isDebugEnabled) {
-            logger.info("Send request with id={$requestId} to $targetRoutingKey")
+            logger.debug("[$tag]:: send request with id={$requestId} to routingKey='$targetRoutingKey'.")
         }
         val props = AMQP.BasicProperties.Builder().messageId(requestId).build()
-        basicPublish(config.exchangeName, targetRoutingKey, props, ByteArray(0))
+        basicPublish(config.exchangeName, targetRoutingKey, props, null)
     }
 
     private fun Throwable.asError() = AppError(

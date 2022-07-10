@@ -13,12 +13,10 @@ object Settings : BaseConfig("/application.properties") {
     val user = getValue(key = "tts-client.rabbitmq.user", default = "dev")
     val password = getValue(key = "tts-client.rabbitmq.password", default = "dev")
 
-    val routingKeyIn = getValue("tts-client.rabbitmq.routing-key-in", default = "resource-identifier")
-    val routingKeyOut = getValue("tts-client.rabbitmq.routing-key-out", default = "resource-body")
-    val queueName = getValue("tts-client.rabbitmq.queue-name", default = "tts-queue")
+    val routingKeyRequest = getValue("tts-client.rabbitmq.routing-key-request", default = "resource-identifier")
+    val routingKeyResponsePrefix = getValue("tts-client.rabbitmq.routing-key-response-prefix", default = "resource-body=")
     val consumerTag = getValue("tts-client.rabbitmq.consumer-tag", default = "tts-server-consumer")
     val exchangeName = getValue("tts-client.rabbitmq.exchange-name", default = "tts-exchange")
-    val exchangeType = getValue("tts-client.rabbitmq.exchange-type", default = "direct")
 
     init {
         logger.info(printDetails())
@@ -27,17 +25,15 @@ object Settings : BaseConfig("/application.properties") {
     private fun printDetails(): String {
         return """
             |
-            |host           = $host
-            |port           = $port
-            |user           = ***
-            |password       = ***            
-            |routingKeyIn   = $routingKeyIn
-            |routingKeyOut  = $routingKeyOut
-            |queueName      = $queueName
-            |consumerTag    = $consumerTag
-            |exchangeName   = $exchangeName
-            |exchangeType   = $exchangeType
-            |timeout-in-ms  = $requestTimeoutInMilliseconds
+            |rabbitmq-host                  = $host
+            |rabbitmq-port                  = $port
+            |rabbitmq-user                  = ***
+            |rabbitmq-password              = ***            
+            |routing-key-request            = $routingKeyRequest
+            |routing-key-response-prefix    = $routingKeyResponsePrefix
+            |consumer-tag                   = $consumerTag
+            |exchange-name                  = $exchangeName
+            |request-timeout-in-ms          = $requestTimeoutInMilliseconds
             """.replaceIndentByMargin("\t")
     }
 }

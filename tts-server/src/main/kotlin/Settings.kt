@@ -11,12 +11,12 @@ object Settings : BaseConfig("/application.properties") {
     val user = getValue(key = "tts-server.rabbitmq.user", default = "dev")
     val password = getValue(key = "tts-server.rabbitmq.password", default = "dev")
 
-    val routingKeyIn = getValue("tts-server.rabbitmq.routing-key-in", default = "resource-identifier")
-    val routingKeyOut = getValue("tts-server.rabbitmq.routing-key-out", default = "resource-body")
-    val queueName = getValue("tts-server.rabbitmq.queue-name", default = "tts-queue")
+    val routingKeyRequest = getValue("tts-server.rabbitmq.routing-key-request", default = "resource-identifier")
+    val routingKeyResponsePrefix =
+        getValue("tts-server.rabbitmq.routing-key-response-prefix", default = "resource-body=")
+    val queueNameRequest = getValue("tts-server.rabbitmq.queue-name-request", default = "tts-queue")
     val consumerTag = getValue("tts-server.rabbitmq.consumer-tag", default = "tts-server-consumer")
     val exchangeName = getValue("tts-server.rabbitmq.exchange-name", default = "tts-exchange")
-    val exchangeType = getValue("tts-server.rabbitmq.exchange-type", default = "direct")
 
     init {
         logger.info(printDetails())
@@ -25,16 +25,15 @@ object Settings : BaseConfig("/application.properties") {
     private fun printDetails(): String {
         return """
             |
-            |host           = $host
-            |port           = $port
-            |user           = ***
-            |password       = ***            
-            |routingKeyIn   = $routingKeyIn
-            |routingKeyOut  = $routingKeyOut
-            |queueName      = $queueName
-            |consumerTag    = $consumerTag
-            |exchangeName   = $exchangeName
-            |exchangeType   = $exchangeType
+            |rabbitmq-host                  = $host
+            |rabbitmq-port                  = $port
+            |rabbitmq-user                  = ***
+            |rabbitmq-password              = ***            
+            |routing-key-request            = $routingKeyRequest
+            |routing-key-response-prefix    = $routingKeyResponsePrefix
+            |queue-name-request             = $queueNameRequest
+            |consumer-tag                   = $consumerTag
+            |exchangeName                   = $exchangeName
             """.replaceIndentByMargin("\t")
     }
 }
