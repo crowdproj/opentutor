@@ -17,6 +17,11 @@ object Settings : BaseConfig("/application.properties") {
     val queueNameRequest = getValue("tts-server.rabbitmq.queue-name-request", default = "tts-queue")
     val consumerTag = getValue("tts-server.rabbitmq.consumer-tag", default = "tts-server-consumer")
     val exchangeName = getValue("tts-server.rabbitmq.exchange-name", default = "tts-exchange")
+    val messageSuccessResponsePrefix =
+        getValue("tts-server.rabbitmq.message-id-response-success-prefix", default = "response-success=")
+    val messageErrorResponsePrefix =
+        getValue("tts-server.rabbitmq.message-id-response-error-prefix", default = "response-error=")
+    val messageStatusHeader = getValue("tts-server.rabbitmq.message-status-header", default = "status")
 
     init {
         logger.info(printDetails())
@@ -34,6 +39,9 @@ object Settings : BaseConfig("/application.properties") {
             |queue-name-request             = $queueNameRequest
             |consumer-tag                   = $consumerTag
             |exchangeName                   = $exchangeName
+            |message-success-prefix         = $messageSuccessResponsePrefix  
+            |message-error-prefix           = $messageErrorResponsePrefix
+            |message-status-header          = $messageStatusHeader
             """.replaceIndentByMargin("\t")
     }
 }

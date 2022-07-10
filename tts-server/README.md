@@ -8,13 +8,16 @@ The server has the following settings (example):
 ```
 	rabbitmq-host                  = localhost
 	rabbitmq-port                  = 5672
-	rabbitmq-user                  = ***
-	rabbitmq-password              = ***            
-	routing-key-request            = resource-identifier
-	routing-key-response-prefix    = resource-body
+	rabbitmq-user                  = guest
+	rabbitmq-password              = guest            
+	routing-key-request            = resource-identifiers
+	routing-key-response-prefix    = resource-body=
 	queue-name-request             = tts-queue
 	consumer-tag                   = tts-server-consumer
 	exchangeName                   = tts-exchange
+	message-success-prefix         = response-success=  
+	message-error-prefix           = response-error=
+	message-status-header          = status
 ```
 
 - the exchange-type is always 'direct'.

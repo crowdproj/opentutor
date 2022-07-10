@@ -5,7 +5,8 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 import com.gitlab.sszuev.flashcards.model.repositories.TTSResourceRepository
-import com.gitlab.sszuev.flashcards.speaker.NoResourceFoundException
+import com.gitlab.sszuev.flashcards.speaker.NotFoundResourceException
+import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
 import com.gitlab.sszuev.flashcards.speaker.Settings
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
@@ -18,15 +19,24 @@ private val logger = LoggerFactory.getLogger(TTSResourceRepositoryImpl::class.ja
 
 class TTSResourceRepositoryImpl(
     private val connectionFactory: RabbitmqConnectionFactory,
-    private val config: QueueConfig,
+    private val config: ClientConfig,
     private val requestTimeoutInMillis: Long = Settings.requestTimeoutInMilliseconds
 ) : TTSResourceRepository {
 
-    constructor(connectionConfig: ConnectionConfig, queueConfig: QueueConfig, requestTimeoutInMs: Long) : this(
+    constructor(
+        connectionConfig: ConnectionConfig = ConnectionConfig(),
+        clientConfig: ClientConfig = ClientConfig(),
+        requestTimeoutInMs: Long = Settings.requestTimeoutInMilliseconds
+    ) : this(
         connectionFactory = SimpleRabbitmqConnectionFactory(config = connectionConfig),
-        config = queueConfig,
+        config = clientConfig,
         requestTimeoutInMillis = requestTimeoutInMs
     )
+
+    init {
+        require(requestTimeoutInMillis != 0L)
+        logger.info("TTS-client request timeout=${requestTimeoutInMillis}ms.")
+    }
 
     private val scope = CoroutineScope(
         context = Executors.newSingleThreadExecutor()
@@ -37,10 +47,24 @@ class TTSResourceRepositoryImpl(
         return ResourceId("${lang.asString()}:$word")
     }
 
+    /**
+     * Gets the resource data from Rabbit MQ message with timeout.
+     * @param [id][ResourceId]
+     * @return [ResourceEntity]
+     */
     override suspend fun getResource(id: ResourceId): ResourceEntity {
         val errors: MutableList<AppError> = mutableListOf()
         val data = try {
-            retrieveDataWithTimeout(id)
+            val res: Deferred<ByteArray> = scope.async(context = Dispatchers.IO) {
+                return@async retrieveData(id)
+            }
+            if (requestTimeoutInMillis < 0) {
+                res.await()
+            } else {
+                runBlocking {
+                    withTimeout(requestTimeoutInMillis) { res.await() }
+                }
+            }
         } catch (ex: Throwable) {
             errors.add(ex.asError())
             ByteArray(0)
@@ -49,28 +73,16 @@ class TTSResourceRepositoryImpl(
     }
 
     /**
-     * @throws TimeoutCancellationException
-     * @throws IllegalStateException
-     */
-    private suspend fun retrieveDataWithTimeout(id: ResourceId): ByteArray {
-        val res: Deferred<ByteArray> = scope.async(context = Dispatchers.IO) {
-            return@async retrieveData(id)
-        }
-        return runBlocking {
-            withTimeout(requestTimeoutInMillis) { res.await() }
-        }
-    }
-
-    /**
-     * Gets the data from Rabbit MQ message.
+     * Gets the byte-array from Rabbit MQ message.
      * @param [id][ResourceId]
      * @return [ByteArray]
-     * @throws NoResourceFoundException
-     * @throws CancellationException
+     * @throws IllegalStateException
+     * @throws NotFoundResourceException
+     * @throws ServerResourceException
      */
     private suspend fun retrieveData(id: ResourceId): ByteArray {
         return connectionFactory.connection.createChannel().use { channel ->
-            var res: ByteArray? = null
+            var res: Any? = null
             val responseRoutingKey = config.routingKeyResponsePrefix + id.asString()
             if (logger.isDebugEnabled) {
                 logger.debug("Bind queue with routing-key='$responseRoutingKey'.")
@@ -110,22 +122,40 @@ class TTSResourceRepositoryImpl(
             }
             if (res == null) {
                 channel.abort(506, "Unable to get response")
-                throw NoResourceFoundException("Null result for request $id.")
+                throw NotFoundResourceException(id, "null result for request.")
             }
-            if (res!!.isEmpty()) {
-                throw NoResourceFoundException("Empty result for request $id.")
+            if (res is ByteArray) {
+                val array = res as ByteArray
+                if (array.isEmpty()) {
+                    throw NotFoundResourceException(id, "empty result for request.")
+                }
+                return@use array
             }
-            return@use res!!
+            if (res is String) {
+                throw ServerResourceException(id, res as String)
+            }
+            throw IllegalStateException("Unknown type ${res!!::class.java.simpleName}")
         }
     }
 
-    private fun handleResponse(tag: String, message: Delivery): ByteArray {
+    private fun handleResponse(tag: String, message: Delivery): Any {
         val responseBody = message.body
         if (logger.isDebugEnabled) {
             val responseId = message.properties.messageId
-            logger.debug("[$tag]:: got response message with id={$responseId}, body length=${responseBody.size}.")
+            logger.debug("[$tag]:: got response message with id={$responseId}.")
         }
-        return responseBody
+        if (isSuccess(message)) {
+            return responseBody
+        }
+        return responseBody.toString(Charsets.UTF_8)
+    }
+
+    private fun isSuccess(message: Delivery): Boolean {
+        val headers = message.properties.headers
+        if (headers == null || headers.isEmpty()) {
+            return true
+        }
+        return headers.getOrDefault(config.messageStatusHeader, true) as Boolean
     }
 
     private fun Channel.sendRequest(

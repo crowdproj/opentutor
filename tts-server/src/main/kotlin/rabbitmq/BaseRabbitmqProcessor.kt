@@ -11,7 +11,7 @@ import kotlin.coroutines.CoroutineContext
 private val logger = LoggerFactory.getLogger(BaseRabbitmqProcessor::class.java)
 
 abstract class BaseRabbitmqProcessor(
-    private val queueConfig: QueueConfig,
+    protected val config: ProcessorConfig,
     private val createConnection: () -> Connection,
 ) : AutoCloseable {
 
@@ -39,16 +39,16 @@ abstract class BaseRabbitmqProcessor(
         )
         val onCancel = cancelCallback()
         runBlocking {
-            exchange(exchangeName = queueConfig.exchangeName, exchangeType = "direct")
-                .queue(queueName = queueConfig.requestQueueName)
+            exchange(exchangeName = config.exchangeName, exchangeType = "direct")
+                .queue(queueName = config.requestQueueName)
                 .bind(
-                    queueName = queueConfig.requestQueueName,
-                    exchangeName = queueConfig.exchangeName,
-                    routingKey = queueConfig.routingKeyRequest
+                    queueName = config.requestQueueName,
+                    exchangeName = config.exchangeName,
+                    routingKey = config.routingKeyRequest
                 )
                 .consume(
-                    queueName = queueConfig.requestQueueName,
-                    consumerTag = queueConfig.consumerTag,
+                    queueName = config.requestQueueName,
+                    consumerTag = config.consumerTag,
                     deliverCallback = onDeliver,
                     cancelCallback = onCancel,
                 )
@@ -63,7 +63,7 @@ abstract class BaseRabbitmqProcessor(
                     }
                 }
             }
-            logger.info("Channel for [${queueConfig.consumerTag}] was closed.")
+            logger.info("Channel for [${config.consumerTag}] was closed.")
         }
     }
 

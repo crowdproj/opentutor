@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.speaker.controllers
 
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.ConnectionConfig
-import com.gitlab.sszuev.flashcards.speaker.rabbitmq.QueueConfig
+import com.gitlab.sszuev.flashcards.speaker.rabbitmq.ProcessorConfig
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.TextToSpeechProcessorImpl
 import com.gitlab.sszuev.flashcards.speaker.services.TextToSpeechService
 import kotlinx.coroutines.*
@@ -14,12 +14,12 @@ class TextToSpeechController(
     constructor(
         service: TextToSpeechService,
         connectionConfig: ConnectionConfig = ConnectionConfig(),
-        queueConfig: QueueConfig = QueueConfig()
+        processorConfig: ProcessorConfig = ProcessorConfig()
     ) : this(
         TextToSpeechProcessorImpl(
             service = service,
             connectionConfig = connectionConfig,
-            queueConfig = queueConfig
+            config = processorConfig
         )
     )
 

@@ -43,22 +43,14 @@ internal class TextToSpeechControllerITest {
             password = "guest",
         )
 
-        private val testQueueConfig = QueueConfig(
-            routingKeyRequest = "test-in",
-            routingKeyResponsePrefix = "test-out=",
-            exchangeName = "test-exchange",
-            requestQueueName = "test-queue",
-            consumerTag = "test-consumer-tag",
-        )
-
         @AfterAll
         @JvmStatic
         fun afterClass() {
             container.stop()
         }
 
-        private fun sendRequest(resourceId: String): Pair<String?, ByteArray?> {
-            val responseRoutingKey = testQueueConfig.routingKeyResponsePrefix + resourceId
+        private fun sendRequest(resourceId: String, config: ProcessorConfig): Triple<String?, ByteArray?, Boolean?> {
+            val responseRoutingKey = config.routingKeyResponsePrefix + resourceId
             ConnectionFactory().apply {
                 host = testConnectionConfig.host
                 port = testConnectionConfig.port
@@ -68,19 +60,21 @@ internal class TextToSpeechControllerITest {
                 connection.createChannel().use { channel ->
                     var responseBody: ByteArray? = null
                     var responseId: String? = null
+                    var responseStatus: Boolean? = null
 
-                    channel.exchangeDeclare(testQueueConfig.exchangeName, "direct")
+                    channel.exchangeDeclare(config.exchangeName, "direct")
                     channel.queueDeclare(responseRoutingKey, false, false, false, null)
-                    channel.queueBind(responseRoutingKey, testQueueConfig.exchangeName, responseRoutingKey)
+                    channel.queueBind(responseRoutingKey, config.exchangeName, responseRoutingKey)
                     val deliverCallback = DeliverCallback { consumerTag, delivery ->
                         responseId = delivery.properties.messageId
                         responseBody = delivery.body
+                        responseStatus = delivery.properties.headers["status"]?.toString().toBoolean()
                         logger.debug("Received by $consumerTag: '$responseId', body=${responseBody?.contentToString()}")
                     }
                     channel.basicConsume(responseRoutingKey, true, deliverCallback, CancelCallback { })
 
                     val props = AMQP.BasicProperties.Builder().messageId(resourceId).build()
-                    channel.basicPublish(testQueueConfig.exchangeName, testQueueConfig.routingKeyRequest, props, ByteArray(0))
+                    channel.basicPublish(config.exchangeName, config.routingKeyRequest, props, ByteArray(0))
 
                     runBlocking {
                         withTimeout(42.seconds) {
@@ -91,12 +85,14 @@ internal class TextToSpeechControllerITest {
                     }
 
                     logger.debug("RESPONSE BODY: ${responseBody?.contentToString()}")
-                    return responseId to responseBody
+                    return Triple(responseId, responseBody, responseStatus)
                 }
             }
         }
 
-        private fun prepareRequestQueue() {
+        private fun prepareRequestQueue(config: ProcessorConfig) {
+            // need to prepare Rabbit MQ request queue since the controller starts asynchronously:
+            // the data will be lost if send message too quickly, before consumer creates required queue
             ConnectionFactory().apply {
                 host = testConnectionConfig.host
                 port = testConnectionConfig.port
@@ -104,40 +100,92 @@ internal class TextToSpeechControllerITest {
                 password = testConnectionConfig.password
             }.newConnection().use { connection ->
                 connection.createChannel().use { channel ->
-                    channel.exchangeDeclare(testQueueConfig.exchangeName, "direct")
-                    channel.queueDeclare(testQueueConfig.requestQueueName, false, false, false, null)
-                    channel.queueBind(testQueueConfig.requestQueueName, testQueueConfig.exchangeName, testQueueConfig.routingKeyRequest)
+                    channel.exchangeDeclare(config.exchangeName, "direct")
+                    channel.queueDeclare(config.requestQueueName, false, false, false, null)
+                    channel.queueBind(
+                        config.requestQueueName,
+                        config.exchangeName,
+                        config.routingKeyRequest
+                    )
                 }
             }
         }
     }
 
     @Test
-    fun `test handle request`() {
-        // need to prepare Rabbit MQ request queue since the controller starts asynchronously:
-        // the data will be lost if send message too quickly, before consumer creates required queue
-        prepareRequestQueue()
+    fun `test handle request success`() {
+        val config = ProcessorConfig(
+            exchangeName = "test-exchange-ok",
+            requestQueueName = "test-q1",
+            consumerTag = "test-consumer-tag",
+        )
+        prepareRequestQueue(config)
 
-        val testRequestId = "TestRequestId=XXX"
+        val testRequestId = "testSuccessRequestId"
         val testAnswer = ByteArray(42) { 42 }
-        val expectedResId = "response-success={$testRequestId}"
+        val expectedResId = "response-success=$testRequestId"
         val mockkTTSService = mockk<TextToSpeechService>()
         every { mockkTTSService.getResource(any()) } returns testAnswer
 
         TextToSpeechController(
             service = mockkTTSService,
-            queueConfig = testQueueConfig,
+            processorConfig = config,
             connectionConfig = testConnectionConfig
         ).start()
         logger.debug("Controller started, send request.")
 
-        val res = sendRequest(testRequestId)
+        val res = sendRequest(testRequestId, config)
         val actualResBody: ByteArray? = res.second
         val actualResId: String? = res.first
+        val actualResStatus: Boolean? = res.third
         logger.debug("RESPONSE BODY: ${actualResBody?.contentToString()}")
+
         Assertions.assertNotNull(actualResBody)
         Assertions.assertNotNull(actualResId)
+        Assertions.assertNotNull(actualResStatus)
         Assertions.assertArrayEquals(testAnswer, actualResBody)
         Assertions.assertEquals(expectedResId, actualResId)
+        Assertions.assertTrue(actualResStatus!!)
     }
+
+    @Test
+    fun `test handle request error`() {
+        val config = ProcessorConfig(
+            exchangeName = "test-exchange-fail",
+            requestQueueName = "test-q2",
+            consumerTag = "test-consumer-tag",
+        )
+        prepareRequestQueue(config)
+
+        val testRequestId = "testErrorRequestId"
+        val testException = TestException("test-exception")
+
+        val expectedResId = "response-error=$testRequestId"
+        val expectedMessage = "${TestException::class.java.name}: ${testException.message}"
+
+        val mockkTTSService = mockk<TextToSpeechService>()
+        every { mockkTTSService.getResource(any()) } throws testException
+
+        TextToSpeechController(
+            service = mockkTTSService,
+            processorConfig = config,
+            connectionConfig = testConnectionConfig
+        ).start()
+        logger.debug("Controller started, send request.")
+
+        val res = sendRequest(testRequestId, config)
+        val actualResBody: String? = res.second?.toString(Charsets.UTF_8)
+        val actualResId: String? = res.first
+        val actualResStatus: Boolean? = res.third
+        logger.debug("RESPONSE BODY: $actualResBody")
+
+        Assertions.assertNotNull(actualResBody)
+        Assertions.assertNotNull(actualResId)
+        Assertions.assertNotNull(actualResStatus)
+        Assertions.assertEquals(expectedResId, actualResId)
+        Assertions.assertTrue(actualResBody!!.startsWith(expectedMessage))
+        Assertions.assertFalse(actualResStatus!!)
+    }
+
+    private class TestException(msg: String) : RuntimeException(msg)
 }
