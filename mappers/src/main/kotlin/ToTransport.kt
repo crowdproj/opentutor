@@ -11,6 +11,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
+    CardOperation.GET_RESOURCE -> this.toGetAudioResponse()
     CardOperation.SEARCH_CARDS -> this.toGetCardsResponse()
     CardOperation.GET_CARD -> this.toGetCardResponse()
     CardOperation.CREATE_CARD -> this.toCreateCardResponse()
@@ -20,6 +21,13 @@ fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.RESET_CARD -> this.toResetCardResponse()
     CardOperation.NONE -> throw IllegalArgumentException("Not supported operation $op.")
 }
+
+fun CardContext.toGetAudioResponse() = GetAudioResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+    resource = this.responseResourceEntity.data,
+)
 
 fun CardContext.toGetCardResponse() = GetCardResponse(
     requestId = this.requestId.toResponseId(),

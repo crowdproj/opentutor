@@ -17,6 +17,12 @@ import org.slf4j.LoggerFactory
 
 private val logger: Logger = LoggerFactory.getLogger("CardController")
 
+suspend fun ApplicationCall.getResource(service: CardService) {
+    execute<GetAudioRequest>(CardOperation.GET_RESOURCE) {
+        service.getResource(this)
+    }
+}
+
 suspend fun ApplicationCall.createCard(service: CardService) {
     execute<CreateCardRequest>(CardOperation.CREATE_CARD) {
         service.createCard(this)

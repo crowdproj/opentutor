@@ -8,6 +8,7 @@ import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.stubs.stubAudioResource
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
 
@@ -22,6 +23,25 @@ class CardCorProcessor {
     companion object {
         private val businessChain = chain {
             initContext()
+
+            operation(CardOperation.GET_RESOURCE) {
+                stubs(CardOperation.GET_RESOURCE) {
+                    stubSuccess(CardOperation.GET_RESOURCE) {
+                        this.responseResourceEntity = stubAudioResource
+                    }
+                    stubError(CardOperation.GET_RESOURCE)
+                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_WRONG_RESOURCE_ID)
+                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_NOT_FOUND)
+                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_SERVER_ERROR)
+                }
+                validators(CardOperation.GET_RESOURCE) {
+                    worker(name = "Make a normalized copy of get-resource id") {
+                        this.normalizedRequestResourceGet = this.requestResourceGet.normalize()
+                    }
+                    validateResourceGetLangId()
+                    validateResourceGetWord()
+                }
+            }
 
             operation(CardOperation.SEARCH_CARDS) {
                 stubs(CardOperation.SEARCH_CARDS) {

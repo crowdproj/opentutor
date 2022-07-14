@@ -2,6 +2,8 @@ package com.gitlab.sszuev.flashcards
 
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.repositories.DummyTTSResourceRepository
+import com.gitlab.sszuev.flashcards.model.repositories.TTSResourceRepository
 import kotlinx.datetime.Instant
 
 /**
@@ -17,6 +19,15 @@ data class CardContext(
 
     var requestId: AppRequestId = AppRequestId.NONE,
     var timestamp: Instant = Instant.NONE,
+
+    // TTS-service repo
+    var ttsResourceRepository: TTSResourceRepository = DummyTTSResourceRepository,
+
+    // get word resource by id (for TTS)
+    var requestResourceGet: ResourceGet = ResourceGet.NONE,
+    var normalizedRequestResourceGet: ResourceGet = ResourceGet.NONE,
+    // get word response (for TTS)
+    var responseResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
 
     // get/delete single card request:
     var requestCardEntityId: CardId = CardId.NONE,

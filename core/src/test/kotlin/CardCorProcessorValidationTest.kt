@@ -64,6 +64,11 @@ class CardCorProcessorValidationTest {
         }
 
         @JvmStatic
+        private fun wrongWords(): List<String> {
+            return listOf("", "x".repeat(42_000))
+        }
+
+        @JvmStatic
         private fun goodIds(): List<String> {
             return listOf("21", "42")
         }
@@ -71,8 +76,8 @@ class CardCorProcessorValidationTest {
         @JvmStatic
         private fun wrongIdsToOperationsWithCardIdInRequest(): List<Arguments> {
             val ops = listOf(CardOperation.GET_CARD, CardOperation.RESET_CARD, CardOperation.DELETE_CARD)
-            val ids = wrongIds()
             val modes = listOf(AppMode.TEST, AppMode.STUB)
+            val ids = wrongIds()
             return ops.flatMap { op -> modes.flatMap { m -> ids.map { Arguments.of(it, m, op) } } }
         }
 
@@ -81,6 +86,28 @@ class CardCorProcessorValidationTest {
             val ops = listOf(CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD)
             val ids = wrongIds()
             return ops.flatMap { op -> ids.map { Arguments.of(it, op) } }
+        }
+
+        @JvmStatic
+        private fun wrongWordsCreateUpdateCardRequest(): List<Arguments> {
+            val ops = listOf(CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD)
+            val modes = listOf(AppMode.TEST, AppMode.STUB)
+            val words = wrongWords()
+            return ops.flatMap { op -> modes.flatMap { m -> words.map { Arguments.of(it, m, op) } } }
+        }
+
+        @JvmStatic
+        private fun wrongWordsGetResource(): List<Arguments> {
+            val modes = listOf(AppMode.TEST, AppMode.STUB)
+            val words = wrongWords()
+            return modes.flatMap { m -> words.map { Arguments.of(it, m) } }
+        }
+
+        @JvmStatic
+        private fun wrongLangIds(): List<Arguments> {
+            val modes = listOf(AppMode.TEST, AppMode.STUB)
+            val ids = sequenceOf("", "xxxxxx", "xxx:", "en~", "42")
+            return modes.flatMap { m -> ids.map { Arguments.of(it, m) } }
         }
     }
 
@@ -116,21 +143,16 @@ class CardCorProcessorValidationTest {
     }
 
     @ParameterizedTest(name = parameterizedTestName)
-    @EnumSource(
-        value = CardOperation::class,
-        names = [
-            "CREATE_CARD",
-            "UPDATE_CARD",
-        ]
-    )
-    fun `test create-card & update-card - validate word`(operation: CardOperation) = runTest {
-        val context = testContext(operation)
-        val cardId = if (operation == CardOperation.CREATE_CARD) CardId.NONE else CardId("42")
-        context.requestCardEntity = testCard.copy(word = "", cardId = cardId)
-        processor.execute(context)
-        val error = error(context)
-        assertValidationError("card-word", error)
-    }
+    @MethodSource(value = ["wrongWordsCreateUpdateCardRequest"])
+    fun `test create-card & update-card - validate word`(word: String, mode: AppMode, operation: CardOperation) =
+        runTest {
+            val context = testContext(operation, mode)
+            val cardId = if (operation == CardOperation.CREATE_CARD) CardId.NONE else CardId("42")
+            context.requestCardEntity = testCard.copy(word = word, cardId = cardId)
+            processor.execute(context)
+            val error = error(context)
+            assertValidationError("card-word", error)
+        }
 
     @ParameterizedTest(name = parameterizedTestName)
     @EnumSource(
@@ -321,5 +343,25 @@ class CardCorProcessorValidationTest {
         processor.execute(context)
         val error = error(context)
         assertValidationError("card-id", error)
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
+    @MethodSource(value = ["wrongLangIds"])
+    fun `test get resource - validate request LangId`(id: String, m: AppMode) = runTest {
+        val context = testContext(CardOperation.GET_RESOURCE, AppMode.TEST)
+        context.requestResourceGet = ResourceGet(lang = LangId(id), word = "xxx")
+        processor.execute(context)
+        val error = error(context)
+        assertValidationError("audio-resource-lang-id", error)
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
+    @MethodSource(value = ["wrongWordsGetResource"])
+    fun `test get resource - validate request word`(word: String, m: AppMode) = runTest {
+        val context = testContext(CardOperation.GET_RESOURCE, AppMode.TEST)
+        context.requestResourceGet = ResourceGet(lang = LangId("EN"), word = word)
+        processor.execute(context)
+        val error = error(context)
+        assertValidationError("audio-resource-word", error)
     }
 }

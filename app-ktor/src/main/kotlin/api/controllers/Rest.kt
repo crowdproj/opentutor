@@ -29,3 +29,10 @@ fun Route.cards(service: CardService) {
         }
     }
 }
+fun Route.sounds(service: CardService) {
+    route("sounds") {
+        post("get") {
+            call.getResource(service)
+        }
+    }
+}

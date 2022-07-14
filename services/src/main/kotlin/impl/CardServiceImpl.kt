@@ -10,6 +10,8 @@ import com.gitlab.sszuev.flashcards.services.CardService
 class CardServiceImpl : CardService {
     private val processor = CardCorProcessor()
 
+    override suspend fun getResource(context: CardContext): CardContext = context.exec()
+
     override suspend fun createCard(context: CardContext): CardContext = context.exec()
 
     override suspend fun updateCard(context: CardContext): CardContext = context.exec()

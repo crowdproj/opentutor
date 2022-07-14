@@ -5,7 +5,6 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
-import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
@@ -36,7 +35,7 @@ fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = w
 
 fun ChainDSL<CardContext>.validateCardEntityWord(getCard: (CardContext) -> CardEntity) = worker {
     this.name = "Test card-word"
-    test { isWordWrong(getCard(this).word) }
+    test { !isCorrectWrong(getCard(this).word) }
     process {
         fail(validationError(fieldName = "card-word"))
     }
@@ -179,28 +178,4 @@ private fun isIdBlank(id: Id): Boolean {
 
 private fun isIdWrong(id: Id): Boolean {
     return !id.asString().matches(Regex("\\d+"))
-}
-
-/**
- * Tests word. See [wiki: Longest words](https://en.wikipedia.org/wiki/Longest_words).
- * @param [txt] to test
- * @return [Boolean]
- */
-private fun isWordWrong(txt: String): Boolean {
-    return txt.isBlank() || txt.length > 256
-}
-
-private fun validationError(
-    fieldName: String,
-    description: String = ""
-) = AppError(
-    code = "validation-$fieldName",
-    field = fieldName,
-    group = "validation",
-    message = if (description.isBlank()) "" else "validation error for $fieldName: $description"
-)
-
-internal fun CardContext.fail(error: AppError) {
-    this.status = AppStatus.FAIL
-    this.errors.add(error)
 }

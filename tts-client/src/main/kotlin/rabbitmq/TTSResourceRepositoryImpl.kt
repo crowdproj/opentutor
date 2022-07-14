@@ -69,7 +69,7 @@ class TTSResourceRepositoryImpl(
             errors.add(ex.asError())
             ByteArray(0)
         }
-        return ResourceEntity(id, data, errors)
+        return ResourceEntity(resourceId = id, data = data, errors = errors)
     }
 
     /**

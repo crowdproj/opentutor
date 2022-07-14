@@ -148,7 +148,7 @@ internal class TTSResourceRepositoryITest {
             val res = repository.getResource(testRequestId)
             Assertions.assertArrayEquals(expectedDataArray, res.data) { "expected: $expectedDataSize." }
             Assertions.assertTrue(res.errors.isEmpty())
-            Assertions.assertEquals(testRequestId, res.cardId)
+            Assertions.assertEquals(testRequestId, res.resourceId)
         }
     }
 
@@ -181,7 +181,7 @@ internal class TTSResourceRepositoryITest {
 
             val res = repository.getResource(testRequestId)
 
-            Assertions.assertEquals(testRequestId, res.cardId)
+            Assertions.assertEquals(testRequestId, res.resourceId)
             Assertions.assertEquals(1, res.errors.size)
             Assertions.assertArrayEquals(ByteArray(0), res.data)
             val error = res.errors[0]
@@ -242,7 +242,7 @@ internal class TTSResourceRepositoryITest {
                 requestTimeoutInMs = 4200,
             )
             val res = repository.getResource(testRequestId)
-            Assertions.assertEquals(testRequestId, res.cardId)
+            Assertions.assertEquals(testRequestId, res.resourceId)
             Assertions.assertEquals(1, res.errors.size)
             Assertions.assertArrayEquals(ByteArray(0), res.data)
             val error = res.errors[0]

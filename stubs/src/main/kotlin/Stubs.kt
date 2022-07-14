@@ -2,12 +2,14 @@ package com.gitlab.sszuev.flashcards.stubs
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStub
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 
 const val STUB_ERROR_GROUP = "StubErrors"
+
+val stubAudioResource = ResourceEntity(
+    resourceId = ResourceId(42.toString()),
+    data = ByteArray(42) { 42 },
+)
 
 val stubError = AppError(
     field = "the-error-field",

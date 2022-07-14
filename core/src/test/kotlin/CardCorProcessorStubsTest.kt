@@ -3,10 +3,7 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.stubs.stubCard
-import com.gitlab.sszuev.flashcards.stubs.stubCards
-import com.gitlab.sszuev.flashcards.stubs.stubError
-import com.gitlab.sszuev.flashcards.stubs.stubErrorForCode
+import com.gitlab.sszuev.flashcards.stubs.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -24,6 +21,8 @@ internal class CardCorProcessorStubsTest {
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
         private val testCard = stubCard.copy()
+        private val testAudioResourceGet = ResourceGet(lang = LangId("xx"), word = "xxx")
+
         private val testCardFilter = CardFilter(
             dictionaryIds = listOf(2, 4, 42).map { DictionaryId(it.toString()) },
             length = 42,
@@ -231,5 +230,30 @@ internal class CardCorProcessorStubsTest {
         processor.execute(context)
         assertFail(context, stubErrorForCode(AppStub.ERROR_WRONG_CARD_ID))
         Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+    }
+
+    @Test
+    fun `test get audio resource`() = runTest {
+        val context = testContext(CardOperation.GET_RESOURCE, AppStub.SUCCESS)
+        context.requestResourceGet = testAudioResourceGet
+        processor.execute(context)
+        assertSuccess(context)
+        Assertions.assertEquals(stubAudioResource, context.responseResourceEntity)
+    }
+
+    @ParameterizedTest
+    @EnumSource(
+        value = AppStub::class,
+        names = [
+            "ERROR_AUDIO_RESOURCE_WRONG_RESOURCE_ID",
+            "ERROR_AUDIO_RESOURCE_SERVER_ERROR",
+            "ERROR_AUDIO_RESOURCE_NOT_FOUND",
+        ]
+    )
+    fun `test get-audion resource specific fail`(case: AppStub) = runTest {
+        val context = testContext(CardOperation.GET_RESOURCE, case)
+        context.requestResourceGet = testAudioResourceGet
+        processor.execute(context)
+        assertFail(context, stubErrorForCode(case))
     }
 }
