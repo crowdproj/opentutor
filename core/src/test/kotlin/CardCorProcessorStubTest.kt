@@ -15,7 +15,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-internal class CardCorProcessorStubsTest {
+internal class CardCorProcessorStubTest {
 
     companion object {
         private val processor = CardCorProcessor()

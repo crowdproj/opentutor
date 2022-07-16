@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     id("application")
+    id("java-test-fixtures")
 }
 
 group = rootProject.group
@@ -29,6 +30,7 @@ dependencies {
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testFixturesImplementation(project(":common"))
 }
 
 tasks.test {

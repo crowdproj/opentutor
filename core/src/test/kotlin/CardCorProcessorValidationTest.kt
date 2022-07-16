@@ -348,7 +348,7 @@ class CardCorProcessorValidationTest {
     @ParameterizedTest(name = parameterizedTestName)
     @MethodSource(value = ["wrongLangIds"])
     fun `test get resource - validate request LangId`(id: String, m: AppMode) = runTest {
-        val context = testContext(CardOperation.GET_RESOURCE, AppMode.TEST)
+        val context = testContext(CardOperation.GET_RESOURCE, m)
         context.requestResourceGet = ResourceGet(lang = LangId(id), word = "xxx")
         processor.execute(context)
         val error = error(context)
@@ -358,7 +358,7 @@ class CardCorProcessorValidationTest {
     @ParameterizedTest(name = parameterizedTestName)
     @MethodSource(value = ["wrongWordsGetResource"])
     fun `test get resource - validate request word`(word: String, m: AppMode) = runTest {
-        val context = testContext(CardOperation.GET_RESOURCE, AppMode.TEST)
+        val context = testContext(CardOperation.GET_RESOURCE, m)
         context.requestResourceGet = ResourceGet(lang = LangId("EN"), word = word)
         processor.execute(context)
         val error = error(context)

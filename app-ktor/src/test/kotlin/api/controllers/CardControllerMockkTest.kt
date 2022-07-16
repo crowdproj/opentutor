@@ -71,6 +71,14 @@ internal class CardControllerMockkTest {
         ) { this.deleteCard(it) }
     }
 
+    @Test
+    fun `test get-audio-resource service error`() {
+        testServiceError(
+            endpoint = "sounds/get",
+            requestBody = GetAudioRequest(requestId = "request=sounds/get")
+        ) { this.getResource(it) }
+    }
+
     private inline fun <reified X : BaseRequest> testServiceError(
         endpoint: String,
         requestBody: X,
@@ -85,6 +93,7 @@ internal class CardControllerMockkTest {
         routing {
             route("test/api") {
                 cards(service)
+                sounds(service)
             }
         }
         val response = testPost("/test/api/$endpoint", requestBody)

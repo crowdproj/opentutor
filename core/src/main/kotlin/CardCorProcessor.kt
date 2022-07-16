@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.process.processResourceRequest
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
 import com.gitlab.sszuev.flashcards.core.validation.*
@@ -40,6 +41,9 @@ class CardCorProcessor {
                     }
                     validateResourceGetLangId()
                     validateResourceGetWord()
+                }
+                runs(CardOperation.GET_RESOURCE) {
+                    processResourceRequest()
                 }
             }
 

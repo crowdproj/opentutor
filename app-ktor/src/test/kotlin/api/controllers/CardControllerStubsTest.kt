@@ -244,4 +244,14 @@ class CardControllerStubsTest {
         val response = testPost("/v1/api/cards/delete", requestBody)
         testResponseError<DeleteCardResponse>(requestBody.requestId, response)
     }
+
+    @Test
+    fun `test get-audio resource error`() = testApplication {
+        val requestBody = GetAudioRequest(
+            requestId = "error-request",
+            debug = debugError,
+        )
+        val response = testPost("/v1/api/sounds/get", requestBody)
+        testResponseError<GetAudioResponse>(requestBody.requestId, response)
+    }
 }
