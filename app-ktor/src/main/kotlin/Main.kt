@@ -23,6 +23,7 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused")
 fun Application.module() {
+    val conf = AppConfig(this.environment.config)
     install(Routing)
 
     install(CachingHeaders)
@@ -52,7 +53,7 @@ fun Application.module() {
     @Suppress("OPT_IN_USAGE")
     install(Locations)
 
-    val service = cardService()
+    val service = cardService(conf)
     routing {
         apiV1(service)
 

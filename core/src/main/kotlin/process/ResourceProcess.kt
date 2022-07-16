@@ -10,7 +10,7 @@ fun ChainDSL<CardContext>.processResourceRequest() = worker {
     this.name = "process audio resource request"
     process {
         val request = this.normalizedRequestResourceGet
-        val id = this.ttsResourceRepository.findResourceId(request.word, request.lang)
+        val id = this.repositories.ttsClient.findResourceId(request.word, request.lang)
             ?: return@process fail(
                 runError(
                     operation = CardOperation.GET_RESOURCE,
@@ -18,7 +18,7 @@ fun ChainDSL<CardContext>.processResourceRequest() = worker {
                     description = "no resource found"
                 )
             )
-        this.responseResourceEntity = this.ttsResourceRepository.getResource(id)
+        this.responseResourceEntity = this.repositories.ttsClient.getResource(id)
         this.status = AppStatus.OK
     }
     onException {

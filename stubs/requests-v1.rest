@@ -287,3 +287,33 @@ Content-Type: application/json
     "stub": "error"
   }
 }
+
+### Get sound success
+POST http://localhost:8080/v1/api/sounds/get
+Content-Type: application/json
+
+{
+  "requestType": "getAudio",
+  "requestId": "getSoundSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "lang": "EN",
+  "word": "snow"
+}
+
+### Get sound server error
+POST http://localhost:8080/v1/api/sounds/get
+Content-Type: application/json
+
+{
+  "requestType": "getAudio",
+  "requestId": "getSoundError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error_audio_resource_server_error"
+  },
+  "lang": "EN",
+  "word": "snow"
+}

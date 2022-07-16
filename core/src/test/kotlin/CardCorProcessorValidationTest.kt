@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.CardContextRepositories
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
@@ -22,7 +23,7 @@ class CardCorProcessorValidationTest {
     companion object {
         private const val parameterizedTestName =
             "test: ${ParameterizedTest.INDEX_PLACEHOLDER}: \"${ParameterizedTest.ARGUMENTS_WITH_NAMES_PLACEHOLDER}\""
-        private val processor = CardCorProcessor()
+        private val processor = CardCorProcessor(repositories = CardContextRepositories.DEFAULT)
         private val requestId = UUID.randomUUID().toString()
         private val testCard = stubCard.copy()
         private val testCardFilter = CardFilter(

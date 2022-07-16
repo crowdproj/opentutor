@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 
 /**
  * Generic (TextToSpeech) interface to provide access to [ResourceEntity]s.
+ * Implementations must have no-opt constructor to allow dynamic loading.
  */
 interface TTSResourceRepository {
 

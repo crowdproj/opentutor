@@ -250,8 +250,22 @@ class CardControllerStubsTest {
         val requestBody = GetAudioRequest(
             requestId = "error-request",
             debug = debugError,
+            word = "xxx",
+            lang = "xx",
         )
         val response = testPost("/v1/api/sounds/get", requestBody)
         testResponseError<GetAudioResponse>(requestBody.requestId, response)
+    }
+
+    @Test
+    fun `test get-audio resource success`() = testApplication {
+        val requestBody = GetAudioRequest(
+            requestId = "success-request",
+            debug = debugSuccess,
+            word = "xxx",
+            lang = "xx",
+        )
+        val response = testPost("/v1/api/sounds/get", requestBody)
+        testResponseSuccess<GetAudioResponse>(requestBody.requestId, response)
     }
 }

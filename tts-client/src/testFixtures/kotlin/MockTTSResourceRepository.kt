@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.speaker.rabbitmq
+package com.gitlab.sszuev.flashcards.speaker
 
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
@@ -11,10 +11,10 @@ import java.util.concurrent.atomic.AtomicLong
  * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
  */
 class MockTTSResourceRepository(
-    val answerResourceId: () -> ResourceId?,
-    val answerResourceEntity: () -> ResourceEntity,
-    val findResourceIdCounts: AtomicLong,
-    val getResourceCounts: AtomicLong,
+    val answerResourceId: () -> ResourceId? = { ResourceId.NONE },
+    val answerResourceEntity: () -> ResourceEntity = { ResourceEntity.DUMMY },
+    val findResourceIdCounts: AtomicLong = AtomicLong(),
+    val getResourceCounts: AtomicLong = AtomicLong(),
 ) : TTSResourceRepository {
 
     override suspend fun findResourceId(word: String, lang: LangId): ResourceId? {

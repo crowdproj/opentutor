@@ -5,17 +5,15 @@ import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.speaker.rabbitmq.MockTTSResourceRepository
+import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.util.concurrent.atomic.AtomicLong
 
 @ExperimentalCoroutinesApi
 internal class CardCorProcessorRunGetResourceTest {
     companion object {
-        private val processor = CardCorProcessor()
 
         private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
             val context = CardContext()
@@ -38,21 +36,16 @@ internal class CardCorProcessorRunGetResourceTest {
             resourceId = testResourceId,
             data = ByteArray(42) { 42 }
         )
-        val findResourceIdCounts = AtomicLong()
-        val getResourceCounts = AtomicLong()
 
         val repository = MockTTSResourceRepository(
             answerResourceId = { testResourceId },
             answerResourceEntity = { testResourceEntity },
-            findResourceIdCounts = findResourceIdCounts,
-            getResourceCounts = getResourceCounts
         )
 
         val context = testContext(CardOperation.GET_RESOURCE)
-        context.ttsResourceRepository = repository
         context.requestResourceGet = testResourceGet
 
-        processor.execute(context)
+        CardCorProcessor(context.repositories.copy(ttsClient = repository)).execute(context)
 
         Assertions.assertEquals(requestId(CardOperation.GET_RESOURCE), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
@@ -72,21 +65,17 @@ internal class CardCorProcessorRunGetResourceTest {
             resourceId = testResourceId,
             data = ByteArray(42) { 42 }
         )
-        val findResourceIdCounts = AtomicLong()
-        val getResourceCounts = AtomicLong()
 
         val repository = MockTTSResourceRepository(
             answerResourceId = { null },
             answerResourceEntity = { testResourceEntity },
-            findResourceIdCounts = findResourceIdCounts,
-            getResourceCounts = getResourceCounts
         )
 
         val context = testContext(CardOperation.GET_RESOURCE)
-        context.ttsResourceRepository = repository
+        context.repositories = context.repositories.copy(ttsClient = repository)
         context.requestResourceGet = testResourceGet
 
-        processor.execute(context)
+        CardCorProcessor(context.repositories.copy(ttsClient = repository)).execute(context)
 
         Assertions.assertEquals(requestId(CardOperation.GET_RESOURCE), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
@@ -108,21 +97,17 @@ internal class CardCorProcessorRunGetResourceTest {
     fun `test get resource fail exception`() = runTest {
         val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
         val testResourceId = ResourceId("test-id")
-        val findResourceIdCounts = AtomicLong()
-        val getResourceCounts = AtomicLong()
 
         val repository = MockTTSResourceRepository(
             answerResourceId = { testResourceId },
             answerResourceEntity = { throw TestException() },
-            findResourceIdCounts = findResourceIdCounts,
-            getResourceCounts = getResourceCounts
         )
 
         val context = testContext(CardOperation.GET_RESOURCE)
-        context.ttsResourceRepository = repository
+        context.repositories = context.repositories.copy(ttsClient = repository)
         context.requestResourceGet = testResourceGet
 
-        processor.execute(context)
+        CardCorProcessor(context.repositories.copy(ttsClient = repository)).execute(context)
 
         Assertions.assertEquals(requestId(CardOperation.GET_RESOURCE), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
