@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.services.impl
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardContextRepositories
+import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.core.CardCorProcessor
 import com.gitlab.sszuev.flashcards.services.CardService
 
@@ -9,7 +9,7 @@ import com.gitlab.sszuev.flashcards.services.CardService
  * @see CardCorProcessor
  */
 class CardServiceImpl(
-    settings: CardContextRepositories
+    settings: CardRepositories
 ) : CardService {
     private val processor = CardCorProcessor(settings)
 

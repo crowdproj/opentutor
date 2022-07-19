@@ -8,7 +8,7 @@ import kotlinx.datetime.Instant
  * Represents request context for card operations.
  */
 data class CardContext(
-    var repositories: CardContextRepositories = CardContextRepositories.DEFAULT,
+    var repositories: CardRepositories = CardRepositories.DEFAULT,
     var operation: CardOperation = CardOperation.NONE,
     var status: AppStatus = AppStatus.INIT,
     val errors: MutableList<AppError> = mutableListOf(),

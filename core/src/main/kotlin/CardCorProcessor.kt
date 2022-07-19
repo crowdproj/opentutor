@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardContextRepositories
+import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.core.process.processResourceRequest
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
@@ -18,10 +18,10 @@ import com.gitlab.sszuev.flashcards.stubs.stubCards
  * Main class fot business logic,
  * it is based on Chain-Of-Responsibility (COR) pattern.
  */
-class CardCorProcessor(private val repositories: CardContextRepositories) {
+class CardCorProcessor(private val repositories: CardRepositories) {
 
     suspend fun execute(context: CardContext) =
-        businessChain.build().exec(context.apply { this.repositories = this@CardCorProcessor.repositories })
+        businessChain.exec(context.apply { this.repositories = this@CardCorProcessor.repositories })
 
     companion object {
         private val businessChain = chain {
@@ -177,6 +177,6 @@ class CardCorProcessor(private val repositories: CardContextRepositories) {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
             }
-        }
+        }.build()
     }
 }
