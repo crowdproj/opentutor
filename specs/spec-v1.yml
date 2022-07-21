@@ -20,7 +20,7 @@ tags:
 
 paths:
   /api/sounds/get:
-    get:
+    post:
       tags:
         - audio
       summary: Gets an audio-resource by its id (as a path)
@@ -222,7 +222,9 @@ components:
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
-            resourceId:
+            lang:
+              type: string
+            word:
               type: string
 
     GetAudioResponse:
@@ -540,6 +542,9 @@ components:
         - error_card_wrong_part_of_speech
         - error_card_wrong_details
         - error_card_wrong_audio_resource
+        - error_audio_resource_wrong_resource_id
+        - error_audio_resource_server_error
+        - error_audio_resource_not_found
         - error_cards_filter_wrong_length
         - error_cards_filter_wrong_dictionary_id
         - error_learn_card_wrong_card_id

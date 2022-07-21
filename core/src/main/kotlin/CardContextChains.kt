@@ -38,7 +38,7 @@ internal fun ChainDSL<CardContext>.stubs(
 ) = chain {
     this.name = "${operation.title()} ::: stubs"
     test {
-        this.workMode == AppMode.STUB && this.status == AppStatus.RUN
+        this.operation == operation && this.workMode == AppMode.STUB && this.status == AppStatus.RUN
     }
     configure()
 }
@@ -49,7 +49,18 @@ internal fun ChainDSL<CardContext>.validators(
 ) = chain {
     this.name = "${operation.title()} ::: validation"
     test {
-        this.status == AppStatus.RUN
+        this.operation == operation && this.status == AppStatus.RUN
+    }
+    configure()
+}
+
+internal fun ChainDSL<CardContext>.runs(
+    operation: CardOperation,
+    configure: ChainDSL<CardContext>.() -> Unit
+) = chain {
+    this.name = "${operation.title()} ::: process"
+    test {
+        this.operation == operation && this.workMode != AppMode.STUB && this.status == AppStatus.RUN
     }
     configure()
 }

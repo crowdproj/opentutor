@@ -16,19 +16,18 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.cors.routing.*
 import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.routing.*
-import io.ktor.server.websocket.*
 import org.slf4j.event.Level
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused")
 fun Application.module() {
+    val conf = AppConfig(this.environment.config)
     install(Routing)
 
     install(CachingHeaders)
     install(DefaultHeaders)
     install(AutoHeadResponse)
-    install(WebSockets)
 
     install(CORS) {
         allowMethod(HttpMethod.Post)
@@ -52,7 +51,7 @@ fun Application.module() {
     @Suppress("OPT_IN_USAGE")
     install(Locations)
 
-    val service = cardService()
+    val service = cardService(conf)
     routing {
         apiV1(service)
 

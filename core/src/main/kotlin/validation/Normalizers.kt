@@ -27,12 +27,23 @@ fun CardLearn.normalize(): CardLearn {
     )
 }
 
+fun ResourceGet.normalize(): ResourceGet {
+    return ResourceGet(
+        word = this.word.trim(),
+        lang = this.lang.normalize(),
+    )
+}
+
 fun CardId.normalize(): CardId {
     return CardId(this.normalizeAsString())
 }
 
 fun DictionaryId.normalize(): DictionaryId {
     return DictionaryId(this.normalizeAsString())
+}
+
+fun LangId.normalize(): LangId {
+    return LangId(this.normalizeAsString().lowercase())
 }
 
 private fun Id.normalizeAsString(): String {

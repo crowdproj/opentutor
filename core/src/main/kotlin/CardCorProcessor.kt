@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.CardRepositories
+import com.gitlab.sszuev.flashcards.core.process.processResourceRequest
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
 import com.gitlab.sszuev.flashcards.core.validation.*
@@ -8,6 +10,7 @@ import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.stubs.stubAudioResource
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
 
@@ -15,13 +18,36 @@ import com.gitlab.sszuev.flashcards.stubs.stubCards
  * Main class fot business logic,
  * it is based on Chain-Of-Responsibility (COR) pattern.
  */
-class CardCorProcessor {
+class CardCorProcessor(private val repositories: CardRepositories) {
 
-    suspend fun execute(context: CardContext) = businessChain.build().exec(context)
+    suspend fun execute(context: CardContext) =
+        businessChain.exec(context.apply { this.repositories = this@CardCorProcessor.repositories })
 
     companion object {
         private val businessChain = chain {
             initContext()
+
+            operation(CardOperation.GET_RESOURCE) {
+                stubs(CardOperation.GET_RESOURCE) {
+                    stubSuccess(CardOperation.GET_RESOURCE) {
+                        this.responseResourceEntity = stubAudioResource
+                    }
+                    stubError(CardOperation.GET_RESOURCE)
+                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_WRONG_RESOURCE_ID)
+                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_NOT_FOUND)
+                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_SERVER_ERROR)
+                }
+                validators(CardOperation.GET_RESOURCE) {
+                    worker(name = "Make a normalized copy of get-resource id") {
+                        this.normalizedRequestResourceGet = this.requestResourceGet.normalize()
+                    }
+                    validateResourceGetLangId()
+                    validateResourceGetWord()
+                }
+                runs(CardOperation.GET_RESOURCE) {
+                    processResourceRequest()
+                }
+            }
 
             operation(CardOperation.SEARCH_CARDS) {
                 stubs(CardOperation.SEARCH_CARDS) {
@@ -151,6 +177,6 @@ class CardCorProcessor {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
             }
-        }
+        }.build()
     }
 }

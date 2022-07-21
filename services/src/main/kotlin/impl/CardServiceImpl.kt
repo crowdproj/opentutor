@@ -1,14 +1,19 @@
 package com.gitlab.sszuev.flashcards.services.impl
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.core.CardCorProcessor
 import com.gitlab.sszuev.flashcards.services.CardService
 
 /**
  * @see CardCorProcessor
  */
-class CardServiceImpl : CardService {
-    private val processor = CardCorProcessor()
+class CardServiceImpl(
+    settings: CardRepositories
+) : CardService {
+    private val processor = CardCorProcessor(settings)
+
+    override suspend fun getResource(context: CardContext): CardContext = context.exec()
 
     override suspend fun createCard(context: CardContext): CardContext = context.exec()
 
