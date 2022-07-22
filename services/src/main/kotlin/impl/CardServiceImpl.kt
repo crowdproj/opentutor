@@ -21,6 +21,8 @@ class CardServiceImpl(
 
     override suspend fun searchCards(context: CardContext): CardContext = context.exec()
 
+    override suspend fun getAllCards(context: CardContext): CardContext = context.exec()
+
     override suspend fun getCard(context: CardContext): CardContext = context.exec()
 
     override suspend fun learnCard(context: CardContext): CardContext = context.exec()

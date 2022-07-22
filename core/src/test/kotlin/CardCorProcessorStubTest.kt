@@ -147,8 +147,8 @@ internal class CardCorProcessorStubTest {
     @EnumSource(
         value = AppStub::class,
         names = [
-            "ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID",
-            "ERROR_CARDS_FILTER_WRONG_LENGTH"
+            "ERROR_WRONG_DICTIONARY_ID",
+            "ERROR_CARDS_WRONG_FILTER_LENGTH"
         ]
     )
     fun `test search-cards specific fail`(case: AppStub) = runTest {
@@ -198,6 +198,24 @@ internal class CardCorProcessorStubTest {
         processor.execute(context)
         assertSuccess(context)
         Assertions.assertEquals(stubCard, context.responseCardEntity)
+    }
+
+    @Test
+    fun `test get-all-cards success`() = runTest {
+        val context = testContext(CardOperation.GET_ALL_CARDS, AppStub.SUCCESS)
+        context.requestDictionaryId = DictionaryId("42")
+        processor.execute(context)
+        assertSuccess(context)
+        Assertions.assertEquals(stubCards, context.responseCardEntityList)
+    }
+
+    @Test
+    fun `test get-all-cards error`() = runTest {
+        val context = testContext(CardOperation.GET_ALL_CARDS, AppStub.ERROR_WRONG_DICTIONARY_ID)
+        context.requestDictionaryId = DictionaryId("42")
+        processor.execute(context)
+        assertFail(context, stubErrorForCode(AppStub.ERROR_WRONG_DICTIONARY_ID))
+        Assertions.assertTrue(context.responseCardEntityList.isEmpty())
     }
 
     @ParameterizedTest

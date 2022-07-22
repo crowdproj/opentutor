@@ -25,6 +25,11 @@ interface CardService {
     suspend fun searchCards(context: CardContext): CardContext
 
     /**
+     * Gets all cards by dictionary id.
+     */
+    suspend fun getAllCards(context: CardContext): CardContext
+
+    /**
      * Gets card by id.
      */
     suspend fun getCard(context: CardContext): CardContext

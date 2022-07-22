@@ -22,6 +22,33 @@ internal class SerializationTest {
             details = mapOf("A" to 2, "B" to 3),
         )
 
+        private val dictionary = DictionaryResource(
+            dictionaryId = "42",
+            name = "XXX",
+            sourceLang = "X",
+            targetLang = "Y",
+            partOfSpeech = listOf("X", "Y"),
+            total = 1,
+            learned = 42
+        )
+
+        private val update = CardUpdateResource(
+            cardId = "42",
+            details = mapOf("A" to 2, "B" to 3),
+        )
+
+        private val error = ErrorResource(
+            code = "XXX",
+            group = "QQQ",
+            field = "VVV",
+            message = "mmm"
+        )
+
+        private val debug = DebugResource(
+            mode = RunMode.TEST,
+            stub = DebugStub.ERROR_UNKNOWN
+        )
+
         private fun assertCard(json: String) {
             Assertions.assertTrue(json.contains("\"cardId\":\"42\""))
             Assertions.assertTrue(json.contains("\"dictionaryId\":\"100500\""))
@@ -35,16 +62,6 @@ internal class SerializationTest {
             assertDebug(json)
         }
 
-        private val dictionary = DictionaryResource(
-            dictionaryId = "42",
-            name = "XXX",
-            sourceLang = "X",
-            targetLang = "Y",
-            partOfSpeech = listOf("X", "Y"),
-            total = 1,
-            learned = 42
-        )
-
         private fun assertDictionary(json: String) {
             Assertions.assertTrue(json.contains("\"dictionaryId\":\"42\""))
             Assertions.assertTrue(json.contains("\"name\":\"XXX\""))
@@ -55,23 +72,11 @@ internal class SerializationTest {
             Assertions.assertTrue(json.contains("\"learned\":42"))
         }
 
-        private val update = CardUpdateResource(
-            cardId = "42",
-            details = mapOf("A" to 2, "B" to 3),
-        )
-
         private fun assertUpdate(json: String) {
             Assertions.assertTrue(json.contains("\"cardId\":\"42\""))
             Assertions.assertTrue(json.contains("\"A\":2"))
             Assertions.assertTrue(json.contains("\"B\":3"))
         }
-
-        private val error = ErrorResource(
-            code = "XXX",
-            group = "QQQ",
-            field = "VVV",
-            message = "mmm"
-        )
 
         private fun assertError(json: String) {
             Assertions.assertTrue(json.contains("\"code\":\"XXX\""))
@@ -79,11 +84,6 @@ internal class SerializationTest {
             Assertions.assertTrue(json.contains("\"field\":\"VVV\""))
             Assertions.assertTrue(json.contains("\"message\":\"mmm\""))
         }
-
-        private val debug = DebugResource(
-            mode = RunMode.TEST,
-            stub = DebugStub.ERROR_UNKNOWN
-        )
 
         private fun assertDebug(json: String) {
             Assertions.assertTrue(json.contains("\"mode\":\"test\""))
@@ -125,8 +125,8 @@ internal class SerializationTest {
     }
 
     @Test
-    fun `test serialization for GetCardsRequest`() {
-        val req1 = GetCardsRequest(
+    fun `test serialization for SearchCardsRequest`() {
+        val req1 = SearchCardsRequest(
             random = false,
             unknown = true,
             length = 42,
@@ -135,11 +135,54 @@ internal class SerializationTest {
             debug = debug
         )
         val json = serialize(req1)
-        Assertions.assertTrue(json.contains("\"requestType\":\"getCards\""))
+        Assertions.assertTrue(json.contains("\"requestType\":\"searchCards\""))
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
-        val req2 = deserializeRequest<GetCardsRequest>(json)
+        val req2 = deserializeRequest<SearchCardsRequest>(json)
         Assertions.assertNotSame(req1, req2)
         Assertions.assertEquals(req1, req2)
+    }
+
+    @Test
+    fun `test serialization for SearchCardsResponse`() {
+        val res1 = SearchCardsResponse(
+            cards = listOf(card, card),
+            requestId = "request=42",
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"responseType\":\"searchCards\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        val res2 = deserializeResponse<SearchCardsResponse>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1, res2)
+    }
+
+    @Test
+    fun `test serialization for GetAllCardsRequest`() {
+        val req1 = GetAllCardsRequest(
+            dictionaryId = "42",
+            requestId = "request=42",
+            debug = debug
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"getAllCards\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        val req2 = deserializeRequest<GetAllCardsRequest>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+
+    @Test
+    fun `test serialization for GetAllCardsResponse`() {
+        val res1 = GetAllCardsResponse(
+            cards = listOf(card, card),
+            requestId = "request=42",
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"responseType\":\"getAllCards\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        val res2 = deserializeResponse<GetAllCardsResponse>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1, res2)
     }
 
     @Test
@@ -188,21 +231,35 @@ internal class SerializationTest {
     }
 
     @Test
-    fun `test serialization for GetDictionaryResponse`() {
-        val res1 = GetDictionariesResponse(
+    fun `test serialization for GetAllDictionaryRequest`() {
+        val req1 = GetAllDictionariesRequest(
+            requestId = "request=42",
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"getAllDictionaries\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+
+        val req2 = deserializeRequest<GetAllDictionariesRequest>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+
+    @Test
+    fun `test serialization for GetAllDictionaryResponse`() {
+        val res1 = GetAllDictionariesResponse(
             dictionaries = listOf(dictionary),
             result = Result.ERROR,
             requestId = "request=42",
             errors = listOf(error)
         )
         val json = serialize(res1)
-        Assertions.assertTrue(json.contains("\"responseType\":\"getDictionaries\""))
+        Assertions.assertTrue(json.contains("\"responseType\":\"getAllDictionaries\""))
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         Assertions.assertTrue(json.contains("\"result\":\"error\""))
         assertError(json)
         assertDictionary(json)
 
-        val req1 = deserializeResponse<GetDictionariesResponse>(json)
+        val req1 = deserializeResponse<GetAllDictionariesResponse>(json)
         Assertions.assertNotSame(res1, req1)
         Assertions.assertEquals(res1, req1)
     }

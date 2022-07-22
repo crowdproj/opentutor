@@ -48,7 +48,7 @@ class ToTransportTest {
     }
 
     @Test
-    fun `test toGetCardsResponse`() {
+    fun `test toSearchCardsResponse`() {
         val context = CardContext(
             requestId = AppRequestId("request=42"),
             operation = CardOperation.SEARCH_CARDS,
@@ -80,13 +80,43 @@ class ToTransportTest {
             ),
             status = AppStatus.OK
         )
-        val res = context.toGetCardsResponse()
+        val res = context.toSearchCardsResponse()
 
         Assertions.assertEquals(context.requestId.asString(), res.requestId)
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertEquals(2, res.errors!!.size)
         assertError(context.errors[0], res.errors!![0])
         assertError(context.errors[1], res.errors!![1])
+        Assertions.assertEquals(2, res.cards!!.size)
+        assertCard(context.responseCardEntityList[0], res.cards!![0])
+        assertCard(context.responseCardEntityList[1], res.cards!![1])
+    }
+
+    @Test
+    fun `test toGetAllCardsResponse`() {
+        val context = CardContext(
+            requestId = AppRequestId("request=42"),
+            operation = CardOperation.GET_ALL_CARDS,
+            responseCardEntityList = listOf(
+                CardEntity(
+                    cardId = CardId("H"),
+                    dictionaryId = DictionaryId("J"),
+                    word = "xxx"
+                ),
+                CardEntity(
+                    cardId = CardId("K"),
+                    dictionaryId = DictionaryId("M"),
+                    word = "yyy"
+                ),
+            ),
+            errors = mutableListOf(),
+            status = AppStatus.OK
+        )
+        val res = context.toGetAllCardsResponse()
+
+        Assertions.assertEquals(context.requestId.asString(), res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
         Assertions.assertEquals(2, res.cards!!.size)
         assertCard(context.responseCardEntityList[0], res.cards!![0])
         assertCard(context.responseCardEntityList[1], res.cards!![1])

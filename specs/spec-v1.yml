@@ -40,18 +40,18 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAudioResponse'
 
-  /api/dictionaries/search:
+  /api/dictionaries/get-all:
     post:
       tags:
         - dictionary
       summary: Gets dictionaries
-      operationId: getDictionaries
+      operationId: getAllDictionaries
       requestBody:
         description: request body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetDictionariesRequest'
+              $ref: '#/components/schemas/GetAllDictionariesRequest'
         required: true
       responses:
         200:
@@ -59,20 +59,20 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetDictionariesResponse'
+                $ref: '#/components/schemas/GetAllDictionariesResponse'
 
   /api/cards/search:
     post:
       tags:
         - card
       summary: Gets cards by parameters
-      operationId: getCards
+      operationId: searchCards
       requestBody:
         description: request body
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GetCardsRequest'
+              $ref: '#/components/schemas/SearchCardsRequest'
         required: true
       responses:
         200:
@@ -80,7 +80,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GetCardsResponse'
+                $ref: '#/components/schemas/SearchCardsResponse'
+
+  /api/cards/get-all:
+    post:
+      tags:
+        - card
+      summary: Gets all cards by dictionary id
+      operationId: getAllCards
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAllCardsRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAllCardsResponse'
 
   /api/cards/get:
     post:
@@ -236,14 +257,14 @@ components:
               type: string
               format: byte
 
-    GetDictionariesRequest:
+    GetAllDictionariesRequest:
       description: 'Request to read dictionaries'
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
 
-    GetDictionariesResponse:
+    GetAllDictionariesResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -254,7 +275,7 @@ components:
               items:
                 $ref: '#/components/schemas/DictionaryResource'
 
-    GetCardsRequest:
+    SearchCardsRequest:
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -275,7 +296,27 @@ components:
               items:
                 type: string
 
-    GetCardsResponse:
+    SearchCardsResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: List of cards
+          properties:
+            cards:
+              type: array
+              items:
+                $ref: '#/components/schemas/CardResource'
+
+    GetAllCardsRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            dictionaryId:
+              type: string
+
+    GetAllCardsResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -385,8 +426,9 @@ components:
         propertyName: requestType
         mapping:
           getAudio: '#/components/schemas/GetAudioRequest'
-          getDictionaries: '#/components/schemas/GetDictionariesRequest'
-          getCards: '#/components/schemas/GetCardsRequest'
+          getAllDictionaries: '#/components/schemas/GetAllDictionariesRequest'
+          searchCards: '#/components/schemas/SearchCardsRequest'
+          getAllCards: '#/components/schemas/GetAllCardsRequest'
           getCard: '#/components/schemas/GetCardRequest'
           createCard: '#/components/schemas/CreateCardRequest'
           updateCard: '#/components/schemas/UpdateCardRequest'
@@ -421,8 +463,9 @@ components:
         propertyName: responseType
         mapping:
           getAudio: '#/components/schemas/GetAudioResponse'
-          getDictionaries: '#/components/schemas/GetDictionariesResponse'
-          getCards: '#/components/schemas/GetCardsResponse'
+          getAllDictionaries: '#/components/schemas/GetAllDictionariesResponse'
+          searchCards: '#/components/schemas/SearchCardsResponse'
+          getAllCards: '#/components/schemas/GetAllCardsResponse'
           getCard: '#/components/schemas/GetCardResponse'
           createCard: '#/components/schemas/CreateCardResponse'
           updateCard: '#/components/schemas/UpdateCardResponse'
@@ -534,6 +577,7 @@ components:
       enum:
         - success
         - error_unexpected_field
+        - error_wrong_dictionary_id
         - error_wrong_card_id
         - error_card_wrong_word
         - error_card_wrong_transcription
@@ -545,8 +589,7 @@ components:
         - error_audio_resource_wrong_resource_id
         - error_audio_resource_server_error
         - error_audio_resource_not_found
-        - error_cards_filter_wrong_length
-        - error_cards_filter_wrong_dictionary_id
+        - error_cards_wrong_filter_length
         - error_learn_card_wrong_card_id
         - error_learn_card_wrong_stages
         - error_learn_card_wrong_details

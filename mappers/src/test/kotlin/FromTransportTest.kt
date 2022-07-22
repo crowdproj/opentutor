@@ -35,8 +35,30 @@ class FromTransportTest {
     }
 
     @Test
-    fun `test fromGetCardsRequest`() {
-        val req = GetCardsRequest(
+    fun `test fromGetAllCardsRequest`() {
+        val req = GetAllCardsRequest(
+            requestId = "request=42",
+            dictionaryId = "dictionary=42",
+            debug = DebugResource(
+                mode = RunMode.TEST,
+                stub = DebugStub.SUCCESS
+            ),
+        )
+        val context = CardContext()
+        context.fromTransport(req)
+
+        assertContext(
+            expectedStub = AppStub.SUCCESS,
+            expectedMode = AppMode.TEST,
+            expectedRequestId = "request=42",
+            actual = context
+        )
+        Assertions.assertEquals("dictionary=42", context.requestDictionaryId.asString())
+    }
+
+    @Test
+    fun `test fromSearchCardsRequest`() {
+        val req = SearchCardsRequest(
             requestId = "req",
             debug = DebugResource(
                 mode = RunMode.PROD,

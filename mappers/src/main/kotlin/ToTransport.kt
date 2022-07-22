@@ -12,7 +12,8 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.GET_RESOURCE -> this.toGetAudioResponse()
-    CardOperation.SEARCH_CARDS -> this.toGetCardsResponse()
+    CardOperation.GET_ALL_CARDS -> this.toGetAllCardsResponse()
+    CardOperation.SEARCH_CARDS -> this.toSearchCardsResponse()
     CardOperation.GET_CARD -> this.toGetCardResponse()
     CardOperation.CREATE_CARD -> this.toCreateCardResponse()
     CardOperation.UPDATE_CARD -> this.toUpdateCardResponse()
@@ -36,7 +37,14 @@ fun CardContext.toGetCardResponse() = GetCardResponse(
     card = this.responseCardEntity.toCardResource()
 )
 
-fun CardContext.toGetCardsResponse() = GetCardsResponse(
+fun CardContext.toGetAllCardsResponse() = GetAllCardsResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+    cards = this.responseCardEntityList.mapNotNull { it.toCardResource() }
+)
+
+fun CardContext.toSearchCardsResponse() = SearchCardsResponse(
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),

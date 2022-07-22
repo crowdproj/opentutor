@@ -10,7 +10,8 @@ import com.gitlab.sszuev.flashcards.model.domain.*
 fun CardContext.fromTransport(request: BaseRequest) = when (request) {
     is GetAudioRequest -> fromGetGetAudioRequest(request)
     is GetCardRequest -> fromGetCardRequest(request)
-    is GetCardsRequest -> fromGetCardsRequest(request)
+    is GetAllCardsRequest -> fromGetAllCardsRequest(request)
+    is SearchCardsRequest -> fromSearchCardsRequest(request)
     is CreateCardRequest -> fromCreateCardRequest(request)
     is UpdateCardRequest -> fromUpdateCardRequest(request)
     is DeleteCardRequest -> fromDeleteCardRequest(request)
@@ -35,7 +36,15 @@ fun CardContext.fromGetCardRequest(request: GetCardRequest) {
     this.debugCase = request.debug.transportToStubCase()
 }
 
-fun CardContext.fromGetCardsRequest(request: GetCardsRequest) {
+fun CardContext.fromGetAllCardsRequest(request: GetAllCardsRequest) {
+    this.operation = CardOperation.GET_ALL_CARDS
+    this.requestId = request.requestId()
+    this.workMode = request.debug.transportToWorkMode()
+    this.debugCase = request.debug.transportToStubCase()
+    this.requestDictionaryId = toDictionaryId(request.dictionaryId)
+}
+
+fun CardContext.fromSearchCardsRequest(request: SearchCardsRequest) {
     this.operation = CardOperation.SEARCH_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
@@ -90,8 +99,6 @@ fun CardContext.fromResetCardRequest(request: ResetCardRequest) {
 
 private fun BaseRequest?.requestId() = this?.requestId?.let { AppRequestId(it) } ?: AppRequestId.NONE
 
-private fun toLangId(id: String?) = id?.let { LangId(it) } ?: LangId.NONE
-
 private fun toCardId(id: String?) = id?.let { CardId(it) } ?: CardId.NONE
 
 private fun toDictionaryId(id: String?) = id?.let { DictionaryId(it) } ?: DictionaryId.NONE
@@ -129,8 +136,8 @@ private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.ERROR_AUDIO_RESOURCE_WRONG_RESOURCE_ID -> AppStub.ERROR_AUDIO_RESOURCE_WRONG_RESOURCE_ID
     DebugStub.ERROR_AUDIO_RESOURCE_SERVER_ERROR -> AppStub.ERROR_AUDIO_RESOURCE_SERVER_ERROR
     DebugStub.ERROR_AUDIO_RESOURCE_NOT_FOUND -> AppStub.ERROR_AUDIO_RESOURCE_NOT_FOUND
-    DebugStub.ERROR_CARDS_FILTER_WRONG_LENGTH -> AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH
-    DebugStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID -> AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID
+    DebugStub.ERROR_WRONG_DICTIONARY_ID -> AppStub.ERROR_WRONG_DICTIONARY_ID
+    DebugStub.ERROR_CARDS_WRONG_FILTER_LENGTH -> AppStub.ERROR_CARDS_WRONG_FILTER_LENGTH
     DebugStub.ERROR_LEARN_CARD_WRONG_CARD_ID -> AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID
     DebugStub.ERROR_LEARN_CARD_WRONG_STAGES -> AppStub.ERROR_LEARN_CARD_WRONG_STAGES
     DebugStub.ERROR_LEARN_CARD_WRONG_DETAILS -> AppStub.ERROR_LEARN_CARD_WRONG_DETAILS

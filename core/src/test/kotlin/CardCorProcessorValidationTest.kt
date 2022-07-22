@@ -75,6 +75,13 @@ class CardCorProcessorValidationTest {
         }
 
         @JvmStatic
+        private fun wrongIdsWithMode(): List<Arguments> {
+            val modes = listOf(AppMode.TEST, AppMode.STUB)
+            val ids = wrongIds()
+            return modes.flatMap { op -> ids.map { Arguments.of(it, op) } }
+        }
+
+        @JvmStatic
         private fun wrongIdsToOperationsWithCardIdInRequest(): List<Arguments> {
             val ops = listOf(CardOperation.GET_CARD, CardOperation.RESET_CARD, CardOperation.DELETE_CARD)
             val modes = listOf(AppMode.TEST, AppMode.STUB)
@@ -364,5 +371,15 @@ class CardCorProcessorValidationTest {
         processor.execute(context)
         val error = error(context)
         assertValidationError("audio-resource-word", error)
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
+    @MethodSource(value = ["wrongIdsWithMode"])
+    fun `test get-all-cards - validate DictionaryId`(id: String, m: AppMode) = runTest {
+        val context = testContext(CardOperation.GET_ALL_CARDS, m)
+        context.requestDictionaryId = DictionaryId(id)
+        processor.execute(context)
+        val error = error(context)
+        assertValidationError("dictionary-id", error)
     }
 }

@@ -36,8 +36,14 @@ suspend fun ApplicationCall.updateCard(service: CardService) {
 }
 
 suspend fun ApplicationCall.searchCards(service: CardService) {
-    execute<GetCardsRequest>(CardOperation.SEARCH_CARDS) {
+    execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS) {
         service.searchCards(this)
+    }
+}
+
+suspend fun ApplicationCall.getAllCards(service: CardService) {
+    execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS) {
+        service.getAllCards(this)
     }
 }
 

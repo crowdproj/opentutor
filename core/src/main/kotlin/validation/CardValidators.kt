@@ -6,10 +6,7 @@ import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.*
 
 fun ChainDSL<CardContext>.validateCardEntityHasValidCardId(getCardEntity: (CardContext) -> CardEntity) = worker {
     validateId("card-id") { getCardEntity(it).cardId }
@@ -27,6 +24,10 @@ fun ChainDSL<CardContext>.validateCardEntityHasNoCardId(getEntity: (CardContext)
 
 fun ChainDSL<CardContext>.validateCardEntityDictionaryId(getCardEntity: (CardContext) -> CardEntity) = worker {
     validateId("dictionary-id") { getCardEntity(it).dictionaryId }
+}
+
+fun ChainDSL<CardContext>.validateDictionaryId(getDictionaryId: (CardContext) -> DictionaryId) = worker {
+    validateId("dictionary-id") { getDictionaryId(it) }
 }
 
 fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = worker {

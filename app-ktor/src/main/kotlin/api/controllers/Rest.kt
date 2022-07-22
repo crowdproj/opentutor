@@ -15,6 +15,9 @@ fun Route.cards(service: CardService) {
         post("search") {
             call.searchCards(service)
         }
+        post("get-all") {
+            call.getAllCards(service)
+        }
         post("get") {
             call.getCard(service)
         }

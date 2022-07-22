@@ -122,7 +122,7 @@ class CardControllerStubsTest {
 
     @Test
     fun `test search-cards card success`() = testApplication {
-        val requestBody = GetCardsRequest(
+        val requestBody = SearchCardsRequest(
             requestId = "success-request",
             debug = debugSuccess,
             dictionaryIds = listOf("42"),
@@ -131,7 +131,7 @@ class CardControllerStubsTest {
             unknown = true,
         )
         val response = testPost("/v1/api/cards/search", requestBody)
-        val responseBody = testResponseSuccess<GetCardsResponse>(requestBody.requestId, response)
+        val responseBody = testResponseSuccess<SearchCardsResponse>(requestBody.requestId, response)
         Assertions.assertEquals(stubCards.size, responseBody.cards!!.size)
         responseBody.cards!!.forEachIndexed { index, cardResource ->
             val card = stubCards[index]
@@ -141,7 +141,7 @@ class CardControllerStubsTest {
 
     @Test
     fun `test search-cards error`() = testApplication {
-        val requestBody = GetCardsRequest(
+        val requestBody = SearchCardsRequest(
             requestId = "error-request",
             debug = debugError,
             dictionaryIds = listOf("a", "b", "c"),
@@ -150,7 +150,7 @@ class CardControllerStubsTest {
             unknown = false,
         )
         val response = testPost("/v1/api/cards/search", requestBody)
-        testResponseError<GetCardsResponse>(requestBody.requestId, response)
+        testResponseError<SearchCardsResponse>(requestBody.requestId, response)
     }
 
     @Test
@@ -267,5 +267,33 @@ class CardControllerStubsTest {
         )
         val response = testPost("/v1/api/sounds/get", requestBody)
         testResponseSuccess<GetAudioResponse>(requestBody.requestId, response)
+    }
+
+
+    @Test
+    fun `test get-all-cards card success`() = testApplication {
+        val requestBody = GetAllCardsRequest(
+            requestId = "success-request",
+            debug = debugSuccess,
+            dictionaryId = "42",
+        )
+        val response = testPost("/v1/api/cards/get-all", requestBody)
+        val responseBody = testResponseSuccess<GetAllCardsResponse>(requestBody.requestId, response)
+        Assertions.assertEquals(stubCards.size, responseBody.cards!!.size)
+        responseBody.cards!!.forEachIndexed { index, cardResource ->
+            val card = stubCards[index]
+            assertCard(card, cardResource)
+        }
+    }
+
+    @Test
+    fun `test get-all-cards error`() = testApplication {
+        val requestBody = GetAllCardsRequest(
+            requestId = "error-request",
+            debug = debugError,
+            dictionaryId = "XXX",
+        )
+        val response = testPost("/v1/api/cards/get-all", requestBody)
+        testResponseError<GetAllCardsResponse>(requestBody.requestId, response)
     }
 }

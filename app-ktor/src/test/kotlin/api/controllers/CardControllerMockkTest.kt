@@ -27,8 +27,16 @@ internal class CardControllerMockkTest {
     fun `test search-cards service error`() {
         testServiceError(
             endpoint = "cards/search",
-            requestBody = GetCardsRequest(requestId = "request=cards/search")
+            requestBody = SearchCardsRequest(requestId = "request=cards/search")
         ) { this.searchCards(it) }
+    }
+
+    @Test
+    fun `test get-all-cards service error`() {
+        testServiceError(
+            endpoint = "cards/get-all",
+            requestBody = GetAllCardsRequest(requestId = "request=cards/get-all")
+        ) { this.getAllCards(it) }
     }
 
     @Test

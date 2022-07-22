@@ -19,7 +19,7 @@ class AppConfig(private val config: ApplicationConfig) {
     private fun <X> loadJavaClass(implKey: String): X {
         val implName = config.propertyOrNull("ktor.application.tts-client.impl")?.getString()
             ?: throw ExceptionInInitializerError("Can't find $implKey.")
-        logger.info("Load class $implName")
+        logger.debug("Load class $implName.")
         val clazz = Class.forName(implName).kotlin
         val res = clazz.createInstance()
         return res as X

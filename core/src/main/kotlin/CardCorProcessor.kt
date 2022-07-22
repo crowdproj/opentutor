@@ -55,8 +55,8 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                         this.responseCardEntityList = stubCards
                     }
                     stubError(CardOperation.SEARCH_CARDS)
-                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_CARDS_FILTER_WRONG_LENGTH)
-                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_CARDS_FILTER_WRONG_DICTIONARY_ID)
+                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_CARDS_WRONG_FILTER_LENGTH)
+                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_WRONG_DICTIONARY_ID)
                 }
                 validators(CardOperation.SEARCH_CARDS) {
                     worker(name = "Make a normalized copy of search-cards request") {
@@ -64,6 +64,22 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     }
                     validateCardFilterLength { it.normalizedRequestCardFilter }
                     validateCardFilterDictionaryIds { it.normalizedRequestCardFilter }
+                }
+            }
+
+            operation(CardOperation.GET_ALL_CARDS) {
+                stubs(CardOperation.GET_ALL_CARDS) {
+                    stubSuccess(CardOperation.GET_ALL_CARDS) {
+                        this.responseCardEntityList = stubCards
+                    }
+                    stubError(CardOperation.GET_ALL_CARDS)
+                    stubError(CardOperation.GET_ALL_CARDS, AppStub.ERROR_WRONG_DICTIONARY_ID)
+                }
+                validators(CardOperation.GET_ALL_CARDS) {
+                    worker(name = "Make a normalized copy of get-all-cards request") {
+                        this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
+                    }
+                    validateDictionaryId { it.normalizedRequestDictionaryId }
                 }
             }
 

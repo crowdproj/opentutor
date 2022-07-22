@@ -25,6 +25,9 @@ data class CardContext(
     // get word response (for TTS)
     var responseResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
 
+    // get-all cards request:
+    var requestDictionaryId: DictionaryId = DictionaryId.NONE,
+    var normalizedRequestDictionaryId: DictionaryId = DictionaryId.NONE,
     // get/delete single card request:
     var requestCardEntityId: CardId = CardId.NONE,
     var normalizedRequestCardEntityId: CardId = CardId.NONE,
