@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards
 
-import com.gitlab.sszuev.flashcards.model.repositories.NoOpTTSResourceRepository
-import com.gitlab.sszuev.flashcards.model.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.repositories.NoOpTTSResourceRepository
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 
 data class CardRepositories(
     val ttsClient: TTSResourceRepository = NoOpTTSResourceRepository,

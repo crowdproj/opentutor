@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
-import com.gitlab.sszuev.flashcards.model.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
 import com.rabbitmq.client.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi

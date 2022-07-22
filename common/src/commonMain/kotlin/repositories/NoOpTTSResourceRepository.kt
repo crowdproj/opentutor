@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.model.repositories
+package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity

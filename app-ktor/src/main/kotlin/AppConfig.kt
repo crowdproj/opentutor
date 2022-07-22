@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards
 
-import com.gitlab.sszuev.flashcards.model.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import io.ktor.server.config.*
 import org.slf4j.LoggerFactory
 import kotlin.reflect.full.createInstance

@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.speaker
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
-import com.gitlab.sszuev.flashcards.model.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import java.util.concurrent.atomic.AtomicLong
 
 /**
