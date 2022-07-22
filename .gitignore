@@ -5,3 +5,5 @@ build
 */build
 deploy/kfdata
 deploy/rabbitmq
+.gradle/
+gradle/
