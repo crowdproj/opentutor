@@ -27,7 +27,7 @@ class LingvoDictionaryReader : DictionaryReader {
     }
 
     @Throws(ParserConfigurationException::class, IOException::class, SAXException::class)
-    fun loadDictionary(source: InputSource): Dictionary {
+    private fun loadDictionary(source: InputSource): Dictionary {
         val dictionaryId = dictionarySequence.incrementAndGet()
         val dbf = DocumentBuilderFactory.newInstance()
         dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)

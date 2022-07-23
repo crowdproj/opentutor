@@ -12,7 +12,7 @@ interface CardDbRepository {
     /**
      * Gets all cards by dictionaryId.
      */
-    fun getAllCards(dictionaryId: DictionaryIdDbRequest): CardEntitiesDbResponse
+    fun getAllCards(request: DictionaryIdDbRequest): CardEntitiesDbResponse
 }
 
 data class DictionaryIdDbRequest(val dictionaryId: DictionaryId, val lock: CardLock)

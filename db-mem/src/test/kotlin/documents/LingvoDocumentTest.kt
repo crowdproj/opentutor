@@ -74,7 +74,7 @@ internal class LingvoDocumentTest {
     }
 
     @Test
-    fun testDictionaryWriter() {
+    fun `test LingvoDictionaryWriter`() {
         val expected = normalize(readDataAsString("/TestDictionaryEnRu.xml"))
         val card1 = Card(
             id = 1,
@@ -136,7 +136,7 @@ internal class LingvoDocumentTest {
     }
 
     @Test
-    fun testLingvoDictionaryReader() {
+    fun `test LingvoDictionaryReader`() {
         // word + translations must be unique
         val cards: MutableSet<String> = HashSet()
         val dic = readResourceDictionary("/data/BusinessEnRu.xml")
@@ -150,7 +150,7 @@ internal class LingvoDocumentTest {
     }
 
     @Test
-    fun testReadWriteRoundTrip(@TempDir dir: Path) {
+    fun `test read-write round trip`(@TempDir dir: Path) {
         val orig = readResourceDictionary("/data/WeatherEnRu.xml")
         val tmp = dir.resolve("test-WeatherEnRu.xml")
         Files.newOutputStream(tmp).use { writer.write(orig, it) }
