@@ -1,0 +1,426 @@
+id,card_id,text
+1,1,We need to accelerate our program. -- Мы должны ускорить реализацию нашей программы.
+2,2,accept an offer -- принять предложение
+3,2,"accept on condition that -- соглашаться при условии, что"
+4,3,remarkable achievement -- потрясающий успех
+5,3,outstanding achievements in science -- выдающиеся научные достижения
+6,4,to terminate an activity -- прекращать деятельность
+7,4,Business activity was paralyzed. -- Деловая активность была парализована.
+8,5,Agreed! -- Договорились!
+9,5,They agreed to meet at 5. -- Они договорились встретиться в 5.
+10,6,He agreed to my plan. -- Он принял мой план.
+11,6,agree on all points -- договориться по всем пунктам
+12,7,We are agreed on this. -- У нас по этому поводу общее мнение.
+13,7,agree in opinion -- сходиться во мнениях
+14,8,to enter into an agreement -- заключить договор
+15,8,to break an agreement -- разорвать соглашение
+16,9,We were in full agreement with them. -- Мы были совершенно согласны с ними.
+17,9,by mutual agreement -- по обоюдному согласию
+18,9,We reached agreement on all points. -- Мы пришли к согласию по всем вопросам.
+19,10,annual income -- годовой доход
+20,10,annual report -- годовой отчет
+21,11,to annul a treaty -- аннулировать договор
+22,12,to fill in an application form -- заполнить анкету
+23,12,to submit an application form -- подавать заявление
+24,13,"to make an appointment -- договориться о встрече, назначить вчтречу"
+25,14,to hold an appointment -- занимать должность
+26,15,I congratulated Sam on his new appointment. -- Я поздравила Сэма с его назначением.
+27,17,goal attainment -- достижение цели
+28,17,above attainment -- недостижимый
+29,18,Board of Directors -- Правление
+30,18,board of trustees -- совет попечителей
+31,19,absolute boss -- непререкаемый лидер
+32,20,breach of contract -- нарушение контракта
+33,20,breach of order -- нарушение регламента
+34,21,They broke for lunch. -- У них перерыв на обед.
+35,22,Let's take a short break for lunch. -- Давайте сделаем короткий перерыв на обед.
+36,23,personal business -- личные дела
+37,23,unfinished business -- незавершенное дело
+38,23,business hours -- приемные часы
+39,24,to establish a business -- открыть фирму
+40,24,to manage/run a business -- управлять фирмой
+41,25,small business -- малый бизнес
+42,25,to go into business -- заняться бизнесом
+43,25,to do business with smb -- иметь с кем-л. дело
+44,26,potential buyer -- потенциальный покупатель
+45,26,in/at buyers' option -- по усмотрению покупателей
+46,26,"The buyer paid $6,000 down for the car. -- Покупатель выложил $6000 за автомобиль."
+47,28,plant capacity -- производственные мощности предприятия
+48,28,full capacity -- максимальная производительность
+49,28,at capacity -- при мощности
+50,29,intellectual capacity -- умственные способности
+51,29,earning capacity -- трудоспособность
+52,30,
+53,30,capacity for adjustments -- приспособляемость
+54,31,professional career -- профессиональная карьера
+55,31,successful career -- удачная карьера
+56,31,to give up one's career -- отказаться от карьеры
+57,32,She made a careful assessment of the situation. -- Она точно оценила положение дел.
+58,32,a careful differentiation of the causes -- тонкое различение причин
+59,33,careful analysis -- подробный анализ
+60,33,It requires careful consideration. -- Это требует тщательного изучения.
+61,34,We all have certain duties to carry out. -- У каждого есть свои обязанности.
+62,34,"to carry out in(to) practice -- осуществлять, проводить в жизнь"
+63,34,to carry out an audit -- провести проверку
+64,35,characteristic feature -- характерная особенность
+65,36,individual characteristic -- индивидуальные особенности
+66,36,unique characteristic -- уникальное свойство
+67,36,identifying characteristic -- отличительная особенность
+68,37,"We must check to see if everything is ready. -- Надо проверить, все ли готово."
+69,38,"to make a check of/on smth. -- осуществлять контроль, проводить проверку кого/чего-либо"
+70,39,Chief Engineer -- главный инженер
+71,41,to raise a claim -- предъявить претензию
+72,41,to lay claim to -- предъявлять права на (что-л.)
+73,43,to claim damages -- требовать возмещения убытков
+74,43,to claim attention -- требовать к себе внимания
+75,43,to claim one's right -- требовать своего
+76,44,He is formal with his colleagues. -- Он держится с коллегами официально.
+77,45,commercial business -- торговое предпринимательство
+78,45,commercial cargo -- коммерческий груз
+79,45,commercial risk -- коммерческий риск
+80,46,executive committee -- исполнительный комитет
+81,46,"steering committee -- организационный, подготовительный комитет"
+82,47,joint-stock company -- акционерное общество
+83,47,limited liability company -- общество с ограниченной ответственностью
+84,48,compensation agreement -- соглашение о компенсации (об оплате)
+85,49,a competent engineer -- квалифицированный инженер
+86,50,after completing the check -- по окончании проверки
+87,51,to complete a contract -- выполнять договор
+88,53,as concerns -- что касается
+89,53,as far as his conduct is concerned -- что касается его поведения
+90,54,to set a condition -- ставить условие
+91,54,working conditions -- условия труда
+92,54,under such conditions -- при таких обстоятельствах
+93,55,to hold a conference -- проводить конференцию
+94,55,press conference -- пресс-конференция
+95,57,to come into conflict with -- вступить в конфликт с (кем-л.)
+96,57,conflict of interests -- конфликт интересов
+97,58,My opinions conflict with yours. -- Я с вами не согласен.
+98,59,to sign a contract -- подписать договор
+99,59,to execute the contract -- выполнять условия договора
+100,59,to breach a contract -- нарушать условия контракта
+101,60,We contracted to construct the bridge. -- Мы заключили договор на постройку моста.
+102,61,general contractor -- генеральный подрядчик
+103,61,building contractor -- подрядчик-строитель
+104,62,
+105,62,to make one's contribution -- вносить свой вклад
+106,63,to be not corresponding with/to -- не соответствовать
+107,63,most closely corresponding -- наиболее точно соответствующий
+108,64,to cost a small fortune -- стоить очень дорого
+109,64,doesn't cost anything -- ничего не стоит
+110,65,prime cost -- себестоимость
+111,65,at any cost -- любой ценой
+112,66,capital costs -- капитальные затраты
+113,66,"running costs -- эксплуатационные издержки, текущие расходы"
+114,66,at one's cost -- за чей-л. счет
+115,67,to send one's CV to an employer -- послать свое резюме работодателю
+116,67,"Please, attach your CV. -- Пожалуйста, отправьте резюме в приложении."
+117,68,High prices are scaring away the customers. -- Высокие цены отпугивают покупателей.
+118,68,to attend customers -- обслуживать клиентов/покупателей
+119,69,"We debated what to do. -- Мы обсуждали, что делать."
+120,69,"to debate heatedly, hotly -- горячо спорить"
+121,70,"a debate about, with -- дискуссия по вопросу"
+122,70,to hold a debate about smth -- вести дискуссию о чем-л.
+123,71,to arrive at a decision -- принять решение
+124,71,We made the decision to accept their offer. -- Мы решили принять их предложение.
+125,71,final decision -- окончательное решение
+126,72,to achieve a high degree of proficiency -- достичь высокого уровня профессионализма
+127,72,to a certain degree -- до известной степени
+128,73,Sorry for the delay in answering. -- Извините за задержку с ответом.
+129,73,The matter allows of no delay. -- Дело не терпит отлагательства.
+130,74,We delayed sending the telegram. -- Мы решили пока не посылать телеграмму.
+131,74,We have to delay the meeing. -- Нам придется отложить встречу.
+132,75,delegation of authority -- передача прав и ответственности кому-л.
+133,76,an official delegation -- официальная делегация
+134,76,to head a delegation -- возглавлять делегацию
+135,77,to deliver an order -- доставлять заказ
+136,78,payment on delivery -- оплата при доставке
+137,78,to make a delivery -- поставлять
+138,78,We guarantee prompt delivery. -- Мы гарантируем своевременную доставку.
+139,80,to design a building -- спроектировать здание
+140,81,aircraft designer -- авиационный конструктор
+141,81,urban designers -- проектировщики городов
+142,82,The device is complicated in construction. -- Прибор сложен по конструкции.
+143,82,to install a device -- установить устройство
+144,83,diligent in one's work -- проявляющий усердие в работе
+145,84,acting director -- исполняющий обязанности директора
+146,84,director-general -- генеральный директор
+147,85,He was discharged because of absenteeism. -- Его уволили по причине прогулов.
+148,86,under discussion -- на обсуждении
+149,86,group discussion -- групповое обсуждение
+150,86,to have a discussion -- проводить дискуссию
+151,87,He was dismissed as incompetent. -- Его уволили за некомпетентность.
+152,87,The worker was dismissed for laziness. -- Рабочего уволили за лень.
+153,89,The firm dispatches the goods to London. -- Фирма поставляет товары в Лондон.
+154,90,heated dispute -- горячий спор
+155,90,"beyond dispute -- вне сомнения, бесспорно"
+156,90,to settle a dispute -- разрешать спор
+157,91,to dispute about/over smth -- спорить о чем-л.
+158,92,professional education -- профессиональное обучение
+159,92,in-service education -- повышение квалификации
+160,93,maximum efficiency -- максимальная производительность
+161,93,to increase the efficiency of production -- повышать эффективность производства
+162,94,to make the most efficient use (of) -- наиболее рационально использовать что-л.
+163,94,efficient work -- эффективная работа
+164,96,to hire an employee -- нанимать сотрудника на работу
+165,96,to dismiss an employee -- увольнять сотрудника с работы
+166,96,"part-time employee -- сотрудник, работающий на неполную ставку"
+167,97,to give employment -- давать работу
+168,97,full-time employment -- работа полный рабочий день
+169,97,employment agency -- агентство по трудоустройству
+170,98,software engineering -- разработка программного обеспечения
+171,99,Let me enlarge upon that point. -- Я бы хотел подробнее остановиться на этом пункте.
+172,100,private enterprise -- частное предпринимательство
+173,101,a commercial enterprise -- коммерческое предприятие
+174,101,co-operative enterprise -- кооперативное предприятие
+175,103,office equipment -- офисное оборудование
+176,103,equipment for road construction -- оборудование для дорожного строительства
+177,104,He estimates the cost of repairing at $60. -- Он оценивает стоимость ремонта в 60$.
+178,105,by smb.'s estimate -- по чьей-л. оценке
+179,105,to give estimate -- оценивать
+180,105,an approximate estimate -- приблизительная оценка
+181,106,estimate of expenditures -- смета затрат
+182,106,approved estimate -- утвержденная смета
+183,107,to organize an exhibit -- проводить выставку
+184,107,photo exhibit -- фотовыставка
+185,108,Our trade with China is expanding. -- Наша торговля с Китаем расширяется.
+186,109,to meet expectation -- отвечать ожиданиям
+187,109,to exceed expectation -- превосходить ожидания
+188,109,in expectation of -- в ожидании
+189,110,to incur an expense -- тратиться
+190,110,to reimburse expenses -- покрывать затраты
+191,110,operating expense -- текущие затраты
+192,111,She has 10 years experience in the job. -- У нее десятилетний опыт такой работы.
+193,111,firsthand experience -- практический опыт
+194,112,to perform an experiment on -- проводить эксперимент на
+195,115,to hold an exposition -- проводить выставку
+196,115,an international exposition -- международная выставка
+197,116,to open a factory -- открыть фабрику
+198,116,textile factory -- текстильная фабрика
+199,116,factory waste -- промышленные отходы
+200,119,an annual fair -- ежегодная ярмарка
+201,119,world's fair -- международная ярмарка
+202,120,a fee for -- плата за
+203,120,to charge a fee -- назначать/брать плату
+204,121,to fire an employee -- увольнять сотрудника с работы
+205,122,to manage a firm -- управлять фирмой
+206,122,advertising firm -- рекламная фирма
+207,122,to establish a firm -- основать фирму
+208,124,to fulfill a task -- выполнить задание
+209,126,head of the department -- начальник отдела
+210,127,Michael was chosen to head the firm. -- Руководить фирмой было поручено Майклу.
+211,127,to head a delegation -- возглавлять делегацию
+212,128,"to offer an incentive -- побуждать, стимулировать"
+213,128,to have no incentive to work harder -- не иметь стимула для более упорной работы
+214,129,annual income -- годовой заработок
+215,129,net income -- чистый доход
+216,130,to increase by 10% -- увеличиться на 10%
+217,130,to increase in size -- увеличиваться в размере
+218,131,a considerable increase -- значительный рост
+219,131,slight increase -- небольшой рост
+220,131,steady increase -- постоянный рост
+221,134,to conduct an interview -- проводить интервью
+222,134,job interview -- собеседование при приеме на работу
+223,135,to interview for a job -- проводить беседу при поступлении на работу
+224,136,to look for a job -- искать работу
+225,136,to quit a job -- оставлять работу
+226,137,"difficult, hard job -- трудное задание"
+227,137,to do a job -- выполнить задание
+228,138,to inflict losses on -- причинять ущерб (кому-л.)
+229,138,to make up a loss -- возмещать убытки
+230,138,to sell at a loss -- продавать в убыток
+231,139,marketing management -- управление маркетингом
+232,140,by decision of the company management -- по решению руководства компании
+233,141,branch manager -- заведующий отделением
+234,141,sales manager -- менеджер по продажам
+235,142,direct marketing -- сбыт без посредников
+236,143,marketing research -- маркетинговые исследования
+237,144,to treat smb. according to his merits -- оценивать кого-л. по заслугам
+238,145,paper-mill -- бумажная фабрика
+239,145,saw-mill -- лесопильный завод
+240,145,steel mill -- сталелитейный завод
+241,146,mutual understanding -- взаимопонимание
+242,146,mutual help -- взаимопомощь
+243,147,"He will notify us where we are to meet. -- Он скажет нам, где мы встречаемся."
+244,148,Your presence is obligatory. -- Ваша явка обязательна.
+245,149,to come into office -- приступить к исполнению служебных обязанностей
+246,149,to leave office -- уйти с должности
+247,150,branch office -- филиал
+248,150,head office -- главный офис
+249,151,order of dismissal -- приказ об увольнении
+250,151,by smb.'s order -- по чьему-л. приказанию
+251,154,active participant -- активный участник
+252,155,a meeting with partners -- встреча с партнерами
+253,156,party to the contract -- сторона по договору
+254,156,interested party -- заинтересованная сторона
+255,156,contracting parties -- договаривающиеся стороны
+256,157,to pay in cash -- платить наличными
+257,157,to pay in advance -- платить авансом
+258,158,overtime pay -- оплата за сверхурочную работу
+259,158,sick pay -- пособие по болезни
+260,160,qualified personnel -- квалифицированный персонал
+261,161,to plan ahead -- планировать заранее
+262,162,long-term plan -- долгосрочный план
+263,162,feasible plan -- выполнимый план
+264,162,to propose a plan -- предлагать план
+265,164,managerial position -- руководящая должность
+266,164,to look for a position -- искать работу
+267,164,temporary position -- временное место работы
+268,166,to make a presentation -- делать презентацию
+269,167,local press -- местная пресса
+270,167,foreign press -- зарубежные средства массовой информации
+271,168,to be on probation -- находиться на стажировке
+272,169,processing industry -- обрабатывающая промышленность
+273,169,automatic data processing -- автоматическая обработка данных
+274,170,to make products -- производить товары
+275,170,product development -- разработка изделия
+276,171,to increase production -- увеличить объемы производства
+277,171,to decrease production -- уменьшить объемы производства
+278,171,coal production -- добыча угля
+279,172,labour productivity -- производительность труда
+280,172,to increase productivity -- повышать прозводительность
+281,173,to bring a profit -- приносить прибыль
+282,173,to make a profit -- получать прибыль
+283,173,gross profit -- валовая прибыль
+284,174,to profit by a transaction -- получить прибыль от сделки
+285,175,to draw up a project -- составлять проект
+286,175,to carry out a project -- осуществлять план
+287,175,pilot project -- опытный план/проект
+288,176,to prolong the term -- продлевать срок действия
+289,177,prolongation of the term -- продление срока действия
+290,178,to possess properties -- обладать свойствами
+291,178,characteristic property -- характерная особенность
+292,180,professional qualification -- профессиональная компетентность
+293,180,She has the qualification for the job. -- Она квалифицирована для этой работы.
+294,181,highly qualified -- высоко квалифицированный
+295,181,qualified as an engineer -- получивший квалификацию инженера
+296,182,personal quality -- личное качество
+297,183,"fine, high quality -- высокое качество"
+298,183,"low, poor quality -- плохое качество"
+299,183,certificate of quality -- свидетельство качества
+300,184,record of attendances -- регистрация присутствующих
+301,184,"to keep, make a record -- вести записи"
+302,187,to make reference to -- ссылаться на что-л.
+303,188,"to give, provide a reference -- давать рекомендацию"
+304,188,positive/negative reference -- хорошая/плохая рекомендация
+305,189,"to conduct registration -- записывать, регистрировать"
+306,189,registration fee -- регистрационный взнос
+307,191,"to make a remark -- сделать замечание, высказаться"
+308,191,timely remark -- уместное замечание
+309,192,to offer remuneration -- предоставлять компенсацию
+310,193,to draw up a report -- готовить доклад
+311,193,daily report -- ежедневный отчет
+312,196,to set requirements -- определять требования
+313,196,"to fulfill, meet a requirement -- отвечать требованиям"
+314,197,to do research -- проводить исследования
+315,197,market research -- изучение конъюнктуры рынка
+316,199,reserve supply -- резервный запас
+317,200,to keep a reserve -- иметь запас
+318,200,limited reserve -- ограниченные резервы
+319,200,strategic reserves -- стратегические запасы
+320,201,He is very responsible. -- Он очень ответственный.
+321,202,be responsible for smth. -- быть ответственным за что-л.
+322,202,I am not responsible for this project. -- Я не являюсь ответственным за этот проект.
+323,203,monthly revenue -- месячный доход
+324,203,to generate revenue -- давать доход
+325,204,to raise salaries -- поднимать зарплату
+326,204,"to cut, reduce salaries -- урезать зарплату"
+327,205,fixed/flexible schedule -- фиксированный/скользящий график
+328,205,ahead of schedule -- с опережением графика
+329,205,according to schedule -- по графику
+330,206,to schedule jobs -- составлять график работ
+331,206,The meeting has not been scheduled. -- Эта встреча не запланирована.
+332,208,"to provide a service -- предлагать услуги, обслуживать"
+333,208,service charge -- плата за услуги
+334,210,to hold a session -- проводить заседание
+335,210,working session -- рабочее заседание
+336,210,a session on -- заседание посвященное (чему-л.)
+337,211,to put one's signature -- ставить свою подпись
+338,211,date of signature -- дата подписания
+339,213,skilled personnel -- квалифицированные кадры
+340,213,"skilled labour -- работа, требующая (высокой) квалификации"
+341,215,administrative staff -- административный персонал
+342,215,She joined the staff as an editor. -- Она стала работать редактором.
+343,216,official stamp -- гербовая печать
+344,220,"to address, discuss a subject -- затрагивать какую-л. тему"
+345,221,subsidiary company -- дочерняя компания
+346,222,an overseas subsidiary -- зарубежный филиал
+347,223,a supplement to -- приложение к чему-л.
+348,223,
+349,224,to supplement each other -- дополнять друг друга
+350,225,to hold a symposium on -- проводить симпозиум по (каким-л. вопросам)
+351,227,"to conduct, give a test -- проводить испытание"
+352,227,proficiency test -- проверка квалификации
+353,229,basic theme -- главная тема
+354,231,powerful tool -- мощное средство
+355,233,"to receive training -- обучаться, учиться"
+356,233,"to provide training -- тренировать, обучать"
+357,233,training in the use of computers -- занятия по пользованию компьютером
+358,234,training centre -- учебный центр
+359,235,"transfer of authority -- передача прав, полномочий"
+360,236,a translation from Russian into English -- перевод с русского на английский
+361,236,simultaneous translation -- синхронный перевод
+362,238,to fill a vacancy -- найти работника на вакантную должность
+363,239,minimum wage -- минимальная заработная плата
+364,239,to earn wages -- получать заработную плату
+365,240,The weakness of the project is its cost. -- Недостаток проекта - его стоимость.
+366,241,She works for a large firm. -- Она работает в большой фирме.
+367,241,I worked to a man called Duncan. -- Я работал на человека по имени Дункан.
+368,242,to begin work -- приступить к работе
+369,242,to go to work -- пойти на работу
+370,242,They quit work at one o'clock. -- Они заканчивают работу в час дня.
+371,243,atmospheric front -- атмосферный фронт
+372,243,atmospheric layer -- слой атмосферы
+373,243,atmospheric instability -- атмосферная нестабильность
+374,244,weather forecast -- прогноз погоды
+375,244,weather bureau -- бюро погоды
+376,244,nasty weather -- ненастная погода
+377,244,spell of cold weather -- похолодание
+378,245,It snows. -- Идет снег.
+379,245,a flake of snow -- снежинка
+380,245,snow depth -- высота снежного покрова
+381,246,It rains. -- Идет дождь.
+382,246,"heavy rain -- проливной дождь, ливень"
+383,246,drizzling rain -- изморось
+384,246,torrential rain -- проливной дождь
+385,247,a sudden gust of wind — внезапный порыв ветра
+386,248,It hails. -- Идет град.
+387,251,It was thundering all night long. -- Всю ночь гремел гром.
+388,252,a flash of lightning -- вспышка молнии
+389,255,The barometer is falling. -- Барометр падает.
+390,256,windy weather -- ветреная погода
+391,256,It is windy. -- Ветрено.
+392,257,relative humidity -- относительная влажность
+393,260,damp air -- влажный воздух
+394,262,5 degrees above (below) zero -- 5 градусов выше (ниже) нуля
+395,263,atmospheric pressure -- атмосферное давление
+396,263,low pressure area -- область пониженного давления
+397,266,hot weather -- жаркая погода
+398,266,It is hot. -- Жарко.
+399,268,"hoar-frost -- иней, изморозь"
+400,269,It drizzles. -- Идёт мелкий дождь.
+401,270,heat haze -- марево
+402,271,thin ice -- тонкий лед
+403,272,scattered showers — местами проливные дожди
+404,275,It is cloudy. -- Облачно.
+405,276,The snow started to thaw. -- Снег начал таять.
+406,277,cool breeze -- прохладный ветерок
+407,278,dusty road -- пыльная дорога
+408,280,fresh air -- свежий воздух
+409,281,slippery road -- скользкая дорога
+410,285,sunny day -- солнечный день
+411,286,dry air -- сухой воздух
+412,288,What’s the temperature today? -- Какая сегодня температура?
+413,290,Celsius / Centigrade thermometer -- термометр Цельсия / со шкалой Цельсия
+414,290,Fahrenheit thermometer -- термометр Фаренгейта / со шкалой Фаренгейта
+415,291,thick fog -- густой туман
+416,292,"morning mist -- утренний туман, утренняя дымка"
+417,295,cold weather -- холодная погода
+418,297,dust storm -- пыльная буря
+419,298,The sky was clear. -- Небо было безоблачным.
+420,303,gale warning -- штормовое предупреждение
+421,304,scorching sun -- палящее солнце
+422,304,scorching day -- знойный день
+423,306,blustery weather -- ветреная погода
+424,306,blustery wind -- порывистый ветер
+425,307,The sky is overcast. -- Небо затянуто облаками.
