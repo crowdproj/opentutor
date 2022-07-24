@@ -15,6 +15,14 @@ interface CardDbRepository {
     fun getAllCards(request: DictionaryIdDbRequest): CardEntitiesDbResponse
 }
 
-data class DictionaryIdDbRequest(val dictionaryId: DictionaryId, val lock: CardLock)
+fun DictionaryId.toDbRequest(): DictionaryIdDbRequest {
+    return DictionaryIdDbRequest(this)
+}
 
-data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError>)
+data class DictionaryIdDbRequest(val id: DictionaryId, val lock: CardLock = CardLock.NONE)
+
+data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError> = emptyList()) {
+    companion object {
+        val EMPTY = CardEntitiesDbResponse(cards = emptyList(), errors = emptyList())
+    }
+}

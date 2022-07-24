@@ -29,6 +29,11 @@ internal fun DictionaryId.asDbId(): Long {
     throw IllegalArgumentException("Wrong dictionary id ${asString()}.")
 }
 
+internal fun notFoundDbError(
+    operation: String,
+    fieldName: String = "",
+) = dbError(operation = operation, fieldName = fieldName, description = """dictionary with id="$fieldName" not found""")
+
 internal fun dbError(
     operation: String,
     fieldName: String = "",

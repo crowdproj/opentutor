@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.CardRepositories
+import com.gitlab.sszuev.flashcards.core.process.processGetAllCardsRequest
 import com.gitlab.sszuev.flashcards.core.process.processResourceRequest
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
@@ -80,6 +81,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                         this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
                     }
                     validateDictionaryId { it.normalizedRequestDictionaryId }
+                }
+                runs(CardOperation.GET_ALL_CARDS) {
+                    processGetAllCardsRequest()
                 }
             }
 

@@ -15,7 +15,6 @@ import kotlin.streams.asSequence
 object DictionaryStore {
     private val logger = LoggerFactory.getLogger(DictionaryStore::class.java)
 
-    private val reader = LingvoDictionaryReader()
     private val resources = ConcurrentHashMap<String, List<Dictionary>>()
 
     fun getDictionaries(location: String): List<Dictionary> {
@@ -30,13 +29,14 @@ object DictionaryStore {
 
     private fun loadDatabaseFromClassPath(location: String): List<Dictionary> {
         logger.info("Load from classpath: $location.")
-        val resources: List<String> = requireNotNull(DictionaryStore::class.java.getResourceAsStream(location)) {
+        val reader = LingvoDictionaryReader()
+        val dir: List<String> = requireNotNull(DictionaryStore::class.java.getResourceAsStream(location)) {
             "Can't find classpath directory $location."
         }.bufferedReader(Charsets.UTF_8).use { br ->
             // java Stream to Sequence and then to List due to compilation error with type inferencing
             br.lines().asSequence().toList()
         }.sorted() // sort to make output deterministic
-        val res: List<Dictionary> = resources.map {
+        val res: List<Dictionary> = dir.map {
             requireNotNull(DictionaryStore::class.java.getResourceAsStream("$location/$it")) {
                 "Can't find classpath resource $location/$it."
             }.use { src ->
@@ -49,9 +49,10 @@ object DictionaryStore {
 
     private fun loadDatabaseFromDirectory(location: String): List<Dictionary> {
         logger.info("Load from directory: $location.")
-        val p = Paths.get(location).createDirectories().toRealPath()
-        require(p.isDirectory()) { "Not a directory: $location." }
-        val res: List<Dictionary> = Files.newDirectoryStream(p).use { ds ->
+        val reader = LingvoDictionaryReader()
+        val dir = Paths.get(location).createDirectories().toRealPath()
+        require(dir.isDirectory()) { "Not a directory: $location." }
+        val res: List<Dictionary> = Files.newDirectoryStream(dir).use { ds ->
             ds.mapNotNull { f ->
                 if (!f.isRegularFile()) {
                     logger.warn("Not a file: $f.")

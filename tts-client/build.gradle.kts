@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    id("application")
     id("java-test-fixtures")
 }
 

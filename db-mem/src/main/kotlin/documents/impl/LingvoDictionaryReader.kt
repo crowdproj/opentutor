@@ -7,16 +7,11 @@ import org.xml.sax.InputSource
 import org.xml.sax.SAXException
 import java.io.IOException
 import java.io.InputStream
-import java.util.concurrent.atomic.AtomicLong
 import javax.xml.XMLConstants
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
-class LingvoDictionaryReader : DictionaryReader {
-    private val dictionarySequence = AtomicLong()
-    private val cardSequence = AtomicLong()
-    private val exampleSequence = AtomicLong()
-    private val translationSequence = AtomicLong()
+class LingvoDictionaryReader(private val ids: IdSequences = IdSequences()) : DictionaryReader {
 
     override fun parse(input: InputStream): Dictionary {
         return try {
@@ -28,7 +23,7 @@ class LingvoDictionaryReader : DictionaryReader {
 
     @Throws(ParserConfigurationException::class, IOException::class, SAXException::class)
     private fun loadDictionary(source: InputSource): Dictionary {
-        val dictionaryId = dictionarySequence.incrementAndGet()
+        val dictionaryId = ids.nextDictionaryId()
         val dbf = DocumentBuilderFactory.newInstance()
         dbf.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true)
         val db = dbf.newDocumentBuilder()
@@ -56,7 +51,7 @@ class LingvoDictionaryReader : DictionaryReader {
     }
 
     private fun parseMeaning(word: String, node: Element, dictionaryId: Long): Card {
-        val cardId = cardSequence.incrementAndGet()
+        val cardId = ids.nextCardId()
         val transcription = node.getAttribute("transcription")
         val id = node.getAttribute("partOfSpeech")
         val pos: String? = if (id.isBlank()) null else LingvoMappings.toPartOfSpeechTag(id)
@@ -70,7 +65,7 @@ class LingvoDictionaryReader : DictionaryReader {
         val translations = DOMUtils.elements(DOMUtils.getElement(node, "translations"), "word")
             .map { parseTranslation(it, cardId) }.toSet()
         val examples = DOMUtils.findElement(node, "examples")
-            ?.let { DOMUtils.elements(it, "example").map { parseExample(it, cardId) }.toSet() } ?: emptySet()
+            ?.let { e -> DOMUtils.elements(e, "example").map { parseExample(it, cardId) }.toSet() } ?: emptySet()
         return Card(
             id = cardId,
             dictionaryId = dictionaryId,
@@ -89,12 +84,12 @@ class LingvoDictionaryReader : DictionaryReader {
     }
 
     private fun parseTranslation(node: Element, cardId: Long): Translation {
-        val id = translationSequence.incrementAndGet()
+        val id = ids.nextTranslationId()
         return Translation(id = id, text = DOMUtils.normalizeContent(node), cardId = cardId)
     }
 
     private fun parseExample(node: Element, cardId: Long): Example {
-        val id = exampleSequence.incrementAndGet()
+        val id = ids.nextExampleId()
         return Example(id = id, text = DOMUtils.normalizeContent(node), cardId = cardId)
     }
 }

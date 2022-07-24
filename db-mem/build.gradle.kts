@@ -16,6 +16,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation(testFixtures(project(":db-common")))
 }
 
 tasks.test {

@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class CardCorProcessorRunGetResourceTest {
+internal class CardCorProcessorRunResourceTest {
     companion object {
 
         private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {

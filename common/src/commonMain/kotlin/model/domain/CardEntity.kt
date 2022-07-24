@@ -10,6 +10,7 @@ data class CardEntity(
     val answered: Int? = null,
     val translations: List<String> = emptyList(),
     val examples: List<String> = emptyList(),
+    val lock: CardLock = CardLock.NONE,
 ) {
     companion object {
         val DUMMY = CardEntity()

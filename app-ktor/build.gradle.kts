@@ -47,6 +47,7 @@ dependencies {
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation(testFixtures(project(":tts-client")))
+    testImplementation(testFixtures(project(":db-common")))
 }
 
 tasks.test {

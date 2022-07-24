@@ -26,4 +26,20 @@ internal class CardControllerRunTest {
         Assertions.assertNull(res.errors)
         Assertions.assertArrayEquals(ResourceEntity.DUMMY.data, res.resource)
     }
+
+    @Test
+    fun `test get-all-cards success`() = testApplication {
+        val requestBody = GetAllCardsRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            dictionaryId = "2",
+        )
+        val response = testPost("/v1/api/cards/get-all", requestBody)
+        val res = response.body<GetAllCardsResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
+        Assertions.assertEquals(emptyList<CardResource>(), res.cards)
+    }
 }
