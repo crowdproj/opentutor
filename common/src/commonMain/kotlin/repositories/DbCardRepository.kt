@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardLock
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 /**
@@ -12,14 +11,8 @@ interface DbCardRepository {
     /**
      * Gets all cards by dictionaryId.
      */
-    fun getAllCards(request: DictionaryIdDbRequest): CardEntitiesDbResponse
+    fun getAllCards(id: DictionaryId): CardEntitiesDbResponse
 }
-
-fun DictionaryId.toDbRequest(): DictionaryIdDbRequest {
-    return DictionaryIdDbRequest(this)
-}
-
-data class DictionaryIdDbRequest(val id: DictionaryId, val lock: CardLock = CardLock.NONE)
 
 data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError> = emptyList()) {
     companion object {

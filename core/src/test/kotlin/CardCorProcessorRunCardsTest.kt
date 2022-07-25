@@ -8,7 +8,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
-import com.gitlab.sszuev.flashcards.repositories.toDbRequest
 import com.gitlab.sszuev.flashcards.stubs.stubCards
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -33,7 +32,7 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test get-all-cards fail`() = runTest {
-        val testDictionaryId = DictionaryId("42").toDbRequest()
+        val testDictionaryId = DictionaryId("42")
         val testResponseEntities = stubCards
 
         val repository = MockDbCardRepository(
@@ -43,7 +42,7 @@ internal class CardCorProcessorRunCardsTest {
         )
 
         val context = testContext(CardOperation.GET_ALL_CARDS)
-        context.requestDictionaryId = testDictionaryId.id
+        context.requestDictionaryId = testDictionaryId
 
         CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
 
@@ -56,7 +55,7 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test get-all-cards unexpected fail`() = runTest {
-        val testDictionaryId = DictionaryId("42").toDbRequest()
+        val testDictionaryId = DictionaryId("42")
         val testResponseEntities = stubCards
 
         val repository = MockDbCardRepository(
@@ -70,7 +69,7 @@ internal class CardCorProcessorRunCardsTest {
         )
 
         val context = testContext(CardOperation.GET_ALL_CARDS)
-        context.requestDictionaryId = testDictionaryId.id
+        context.requestDictionaryId = testDictionaryId
 
         CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
 
@@ -81,7 +80,7 @@ internal class CardCorProcessorRunCardsTest {
         val error = context.errors[0]
         Assertions.assertEquals("run::${CardOperation.GET_ALL_CARDS}", error.code)
         Assertions.assertEquals("run", error.group)
-        Assertions.assertEquals(testDictionaryId.id.asString(), error.field)
+        Assertions.assertEquals(testDictionaryId.asString(), error.field)
         Assertions.assertEquals("Error while GET_ALL_CARDS: exception", error.message)
         Assertions.assertInstanceOf(TestException::class.java, error.exception)
     }

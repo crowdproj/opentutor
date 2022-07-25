@@ -1,7 +1,9 @@
 package com.gitlab.sszuev.flashcards.repositories
 
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+
 object NoOpDbCardRepository : DbCardRepository {
-    override fun getAllCards(request: DictionaryIdDbRequest): CardEntitiesDbResponse {
+    override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
         return noOp()
     }
 
