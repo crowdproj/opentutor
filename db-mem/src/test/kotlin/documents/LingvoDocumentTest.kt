@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem.documents
 
-import com.gitlab.sszuev.flashcards.dbmem.AppConfig
+import com.gitlab.sszuev.flashcards.dbmem.MemDbConfig
 import com.gitlab.sszuev.flashcards.dbmem.dao.*
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryReader
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryWriter
@@ -19,7 +19,7 @@ internal class LingvoDocumentTest {
         private val LOGGER = LoggerFactory.getLogger(LingvoDocumentTest::class.java)
 
         private val parser: DictionaryReader = LingvoDictionaryReader()
-        private val writer: DictionaryWriter = LingvoDictionaryWriter(AppConfig(numberOfRightAnswers = 5))
+        private val writer: DictionaryWriter = LingvoDictionaryWriter(MemDbConfig(numberOfRightAnswers = 5))
 
         private fun normalize(s: String): String {
             return s.replace("[\n\r\t]".toRegex(), "")

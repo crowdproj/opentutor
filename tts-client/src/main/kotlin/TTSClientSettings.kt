@@ -3,8 +3,8 @@ package com.gitlab.sszuev.flashcards.speaker
 import com.gitlab.sszuev.flashcards.config.BaseConfig
 import org.slf4j.LoggerFactory
 
-object Settings : BaseConfig("/application.properties") {
-    private val logger = LoggerFactory.getLogger(Settings::class.java)
+object TTSClientSettings : BaseConfig("/application.properties") {
+    private val logger = LoggerFactory.getLogger(TTSClientSettings::class.java)
 
     val requestTimeoutInMilliseconds = getValue(key = "tts-client.request-timeout-in-milliseconds", default = 1000L)
 

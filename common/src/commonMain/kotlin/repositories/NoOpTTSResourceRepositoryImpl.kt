@@ -4,7 +4,7 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 
-object NoOpTTSResourceRepository: TTSResourceRepository {
+object NoOpTTSResourceRepositoryImpl: TTSResourceRepository {
 
     override suspend fun findResourceId(word: String, lang: LangId): ResourceId? {
         return null

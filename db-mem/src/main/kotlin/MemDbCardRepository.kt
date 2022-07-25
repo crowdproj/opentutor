@@ -1,11 +1,13 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.asDbId
+import com.gitlab.sszuev.flashcards.common.notFoundDbError
 import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
-import com.gitlab.sszuev.flashcards.repositories.CardDbRepository
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionaryIdDbRequest
 
-class MemCardDbRepositoryImpl(config: AppConfig = AppConfig()) : CardDbRepository {
+class MemDbCardRepository(config: MemDbConfig = MemDbConfig()) : DbCardRepository {
     private val dictionaries: Map<Long, Dictionary> =
         DictionaryStore.getDictionaries(config.dataLocation).associateBy { it.id }
 

@@ -8,7 +8,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 /**
  * Database repository to work with cards.
  */
-interface CardDbRepository {
+interface DbCardRepository {
     /**
      * Gets all cards by dictionaryId.
      */

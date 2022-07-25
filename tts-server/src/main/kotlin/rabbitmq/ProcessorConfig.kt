@@ -1,14 +1,14 @@
 package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 
-import com.gitlab.sszuev.flashcards.speaker.Settings
+import com.gitlab.sszuev.flashcards.speaker.ServerSettings
 
 data class ProcessorConfig(
-    val routingKeyRequest: String = Settings.routingKeyRequest,
-    val routingKeyResponsePrefix: String = Settings.routingKeyResponsePrefix,
-    val exchangeName: String = Settings.exchangeName,
-    val requestQueueName: String = Settings.queueNameRequest,
-    val consumerTag: String = Settings.consumerTag,
-    val messageSuccessResponsePrefix: String = Settings.messageSuccessResponsePrefix,
-    val messageErrorResponsePrefix: String = Settings.messageErrorResponsePrefix,
-    val messageStatusHeader: String = Settings.messageStatusHeader,
+    val routingKeyRequest: String = ServerSettings.routingKeyRequest,
+    val routingKeyResponsePrefix: String = ServerSettings.routingKeyResponsePrefix,
+    val exchangeName: String = ServerSettings.exchangeName,
+    val requestQueueName: String = ServerSettings.queueNameRequest,
+    val consumerTag: String = ServerSettings.consumerTag,
+    val messageSuccessResponsePrefix: String = ServerSettings.messageSuccessResponsePrefix,
+    val messageErrorResponsePrefix: String = ServerSettings.messageErrorResponsePrefix,
+    val messageStatusHeader: String = ServerSettings.messageStatusHeader,
 )

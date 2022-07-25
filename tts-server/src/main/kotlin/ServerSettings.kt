@@ -3,8 +3,8 @@ package com.gitlab.sszuev.flashcards.speaker
 import com.gitlab.sszuev.flashcards.config.BaseConfig
 import org.slf4j.LoggerFactory
 
-object Settings : BaseConfig("/application.properties") {
-    private val logger = LoggerFactory.getLogger(Settings::class.java)
+object ServerSettings : BaseConfig("/application.properties") {
+    private val logger = LoggerFactory.getLogger(ServerSettings::class.java)
 
     val host = getValue(key = "tts-server.rabbitmq.host", default = "localhost")
     val port = getValue(key = "tts-server.rabbitmq.port", default = 5672)

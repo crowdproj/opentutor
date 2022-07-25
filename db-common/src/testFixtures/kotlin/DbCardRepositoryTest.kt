@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.repositories.CardDbRepository
+import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.toDbRequest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -10,9 +10,9 @@ import org.junit.jupiter.api.Test
  * Note: all implementations must have the same ids in tests for the same entities to have deterministic behavior.
  */
 @Suppress("FunctionName")
-abstract class CardDbRepositoryTest {
+abstract class DbCardRepositoryTest {
 
-    abstract val repository: CardDbRepository
+    abstract val repository: DbCardRepository
 
     @Test
     fun `test get all cards success`() {

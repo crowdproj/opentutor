@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
+import com.gitlab.sszuev.flashcards.speaker.TTSClientConfig
 import com.rabbitmq.client.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
@@ -41,7 +42,7 @@ internal class TTSResourceRepositoryITest {
         )
 
         private const val testRequestQueueName = "test-queue"
-        private val testConfig = ClientConfig(
+        private val testConfig = TTSClientConfig(
             routingKeyRequest = "test-in",
             routingKeyResponsePrefix = "test-out",
             exchangeName = "test-exchange",

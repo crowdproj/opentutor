@@ -1,0 +1,6 @@
+package com.gitlab.sszuev.flashcards.dbmem
+
+data class MemDbConfig(
+    val numberOfRightAnswers: Int = MemDbSettings.numberOfRightAnswers,
+    val dataLocation: String = MemDbSettings.dataLocation,
+)

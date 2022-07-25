@@ -11,6 +11,7 @@ dependencies {
 
     implementation(project(":config"))
     implementation(project(":common"))
+    implementation(project(":db-common"))
 
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 

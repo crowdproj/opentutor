@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.dbcommon.MockCardDbRepository
+import com.gitlab.sszuev.flashcards.dbcommon.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -36,7 +36,7 @@ internal class CardCorProcessorRunCardsTest {
         val testDictionaryId = DictionaryId("42").toDbRequest()
         val testResponseEntities = stubCards
 
-        val repository = MockCardDbRepository(
+        val repository = MockDbCardRepository(
             invokeGetAllCards = {
                 CardEntitiesDbResponse(if (it == testDictionaryId) testResponseEntities else emptyList())
             }
@@ -59,7 +59,7 @@ internal class CardCorProcessorRunCardsTest {
         val testDictionaryId = DictionaryId("42").toDbRequest()
         val testResponseEntities = stubCards
 
-        val repository = MockCardDbRepository(
+        val repository = MockDbCardRepository(
             invokeGetAllCards = {
                 CardEntitiesDbResponse(
                     if (it != testDictionaryId)

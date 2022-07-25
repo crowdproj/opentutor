@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards
 
-import com.gitlab.sszuev.flashcards.repositories.CardDbRepository
+import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import io.ktor.server.config.*
 import org.slf4j.LoggerFactory
@@ -15,7 +15,7 @@ class AppConfig(private val config: ApplicationConfig) {
     val ttsClientRepositoryImpl: TTSResourceRepository by lazy {
         loadJavaClass("ktor.application.tts-client.impl")
     }
-    val cardRepositoryImpl: CardDbRepository by lazy {
+    val cardRepositoryImpl: DbCardRepository by lazy {
         loadJavaClass("ktor.application.card-repository.impl")
     }
 

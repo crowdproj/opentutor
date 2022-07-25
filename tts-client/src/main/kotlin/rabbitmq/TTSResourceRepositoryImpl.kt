@@ -7,7 +7,8 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.NotFoundResourceException
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
-import com.gitlab.sszuev.flashcards.speaker.Settings
+import com.gitlab.sszuev.flashcards.speaker.TTSClientConfig
+import com.gitlab.sszuev.flashcards.speaker.TTSClientSettings
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Delivery
@@ -19,14 +20,14 @@ private val logger = LoggerFactory.getLogger(TTSResourceRepositoryImpl::class.ja
 
 class TTSResourceRepositoryImpl(
     private val connectionFactory: RabbitmqConnectionFactory,
-    private val config: ClientConfig,
-    private val requestTimeoutInMillis: Long = Settings.requestTimeoutInMilliseconds
+    private val config: TTSClientConfig,
+    private val requestTimeoutInMillis: Long = TTSClientSettings.requestTimeoutInMilliseconds
 ) : TTSResourceRepository {
 
     constructor(
         connectionConfig: ConnectionConfig = ConnectionConfig(),
-        clientConfig: ClientConfig = ClientConfig(),
-        requestTimeoutInMs: Long = Settings.requestTimeoutInMilliseconds
+        clientConfig: TTSClientConfig = TTSClientConfig(),
+        requestTimeoutInMs: Long = TTSClientSettings.requestTimeoutInMilliseconds
     ) : this(
         connectionFactory = SimpleRabbitmqConnectionFactory(config = connectionConfig),
         config = clientConfig,

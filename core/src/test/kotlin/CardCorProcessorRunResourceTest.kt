@@ -5,7 +5,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
+import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepositoryImpl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -37,7 +37,7 @@ internal class CardCorProcessorRunResourceTest {
             data = ByteArray(42) { 42 }
         )
 
-        val repository = MockTTSResourceRepository(
+        val repository = MockTTSResourceRepositoryImpl(
             answerResourceId = { testResourceId },
             answerResourceEntity = { testResourceEntity },
         )
@@ -66,7 +66,7 @@ internal class CardCorProcessorRunResourceTest {
             data = ByteArray(42) { 42 }
         )
 
-        val repository = MockTTSResourceRepository(
+        val repository = MockTTSResourceRepositoryImpl(
             answerResourceId = { null },
             answerResourceEntity = { testResourceEntity },
         )
@@ -98,7 +98,7 @@ internal class CardCorProcessorRunResourceTest {
         val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
         val testResourceId = ResourceId("test-id")
 
-        val repository = MockTTSResourceRepository(
+        val repository = MockTTSResourceRepositoryImpl(
             answerResourceId = { testResourceId },
             answerResourceEntity = { throw TestException() },
         )

@@ -17,6 +17,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":config"))
+    implementation(project(":db-common"))
 
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")

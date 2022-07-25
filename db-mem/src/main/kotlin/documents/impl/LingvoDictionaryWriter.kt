@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem.documents.impl
 
-import com.gitlab.sszuev.flashcards.dbmem.AppConfig
+import com.gitlab.sszuev.flashcards.dbmem.MemDbConfig
 import com.gitlab.sszuev.flashcards.dbmem.dao.Card
 import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
 import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryWriter
@@ -13,7 +13,7 @@ import javax.xml.transform.*
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-class LingvoDictionaryWriter(private val config: AppConfig) : DictionaryWriter {
+class LingvoDictionaryWriter(private val config: MemDbConfig) : DictionaryWriter {
 
     override fun write(dictionary: Dictionary, output: OutputStream) {
         val document = toXmlDocument(dictionary)
