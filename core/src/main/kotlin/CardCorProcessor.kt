@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.core.process.processGetAllCardsRequest
 import com.gitlab.sszuev.flashcards.core.process.processResourceRequest
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
+import com.gitlab.sszuev.flashcards.core.utils.normalize
 import com.gitlab.sszuev.flashcards.core.validation.*
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker

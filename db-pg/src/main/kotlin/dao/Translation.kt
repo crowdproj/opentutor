@@ -1,11 +1,10 @@
 package com.gitlab.sszuev.flashcards.dbpg.dao
 
-import org.jetbrains.exposed.dao.id.LongIdTable
+import org.jetbrains.exposed.dao.Entity
+import org.jetbrains.exposed.dao.EntityClass
+import org.jetbrains.exposed.dao.id.EntityID
 
-/**
- * id;card_id;text
- */
-object Translation : LongIdTable("translations") {
-    val card = reference("card_id", id).index()
-    val text = text("text")
+class Translation(id: EntityID<Long>) : Entity<Long>(id) {
+    companion object : EntityClass<Long, Translation>(Translations)
+    var text by Translations.text
 }

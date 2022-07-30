@@ -6,7 +6,7 @@ data class CardEntity(
     val word: String = "",
     val transcription: String? = null,
     val partOfSpeech: String? = null,
-    val details: String = "{}",
+    val details: String? = "{}",
     val answered: Int? = null,
     val translations: List<String> = emptyList(),
     val examples: List<String> = emptyList(),
