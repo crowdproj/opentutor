@@ -14,18 +14,17 @@ dependencies {
     val liquibaseVersion: String by project
     val hikariCPVersion: String by project
     val logbackVersion: String by project
+    val typesafeConfigVersion: String by project
 
     implementation(project(":common"))
-    implementation(project(":config"))
     implementation(project(":db-common"))
 
+    implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
-
     implementation("org.postgresql:postgresql:$postgresDriverVersion")
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     implementation("com.zaxxer:HikariCP:$hikariCPVersion")
-
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")

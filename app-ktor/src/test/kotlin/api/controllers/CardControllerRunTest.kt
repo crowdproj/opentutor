@@ -32,7 +32,7 @@ internal class CardControllerRunTest {
         val requestBody = GetAllCardsRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
-            dictionaryId = "2",
+            dictionaryId = "1",
         )
         val response = testPost("/v1/api/cards/get-all", requestBody)
         val res = response.body<GetAllCardsResponse>()
@@ -40,6 +40,7 @@ internal class CardControllerRunTest {
         Assertions.assertEquals("success-request", res.requestId)
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNull(res.errors)
-        Assertions.assertEquals(emptyList<CardResource>(), res.cards)
+        Assertions.assertNotNull(res.cards)
+        Assertions.assertEquals(65, res.cards!!.size)
     }
 }

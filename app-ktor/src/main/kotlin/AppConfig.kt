@@ -13,10 +13,10 @@ private val logger = LoggerFactory.getLogger(AppConfig::class.java)
  */
 class AppConfig(private val config: ApplicationConfig) {
     val ttsClientRepositoryImpl: TTSResourceRepository by lazy {
-        loadJavaClass("ktor.application.tts-client.impl")
+        loadJavaClass("app.tts-client.impl")
     }
     val cardRepositoryImpl: DbCardRepository by lazy {
-        loadJavaClass("ktor.application.card-repository.impl")
+        loadJavaClass("app.card-repository.impl")
     }
 
     @Suppress("UNCHECKED_CAST")

@@ -42,7 +42,7 @@ Content-Type: application/json
   "requestId": "createCardError",
   "debug": {
     "mode": "stub",
-    "stub": "error"
+    "stub": "error_unknown"
   },
   "card": {
     "cardId": "42",
@@ -101,7 +101,7 @@ Content-Type: application/json
   "requestId": "updateCardError",
   "debug": {
     "mode": "stub",
-    "stub": "error"
+    "stub": "error_unknown"
   },
   "card": {
     "cardId": "42",
@@ -150,7 +150,7 @@ Content-Type: application/json
   "requestId": "getCardsError",
   "debug": {
     "mode": "stub",
-    "stub": "error"
+    "stub": "error_unknown"
   },
   "random": false,
   "unknown": false,
@@ -158,6 +158,34 @@ Content-Type: application/json
   "dictionaryIds": [
     "42"
   ]
+}
+
+### Get All Cards Success
+POST http://localhost:8080/v1/api/cards/get-all
+Content-Type: application/json
+
+{
+  "requestType": "getAllCards",
+  "requestId": "getAllCardsSuccess",
+  "debug": {
+    "mode": "stub",
+    "stub": "success"
+  },
+  "dictionaryId": "1"
+}
+
+### Get All Cards Error
+POST http://localhost:8080/v1/api/cards/get-all
+Content-Type: application/json
+
+{
+  "requestType": "getAllCards",
+  "requestId": "getAllCardsError",
+  "debug": {
+    "mode": "stub",
+    "stub": "error_unknown"
+  },
+  "dictionaryId": "-1"
 }
 
 ### Get Card Success
@@ -183,7 +211,7 @@ Content-Type: application/json
   "requestId": "getCardError",
   "debug": {
     "mode": "stub",
-    "stub": "error"
+    "stub": "error_unknown"
   },
   "cardId": "card-42"
 }
@@ -219,7 +247,7 @@ Content-Type: application/json
   "requestId": "learnCardError",
   "debug": {
     "mode": "stub",
-    "stub": "error"
+    "stub": "error_unknown"
   },
   "cards": [
     {
@@ -256,7 +284,7 @@ Content-Type: application/json
   "requestId": "resetCardError",
   "debug": {
     "mode": "stub",
-    "stub": "error"
+    "stub": "error_unknown"
   }
 }
 
@@ -284,7 +312,7 @@ Content-Type: application/json
   "requestId": "deleteCardError",
   "debug": {
     "mode": "stub",
-    "stub": "error"
+    "stub": "error_unknown"
   }
 }
 

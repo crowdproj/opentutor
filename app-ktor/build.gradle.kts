@@ -21,6 +21,7 @@ dependencies {
     implementation(project(":tts-client"))
     implementation(project(":services"))
     implementation(project(":stubs"))
+    implementation(project(":db-pg"))
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -47,7 +48,7 @@ dependencies {
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation(testFixtures(project(":tts-client")))
-    testImplementation(testFixtures(project(":db-common")))
+    testImplementation(project(":db-mem"))
 }
 
 tasks.test {
