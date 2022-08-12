@@ -82,11 +82,11 @@ internal class LingvoDocumentTest {
             text = "rain",
             transcription = "rein",
             partOfSpeech = "noun",
-            translations = setOf(
+            translations = listOf(
                 Translation(id = 1, cardId = 1, text = "дождь"),
                 Translation(id = 2, cardId = 1, text = "ливень")
             ),
-            examples = setOf(
+            examples = listOf(
                 Example(id = 1, cardId = 1, text = "The skies no longer rain death."),
                 Example(id = 2, cardId = 1, text = "The sockets were filled with rain.")
             ),
@@ -98,13 +98,13 @@ internal class LingvoDocumentTest {
             text = "mutual",
             transcription = "ˈmjuːʧʊəl",
             partOfSpeech = "adjective",
-            translations = setOf(
+            translations = listOf(
                 Translation(id = 3, cardId = 2, text = "взаимный"),
                 Translation(id = 4, cardId = 2, text = "обоюдный"),
                 Translation(id = 5, cardId = 2, text = "общий"),
                 Translation(id = 6, cardId = 2, text = "совместный"),
             ),
-            examples = setOf(
+            examples = listOf(
                 Example(id = 3, cardId = 2, text = "Twenty years of mutual vanity, and nothing more."),
             ),
             answered = 12,
@@ -115,7 +115,7 @@ internal class LingvoDocumentTest {
             text = "test",
             transcription = "test",
             partOfSpeech = "verb",
-            translations = setOf(
+            translations = listOf(
                 Translation(id = 7, cardId = 2, text = "тестировать"),
             ),
         )

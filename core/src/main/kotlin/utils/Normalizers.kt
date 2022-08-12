@@ -9,10 +9,10 @@ fun CardEntity.normalize(): CardEntity {
         dictionaryId = this.dictionaryId.normalize(),
         word = this.word.trim(),
         transcription = this.transcription?.trim(),
-        partOfSpeech = this.partOfSpeech?.trim(),
-        details = this.details?.trim() ?: "{}",
+        partOfSpeech = this.partOfSpeech?.lowercase()?.trim(),
+        details = this.details,
         answered = this.answered,
-        translations = this.translations.flatMap { splitIntoWords(it) },
+        translations = this.translations,
         examples = this.examples.asSequence().map { it.trim() }.filter { it.isNotBlank() }.toList(),
     )
 }
@@ -54,52 +54,4 @@ fun LangId.normalize(): LangId {
 
 private fun Id.normalizeAsString(): String {
     return asString().trim()
-}
-
-/**
- * Splits the given `phrase` using comma (i.e. '`,`') as separator.
- * Commas inside the parentheses (e.g. "`(x,y)`") are not considered.
- *
- * @param [phrase]
- * @return [List]
- */
-internal fun splitIntoWords(phrase: String): List<String> {
-    val parts = phrase.split(",")
-    val res = mutableListOf<String>()
-    var i = 0
-    while (i < parts.size) {
-        val pi = parts[i].trim()
-        if (pi.isEmpty()) {
-            i++
-            continue
-        }
-        if (!pi.contains("(") || pi.contains(")")) {
-            res.add(pi)
-            i++
-            continue
-        }
-        val sb = StringBuilder(pi)
-        var j = i + 1
-        while (j < parts.size) {
-            val pj = parts[j].trim { it <= ' ' }
-            if (pj.isEmpty()) {
-                j++
-                continue
-            }
-            sb.append(", ").append(pj)
-            if (pj.contains(")")) {
-                break
-            }
-            j++
-        }
-        if (sb.lastIndexOf(")") == -1) {
-            res.add(pi)
-            i++
-            continue
-        }
-        res.add(sb.toString())
-        i = j
-        i++
-    }
-    return res
 }

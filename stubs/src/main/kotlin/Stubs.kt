@@ -20,9 +20,14 @@ val stubError = AppError(
 )
 
 val stubCard = CardEntity(
-    word = "XXX",
+    word = "stub",
     cardId = CardId(42.toString()),
     dictionaryId = DictionaryId(42.toString()),
+    partOfSpeech = "noun",
+    transcription = "stʌb",
+    translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитация")),
+    examples = listOf("That was the last candle stub I had.", "\$500 ticket stub."),
+    details = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
 )
 
 val stubCards = IntRange(1, 3)

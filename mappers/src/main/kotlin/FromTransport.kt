@@ -23,7 +23,7 @@ fun CardContext.fromTransport(request: BaseRequest) = when (request) {
 fun CardContext.fromGetGetAudioRequest(request: GetAudioRequest) {
     this.operation = CardOperation.GET_RESOURCE
     this.requestId = request.requestId()
-    this.requestResourceGet = ResourceGet(word = request.word?:"", lang = LangId(request.lang?:""))
+    this.requestResourceGet = ResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
 }
@@ -62,7 +62,7 @@ fun CardContext.fromCreateCardRequest(request: CreateCardRequest) {
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
-    this.requestCardEntity = request.card.toCardEntity()
+    this.requestCardEntity = request.card?.toCardEntity() ?: CardEntity.EMPTY
 }
 
 fun CardContext.fromUpdateCardRequest(request: UpdateCardRequest) {
@@ -70,7 +70,7 @@ fun CardContext.fromUpdateCardRequest(request: UpdateCardRequest) {
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
-    this.requestCardEntity = request.card.toCardEntity()
+    this.requestCardEntity = request.card?.toCardEntity() ?: CardEntity.EMPTY
 }
 
 fun CardContext.fromDeleteCardRequest(request: DeleteCardRequest) {
@@ -103,11 +103,28 @@ private fun toCardId(id: String?) = id?.let { CardId(it) } ?: CardId.NONE
 
 private fun toDictionaryId(id: String?) = id?.let { DictionaryId(it) } ?: DictionaryId.NONE
 
-private fun CardResource?.toCardEntity(): CardEntity = CardEntity(
-    cardId = toCardId(this?.cardId),
-    dictionaryId = toDictionaryId(this?.dictionaryId),
-    word = this?.word ?: ""
+private fun CardResource.toCardEntity(): CardEntity = CardEntity(
+    cardId = toCardId(this.cardId),
+    dictionaryId = toDictionaryId(this.dictionaryId),
+    word = this.word ?: "",
+    partOfSpeech = this.partOfSpeech,
+    transcription = this.transcription,
+    translations = this.translations ?: emptyList(),
+    examples = this.examples ?: emptyList(),
+    details = this.details?.mapNotNull {
+        val k = it.key.toStage() ?: return@mapNotNull null
+        k to it.value
+    }?.toMap() ?: emptyMap(),
+    answered = this.answered,
 )
+
+private fun String.toStage(): Stage? {
+    return Stage.values().firstOrNull { it.stageName().equals(other = this, ignoreCase = true) }
+}
+
+private fun Stage.stageName(): String {
+    return name.replace("_", "-")
+}
 
 private fun CardUpdateResource?.toCardLearn(): CardLearn = CardLearn(
     cardId = toCardId(this?.cardId),

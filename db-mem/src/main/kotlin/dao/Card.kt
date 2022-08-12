@@ -8,7 +8,7 @@ data class Card(
     val partOfSpeech: String? = null,
     val details: String = "{}",
     val answered: Int? = null,
-    val translations: Set<Translation>,
-    val examples: Set<Example> = emptySet(),
+    val translations: List<Translation>,
+    val examples: List<Example> = emptyList(),
 )
 

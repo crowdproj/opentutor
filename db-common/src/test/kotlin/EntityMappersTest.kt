@@ -1,10 +1,9 @@
-package com.gitlab.sszuev.flashcards.core
+package com.gitlab.sszuev.flashcards.common
 
-import com.gitlab.sszuev.flashcards.core.utils.splitIntoWords
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-class NormalizersTest {
+internal class EntityMappersTest {
 
     companion object {
         private fun assertSplitWords(expectedSize: Int, givenString: String) {

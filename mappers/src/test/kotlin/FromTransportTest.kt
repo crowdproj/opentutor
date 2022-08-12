@@ -91,7 +91,13 @@ class FromTransportTest {
     fun `test fromCreateCardRequest`() {
         val card = CardResource(
             dictionaryId = "42",
-            word = "test"
+            word = "test",
+            partOfSpeech = "pos",
+            transcription = "test",
+            answered = 42,
+            translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+            examples = listOf("example1", "example2"),
+            details = mapOf("options" to 42, "self-test" to 21)
         )
         val req = CreateCardRequest(
             requestId = "req3",
@@ -118,7 +124,13 @@ class FromTransportTest {
         val card = CardResource(
             cardId = "C",
             dictionaryId = "D",
-            word = "test"
+            word = "test",
+            partOfSpeech = "pos",
+            transcription = "test",
+            answered = 42,
+            translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+            examples = listOf("example1", "example2"),
+            details = mapOf("options" to 42, "self-test" to 21)
         )
         val req = CreateCardRequest(
             requestId = "req4",

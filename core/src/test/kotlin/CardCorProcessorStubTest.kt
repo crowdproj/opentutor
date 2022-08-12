@@ -101,7 +101,7 @@ internal class CardCorProcessorStubTest {
         context.requestCardEntity = testCard
         processor.execute(context)
         assertFail(context)
-        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+        Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
     }
 
     @Test
@@ -122,7 +122,7 @@ internal class CardCorProcessorStubTest {
         context.requestCardEntity = testCard
         processor.execute(context)
         assertFail(context, stubErrorForCode(case))
-        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+        Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
     }
 
     @Test
@@ -140,7 +140,7 @@ internal class CardCorProcessorStubTest {
         context.requestCardFilter = testCardFilter
         processor.execute(context)
         assertFail(context)
-        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+        Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
     }
 
     @ParameterizedTest
@@ -231,7 +231,7 @@ internal class CardCorProcessorStubTest {
         context.requestCardEntityId = testCard.cardId
         processor.execute(context)
         assertSuccess(context)
-        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+        Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
     }
 
     @ParameterizedTest
@@ -248,7 +248,7 @@ internal class CardCorProcessorStubTest {
         context.requestCardEntity = testCard
         processor.execute(context)
         assertFail(context, stubErrorForCode(AppStub.ERROR_WRONG_CARD_ID))
-        Assertions.assertEquals(CardEntity.DUMMY, context.responseCardEntity)
+        Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
     }
 
     @Test

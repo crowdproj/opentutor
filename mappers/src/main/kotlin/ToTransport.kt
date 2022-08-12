@@ -82,13 +82,19 @@ fun CardContext.toResetCardResponse() = ResetCardResponse(
 )
 
 private fun CardEntity.toCardResource(): CardResource? {
-    if (this == CardEntity.DUMMY) {
+    if (this == CardEntity.EMPTY) {
         return null
     }
     return CardResource(
         cardId = cardId.takeIf { it != CardId.NONE }?.asString(),
         dictionaryId = dictionaryId.takeIf { it != DictionaryId.NONE }?.asString(),
-        word = word
+        word = word,
+        partOfSpeech = partOfSpeech,
+        transcription = transcription,
+        translations = translations,
+        examples = examples,
+        details = details.mapKeys { it.key.name },
+        answered = answered,
     )
 }
 

@@ -7,10 +7,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.Result
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -26,7 +23,14 @@ class ToTransportTest {
             responseCardEntity = CardEntity(
                 cardId = CardId("card=42"),
                 dictionaryId = DictionaryId("dictionary=42"),
-                word = "xxx"
+                word = "xxx",
+                partOfSpeech = "pos",
+                transcription = "test",
+                answered = 42,
+                translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+                examples = listOf("example1", "example2"),
+                details = mapOf(Stage.MOSAIC to 42, Stage.SELF_TEST to 21)
+
             ),
             errors = mutableListOf(
                 AppError(

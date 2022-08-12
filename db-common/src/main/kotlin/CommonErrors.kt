@@ -1,14 +1,6 @@
 package com.gitlab.sszuev.flashcards.common
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-
-fun DictionaryId.asDbId(): Long {
-    if (asString().matches("\\d+".toRegex())) {
-        return asString().toLong()
-    }
-    throw IllegalArgumentException("Wrong dictionary id ${asString()}.")
-}
 
 fun notFoundDbError(
     operation: String,

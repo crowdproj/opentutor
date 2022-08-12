@@ -63,9 +63,9 @@ class LingvoDictionaryReader(private val ids: IdSequences = IdSequences()) : Dic
             null
         }
         val translations = DOMUtils.elements(DOMUtils.getElement(node, "translations"), "word")
-            .map { parseTranslation(it, cardId) }.toSet()
+            .map { parseTranslation(it, cardId) }.toList()
         val examples = DOMUtils.findElement(node, "examples")
-            ?.let { e -> DOMUtils.elements(e, "example").map { parseExample(it, cardId) }.toSet() } ?: emptySet()
+            ?.let { e -> DOMUtils.elements(e, "example").map { parseExample(it, cardId) }.toList() } ?: emptyList()
         return Card(
             id = cardId,
             dictionaryId = dictionaryId,
