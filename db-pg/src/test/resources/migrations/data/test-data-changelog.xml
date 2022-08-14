@@ -47,4 +47,9 @@
         </loadData>
     </changeSet>
 
+    <changeSet id="test-data-sequences" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="data-sequences.sql"/>
+        <comment>Seq next data sequence primary keys</comment>
+    </changeSet>
+
 </databaseChangeLog>

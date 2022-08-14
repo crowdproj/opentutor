@@ -5,5 +5,5 @@ data class Dictionary(
     val name: String,
     val sourceLanguage: Language,
     val targetLanguage: Language,
-    val cards: List<Card>,
+    val cards: MutableMap<Long, Card>,
 )

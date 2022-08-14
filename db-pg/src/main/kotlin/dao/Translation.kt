@@ -6,5 +6,6 @@ import org.jetbrains.exposed.dao.id.EntityID
 
 class Translation(id: EntityID<Long>) : Entity<Long>(id) {
     companion object : EntityClass<Long, Translation>(Translations)
+    var cardId by Translations.cardId
     var text by Translations.text
 }

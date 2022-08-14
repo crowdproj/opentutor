@@ -6,5 +6,6 @@ import org.jetbrains.exposed.dao.id.EntityID
 
 class Example(id: EntityID<Long>): Entity<Long>(id) {
     companion object : EntityClass<Long, Example>(Examples)
+    var cardId by Examples.cardId
     var text by Examples.text
 }

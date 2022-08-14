@@ -13,6 +13,6 @@ class Card(id: EntityID<Long>) : Entity<Long>(id) {
     var partOfSpeech by Cards.partOfSpeech
     var details by Cards.details
     var answered by Cards.answered
-    val examples by Example referrersOn Examples.card
-    val translations by Translation referrersOn Translations.card
+    val examples by Example referrersOn Examples.cardId
+    val translations by Translation referrersOn Translations.cardId
 }

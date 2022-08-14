@@ -40,7 +40,7 @@ class LingvoDictionaryWriter(private val config: MemDbConfig) : DictionaryWriter
         dictionary.cards.forEach { card ->
             val element = res.createElement("card")
             root.appendChild(element)
-            writeCard(element, card)
+            writeCard(element, card.value)
         }
         return res
     }

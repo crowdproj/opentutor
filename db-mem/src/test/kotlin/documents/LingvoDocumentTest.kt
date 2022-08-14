@@ -18,11 +18,16 @@ internal class LingvoDocumentTest {
     companion object {
         private val LOGGER = LoggerFactory.getLogger(LingvoDocumentTest::class.java)
 
-        private val parser: DictionaryReader = LingvoDictionaryReader()
-        private val writer: DictionaryWriter = LingvoDictionaryWriter(MemDbConfig(numberOfRightAnswers = 5))
-
         private fun normalize(s: String): String {
             return s.replace("[\n\r\t]".toRegex(), "")
+        }
+
+        private fun createParser(): DictionaryReader {
+            return LingvoDictionaryReader(ids = IdSequences())
+        }
+
+        private fun createWriter(): DictionaryWriter {
+            return LingvoDictionaryWriter(config = MemDbConfig(numberOfRightAnswers = 5))
         }
 
         @Suppress("SameParameterValue")
@@ -37,7 +42,7 @@ internal class LingvoDocumentTest {
         }
 
         private fun readResourceDictionary(name: String): Dictionary {
-            return LingvoDocumentTest::class.java.getResourceAsStream(name)!!.use { parser.parse(it) }
+            return LingvoDocumentTest::class.java.getResourceAsStream(name)!!.use { createParser().parse(it) }
         }
 
         private fun assertDictionary(expected: Dictionary, actual: Dictionary) {
@@ -45,9 +50,9 @@ internal class LingvoDocumentTest {
             Assertions.assertEquals(expected.cards.size, actual.cards.size)
             Assertions.assertEquals(expected.targetLanguage.id, actual.targetLanguage.id)
             Assertions.assertEquals(expected.sourceLanguage.id, actual.sourceLanguage.id)
-            for (i in expected.cards.indices) {
-                val expectedCard = expected.cards[i]
-                val actualCard = actual.cards[i]
+            for (i in expected.cards.keys) {
+                val expectedCard = expected.cards[i]!!
+                val actualCard = actual.cards[i]!!
                 Assertions.assertEquals(expectedCard.text, actualCard.text)
                 Assertions.assertEquals(expectedCard.transcription, actualCard.transcription)
                 Assertions.assertEquals(expectedCard.details, actualCard.details)
@@ -125,10 +130,10 @@ internal class LingvoDocumentTest {
             name = "The Test Dictionary",
             sourceLanguage = Language("en", "xxx"),
             targetLanguage = Language("ru", "xxx"),
-            cards = listOf(card1, card2, card3)
+            cards = mutableMapOf(card1.id to card1, card2.id to card2, card3.id to card3)
         )
         val out = ByteArrayOutputStream()
-        writer.write(dictionary, out)
+        createWriter().write(dictionary, out)
         val txt = out.toString(StandardCharsets.UTF_16)
         LOGGER.info("\n{}", txt)
         val actual = normalize(txt)
@@ -140,7 +145,7 @@ internal class LingvoDocumentTest {
         // word + translations must be unique
         val cards: MutableSet<String> = HashSet()
         val dic = readResourceDictionary("/data/BusinessEnRu.xml")
-        dic.cards.forEach { c ->
+        dic.cards.values.forEach { c ->
             val w = toKey(c)
             LOGGER.info("{}", w)
             Assertions.assertTrue(cards.add(w))
@@ -153,8 +158,8 @@ internal class LingvoDocumentTest {
     fun `test read-write round trip`(@TempDir dir: Path) {
         val orig = readResourceDictionary("/data/WeatherEnRu.xml")
         val tmp = dir.resolve("test-WeatherEnRu.xml")
-        Files.newOutputStream(tmp).use { writer.write(orig, it) }
-        val reload = Files.newInputStream(tmp).use { parser.parse(it) }
+        Files.newOutputStream(tmp).use { createWriter().write(orig, it) }
+        val reload = Files.newInputStream(tmp).use { createParser().parse(it) }
         assertDictionary(orig, reload)
     }
 }

@@ -11,7 +11,7 @@ import javax.xml.XMLConstants
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
-class LingvoDictionaryReader(private val ids: IdSequences = IdSequences()) : DictionaryReader {
+class LingvoDictionaryReader(private val ids: IdSequences) : DictionaryReader {
 
     override fun parse(input: InputStream): Dictionary {
         return try {
@@ -40,8 +40,9 @@ class LingvoDictionaryReader(private val ids: IdSequences = IdSequences()) : Dic
         )
     }
 
-    private fun parseCardList(root: Element, dictionaryId: Long): List<Card> {
-        return DOMUtils.elements(root, "card").flatMap { parseMeanings(it, dictionaryId) }.toList()
+    private fun parseCardList(root: Element, dictionaryId: Long): MutableMap<Long, Card> {
+        return DOMUtils.elements(root, "card").flatMap { parseMeanings(it, dictionaryId) }
+            .associateBy { it.id }.toMutableMap()
     }
 
     private fun parseMeanings(node: Element, dictionaryId: Long): Sequence<Card> {

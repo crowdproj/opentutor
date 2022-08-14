@@ -17,4 +17,10 @@
                   usePreparedStatements="true">
         </loadData>
     </changeSet>
+
+    <changeSet id="init-data-users-sequence" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="users-sequence.sql"/>
+        <comment>Seq next users sequence primary key</comment>
+    </changeSet>
+
 </databaseChangeLog>

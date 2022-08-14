@@ -3,12 +3,19 @@ package com.gitlab.sszuev.flashcards.common
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 
 private val mapper: ObjectMapper = ObjectMapper()
 private val detailsTypeReference: TypeReference<Map<Stage, Long>> =
     object : TypeReference<Map<Stage, Long>>() {}
+
+fun requireNew(entity: CardEntity) {
+    require(entity.cardId == CardId.NONE) { "Specified card-id=${entity.cardId}, expected=none" }
+    require(entity.dictionaryId != DictionaryId.NONE) { "Dictionary id is required" }
+}
 
 fun DictionaryId.asDbId(): Long {
     if (asString().matches("\\d+".toRegex())) {
@@ -38,15 +45,15 @@ fun toDbRecordDetails(details: Map<Stage, Long>): String {
 /**
  * TODO: PG impl should contain JSON, not plain text
  */
-fun toEntityTranslations(fromDb: List<String>): List<List<String>> {
-    return fromDb.map { splitIntoWords(it) }
+fun toEntityTranslations(fromDb: String): List<String> {
+    return splitIntoWords(fromDb)
 }
 
 /**
  * TODO: PG impl should contain JSON, not plain text
  */
-fun toDbRecordTranslations(fromCore: List<List<String>>): List<String> {
-    return fromCore.map { it.joinToString(",") }
+fun toDbRecordTranslations(fromCore: List<String>): String {
+    return fromCore.joinToString(",")
 }
 
 /**

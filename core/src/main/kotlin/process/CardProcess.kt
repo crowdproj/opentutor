@@ -30,3 +30,27 @@ fun ChainDSL<CardContext>.processGetAllCardsRequest() = worker {
         )
     }
 }
+
+
+fun ChainDSL<CardContext>.processCreateRequest() = worker {
+    this.name = "process create-card-request"
+    process {
+        val res = this.repositories.cardRepository.createCard(this.normalizedRequestCardEntity)
+        if (res.errors.isNotEmpty()) {
+            this.errors.addAll(res.errors)
+            this.status = AppStatus.FAIL
+        } else {
+            this.responseCardEntity = res.card
+            this.status = AppStatus.OK
+        }
+    }
+    onException {
+        fail(
+            runError(
+                operation = CardOperation.CREATE_CARD,
+                description = "exception",
+                exception = it
+            )
+        )
+    }
+}
