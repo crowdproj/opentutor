@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.dbmem.documents.impl
 
-import com.gitlab.sszuev.flashcards.dbmem.MemDbConfig
+import com.gitlab.sszuev.flashcards.common.CardStatus
+import com.gitlab.sszuev.flashcards.common.SysConfig
+import com.gitlab.sszuev.flashcards.common.status
 import com.gitlab.sszuev.flashcards.dbmem.dao.Card
 import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
 import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryWriter
@@ -13,7 +15,7 @@ import javax.xml.transform.*
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-class LingvoDictionaryWriter(private val config: MemDbConfig) : DictionaryWriter {
+class LingvoDictionaryWriter(private val config: SysConfig) : DictionaryWriter {
 
     override fun write(dictionary: Dictionary, output: OutputStream) {
         val document = toXmlDocument(dictionary)
@@ -67,15 +69,8 @@ class LingvoDictionaryWriter(private val config: MemDbConfig) : DictionaryWriter
         val doc = meaning.ownerDocument
         val statistics = doc.createElement("statistics")
         meaning.appendChild(statistics)
-        val status: Status
-        if (card.answered == null) {
-            status = Status.UNKNOWN
-        } else {
-            status = if (card.answered >= config.numberOfRightAnswers) {
-                Status.LEARNED
-            } else {
-                Status.IN_PROCESS
-            }
+        val status: CardStatus = config.status(card.answered)
+        if (card.answered != null) {
             statistics.setAttribute("answered", card.answered.toString())
         }
         statistics.setAttribute("status", LingvoMappings.fromStatus(status))

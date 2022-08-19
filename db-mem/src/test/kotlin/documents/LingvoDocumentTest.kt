@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem.documents
 
-import com.gitlab.sszuev.flashcards.dbmem.MemDbConfig
+import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.dbmem.dao.*
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryReader
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryWriter
@@ -27,7 +27,7 @@ internal class LingvoDocumentTest {
         }
 
         private fun createWriter(): DictionaryWriter {
-            return LingvoDictionaryWriter(config = MemDbConfig(numberOfRightAnswers = 5))
+            return LingvoDictionaryWriter(config = SysConfig(numberOfRightAnswers = 5))
         }
 
         @Suppress("SameParameterValue")

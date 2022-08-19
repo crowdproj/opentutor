@@ -43,4 +43,24 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(res.cards)
         Assertions.assertEquals(65, res.cards!!.size)
     }
+
+
+    @Test
+    fun `test search-cards success`() = testApplication {
+        val requestBody = SearchCardsRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            dictionaryIds = listOf("1", "2"),
+            random = false,
+            length = 2,
+        )
+        val response = testPost("/v1/api/cards/search", requestBody)
+        val res = response.body<SearchCardsResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
+        Assertions.assertNotNull(res.cards)
+        Assertions.assertEquals(2, res.cards!!.size)
+    }
 }

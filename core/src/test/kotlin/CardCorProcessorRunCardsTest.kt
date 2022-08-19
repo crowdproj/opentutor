@@ -5,10 +5,7 @@ import com.gitlab.sszuev.flashcards.dbcommon.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 import com.gitlab.sszuev.flashcards.stubs.stubCard
@@ -31,6 +28,17 @@ internal class CardCorProcessorRunCardsTest {
 
         private fun requestId(op: CardOperation, mode: AppMode = AppMode.TEST): AppRequestId {
             return AppRequestId("for-$op:$mode")
+        }
+
+        private fun assertError(context: CardContext, op: CardOperation) {
+            Assertions.assertEquals(requestId(op), context.requestId)
+            Assertions.assertEquals(AppStatus.FAIL, context.status)
+            Assertions.assertEquals(1, context.errors.size)
+            val error = context.errors[0]
+            Assertions.assertEquals("run::$op", error.code)
+            Assertions.assertEquals("run", error.group)
+            Assertions.assertEquals("Error while $op: exception", error.message)
+            Assertions.assertInstanceOf(TestException::class.java, error.exception)
         }
 
         private class TestException : RuntimeException()
@@ -80,15 +88,8 @@ internal class CardCorProcessorRunCardsTest {
         CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
 
         Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
-        Assertions.assertEquals(AppStatus.FAIL, context.status)
-        Assertions.assertEquals(1, context.errors.size)
         Assertions.assertEquals(0, context.responseCardEntityList.size)
-        val error = context.errors[0]
-        Assertions.assertEquals("run::${CardOperation.GET_ALL_CARDS}", error.code)
-        Assertions.assertEquals("run", error.group)
-        Assertions.assertEquals(testDictionaryId.asString(), error.field)
-        Assertions.assertEquals("Error while GET_ALL_CARDS: exception", error.message)
-        Assertions.assertInstanceOf(TestException::class.java, error.exception)
+        assertError(context, CardOperation.GET_ALL_CARDS)
     }
 
     @Test
@@ -130,14 +131,64 @@ internal class CardCorProcessorRunCardsTest {
         CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
 
         Assertions.assertEquals(requestId(CardOperation.CREATE_CARD), context.requestId)
-        Assertions.assertEquals(AppStatus.FAIL, context.status)
-        Assertions.assertEquals(1, context.errors.size)
         Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
-        val error = context.errors[0]
-        Assertions.assertEquals("run::${CardOperation.CREATE_CARD}", error.code)
-        Assertions.assertEquals("run", error.group)
-        Assertions.assertEquals("Error while CREATE_CARD: exception", error.message)
-        Assertions.assertInstanceOf(TestException::class.java, error.exception)
+        assertError(context, CardOperation.CREATE_CARD)
+    }
+
+    @Test
+    fun `test search-cards success`() = runTest {
+        val testFilter = CardFilter(
+            dictionaryIds = listOf(DictionaryId("21"), DictionaryId("42")),
+            random = true,
+            withUnknown = true,
+            length = 42,
+        )
+        val testResponseEntities = stubCards
+
+        val repository = MockDbCardRepository(
+            invokeSearchCards = {
+                CardEntitiesDbResponse(if (it == testFilter) testResponseEntities else emptyList())
+            }
+        )
+
+        val context = testContext(CardOperation.SEARCH_CARDS)
+        context.requestCardFilter = testFilter
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.SEARCH_CARDS), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+
+        Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
+    }
+
+    @Test
+    fun `test search-cards unexpected fail`() = runTest {
+        val testFilter = CardFilter(
+            dictionaryIds = listOf(DictionaryId("42")),
+            random = false,
+            withUnknown = false,
+            length = 1,
+        )
+        val testResponseEntities = stubCards
+
+        val repository = MockDbCardRepository(
+            invokeSearchCards = {
+                CardEntitiesDbResponse(
+                    if (it != testFilter)
+                        testResponseEntities
+                    else throw TestException()
+                )
+            }
+        )
+
+        val context = testContext(CardOperation.SEARCH_CARDS)
+        context.requestCardFilter = testFilter
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        Assertions.assertEquals(0, context.responseCardEntityList.size)
+        assertError(context, CardOperation.SEARCH_CARDS)
     }
 
 }

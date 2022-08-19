@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem.documents.impl
 
+import com.gitlab.sszuev.flashcards.common.CardStatus
 import com.gitlab.sszuev.flashcards.dbmem.dao.*
 import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryReader
 import org.w3c.dom.Element
@@ -57,8 +58,8 @@ class LingvoDictionaryReader(private val ids: IdSequences) : DictionaryReader {
         val id = node.getAttribute("partOfSpeech")
         val pos: String? = if (id.isBlank()) null else LingvoMappings.toPartOfSpeechTag(id)
         val statistics = DOMUtils.getElement(node, "statistics")
-        val status: Status = LingvoMappings.toStatus(statistics.getAttribute("status"))
-        val answered: Int? = if (status != Status.UNKNOWN) {
+        val status: CardStatus = LingvoMappings.toStatus(statistics.getAttribute("status"))
+        val answered: Int? = if (status != CardStatus.UNKNOWN) {
             statistics.getAttribute("answered").takeIf { it.matches("\\d+".toRegex()) }?.toInt() ?: 0
         } else { // in case of status=4 there is some big number
             null

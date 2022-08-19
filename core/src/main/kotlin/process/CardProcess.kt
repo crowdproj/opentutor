@@ -31,7 +31,6 @@ fun ChainDSL<CardContext>.processGetAllCardsRequest() = worker {
     }
 }
 
-
 fun ChainDSL<CardContext>.processCreateRequest() = worker {
     this.name = "process create-card-request"
     process {
@@ -48,6 +47,29 @@ fun ChainDSL<CardContext>.processCreateRequest() = worker {
         fail(
             runError(
                 operation = CardOperation.CREATE_CARD,
+                description = "exception",
+                exception = it
+            )
+        )
+    }
+}
+
+fun ChainDSL<CardContext>.processCardSearchRequest() = worker {
+    this.name = "process card-search-request"
+    process {
+        val res = this.repositories.cardRepository.searchCard(this.normalizedRequestCardFilter)
+        if (res.errors.isNotEmpty()) {
+            this.errors.addAll(res.errors)
+            this.status = AppStatus.FAIL
+        } else {
+            this.responseCardEntityList = res.cards
+            this.status = AppStatus.OK
+        }
+    }
+    onException {
+        fail(
+            runError(
+                operation = CardOperation.SEARCH_CARDS,
                 description = "exception",
                 exception = it
             )

@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
+import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.common.asDbId
 import com.gitlab.sszuev.flashcards.common.dbError
 import com.gitlab.sszuev.flashcards.common.notFoundDbError
@@ -8,17 +9,21 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.Example
 import com.gitlab.sszuev.flashcards.dbpg.dao.Translation
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import org.jetbrains.exposed.dao.with
-import org.jetbrains.exposed.sql.Transaction
+import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import java.sql.SQLException
 
-class PgDbCardRepository(config: PgDbConfig = PgDbConfig()) : DbCardRepository {
-    private val connection = PgDbConnector(config).connection
+class PgDbCardRepository(
+    dbConfig: PgDbConfig = PgDbConfig(),
+    private val sysConfig: SysConfig = SysConfig(),
+) : DbCardRepository {
+    private val connection = PgDbConnector(dbConfig).connection
 
     override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
         return execute {
@@ -60,6 +65,24 @@ class PgDbCardRepository(config: PgDbConfig = PgDbConfig()) : DbCardRepository {
             }
             CardEntityDbResponse(card = CardEntity.EMPTY, errors = listOf(error))
         })
+    }
+
+    override fun searchCard(filter: CardFilter): CardEntitiesDbResponse {
+        val dictionaryIds = filter.dictionaryIds.map { it.asDbId() }
+        val learned = sysConfig.numberOfRightAnswers
+        val random = CustomFunction<Double>("random", DoubleColumnType())
+        return execute {
+            val cards = Card.find {
+                Cards.dictionaryId inList dictionaryIds and
+                        (if (filter.withUnknown) Op.TRUE else Cards.answered.isNull() or Cards.answered.lessEq(learned))
+            }.orderBy(random to SortOrder.ASC)
+                .orderBy(Cards.dictionaryId to SortOrder.ASC)
+                .limit(filter.length)
+                .with(Card::examples)
+                .with(Card::translations)
+                .map { it.toEntity() }
+            CardEntitiesDbResponse(cards = cards)
+        }
     }
 
     private fun <R> execute(statement: Transaction.() -> R): R {

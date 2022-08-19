@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
@@ -38,7 +39,10 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals("database::getAllCards", error.code)
         Assertions.assertEquals(dictionaryId, error.field)
         Assertions.assertEquals("database", error.group)
-        Assertions.assertEquals("""Error while getAllCards: dictionary with id="$dictionaryId" not found""", error.message)
+        Assertions.assertEquals(
+            """Error while getAllCards: dictionary with id="$dictionaryId" not found""",
+            error.message
+        )
         Assertions.assertNull(error.exception)
     }
 
@@ -84,8 +88,30 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals("database::createCard", error.code)
         Assertions.assertEquals(dictionaryId, error.field)
         Assertions.assertEquals("database", error.group)
-        Assertions.assertEquals("""Error while createCard: dictionary with id="$dictionaryId" not found""", error.message)
+        Assertions.assertEquals(
+            """Error while createCard: dictionary with id="$dictionaryId" not found""",
+            error.message
+        )
         Assertions.assertNull(error.exception)
     }
 
+    @Test
+    fun `test search cards random with unknown`() {
+        val filter = CardFilter(
+            dictionaryIds = listOf(DictionaryId("1"), DictionaryId("2"), DictionaryId("3")),
+            withUnknown = true,
+            random = true,
+            length = 300,
+        )
+        val res1 = repository.searchCard(filter)
+        val res2 = repository.searchCard(filter)
+
+        Assertions.assertEquals(0, res1.errors.size)
+        Assertions.assertEquals(0, res2.errors.size)
+        Assertions.assertEquals(300, res1.cards.size)
+        Assertions.assertEquals(300, res2.cards.size)
+        Assertions.assertNotEquals(res1, res2)
+        Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res1.cards.map { it.dictionaryId }.toSet())
+        Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res2.cards.map { it.dictionaryId }.toSet())
+    }
 }

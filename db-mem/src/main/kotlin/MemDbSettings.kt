@@ -10,7 +10,6 @@ object MemDbSettings {
     private val conf: Config = ConfigFactory.load()
 
     val dataLocation = conf.get(key = "db-mem.data-directory", default = "./db-data")
-    val numberOfRightAnswers = conf.get(key = "app.tutor.run.answers", default = 10)
     val dataFlushPeriodInMs = conf.get(key = "db-mem.data-flush-period-in-ms", default = 1000L)
 
     init {
@@ -21,17 +20,12 @@ object MemDbSettings {
         return """
             |
             |data-location                  = $dataLocation
-            |number-of-right-answers        = $numberOfRightAnswers
             |data-flush-period-in-ms        = $dataFlushPeriodInMs
             """.replaceIndentByMargin("\t")
     }
 
     private fun Config.get(key: String, default: String): String {
         return if (hasPath(key)) getString(key) else default
-    }
-
-    private fun Config.get(key: String, default: Int): Int {
-        return if (hasPath(key)) getInt(key) else default
     }
 
     private fun Config.get(key: String, default: Long): Long {

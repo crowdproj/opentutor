@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.IdSequences
 import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryWriter
@@ -25,7 +26,8 @@ import kotlin.streams.asSequence
 class DictionaryStore private constructor(
     private val resources: MutableMap<Long, Pair<Path, Dictionary>>,
     internal val ids: IdSequences,
-    config: MemDbConfig,
+    dbConfig: MemDbConfig,
+    sysConfig: SysConfig,
 ) {
 
     val size: Long
@@ -36,10 +38,10 @@ class DictionaryStore private constructor(
      */
     private val dictionariesToFlush = ConcurrentHashMap<Long, Pair<Path, Dictionary>>()
 
-    private val writer: DictionaryWriter = LingvoDictionaryWriter(config)
+    private val writer: DictionaryWriter = LingvoDictionaryWriter(sysConfig)
 
     init {
-        timer("flush-data-to-disk", daemon = true, period = config.dataFlushPeriodInMs) {
+        timer("flush-data-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
             dictionariesToFlush.keys.toList().mapNotNull { dictionariesToFlush.remove(it) }.forEach {
                 logger.debug("Save dictionary ${it.second.id} to disk.")
                 Files.newOutputStream(it.first).use { out ->
@@ -80,19 +82,21 @@ class DictionaryStore private constructor(
         fun load(
             location: Path,
             ids: IdSequences = globalIdsGenerator,
-            config: MemDbConfig = MemDbConfig()
+            dbConfig: MemDbConfig = MemDbConfig(),
+            sysConfig: SysConfig = SysConfig(),
         ): DictionaryStore {
             return stores.computeIfAbsent(location.toString()) {
-                DictionaryStore(loadDatabaseFromDirectory(it, ids), ids, config)
+                DictionaryStore(loadDatabaseFromDirectory(it, ids), ids, dbConfig, sysConfig)
             }
         }
 
         fun load(
             location: String,
             ids: IdSequences = globalIdsGenerator,
-            config: MemDbConfig = MemDbConfig()
+            dbConfig: MemDbConfig = MemDbConfig(),
+            sysConfig: SysConfig = SysConfig(),
         ): DictionaryStore {
-            return stores.computeIfAbsent(location) { DictionaryStore(loadDatabase(it, ids), ids, config) }
+            return stores.computeIfAbsent(location) { DictionaryStore(loadDatabase(it, ids), ids, dbConfig, sysConfig) }
         }
 
         private fun loadDatabase(location: String, ids: IdSequences): MutableMap<Long, Pair<Path, Dictionary>> {

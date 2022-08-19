@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
@@ -13,6 +14,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 class MockDbCardRepository(
     private val invokeGetAllCards: (DictionaryId) -> CardEntitiesDbResponse = { CardEntitiesDbResponse.EMPTY },
     private val invokeCreateCard: (CardEntity) -> CardEntityDbResponse = { CardEntityDbResponse.EMPTY },
+    private val invokeSearchCards: (CardFilter) -> CardEntitiesDbResponse = { CardEntitiesDbResponse.EMPTY },
 ) : DbCardRepository {
 
     override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
@@ -21,5 +23,9 @@ class MockDbCardRepository(
 
     override fun createCard(card: CardEntity): CardEntityDbResponse {
         return invokeCreateCard(card)
+    }
+
+    override fun searchCard(filter: CardFilter): CardEntitiesDbResponse {
+        return invokeSearchCards(filter)
     }
 }
