@@ -356,6 +356,10 @@ components:
     CreateCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
 
     UpdateCardRequest:
       allOf:
@@ -369,6 +373,10 @@ components:
     UpdateCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
 
     LearnCardRequest:
       allOf:
@@ -384,6 +392,10 @@ components:
     LearnCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
 
     DeleteCardRequest:
       allOf:
@@ -410,6 +422,10 @@ components:
     ResetCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
 
     BaseRequest:
       type: object

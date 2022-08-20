@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.testPost
 import io.ktor.client.call.*
@@ -44,6 +46,38 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(65, res.cards!!.size)
     }
 
+    @Test
+    fun `test create-card success`() = testApplication {
+        val expectedCard = CardEntity(
+            dictionaryId = DictionaryId("1"),
+            word = "rainy",
+            transcription = "ˈreɪnɪ",
+            translations = listOf(listOf("дождливый")),
+        )
+        val requestBody = CreateCardRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            card = CardResource(
+                dictionaryId = expectedCard.dictionaryId.asString(),
+                word = expectedCard.word,
+                transcription = expectedCard.transcription,
+                translations = expectedCard.translations,
+            )
+        )
+        val response = testPost("/v1/api/cards/create", requestBody)
+        val res = response.body<CreateCardResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
+        Assertions.assertNotNull(res.card)
+        Assertions.assertNotNull(res.card!!.cardId)
+        Assertions.assertEquals(expectedCard.dictionaryId.asString(), res.card!!.dictionaryId)
+        Assertions.assertEquals(expectedCard.word, res.card!!.word)
+        Assertions.assertEquals(expectedCard.transcription, res.card!!.transcription)
+        Assertions.assertEquals(expectedCard.translations, res.card!!.translations!!)
+        Assertions.assertTrue(res.card!!.examples!!.isEmpty())
+    }
 
     @Test
     fun `test search-cards success`() = testApplication {

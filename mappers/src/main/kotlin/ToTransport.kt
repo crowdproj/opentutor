@@ -52,12 +52,14 @@ fun CardContext.toSearchCardsResponse() = SearchCardsResponse(
 )
 
 fun CardContext.toCreateCardResponse() = CreateCardResponse(
+    card = this.responseCardEntity.toCardResource(),
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
 )
 
 fun CardContext.toUpdateCardResponse() = UpdateCardResponse(
+    card = this.responseCardEntity.toCardResource(),
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
@@ -70,12 +72,14 @@ fun CardContext.toDeleteCardResponse() = DeleteCardResponse(
 )
 
 fun CardContext.toLearnCardResponse() = LearnCardResponse(
+    card = this.responseCardEntity.toCardResource(),
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
 )
 
 fun CardContext.toResetCardResponse() = ResetCardResponse(
+    card = this.responseCardEntity.toCardResource(),
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),

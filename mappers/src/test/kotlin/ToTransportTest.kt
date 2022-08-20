@@ -1,9 +1,7 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
-import com.gitlab.sszuev.flashcards.api.v1.models.ErrorResource
-import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -132,14 +130,21 @@ class ToTransportTest {
         names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "LEARN_CARD", "RESET_CARD"]
     )
     fun `test toCreateUpdateCardResponse`(op: CardOperation) {
+        val responseEntity = CardResource(
+            cardId = "A",
+            dictionaryId = "G",
+            word = "xxx",
+            details = emptyMap(),
+            translations = emptyList(),
+            examples = emptyList(),
+        )
         val context = CardContext(
             requestId = AppRequestId(op.name),
             operation = op,
-            responseCardEntity =
-            CardEntity(
-                cardId = CardId("A"),
-                dictionaryId = DictionaryId("G"),
-                word = "xxx"
+            responseCardEntity = CardEntity(
+                cardId = CardId(responseEntity.cardId!!),
+                dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
+                word = responseEntity.word!!
             ),
             errors = mutableListOf(),
             status = AppStatus.OK
@@ -149,13 +154,24 @@ class ToTransportTest {
             CardOperation.CREATE_CARD -> context.toCreateCardResponse()
             CardOperation.DELETE_CARD -> context.toDeleteCardResponse()
             CardOperation.LEARN_CARD -> context.toLearnCardResponse()
-            CardOperation.RESET_CARD-> context.toResetCardResponse()
+            CardOperation.RESET_CARD -> context.toResetCardResponse()
             else -> throw IllegalArgumentException()
         }
 
         Assertions.assertEquals(context.requestId.asString(), res.requestId)
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNull(res.errors)
+        val card = when (op) {
+            CardOperation.UPDATE_CARD -> (res as UpdateCardResponse).card!!
+            CardOperation.CREATE_CARD -> (res as CreateCardResponse).card!!
+            CardOperation.LEARN_CARD -> (res as LearnCardResponse).card!!
+            CardOperation.RESET_CARD -> (res as ResetCardResponse).card!!
+            else -> {
+                return
+            }
+        }
+        Assertions.assertNotSame(responseEntity, card)
+        Assertions.assertEquals(responseEntity, card)
     }
 
     private fun assertError(expected: AppError, actual: ErrorResource) {
