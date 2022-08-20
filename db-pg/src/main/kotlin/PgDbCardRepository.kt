@@ -1,15 +1,10 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.common.SysConfig
-import com.gitlab.sszuev.flashcards.common.asDbId
-import com.gitlab.sszuev.flashcards.common.dbError
-import com.gitlab.sszuev.flashcards.common.notFoundDbError
-import com.gitlab.sszuev.flashcards.dbpg.dao.Card
-import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
-import com.gitlab.sszuev.flashcards.dbpg.dao.Example
-import com.gitlab.sszuev.flashcards.dbpg.dao.Translation
+import com.gitlab.sszuev.flashcards.common.*
+import com.gitlab.sszuev.flashcards.dbpg.dao.*
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
@@ -25,6 +20,20 @@ class PgDbCardRepository(
 ) : DbCardRepository {
     private val connection = PgDbConnector(dbConfig).connection
 
+    override fun getCard(id: CardId): CardEntityDbResponse {
+        return execute {
+            val card = Card.findById(id.asDbId())
+            if (card == null) {
+                CardEntityDbResponse(
+                    card = CardEntity.EMPTY,
+                    errors = listOf(noCardFoundDbError(operation = "getCard", id = id))
+                )
+            } else {
+                CardEntityDbResponse(card = card.toEntity())
+            }
+        }
+    }
+
     override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
         return execute {
             val cards = Card.find {
@@ -32,39 +41,13 @@ class PgDbCardRepository(
             }.with(Card::examples).with(Card::translations).map { it.toEntity() }
 
             val errors = if (cards.isEmpty())
-                listOf(notFoundDbError(operation = "getAllCards", fieldName = id.asString()))
+                listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
             else emptyList()
             CardEntitiesDbResponse(
                 cards = cards,
                 errors = errors
             )
         }
-    }
-
-    override fun createCard(card: CardEntity): CardEntityDbResponse {
-        return execute({
-            val record = Card.new {
-                copyToDbEntityRecord(from = card, to = this)
-            }
-            card.examples.forEach {
-                Example.new {
-                    copyToDbExampleRecord(txt = it, card = record, to = this)
-                }
-            }
-            card.translations.forEach {
-                Translation.new {
-                    copyToDbTranslationRecord(txt = it, card = record, to = this)
-                }
-            }
-            CardEntityDbResponse(card = record.toEntity())
-        }, {
-            val error = if (this.message?.contains(UNKNOWN_DICTIONARY) == true) {
-                notFoundDbError(operation = "createCard", fieldName = card.dictionaryId.asString())
-            } else {
-                dbError(operation = "createCard", fieldName = card.cardId.asString(), exception = this)
-            }
-            CardEntityDbResponse(card = CardEntity.EMPTY, errors = listOf(error))
-        })
     }
 
     override fun searchCard(filter: CardFilter): CardEntitiesDbResponse {
@@ -82,6 +65,68 @@ class PgDbCardRepository(
                 .with(Card::translations)
                 .map { it.toEntity() }
             CardEntitiesDbResponse(cards = cards)
+        }
+    }
+
+    override fun createCard(card: CardEntity): CardEntityDbResponse {
+        return execute({
+            requireNew(card)
+            val record = Card.new {
+                copyToDbEntityRecord(from = card, to = this)
+            }
+            createExamplesAndTranslations(card, record)
+            CardEntityDbResponse(card = record.toEntity())
+        }, {
+            val error = if (this.message?.contains(UNKNOWN_DICTIONARY) == true) {
+                noDictionaryFoundDbError(operation = "createCard", card.dictionaryId)
+            } else {
+                dbError(operation = "createCard", fieldName = card.cardId.asString(), exception = this)
+            }
+            CardEntityDbResponse(card = CardEntity.EMPTY, errors = listOf(error))
+        })
+    }
+
+    override fun updateCard(card: CardEntity): CardEntityDbResponse {
+        return execute({
+            requireExiting(card)
+            Examples.deleteWhere {
+                Examples.cardId eq card.cardId.asDbId()
+            }
+            Translations.deleteWhere {
+                Translations.cardId eq card.cardId.asDbId()
+            }
+            val record = Card.findById(card.cardId.asRecordId())
+            if (record == null) {
+                CardEntityDbResponse(
+                    card = CardEntity.EMPTY,
+                    errors = listOf(noCardFoundDbError("updateCard", card.cardId))
+                )
+            } else {
+                copyToDbEntityRecord(from = card, to = record)
+                createExamplesAndTranslations(card, record)
+                CardEntityDbResponse(card = record.toEntity())
+            }
+        }, {
+            val error = if (this.message?.contains(UNKNOWN_DICTIONARY) == true) {
+                noDictionaryFoundDbError(operation = "updateCard", card.dictionaryId)
+            } else {
+                dbError(operation = "updateCard", fieldName = card.cardId.asString(), exception = this)
+            }
+            CardEntityDbResponse(card = CardEntity.EMPTY, errors = listOf(error))
+        })
+    }
+
+    private fun createExamplesAndTranslations(card: CardEntity, record: Card) {
+        // TODO: separated tables for examples and translations was a bad idea - need to fix it with json-column
+        card.examples.forEach {
+            Example.new {
+                copyToDbExampleRecord(txt = it, card = record, to = this)
+            }
+        }
+        card.translations.forEach {
+            Translation.new {
+                copyToDbTranslationRecord(txt = it, card = record, to = this)
+            }
         }
     }
 

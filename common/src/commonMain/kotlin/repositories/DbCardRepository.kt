@@ -3,16 +3,28 @@ package com.gitlab.sszuev.flashcards.repositories
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 /**
  * Database repository to work with cards.
  */
 interface DbCardRepository {
+
+    /**
+     * Gets card by id.
+     */
+    fun getCard(id: CardId): CardEntityDbResponse
+
     /**
      * Gets all cards by dictionaryId.
      */
     fun getAllCards(id: DictionaryId): CardEntitiesDbResponse
+
+    /**
+     * Searches cards by filter.
+     */
+    fun searchCard(filter: CardFilter): CardEntitiesDbResponse
 
     /**
      * Creates card.
@@ -20,9 +32,9 @@ interface DbCardRepository {
     fun createCard(card: CardEntity): CardEntityDbResponse
 
     /**
-     * Searches cards by filter.
+     * Updates.
      */
-    fun searchCard(filter: CardFilter): CardEntitiesDbResponse
+    fun updateCard(card: CardEntity): CardEntityDbResponse
 }
 
 data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError> = emptyList()) {

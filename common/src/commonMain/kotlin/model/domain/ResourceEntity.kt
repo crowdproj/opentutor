@@ -2,6 +2,9 @@ package com.gitlab.sszuev.flashcards.model.domain
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 
+/**
+ * Describes audio-resource.
+ */
 data class ResourceEntity(
     val resourceId: ResourceId = ResourceId.NONE,
     val data: ByteArray = ByteArray(0),

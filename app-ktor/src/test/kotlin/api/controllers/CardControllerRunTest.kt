@@ -47,6 +47,35 @@ internal class CardControllerRunTest {
     }
 
     @Test
+    fun `test get-card success`() = testApplication {
+        // deterministic dictionary,we know exactly what entity is coming back:
+        val requestBody = GetCardRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            cardId = "2",
+        )
+        val response = testPost("/v1/api/cards/get", requestBody)
+        val res = response.body<GetCardResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
+        Assertions.assertNotNull(res.card)
+        Assertions.assertEquals("weather", res.card!!.word)
+        Assertions.assertEquals("'weðə", res.card!!.transcription)
+        Assertions.assertEquals("NOUN", res.card!!.partOfSpeech)
+        Assertions.assertEquals(listOf(listOf("погода")), res.card!!.translations)
+        Assertions.assertEquals(listOf(
+            "weather forecast -- прогноз погоды",
+            "weather bureau -- бюро погоды",
+            "nasty weather -- ненастная погода",
+            "spell of cold weather -- похолодание"), res.card!!.examples)
+        Assertions.assertNull(res.card!!.sound)
+        Assertions.assertNull(res.card!!.answered)
+        Assertions.assertEquals(emptyMap<String, Long>(), res.card!!.details)
+    }
+
+    @Test
     fun `test create-card success`() = testApplication {
         val expectedCard = CardEntity(
             dictionaryId = DictionaryId("1"),
@@ -77,6 +106,34 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(expectedCard.transcription, res.card!!.transcription)
         Assertions.assertEquals(expectedCard.translations, res.card!!.translations!!)
         Assertions.assertTrue(res.card!!.examples!!.isEmpty())
+    }
+
+    @Test
+    fun `test update-card success`() = testApplication {
+        val requestBody = UpdateCardRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            card = CardResource(
+                cardId = "1",
+                dictionaryId = "1",
+                word = "climate",
+                transcription = "ˈklaɪmɪt",
+                translations = listOf(listOf("к-климат")),
+                examples = listOf("Create a climate of fear, and it's easy to keep the borders closed."),
+                answered = 42,
+                details = mapOf("SELF_TEST" to 42L),
+                partOfSpeech = "unknown"
+            )
+        )
+        val response = testPost("/v1/api/cards/update", requestBody)
+        val res = response.body<UpdateCardResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNotNull(res.card)
+        Assertions.assertNotNull(res.card!!.cardId)
+        Assertions.assertEquals(requestBody.card!!, res.card!!)
     }
 
     @Test

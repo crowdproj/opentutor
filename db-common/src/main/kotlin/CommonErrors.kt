@@ -1,11 +1,18 @@
 package com.gitlab.sszuev.flashcards.common
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
-fun notFoundDbError(
+fun noDictionaryFoundDbError(
     operation: String,
-    fieldName: String = "",
-) = dbError(operation = operation, fieldName = fieldName, details = """dictionary with id="$fieldName" not found""")
+    id: DictionaryId,
+) = dbError(operation = operation, fieldName = id.asString(), details = """dictionary with id="${id.asString()}" not found""")
+
+fun noCardFoundDbError(
+    operation: String,
+    id: CardId,
+) = dbError(operation = operation, fieldName = id.asString(), details = """card with id="${id.asString()}" not found""")
 
 fun dbError(
     operation: String,

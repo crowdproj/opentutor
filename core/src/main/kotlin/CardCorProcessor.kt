@@ -2,10 +2,7 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.CardRepositories
-import com.gitlab.sszuev.flashcards.core.process.processCardSearchRequest
-import com.gitlab.sszuev.flashcards.core.process.processCreateRequest
-import com.gitlab.sszuev.flashcards.core.process.processGetAllCardsRequest
-import com.gitlab.sszuev.flashcards.core.process.processResourceRequest
+import com.gitlab.sszuev.flashcards.core.process.*
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
 import com.gitlab.sszuev.flashcards.core.utils.normalize
@@ -144,6 +141,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
+                runs(CardOperation.UPDATE_CARD) {
+                    processUpdateRequest()
+                }
             }
 
             operation(CardOperation.LEARN_CARD) {
@@ -177,6 +177,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                         this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
                     }
                     validateCardId { it.normalizedRequestCardEntityId }
+                }
+                runs(CardOperation.GET_CARD) {
+                    processGetCardRequest()
                 }
             }
 

@@ -17,11 +17,23 @@ fun requireNew(entity: CardEntity) {
     require(entity.dictionaryId != DictionaryId.NONE) { "Dictionary id is required" }
 }
 
+fun requireExiting(entity: CardEntity) {
+    require(entity.cardId.asString().isNotBlank()) { "No card-id specified" }
+    require(entity.dictionaryId != DictionaryId.NONE) { "Dictionary id is required" }
+}
+
 fun DictionaryId.asDbId(): Long {
     if (asString().matches("\\d+".toRegex())) {
         return asString().toLong()
     }
     throw IllegalArgumentException("Wrong dictionary id ${asString()}.")
+}
+
+fun CardId.asDbId(): Long {
+    if (asString().matches("\\d+".toRegex())) {
+        return asString().toLong()
+    }
+    throw IllegalArgumentException("Wrong card id ${asString()}.")
 }
 
 fun toEntityDetails(fromDb: String?): Map<Stage, Long> {

@@ -1,10 +1,14 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.*
+import com.gitlab.sszuev.flashcards.common.toDbRecordDetails
+import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
+import com.gitlab.sszuev.flashcards.common.toEntityDetails
+import com.gitlab.sszuev.flashcards.common.toEntityTranslations
 import com.gitlab.sszuev.flashcards.dbmem.dao.Card
 import com.gitlab.sszuev.flashcards.dbmem.dao.Example
 import com.gitlab.sszuev.flashcards.dbmem.dao.IdSequences
 import com.gitlab.sszuev.flashcards.dbmem.dao.Translation
+import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -21,9 +25,7 @@ internal fun Card.toEntity() = CardEntity(
     answered = answered,
 )
 
-fun CardEntity.toNewDbRecord(ids: IdSequences): Card {
-    requireNew(this)
-    val cardId = ids.nextCardId()
+internal fun CardEntity.toDbRecord(cardId: Long, ids: IdSequences): Card {
     val dictionaryId = dictionaryId.asDbRecordId()
     return Card(
         id = cardId,
@@ -46,4 +48,4 @@ private fun Long.asDictionaryId() = DictionaryId(toString())
 
 private fun Long.asCardId() = CardId(toString())
 
-private fun DictionaryId.asDbRecordId() = asString().toLong()
+private fun Id.asDbRecordId() = asString().toLong()

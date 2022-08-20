@@ -1,9 +1,8 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -15,6 +14,48 @@ import org.junit.jupiter.api.Test
 abstract class DbCardRepositoryTest {
 
     abstract val repository: DbCardRepository
+
+    companion object {
+
+        private fun assertEquals(expected: CardEntity, actual: CardEntity) {
+            Assertions.assertNotSame(expected, actual)
+            Assertions.assertEquals(expected.dictionaryId, actual.dictionaryId)
+            Assertions.assertEquals(expected.answered, actual.answered)
+            Assertions.assertEquals(expected.details, actual.details)
+            Assertions.assertEquals(expected.examples, actual.examples)
+            Assertions.assertEquals(expected.transcription, actual.transcription)
+            Assertions.assertEquals(expected.translations, actual.translations)
+            Assertions.assertEquals(expected.partOfSpeech, actual.partOfSpeech)
+            Assertions.assertEquals(expected.word, actual.word)
+        }
+
+        private fun assertSingleError(res: CardEntityDbResponse, field: String, op: String): AppError {
+            Assertions.assertEquals(1, res.errors.size)
+            val error = res.errors[0]
+            Assertions.assertEquals("database::$op", error.code)
+            Assertions.assertEquals(field, error.field)
+            Assertions.assertEquals("database", error.group)
+            Assertions.assertNull(error.exception)
+            return error
+        }
+    }
+
+    @Test
+    fun `test get card error unknown card`() {
+        val id = CardId("42000")
+        val res = repository.getCard(id)
+        Assertions.assertEquals(CardEntity.EMPTY, res.card)
+        Assertions.assertEquals(1, res.errors.size)
+        val error = res.errors[0]
+        Assertions.assertEquals("database::getCard", error.code)
+        Assertions.assertEquals(id.asString(), error.field)
+        Assertions.assertEquals("database", error.group)
+        Assertions.assertEquals(
+            """Error while getCard: card with id="${id.asString()}" not found""",
+            error.message
+        )
+        Assertions.assertNull(error.exception)
+    }
 
     @Test
     fun `test get all cards success`() {
@@ -84,10 +125,7 @@ abstract class DbCardRepositoryTest {
         )
         val res = repository.createCard(request)
         Assertions.assertEquals(CardEntity.EMPTY, res.card)
-        val error = res.errors[0]
-        Assertions.assertEquals("database::createCard", error.code)
-        Assertions.assertEquals(dictionaryId, error.field)
-        Assertions.assertEquals("database", error.group)
+        val error = assertSingleError(res, dictionaryId, "createCard")
         Assertions.assertEquals(
             """Error while createCard: dictionary with id="$dictionaryId" not found""",
             error.message
@@ -113,5 +151,66 @@ abstract class DbCardRepositoryTest {
         Assertions.assertNotEquals(res1, res2)
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res1.cards.map { it.dictionaryId }.toSet())
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res2.cards.map { it.dictionaryId }.toSet())
+    }
+
+    @Test
+    fun `test get card & update card success`() {
+        val request = CardEntity(
+            cardId = CardId("244"),
+            dictionaryId = DictionaryId("2"),
+            word = "climate",
+            transcription = "ˈklaɪmɪt",
+            translations = listOf(listOf("к-климат")),
+            examples = listOf("Create a climate of fear, and it's easy to keep the borders closed."),
+            answered = 42,
+            details = mapOf(Stage.SELF_TEST to 3),
+            partOfSpeech = "Unknown"
+        )
+        val prev = repository.getCard(request.cardId).card
+        Assertions.assertEquals(request.dictionaryId, prev.dictionaryId)
+        Assertions.assertNotEquals(request.answered, prev.answered)
+        Assertions.assertNotEquals(request.details, prev.details)
+        Assertions.assertNotEquals(request.examples, prev.examples)
+        Assertions.assertNotEquals(request.transcription, prev.transcription)
+        Assertions.assertNotEquals(request.translations, prev.translations)
+        Assertions.assertNotEquals(request.partOfSpeech, prev.partOfSpeech)
+        Assertions.assertNotEquals(request.word, prev.word)
+
+        val res = repository.updateCard(request)
+        Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
+        val updated = repository.updateCard(request).card
+        assertEquals(request, updated)
+
+        val now = repository.getCard(request.cardId).card
+        assertEquals(request, now)
+    }
+
+    @Test
+    fun `test update card error unknown card`() {
+        val id = CardId("4200")
+        val request = CardEntity.EMPTY.copy(
+            cardId = id, dictionaryId = DictionaryId("2"), translations = listOf(listOf("xxx"))
+        )
+        val res = repository.updateCard(request)
+        val error = assertSingleError(res, id.asString(), "updateCard")
+        Assertions.assertEquals(
+            """Error while updateCard: card with id="${id.asString()}" not found""",
+            error.message
+        )
+    }
+
+    @Test
+    fun `test update card error unknown dictionary`() {
+        val cardId = CardId("42")
+        val dictionaryId = DictionaryId("4200")
+        val request = CardEntity.EMPTY.copy(
+            cardId = cardId, dictionaryId = dictionaryId, translations = listOf(listOf("xxx"))
+        )
+        val res = repository.updateCard(request)
+        val error = assertSingleError(res, dictionaryId.asString(), "updateCard")
+        Assertions.assertEquals(
+            """Error while updateCard: dictionary with id="${dictionaryId.asString()}" not found""",
+            error.message
+        )
     }
 }

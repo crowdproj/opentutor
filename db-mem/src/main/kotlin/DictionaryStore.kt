@@ -33,6 +33,9 @@ class DictionaryStore private constructor(
     val size: Long
         get() = resources.size.toLong()
 
+    val keys: Set<Long>
+        get() = resources.keys
+
     /**
      * A queue to flushing data to disk.
      */

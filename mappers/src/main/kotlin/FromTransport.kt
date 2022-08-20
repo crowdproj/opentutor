@@ -119,11 +119,7 @@ private fun CardResource.toCardEntity(): CardEntity = CardEntity(
 )
 
 private fun String.toStage(): Stage? {
-    return Stage.values().firstOrNull { it.stageName().equals(other = this, ignoreCase = true) }
-}
-
-private fun Stage.stageName(): String {
-    return name.replace("_", "-")
+    return Stage.values().firstOrNull { it.name.equals(other = this, ignoreCase = true) }
 }
 
 private fun CardUpdateResource?.toCardLearn(): CardLearn = CardLearn(

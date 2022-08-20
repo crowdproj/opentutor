@@ -45,6 +45,29 @@ internal class CardCorProcessorRunCardsTest {
     }
 
     @Test
+    fun `test get-card success`() = runTest {
+        val testId = CardId("42")
+        val testResponseEntity = stubCard.copy(cardId = testId)
+
+        val repository = MockDbCardRepository(
+            invokeGetCard = {
+                CardEntityDbResponse(if (it == testId) testResponseEntity else CardEntity.EMPTY)
+            }
+        )
+
+        val context = testContext(CardOperation.GET_CARD)
+        context.requestCardEntityId = testId
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.GET_CARD), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+
+        Assertions.assertEquals(testResponseEntity, context.responseCardEntity)
+    }
+
+    @Test
     fun `test get-all-cards success`() = runTest {
         val testDictionaryId = DictionaryId("42")
         val testResponseEntities = stubCards
@@ -191,4 +214,47 @@ internal class CardCorProcessorRunCardsTest {
         assertError(context, CardOperation.SEARCH_CARDS)
     }
 
+    @Test
+    fun `test update-card success`() = runTest {
+        val cardId = CardId("42")
+        val testRequestEntity = stubCard.copy(word = "XXX", cardId = cardId)
+        val testResponseEntity = stubCard.copy(word = "HHH")
+
+        val repository = MockDbCardRepository(
+            invokeUpdateCard = {
+                CardEntityDbResponse(if (it.cardId == cardId) testResponseEntity else testRequestEntity)
+            }
+        )
+
+        val context = testContext(CardOperation.UPDATE_CARD)
+        context.requestCardEntity = testRequestEntity
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.UPDATE_CARD), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status) { "Errors: ${context.errors}" }
+        Assertions.assertTrue(context.errors.isEmpty())
+        Assertions.assertEquals(testResponseEntity, context.responseCardEntity)
+    }
+
+    @Test
+    fun `test update-card unexpected fail`() = runTest {
+        val cardId = CardId("42")
+        val testRequestEntity = stubCard.copy(word = "XXX", cardId = cardId)
+
+        val repository = MockDbCardRepository(
+            invokeUpdateCard = {
+                CardEntityDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
+            }
+        )
+
+        val context = testContext(CardOperation.UPDATE_CARD)
+        context.requestCardEntity = testRequestEntity
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.UPDATE_CARD), context.requestId)
+        Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
+        assertError(context, CardOperation.UPDATE_CARD)
+    }
 }

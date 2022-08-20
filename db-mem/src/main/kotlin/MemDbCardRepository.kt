@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.dbmem
 import com.gitlab.sszuev.flashcards.common.*
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
@@ -19,29 +20,25 @@ class MemDbCardRepository(
         sysConfig = sysConfig,
     )
 
+    override fun getCard(id: CardId): CardEntityDbResponse {
+        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
+            ?: return CardEntityDbResponse(
+                card = CardEntity.EMPTY,
+                errors = listOf(noCardFoundDbError(operation = "getCard", id = id))
+            )
+        return CardEntityDbResponse(card = card.toEntity())
+    }
+
     override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
         val dictionary = dictionaries[id.asDbId()]
             ?: return CardEntitiesDbResponse(
                 cards = emptyList(),
-                errors = listOf(notFoundDbError(operation = "getAllCards", fieldName = id.asString()))
+                errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
             )
         return CardEntitiesDbResponse(
             cards = dictionary.cards.values.map { it.toEntity() },
             errors = emptyList()
         )
-    }
-
-    override fun createCard(card: CardEntity): CardEntityDbResponse {
-        val dictionaryId = card.dictionaryId.asDbId()
-        val dictionary = dictionaries[dictionaryId]
-            ?: return CardEntityDbResponse(
-                card = CardEntity.EMPTY,
-                errors = listOf(notFoundDbError(operation = "createCard", fieldName = card.dictionaryId.asString()))
-            )
-        val saved = card.toNewDbRecord(dictionaries.ids)
-        dictionary.cards[saved.id] = saved
-        dictionaries.flush(dictionaryId)
-        return CardEntityDbResponse(card = saved.toEntity())
     }
 
     override fun searchCard(filter: CardFilter): CardEntitiesDbResponse {
@@ -60,6 +57,41 @@ class MemDbCardRepository(
         }
         val cards = fromDb.take(filter.length).map { it.toEntity() }.toList()
         return CardEntitiesDbResponse(cards = cards)
+    }
+
+    override fun createCard(card: CardEntity): CardEntityDbResponse {
+        requireNew(card)
+        val dictionaryId = card.dictionaryId.asDbId()
+        val dictionary = dictionaries[dictionaryId]
+            ?: return CardEntityDbResponse(
+                card = CardEntity.EMPTY,
+                errors = listOf(noDictionaryFoundDbError(operation = "createCard", id = card.dictionaryId))
+            )
+        val record = card.toDbRecord(dictionaries.ids.nextCardId(), dictionaries.ids)
+        dictionary.cards[record.id] = record
+        dictionaries.flush(dictionaryId)
+        return CardEntityDbResponse(card = record.toEntity())
+    }
+
+    override fun updateCard(card: CardEntity): CardEntityDbResponse {
+        requireExiting(card)
+        val dictionaryId = card.dictionaryId.asDbId()
+        val dictionary = dictionaries[dictionaryId]
+            ?: return CardEntityDbResponse(
+                card = CardEntity.EMPTY,
+                errors = listOf(noDictionaryFoundDbError(operation = "updateCard", id = card.dictionaryId))
+            )
+        val id = card.cardId.asDbId()
+        if (!dictionary.cards.containsKey(id)) {
+            return CardEntityDbResponse(
+                card = CardEntity.EMPTY,
+                errors = listOf(noCardFoundDbError(operation = "updateCard", id = card.cardId))
+            )
+        }
+        val record = card.toDbRecord(id, dictionaries.ids)
+        dictionary.cards[record.id] = record
+        dictionaries.flush(dictionaryId)
+        return CardEntityDbResponse(card = record.toEntity())
     }
 
 }
