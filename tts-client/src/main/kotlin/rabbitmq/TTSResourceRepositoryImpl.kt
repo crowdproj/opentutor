@@ -66,7 +66,7 @@ class TTSResourceRepositoryImpl(
                     withTimeout(requestTimeoutInMillis) { res.await() }
                 }
             }
-        } catch (ex: Throwable) {
+        } catch (ex: Exception) {
             errors.add(ex.asError())
             ByteArray(0)
         }

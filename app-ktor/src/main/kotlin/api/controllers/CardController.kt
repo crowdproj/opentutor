@@ -86,7 +86,7 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
         context.exec()
         val response = context.toResponse()
         respond(response)
-    } catch (ex: Throwable) {
+    } catch (ex: Exception) {
         val msg = "Problem with request=${context.requestId.asString()} :: ${ex.message}"
         if (logger.isDebugEnabled) {
             logger.debug(msg, ex)
@@ -99,7 +99,7 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     }
 }
 
-private fun Throwable.asError(
+private fun Exception.asError(
     code: String = "unknown",
     group: String = "exceptions",
     message: String = this.message ?: "",

@@ -96,7 +96,7 @@ internal class CardControllerMockkTest {
         val service = mockk<CardService>()
         coEvery {
             service.serviceMethod(any())
-        } throws AssertionError(msg)
+        } throws TestException(msg)
 
         routing {
             route("test/api") {
@@ -117,5 +117,6 @@ internal class CardControllerMockkTest {
             service.serviceMethod(any())
         }
     }
-
 }
+
+internal class TestException(msg: String) : RuntimeException(msg)

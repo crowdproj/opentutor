@@ -134,7 +134,7 @@ internal class TTSResourceRepositoryITest {
             futures.forEach {
                 try {
                     it.get()
-                } catch (ex: Throwable) {
+                } catch (ex: Exception) {
                     error.addSuppressed(ex)
                 }
             }

@@ -32,7 +32,8 @@ interface Worker<X> : Exec<X> {
         if (test(context)) {
             try {
                 process(context)
-            } catch (ex: Throwable) {
+            } catch (ex: Exception) {
+                // do not catch Throwable
                 onException(context, ex)
             }
         }

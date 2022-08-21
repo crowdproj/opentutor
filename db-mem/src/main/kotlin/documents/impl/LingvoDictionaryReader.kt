@@ -17,7 +17,7 @@ class LingvoDictionaryReader(private val ids: IdSequences) : DictionaryReader {
     override fun parse(input: InputStream): Dictionary {
         return try {
             loadDictionary(InputSource(input))
-        } catch (ex: Throwable) {
+        } catch (ex: Exception) {
             throw IllegalStateException(ex)
         }
     }
