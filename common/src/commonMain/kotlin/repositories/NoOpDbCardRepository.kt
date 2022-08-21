@@ -1,9 +1,6 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 
 object NoOpDbCardRepository : DbCardRepository {
     override fun getCard(id: CardId): CardEntityDbResponse {
@@ -23,6 +20,10 @@ object NoOpDbCardRepository : DbCardRepository {
     }
 
     override fun updateCard(card: CardEntity): CardEntityDbResponse {
+        return noOp()
+    }
+
+    override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
         return noOp()
     }
 

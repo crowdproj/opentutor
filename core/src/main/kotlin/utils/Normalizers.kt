@@ -29,7 +29,7 @@ fun CardFilter.normalize(): CardFilter {
 fun CardLearn.normalize(): CardLearn {
     return CardLearn(
         cardId = this.cardId.normalize(),
-        details = this.details.mapKeys { it.key.trim() } // empty strings will be lost
+        details = this.details,
     )
 }
 

@@ -2,10 +2,7 @@ package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.common.*
 import com.gitlab.sszuev.flashcards.dbpg.dao.*
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
@@ -114,6 +111,24 @@ class PgDbCardRepository(
             }
             CardEntityDbResponse(card = CardEntity.EMPTY, errors = listOf(error))
         })
+    }
+
+    override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
+        return execute {
+            val cardLearns = learn.associateBy { it.cardId.asDbId() }
+            val records = Card.find {
+                Cards.id inList cardLearns.keys
+            }.associateBy { it.id.value }
+            val errors = cardLearns.keys.filterNot { records.containsKey(it) }.map {
+                noCardFoundDbError(operation = "getCard", id = CardId(it.toString()))
+            }
+            val cards = cardLearns.values.mapNotNull { learn ->
+                val record = records[learn.cardId.asDbId()]?: return@mapNotNull null
+                record.details = toDbRecordDetails(learn.details)
+                record.toEntity()
+            }
+           CardEntitiesDbResponse(cards = cards, errors = errors)
+        }
     }
 
     private fun createExamplesAndTranslations(card: CardEntity, record: Card) {

@@ -59,7 +59,7 @@ internal class CardControllerMockkTest {
     fun `test learn-card service error`() {
         testServiceError(
             endpoint = "cards/learn",
-            requestBody = LearnCardRequest(requestId = "request=cards/learn")
+            requestBody = LearnCardsRequest(requestId = "request=cards/learn")
         ) { this.learnCard(it) }
     }
 

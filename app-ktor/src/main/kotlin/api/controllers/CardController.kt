@@ -54,7 +54,7 @@ suspend fun ApplicationCall.getCard(service: CardService) {
 }
 
 suspend fun ApplicationCall.learnCard(service: CardService) {
-    execute<LearnCardRequest>(CardOperation.LEARN_CARD) {
+    execute<LearnCardsRequest>(CardOperation.LEARN_CARDS) {
         service.learnCard(this)
     }
 }

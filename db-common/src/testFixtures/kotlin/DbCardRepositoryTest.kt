@@ -213,4 +213,29 @@ abstract class DbCardRepositoryTest {
             error.message
         )
     }
+
+    @Test
+    fun `test learn cards success`() {
+        val request = CardLearn(
+            cardId = CardId("244"),
+            details = mapOf(Stage.SELF_TEST to 3, Stage.WRITING to 4),
+        )
+        val res = repository.learnCards(listOf(request))
+        Assertions.assertEquals(0, res.errors.size)
+        Assertions.assertEquals(1, res.cards.size)
+        val card = res.cards[0]
+        println(card)
+        Assertions.assertEquals("weather", card.word)
+        Assertions.assertEquals(DictionaryId("2"), card.dictionaryId)
+        Assertions.assertEquals("'weðə", card.transcription)
+        Assertions.assertEquals("NOUN", card.partOfSpeech)
+        Assertions.assertEquals(null, card.answered)
+        Assertions.assertEquals(listOf(listOf("погода")), card.translations)
+        Assertions.assertEquals(listOf(
+            "weather forecast -- прогноз погоды",
+            "weather bureau -- бюро погоды",
+            "nasty weather -- ненастная погода",
+            "spell of cold weather -- похолодание"), card.examples)
+        Assertions.assertEquals(request.details, card.details)
+    }
 }

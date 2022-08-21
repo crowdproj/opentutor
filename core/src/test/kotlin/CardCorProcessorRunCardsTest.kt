@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.dbcommon.MockDbCardRepository
+import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -256,5 +257,64 @@ internal class CardCorProcessorRunCardsTest {
         Assertions.assertEquals(requestId(CardOperation.UPDATE_CARD), context.requestId)
         Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
         assertError(context, CardOperation.UPDATE_CARD)
+    }
+
+    @Test
+    fun `test learn-cards success`() = runTest {
+        val testLearn = listOf(
+            CardLearn(cardId = stubCard.cardId, details = mapOf(Stage.WRITING to 42)),
+        )
+
+        val testResponseEntities = listOf(stubCard)
+
+        val repository = MockDbCardRepository(
+            invokeLearnCards = {
+                CardEntitiesDbResponse(
+                    cards = if (it == testLearn) testResponseEntities else emptyList(),
+                )
+            }
+        )
+
+        val context = testContext(CardOperation.LEARN_CARDS)
+        context.requestCardLearnList = testLearn
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.LEARN_CARDS), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+        Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
+    }
+
+    @Test
+    fun `test learn-cards error`() = runTest {
+        val testLearn = listOf(
+            CardLearn(cardId = CardId("1"), details = mapOf(Stage.SELF_TEST to 42)),
+            CardLearn(cardId = CardId("2"), details = mapOf(Stage.OPTIONS to 2, Stage.MOSAIC to 3))
+        )
+
+        val testResponseEntities = stubCards
+        val testResponseErrors = listOf(
+            AppError(code = "test")
+        )
+
+        val repository = MockDbCardRepository(
+            invokeLearnCards = {
+                CardEntitiesDbResponse(
+                    cards = if (it == testLearn) testResponseEntities else emptyList(),
+                    errors = if (it == testLearn) testResponseErrors else emptyList()
+                )
+            }
+        )
+
+        val context = testContext(CardOperation.LEARN_CARDS)
+        context.requestCardLearnList = testLearn
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.LEARN_CARDS), context.requestId)
+        Assertions.assertEquals(AppStatus.FAIL, context.status)
+        Assertions.assertEquals(testResponseErrors, context.errors)
+        Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
     }
 }

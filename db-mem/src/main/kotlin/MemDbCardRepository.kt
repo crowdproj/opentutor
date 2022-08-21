@@ -1,10 +1,9 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.*
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.dbmem.dao.Card
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
@@ -92,6 +91,31 @@ class MemDbCardRepository(
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
         return CardEntityDbResponse(card = record.toEntity())
+    }
+
+    override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
+        val cards = mutableSetOf<Card>()
+        val errors = mutableListOf<AppError>()
+        learn.forEach { cardLearn ->
+            learnCard(cardLearn, errors)?.let { cards.add(it) }
+        }
+        cards.map { it.dictionaryId }.distinct().forEach {
+            dictionaries.flush(it)
+        }
+        return CardEntitiesDbResponse(cards = cards.map { it.toEntity() }, errors = errors)
+    }
+
+    private fun learnCard(learn: CardLearn, errors: MutableList<AppError>): Card? {
+        val id = learn.cardId
+        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
+        if (card == null) {
+            errors.add(noCardFoundDbError(operation = "learnCard", id = id))
+            return null
+        }
+        val record = card.copy(details = toDbRecordDetails(learn.details))
+        val dictionary = requireNotNull(dictionaries[card.dictionaryId])
+        dictionary.cards[record.id] = record
+        return record
     }
 
 }

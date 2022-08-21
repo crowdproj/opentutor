@@ -18,7 +18,7 @@ fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.CREATE_CARD -> this.toCreateCardResponse()
     CardOperation.UPDATE_CARD -> this.toUpdateCardResponse()
     CardOperation.DELETE_CARD -> this.toDeleteCardResponse()
-    CardOperation.LEARN_CARD -> this.toLearnCardResponse()
+    CardOperation.LEARN_CARDS -> this.toLearnCardResponse()
     CardOperation.RESET_CARD -> this.toResetCardResponse()
     CardOperation.NONE -> throw IllegalArgumentException("Not supported operation $op.")
 }
@@ -71,8 +71,8 @@ fun CardContext.toDeleteCardResponse() = DeleteCardResponse(
     errors = this.errors.toErrorResourceList(),
 )
 
-fun CardContext.toLearnCardResponse() = LearnCardResponse(
-    card = this.responseCardEntity.toCardResource(),
+fun CardContext.toLearnCardResponse() = LearnCardsResponse(
+    cards = this.responseCardEntityList.mapNotNull { it.toCardResource() },
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),

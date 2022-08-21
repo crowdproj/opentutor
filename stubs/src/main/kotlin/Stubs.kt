@@ -42,7 +42,7 @@ val stubCards = IntRange(1, 3)
 
 val stubLearnCardDetails = CardLearn(
     cardId = CardId(42.toString()),
-    details = mapOf("stage-a" to 42, "stage-b" to 5, "stage-c" to 4)
+    details = mapOf(Stage.SELF_TEST to 42, Stage.WRITING to 5, Stage.OPTIONS to 4)
 )
 
 fun stubErrorForCode(case: AppStub): AppError {

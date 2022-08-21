@@ -32,7 +32,7 @@ internal class CardCorProcessorStubTest {
         )
         private val testCardLearn = CardLearn(
             cardId = CardId("42"),
-            details = mapOf("stage42" to 42)
+            details = mapOf(Stage.SELF_TEST to 42)
         )
 
         private fun testContext(op: CardOperation, case: AppStub): CardContext {
@@ -161,7 +161,7 @@ internal class CardCorProcessorStubTest {
 
     @Test
     fun `test learn-cards success`() = runTest {
-        val context = testContext(CardOperation.LEARN_CARD, AppStub.SUCCESS)
+        val context = testContext(CardOperation.LEARN_CARDS, AppStub.SUCCESS)
         context.requestCardLearnList = listOf(testCardLearn, testCardLearn)
         processor.execute(context)
         assertSuccess(context)
@@ -169,7 +169,7 @@ internal class CardCorProcessorStubTest {
 
     @Test
     fun `test learn-cards unknown fail`() = runTest {
-        val context = testContext(CardOperation.LEARN_CARD, AppStub.UNKNOWN_ERROR)
+        val context = testContext(CardOperation.LEARN_CARDS, AppStub.UNKNOWN_ERROR)
         context.requestCardLearnList = listOf(testCardLearn)
         processor.execute(context)
         assertFail(context)
@@ -185,7 +185,7 @@ internal class CardCorProcessorStubTest {
         ]
     )
     fun `test learn-cards specific fail`(case: AppStub) = runTest {
-        val context = testContext(CardOperation.LEARN_CARD, case)
+        val context = testContext(CardOperation.LEARN_CARDS, case)
         context.requestCardLearnList = listOf(testCardLearn)
         processor.execute(context)
         assertFail(context, stubErrorForCode(case))

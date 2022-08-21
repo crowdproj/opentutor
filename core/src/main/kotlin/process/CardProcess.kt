@@ -57,7 +57,7 @@ fun ChainDSL<CardContext>.processCardSearchRequest() = worker {
     }
 }
 
-fun ChainDSL<CardContext>.processCreateRequest() = worker {
+fun ChainDSL<CardContext>.processCreateCardRequest() = worker {
     this.name = "process create-card-request"
     process {
         val res = this.repositories.cardRepository.createCard(this.normalizedRequestCardEntity)
@@ -68,7 +68,7 @@ fun ChainDSL<CardContext>.processCreateRequest() = worker {
     }
 }
 
-fun ChainDSL<CardContext>.processUpdateRequest() = worker {
+fun ChainDSL<CardContext>.processUpdateCardRequest() = worker {
     this.name = "process update-card-request"
     process {
         val res = this.repositories.cardRepository.updateCard(this.normalizedRequestCardEntity)
@@ -79,22 +79,33 @@ fun ChainDSL<CardContext>.processUpdateRequest() = worker {
     }
 }
 
+fun ChainDSL<CardContext>.processLearnCardsRequest() = worker {
+    this.name = "process learn-cards-request"
+    process {
+        val res = this.repositories.cardRepository.learnCards(this.normalizedRequestCardLearnList)
+        this.postProcess(res)
+    }
+    onException {
+        this.handleThrowable(CardOperation.LEARN_CARDS, it)
+    }
+}
+
 private fun CardContext.postProcess(res: CardEntitiesDbResponse) {
+    this.responseCardEntityList = res.cards
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
         this.status = AppStatus.FAIL
     } else {
-        this.responseCardEntityList = res.cards
         this.status = AppStatus.OK
     }
 }
 
 private fun CardContext.postProcess(res: CardEntityDbResponse) {
+    this.responseCardEntity = res.card
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
         this.status = AppStatus.FAIL
     } else {
-        this.responseCardEntity = res.card
         this.status = AppStatus.OK
     }
 }

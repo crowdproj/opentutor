@@ -15,7 +15,7 @@ fun CardContext.fromTransport(request: BaseRequest) = when (request) {
     is CreateCardRequest -> fromCreateCardRequest(request)
     is UpdateCardRequest -> fromUpdateCardRequest(request)
     is DeleteCardRequest -> fromDeleteCardRequest(request)
-    is LearnCardRequest -> fromLearnCardRequest(request)
+    is LearnCardsRequest -> fromLearnCardRequest(request)
     is ResetCardRequest -> fromResetCardRequest(request)
     else -> throw IllegalArgumentException("Unknown request ${request.javaClass}")
 }
@@ -81,8 +81,8 @@ fun CardContext.fromDeleteCardRequest(request: DeleteCardRequest) {
     this.requestCardEntityId = toCardId(request.cardId)
 }
 
-fun CardContext.fromLearnCardRequest(request: LearnCardRequest) {
-    this.operation = CardOperation.LEARN_CARD
+fun CardContext.fromLearnCardRequest(request: LearnCardsRequest) {
+    this.operation = CardOperation.LEARN_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -111,20 +111,18 @@ private fun CardResource.toCardEntity(): CardEntity = CardEntity(
     transcription = this.transcription,
     translations = this.translations ?: emptyList(),
     examples = this.examples ?: emptyList(),
-    details = this.details?.mapNotNull {
-        val k = it.key.toStage() ?: return@mapNotNull null
-        k to it.value
-    }?.toMap() ?: emptyMap(),
+    details = this.details.toDetails(),
     answered = this.answered,
 )
 
 private fun String.toStage(): Stage? {
-    return Stage.values().firstOrNull { it.name.equals(other = this, ignoreCase = true) }
+    val str = this.replace("-", "_")
+    return Stage.values().firstOrNull { it.name.equals(other = str, ignoreCase = true) }
 }
 
-private fun CardUpdateResource?.toCardLearn(): CardLearn = CardLearn(
+private fun LearnResource?.toCardLearn(): CardLearn = CardLearn(
     cardId = toCardId(this?.cardId),
-    details = this?.details ?: emptyMap()
+    details = this?.details.toDetails()
 )
 
 private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
@@ -133,6 +131,11 @@ private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
     RunMode.STUB -> AppMode.STUB
     null -> AppMode.PROD
 }
+
+private fun Map<String, Long>?.toDetails() = this?.mapNotNull {
+    val k = it.key.toStage() ?: return@mapNotNull null
+    k to it.value
+}?.toMap() ?: emptyMap()
 
 private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.SUCCESS -> AppStub.SUCCESS

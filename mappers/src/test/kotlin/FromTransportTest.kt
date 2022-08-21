@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -176,20 +177,20 @@ class FromTransportTest {
 
     @Test
     fun `test fromLearnCardRequest`() {
-        val req = LearnCardRequest(
+        val req = LearnCardsRequest(
             requestId = "req6",
             cards = listOf(
-                CardUpdateResource(
+                LearnResource(
                     cardId = "a",
                     details = emptyMap()
                 ),
-                CardUpdateResource(
+                LearnResource(
                     cardId = "b",
-                    details = mapOf("c" to 10, "d" to 8)
+                    details = mapOf("self-test" to 10, "mosaic" to 8)
                 ),
-                CardUpdateResource(
+                LearnResource(
                     cardId = "e",
-                    details = mapOf("f" to 42)
+                    details = mapOf("options" to 42)
                 ),
             ),
             debug = DebugResource(
@@ -211,8 +212,8 @@ class FromTransportTest {
         assertCardId("b", context.requestCardLearnList[1].cardId)
         assertCardId("e", context.requestCardLearnList[2].cardId)
         Assertions.assertTrue(context.requestCardLearnList[0].details.isEmpty())
-        Assertions.assertEquals(mapOf("c" to 10, "d" to 8), context.requestCardLearnList[1].details)
-        Assertions.assertEquals(mapOf("f" to 42), context.requestCardLearnList[2].details)
+        Assertions.assertEquals(mapOf(Stage.SELF_TEST to 10L, Stage.MOSAIC to 8), context.requestCardLearnList[1].details)
+        Assertions.assertEquals(mapOf(Stage.OPTIONS to 42L), context.requestCardLearnList[2].details)
     }
 
     @Test

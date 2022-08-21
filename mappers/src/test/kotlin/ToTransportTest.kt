@@ -127,7 +127,7 @@ class ToTransportTest {
     @ParameterizedTest
     @EnumSource(
         value = CardOperation::class,
-        names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "LEARN_CARD", "RESET_CARD"]
+        names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "RESET_CARD"]
     )
     fun `test toCreateUpdateCardResponse`(op: CardOperation) {
         val responseEntity = CardResource(
@@ -153,7 +153,6 @@ class ToTransportTest {
             CardOperation.UPDATE_CARD -> context.toUpdateCardResponse()
             CardOperation.CREATE_CARD -> context.toCreateCardResponse()
             CardOperation.DELETE_CARD -> context.toDeleteCardResponse()
-            CardOperation.LEARN_CARD -> context.toLearnCardResponse()
             CardOperation.RESET_CARD -> context.toResetCardResponse()
             else -> throw IllegalArgumentException()
         }
@@ -164,12 +163,43 @@ class ToTransportTest {
         val card = when (op) {
             CardOperation.UPDATE_CARD -> (res as UpdateCardResponse).card!!
             CardOperation.CREATE_CARD -> (res as CreateCardResponse).card!!
-            CardOperation.LEARN_CARD -> (res as LearnCardResponse).card!!
             CardOperation.RESET_CARD -> (res as ResetCardResponse).card!!
             else -> {
                 return
             }
         }
+        Assertions.assertNotSame(responseEntity, card)
+        Assertions.assertEquals(responseEntity, card)
+    }
+
+    @Test
+    fun `test toLearnCardResponse`() {
+        val responseEntity = CardResource(
+            cardId = "A",
+            dictionaryId = "G",
+            word = "xxx",
+            details = emptyMap(),
+            translations = emptyList(),
+            examples = emptyList(),
+        )
+        val context = CardContext(
+            requestId = AppRequestId(CardOperation.LEARN_CARDS.name),
+            operation = CardOperation.LEARN_CARDS,
+            responseCardEntityList = listOf(CardEntity(
+                cardId = CardId(responseEntity.cardId!!),
+                dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
+                word = responseEntity.word!!
+            )),
+            errors = mutableListOf(),
+            status = AppStatus.OK
+        )
+        val res = context.toLearnCardResponse()
+
+        Assertions.assertEquals(context.requestId.asString(), res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
+        Assertions.assertEquals(1, res.cards!!.size)
+        val card = res.cards!!.get(0)
         Assertions.assertNotSame(responseEntity, card)
         Assertions.assertEquals(responseEntity, card)
     }

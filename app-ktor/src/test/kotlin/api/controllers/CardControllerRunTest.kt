@@ -154,4 +154,21 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(res.cards)
         Assertions.assertEquals(2, res.cards!!.size)
     }
+
+    @Test
+    fun `test learn-card success`() = testApplication {
+        val requestBody = LearnCardsRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            cards = listOf(LearnResource(cardId = "2", details = mapOf("mosaic" to 42L)))
+        )
+        val response = testPost("/v1/api/cards/learn", requestBody)
+        val res = response.body<LearnCardsResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}"}
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertEquals(1, res.cards!!.size)
+        Assertions.assertEquals("weather", res.cards!![0].word)
+    }
 }

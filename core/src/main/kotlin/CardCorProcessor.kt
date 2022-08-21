@@ -114,7 +114,7 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.CREATE_CARD) {
-                    processCreateRequest()
+                    processCreateCardRequest()
                 }
             }
 
@@ -142,25 +142,28 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.UPDATE_CARD) {
-                    processUpdateRequest()
+                    processUpdateCardRequest()
                 }
             }
 
-            operation(CardOperation.LEARN_CARD) {
-                stubs(CardOperation.LEARN_CARD) {
-                    stubSuccess(CardOperation.LEARN_CARD)
-                    stubError(CardOperation.LEARN_CARD)
-                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
-                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
-                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
+            operation(CardOperation.LEARN_CARDS) {
+                stubs(CardOperation.LEARN_CARDS) {
+                    stubSuccess(CardOperation.LEARN_CARDS)
+                    stubError(CardOperation.LEARN_CARDS)
+                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
+                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
+                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
                 }
-                validators(CardOperation.LEARN_CARD) {
+                validators(CardOperation.LEARN_CARDS) {
                     worker(name = "Make a normalized copy of learn-card request") {
                         this.normalizedRequestCardLearnList = this.requestCardLearnList.map { it.normalize() }
                     }
                     validateCardLearnListCardIds { it.normalizedRequestCardLearnList }
                     validateCardLearnListStages { it.normalizedRequestCardLearnList }
                     validateCardLearnListDetails { it.normalizedRequestCardLearnList }
+                }
+                runs(CardOperation.LEARN_CARDS) {
+                    processLearnCardsRequest()
                 }
             }
 

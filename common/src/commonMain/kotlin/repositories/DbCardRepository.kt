@@ -1,10 +1,7 @@
 package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 
 /**
  * Database repository to work with cards.
@@ -35,6 +32,11 @@ interface DbCardRepository {
      * Updates.
      */
     fun updateCard(card: CardEntity): CardEntityDbResponse
+
+    /**
+     * Updates cards details.
+     */
+    fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse
 }
 
 data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError> = emptyList()) {
