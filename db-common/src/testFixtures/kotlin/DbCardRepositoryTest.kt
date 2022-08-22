@@ -82,6 +82,18 @@ abstract class DbCardRepositoryTest {
             details = emptyMap(),
         )
 
+        private val windCardEntity = CardEntity(
+            cardId = CardId("247"),
+            dictionaryId = DictionaryId("2"),
+            word = "wind",
+            transcription = "wind",
+            partOfSpeech = "NOUN",
+            translations = listOf(listOf("ветер")),
+            examples = listOf("a sudden gust of wind — внезапный порыв ветра"),
+            answered = null,
+            details = emptyMap(),
+        )
+
         private val newMurkyCardEntity = CardEntity(
             dictionaryId = DictionaryId("2"),
             word = "murky",
@@ -283,6 +295,22 @@ abstract class DbCardRepositoryTest {
     @Test
     fun `test get card & reset card success`() {
         val request = snowCardEntity
+        val prev = repository.getCard(request.cardId).card
+        assertCard(request, prev)
+
+        val expected = request.copy(answered = 0)
+        val res = repository.resetCard(request.cardId)
+        assertNoErrors(res)
+        val updated = res.card
+        assertCard(expected, updated)
+
+        val now = repository.getCard(request.cardId).card
+        assertCard(expected, now)
+    }
+
+    @Test
+    fun `test get card & delete card success`() {
+        val request = windCardEntity
         val prev = repository.getCard(request.cardId).card
         assertCard(request, prev)
 

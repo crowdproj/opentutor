@@ -9,6 +9,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
 import kotlinx.coroutines.test.runTest
@@ -340,6 +341,27 @@ internal class CardCorProcessorRunCardsTest {
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
         Assertions.assertEquals(testResponseEntity, context.responseCardEntity)
+    }
+
+    @Test
+    fun `test delete-card success`() = runTest {
+        val testId = CardId("42")
+        val response = DeleteEntityDbResponse()
+
+        val repository = MockDbCardRepository(
+            invokeDeleteCard = {
+                if (it == testId) response else throw TestException()
+            }
+        )
+
+        val context = testContext(CardOperation.DELETE_CARD)
+        context.requestCardEntityId = testId
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.DELETE_CARD), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
     }
 
 }

@@ -214,6 +214,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     }
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
+                runs(CardOperation.DELETE_CARD) {
+                    processDeleteCardRequest()
+                }
             }
         }.build()
     }

@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
+import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -123,11 +124,11 @@ class PgDbCardRepository(
                 noCardFoundDbError(operation = "getCard", id = CardId(it.toString()))
             }
             val cards = cardLearns.values.mapNotNull { learn ->
-                val record = records[learn.cardId.asDbId()]?: return@mapNotNull null
+                val record = records[learn.cardId.asDbId()] ?: return@mapNotNull null
                 record.details = toDbRecordDetails(learn.details)
                 record.toEntity()
             }
-           CardEntitiesDbResponse(cards = cards, errors = errors)
+            CardEntitiesDbResponse(cards = cards, errors = errors)
         }
     }
 
@@ -143,6 +144,17 @@ class PgDbCardRepository(
                 card.answered = 0
                 CardEntityDbResponse(card = card.toEntity())
             }
+        }
+    }
+
+    override fun deleteCard(id: CardId): DeleteEntityDbResponse {
+        return execute {
+            val res = Cards.deleteWhere {
+                Cards.id eq id.asDbId()
+            }
+            DeleteEntityDbResponse(
+                if (res == 0) listOf(noCardFoundDbError(operation = "deleteCard", id = id)) else emptyList()
+            )
         }
     }
 

@@ -188,4 +188,19 @@ internal class CardControllerRunTest {
         Assertions.assertEquals("weather", res.card!!.word)
         Assertions.assertEquals(0, res.card!!.answered)
     }
+
+    @Test
+    fun `test delete-card success`() = testApplication {
+        val requestBody = DeleteCardRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            cardId = "2",
+        )
+        val response = testPost("/v1/api/cards/delete", requestBody)
+        val res = response.body<DeleteCardResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}"}
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+    }
 }

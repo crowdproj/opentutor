@@ -42,6 +42,11 @@ interface DbCardRepository {
      * Resets status.
      */
     fun resetCard(id: CardId): CardEntityDbResponse
+
+    /**
+     * Deletes card by id.
+     */
+    fun deleteCard(id: CardId): DeleteEntityDbResponse
 }
 
 data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError> = emptyList()) {
@@ -53,5 +58,11 @@ data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<
 data class CardEntityDbResponse(val card: CardEntity, val errors: List<AppError> = emptyList()) {
     companion object {
         val EMPTY = CardEntityDbResponse(card = CardEntity.EMPTY)
+    }
+}
+
+data class DeleteEntityDbResponse(val errors: List<AppError> = emptyList()) {
+    companion object {
+        val EMPTY = DeleteEntityDbResponse(errors = emptyList())
     }
 }

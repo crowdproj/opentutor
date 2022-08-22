@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
+import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
 import kotlin.random.Random
 
 class MemDbCardRepository(
@@ -61,11 +62,8 @@ class MemDbCardRepository(
     override fun createCard(card: CardEntity): CardEntityDbResponse {
         requireNew(card)
         val dictionaryId = card.dictionaryId.asDbId()
-        val dictionary = dictionaries[dictionaryId]
-            ?: return CardEntityDbResponse(
-                card = CardEntity.EMPTY,
-                errors = listOf(noDictionaryFoundDbError(operation = "createCard", id = card.dictionaryId))
-            )
+        val dictionary =
+            dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "createCard")
         val record = card.toDbRecord(dictionaries.ids.nextCardId(), dictionaries.ids)
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
@@ -75,17 +73,11 @@ class MemDbCardRepository(
     override fun updateCard(card: CardEntity): CardEntityDbResponse {
         requireExiting(card)
         val dictionaryId = card.dictionaryId.asDbId()
-        val dictionary = dictionaries[dictionaryId]
-            ?: return CardEntityDbResponse(
-                card = CardEntity.EMPTY,
-                errors = listOf(noDictionaryFoundDbError(operation = "updateCard", id = card.dictionaryId))
-            )
+        val dictionary =
+            dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "updateCard")
         val id = card.cardId.asDbId()
         if (!dictionary.cards.containsKey(id)) {
-            return CardEntityDbResponse(
-                card = CardEntity.EMPTY,
-                errors = listOf(noCardFoundDbError(operation = "updateCard", id = card.cardId))
-            )
+            return createNoCardResponseError(card.cardId, "updateCard")
         }
         val record = card.toDbRecord(id, dictionaries.ids)
         dictionary.cards[record.id] = record
@@ -106,11 +98,7 @@ class MemDbCardRepository(
     }
 
     override fun resetCard(id: CardId): CardEntityDbResponse {
-        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
-            ?: return CardEntityDbResponse(
-                card = CardEntity.EMPTY,
-                errors = listOf(noCardFoundDbError(operation = "resetCard", id = id))
-            )
+        val card = findCard(id) ?: return createNoCardResponseError(id, "resetCard")
         val record = card.copy(answered = 0)
         val dictionary = dictionaries[card.dictionaryId]
         requireNotNull(dictionary).cards[card.id] = record
@@ -118,9 +106,21 @@ class MemDbCardRepository(
         return CardEntityDbResponse(card = record.toEntity())
     }
 
+    override fun deleteCard(id: CardId): DeleteEntityDbResponse {
+        val card = findCard(id) ?: return DeleteEntityDbResponse(
+            errors = listOf(
+                noCardFoundDbError(operation = "deleteCard", id = id)
+            )
+        )
+        val dictionary = dictionaries[card.dictionaryId]
+        requireNotNull(dictionary).cards.remove(card.id)
+        dictionaries.flush(card.dictionaryId)
+        return DeleteEntityDbResponse()
+    }
+
     private fun learnCard(learn: CardLearn, errors: MutableList<AppError>): Card? {
         val id = learn.cardId
-        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
+        val card = findCard(id)
         if (card == null) {
             errors.add(noCardFoundDbError(operation = "learnCard", id = id))
             return null
@@ -129,6 +129,24 @@ class MemDbCardRepository(
         val dictionary = requireNotNull(dictionaries[card.dictionaryId])
         dictionary.cards[record.id] = record
         return record
+    }
+
+    private fun findCard(id: CardId): Card? {
+        return dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
+    }
+
+    private fun createNoCardResponseError(id: CardId, operation: String): CardEntityDbResponse {
+        return CardEntityDbResponse(
+            card = CardEntity.EMPTY,
+            errors = listOf(noCardFoundDbError(operation = operation, id = id))
+        )
+    }
+
+    private fun createNoDictionaryResponseError(id: DictionaryId, operation: String): CardEntityDbResponse {
+        return CardEntityDbResponse(
+            card = CardEntity.EMPTY,
+            errors = listOf(noDictionaryFoundDbError(operation = operation, id = id))
+        )
     }
 
 }

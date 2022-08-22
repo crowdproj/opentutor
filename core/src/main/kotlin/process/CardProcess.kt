@@ -101,6 +101,17 @@ fun ChainDSL<CardContext>.processResetCardsRequest() = worker {
     }
 }
 
+fun ChainDSL<CardContext>.processDeleteCardRequest() = worker {
+    this.name = "process delete-card-request"
+    process {
+        val res = this.repositories.cardRepository.resetCard(this.normalizedRequestCardEntityId)
+        this.postProcess(res)
+    }
+    onException {
+        this.handleThrowable(CardOperation.DELETE_CARD, it)
+    }
+}
+
 private fun CardContext.postProcess(res: CardEntitiesDbResponse) {
     this.responseCardEntityList = res.cards
     if (res.errors.isNotEmpty()) {
