@@ -5,7 +5,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepositoryImpl
+import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -15,16 +15,16 @@ import org.junit.jupiter.api.Test
 internal class CardCorProcessorRunResourceTest {
     companion object {
 
-        private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
+        private fun testContext(): CardContext {
             val context = CardContext()
-            context.operation = op
-            context.workMode = mode
-            context.requestId = requestId(op, mode)
+            context.operation = CardOperation.GET_RESOURCE
+            context.workMode = AppMode.TEST
+            context.requestId = requestId()
             return context
         }
 
-        private fun requestId(op: CardOperation, mode: AppMode = AppMode.TEST): AppRequestId {
-            return AppRequestId("for-$op:$mode")
+        private fun requestId(mode: AppMode = AppMode.TEST): AppRequestId {
+            return AppRequestId("for-${AppMode.TEST}:$mode")
         }
     }
 
@@ -37,17 +37,17 @@ internal class CardCorProcessorRunResourceTest {
             data = ByteArray(42) { 42 }
         )
 
-        val repository = MockTTSResourceRepositoryImpl(
+        val repository = MockTTSResourceRepository(
             answerResourceId = { testResourceId },
             answerResourceEntity = { testResourceEntity },
         )
 
-        val context = testContext(CardOperation.GET_RESOURCE)
+        val context = testContext()
         context.requestResourceGet = testResourceGet
 
-        CardCorProcessor(context.repositories.copy(ttsClient = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.GET_RESOURCE), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
 
@@ -66,18 +66,18 @@ internal class CardCorProcessorRunResourceTest {
             data = ByteArray(42) { 42 }
         )
 
-        val repository = MockTTSResourceRepositoryImpl(
+        val repository = MockTTSResourceRepository(
             answerResourceId = { null },
             answerResourceEntity = { testResourceEntity },
         )
 
-        val context = testContext(CardOperation.GET_RESOURCE)
-        context.repositories = context.repositories.copy(ttsClient = repository)
+        val context = testContext()
+        context.repositories = context.repositories.copy(testTTSClientRepository = repository)
         context.requestResourceGet = testResourceGet
 
-        CardCorProcessor(context.repositories.copy(ttsClient = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.GET_RESOURCE), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
         Assertions.assertEquals(ResourceEntity.DUMMY, context.responseResourceEntity)
@@ -98,18 +98,18 @@ internal class CardCorProcessorRunResourceTest {
         val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
         val testResourceId = ResourceId("test-id")
 
-        val repository = MockTTSResourceRepositoryImpl(
+        val repository = MockTTSResourceRepository(
             answerResourceId = { testResourceId },
             answerResourceEntity = { throw TestException() },
         )
 
-        val context = testContext(CardOperation.GET_RESOURCE)
-        context.repositories = context.repositories.copy(ttsClient = repository)
+        val context = testContext()
+        context.repositories = context.repositories.copy(testTTSClientRepository = repository)
         context.requestResourceGet = testResourceGet
 
-        CardCorProcessor(context.repositories.copy(ttsClient = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.GET_RESOURCE), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
         Assertions.assertEquals(ResourceEntity.DUMMY, context.responseResourceEntity)

@@ -13,9 +13,9 @@ import org.junit.jupiter.api.Test
 internal class CardControllerRunTest {
 
     @Test
-    fun `test get audio resource success`() = testApplication {
+    fun `test get-audio-resource`() = testApplication {
         val requestBody = GetAudioRequest(
-            requestId = "success-request",
+            requestId = "resource-request",
             debug = DebugResource(mode = RunMode.TEST),
             word = "xxx",
             lang = "xx",
@@ -23,9 +23,10 @@ internal class CardControllerRunTest {
         val response = testPost("/v1/api/sounds/get", requestBody)
         val res = response.body<GetAudioResponse>()
         Assertions.assertEquals(200, response.status.value)
-        Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNull(res.errors)
+        Assertions.assertEquals(requestBody.requestId, res.requestId)
+        Assertions.assertEquals(1, res.errors!!.size)
+        Assertions.assertEquals(Result.ERROR, res.result)
+        Assertions.assertEquals("Error while GET_RESOURCE: no resource found", res.errors!![0].message)
         Assertions.assertArrayEquals(ResourceEntity.DUMMY.data, res.resource)
     }
 
@@ -40,8 +41,8 @@ internal class CardControllerRunTest {
         val res = response.body<GetAllCardsResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
         Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNull(res.errors)
         Assertions.assertNotNull(res.cards)
         Assertions.assertEquals(65, res.cards!!.size)
     }
@@ -58,8 +59,8 @@ internal class CardControllerRunTest {
         val res = response.body<GetCardResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
         Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNull(res.errors)
         Assertions.assertNotNull(res.card)
         Assertions.assertEquals("weather", res.card!!.word)
         Assertions.assertEquals("'weðə", res.card!!.transcription)
@@ -97,8 +98,8 @@ internal class CardControllerRunTest {
         val res = response.body<CreateCardResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
         Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNull(res.errors)
         Assertions.assertNotNull(res.card)
         Assertions.assertNotNull(res.card!!.cardId)
         Assertions.assertEquals(expectedCard.dictionaryId.asString(), res.card!!.dictionaryId)
@@ -149,8 +150,8 @@ internal class CardControllerRunTest {
         val res = response.body<SearchCardsResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
         Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNull(res.errors)
         Assertions.assertNotNull(res.cards)
         Assertions.assertEquals(2, res.cards!!.size)
     }

@@ -12,7 +12,7 @@ fun ChainDSL<CardContext>.processGetCardRequest() = worker {
     this.name = "process get-card-request"
     process {
         val id = this.normalizedRequestCardEntityId
-        val res = this.repositories.cardRepository.getCard(id)
+        val res = this.repositories.cardRepository(this.workMode).getCard(id)
         this.postProcess(res)
     }
     onException {
@@ -31,7 +31,7 @@ fun ChainDSL<CardContext>.processGetAllCardsRequest() = worker {
     this.name = "process get-all-cards-request"
     process {
         val id = this.normalizedRequestDictionaryId
-        val res = this.repositories.cardRepository.getAllCards(id)
+        val res = this.repositories.cardRepository(this.workMode).getAllCards(id)
         this.postProcess(res)
     }
     onException {
@@ -49,7 +49,7 @@ fun ChainDSL<CardContext>.processGetAllCardsRequest() = worker {
 fun ChainDSL<CardContext>.processCardSearchRequest() = worker {
     this.name = "process card-search-request"
     process {
-        val res = this.repositories.cardRepository.searchCard(this.normalizedRequestCardFilter)
+        val res = this.repositories.cardRepository(this.workMode).searchCard(this.normalizedRequestCardFilter)
         this.postProcess(res)
     }
     onException {
@@ -60,7 +60,7 @@ fun ChainDSL<CardContext>.processCardSearchRequest() = worker {
 fun ChainDSL<CardContext>.processCreateCardRequest() = worker {
     this.name = "process create-card-request"
     process {
-        val res = this.repositories.cardRepository.createCard(this.normalizedRequestCardEntity)
+        val res = this.repositories.cardRepository(this.workMode).createCard(this.normalizedRequestCardEntity)
         this.postProcess(res)
     }
     onException {
@@ -71,7 +71,7 @@ fun ChainDSL<CardContext>.processCreateCardRequest() = worker {
 fun ChainDSL<CardContext>.processUpdateCardRequest() = worker {
     this.name = "process update-card-request"
     process {
-        val res = this.repositories.cardRepository.updateCard(this.normalizedRequestCardEntity)
+        val res = this.repositories.cardRepository(this.workMode).updateCard(this.normalizedRequestCardEntity)
         this.postProcess(res)
     }
     onException {
@@ -82,7 +82,7 @@ fun ChainDSL<CardContext>.processUpdateCardRequest() = worker {
 fun ChainDSL<CardContext>.processLearnCardsRequest() = worker {
     this.name = "process learn-cards-request"
     process {
-        val res = this.repositories.cardRepository.learnCards(this.normalizedRequestCardLearnList)
+        val res = this.repositories.cardRepository(this.workMode).learnCards(this.normalizedRequestCardLearnList)
         this.postProcess(res)
     }
     onException {
@@ -93,7 +93,7 @@ fun ChainDSL<CardContext>.processLearnCardsRequest() = worker {
 fun ChainDSL<CardContext>.processResetCardsRequest() = worker {
     this.name = "process reset-cards-request"
     process {
-        val res = this.repositories.cardRepository.resetCard(this.normalizedRequestCardEntityId)
+        val res = this.repositories.cardRepository(this.workMode).resetCard(this.normalizedRequestCardEntityId)
         this.postProcess(res)
     }
     onException {
@@ -104,7 +104,7 @@ fun ChainDSL<CardContext>.processResetCardsRequest() = worker {
 fun ChainDSL<CardContext>.processDeleteCardRequest() = worker {
     this.name = "process delete-card-request"
     process {
-        val res = this.repositories.cardRepository.resetCard(this.normalizedRequestCardEntityId)
+        val res = this.repositories.cardRepository(this.workMode).resetCard(this.normalizedRequestCardEntityId)
         this.postProcess(res)
     }
     onException {

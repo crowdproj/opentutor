@@ -10,7 +10,7 @@ import java.util.concurrent.atomic.AtomicLong
  * Does not work with `io.mockk:mockk`
  * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
  */
-class MockTTSResourceRepositoryImpl(
+class MockTTSResourceRepository(
     val answerResourceId: () -> ResourceId? = { ResourceId.NONE },
     val answerResourceEntity: () -> ResourceEntity = { ResourceEntity.DUMMY },
     val findResourceIdCounts: AtomicLong = AtomicLong(),

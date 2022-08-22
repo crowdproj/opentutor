@@ -16,9 +16,9 @@ import kotlinx.coroutines.*
 import org.slf4j.LoggerFactory
 import java.util.concurrent.Executors
 
-private val logger = LoggerFactory.getLogger(TTSResourceRepositoryImpl::class.java)
+private val logger = LoggerFactory.getLogger(RMQTTSResourceRepository::class.java)
 
-class TTSResourceRepositoryImpl(
+class RMQTTSResourceRepository(
     private val connectionFactory: RabbitmqConnectionFactory,
     private val config: TTSClientConfig,
     private val requestTimeoutInMillis: Long = TTSClientSettings.requestTimeoutInMilliseconds

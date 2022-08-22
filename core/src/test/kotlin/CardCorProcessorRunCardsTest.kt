@@ -20,20 +20,20 @@ import org.junit.jupiter.api.Test
 internal class CardCorProcessorRunCardsTest {
     companion object {
 
-        private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
+        private fun testContext(op: CardOperation): CardContext {
             val context = CardContext()
             context.operation = op
-            context.workMode = mode
-            context.requestId = requestId(op, mode)
+            context.workMode = AppMode.TEST
+            context.requestId = requestId(AppMode.TEST)
             return context
         }
 
-        private fun requestId(op: CardOperation, mode: AppMode = AppMode.TEST): AppRequestId {
-            return AppRequestId("for-$op:$mode")
+        private fun requestId(mode: AppMode = AppMode.TEST): AppRequestId {
+            return AppRequestId("for-${AppMode.TEST}:$mode")
         }
 
         private fun assertError(context: CardContext, op: CardOperation) {
-            Assertions.assertEquals(requestId(op), context.requestId)
+            Assertions.assertEquals(requestId(), context.requestId)
             Assertions.assertEquals(AppStatus.FAIL, context.status)
             Assertions.assertEquals(1, context.errors.size)
             val error = context.errors[0]
@@ -60,9 +60,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.GET_CARD)
         context.requestCardEntityId = testId
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.GET_CARD), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
 
@@ -83,9 +83,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.GET_ALL_CARDS)
         context.requestDictionaryId = testDictionaryId
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
 
@@ -110,9 +110,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.GET_ALL_CARDS)
         context.requestDictionaryId = testDictionaryId
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(0, context.responseCardEntityList.size)
         assertError(context, CardOperation.GET_ALL_CARDS)
     }
@@ -131,9 +131,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.CREATE_CARD)
         context.requestCardEntity = testRequestEntity
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.CREATE_CARD), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status) { "Errors: ${context.errors}" }
         Assertions.assertTrue(context.errors.isEmpty())
 
@@ -153,9 +153,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.CREATE_CARD)
         context.requestCardEntity = testRequestEntity
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.CREATE_CARD), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
         assertError(context, CardOperation.CREATE_CARD)
     }
@@ -179,9 +179,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.SEARCH_CARDS)
         context.requestCardFilter = testFilter
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.SEARCH_CARDS), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
 
@@ -211,7 +211,7 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.SEARCH_CARDS)
         context.requestCardFilter = testFilter
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
         Assertions.assertEquals(0, context.responseCardEntityList.size)
         assertError(context, CardOperation.SEARCH_CARDS)
     }
@@ -231,9 +231,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.UPDATE_CARD)
         context.requestCardEntity = testRequestEntity
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.UPDATE_CARD), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status) { "Errors: ${context.errors}" }
         Assertions.assertTrue(context.errors.isEmpty())
         Assertions.assertEquals(testResponseEntity, context.responseCardEntity)
@@ -253,9 +253,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.UPDATE_CARD)
         context.requestCardEntity = testRequestEntity
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.UPDATE_CARD), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
         assertError(context, CardOperation.UPDATE_CARD)
     }
@@ -279,9 +279,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.LEARN_CARDS)
         context.requestCardLearnList = testLearn
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.LEARN_CARDS), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
         Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
@@ -311,9 +311,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.LEARN_CARDS)
         context.requestCardLearnList = testLearn
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.LEARN_CARDS), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(testResponseErrors, context.errors)
         Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
@@ -335,9 +335,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.RESET_CARD)
         context.requestCardEntityId = testId
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.RESET_CARD), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
         Assertions.assertEquals(testResponseEntity, context.responseCardEntity)
@@ -357,9 +357,9 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.DELETE_CARD)
         context.requestCardEntityId = testId
 
-        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+        CardCorProcessor(context.repositories.copy(testCardRepository = repository)).execute(context)
 
-        Assertions.assertEquals(requestId(CardOperation.DELETE_CARD), context.requestId)
+        Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
     }

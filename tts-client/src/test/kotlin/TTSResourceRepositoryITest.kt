@@ -155,14 +155,14 @@ internal class TTSResourceRepositoryITest {
 
     @Test
     fun `test success get two resource sequentially`() = runTest {
-        val repository1: TTSResourceRepository = TTSResourceRepositoryImpl(
+        val repository1: TTSResourceRepository = RMQTTSResourceRepository(
             connectionConfig = testConnectionConfig,
             clientConfig = testConfig,
             requestTimeoutInMs = 42_000
         )
         testSendRequestSuccess(repository1, testRequestId(1))
 
-        val repository2: TTSResourceRepository = TTSResourceRepositoryImpl(
+        val repository2: TTSResourceRepository = RMQTTSResourceRepository(
             connectionConfig = testConnectionConfig,
             clientConfig = testConfig,
             requestTimeoutInMs = 42_000
@@ -174,7 +174,7 @@ internal class TTSResourceRepositoryITest {
     fun `test fail get resources with timeout cancel`() = runTest {
         for (id in 1..3) {
             val testRequestId = testRequestId(id.toByte())
-            val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+            val repository: TTSResourceRepository = RMQTTSResourceRepository(
                 connectionConfig = testConnectionConfig,
                 clientConfig = testConfig,
                 requestTimeoutInMs = minDelayMillis - 1
@@ -198,7 +198,7 @@ internal class TTSResourceRepositoryITest {
         val ids = (1..numThreads / 2).flatMap { sequenceOf(it, it) }.toList()
         val cyclicBarrier = CyclicBarrier(numThreads)
         testMultithreadingRun(numThreads) {
-            val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+            val repository: TTSResourceRepository = RMQTTSResourceRepository(
                 connectionConfig = testConnectionConfig,
                 clientConfig = testConfig,
                 requestTimeoutInMs = 42_000
@@ -217,7 +217,7 @@ internal class TTSResourceRepositoryITest {
         val numThreads = 10
         val ids = (1..numThreads / 2).flatMap { sequenceOf(it, it) }.toList()
 
-        val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+        val repository: TTSResourceRepository = RMQTTSResourceRepository(
             connectionConfig = testConnectionConfig,
             clientConfig = testConfig,
             requestTimeoutInMs = 42_000
@@ -237,7 +237,7 @@ internal class TTSResourceRepositoryITest {
     fun `test fail get resources with server error`() = runTest {
         for (id in 1..3) {
             val testRequestId = testRequestId(id.toByte(), false)
-            val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+            val repository: TTSResourceRepository = RMQTTSResourceRepository(
                 connectionConfig = testConnectionConfig,
                 clientConfig = testConfig,
                 requestTimeoutInMs = 4200,
