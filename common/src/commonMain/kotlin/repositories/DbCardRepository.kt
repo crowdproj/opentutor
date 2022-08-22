@@ -37,6 +37,11 @@ interface DbCardRepository {
      * Updates cards details.
      */
     fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse
+
+    /**
+     * Resets status.
+     */
+    fun resetCard(id: CardId): CardEntityDbResponse
 }
 
 data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError> = emptyList()) {

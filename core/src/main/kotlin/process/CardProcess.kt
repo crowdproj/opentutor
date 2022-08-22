@@ -90,6 +90,17 @@ fun ChainDSL<CardContext>.processLearnCardsRequest() = worker {
     }
 }
 
+fun ChainDSL<CardContext>.processResetCardsRequest() = worker {
+    this.name = "process reset-cards-request"
+    process {
+        val res = this.repositories.cardRepository.resetCard(this.normalizedRequestCardEntityId)
+        this.postProcess(res)
+    }
+    onException {
+        this.handleThrowable(CardOperation.RESET_CARD, it)
+    }
+}
+
 private fun CardContext.postProcess(res: CardEntitiesDbResponse) {
     this.responseCardEntityList = res.cards
     if (res.errors.isNotEmpty()) {

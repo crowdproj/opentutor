@@ -171,4 +171,21 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(1, res.cards!!.size)
         Assertions.assertEquals("weather", res.cards!![0].word)
     }
+
+    @Test
+    fun `test reset-card success`() = testApplication {
+        val requestBody = ResetCardRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            cardId = "2",
+        )
+        val response = testPost("/v1/api/cards/reset", requestBody)
+        val res = response.body<ResetCardResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}"}
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertEquals("weather", res.card!!.word)
+        Assertions.assertEquals(0, res.card!!.answered)
+    }
 }

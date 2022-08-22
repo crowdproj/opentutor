@@ -105,6 +105,19 @@ class MemDbCardRepository(
         return CardEntitiesDbResponse(cards = cards.map { it.toEntity() }, errors = errors)
     }
 
+    override fun resetCard(id: CardId): CardEntityDbResponse {
+        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
+            ?: return CardEntityDbResponse(
+                card = CardEntity.EMPTY,
+                errors = listOf(noCardFoundDbError(operation = "resetCard", id = id))
+            )
+        val record = card.copy(answered = 0)
+        val dictionary = dictionaries[card.dictionaryId]
+        requireNotNull(dictionary).cards[card.id] = record
+        dictionaries.flush(card.dictionaryId)
+        return CardEntityDbResponse(card = record.toEntity())
+    }
+
     private fun learnCard(learn: CardLearn, errors: MutableList<AppError>): Card? {
         val id = learn.cardId
         val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()

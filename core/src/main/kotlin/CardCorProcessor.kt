@@ -198,6 +198,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     }
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
+                runs(CardOperation.RESET_CARD) {
+                    processResetCardsRequest()
+                }
             }
             operation(CardOperation.DELETE_CARD) {
                 stubs(CardOperation.DELETE_CARD) {

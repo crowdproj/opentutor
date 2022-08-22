@@ -131,6 +131,21 @@ class PgDbCardRepository(
         }
     }
 
+    override fun resetCard(id: CardId): CardEntityDbResponse {
+        return execute {
+            val card = Card.findById(id.asDbId())
+            if (card == null) {
+                CardEntityDbResponse(
+                    card = CardEntity.EMPTY,
+                    errors = listOf(noCardFoundDbError(operation = "resetCard", id = id))
+                )
+            } else {
+                card.answered = 0
+                CardEntityDbResponse(card = card.toEntity())
+            }
+        }
+    }
+
     private fun createExamplesAndTranslations(card: CardEntity, record: Card) {
         // TODO: separated tables for examples and translations was a bad idea - need to fix it with json-column
         card.examples.forEach {

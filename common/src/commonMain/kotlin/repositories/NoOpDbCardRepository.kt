@@ -27,6 +27,10 @@ object NoOpDbCardRepository : DbCardRepository {
         return noOp()
     }
 
+    override fun resetCard(id: CardId): CardEntityDbResponse {
+        return noOp()
+    }
+
     private fun <X> noOp(): X {
         throw IllegalStateException("Must not be called.")
     }

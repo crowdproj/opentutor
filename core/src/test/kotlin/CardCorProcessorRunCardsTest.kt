@@ -317,4 +317,29 @@ internal class CardCorProcessorRunCardsTest {
         Assertions.assertEquals(testResponseErrors, context.errors)
         Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
     }
+
+    @Test
+    fun `test reset-card success`() = runTest {
+        val testId = CardId("42")
+        val testResponseEntity = stubCard.copy(cardId = testId)
+
+        val repository = MockDbCardRepository(
+            invokeResetCard = {
+                CardEntityDbResponse(
+                    card = if (it == testId) testResponseEntity else CardEntity.EMPTY,
+                )
+            }
+        )
+
+        val context = testContext(CardOperation.RESET_CARD)
+        context.requestCardEntityId = testId
+
+        CardCorProcessor(context.repositories.copy(cardRepository = repository)).execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.RESET_CARD), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+        Assertions.assertEquals(testResponseEntity, context.responseCardEntity)
+    }
+
 }

@@ -17,26 +17,111 @@ abstract class DbCardRepositoryTest {
 
     companion object {
 
-        private fun assertEquals(expected: CardEntity, actual: CardEntity) {
+        private val weatherCardEntity = CardEntity(
+            cardId = CardId("244"),
+            dictionaryId = DictionaryId("2"),
+            word = "weather",
+            transcription = "'weðə",
+            partOfSpeech = "NOUN",
+            answered = null,
+            translations = listOf(listOf("погода")),
+            examples = listOf(
+                "weather forecast -- прогноз погоды",
+                "weather bureau -- бюро погоды",
+                "nasty weather -- ненастная погода",
+                "spell of cold weather -- похолодание"
+            ),
+            details = emptyMap(),
+        )
+
+        private val climateCardEntity = CardEntity(
+            cardId = weatherCardEntity.cardId,
+            dictionaryId = DictionaryId("2"),
+            word = "climate",
+            transcription = "ˈklaɪmɪt",
+            details = mapOf(Stage.SELF_TEST to 3),
+            partOfSpeech = "Unknown",
+            answered = null,
+            translations = listOf(listOf("климат", "атмосфера", "обстановка"), listOf("климатические условия")),
+            examples = listOf(
+                "Create a climate of fear, and it's easy to keep the borders closed.",
+                "The clock of climate change is ticking in these magnificent landscapes.",
+            ),
+        )
+
+        private val snowCardEntity = CardEntity(
+            cardId = CardId("245"),
+            dictionaryId = DictionaryId("2"),
+            word = "snow",
+            transcription = "snəu",
+            partOfSpeech = "NOUN",
+            translations = listOf(listOf("снег")),
+            examples = listOf(
+                "It snows. -- Идет снег.",
+                "a flake of snow -- снежинка",
+                "snow depth -- высота снежного покрова"
+            ),
+            answered = null,
+            details = emptyMap(),
+        )
+
+        private val rainCardEntity = CardEntity(
+            cardId = CardId("246"),
+            dictionaryId = DictionaryId("2"),
+            word = "rain",
+            transcription = "rein",
+            partOfSpeech = "NOUN",
+            translations = listOf(listOf("дождь")),
+            examples = listOf(
+                "It rains. -- Идет дождь.",
+                "heavy rain -- проливной дождь, ливень",
+                "drizzling rain -- изморось",
+                "torrential rain -- проливной дождь",
+            ),
+            answered = null,
+            details = emptyMap(),
+        )
+
+        private val newMurkyCardEntity = CardEntity(
+            dictionaryId = DictionaryId("2"),
+            word = "murky",
+            transcription = "ˈmɜːkɪ",
+            partOfSpeech = "adjective",
+            translations = listOf(listOf("темный"), listOf("пасмурный")),
+            examples = listOf("Well, that's a murky issue, isn't it?"),
+            answered = 42,
+            details = mapOf(Stage.OPTIONS to 0),
+        )
+
+        private fun assertCard(expected: CardEntity, actual: CardEntity) {
+            Assertions.assertEquals(expected.cardId, actual.cardId)
+            assertCardNoId(expected, actual)
+        }
+
+        private fun assertCardNoId(expected: CardEntity, actual: CardEntity) {
             Assertions.assertNotSame(expected, actual)
             Assertions.assertEquals(expected.dictionaryId, actual.dictionaryId)
+            Assertions.assertEquals(expected.word, actual.word)
+            Assertions.assertEquals(expected.transcription, actual.transcription)
+            Assertions.assertEquals(expected.partOfSpeech, actual.partOfSpeech)
             Assertions.assertEquals(expected.answered, actual.answered)
             Assertions.assertEquals(expected.details, actual.details)
-            Assertions.assertEquals(expected.examples, actual.examples)
-            Assertions.assertEquals(expected.transcription, actual.transcription)
             Assertions.assertEquals(expected.translations, actual.translations)
-            Assertions.assertEquals(expected.partOfSpeech, actual.partOfSpeech)
-            Assertions.assertEquals(expected.word, actual.word)
+            Assertions.assertEquals(expected.examples, actual.examples)
         }
 
         private fun assertSingleError(res: CardEntityDbResponse, field: String, op: String): AppError {
-            Assertions.assertEquals(1, res.errors.size)
+            Assertions.assertEquals(1, res.errors.size) { "Errors: ${res.errors}" }
             val error = res.errors[0]
             Assertions.assertEquals("database::$op", error.code)
             Assertions.assertEquals(field, error.field)
             Assertions.assertEquals("database", error.group)
             Assertions.assertNull(error.exception)
             return error
+        }
+
+        private fun assertNoErrors(res: CardEntityDbResponse) {
+            Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
         }
     }
 
@@ -89,27 +174,10 @@ abstract class DbCardRepositoryTest {
 
     @Test
     fun `test create card success`() {
-        val request = CardEntity(
-            dictionaryId = DictionaryId("2"),
-            word = "murky",
-            transcription = "ˈmɜːkɪ",
-            partOfSpeech = "adjective",
-            translations = listOf(listOf("темный"), listOf("пасмурный")),
-            examples = listOf("Well, that's a murky issue, isn't it?"),
-            answered = 42,
-            details = mapOf(Stage.OPTIONS to 0),
-        )
+        val request = newMurkyCardEntity
         val res = repository.createCard(request)
-        Assertions.assertEquals(0, res.errors.size)
-        Assertions.assertEquals(request.dictionaryId, res.card.dictionaryId)
-        Assertions.assertEquals(request.word, res.card.word)
-        Assertions.assertEquals(request.transcription, res.card.transcription)
-        Assertions.assertEquals(request.partOfSpeech, res.card.partOfSpeech)
-        Assertions.assertEquals(request.translations, res.card.translations)
-        Assertions.assertEquals(request.examples, res.card.examples)
-        Assertions.assertEquals(request.answered, res.card.answered)
-        Assertions.assertEquals(request.details, res.card.details)
-        Assertions.assertNotEquals(request.cardId, res.card.cardId)
+        assertNoErrors(res)
+        assertCardNoId(request, res.card)
         Assertions.assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
     }
 
@@ -155,34 +223,18 @@ abstract class DbCardRepositoryTest {
 
     @Test
     fun `test get card & update card success`() {
-        val request = CardEntity(
-            cardId = CardId("244"),
-            dictionaryId = DictionaryId("2"),
-            word = "climate",
-            transcription = "ˈklaɪmɪt",
-            translations = listOf(listOf("к-климат")),
-            examples = listOf("Create a climate of fear, and it's easy to keep the borders closed."),
-            answered = 42,
-            details = mapOf(Stage.SELF_TEST to 3),
-            partOfSpeech = "Unknown"
-        )
-        val prev = repository.getCard(request.cardId).card
-        Assertions.assertEquals(request.dictionaryId, prev.dictionaryId)
-        Assertions.assertNotEquals(request.answered, prev.answered)
-        Assertions.assertNotEquals(request.details, prev.details)
-        Assertions.assertNotEquals(request.examples, prev.examples)
-        Assertions.assertNotEquals(request.transcription, prev.transcription)
-        Assertions.assertNotEquals(request.translations, prev.translations)
-        Assertions.assertNotEquals(request.partOfSpeech, prev.partOfSpeech)
-        Assertions.assertNotEquals(request.word, prev.word)
+        val expected = weatherCardEntity
+        val prev = repository.getCard(expected.cardId).card
+        assertCard(expected, prev)
+
+        val request = climateCardEntity
 
         val res = repository.updateCard(request)
-        Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
-        val updated = repository.updateCard(request).card
-        assertEquals(request, updated)
-
-        val now = repository.getCard(request.cardId).card
-        assertEquals(request, now)
+        assertNoErrors(res)
+        val updated = res.card
+        assertCard(request, updated)
+        val now = repository.getCard(expected.cardId).card
+        assertCard(request, now)
     }
 
     @Test
@@ -217,25 +269,30 @@ abstract class DbCardRepositoryTest {
     @Test
     fun `test learn cards success`() {
         val request = CardLearn(
-            cardId = CardId("244"),
+            cardId = rainCardEntity.cardId,
             details = mapOf(Stage.SELF_TEST to 3, Stage.WRITING to 4),
         )
         val res = repository.learnCards(listOf(request))
-        Assertions.assertEquals(0, res.errors.size)
+        Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(1, res.cards.size)
         val card = res.cards[0]
-        println(card)
-        Assertions.assertEquals("weather", card.word)
-        Assertions.assertEquals(DictionaryId("2"), card.dictionaryId)
-        Assertions.assertEquals("'weðə", card.transcription)
-        Assertions.assertEquals("NOUN", card.partOfSpeech)
-        Assertions.assertEquals(null, card.answered)
-        Assertions.assertEquals(listOf(listOf("погода")), card.translations)
-        Assertions.assertEquals(listOf(
-            "weather forecast -- прогноз погоды",
-            "weather bureau -- бюро погоды",
-            "nasty weather -- ненастная погода",
-            "spell of cold weather -- похолодание"), card.examples)
-        Assertions.assertEquals(request.details, card.details)
+        val expectedCard = rainCardEntity.copy(details = request.details)
+        assertCard(expected = expectedCard, actual = card)
+    }
+
+    @Test
+    fun `test get card & reset card success`() {
+        val request = snowCardEntity
+        val prev = repository.getCard(request.cardId).card
+        assertCard(request, prev)
+
+        val expected = request.copy(answered = 0)
+        val res = repository.resetCard(request.cardId)
+        assertNoErrors(res)
+        val updated = res.card
+        assertCard(expected, updated)
+
+        val now = repository.getCard(request.cardId).card
+        assertCard(expected, now)
     }
 }

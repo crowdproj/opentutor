@@ -16,6 +16,7 @@ class MockDbCardRepository(
     private val invokeCreateCard: (CardEntity) -> CardEntityDbResponse = { CardEntityDbResponse.EMPTY },
     private val invokeUpdateCard: (CardEntity) -> CardEntityDbResponse = { CardEntityDbResponse.EMPTY },
     private val invokeLearnCards: (List<CardLearn>) -> CardEntitiesDbResponse = { CardEntitiesDbResponse.EMPTY },
+    private val invokeResetCard: (CardId) -> CardEntityDbResponse = { CardEntityDbResponse.EMPTY },
 ) : DbCardRepository {
 
     override fun getCard(id: CardId): CardEntityDbResponse {
@@ -40,5 +41,9 @@ class MockDbCardRepository(
 
     override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
         return invokeLearnCards(learn)
+    }
+
+    override fun resetCard(id: CardId): CardEntityDbResponse {
+        return invokeResetCard(id)
     }
 }
