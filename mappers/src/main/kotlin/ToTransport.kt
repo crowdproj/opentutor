@@ -18,7 +18,7 @@ fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.CREATE_CARD -> this.toCreateCardResponse()
     CardOperation.UPDATE_CARD -> this.toUpdateCardResponse()
     CardOperation.DELETE_CARD -> this.toDeleteCardResponse()
-    CardOperation.LEARN_CARD -> this.toLearnCardResponse()
+    CardOperation.LEARN_CARDS -> this.toLearnCardResponse()
     CardOperation.RESET_CARD -> this.toResetCardResponse()
     CardOperation.NONE -> throw IllegalArgumentException("Not supported operation $op.")
 }
@@ -52,12 +52,14 @@ fun CardContext.toSearchCardsResponse() = SearchCardsResponse(
 )
 
 fun CardContext.toCreateCardResponse() = CreateCardResponse(
+    card = this.responseCardEntity.toCardResource(),
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
 )
 
 fun CardContext.toUpdateCardResponse() = UpdateCardResponse(
+    card = this.responseCardEntity.toCardResource(),
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
@@ -69,26 +71,34 @@ fun CardContext.toDeleteCardResponse() = DeleteCardResponse(
     errors = this.errors.toErrorResourceList(),
 )
 
-fun CardContext.toLearnCardResponse() = LearnCardResponse(
+fun CardContext.toLearnCardResponse() = LearnCardsResponse(
+    cards = this.responseCardEntityList.mapNotNull { it.toCardResource() },
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
 )
 
 fun CardContext.toResetCardResponse() = ResetCardResponse(
+    card = this.responseCardEntity.toCardResource(),
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
 )
 
 private fun CardEntity.toCardResource(): CardResource? {
-    if (this == CardEntity.DUMMY) {
+    if (this == CardEntity.EMPTY) {
         return null
     }
     return CardResource(
         cardId = cardId.takeIf { it != CardId.NONE }?.asString(),
         dictionaryId = dictionaryId.takeIf { it != DictionaryId.NONE }?.asString(),
-        word = word
+        word = word,
+        partOfSpeech = partOfSpeech,
+        transcription = transcription,
+        translations = translations,
+        examples = examples,
+        details = details.mapKeys { it.key.name },
+        answered = answered,
     )
 }
 

@@ -15,7 +15,7 @@ fun CardContext.fromTransport(request: BaseRequest) = when (request) {
     is CreateCardRequest -> fromCreateCardRequest(request)
     is UpdateCardRequest -> fromUpdateCardRequest(request)
     is DeleteCardRequest -> fromDeleteCardRequest(request)
-    is LearnCardRequest -> fromLearnCardRequest(request)
+    is LearnCardsRequest -> fromLearnCardRequest(request)
     is ResetCardRequest -> fromResetCardRequest(request)
     else -> throw IllegalArgumentException("Unknown request ${request.javaClass}")
 }
@@ -23,7 +23,7 @@ fun CardContext.fromTransport(request: BaseRequest) = when (request) {
 fun CardContext.fromGetGetAudioRequest(request: GetAudioRequest) {
     this.operation = CardOperation.GET_RESOURCE
     this.requestId = request.requestId()
-    this.requestResourceGet = ResourceGet(word = request.word?:"", lang = LangId(request.lang?:""))
+    this.requestResourceGet = ResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
 }
@@ -62,7 +62,7 @@ fun CardContext.fromCreateCardRequest(request: CreateCardRequest) {
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
-    this.requestCardEntity = request.card.toCardEntity()
+    this.requestCardEntity = request.card?.toCardEntity() ?: CardEntity.EMPTY
 }
 
 fun CardContext.fromUpdateCardRequest(request: UpdateCardRequest) {
@@ -70,7 +70,7 @@ fun CardContext.fromUpdateCardRequest(request: UpdateCardRequest) {
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
-    this.requestCardEntity = request.card.toCardEntity()
+    this.requestCardEntity = request.card?.toCardEntity() ?: CardEntity.EMPTY
 }
 
 fun CardContext.fromDeleteCardRequest(request: DeleteCardRequest) {
@@ -81,8 +81,8 @@ fun CardContext.fromDeleteCardRequest(request: DeleteCardRequest) {
     this.requestCardEntityId = toCardId(request.cardId)
 }
 
-fun CardContext.fromLearnCardRequest(request: LearnCardRequest) {
-    this.operation = CardOperation.LEARN_CARD
+fun CardContext.fromLearnCardRequest(request: LearnCardsRequest) {
+    this.operation = CardOperation.LEARN_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -103,15 +103,26 @@ private fun toCardId(id: String?) = id?.let { CardId(it) } ?: CardId.NONE
 
 private fun toDictionaryId(id: String?) = id?.let { DictionaryId(it) } ?: DictionaryId.NONE
 
-private fun CardResource?.toCardEntity(): CardEntity = CardEntity(
-    cardId = toCardId(this?.cardId),
-    dictionaryId = toDictionaryId(this?.dictionaryId),
-    word = this?.word ?: ""
+private fun CardResource.toCardEntity(): CardEntity = CardEntity(
+    cardId = toCardId(this.cardId),
+    dictionaryId = toDictionaryId(this.dictionaryId),
+    word = this.word ?: "",
+    partOfSpeech = this.partOfSpeech,
+    transcription = this.transcription,
+    translations = this.translations ?: emptyList(),
+    examples = this.examples ?: emptyList(),
+    details = this.details.toDetails(),
+    answered = this.answered,
 )
 
-private fun CardUpdateResource?.toCardLearn(): CardLearn = CardLearn(
+private fun String.toStage(): Stage? {
+    val str = this.replace("-", "_")
+    return Stage.values().firstOrNull { it.name.equals(other = str, ignoreCase = true) }
+}
+
+private fun LearnResource?.toCardLearn(): CardLearn = CardLearn(
     cardId = toCardId(this?.cardId),
-    details = this?.details ?: emptyMap()
+    details = this?.details.toDetails()
 )
 
 private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
@@ -120,6 +131,11 @@ private fun DebugResource?.transportToWorkMode(): AppMode = when (this?.mode) {
     RunMode.STUB -> AppMode.STUB
     null -> AppMode.PROD
 }
+
+private fun Map<String, Long>?.toDetails() = this?.mapNotNull {
+    val k = it.key.toStage() ?: return@mapNotNull null
+    k to it.value
+}?.toMap() ?: emptyMap()
 
 private fun DebugResource?.transportToStubCase(): AppStub = when (this?.stub) {
     DebugStub.SUCCESS -> AppStub.SUCCESS

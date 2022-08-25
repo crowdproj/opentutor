@@ -18,6 +18,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
     testImplementation(testFixtures(project(":tts-client")))
+    testImplementation(testFixtures(project(":db-common")))
 }
 
 tasks.test {

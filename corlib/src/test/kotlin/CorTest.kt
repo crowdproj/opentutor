@@ -99,7 +99,7 @@ internal class CorTest {
             chain {
                 name = "chain"
                 worker {
-                    process { throw AssertionError("2") }
+                    process { throw TestException("2") }
                     onException { this.counter++ }
                 }
                 worker {
@@ -108,7 +108,7 @@ internal class CorTest {
             }
             worker {
                 worker {
-                    process { throw AssertionError("4") }
+                    process { throw TestException("4") }
                     onException { this.counter++ }
                 }
             }
@@ -126,7 +126,7 @@ internal class CorTest {
             }
             chain {
                 worker {
-                    process { throw AssertionError("6") }
+                    process { throw TestException("6") }
                     onException { this.counter-- }
                 }
                 worker {
@@ -200,3 +200,5 @@ internal class CorTest {
 internal data class TestContext(
     var counter: Int = Int.MIN_VALUE,
 )
+
+internal class TestException(msg: String) : RuntimeException(msg)

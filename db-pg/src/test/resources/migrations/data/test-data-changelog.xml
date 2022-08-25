@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="test-data" author="sszuev">
+        <loadData file="languages.csv"
+                  quotchar="'"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";"
+                  tableName="languages"
+                  usePreparedStatements="true">
+        </loadData>
+        <loadData file="dictionaries.csv"
+                  quotchar="'"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  separator=";"
+                  tableName="dictionaries"
+                  usePreparedStatements="true">
+        </loadData>
+        <loadData file="cards.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  tableName="cards"
+                  usePreparedStatements="true">
+            <column name="text" type="string"/>
+            <column name="transcription" type="string"/>
+            <column name="details" type="string"/>
+        </loadData>
+        <loadData file="examples.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  tableName="examples"
+                  usePreparedStatements="true">
+            <column name="text" type="string"/>
+        </loadData>
+        <loadData file="translations.csv"
+                  relativeToChangelogFile="true"
+                  schemaName="public"
+                  tableName="translations"
+                  usePreparedStatements="true">
+            <column name="text" type="string"/>
+        </loadData>
+    </changeSet>
+
+    <changeSet id="test-data-sequences" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="data-sequences.sql"/>
+        <comment>Seq next data sequence primary keys</comment>
+    </changeSet>
+
+</databaseChangeLog>

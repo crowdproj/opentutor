@@ -1,16 +1,11 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
-import com.gitlab.sszuev.flashcards.api.v1.models.ErrorResource
-import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -26,7 +21,14 @@ class ToTransportTest {
             responseCardEntity = CardEntity(
                 cardId = CardId("card=42"),
                 dictionaryId = DictionaryId("dictionary=42"),
-                word = "xxx"
+                word = "xxx",
+                partOfSpeech = "pos",
+                transcription = "test",
+                answered = 42,
+                translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+                examples = listOf("example1", "example2"),
+                details = mapOf(Stage.MOSAIC to 42, Stage.SELF_TEST to 21)
+
             ),
             errors = mutableListOf(
                 AppError(
@@ -125,17 +127,24 @@ class ToTransportTest {
     @ParameterizedTest
     @EnumSource(
         value = CardOperation::class,
-        names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "LEARN_CARD", "RESET_CARD"]
+        names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "RESET_CARD"]
     )
     fun `test toCreateUpdateCardResponse`(op: CardOperation) {
+        val responseEntity = CardResource(
+            cardId = "A",
+            dictionaryId = "G",
+            word = "xxx",
+            details = emptyMap(),
+            translations = emptyList(),
+            examples = emptyList(),
+        )
         val context = CardContext(
             requestId = AppRequestId(op.name),
             operation = op,
-            responseCardEntity =
-            CardEntity(
-                cardId = CardId("A"),
-                dictionaryId = DictionaryId("G"),
-                word = "xxx"
+            responseCardEntity = CardEntity(
+                cardId = CardId(responseEntity.cardId!!),
+                dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
+                word = responseEntity.word!!
             ),
             errors = mutableListOf(),
             status = AppStatus.OK
@@ -144,14 +153,55 @@ class ToTransportTest {
             CardOperation.UPDATE_CARD -> context.toUpdateCardResponse()
             CardOperation.CREATE_CARD -> context.toCreateCardResponse()
             CardOperation.DELETE_CARD -> context.toDeleteCardResponse()
-            CardOperation.LEARN_CARD -> context.toLearnCardResponse()
-            CardOperation.RESET_CARD-> context.toResetCardResponse()
+            CardOperation.RESET_CARD -> context.toResetCardResponse()
             else -> throw IllegalArgumentException()
         }
 
         Assertions.assertEquals(context.requestId.asString(), res.requestId)
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNull(res.errors)
+        val card = when (op) {
+            CardOperation.UPDATE_CARD -> (res as UpdateCardResponse).card!!
+            CardOperation.CREATE_CARD -> (res as CreateCardResponse).card!!
+            CardOperation.RESET_CARD -> (res as ResetCardResponse).card!!
+            else -> {
+                return
+            }
+        }
+        Assertions.assertNotSame(responseEntity, card)
+        Assertions.assertEquals(responseEntity, card)
+    }
+
+    @Test
+    fun `test toLearnCardResponse`() {
+        val responseEntity = CardResource(
+            cardId = "A",
+            dictionaryId = "G",
+            word = "xxx",
+            details = emptyMap(),
+            translations = emptyList(),
+            examples = emptyList(),
+        )
+        val context = CardContext(
+            requestId = AppRequestId(CardOperation.LEARN_CARDS.name),
+            operation = CardOperation.LEARN_CARDS,
+            responseCardEntityList = listOf(CardEntity(
+                cardId = CardId(responseEntity.cardId!!),
+                dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
+                word = responseEntity.word!!
+            )),
+            errors = mutableListOf(),
+            status = AppStatus.OK
+        )
+        val res = context.toLearnCardResponse()
+
+        Assertions.assertEquals(context.requestId.asString(), res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
+        Assertions.assertEquals(1, res.cards!!.size)
+        val card = res.cards!!.get(0)
+        Assertions.assertNotSame(responseEntity, card)
+        Assertions.assertEquals(responseEntity, card)
     }
 
     private fun assertError(expected: AppError, actual: ErrorResource) {

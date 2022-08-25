@@ -21,9 +21,9 @@ class CardControllerStubsTest {
             cardId = stubCard.cardId.asString(),
             dictionaryId = stubCard.dictionaryId.asString()
         )
-        private val testLearnCard = CardUpdateResource(
+        private val testLearnCard = LearnResource(
             cardId = stubLearnCardDetails.cardId.asString(),
-            details = stubLearnCardDetails.details,
+            details = stubLearnCardDetails.details.mapKeys { it.toString() },
         )
         private val debugSuccess = DebugResource(
             mode = RunMode.STUB,
@@ -164,7 +164,7 @@ class CardControllerStubsTest {
         val responseBody = testResponseSuccess<GetCardResponse>(requestBody.requestId, response)
         Assertions.assertNotNull(responseBody.card)
         val responseEntity = responseBody.card!!
-        Assertions.assertNotSame(stubCard, responseEntity)
+        assertCard(stubCard, responseEntity)
     }
 
     @Test
@@ -181,24 +181,24 @@ class CardControllerStubsTest {
 
     @Test
     fun `test cards-learn success`() = testApplication {
-        val requestBody = LearnCardRequest(
+        val requestBody = LearnCardsRequest(
             requestId = "success-request",
             debug = debugSuccess,
             cards = listOf(testLearnCard.copy(cardId = "a"), testLearnCard.copy(cardId = "b")),
         )
         val response = testPost("/v1/api/cards/learn", requestBody)
-        testResponseSuccess<LearnCardResponse>(requestBody.requestId, response)
+        testResponseSuccess<LearnCardsResponse>(requestBody.requestId, response)
     }
 
     @Test
     fun `test cards-learn error`() = testApplication {
-        val requestBody = LearnCardRequest(
+        val requestBody = LearnCardsRequest(
             requestId = "error-request",
             debug = debugError,
             cards = listOf(testLearnCard.copy(cardId = "d"), testLearnCard.copy(cardId = "e")),
         )
         val response = testPost("/v1/api/cards/learn", requestBody)
-        testResponseError<LearnCardResponse>(requestBody.requestId, response)
+        testResponseError<LearnCardsResponse>(requestBody.requestId, response)
     }
 
     @Test

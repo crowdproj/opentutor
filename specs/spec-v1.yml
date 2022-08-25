@@ -179,7 +179,7 @@ paths:
             schema:
               type: array
               items:
-                $ref: '#/components/schemas/LearnCardRequest'
+                $ref: '#/components/schemas/LearnCardsRequest'
         required: true
       responses:
         200:
@@ -187,7 +187,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/LearnCardResponse'
+                $ref: '#/components/schemas/LearnCardsResponse'
 
   /api/cards/delete:
     post:
@@ -356,6 +356,10 @@ components:
     CreateCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
 
     UpdateCardRequest:
       allOf:
@@ -369,8 +373,12 @@ components:
     UpdateCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
 
-    LearnCardRequest:
+    LearnCardsRequest:
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -379,11 +387,17 @@ components:
             cards:
               type: array
               items:
-                $ref: '#/components/schemas/CardUpdateResource'
+                $ref: '#/components/schemas/LearnResource'
 
-    LearnCardResponse:
+    LearnCardsResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            cards:
+              type: array
+              items:
+                $ref: '#/components/schemas/CardResource'
 
     DeleteCardRequest:
       allOf:
@@ -410,6 +424,10 @@ components:
     ResetCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
 
     BaseRequest:
       type: object
@@ -432,7 +450,7 @@ components:
           getCard: '#/components/schemas/GetCardRequest'
           createCard: '#/components/schemas/CreateCardRequest'
           updateCard: '#/components/schemas/UpdateCardRequest'
-          learnCard: '#/components/schemas/LearnCardRequest'
+          learnCard: '#/components/schemas/LearnCardsRequest'
           deleteCard: '#/components/schemas/DeleteCardRequest'
           resetCard: '#/components/schemas/ResetCardRequest'
 
@@ -469,7 +487,7 @@ components:
           getCard: '#/components/schemas/GetCardResponse'
           createCard: '#/components/schemas/CreateCardResponse'
           updateCard: '#/components/schemas/UpdateCardResponse'
-          learnCard: '#/components/schemas/LearnCardResponse'
+          learnCard: '#/components/schemas/LearnCardsResponse'
           deleteCard: '#/components/schemas/DeleteCardResponse'
           resetCard: '#/components/schemas/ResetCardResponse'
 
@@ -531,7 +549,7 @@ components:
             type: integer
             format: int64
 
-    CardUpdateResource:
+    LearnResource:
       description: 'A card resource to update card stage details'
       type: object
       properties:
@@ -541,7 +559,7 @@ components:
           type: object
           additionalProperties:
             type: integer
-            format: int32
+            format: int64
 
     ErrorResource:
       type: object

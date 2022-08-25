@@ -35,14 +35,14 @@ data class CardContext(
     var requestCardFilter: CardFilter = CardFilter.EMPTY,
     var normalizedRequestCardFilter: CardFilter = CardFilter.EMPTY,
     // update/create request:
-    var requestCardEntity: CardEntity = CardEntity.DUMMY,
-    var normalizedRequestCardEntity: CardEntity = CardEntity.DUMMY,
+    var requestCardEntity: CardEntity = CardEntity.EMPTY,
+    var normalizedRequestCardEntity: CardEntity = CardEntity.EMPTY,
     // learn card
     var requestCardLearnList: List<CardLearn> = listOf(),
     var normalizedRequestCardLearnList: List<CardLearn> = listOf(),
 
     // get single card response:
-    var responseCardEntity: CardEntity = CardEntity.DUMMY,
+    var responseCardEntity: CardEntity = CardEntity.EMPTY,
     // get cards list response:
     var responseCardEntityList: List<CardEntity> = listOf(),
 )

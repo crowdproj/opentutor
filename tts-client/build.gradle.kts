@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    id("application")
     id("java-test-fixtures")
 }
 
@@ -15,13 +14,13 @@ dependencies {
     val slf4jVersion: String by project
     val testContainersVersion: String by project
     val mockkVersion: String by project
+    val typesafeConfigVersion: String by project
 
-    implementation(project(":config"))
     implementation(project(":common"))
 
     implementation("com.rabbitmq:amqp-client:$rabbitVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
-
+    implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
     testImplementation("ch.qos.logback:logback-classic:$logbackVersion")

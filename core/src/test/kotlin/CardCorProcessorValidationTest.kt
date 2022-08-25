@@ -34,7 +34,7 @@ class CardCorProcessorValidationTest {
         )
         private val testCardLearn = CardLearn(
             cardId = CardId("42"),
-            details = mapOf("stage42" to 42)
+            details = mapOf(Stage.MOSAIC to 42)
         )
 
         private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
@@ -274,7 +274,7 @@ class CardCorProcessorValidationTest {
     @ParameterizedTest(name = parameterizedTestName)
     @MethodSource("wrongIds")
     fun `test learn-cards - validate CardIds`(id: String) = runTest {
-        val context1 = testContext(CardOperation.LEARN_CARD)
+        val context1 = testContext(CardOperation.LEARN_CARDS)
         context1.requestCardLearnList = listOf(
             testCardLearn.copy(cardId = CardId("1")),
             testCardLearn.copy(),
@@ -284,7 +284,7 @@ class CardCorProcessorValidationTest {
         val error = error(context1)
         assertValidationError("card-learn-card-ids", error)
 
-        val context2 = testContext(CardOperation.LEARN_CARD)
+        val context2 = testContext(CardOperation.LEARN_CARDS)
         context2.requestCardLearnList = listOf(
             testCardLearn.copy(cardId = CardId(id)),
             testCardLearn.copy(cardId = CardId(id)),
@@ -297,13 +297,13 @@ class CardCorProcessorValidationTest {
 
     @Test
     fun `test learn-cards - validate wrong stages`() = runTest {
-        val context = testContext(CardOperation.LEARN_CARD)
+        val context = testContext(CardOperation.LEARN_CARDS)
         context.requestCardLearnList = listOf(
-            testCardLearn.copy(cardId = CardId("42"), details = mapOf(" " to 42, "xx".repeat(42) to 42)),
-            testCardLearn.copy(cardId = CardId("21"), details = mapOf("y".repeat(21) to 42, " x".repeat(2) to 42)),
+            testCardLearn.copy(cardId = CardId("42"), details = emptyMap()),
+            testCardLearn.copy(cardId = CardId("21"), details = emptyMap()),
         )
         processor.execute(context)
-        Assertions.assertEquals(3, context.errors.size)
+        Assertions.assertEquals(2, context.errors.size)
         context.errors.forEach {
             assertValidationError("card-learn-stages", it)
         }
@@ -311,36 +311,16 @@ class CardCorProcessorValidationTest {
 
     @Test
     fun `test learn-cards - validate wrong details`() = runTest {
-        val context = testContext(CardOperation.LEARN_CARD)
+        val context = testContext(CardOperation.LEARN_CARDS)
         context.requestCardLearnList = listOf(
-            testCardLearn.copy(cardId = CardId("42"), details = mapOf("stage1" to 4200, "stage2" to 42)),
-            testCardLearn.copy(cardId = CardId("21"), details = mapOf("stage3" to -12, " stage4" to 0)),
+            testCardLearn.copy(cardId = CardId("42"), details = mapOf(Stage.OPTIONS to 4200, Stage.WRITING to 42)),
+            testCardLearn.copy(cardId = CardId("21"), details = mapOf(Stage.MOSAIC to -12, Stage.SELF_TEST to 0)),
         )
         processor.execute(context)
         Assertions.assertEquals(3, context.errors.size)
         context.errors.forEach {
             assertValidationError("card-learn-details", it)
         }
-    }
-
-    @ParameterizedTest(name = parameterizedTestName)
-    @EnumSource(
-        value = AppMode::class,
-        names = [
-            "TEST",
-            "STUB",
-        ]
-    )
-    fun `test learn-cards - validate wrong several fields`(mode: AppMode) = runTest {
-        val context = testContext(CardOperation.LEARN_CARD, mode)
-        context.requestCardLearnList = listOf(
-            testCardLearn.copy(
-                cardId = CardId("xxx"),
-                details = mapOf("stage1" to 4200, "xxx".repeat(42000) to -42)
-            ),
-        )
-        processor.execute(context)
-        Assertions.assertEquals(4, context.errors.size)
     }
 
     @ParameterizedTest(name = parameterizedTestName)

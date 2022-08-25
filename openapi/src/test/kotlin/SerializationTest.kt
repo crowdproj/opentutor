@@ -32,7 +32,7 @@ internal class SerializationTest {
             learned = 42
         )
 
-        private val update = CardUpdateResource(
+        private val update = LearnResource(
             cardId = "42",
             details = mapOf("A" to 2, "B" to 3),
         )
@@ -265,14 +265,14 @@ internal class SerializationTest {
     }
 
     @Test
-    fun `test serialization for LearnCardRequest`() {
-        val req1 = LearnCardRequest(cards = listOf(update), requestId = "request=42")
+    fun `test serialization for LearnCardsRequest`() {
+        val req1 = LearnCardsRequest(cards = listOf(update), requestId = "request=42")
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"learnCard\""))
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         assertUpdate(json)
 
-        val req2 = deserializeRequest<LearnCardRequest>(json)
+        val req2 = deserializeRequest<LearnCardsRequest>(json)
         Assertions.assertNotSame(req1, req2)
         Assertions.assertEquals(req1, req2)
     }

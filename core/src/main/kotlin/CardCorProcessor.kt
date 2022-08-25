@@ -2,9 +2,10 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.CardRepositories
-import com.gitlab.sszuev.flashcards.core.process.processResourceRequest
+import com.gitlab.sszuev.flashcards.core.process.*
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
+import com.gitlab.sszuev.flashcards.core.utils.normalize
 import com.gitlab.sszuev.flashcards.core.validation.*
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
@@ -65,6 +66,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardFilterLength { it.normalizedRequestCardFilter }
                     validateCardFilterDictionaryIds { it.normalizedRequestCardFilter }
                 }
+                runs(CardOperation.SEARCH_CARDS) {
+                    processCardSearchRequest()
+                }
             }
 
             operation(CardOperation.GET_ALL_CARDS) {
@@ -80,6 +84,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                         this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
                     }
                     validateDictionaryId { it.normalizedRequestDictionaryId }
+                }
+                runs(CardOperation.GET_ALL_CARDS) {
+                    processGetAllCardsRequest()
                 }
             }
 
@@ -106,6 +113,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
+                runs(CardOperation.CREATE_CARD) {
+                    processCreateCardRequest()
+                }
             }
 
             operation(CardOperation.UPDATE_CARD) {
@@ -131,23 +141,29 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
+                runs(CardOperation.UPDATE_CARD) {
+                    processUpdateCardRequest()
+                }
             }
 
-            operation(CardOperation.LEARN_CARD) {
-                stubs(CardOperation.LEARN_CARD) {
-                    stubSuccess(CardOperation.LEARN_CARD)
-                    stubError(CardOperation.LEARN_CARD)
-                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
-                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
-                    stubError(CardOperation.LEARN_CARD, AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
+            operation(CardOperation.LEARN_CARDS) {
+                stubs(CardOperation.LEARN_CARDS) {
+                    stubSuccess(CardOperation.LEARN_CARDS)
+                    stubError(CardOperation.LEARN_CARDS)
+                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
+                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
+                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
                 }
-                validators(CardOperation.LEARN_CARD) {
+                validators(CardOperation.LEARN_CARDS) {
                     worker(name = "Make a normalized copy of learn-card request") {
                         this.normalizedRequestCardLearnList = this.requestCardLearnList.map { it.normalize() }
                     }
                     validateCardLearnListCardIds { it.normalizedRequestCardLearnList }
                     validateCardLearnListStages { it.normalizedRequestCardLearnList }
                     validateCardLearnListDetails { it.normalizedRequestCardLearnList }
+                }
+                runs(CardOperation.LEARN_CARDS) {
+                    processLearnCardsRequest()
                 }
             }
 
@@ -165,6 +181,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     }
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
+                runs(CardOperation.GET_CARD) {
+                    processGetCardRequest()
+                }
             }
 
             operation(CardOperation.RESET_CARD) {
@@ -179,6 +198,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     }
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
+                runs(CardOperation.RESET_CARD) {
+                    processResetCardsRequest()
+                }
             }
             operation(CardOperation.DELETE_CARD) {
                 stubs(CardOperation.DELETE_CARD) {
@@ -191,6 +213,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                         this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
                     }
                     validateCardId { it.normalizedRequestCardEntityId }
+                }
+                runs(CardOperation.DELETE_CARD) {
+                    processDeleteCardRequest()
                 }
             }
         }.build()

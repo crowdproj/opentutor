@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
+import com.gitlab.sszuev.flashcards.speaker.TTSClientConfig
 import com.rabbitmq.client.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.TimeoutCancellationException
@@ -41,7 +42,7 @@ internal class TTSResourceRepositoryITest {
         )
 
         private const val testRequestQueueName = "test-queue"
-        private val testConfig = ClientConfig(
+        private val testConfig = TTSClientConfig(
             routingKeyRequest = "test-in",
             routingKeyResponsePrefix = "test-out",
             exchangeName = "test-exchange",
@@ -133,7 +134,7 @@ internal class TTSResourceRepositoryITest {
             futures.forEach {
                 try {
                     it.get()
-                } catch (ex: Throwable) {
+                } catch (ex: Exception) {
                     error.addSuppressed(ex)
                 }
             }
@@ -154,14 +155,14 @@ internal class TTSResourceRepositoryITest {
 
     @Test
     fun `test success get two resource sequentially`() = runTest {
-        val repository1: TTSResourceRepository = TTSResourceRepositoryImpl(
+        val repository1: TTSResourceRepository = RMQTTSResourceRepository(
             connectionConfig = testConnectionConfig,
             clientConfig = testConfig,
             requestTimeoutInMs = 42_000
         )
         testSendRequestSuccess(repository1, testRequestId(1))
 
-        val repository2: TTSResourceRepository = TTSResourceRepositoryImpl(
+        val repository2: TTSResourceRepository = RMQTTSResourceRepository(
             connectionConfig = testConnectionConfig,
             clientConfig = testConfig,
             requestTimeoutInMs = 42_000
@@ -173,7 +174,7 @@ internal class TTSResourceRepositoryITest {
     fun `test fail get resources with timeout cancel`() = runTest {
         for (id in 1..3) {
             val testRequestId = testRequestId(id.toByte())
-            val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+            val repository: TTSResourceRepository = RMQTTSResourceRepository(
                 connectionConfig = testConnectionConfig,
                 clientConfig = testConfig,
                 requestTimeoutInMs = minDelayMillis - 1
@@ -197,7 +198,7 @@ internal class TTSResourceRepositoryITest {
         val ids = (1..numThreads / 2).flatMap { sequenceOf(it, it) }.toList()
         val cyclicBarrier = CyclicBarrier(numThreads)
         testMultithreadingRun(numThreads) {
-            val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+            val repository: TTSResourceRepository = RMQTTSResourceRepository(
                 connectionConfig = testConnectionConfig,
                 clientConfig = testConfig,
                 requestTimeoutInMs = 42_000
@@ -216,7 +217,7 @@ internal class TTSResourceRepositoryITest {
         val numThreads = 10
         val ids = (1..numThreads / 2).flatMap { sequenceOf(it, it) }.toList()
 
-        val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+        val repository: TTSResourceRepository = RMQTTSResourceRepository(
             connectionConfig = testConnectionConfig,
             clientConfig = testConfig,
             requestTimeoutInMs = 42_000
@@ -236,7 +237,7 @@ internal class TTSResourceRepositoryITest {
     fun `test fail get resources with server error`() = runTest {
         for (id in 1..3) {
             val testRequestId = testRequestId(id.toByte(), false)
-            val repository: TTSResourceRepository = TTSResourceRepositoryImpl(
+            val repository: TTSResourceRepository = RMQTTSResourceRepository(
                 connectionConfig = testConnectionConfig,
                 clientConfig = testConfig,
                 requestTimeoutInMs = 4200,

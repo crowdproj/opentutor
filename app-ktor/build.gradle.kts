@@ -8,7 +8,6 @@ group = rootProject.group
 version = rootProject.version
 
 dependencies {
-    val kotlinVersion: String by project
     val ktorVersion: String by project
     val junitVersion: String by project
     val logbackVersion: String by project
@@ -21,6 +20,10 @@ dependencies {
     implementation(project(":tts-client"))
     implementation(project(":services"))
     implementation(project(":stubs"))
+    implementation(project(":core"))
+    implementation(project(":db-common"))
+    implementation(project(":db-pg"))
+    implementation(project(":db-mem"))
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
     implementation("io.ktor:ktor-server-netty:$ktorVersion")
@@ -39,14 +42,11 @@ dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
 
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
-
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
     testImplementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation(testFixtures(project(":tts-client")))
 }
 
 tasks.test {

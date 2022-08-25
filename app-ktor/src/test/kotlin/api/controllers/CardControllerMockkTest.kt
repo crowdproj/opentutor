@@ -59,7 +59,7 @@ internal class CardControllerMockkTest {
     fun `test learn-card service error`() {
         testServiceError(
             endpoint = "cards/learn",
-            requestBody = LearnCardRequest(requestId = "request=cards/learn")
+            requestBody = LearnCardsRequest(requestId = "request=cards/learn")
         ) { this.learnCard(it) }
     }
 
@@ -96,7 +96,7 @@ internal class CardControllerMockkTest {
         val service = mockk<CardService>()
         coEvery {
             service.serviceMethod(any())
-        } throws AssertionError(msg)
+        } throws TestException(msg)
 
         routing {
             route("test/api") {
@@ -117,5 +117,6 @@ internal class CardControllerMockkTest {
             service.serviceMethod(any())
         }
     }
-
 }
+
+internal class TestException(msg: String) : RuntimeException(msg)

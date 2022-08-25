@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.gitlab.sszuev.flashcards.api.apiV1
+import com.gitlab.sszuev.flashcards.dbmem.MemDbCardRepository
+import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
+import com.gitlab.sszuev.flashcards.speaker.rabbitmq.RMQTTSResourceRepository
+import com.gitlab.sszuev.flashcards.speaker.test.NullTTSResourceRepository
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -22,7 +26,12 @@ fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
 @Suppress("unused")
 fun Application.module() {
-    val conf = AppConfig(this.environment.config)
+    val repositories = CardRepositories(
+        prodTTSClientRepository = RMQTTSResourceRepository(),
+        testTTSClientRepository = NullTTSResourceRepository,
+        prodCardRepository = PgDbCardRepository(),
+        testCardRepository = MemDbCardRepository(),
+    )
     install(Routing)
 
     install(CachingHeaders)
@@ -51,7 +60,7 @@ fun Application.module() {
     @Suppress("OPT_IN_USAGE")
     install(Locations)
 
-    val service = cardService(conf)
+    val service = cardService(repositories)
     routing {
         apiV1(service)
 

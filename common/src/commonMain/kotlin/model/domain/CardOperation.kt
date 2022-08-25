@@ -9,6 +9,6 @@ enum class CardOperation {
     CREATE_CARD,
     UPDATE_CARD,
     DELETE_CARD,
-    LEARN_CARD,
+    LEARN_CARDS,
     RESET_CARD,
 }

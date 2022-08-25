@@ -13,7 +13,7 @@ fun ChainDSL<CardContext>.validateCardEntityHasValidCardId(getCardEntity: (CardC
 }
 
 fun ChainDSL<CardContext>.validateCardEntityHasNoCardId(getEntity: (CardContext) -> CardEntity) = worker {
-    this.name =  "Test card-id length"
+    this.name = "Test card-id length"
     test {
         !isIdBlank(getEntity(this).cardId)
     }
@@ -70,32 +70,29 @@ fun ChainDSL<CardContext>.validateCardLearnListStages(getCardLearn: (CardContext
     workerName = "Test learn-card stages",
     fieldName = "card-learn-stages",
     getEntityCollection = { context ->
-        getCardLearn(context).flatMap { cardLearn ->
-            cardLearn.details.keys.map { stage ->
-                cardLearn.cardId to stage
-            }
+        getCardLearn(context).map { cardLearn ->
+            cardLearn.cardId to cardLearn.details.keys
         }
     }
-) { (_, stage) ->
-    // stage is determined by some vocabulary (can be fixed in system).
-    // right not just check it is not empty and not too long
-    stage.isBlank() || stage.length > 10
+) { (_, stages) ->
+    stages.isEmpty()
 }
 
-fun ChainDSL<CardContext>.validateCardLearnListDetails(getCardLearn: (CardContext) -> List<CardLearn>) = validateFields(
-    workerName = "Test learn-card details",
-    fieldName = "card-learn-details",
-    getEntityCollection = { context ->
-        getCardLearn(context).flatMap { cardLearn ->
-            cardLearn.details.values.map { value ->
-                cardLearn.cardId to value
+fun ChainDSL<CardContext>.validateCardLearnListDetails(getCardLearn: (CardContext) -> List<CardLearn>) =
+    validateCollectionFieldsAreCorrect(
+        workerName = "Test learn-card details",
+        fieldName = "card-learn-details",
+        getEntityCollection = { context ->
+            getCardLearn(context).flatMap { cardLearn ->
+                cardLearn.details.values.map { value ->
+                    cardLearn.cardId to value
+                }
             }
         }
+    ) { (_, score) ->
+        // right not just check score is positive and not big
+        score <= 0 || score > 42
     }
-) { (_, score) ->
-    // right not just check score is positive and not big
-    score <= 0 || score > 42
-}
 
 private fun ChainDSL<CardContext>.validateId(
     fieldName: String,
@@ -146,29 +143,42 @@ private fun <V> ChainDSL<CardContext>.validateFields(
     getEntityCollection: (CardContext) -> Collection<V>,
     testIsWrong: (V) -> Boolean,
 ) = chain {
-    worker {
-        this.name = "$workerName:: length"
-        test {
-            getEntityCollection(this).isEmpty()
-        }
-        process {
-            fail(validationError(fieldName = fieldName, description = "not specified"))
-        }
+    validateCollectionIsNotEmpty(workerName, fieldName, getEntityCollection)
+    validateCollectionFieldsAreCorrect(workerName, fieldName, getEntityCollection, testIsWrong)
+}
+
+private fun <V> ChainDSL<CardContext>.validateCollectionIsNotEmpty(
+    workerName: String,
+    fieldName: String,
+    getEntityCollection: (CardContext) -> Collection<V>,
+) = worker {
+    this.name = "$workerName:: length"
+    test {
+        getEntityCollection(this).isEmpty()
     }
-    worker {
-        this.name = "$workerName:: content"
-        process {
-            this.errors.addAll(
-                getEntityCollection(this)
-                    .filter {
-                        testIsWrong(it)
-                    }.map {
-                        validationError(fieldName = fieldName, description = "wrong field value: [$it]")
-                    }.toList()
-            )
-            if (this.errors.isNotEmpty()) {
-                this.status = AppStatus.FAIL
-            }
+    process {
+        fail(validationError(fieldName = fieldName, description = "not specified"))
+    }
+}
+
+private fun <V> ChainDSL<CardContext>.validateCollectionFieldsAreCorrect(
+    workerName: String,
+    fieldName: String,
+    getEntityCollection: (CardContext) -> Collection<V>,
+    testIsWrong: (V) -> Boolean = { false },
+) = worker {
+    this.name = "$workerName:: content"
+    process {
+        this.errors.addAll(
+            getEntityCollection(this)
+                .filter {
+                    testIsWrong(it)
+                }.map {
+                    validationError(fieldName = fieldName, description = "wrong field value: [$it]")
+                }.toList()
+        )
+        if (this.errors.isNotEmpty()) {
+            this.status = AppStatus.FAIL
         }
     }
 }
