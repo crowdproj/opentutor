@@ -15,6 +15,6 @@ object NoOpTTSResourceRepository: TTSResourceRepository {
     }
 
     private fun <X> noOp(): X {
-        throw IllegalStateException("Must not be called.")
+        error("Must not be called.")
     }
 }

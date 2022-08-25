@@ -8,7 +8,6 @@ group = rootProject.group
 version = rootProject.version
 
 dependencies {
-    val kotlinVersion: String by project
     val ktorVersion: String by project
     val junitVersion: String by project
     val logbackVersion: String by project
@@ -42,8 +41,6 @@ dependencies {
 
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
-
-    runtimeOnly("org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
