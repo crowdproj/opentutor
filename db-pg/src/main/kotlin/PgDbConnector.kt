@@ -10,6 +10,7 @@ import liquibase.database.jvm.JdbcConnection
 import liquibase.resource.ClassLoaderResourceAccessor
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig
+import java.util.concurrent.ConcurrentHashMap
 
 class PgDbConnector(config: PgDbConfig) {
 
@@ -21,7 +22,7 @@ class PgDbConnector(config: PgDbConfig) {
         it.password = config.jdbcPasswd
         it.maximumPoolSize = config.hikariPoolSize
         it.keepaliveTime = config.hikariPoolKeepAliveTimeMs
-        it.connectionInitSql = "SET timezone = 'UTC'; COMMIT; ";
+        it.connectionInitSql = "SET timezone = 'UTC'; COMMIT; "
         HikariDataSource(it)
     }
 
@@ -35,8 +36,21 @@ class PgDbConnector(config: PgDbConfig) {
         }
     }
 
-    val connection: Database = Database.connect(
+    private val connection: Database = Database.connect(
         datasource = dataSource,
         databaseConfig = databaseConfig,
     )
+
+    companion object {
+        private val connections = ConcurrentHashMap<PgDbConfig, Database>()
+
+        /**
+         * Connection pool.
+         * @param [config][PgDbConfig]
+         * @return [Database] - dedicated connection for the given configuration
+         */
+        fun connection(config: PgDbConfig): Database {
+            return connections.computeIfAbsent(config) { PgDbConnector(config).connection }
+        }
+    }
 }

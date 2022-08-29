@@ -7,7 +7,11 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 fun noDictionaryFoundDbError(
     operation: String,
     id: DictionaryId,
-) = dbError(operation = operation, fieldName = id.asString(), details = """dictionary with id="${id.asString()}" not found""")
+) = dbError(
+    operation = operation,
+    fieldName = id.asString(),
+    details = """dictionary with id="${id.asString()}" not found"""
+)
 
 fun noCardFoundDbError(
     operation: String,
@@ -18,6 +22,15 @@ fun noUserFoundDbError(
     operation: String,
     uid: String,
 ) = dbError(operation = operation, fieldName = uid, details = """user with uid="$uid" not found""")
+
+fun wrongUserUUIDDbError(
+    operation: String,
+    uid: String,
+) = dbError(
+    operation = operation,
+    fieldName = uid,
+    details = "wrong uuid=<$uid.>",
+)
 
 fun dbError(
     operation: String,

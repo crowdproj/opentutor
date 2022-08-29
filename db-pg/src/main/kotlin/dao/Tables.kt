@@ -52,11 +52,10 @@ object Translations : LongIdTableWithSequence(
 }
 
 /**
- * id;login;pwd;role
+ * id;uuid,role
  */
 object Users : LongIdTableWithSequence(tableName = "users", idSeqName = "users_id_seq", pkeyName = "users_pkey") {
-    val login = varchar("login", 255)
-    val password = varchar("pwd", 255)
+    val uuid = uuid("uuid").uniqueIndex()
     val role = integer("role")
 }
 

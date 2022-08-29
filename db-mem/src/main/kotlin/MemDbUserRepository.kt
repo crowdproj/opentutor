@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.dbError
 import com.gitlab.sszuev.flashcards.common.noUserFoundDbError
+import com.gitlab.sszuev.flashcards.common.wrongUserUUIDDbError
 import com.gitlab.sszuev.flashcards.model.domain.UserEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
@@ -21,15 +21,7 @@ class MemDbUserRepository(
             UUID.fromString(uid)
         } catch (ex: IllegalArgumentException) {
             return UserEntityDbResponse(
-                user = UserEntity.EMPTY,
-                errors = listOf(
-                    dbError(
-                        operation = "getUser",
-                        fieldName = uid,
-                        details = "wrong uuid=<$uid.>",
-                        exception = ex
-                    )
-                )
+                user = UserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", uid))
             )
         }
         val res = users[uuid]

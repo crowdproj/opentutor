@@ -54,7 +54,7 @@ abstract class DbUserRepositoryTest {
             "Error while getUser: wrong uuid=<$uuid.>",
             error.message
         )
-        Assertions.assertInstanceOf(IllegalArgumentException::class.java, error.exception)
+        Assertions.assertNull(error.exception)
     }
 
     @Test

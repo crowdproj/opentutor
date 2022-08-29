@@ -5,10 +5,13 @@ import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
 import com.gitlab.sszuev.flashcards.common.toEntityDetails
 import com.gitlab.sszuev.flashcards.common.toEntityTranslations
 import com.gitlab.sszuev.flashcards.dbpg.dao.*
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
 import org.jetbrains.exposed.dao.id.EntityID
+
+internal fun User.toEntity() = UserEntity(
+    id = this.id.asUserId(),
+    uid = this.uuid.toString(),
+)
 
 internal fun Card.toEntity() = CardEntity(
     cardId = this.id.asCardId(),
@@ -40,6 +43,8 @@ internal fun copyToDbTranslationRecord(txt: List<String>, card: Card, to: Transl
     to.cardId = card.id
     to.text = toDbRecordTranslations(txt)
 }
+
+internal fun EntityID<Long>.asUserId() = UserId(value.toString())
 
 internal fun EntityID<Long>.asDictionaryId() = DictionaryId(value.toString())
 

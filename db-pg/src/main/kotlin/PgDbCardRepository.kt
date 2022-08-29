@@ -9,21 +9,19 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.*
-import org.jetbrains.exposed.sql.transactions.transaction
-import java.sql.SQLException
 
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
     private val sysConfig: SysConfig = SysConfig(),
 ) : DbCardRepository {
-    private val connection by lazy {
+    internal val connection by lazy {
         // lazy, to avoid initialization error when there is no real pg-database
         // and memory-storage is used instead
-        PgDbConnector(dbConfig).connection
+        PgDbConnector.connection(dbConfig)
     }
 
     override fun getCard(id: CardId): CardEntityDbResponse {
-        return execute {
+        return connection.execute {
             val card = Card.findById(id.asDbId())
             if (card == null) {
                 CardEntityDbResponse(
@@ -37,7 +35,7 @@ class PgDbCardRepository(
     }
 
     override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
-        return execute {
+        return connection.execute {
             val cards = Card.find {
                 Cards.dictionaryId eq id.asDbId()
             }.with(Card::examples).with(Card::translations).map { it.toEntity() }
@@ -56,7 +54,7 @@ class PgDbCardRepository(
         val dictionaryIds = filter.dictionaryIds.map { it.asDbId() }
         val learned = sysConfig.numberOfRightAnswers
         val random = CustomFunction<Double>("random", DoubleColumnType())
-        return execute {
+        return connection.execute {
             val cards = Card.find {
                 Cards.dictionaryId inList dictionaryIds and
                         (if (filter.withUnknown) Op.TRUE else Cards.answered.isNull() or Cards.answered.lessEq(learned))
@@ -71,7 +69,7 @@ class PgDbCardRepository(
     }
 
     override fun createCard(card: CardEntity): CardEntityDbResponse {
-        return execute({
+        return connection.execute({
             requireNew(card)
             val record = Card.new {
                 copyToDbEntityRecord(from = card, to = this)
@@ -89,7 +87,7 @@ class PgDbCardRepository(
     }
 
     override fun updateCard(card: CardEntity): CardEntityDbResponse {
-        return execute({
+        return connection.execute({
             requireExiting(card)
             Examples.deleteWhere {
                 Examples.cardId eq card.cardId.asDbId()
@@ -119,7 +117,7 @@ class PgDbCardRepository(
     }
 
     override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
-        return execute {
+        return connection.execute {
             val cardLearns = learn.associateBy { it.cardId.asDbId() }
             val records = Card.find {
                 Cards.id inList cardLearns.keys
@@ -137,7 +135,7 @@ class PgDbCardRepository(
     }
 
     override fun resetCard(id: CardId): CardEntityDbResponse {
-        return execute {
+        return connection.execute {
             val card = Card.findById(id.asDbId())
             if (card == null) {
                 CardEntityDbResponse(
@@ -152,7 +150,7 @@ class PgDbCardRepository(
     }
 
     override fun deleteCard(id: CardId): DeleteEntityDbResponse {
-        return execute {
+        return connection.execute {
             val res = Cards.deleteWhere {
                 Cards.id eq id.asDbId()
             }
@@ -173,18 +171,6 @@ class PgDbCardRepository(
             Translation.new {
                 copyToDbTranslationRecord(txt = it, card = record, to = this)
             }
-        }
-    }
-
-    private fun <R> execute(statement: Transaction.() -> R): R {
-        return transaction(connection, statement)
-    }
-
-    private fun <R> execute(statement: Transaction.() -> R, handleError: Exception.() -> R): R {
-        return try {
-            transaction(connection, statement)
-        } catch (ex: SQLException) {
-            handleError(ex)
         }
     }
 }

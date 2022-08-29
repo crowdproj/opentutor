@@ -15,13 +15,16 @@ dependencies {
     val hikariCPVersion: String by project
     val logbackVersion: String by project
     val typesafeConfigVersion: String by project
+    val caffeineVersion: String by project
 
     implementation(project(":common"))
     implementation(project(":db-common"))
 
     implementation("com.typesafe:config:$typesafeConfigVersion")
+    implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
+
     implementation("org.postgresql:postgresql:$postgresDriverVersion")
     implementation("org.liquibase:liquibase-core:$liquibaseVersion")
     implementation("com.zaxxer:HikariCP:$hikariCPVersion")
