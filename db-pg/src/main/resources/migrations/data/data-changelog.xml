@@ -12,7 +12,6 @@
                   quotchar="'"
                   relativeToChangelogFile="true"
                   schemaName="public"
-                  separator=";"
                   tableName="users"
                   usePreparedStatements="true">
         </loadData>

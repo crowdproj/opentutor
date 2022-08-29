@@ -54,7 +54,7 @@ class LingvoDictionaryReader(private val ids: IdSequences) : DictionaryReader {
 
     private fun parseMeaning(word: String, node: Element, dictionaryId: Long): Card {
         val cardId = ids.nextCardId()
-        val transcription = node.getAttribute("transcription")
+        val transcription = node.getAttribute("transcription").takeIf { it.isNotBlank() }
         val id = node.getAttribute("partOfSpeech")
         val pos: String? = if (id.isBlank()) null else LingvoMappings.toPartOfSpeechTag(id)
         val statistics = DOMUtils.getElement(node, "statistics")

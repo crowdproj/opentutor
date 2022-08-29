@@ -14,6 +14,11 @@ fun noCardFoundDbError(
     id: CardId,
 ) = dbError(operation = operation, fieldName = id.asString(), details = """card with id="${id.asString()}" not found""")
 
+fun noUserFoundDbError(
+    operation: String,
+    uid: String,
+) = dbError(operation = operation, fieldName = uid, details = """user with uid="$uid" not found""")
+
 fun dbError(
     operation: String,
     fieldName: String = "",

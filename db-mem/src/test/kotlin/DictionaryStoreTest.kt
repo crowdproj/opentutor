@@ -7,28 +7,11 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
-import kotlin.io.path.createFile
-import kotlin.io.path.outputStream
 
 internal class DictionaryStoreTest {
 
-    companion object {
-        private fun saveDictionariesToDir(dir: Path) {
-            DictionaryStoreTest::class.java.getResourceAsStream("/data")!!.bufferedReader().use { bf ->
-                bf.lines().forEach { r ->
-                    val file = dir.resolve(r).createFile()
-                    DictionaryStoreTest::class.java.getResourceAsStream("/data/$r")!!.use { src ->
-                        file.outputStream().use { dst ->
-                            src.copyTo(dst)
-                        }
-                    }
-                }
-            }
-        }
-    }
-
     @Test
-    fun `test load from class-path`() {
+    fun `test load dictionaries from class-path`() {
         val dictionaries = DictionaryStore.load(location = "classpath:/data", ids = IdSequences())
         Assertions.assertEquals(2, dictionaries.size)
         Assertions.assertEquals("Business vocabulary (Job)", dictionaries[1]!!.name)
@@ -39,8 +22,8 @@ internal class DictionaryStoreTest {
     }
 
     @Test
-    fun `test load from directory & flush & reload`(@TempDir dir: Path) {
-        saveDictionariesToDir(dir)
+    fun `test load dictionaries from directory & flush & reload`(@TempDir dir: Path) {
+        copyClassPathDataToDir(dir)
         val dictionaries1 = DictionaryStore.load(location = dir, ids = IdSequences())
         Assertions.assertEquals(2, dictionaries1.size)
         Assertions.assertEquals("Business vocabulary (Job)", dictionaries1[1]!!.name)
@@ -56,17 +39,35 @@ internal class DictionaryStoreTest {
             translations = listOf(Translation(id = -42, text = "слово", cardId = -42))
         )
         dictionaries1[2]!!.cards[-42] = card
-        // wait 1 second (default period is 500 ms) and reload store
-        Thread.sleep(1000)
+        dictionaries1.flush(2)
 
         val dictionaries2 = DictionaryStore.load(location = dir, ids = IdSequences())
+        Assertions.assertSame(dictionaries1, dictionaries2)
         Assertions.assertEquals(2, dictionaries2.size)
         Assertions.assertEquals(242, dictionaries2[1]!!.cards.size)
         Assertions.assertEquals(66, dictionaries2[2]!!.cards.size)
+        val actual2 = dictionaries2[2]!!.cards.values.first { it.text == card.text }
+        Assertions.assertNotNull(actual2)
+        Assertions.assertSame(card, actual2)
 
-        val actual = dictionaries2[2]!!.cards[-42]
-        Assertions.assertNotNull(actual)
-        Assertions.assertEquals(card, actual!!)
+        // wait 1 second (default period is 500 ms) and reload store
+        Thread.sleep(1000)
+
+        // clear to avoid caching
+        DictionaryStore.clear()
+
+        val dictionaries3 = DictionaryStore.load(location = dir, ids = IdSequences())
+        Assertions.assertNotSame(dictionaries1, dictionaries3)
+        Assertions.assertEquals(2, dictionaries3.size)
+        Assertions.assertEquals(242, dictionaries3[1]!!.cards.size)
+        Assertions.assertEquals(66, dictionaries3[2]!!.cards.size)
+
+        val actual3 = dictionaries3[2]!!.cards.values.first { it.text == card.text }
+        Assertions.assertNotNull(actual3)
+        Assertions.assertNotSame(actual2, actual3)
+        Assertions.assertEquals(card.transcription, actual3.transcription)
+        Assertions.assertEquals(card.translations.map { it.text }, actual3.translations.map { it.text })
+        Assertions.assertEquals(card.examples.map { it.text }, actual3.examples.map { it.text })
     }
 
 }
