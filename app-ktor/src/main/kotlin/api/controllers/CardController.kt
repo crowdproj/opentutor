@@ -9,6 +9,8 @@ import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.services.CardService
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock
@@ -81,8 +83,15 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
         if (logger.isDebugEnabled) {
             logger.debug("Request: $operation")
         }
+        val principal = requireNotNull(principal<JWTPrincipal>()) {
+            "No principal in request"
+        }
+        val requestUserUid = requireNotNull(principal.subject) {
+            "No subject in principal=$principal"
+        }
         val request = receive<R>()
         context.fromTransport(request)
+        context.fromTransport(requestUserUid)
         context.exec()
         val response = context.toResponse()
         respond(response)

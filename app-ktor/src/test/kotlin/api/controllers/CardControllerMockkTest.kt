@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
 import io.ktor.client.call.*
+import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -99,9 +100,11 @@ internal class CardControllerMockkTest {
         } throws TestException(msg)
 
         routing {
-            route("test/api") {
-                cards(service)
-                sounds(service)
+            authenticate("auth-jwt") {
+                route("test/api") {
+                    cards(service)
+                    sounds(service)
+                }
             }
         }
         val response = testPost("/test/api/$endpoint", requestBody)

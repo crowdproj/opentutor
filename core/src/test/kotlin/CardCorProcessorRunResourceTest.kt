@@ -17,6 +17,7 @@ internal class CardCorProcessorRunResourceTest {
 
         private fun testContext(): CardContext {
             val context = CardContext()
+            context.requestUserUid = UserUid("42")
             context.operation = CardOperation.GET_RESOURCE
             context.workMode = AppMode.TEST
             context.requestId = requestId()

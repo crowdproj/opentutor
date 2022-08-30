@@ -22,6 +22,7 @@ internal class CardCorProcessorRunCardsTest {
 
         private fun testContext(op: CardOperation): CardContext {
             val context = CardContext()
+            context.requestUserUid = UserUid("42")
             context.operation = op
             context.workMode = AppMode.TEST
             context.requestId = requestId(AppMode.TEST)

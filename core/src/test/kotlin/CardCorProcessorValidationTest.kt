@@ -39,6 +39,7 @@ class CardCorProcessorValidationTest {
 
         private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
             val context = CardContext()
+            context.requestUserUid = UserUid("42")
             context.operation = op
             context.workMode = mode
             context.requestId = AppRequestId(requestId)
@@ -361,5 +362,33 @@ class CardCorProcessorValidationTest {
         processor.execute(context)
         val error = error(context)
         assertValidationError("dictionary-id", error)
+    }
+
+    @ParameterizedTest(name = parameterizedTestName)
+    @EnumSource(CardOperation::class)
+    fun `test get-user - validate uid`(operation: CardOperation) = runTest {
+        if (operation == CardOperation.NONE) {
+            return@runTest
+        }
+        sequenceOf(AppMode.TEST, AppMode.STUB).forEach { m ->
+            val context = testContext(operation, m)
+                .copy(
+                    requestUserUid = UserUid(""),
+                    requestResourceGet = ResourceGet("xxx", LangId("EN")),
+                    requestCardLearnList = listOf(CardLearn(CardId("42"), details = mapOf(Stage.MOSAIC to 42))),
+                    requestCardFilter = CardFilter(dictionaryIds = listOf(DictionaryId("42")), length = 42),
+                    requestCardEntityId = CardId("42"),
+                    requestDictionaryId = DictionaryId("42"),
+                    requestCardEntity = CardEntity(
+                        cardId = if (operation == CardOperation.UPDATE_CARD) CardId("42") else CardId.NONE,
+                        dictionaryId = DictionaryId("42"),
+                        word = "xxx",
+                        translations = listOf(listOf("kkk"))
+                    )
+                )
+            processor.execute(context)
+            val error = error(context)
+            assertValidationError("user-uid", error)
+        }
     }
 }
