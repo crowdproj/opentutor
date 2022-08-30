@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -21,11 +22,13 @@ internal class CardCorProcessorRunResourceTest {
             context.operation = CardOperation.GET_RESOURCE
             context.workMode = AppMode.TEST
             context.requestId = requestId()
+            context.repositories = context.repositories
+                .copy(testUserRepository = MockDbUserRepository())
             return context
         }
 
-        private fun requestId(mode: AppMode = AppMode.TEST): AppRequestId {
-            return AppRequestId("for-${AppMode.TEST}:$mode")
+        private fun requestId(): AppRequestId {
+            return AppRequestId("[for-${CardOperation.GET_RESOURCE}]")
         }
     }
 
@@ -73,7 +76,6 @@ internal class CardCorProcessorRunResourceTest {
         )
 
         val context = testContext()
-        context.repositories = context.repositories.copy(testTTSClientRepository = repository)
         context.requestResourceGet = testResourceGet
 
         CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)
@@ -105,7 +107,6 @@ internal class CardCorProcessorRunResourceTest {
         )
 
         val context = testContext()
-        context.repositories = context.repositories.copy(testTTSClientRepository = repository)
         context.requestResourceGet = testResourceGet
 
         CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)

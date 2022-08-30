@@ -44,7 +44,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateResourceGetWord()
                 }
                 runs(CardOperation.GET_RESOURCE) {
-                    processResourceRequest()
+                    processFindUser(CardOperation.GET_RESOURCE)
+                    processResource()
+                    finish(CardOperation.GET_RESOURCE)
                 }
             }
 
@@ -64,7 +66,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardFilterDictionaryIds { it.normalizedRequestCardFilter }
                 }
                 runs(CardOperation.SEARCH_CARDS) {
-                    processCardSearchRequest()
+                    processFindUser(CardOperation.SEARCH_CARDS)
+                    processCardSearch()
+                    finish(CardOperation.SEARCH_CARDS)
                 }
             }
 
@@ -82,7 +86,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateDictionaryId { it.normalizedRequestDictionaryId }
                 }
                 runs(CardOperation.GET_ALL_CARDS) {
-                    processGetAllCardsRequest()
+                    processFindUser(CardOperation.GET_ALL_CARDS)
+                    processGetAllCards()
+                    finish(CardOperation.GET_ALL_CARDS)
                 }
             }
 
@@ -109,7 +115,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.CREATE_CARD) {
-                    processCreateCardRequest()
+                    processFindUser(CardOperation.CREATE_CARD)
+                    processCreateCard()
+                    finish(CardOperation.CREATE_CARD)
                 }
             }
 
@@ -136,7 +144,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.UPDATE_CARD) {
-                    processUpdateCardRequest()
+                    processFindUser(CardOperation.UPDATE_CARD)
+                    processUpdateCard()
+                    finish(CardOperation.UPDATE_CARD)
                 }
             }
 
@@ -156,7 +166,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardLearnListDetails { it.normalizedRequestCardLearnList }
                 }
                 runs(CardOperation.LEARN_CARDS) {
-                    processLearnCardsRequest()
+                    processFindUser(CardOperation.LEARN_CARDS)
+                    processLearnCards()
+                    finish(CardOperation.LEARN_CARDS)
                 }
             }
 
@@ -174,7 +186,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.GET_CARD) {
-                    processGetCardRequest()
+                    processFindUser(CardOperation.GET_CARD)
+                    processGetCard()
+                    finish(CardOperation.GET_CARD)
                 }
             }
 
@@ -190,7 +204,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.RESET_CARD) {
-                    processResetCardsRequest()
+                    processFindUser(CardOperation.RESET_CARD)
+                    processResetCards()
+                    finish(CardOperation.RESET_CARD)
                 }
             }
             operation(CardOperation.DELETE_CARD) {
@@ -205,7 +221,9 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.DELETE_CARD) {
-                    processDeleteCardRequest()
+                    processFindUser(CardOperation.DELETE_CARD)
+                    processDeleteCard()
+                    finish(CardOperation.DELETE_CARD)
                 }
             }
         }.build()

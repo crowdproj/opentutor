@@ -365,11 +365,8 @@ class CardCorProcessorValidationTest {
     }
 
     @ParameterizedTest(name = parameterizedTestName)
-    @EnumSource(CardOperation::class)
+    @EnumSource(value = CardOperation::class, names = ["NONE"], mode = EnumSource.Mode.EXCLUDE)
     fun `test get-user - validate uid`(operation: CardOperation) = runTest {
-        if (operation == CardOperation.NONE) {
-            return@runTest
-        }
         sequenceOf(AppMode.TEST, AppMode.STUB).forEach { m ->
             val context = testContext(operation, m)
                 .copy(

@@ -63,6 +63,19 @@ internal fun ChainDSL<CardContext>.runs(
         this.operation == operation && this.workMode != AppMode.STUB && this.status == AppStatus.RUN
     }
     configure()
+    finish(operation)
+}
+
+internal fun ChainDSL<CardContext>.finish(
+    operation: CardOperation,
+) = worker {
+    this.name = "${operation.title()} ::: finish"
+    test {
+        this.operation == operation && this.workMode != AppMode.STUB && this.status == AppStatus.RUN
+    }
+    process {
+        this.status = AppStatus.OK
+    }
 }
 
 internal fun CardOperation.title(): String {

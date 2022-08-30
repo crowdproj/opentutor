@@ -41,7 +41,7 @@ suspend inline fun <reified X> ApplicationTestBuilder.testPost(endpoint: String,
 }
 
 fun HttpRequestBuilder.auth(
-    id: String = "test-user",
+    id: String = "c9a414f5-3f75-4494-b664-f4c8b33ff4e6",
     conf: KeycloakConfig = testKeycloakConfig,
 ) {
     val token = JWT.create()

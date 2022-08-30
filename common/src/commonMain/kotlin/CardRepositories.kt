@@ -1,19 +1,26 @@
 package com.gitlab.sszuev.flashcards
 
 import com.gitlab.sszuev.flashcards.model.common.AppMode
-import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
-import com.gitlab.sszuev.flashcards.repositories.NoOpDbCardRepository
-import com.gitlab.sszuev.flashcards.repositories.NoOpTTSResourceRepository
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.repositories.*
 
 data class CardRepositories(
     private val prodTTSClientRepository: TTSResourceRepository = NoOpTTSResourceRepository,
     private val testTTSClientRepository: TTSResourceRepository = NoOpTTSResourceRepository,
     private val prodCardRepository: DbCardRepository = NoOpDbCardRepository,
     private val testCardRepository: DbCardRepository = NoOpDbCardRepository,
+    private val prodUserRepository: DbUserRepository = NoOpDbUserRepository,
+    private val testUserRepository: DbUserRepository = NoOpDbUserRepository,
 ) {
     companion object {
         val DEFAULT = CardRepositories()
+    }
+
+    fun userRepository(mode: AppMode): DbUserRepository {
+        return when(mode) {
+            AppMode.PROD -> prodUserRepository
+            AppMode.TEST -> testUserRepository
+            AppMode.STUB -> NoOpDbUserRepository
+        }
     }
 
     fun cardRepository(mode: AppMode): DbCardRepository {

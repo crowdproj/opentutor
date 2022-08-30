@@ -7,14 +7,14 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 object NoOpTTSResourceRepository: TTSResourceRepository {
 
     override suspend fun findResourceId(word: String, lang: LangId): ResourceId? {
-        return noOp()
+        noOp()
     }
 
     override suspend fun getResource(id: ResourceId): ResourceEntity {
-        return noOp()
+        noOp()
     }
 
-    private fun <X> noOp(): X {
+    private fun noOp(): Nothing {
         error("Must not be called.")
     }
 }

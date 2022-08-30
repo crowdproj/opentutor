@@ -7,7 +7,9 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.gitlab.sszuev.flashcards.api.apiV1
 import com.gitlab.sszuev.flashcards.dbmem.MemDbCardRepository
+import com.gitlab.sszuev.flashcards.dbmem.MemDbUserRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
+import com.gitlab.sszuev.flashcards.dbpg.PgDbUserRepository
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.RMQTTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.test.NullTTSResourceRepository
 import io.ktor.client.*
@@ -47,6 +49,8 @@ fun Application.module(
         testTTSClientRepository = NullTTSResourceRepository,
         prodCardRepository = PgDbCardRepository(),
         testCardRepository = MemDbCardRepository(),
+        prodUserRepository = PgDbUserRepository(),
+        testUserRepository = MemDbUserRepository(),
     ),
     keycloakConfig: KeycloakConfig = KeycloakConfig(environment.config),
 ) {
