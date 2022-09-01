@@ -16,4 +16,4 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_DEFAULT_PASS}
       PGDATA: /usr/share/data
     volumes:
-      - "${DATA_DIR}:/usr/share/data:z"
+      - "${DATA_DIR}/postgres:/usr/share/data:z"
