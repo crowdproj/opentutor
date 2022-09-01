@@ -7,6 +7,10 @@ import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.*
 
+fun CardContext.fromTransport(request: String) {
+    this.requestUserUid = UserUid(request)
+}
+
 fun CardContext.fromTransport(request: BaseRequest) = when (request) {
     is GetAudioRequest -> fromGetGetAudioRequest(request)
     is GetCardRequest -> fromGetCardRequest(request)

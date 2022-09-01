@@ -8,7 +8,6 @@ import com.gitlab.sszuev.flashcards.core.stubs.stubSuccess
 import com.gitlab.sszuev.flashcards.core.utils.normalize
 import com.gitlab.sszuev.flashcards.core.validation.*
 import com.gitlab.sszuev.flashcards.corlib.chain
-import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.stubs.stubAudioResource
@@ -38,15 +37,16 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_NOT_FOUND)
                     stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_SERVER_ERROR)
                 }
+                normalize(CardOperation.GET_RESOURCE)
                 validators(CardOperation.GET_RESOURCE) {
-                    worker(name = "Make a normalized copy of get-resource id") {
-                        this.normalizedRequestResourceGet = this.requestResourceGet.normalize()
-                    }
+                    validateUserId(CardOperation.GET_RESOURCE)
                     validateResourceGetLangId()
                     validateResourceGetWord()
                 }
                 runs(CardOperation.GET_RESOURCE) {
-                    processResourceRequest()
+                    processFindUser(CardOperation.GET_RESOURCE)
+                    processResource()
+                    finish(CardOperation.GET_RESOURCE)
                 }
             }
 
@@ -59,15 +59,16 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_CARDS_WRONG_FILTER_LENGTH)
                     stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_WRONG_DICTIONARY_ID)
                 }
+                normalize(CardOperation.SEARCH_CARDS)
                 validators(CardOperation.SEARCH_CARDS) {
-                    worker(name = "Make a normalized copy of search-cards request") {
-                        this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
-                    }
+                    validateUserId(CardOperation.SEARCH_CARDS)
                     validateCardFilterLength { it.normalizedRequestCardFilter }
                     validateCardFilterDictionaryIds { it.normalizedRequestCardFilter }
                 }
                 runs(CardOperation.SEARCH_CARDS) {
-                    processCardSearchRequest()
+                    processFindUser(CardOperation.SEARCH_CARDS)
+                    processCardSearch()
+                    finish(CardOperation.SEARCH_CARDS)
                 }
             }
 
@@ -79,14 +80,15 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.GET_ALL_CARDS)
                     stubError(CardOperation.GET_ALL_CARDS, AppStub.ERROR_WRONG_DICTIONARY_ID)
                 }
+                normalize(CardOperation.GET_ALL_CARDS)
                 validators(CardOperation.GET_ALL_CARDS) {
-                    worker(name = "Make a normalized copy of get-all-cards request") {
-                        this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
-                    }
+                    validateUserId(CardOperation.GET_ALL_CARDS)
                     validateDictionaryId { it.normalizedRequestDictionaryId }
                 }
                 runs(CardOperation.GET_ALL_CARDS) {
-                    processGetAllCardsRequest()
+                    processFindUser(CardOperation.GET_ALL_CARDS)
+                    processGetAllCards()
+                    finish(CardOperation.GET_ALL_CARDS)
                 }
             }
 
@@ -105,16 +107,17 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_DETAILS)
                     stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
                 }
+                normalize(CardOperation.CREATE_CARD)
                 validators(CardOperation.CREATE_CARD) {
-                    worker(name = "Make a normalized copy of create-card card-entity") {
-                        this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
-                    }
+                    validateUserId(CardOperation.CREATE_CARD)
                     validateCardEntityHasNoCardId { it.normalizedRequestCardEntity }
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.CREATE_CARD) {
-                    processCreateCardRequest()
+                    processFindUser(CardOperation.CREATE_CARD)
+                    processCreateCard()
+                    finish(CardOperation.CREATE_CARD)
                 }
             }
 
@@ -133,16 +136,17 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_DETAILS)
                     stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
                 }
+                normalize(CardOperation.UPDATE_CARD)
                 validators(CardOperation.UPDATE_CARD) {
-                    worker(name = "Make a normalized copy of update-card card-entity") {
-                        this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
-                    }
+                    validateUserId(CardOperation.UPDATE_CARD)
                     validateCardEntityHasValidCardId { it.normalizedRequestCardEntity }
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
                     validateCardEntityWord { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.UPDATE_CARD) {
-                    processUpdateCardRequest()
+                    processFindUser(CardOperation.UPDATE_CARD)
+                    processUpdateCard()
+                    finish(CardOperation.UPDATE_CARD)
                 }
             }
 
@@ -154,16 +158,17 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
                     stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
                 }
+                normalize(CardOperation.LEARN_CARDS)
                 validators(CardOperation.LEARN_CARDS) {
-                    worker(name = "Make a normalized copy of learn-card request") {
-                        this.normalizedRequestCardLearnList = this.requestCardLearnList.map { it.normalize() }
-                    }
+                    validateUserId(CardOperation.LEARN_CARDS)
                     validateCardLearnListCardIds { it.normalizedRequestCardLearnList }
                     validateCardLearnListStages { it.normalizedRequestCardLearnList }
                     validateCardLearnListDetails { it.normalizedRequestCardLearnList }
                 }
                 runs(CardOperation.LEARN_CARDS) {
-                    processLearnCardsRequest()
+                    processFindUser(CardOperation.LEARN_CARDS)
+                    processLearnCards()
+                    finish(CardOperation.LEARN_CARDS)
                 }
             }
 
@@ -175,14 +180,15 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.GET_CARD)
                     stubError(CardOperation.GET_CARD, AppStub.ERROR_WRONG_CARD_ID)
                 }
+                normalize(CardOperation.GET_CARD)
                 validators(CardOperation.GET_CARD) {
-                    worker(name = "Make a normalized copy of get-card-id") {
-                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
-                    }
+                    validateUserId(CardOperation.GET_CARD)
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.GET_CARD) {
-                    processGetCardRequest()
+                    processFindUser(CardOperation.GET_CARD)
+                    processGetCard()
+                    finish(CardOperation.GET_CARD)
                 }
             }
 
@@ -192,14 +198,15 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.RESET_CARD)
                     stubError(CardOperation.RESET_CARD, AppStub.ERROR_WRONG_CARD_ID)
                 }
+                normalize(CardOperation.RESET_CARD)
                 validators(CardOperation.RESET_CARD) {
-                    worker(name = "Make a normalized copy of reset-card-id") {
-                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
-                    }
+                    validateUserId(CardOperation.RESET_CARD)
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.RESET_CARD) {
-                    processResetCardsRequest()
+                    processFindUser(CardOperation.RESET_CARD)
+                    processResetCards()
+                    finish(CardOperation.RESET_CARD)
                 }
             }
             operation(CardOperation.DELETE_CARD) {
@@ -208,14 +215,15 @@ class CardCorProcessor(private val repositories: CardRepositories) {
                     stubError(CardOperation.DELETE_CARD)
                     stubError(CardOperation.DELETE_CARD, AppStub.ERROR_WRONG_CARD_ID)
                 }
+                normalize(CardOperation.DELETE_CARD)
                 validators(CardOperation.DELETE_CARD) {
-                    worker(name = "Make a normalized copy of delete-card-id") {
-                        this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
-                    }
+                    validateUserId(CardOperation.DELETE_CARD)
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.DELETE_CARD) {
-                    processDeleteCardRequest()
+                    processFindUser(CardOperation.DELETE_CARD)
+                    processDeleteCard()
+                    finish(CardOperation.DELETE_CARD)
                 }
             }
         }.build()

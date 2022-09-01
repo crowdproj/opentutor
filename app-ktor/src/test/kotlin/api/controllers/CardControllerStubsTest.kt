@@ -7,9 +7,9 @@ import com.gitlab.sszuev.flashcards.stubs.stubCards
 import com.gitlab.sszuev.flashcards.stubs.stubError
 import com.gitlab.sszuev.flashcards.stubs.stubLearnCardDetails
 import com.gitlab.sszuev.flashcards.testPost
+import com.gitlab.sszuev.flashcards.testSecuredApp
 import io.ktor.client.call.*
 import io.ktor.client.statement.*
-import io.ktor.server.testing.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -77,7 +77,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test create-card success`() = testApplication {
+    fun `test create-card success`() = testSecuredApp {
         val requestBody = CreateCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -88,7 +88,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test create-card error`() = testApplication {
+    fun `test create-card error`() = testSecuredApp {
         val requestBody = CreateCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -99,7 +99,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test update-card success`() = testApplication {
+    fun `test update-card success`() = testSecuredApp {
         val requestBody = UpdateCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -110,7 +110,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test update-card error`() = testApplication {
+    fun `test update-card error`() = testSecuredApp {
         val requestBody = UpdateCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -121,7 +121,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test search-cards card success`() = testApplication {
+    fun `test search-cards card success`() = testSecuredApp {
         val requestBody = SearchCardsRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -140,7 +140,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test search-cards error`() = testApplication {
+    fun `test search-cards error`() = testSecuredApp {
         val requestBody = SearchCardsRequest(
             requestId = "error-request",
             debug = debugError,
@@ -154,7 +154,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test get-card success`() = testApplication {
+    fun `test get-card success`() = testSecuredApp {
         val requestBody = GetCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -168,7 +168,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test get-card error`() = testApplication {
+    fun `test get-card error`() = testSecuredApp {
         val requestBody = GetCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -180,7 +180,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-learn success`() = testApplication {
+    fun `test cards-learn success`() = testSecuredApp {
         val requestBody = LearnCardsRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -191,7 +191,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test cards-learn error`() = testApplication {
+    fun `test cards-learn error`() = testSecuredApp {
         val requestBody = LearnCardsRequest(
             requestId = "error-request",
             debug = debugError,
@@ -202,7 +202,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test reset-card success`() = testApplication {
+    fun `test reset-card success`() = testSecuredApp {
         val requestBody = ResetCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -213,7 +213,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test reset-card error`() = testApplication {
+    fun `test reset-card error`() = testSecuredApp {
         val requestBody = ResetCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -224,7 +224,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test delete-card success`() = testApplication {
+    fun `test delete-card success`() = testSecuredApp {
         val requestBody = DeleteCardRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -235,7 +235,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test delete-card error`() = testApplication {
+    fun `test delete-card error`() = testSecuredApp {
         val requestBody = DeleteCardRequest(
             requestId = "error-request",
             debug = debugError,
@@ -246,7 +246,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test get-audio resource error`() = testApplication {
+    fun `test get-audio resource error`() = testSecuredApp {
         val requestBody = GetAudioRequest(
             requestId = "error-request",
             debug = debugError,
@@ -258,7 +258,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test get-audio resource success`() = testApplication {
+    fun `test get-audio resource success`() = testSecuredApp {
         val requestBody = GetAudioRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -271,7 +271,7 @@ class CardControllerStubsTest {
 
 
     @Test
-    fun `test get-all-cards card success`() = testApplication {
+    fun `test get-all-cards card success`() = testSecuredApp {
         val requestBody = GetAllCardsRequest(
             requestId = "success-request",
             debug = debugSuccess,
@@ -287,7 +287,7 @@ class CardControllerStubsTest {
     }
 
     @Test
-    fun `test get-all-cards error`() = testApplication {
+    fun `test get-all-cards error`() = testSecuredApp {
         val requestBody = GetAllCardsRequest(
             requestId = "error-request",
             debug = debugError,

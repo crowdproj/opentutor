@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.dbcommon
+package com.gitlab.sszuev.flashcards.dbcommon.mocks
 
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse

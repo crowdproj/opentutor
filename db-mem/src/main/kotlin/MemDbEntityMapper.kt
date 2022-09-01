@@ -4,14 +4,15 @@ import com.gitlab.sszuev.flashcards.common.toDbRecordDetails
 import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
 import com.gitlab.sszuev.flashcards.common.toEntityDetails
 import com.gitlab.sszuev.flashcards.common.toEntityTranslations
-import com.gitlab.sszuev.flashcards.dbmem.dao.Card
-import com.gitlab.sszuev.flashcards.dbmem.dao.Example
-import com.gitlab.sszuev.flashcards.dbmem.dao.IdSequences
-import com.gitlab.sszuev.flashcards.dbmem.dao.Translation
+import com.gitlab.sszuev.flashcards.dbmem.dao.*
 import com.gitlab.sszuev.flashcards.model.Id
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.*
+import java.util.*
+
+internal fun User.toEntity() = UserEntity(
+    id = id.asUserId(),
+    uid = uuid.asUserUid(),
+)
 
 internal fun Card.toEntity() = CardEntity(
     cardId = id.asCardId(),
@@ -43,6 +44,10 @@ internal fun CardEntity.toDbRecord(cardId: Long, ids: IdSequences): Card {
         answered = answered,
     )
 }
+
+private fun Long.asUserId() = UserId(toString())
+
+internal fun UUID.asUserUid() = UserUid(toString())
 
 private fun Long.asDictionaryId() = DictionaryId(toString())
 

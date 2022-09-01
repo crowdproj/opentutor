@@ -19,6 +19,11 @@ data class CardContext(
     var requestId: AppRequestId = AppRequestId.NONE,
     var timestamp: Instant = Instant.NONE,
 
+    // get user:
+    var requestUserUid: UserUid = UserUid.NONE,
+    var normalizedRequestUserUid: UserUid = UserUid.NONE,
+    var contextUserEntity: UserEntity = UserEntity.EMPTY,
+
     // get word resource by id (for TTS)
     var requestResourceGet: ResourceGet = ResourceGet.NONE,
     var normalizedRequestResourceGet: ResourceGet = ResourceGet.NONE,

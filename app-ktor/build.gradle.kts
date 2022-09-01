@@ -13,6 +13,9 @@ dependencies {
     val logbackVersion: String by project
     val slf4jVersion: String by project
     val mockkVersion: String by project
+    val bootstrapVersion: String by project
+    val jqueryVersion: String by project
+    val keycloakJsAdapterVersion: String by project
 
     implementation(project(":openapi"))
     implementation(project(":mappers"))
@@ -26,7 +29,7 @@ dependencies {
     implementation(project(":db-mem"))
 
     implementation("io.ktor:ktor-server-core:$ktorVersion")
-    implementation("io.ktor:ktor-server-netty:$ktorVersion")
+    implementation("io.ktor:ktor-server-jetty:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 
@@ -38,6 +41,19 @@ dependencies {
     implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-auto-head-response:$ktorVersion")
+
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
+    implementation("io.ktor:ktor-server-auth:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+
+    implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
+    implementation("io.ktor:ktor-server-thymeleaf:$ktorVersion")
+
+    implementation("io.ktor:ktor-server-webjars:$ktorVersion")
+    implementation("org.webjars:bootstrap:$bootstrapVersion")
+    implementation("org.webjars:jquery:$jqueryVersion")
+    implementation("org.keycloak:keycloak-js-adapter:$keycloakJsAdapterVersion")
 
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
@@ -54,7 +70,7 @@ tasks.test {
 }
 
 application {
-    mainClass.set("io.ktor.server.netty.EngineMain")
+    mainClass.set("com.gitlab.sszuev.flashcards.MainKt")
 }
 
 docker {

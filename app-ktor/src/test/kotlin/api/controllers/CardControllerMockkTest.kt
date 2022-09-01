@@ -4,9 +4,10 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.testPost
+import com.gitlab.sszuev.flashcards.testSecuredApp
 import io.ktor.client.call.*
+import io.ktor.server.auth.*
 import io.ktor.server.routing.*
-import io.ktor.server.testing.*
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.mockk
@@ -91,7 +92,7 @@ internal class CardControllerMockkTest {
         endpoint: String,
         requestBody: X,
         crossinline serviceMethod: suspend CardService.(CardContext) -> CardContext
-    ) = testApplication {
+    ) = testSecuredApp {
         val msg = "for $endpoint"
         val service = mockk<CardService>()
         coEvery {
@@ -99,9 +100,11 @@ internal class CardControllerMockkTest {
         } throws TestException(msg)
 
         routing {
-            route("test/api") {
-                cards(service)
-                sounds(service)
+            authenticate("auth-jwt") {
+                route("test/api") {
+                    cards(service)
+                    sounds(service)
+                }
             }
         }
         val response = testPost("/test/api/$endpoint", requestBody)

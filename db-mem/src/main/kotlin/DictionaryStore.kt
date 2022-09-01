@@ -30,12 +30,6 @@ class DictionaryStore private constructor(
     sysConfig: SysConfig,
 ) {
 
-    val size: Long
-        get() = resources.size.toLong()
-
-    val keys: Set<Long>
-        get() = resources.keys
-
     /**
      * A queue to flushing data to disk.
      */
@@ -44,7 +38,7 @@ class DictionaryStore private constructor(
     private val writer: DictionaryWriter = LingvoDictionaryWriter(sysConfig)
 
     init {
-        timer("flush-data-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
+        timer("flush-dictionaries-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
             dictionariesToFlush.keys.toList().mapNotNull { dictionariesToFlush.remove(it) }.forEach {
                 logger.debug("Save dictionary ${it.second.id} to disk.")
                 Files.newOutputStream(it.first).use { out ->
@@ -53,6 +47,12 @@ class DictionaryStore private constructor(
             }
         }
     }
+
+    val size: Long
+        get() = resources.size.toLong()
+
+    val keys: Set<Long>
+        get() = resources.keys
 
     operator fun get(id: Long): Dictionary? {
         return resources[id]?.second
@@ -73,18 +73,27 @@ class DictionaryStore private constructor(
         private val logger = LoggerFactory.getLogger(DictionaryStore::class.java)
 
         /**
-         * Global id registry.
-         */
-        private val globalIdsGenerator: IdSequences = IdSequences()
-
-        /**
          * Global dictionary store registry.
          */
         private val stores = ConcurrentHashMap<String, DictionaryStore>()
 
+        /**
+         * Back door for testing
+         */
+        internal fun clear() {
+            stores.clear()
+        }
+
+        /**
+         * Loads dictionary store from directory.
+         * @param [location][Path] - path to directory
+         * @param [ids][IdSequences]
+         * @param [dbConfig][MemDbConfig]
+         * @param [sysConfig][SysConfig]
+         */
         fun load(
             location: Path,
-            ids: IdSequences = globalIdsGenerator,
+            ids: IdSequences = IdSequences.globalIdsGenerator,
             dbConfig: MemDbConfig = MemDbConfig(),
             sysConfig: SysConfig = SysConfig(),
         ): DictionaryStore {
@@ -93,9 +102,16 @@ class DictionaryStore private constructor(
             }
         }
 
+        /**
+         * Loads dictionary store from classpath or directory.
+         * @param [location][String] - either dir path or classpath to dir with data
+         * @param [ids][IdSequences]
+         * @param [dbConfig][MemDbConfig]
+         * @param [sysConfig][SysConfig]
+         */
         fun load(
             location: String,
-            ids: IdSequences = globalIdsGenerator,
+            ids: IdSequences = IdSequences.globalIdsGenerator,
             dbConfig: MemDbConfig = MemDbConfig(),
             sysConfig: SysConfig = SysConfig(),
         ): DictionaryStore {
@@ -112,15 +128,23 @@ class DictionaryStore private constructor(
             classpathLocation: String,
             ids: IdSequences
         ): MutableMap<Long, Pair<Path, Dictionary>> {
-            logger.info("Load from classpath: $classpathLocation.")
+            logger.info("Load dictionaries from classpath: $classpathLocation.")
             val reader = LingvoDictionaryReader(ids)
-            val dir: List<String> = requireNotNull(DictionaryStore::class.java.getResourceAsStream(classpathLocation)) {
-                "Can't find classpath directory $classpathLocation."
-            }.bufferedReader(Charsets.UTF_8).use { br ->
-                // java Stream to Sequence and then to List due to compilation error with type inferencing
-                br.lines().asSequence().toList()
-            }.sorted() // sort to make output deterministic
-            val res: List<Pair<Path, Dictionary>> = dir.map {
+            val files: List<String> =
+                requireNotNull(DictionaryStore::class.java.getResourceAsStream(classpathLocation)) {
+                    "Can't find classpath directory $classpathLocation."
+                }.bufferedReader(Charsets.UTF_8).use { br ->
+                    // java Stream to Sequence and then to List due to compilation error with type inferencing
+                    br.lines().asSequence().toList()
+                }.filter {
+                    return@filter if (!it.endsWith(".xml")) {
+                        logger.debug("Not a xml file: $it.")
+                        false
+                    } else {
+                        true
+                    }
+                }.sorted() // sort to make output deterministic
+            val res: List<Pair<Path, Dictionary>> = files.map {
                 requireNotNull(DictionaryStore::class.java.getResourceAsStream("$classpathLocation/$it")) {
                     "Can't find classpath resource $classpathLocation/$it."
                 }.use { src ->
@@ -135,7 +159,7 @@ class DictionaryStore private constructor(
             directoryLocation: String,
             ids: IdSequences
         ): MutableMap<Long, Pair<Path, Dictionary>> {
-            logger.info("Load from directory: $directoryLocation.")
+            logger.info("Load dictionaries from directory: $directoryLocation.")
             val reader = LingvoDictionaryReader(ids)
             val dir = Paths.get(directoryLocation).createDirectories().toRealPath()
             require(dir.isDirectory()) { "Not a directory: $directoryLocation." }
@@ -143,6 +167,10 @@ class DictionaryStore private constructor(
                 ds.mapNotNull { file ->
                     if (!file.isRegularFile()) {
                         logger.warn("Not a file: $file.")
+                        return@mapNotNull null
+                    }
+                    if (!file.fileName.toString().endsWith(".xml")) {
+                        logger.debug("Not a xml file: $file.")
                         return@mapNotNull null
                     }
                     file

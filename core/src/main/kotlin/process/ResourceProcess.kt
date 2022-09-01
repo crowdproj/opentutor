@@ -6,7 +6,7 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 
-fun ChainDSL<CardContext>.processResourceRequest() = worker {
+fun ChainDSL<CardContext>.processResource() = worker {
     this.name = "process audio resource request"
     process {
         val request = this.normalizedRequestResourceGet
@@ -19,7 +19,7 @@ fun ChainDSL<CardContext>.processResourceRequest() = worker {
                 )
             )
         this.responseResourceEntity = this.repositories.ttsClientRepository(this.workMode).getResource(id)
-        this.status = AppStatus.OK
+        this.status = AppStatus.RUN
     }
     onException {
         fail(

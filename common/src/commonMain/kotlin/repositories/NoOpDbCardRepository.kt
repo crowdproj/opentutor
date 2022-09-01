@@ -4,38 +4,38 @@ import com.gitlab.sszuev.flashcards.model.domain.*
 
 object NoOpDbCardRepository : DbCardRepository {
     override fun getCard(id: CardId): CardEntityDbResponse {
-        return noOp()
+        noOp()
     }
 
     override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
-        return noOp()
+        noOp()
     }
 
     override fun searchCard(filter: CardFilter): CardEntitiesDbResponse {
-        return noOp()
+        noOp()
     }
 
     override fun createCard(card: CardEntity): CardEntityDbResponse {
-        return noOp()
+        noOp()
     }
 
     override fun updateCard(card: CardEntity): CardEntityDbResponse {
-        return noOp()
+        noOp()
     }
 
     override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
-        return noOp()
+        noOp()
     }
 
     override fun resetCard(id: CardId): CardEntityDbResponse {
-        return noOp()
+        noOp()
     }
 
     override fun deleteCard(id: CardId): DeleteEntityDbResponse {
-        return noOp()
+        noOp()
     }
 
-    private fun <X> noOp(): X {
+    private fun noOp(): Nothing {
         error("Must not be called.")
     }
 }
