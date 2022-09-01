@@ -3,6 +3,7 @@
 ### Create Card Success
 POST http://localhost:8080/v1/api/cards/create
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "createCard",
@@ -36,6 +37,7 @@ Content-Type: application/json
 ### Create Card Error
 POST http://localhost:8080/v1/api/cards/create
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "createCard",
@@ -70,6 +72,7 @@ Content-Type: application/json
 ### Update Card Success
 POST http://localhost:8080/v1/api/cards/update
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "updateCard",
@@ -95,6 +98,7 @@ Content-Type: application/json
 ### Update Card Error
 POST http://localhost:8080/v1/api/cards/update
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "updateCard",
@@ -120,6 +124,7 @@ Content-Type: application/json
 ### Search Cards Success
 POST http://localhost:8080/v1/api/cards/search
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getCards",
@@ -144,6 +149,7 @@ Content-Type: application/json
 ### Search Cards Error
 POST http://localhost:8080/v1/api/cards/search
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getCards",
@@ -163,6 +169,7 @@ Content-Type: application/json
 ### Get All Cards Success
 POST http://localhost:8080/v1/api/cards/get-all
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getAllCards",
@@ -177,6 +184,7 @@ Content-Type: application/json
 ### Get All Cards Error
 POST http://localhost:8080/v1/api/cards/get-all
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getAllCards",
@@ -191,6 +199,7 @@ Content-Type: application/json
 ### Get Card Success
 POST http://localhost:8080/v1/api/cards/get
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getCard",
@@ -205,6 +214,7 @@ Content-Type: application/json
 ### Get Card Error
 POST http://localhost:8080/v1/api/cards/get
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getCard",
@@ -219,6 +229,7 @@ Content-Type: application/json
 ### Learn Card Success
 POST http://localhost:8080/v1/api/cards/learn
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "learnCard",
@@ -241,6 +252,7 @@ Content-Type: application/json
 ### Learn Card Success
 POST http://localhost:8080/v1/api/cards/learn
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "learnCard",
@@ -263,6 +275,7 @@ Content-Type: application/json
 ### Reset Card Success
 POST http://localhost:8080/v1/api/cards/reset
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "cardId": "42",
@@ -277,6 +290,7 @@ Content-Type: application/json
 ### Reset Card Error
 POST http://localhost:8080/v1/api/cards/reset
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "cardId": "42",
@@ -291,6 +305,7 @@ Content-Type: application/json
 ### Delete Card Success
 POST http://localhost:8080/v1/api/cards/delete
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "cardId": "42",
@@ -305,6 +320,7 @@ Content-Type: application/json
 ### Delete Card Error
 POST http://localhost:8080/v1/api/cards/delete
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "cardId": "42",
@@ -319,6 +335,7 @@ Content-Type: application/json
 ### Get sound success
 POST http://localhost:8080/v1/api/sounds/get
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getAudio",
@@ -334,6 +351,7 @@ Content-Type: application/json
 ### Get sound server error
 POST http://localhost:8080/v1/api/sounds/get
 Content-Type: application/json
+Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
   "requestType": "getAudio",
