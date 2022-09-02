@@ -1,0 +1,149 @@
+openapi: 3.0.4
+info:
+  title: OpenTutor
+  description: 'A logging API for OpenTutor project'
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+
+paths:
+  /log:
+    get:
+      description: not in use
+      responses:
+        200:
+          description: logs
+          content: {}
+
+components:
+  schemas:
+    LogResource:
+      title: generic logs resource
+      description: Generic logs resource for every microservice from the project
+      type: object
+      properties:
+        logId:
+          type: string
+        messageId:
+          type: string
+        requestId:
+          type: string
+        source:
+          type: string
+        messageTime:
+          type: string
+        user:
+          $ref: '#/components/schemas/UserLogResource'
+        cards:
+          $ref: '#/components/schemas/CardsLogResource'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorLogResource'
+
+    UserLogResource:
+      title: A log resource for UserEntity
+      properties:
+        userId:
+          type: string
+        userUid:
+          type: string
+
+    CardsLogResource:
+      title: A log resource for CardContext
+      type: object
+      properties:
+        requestCardId:
+          type: string
+        requestDictionaryId:
+          type: string
+        requestCard:
+          $ref: '#/components/schemas/CardEntityResource'
+        requestCardFilter:
+          $ref: '#/components/schemas/CardFilterResource'
+        responseCard:
+          $ref: '#/components/schemas/CardEntityResource'
+        requestCardLearn:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardLearnResource'
+        responseCards:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardEntityResource'
+
+    ErrorLogResource:
+      type: object
+      description: A log resource for error object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    CardEntityResource:
+      title: A log resource for CardEntity
+      type: object
+      properties:
+        cardId:
+          type: string
+        dictionaryId:
+          type: string
+        word:
+          type: string
+        transcription:
+          type: string
+        partOfSpeech:
+          type: string
+        translations:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+        examples:
+          type: array
+          items:
+            type: string
+        sound:
+          type: string
+        answered:
+          type: integer
+          format: int32
+        details:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+
+    CardFilterResource:
+      title: A log resource for CardFilter
+      properties:
+        random:
+          type: boolean
+        unknown:
+          type: boolean
+        length:
+          type: integer
+          format: int32
+        dictionaryIds:
+          type: array
+          items:
+            type: string
+
+    CardLearnResource:
+      description: A log resource for CardLearn
+      type: object
+      properties:
+        cardId:
+          type: string
+        details:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64

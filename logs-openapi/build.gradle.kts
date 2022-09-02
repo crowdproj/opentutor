@@ -8,11 +8,7 @@ version = rootProject.version
 
 dependencies {
     val jacksonVersion: String by project
-    val junitVersion: String by project
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-
-    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
 tasks.test {
@@ -26,13 +22,13 @@ sourceSets {
 }
 
 openApiGenerate {
-    val openapiGroup = "${rootProject.group}.api.v1"
+    val openapiGroup = "${rootProject.group}.logs"
     generatorName.set("kotlin")
     packageName.set(openapiGroup)
     apiPackage.set("$openapiGroup.api")
     modelPackage.set("$openapiGroup.models")
     invokerPackage.set("$openapiGroup.invoker")
-    inputSpec.set("$rootDir/specs/spec-v1.yml")
+    inputSpec.set("$rootDir/specs/spec-logs.yml")
 
     globalProperties.apply {
         put("models", "")
