@@ -10,6 +10,7 @@ import com.gitlab.sszuev.flashcards.dbmem.MemDbCardRepository
 import com.gitlab.sszuev.flashcards.dbmem.MemDbUserRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbUserRepository
+import com.gitlab.sszuev.flashcards.logslib.logger
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.RMQTTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.test.NullTTSResourceRepository
 import io.ktor.client.*
@@ -127,13 +128,15 @@ fun Application.module(
     install(Locations)
 
     val service = cardService(repositories)
+    val logger = logger(Route::class.java)
+
     routing {
         static("/static") {
             staticBasePackage = "static"
             resources(".")
         }
         authenticate("auth-jwt") {
-            this@authenticate.apiV1(service)
+            this@authenticate.apiV1(service, logger)
         }
         authenticate("keycloakOAuth") {
             location<Index> {

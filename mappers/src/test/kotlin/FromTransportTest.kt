@@ -24,7 +24,7 @@ class FromTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.SUCCESS,
@@ -46,7 +46,7 @@ class FromTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.SUCCESS,
@@ -71,7 +71,7 @@ class FromTransportTest {
             dictionaryIds = listOf("a", "b", "c")
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -109,7 +109,7 @@ class FromTransportTest {
             card = card
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.SUCCESS,
@@ -142,7 +142,7 @@ class FromTransportTest {
             card = card
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -164,7 +164,7 @@ class FromTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -199,7 +199,7 @@ class FromTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -227,7 +227,7 @@ class FromTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransport(req)
+        context.fromTransportToRequest(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,

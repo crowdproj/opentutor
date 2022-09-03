@@ -2,7 +2,10 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
-import com.gitlab.sszuev.flashcards.mappers.v1.fromTransport
+import com.gitlab.sszuev.flashcards.logmappers.toLogResource
+import com.gitlab.sszuev.flashcards.logslib.LogbackWrapper
+import com.gitlab.sszuev.flashcards.mappers.v1.fromTransportToRequest
+import com.gitlab.sszuev.flashcards.mappers.v1.fromTransportToUser
 import com.gitlab.sszuev.flashcards.mappers.v1.toResponse
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -14,93 +17,90 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import kotlinx.datetime.Clock
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 
-private val logger: Logger = LoggerFactory.getLogger("CardController")
-
-suspend fun ApplicationCall.getResource(service: CardService) {
-    execute<GetAudioRequest>(CardOperation.GET_RESOURCE) {
+suspend fun ApplicationCall.getResource(service: CardService, logger: LogbackWrapper) {
+    execute<GetAudioRequest>(CardOperation.GET_RESOURCE, logger) {
         service.getResource(this)
     }
 }
 
-suspend fun ApplicationCall.createCard(service: CardService) {
-    execute<CreateCardRequest>(CardOperation.CREATE_CARD) {
+suspend fun ApplicationCall.createCard(service: CardService, logger: LogbackWrapper) {
+    execute<CreateCardRequest>(CardOperation.CREATE_CARD, logger) {
         service.createCard(this)
     }
 }
 
-suspend fun ApplicationCall.updateCard(service: CardService) {
-    execute<UpdateCardRequest>(CardOperation.UPDATE_CARD) {
+suspend fun ApplicationCall.updateCard(service: CardService, logger: LogbackWrapper) {
+    execute<UpdateCardRequest>(CardOperation.UPDATE_CARD, logger) {
         service.updateCard(this)
     }
 }
 
-suspend fun ApplicationCall.searchCards(service: CardService) {
-    execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS) {
+suspend fun ApplicationCall.searchCards(service: CardService, logger: LogbackWrapper) {
+    execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS, logger) {
         service.searchCards(this)
     }
 }
 
-suspend fun ApplicationCall.getAllCards(service: CardService) {
-    execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS) {
+suspend fun ApplicationCall.getAllCards(service: CardService, logger: LogbackWrapper) {
+    execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS, logger) {
         service.getAllCards(this)
     }
 }
 
-suspend fun ApplicationCall.getCard(service: CardService) {
-    execute<GetCardRequest>(CardOperation.GET_CARD) {
+suspend fun ApplicationCall.getCard(service: CardService, logger: LogbackWrapper) {
+    execute<GetCardRequest>(CardOperation.GET_CARD, logger) {
         service.getCard(this)
     }
 }
 
-suspend fun ApplicationCall.learnCard(service: CardService) {
-    execute<LearnCardsRequest>(CardOperation.LEARN_CARDS) {
+suspend fun ApplicationCall.learnCard(service: CardService, logger: LogbackWrapper) {
+    execute<LearnCardsRequest>(CardOperation.LEARN_CARDS, logger) {
         service.learnCard(this)
     }
 }
 
-suspend fun ApplicationCall.resetCard(service: CardService) {
-    execute<ResetCardRequest>(CardOperation.RESET_CARD) {
+suspend fun ApplicationCall.resetCard(service: CardService, logger: LogbackWrapper) {
+    execute<ResetCardRequest>(CardOperation.RESET_CARD, logger) {
         service.resetCard(this)
     }
 }
 
-suspend fun ApplicationCall.deleteCard(service: CardService) {
-    execute<DeleteCardRequest>(CardOperation.DELETE_CARD) {
+suspend fun ApplicationCall.deleteCard(service: CardService, logger: LogbackWrapper) {
+    execute<DeleteCardRequest>(CardOperation.DELETE_CARD, logger) {
         service.deleteCard(this)
     }
 }
 
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
-    operation: CardOperation? = null,
-    exec: CardContext.() -> Unit
+    operation: CardOperation,
+    logger: LogbackWrapper,
+    noinline exec: suspend CardContext.() -> Unit,
 ) {
     val context = CardContext()
     context.timestamp = Clock.System.now()
+    val logId = operation.name
     try {
-        if (logger.isDebugEnabled) {
-            logger.debug("Request: $operation")
+        logger.withLogging {
+            val principal = requireNotNull(principal<JWTPrincipal>()) {
+                "No principal in request"
+            }
+            val requestUserUid = requireNotNull(principal.subject) {
+                "No subject in principal=$principal"
+            }
+            val request = receive<R>()
+            context.fromTransportToRequest(request)
+            context.fromTransportToUser(requestUserUid)
+            logger.info(msg = "Request: $operation", data = context.toLogResource(logId))
+            context.exec()
+            logger.info(msg = "Response: $operation", data = context.toLogResource(logId))
+            val response = context.toResponse()
+            respond(response)
         }
-        val principal = requireNotNull(principal<JWTPrincipal>()) {
-            "No principal in request"
-        }
-        val requestUserUid = requireNotNull(principal.subject) {
-            "No subject in principal=$principal"
-        }
-        val request = receive<R>()
-        context.fromTransport(request)
-        context.fromTransport(requestUserUid)
-        context.exec()
-        val response = context.toResponse()
-        respond(response)
     } catch (ex: Exception) {
         val msg = "Problem with request=${context.requestId.asString()} :: ${ex.message}"
-        if (logger.isDebugEnabled) {
-            logger.debug(msg, ex)
-        }
-        operation?.also { context.operation = it }
+        logger.error(msg = msg, throwable = ex, data = context.toLogResource(logId))
+        context.operation = operation
         context.status = AppStatus.FAIL
         context.errors.add(ex.asError(message = msg))
         val response = context.toResponse()
