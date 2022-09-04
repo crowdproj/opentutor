@@ -1,41 +1,42 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
+import com.gitlab.sszuev.flashcards.logslib.LogbackWrapper
 import com.gitlab.sszuev.flashcards.services.CardService
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
-fun Route.cards(service: CardService) {
+fun Route.cards(service: CardService, logger: LogbackWrapper) {
     route("cards") {
         post("create") {
-            call.createCard(service)
+            call.createCard(service, logger)
         }
         post("update") {
-            call.updateCard(service)
+            call.updateCard(service, logger)
         }
         post("search") {
-            call.searchCards(service)
+            call.searchCards(service, logger)
         }
         post("get-all") {
-            call.getAllCards(service)
+            call.getAllCards(service, logger)
         }
         post("get") {
-            call.getCard(service)
+            call.getCard(service, logger)
         }
         post("learn") {
-            call.learnCard(service)
+            call.learnCard(service, logger)
         }
         post("reset") {
-            call.resetCard(service)
+            call.resetCard(service, logger)
         }
         post("delete") {
-            call.deleteCard(service)
+            call.deleteCard(service, logger)
         }
     }
 }
-fun Route.sounds(service: CardService) {
+fun Route.sounds(service: CardService, logger: LogbackWrapper) {
     route("sounds") {
         post("get") {
-            call.getResource(service)
+            call.getResource(service, logger)
         }
     }
 }

@@ -1,26 +1,25 @@
+### flashcard-kt ::: logs-lib
+
+This module contains a custom logger-lib, which wraps logback. It could be used in a web-application in conjunction with ELK (Elasticsearch + Logstash + Kafka) stack.
+
+Dependencies:
+- `ch.qos.logback:logback-classic`
+- `net.logstash.logback:logstash-logback-encoder`
+
+Note that log-configuration is in client's responsibility.     
+Example of config for ELK:
+```xml
 <configuration debug="true">
-
-    <!-- For ELK-Stack: Kafka log's host -->
     <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-localhost:9094}"/>
-
-    <!-- For ELK-Stack: Kafka log's topic -->
-    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-flashcards-logs}"/>
-
-    <!-- For log files: App name -->
-    <property name="SERVICE_NAME" value="${SERVICE_NAME:-flashcards}"/>
-
-    <!-- Log level for packages "com.gitlab.sszuev.*" -->
-    <property name="APP_LOG_LEVEL" value="${APP_LOG_LEVEL:-info}"/>
-
-    <!-- Log level for other packages -->
+    <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-app-logs}"/>
+    <property name="SERVICE_NAME" value="${SERVICE_NAME:-application}"/>
+    <property name="CLIENT_LOG_LEVEL" value="${CLIENT_LOG_LEVEL:-info}"/>
     <property name="COMMON_LOG_LEVEL" value="${COMMON_LOG_LEVEL:-error}"/>
-
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level[%marker] %logger{36} [%mdc] - %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level[%marker] %logger{36} - %msg%n%mdc%n</pattern>
         </encoder>
     </appender>
-
     <appender name="asyncLogKafka" class="net.logstash.logback.appender.LoggingEventAsyncDisruptorAppender">
         <if condition='!property("LOGS_KAFKA_HOSTS").equals("LOGS_KAFKA_HOSTS_IS_UNDEFINED") &amp;&amp; !property("LOGS_KAFKA_HOSTS").isEmpty()'>
             <then>
@@ -58,24 +57,13 @@
             </then>
         </if>
     </appender>
-
-    <logger name="com.gitlab.sszuev" level="${APP_LOG_LEVEL}" additivity="false">
+    <logger name="com.example.client" level="${CLIENT_LOG_LEVEL}" additivity="false">
         <appender-ref ref="asyncLogKafka"/>
         <appender-ref ref="STDOUT"/>
-        <if condition='!property("LOGS_KAFKA_HOSTS").equals("LOGS_KAFKA_HOSTS_IS_UNDEFINED") &amp;&amp; !property("LOGS_KAFKA_HOSTS").isEmpty()'>
-            <then>
-                <appender-ref ref="kafkaVerboseAppender"/>
-            </then>
-        </if>
     </logger>
-
     <root level="${COMMON_LOG_LEVEL}">
         <appender-ref ref="asyncLogKafka"/>
         <appender-ref ref="STDOUT"/>
-        <if condition='!property("LOGS_KAFKA_HOSTS").equals("LOGS_KAFKA_HOSTS_IS_UNDEFINED") &amp;&amp; !property("LOGS_KAFKA_HOSTS").isEmpty()'>
-            <then>
-                <appender-ref ref="kafkaVerboseAppender"/>
-            </then>
-        </if>
     </root>
 </configuration>
+```

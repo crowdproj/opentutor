@@ -8,7 +8,7 @@ version = rootProject.version
 dependencies {
     val junitVersion: String by project
 
-    implementation(project(":openapi"))
+    implementation(project(":logs-openapi"))
     implementation(project(":common"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")

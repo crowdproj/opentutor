@@ -127,7 +127,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
-  "requestType": "getCards",
+  "requestType": "searchCards",
   "requestId": "getCardsSuccess",
   "debug": {
     "mode": "stub",
@@ -152,7 +152,7 @@ Content-Type: application/json
 Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJjOWE0MTRmNS0zZjc1LTQ0OTQtYjY2NC1mNGM4YjMzZmY0ZTYiLCJhdWQiOiJmbGFzaGNhcmRzLWF1ZGllbmNlIiwiaXNzIjoiZmxhc2hjYXJkcy1pc3N1ZXIifQ.rz5NpLQK7rJvr-ROCOw0giAU-mgRCZPmm8nLiU2rrr8
 
 {
-  "requestType": "getCards",
+  "requestType": "searchCards",
   "requestId": "getCardsError",
   "debug": {
     "mode": "stub",

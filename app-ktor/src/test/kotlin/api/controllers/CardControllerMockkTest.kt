@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.logslib.logger
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
@@ -98,12 +99,13 @@ internal class CardControllerMockkTest {
         coEvery {
             service.serviceMethod(any())
         } throws TestException(msg)
+        val logger = logger(CardControllerMockkTest::class.java)
 
         routing {
             authenticate("auth-jwt") {
                 route("test/api") {
-                    cards(service)
-                    sounds(service)
+                    cards(service, logger)
+                    sounds(service, logger)
                 }
             }
         }
