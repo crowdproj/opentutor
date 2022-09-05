@@ -147,9 +147,9 @@ internal class TTSResourceRepositoryITest {
             val expectedDataSize = extractSize(testRequestId.asString())
             val expectedDataArray = ByteArray(expectedDataSize.toInt()) { expectedDataSize }
             val res = repository.getResource(testRequestId)
-            Assertions.assertArrayEquals(expectedDataArray, res.data) { "expected: $expectedDataSize." }
+            Assertions.assertArrayEquals(expectedDataArray, res.resource.data) { "expected: $expectedDataSize." }
             Assertions.assertTrue(res.errors.isEmpty())
-            Assertions.assertEquals(testRequestId, res.resourceId)
+            Assertions.assertEquals(testRequestId, res.resource.resourceId)
         }
     }
 
@@ -182,9 +182,9 @@ internal class TTSResourceRepositoryITest {
 
             val res = repository.getResource(testRequestId)
 
-            Assertions.assertEquals(testRequestId, res.resourceId)
+            Assertions.assertEquals(ResourceId.NONE, res.resource.resourceId)
             Assertions.assertEquals(1, res.errors.size)
-            Assertions.assertArrayEquals(ByteArray(0), res.data)
+            Assertions.assertArrayEquals(ByteArray(0), res.resource.data)
             val error = res.errors[0]
             Assertions.assertEquals("resource", error.code)
             Assertions.assertEquals("exceptions", error.group)
@@ -243,9 +243,9 @@ internal class TTSResourceRepositoryITest {
                 requestTimeoutInMs = 4200,
             )
             val res = repository.getResource(testRequestId)
-            Assertions.assertEquals(testRequestId, res.resourceId)
+            Assertions.assertEquals(ResourceId.NONE, res.resource.resourceId)
             Assertions.assertEquals(1, res.errors.size)
-            Assertions.assertArrayEquals(ByteArray(0), res.data)
+            Assertions.assertArrayEquals(ByteArray(0), res.resource.data)
             val error = res.errors[0]
             Assertions.assertEquals("resource", error.code)
             Assertions.assertEquals("exceptions", error.group)

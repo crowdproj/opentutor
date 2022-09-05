@@ -1,8 +1,9 @@
 package com.gitlab.sszuev.flashcards.speaker
 
-import com.gitlab.sszuev.flashcards.model.domain.LangId
-import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.repositories.ResourceEntityTTSResponse
+import com.gitlab.sszuev.flashcards.repositories.ResourceIdTTSResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import java.util.concurrent.atomic.AtomicLong
 
@@ -11,19 +12,19 @@ import java.util.concurrent.atomic.AtomicLong
  * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
  */
 class MockTTSResourceRepository(
-    val answerResourceId: () -> ResourceId? = { ResourceId.NONE },
-    val answerResourceEntity: () -> ResourceEntity = { ResourceEntity.DUMMY },
     val findResourceIdCounts: AtomicLong = AtomicLong(),
     val getResourceCounts: AtomicLong = AtomicLong(),
+    val invokeFindResourceId: (ResourceGet) -> ResourceIdTTSResponse = { ResourceIdTTSResponse.EMPTY },
+    val invokeGetResource: (ResourceId) -> ResourceEntityTTSResponse = { ResourceEntityTTSResponse.EMPTY },
 ) : TTSResourceRepository {
 
-    override suspend fun findResourceId(word: String, lang: LangId): ResourceId? {
+    override suspend fun findResourceId(filter: ResourceGet): ResourceIdTTSResponse {
         findResourceIdCounts.incrementAndGet()
-        return answerResourceId()
+        return invokeFindResourceId(filter)
     }
 
-    override suspend fun getResource(id: ResourceId): ResourceEntity {
+    override suspend fun getResource(id: ResourceId): ResourceEntityTTSResponse {
         getResourceCounts.incrementAndGet()
-        return answerResourceEntity()
+        return invokeGetResource(id)
     }
 }

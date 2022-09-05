@@ -1,7 +1,8 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 
 /**
@@ -11,17 +12,28 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 interface TTSResourceRepository {
 
     /**
-     * Returns a resource identifier that corresponds to the given [word] and [lang] tag.
-     * @param [word][String]
-     * @param [lang][LangId]
-     * @return [ResourceId] or `null` if there is no resource for the provided data
+     * Returns a resource identifier that corresponds to the given [filter].
+     * @param [filter][ResourceGet]
+     * @return [ResourceIdTTSResponse]
      */
-    suspend fun findResourceId(word: String, lang: LangId): ResourceId?
+    suspend fun findResourceId(filter: ResourceGet): ResourceIdTTSResponse
 
     /**
      * Gets resource by its id.
      * @param [id][ResourceId]
-     * @return [ResourceEntity]
+     * @return [ResourceEntityTTSResponse]
      */
-    suspend fun getResource(id: ResourceId): ResourceEntity
+    suspend fun getResource(id: ResourceId): ResourceEntityTTSResponse
+}
+
+data class ResourceEntityTTSResponse(val resource: ResourceEntity, val errors: List<AppError> = emptyList()) {
+    companion object {
+        val EMPTY = ResourceEntityTTSResponse(resource = ResourceEntity.DUMMY)
+    }
+}
+
+data class ResourceIdTTSResponse(val id: ResourceId, val errors: List<AppError> = emptyList()) {
+    companion object {
+        val EMPTY = ResourceIdTTSResponse(id = ResourceId.NONE)
+    }
 }
