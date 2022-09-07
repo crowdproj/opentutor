@@ -6,13 +6,9 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.gitlab.sszuev.flashcards.api.apiV1
-import com.gitlab.sszuev.flashcards.dbmem.MemDbCardRepository
-import com.gitlab.sszuev.flashcards.dbmem.MemDbUserRepository
-import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
-import com.gitlab.sszuev.flashcards.dbpg.PgDbUserRepository
+import com.gitlab.sszuev.flashcards.config.KeycloakConfig
+import com.gitlab.sszuev.flashcards.config.RepositoriesConfig
 import com.gitlab.sszuev.flashcards.logslib.logger
-import com.gitlab.sszuev.flashcards.speaker.rabbitmq.RMQTTSResourceRepository
-import com.gitlab.sszuev.flashcards.speaker.test.NullTTSResourceRepository
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.*
@@ -45,14 +41,7 @@ fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.module(
-    repositories: CardRepositories = CardRepositories(
-        prodTTSClientRepository = RMQTTSResourceRepository(),
-        testTTSClientRepository = NullTTSResourceRepository,
-        prodCardRepository = PgDbCardRepository(),
-        testCardRepository = MemDbCardRepository(),
-        prodUserRepository = PgDbUserRepository(),
-        testUserRepository = MemDbUserRepository(),
-    ),
+    repositoriesConfig: RepositoriesConfig = RepositoriesConfig(),
     keycloakConfig: KeycloakConfig = KeycloakConfig(environment.config),
 ) {
     val port = environment.config.property("ktor.deployment.port").getString()
@@ -127,7 +116,7 @@ fun Application.module(
 
     install(Locations)
 
-    val service = cardService(repositories)
+    val service = cardService(repositoriesConfig.cardRepositories)
     val logger = logger(Route::class.java)
 
     routing {

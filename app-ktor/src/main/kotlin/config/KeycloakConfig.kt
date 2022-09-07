@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards
+package com.gitlab.sszuev.flashcards.config
 
 import io.ktor.server.config.*
 
