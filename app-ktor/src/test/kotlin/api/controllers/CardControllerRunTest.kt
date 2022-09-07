@@ -26,7 +26,10 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(requestBody.requestId, res.requestId)
         Assertions.assertEquals(1, res.errors!!.size)
         Assertions.assertEquals(Result.ERROR, res.result)
-        Assertions.assertEquals("Error while GET_RESOURCE: no resource found", res.errors!![0].message)
+        Assertions.assertEquals(
+            "Error while GET_RESOURCE: no resource found. filter=ResourceGet(word=xxx, lang=LangId(id=xx))",
+            res.errors!![0].message
+        )
         Assertions.assertArrayEquals(ResourceEntity.DUMMY.data, res.resource)
     }
 
@@ -41,7 +44,7 @@ internal class CardControllerRunTest {
         val res = response.body<GetAllCardsResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNotNull(res.cards)
         Assertions.assertEquals(65, res.cards!!.size)
@@ -59,18 +62,21 @@ internal class CardControllerRunTest {
         val res = response.body<GetCardResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNotNull(res.card)
         Assertions.assertEquals("weather", res.card!!.word)
         Assertions.assertEquals("'weðə", res.card!!.transcription)
         Assertions.assertEquals("NOUN", res.card!!.partOfSpeech)
         Assertions.assertEquals(listOf(listOf("погода")), res.card!!.translations)
-        Assertions.assertEquals(listOf(
-            "weather forecast -- прогноз погоды",
-            "weather bureau -- бюро погоды",
-            "nasty weather -- ненастная погода",
-            "spell of cold weather -- похолодание"), res.card!!.examples)
+        Assertions.assertEquals(
+            listOf(
+                "weather forecast -- прогноз погоды",
+                "weather bureau -- бюро погоды",
+                "nasty weather -- ненастная погода",
+                "spell of cold weather -- похолодание"
+            ), res.card!!.examples
+        )
         Assertions.assertNull(res.card!!.sound)
         Assertions.assertNull(res.card!!.answered)
         Assertions.assertEquals(emptyMap<String, Long>(), res.card!!.details)
@@ -98,7 +104,7 @@ internal class CardControllerRunTest {
         val res = response.body<CreateCardResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNotNull(res.card)
         Assertions.assertNotNull(res.card!!.cardId)
@@ -129,7 +135,7 @@ internal class CardControllerRunTest {
         val response = testPost("/v1/api/cards/update", requestBody)
         val res = response.body<UpdateCardResponse>()
         Assertions.assertEquals(200, response.status.value)
-        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals("success-request", res.requestId)
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNotNull(res.card)
@@ -150,7 +156,7 @@ internal class CardControllerRunTest {
         val res = response.body<SearchCardsResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNotNull(res.cards)
         Assertions.assertEquals(2, res.cards!!.size)
@@ -167,7 +173,7 @@ internal class CardControllerRunTest {
         val res = response.body<LearnCardsResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertEquals(1, res.cards!!.size)
         Assertions.assertEquals("weather", res.cards!![0].word)
@@ -184,7 +190,7 @@ internal class CardControllerRunTest {
         val res = response.body<ResetCardResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertEquals("weather", res.card!!.word)
         Assertions.assertEquals(0, res.card!!.answered)
@@ -201,7 +207,7 @@ internal class CardControllerRunTest {
         val res = response.body<DeleteCardResponse>()
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Errors: ${res.errors}"}
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
     }
 }

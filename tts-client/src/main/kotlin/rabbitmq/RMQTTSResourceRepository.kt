@@ -1,9 +1,11 @@
 package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.repositories.ResourceEntityTTSResponse
+import com.gitlab.sszuev.flashcards.repositories.ResourceIdTTSResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.NotFoundResourceException
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
@@ -44,33 +46,34 @@ class RMQTTSResourceRepository(
             .asCoroutineDispatcher() + CoroutineName("thread-rabbitmq-test-client")
     )
 
-    override suspend fun findResourceId(word: String, lang: LangId): ResourceId {
-        return ResourceId("${lang.asString()}:$word")
+    override suspend fun findResourceId(filter: ResourceGet): ResourceIdTTSResponse {
+        return ResourceIdTTSResponse(ResourceId("${filter.lang.asString()}:${filter.word}"))
     }
 
     /**
      * Gets the resource data from Rabbit MQ message with timeout.
      * @param [id][ResourceId]
-     * @return [ResourceEntity]
+     * @return [ResourceEntityTTSResponse]
      */
-    override suspend fun getResource(id: ResourceId): ResourceEntity {
+    override suspend fun getResource(id: ResourceId): ResourceEntityTTSResponse {
         val errors: MutableList<AppError> = mutableListOf()
-        val data = try {
+        val entity = try {
             val res: Deferred<ByteArray> = scope.async(context = Dispatchers.IO) {
                 return@async retrieveData(id)
             }
-            if (requestTimeoutInMillis < 0) {
+            val data = if (requestTimeoutInMillis < 0) {
                 res.await()
             } else {
                 runBlocking {
                     withTimeout(requestTimeoutInMillis) { res.await() }
                 }
             }
+            ResourceEntity(resourceId = id, data = data)
         } catch (ex: Exception) {
             errors.add(ex.asError())
-            ByteArray(0)
+            ResourceEntity.DUMMY
         }
-        return ResourceEntity(resourceId = id, data = data, errors = errors)
+        return ResourceEntityTTSResponse(entity, errors)
     }
 
     /**

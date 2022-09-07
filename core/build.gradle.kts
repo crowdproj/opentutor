@@ -9,7 +9,7 @@ dependencies {
     val junitVersion: String by project
     val kotlinCoroutinesVersion: String by project
 
-    implementation(project(":corlib"))
+    implementation(project(":cor-lib"))
     implementation(project(":common"))
     implementation(project(":stubs"))
 

@@ -6,6 +6,8 @@ import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.repositories.ResourceEntityTTSResponse
+import com.gitlab.sszuev.flashcards.repositories.ResourceIdTTSResponse
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -42,8 +44,8 @@ internal class CardCorProcessorRunResourceTest {
         )
 
         val repository = MockTTSResourceRepository(
-            answerResourceId = { testResourceId },
-            answerResourceEntity = { testResourceEntity },
+            invokeFindResourceId = { ResourceIdTTSResponse(testResourceId) },
+            invokeGetResource = { ResourceEntityTTSResponse(testResourceEntity) },
         )
 
         val context = testContext()
@@ -63,16 +65,16 @@ internal class CardCorProcessorRunResourceTest {
 
     @Test
     fun `test get resource fail no resource found`() = runTest {
-        val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
+        val testResourceGet = ResourceGet(word = "xxx", lang = LangId("en"))
         val testResourceId = ResourceId("test-id")
-        val testResourceEntity = ResourceEntity(
+        val testResourceEntity = ResourceEntityTTSResponse(ResourceEntity(
             resourceId = testResourceId,
             data = ByteArray(42) { 42 }
-        )
+        ))
 
         val repository = MockTTSResourceRepository(
-            answerResourceId = { null },
-            answerResourceEntity = { testResourceEntity },
+            invokeFindResourceId = { ResourceIdTTSResponse.EMPTY },
+            invokeGetResource = { testResourceEntity },
         )
 
         val context = testContext()
@@ -89,7 +91,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals("run::${CardOperation.GET_RESOURCE}", error.code)
         Assertions.assertEquals("run", error.group)
         Assertions.assertEquals(testResourceGet.toString(), error.field)
-        Assertions.assertEquals("Error while GET_RESOURCE: no resource found", error.message)
+        Assertions.assertEquals("Error while GET_RESOURCE: no resource found. filter=${testResourceGet}", error.message)
         Assertions.assertNull(error.exception)
 
         Assertions.assertEquals(1, repository.findResourceIdCounts.get())
@@ -99,11 +101,11 @@ internal class CardCorProcessorRunResourceTest {
     @Test
     fun `test get resource fail exception`() = runTest {
         val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
-        val testResourceId = ResourceId("test-id")
+        val testResourceIdFound = ResourceIdTTSResponse(ResourceId("test-id"))
 
         val repository = MockTTSResourceRepository(
-            answerResourceId = { testResourceId },
-            answerResourceEntity = { throw TestException() },
+            invokeFindResourceId = { testResourceIdFound },
+            invokeGetResource = { throw TestException() },
         )
 
         val context = testContext()
@@ -120,7 +122,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals("run::${CardOperation.GET_RESOURCE}", error.code)
         Assertions.assertEquals("run", error.group)
         Assertions.assertEquals(testResourceGet.toString(), error.field)
-        Assertions.assertEquals("Error while GET_RESOURCE: exception", error.message)
+        Assertions.assertEquals("Error while GET_RESOURCE: unexpected exception", error.message)
         Assertions.assertInstanceOf(TestException::class.java, error.exception)
 
         Assertions.assertEquals(1, repository.findResourceIdCounts.get())

@@ -1,4 +1,4 @@
-### flashcard-kt ::: corlib
+### flashcard-kt ::: cor-lib
 
 This module contains Chain of Responsibility (CoR) pattern implementation.
 It is used by business logic (core)

@@ -5,20 +5,56 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 
 fun ChainDSL<CardContext>.processResource() = worker {
     this.name = "process audio resource request"
     process {
         val request = this.normalizedRequestResourceGet
-        val id = this.repositories.ttsClientRepository(this.workMode).findResourceId(request.word, request.lang)
-            ?: return@process fail(
+        val foundId = this.repositories.ttsClientRepository(this.workMode).findResourceId(request)
+        if (foundId.errors.isNotEmpty()) {
+            this.errors.addAll(foundId.errors)
+            this.status = AppStatus.FAIL
+            return@process
+        } else if (foundId.id == ResourceId.NONE) {
+            this.errors.add(
                 runError(
                     operation = CardOperation.GET_RESOURCE,
                     fieldName = this.requestResourceGet.toFieldName(),
-                    description = "no resource found"
+                    description = "no resource found. filter=$request"
                 )
             )
-        this.responseResourceEntity = this.repositories.ttsClientRepository(this.workMode).getResource(id)
+            this.status = AppStatus.FAIL
+            return@process
+        }
+        val foundResource = this.repositories.ttsClientRepository(this.workMode).getResource(foundId.id)
+        if (foundResource.errors.isNotEmpty()) {
+            this.errors.addAll(foundId.errors)
+            this.status = AppStatus.FAIL
+            return@process
+        } else if (foundResource.resource == ResourceEntity.DUMMY) {
+            this.errors.add(
+                runError(
+                    operation = CardOperation.GET_RESOURCE,
+                    fieldName = foundId.id.toFieldName(),
+                    description = "no resource found. id=${foundId.id}"
+                )
+            )
+            this.status = AppStatus.FAIL
+            return@process
+        } else if (foundResource.resource.data.isEmpty()) {
+            this.errors.add(
+                runError(
+                    operation = CardOperation.GET_RESOURCE,
+                    fieldName = foundId.id.toFieldName(),
+                    description = "empty resource found. id=${foundId.id}"
+                )
+            )
+            this.status = AppStatus.FAIL
+            return@process
+        }
+        this.responseResourceEntity = foundResource.resource
         this.status = AppStatus.RUN
     }
     onException {
@@ -26,7 +62,7 @@ fun ChainDSL<CardContext>.processResource() = worker {
             runError(
                 operation = CardOperation.GET_RESOURCE,
                 fieldName = this.requestResourceGet.toFieldName(),
-                description = "exception",
+                description = "unexpected exception",
                 exception = it
             )
         )
