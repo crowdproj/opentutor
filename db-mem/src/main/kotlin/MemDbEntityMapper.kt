@@ -5,6 +5,7 @@ import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
 import com.gitlab.sszuev.flashcards.common.toEntityDetails
 import com.gitlab.sszuev.flashcards.common.toEntityTranslations
 import com.gitlab.sszuev.flashcards.dbmem.dao.*
+import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.*
 import java.util.*
@@ -12,6 +13,13 @@ import java.util.*
 internal fun User.toEntity() = UserEntity(
     id = id.asUserId(),
     uid = uuid.asUserUid(),
+)
+
+internal fun Dictionary.toEntity() = DictionaryEntity(
+    dictionaryId = this.id.asDictionaryId(),
+    name = this.name,
+    sourceLangId = this.sourceLanguage.toDbLangId(),
+    targetLangId = this.targetLanguage.toDbLangId(),
 )
 
 internal fun Card.toEntity() = CardEntity(
@@ -54,3 +62,5 @@ private fun Long.asDictionaryId() = DictionaryId(toString())
 private fun Long.asCardId() = CardId(toString())
 
 private fun Id.asDbRecordId() = asString().toLong()
+
+private fun Language.toDbLangId(): LangId = LangId(this.id)
