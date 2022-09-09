@@ -6,4 +6,5 @@ data class Dictionary(
     val sourceLanguage: Language,
     val targetLanguage: Language,
     val cards: MutableMap<Long, Card>,
+    val userId: Long?,
 )

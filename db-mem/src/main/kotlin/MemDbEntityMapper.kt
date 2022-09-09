@@ -20,6 +20,7 @@ internal fun Dictionary.toEntity() = DictionaryEntity(
     name = this.name,
     sourceLangId = this.sourceLanguage.toDbLangId(),
     targetLangId = this.targetLanguage.toDbLangId(),
+    userId = this.userId?.asUserId() ?: UserId.NONE
 )
 
 internal fun Card.toEntity() = CardEntity(

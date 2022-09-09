@@ -37,8 +37,15 @@ class LingvoDictionaryReader(private val ids: IdSequences) : DictionaryReader {
             name = root.getAttribute("title"),
             sourceLanguage = src,
             targetLanguage = dst,
-            cards = parseCardList(root, dictionaryId)
+            cards = parseCardList(root, dictionaryId),
+            userId = parseUserId(root),
         )
+    }
+
+    private fun parseUserId(root: Element): Long? {
+        // custom field (not lingvo scheme)
+        val id = root.getAttribute("userId")
+        return if (id.isBlank()) null else id.toLong()
     }
 
     private fun parseCardList(root: Element, dictionaryId: Long): MutableMap<Long, Card> {

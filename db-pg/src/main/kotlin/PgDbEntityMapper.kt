@@ -63,6 +63,14 @@ internal fun EntityID<Long>.asDictionaryId() = DictionaryId(value.toString())
 
 internal fun EntityID<Long>.asCardId() = CardId(value.toString())
 
+internal fun UserId.asRecordId(): EntityID<Long> {
+    return if (asString().matches("\\d+".toRegex())) {
+        EntityID(asString().toLong(), Dictionaries)
+    } else {
+        EntityID(-42, Dictionaries)
+    }
+}
+
 internal fun DictionaryId.asRecordId() = EntityID(asString().toLong(), Dictionaries)
 
 internal fun CardId.asRecordId() = EntityID(asString().toLong(), Cards)

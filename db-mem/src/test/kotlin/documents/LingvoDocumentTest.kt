@@ -130,7 +130,8 @@ internal class LingvoDocumentTest {
             name = "The Test Dictionary",
             sourceLanguage = Language("en", "xxx"),
             targetLanguage = Language("ru", "xxx"),
-            cards = mutableMapOf(card1.id to card1, card2.id to card2, card3.id to card3)
+            cards = mutableMapOf(card1.id to card1, card2.id to card2, card3.id to card3),
+            userId = 42,
         )
         val out = ByteArrayOutputStream()
         createWriter().write(dictionary, out)

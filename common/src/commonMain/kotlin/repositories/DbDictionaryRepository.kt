@@ -2,9 +2,10 @@ package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.UserId
 
 interface DbDictionaryRepository {
-    fun getAllDictionaries(): DictionaryEntitiesDbResponse
+    fun getAllDictionaries(userId: UserId): DictionaryEntitiesDbResponse
 }
 
 data class DictionaryEntitiesDbResponse(
