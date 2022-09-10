@@ -1,10 +1,10 @@
-package com.gitlab.sszuev.flashcards.core.process
+package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
 
 internal fun ResourceGet.toFieldName(): String {
@@ -16,7 +16,7 @@ internal fun Id.toFieldName(): String {
 }
 
 internal fun runError(
-    operation: CardOperation,
+    operation: AppOperation,
     fieldName: String = "",
     description: String = "",
     exception: Throwable? = null,

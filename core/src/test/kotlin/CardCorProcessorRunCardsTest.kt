@@ -4,10 +4,7 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
-import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppMode
-import com.gitlab.sszuev.flashcards.model.common.AppRequestId
-import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.*
 import com.gitlab.sszuev.flashcards.stubs.stubCard
@@ -21,6 +18,7 @@ import org.junit.jupiter.params.provider.EnumSource
 @Suppress("OPT_IN_USAGE")
 internal class CardCorProcessorRunCardsTest {
     companion object {
+        private val testUser = AppUserEntity(AppUserId("42"), AppAuthId("00000000-0000-0000-0000-000000000000"))
 
         private fun testContext(
             op: CardOperation,
@@ -34,7 +32,7 @@ internal class CardCorProcessorRunCardsTest {
                     testCardRepository = cardRepository
                 )
             )
-            context.requestUserUid = UserUid("42")
+            context.requestAppAuthId = testUser.authId
             context.workMode = AppMode.TEST
             context.requestId = requestId(op)
             return context
@@ -58,8 +56,6 @@ internal class CardCorProcessorRunCardsTest {
             Assertions.assertEquals(1, context.errors.size)
             return context.errors[0]
         }
-
-        private class TestException : RuntimeException()
     }
 
     @Test
@@ -88,16 +84,15 @@ internal class CardCorProcessorRunCardsTest {
     @Test
     fun `test get-card error - unexpected fail`() = runTest {
         val testCardId = CardId("42")
-        val testUid = UserUid("21")
-        val testUser = UserEntity(UserId("42"), testUid)
 
         val cardRepository = MockDbCardRepository(invokeGetCard = { throw TestException() })
-        val userRepository =
-            MockDbUserRepository(invokeGetUser = { if (it == testUid) UserEntityDbResponse(user = testUser) else throw TestException() })
+        val userRepository = MockDbUserRepository(
+            invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw TestException() }
+        )
 
         val context =
             testContext(CardOperation.GET_CARD, cardRepository = cardRepository, userRepository = userRepository)
-        context.requestUserUid = testUid
+        context.requestAppAuthId = testUser.authId
         context.requestCardEntityId = testCardId
 
         CardCorProcessor().execute(context)
@@ -404,7 +399,7 @@ internal class CardCorProcessorRunCardsTest {
     @ParameterizedTest
     @EnumSource(value = CardOperation::class, names = ["NONE", "GET_RESOURCE"], mode = EnumSource.Mode.EXCLUDE)
     fun `test no user found`(op: CardOperation) = runTest {
-        val testUid = UserUid("21")
+        val testUid = AppAuthId("21")
         val testError = AppError(group = "test-error", code = "test-error")
 
         val testCardId = CardId("42")
@@ -425,13 +420,13 @@ internal class CardCorProcessorRunCardsTest {
         val userRepository =
             MockDbUserRepository(invokeGetUser = {
                 UserEntityDbResponse(
-                    user = UserEntity.EMPTY,
+                    user = AppUserEntity.EMPTY,
                     errors = listOf(testError)
                 )
             })
 
         val context = testContext(op, cardRepository = cardRepository, userRepository = userRepository)
-        context.requestUserUid = testUid
+        context.requestAppAuthId = testUid
         context.requestCardEntityId = testCardId
         context.requestCardLearnList = listOf(testLearn)
         context.requestCardEntity = testCardEntity

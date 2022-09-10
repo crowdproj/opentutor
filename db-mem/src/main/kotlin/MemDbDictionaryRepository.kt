@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.SysConfig
-import com.gitlab.sszuev.flashcards.model.domain.UserId
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionaryEntitiesDbResponse
 
@@ -15,7 +15,7 @@ class MemDbDictionaryRepository(
         sysConfig = sysConfig,
     )
 
-    override fun getAllDictionaries(userId: UserId): DictionaryEntitiesDbResponse {
+    override fun getAllDictionaries(userId: AppUserId): DictionaryEntitiesDbResponse {
         val dictionaries = this.dictionaries.keys
             .mapNotNull { dictionaries[it] }
             .map { it.toEntity() }

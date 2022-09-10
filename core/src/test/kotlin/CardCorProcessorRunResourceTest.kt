@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -28,7 +29,7 @@ internal class CardCorProcessorRunResourceTest {
                     testTTSClientRepository = repository
                 )
             )
-            context.requestUserUid = UserUid("42")
+            context.requestAppAuthId = AppAuthId("42")
             context.workMode = AppMode.TEST
             context.requestId = requestId()
             return context
@@ -133,6 +134,4 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(1, repository.findResourceIdCounts.get())
         Assertions.assertEquals(1, repository.getResourceCounts.get())
     }
-
-    private class TestException : RuntimeException()
 }

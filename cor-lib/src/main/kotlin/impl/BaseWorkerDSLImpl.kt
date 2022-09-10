@@ -24,4 +24,8 @@ abstract class BaseWorkerDSLImpl<D>(
     override fun onException(exceptionHandler: suspend D.(ex: Throwable) -> Unit) {
         this.exceptionHandler = exceptionHandler
     }
+
+    override fun toString(): String {
+        return "WorkerDSL(name='$name', description='$description')"
+    }
 }

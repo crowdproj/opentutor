@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.core.process
+package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
@@ -9,7 +9,7 @@ import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 
 fun ChainDSL<CardContext>.processGetCard() = worker {
-    this.name = "process get-card-request"
+    this.name = "process get-card request"
     test {
         this.status == AppStatus.RUN
     }
@@ -31,7 +31,7 @@ fun ChainDSL<CardContext>.processGetCard() = worker {
 }
 
 fun ChainDSL<CardContext>.processGetAllCards() = worker {
-    this.name = "process get-all-cards-request"
+    this.name = "process get-all-cards request"
     test {
         this.status == AppStatus.RUN
     }
@@ -53,7 +53,7 @@ fun ChainDSL<CardContext>.processGetAllCards() = worker {
 }
 
 fun ChainDSL<CardContext>.processCardSearch() = worker {
-    this.name = "process card-search-request"
+    this.name = "process card-search request"
     test {
         this.status == AppStatus.RUN
     }
@@ -67,7 +67,7 @@ fun ChainDSL<CardContext>.processCardSearch() = worker {
 }
 
 fun ChainDSL<CardContext>.processCreateCard() = worker {
-    this.name = "process create-card-request"
+    this.name = "process create-card request"
     test {
         this.status == AppStatus.RUN
     }
@@ -81,7 +81,7 @@ fun ChainDSL<CardContext>.processCreateCard() = worker {
 }
 
 fun ChainDSL<CardContext>.processUpdateCard() = worker {
-    this.name = "process update-card-request"
+    this.name = "process update-card request"
     test {
         this.status == AppStatus.RUN
     }
@@ -95,7 +95,7 @@ fun ChainDSL<CardContext>.processUpdateCard() = worker {
 }
 
 fun ChainDSL<CardContext>.processLearnCards() = worker {
-    this.name = "process learn-cards-request"
+    this.name = "process learn-cards request"
     test {
         this.status == AppStatus.RUN
     }
@@ -109,7 +109,7 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
 }
 
 fun ChainDSL<CardContext>.processResetCards() = worker {
-    this.name = "process reset-cards-request"
+    this.name = "process reset-cards request"
     test {
         this.status == AppStatus.RUN
     }
@@ -123,7 +123,7 @@ fun ChainDSL<CardContext>.processResetCards() = worker {
 }
 
 fun ChainDSL<CardContext>.processDeleteCard() = worker {
-    this.name = "process delete-card-request"
+    this.name = "process delete-card request"
     test {
         this.status == AppStatus.RUN
     }

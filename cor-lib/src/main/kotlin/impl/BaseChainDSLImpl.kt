@@ -25,4 +25,8 @@ abstract class BaseChainDSLImpl<D>(
     override fun onException(exceptionHandler: suspend D.(ex: Throwable) -> Unit) {
         this.exceptionHandler = exceptionHandler
     }
+
+    override fun toString(): String {
+        return "ChainDSL(name='$name', description='$description')"
+    }
 }

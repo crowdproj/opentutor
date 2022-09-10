@@ -1,15 +1,16 @@
-package com.gitlab.sszuev.flashcards.core.process
+package com.gitlab.sszuev.flashcards.core.processes
 
-import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.validators.fail
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
+import com.gitlab.sszuev.flashcards.model.common.AppContext
+import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 
-fun ChainDSL<CardContext>.processFindUser(operation: CardOperation) = worker {
-    this.name = "process get-user"
+internal inline fun <reified Context : AppContext> ChainDSL<Context>.processFindUser(operation: AppOperation) = worker {
+    this.name = "${Context::class.java.simpleName} :: process get-user"
     process {
-        val uid = this.normalizedRequestUserUid
+        val uid = this.normalizedRequestAppAuthId
         val res = this.repositories.userRepository(this.workMode).getUser(uid)
         this.contextUserEntity = res.user
         if (res.errors.isNotEmpty()) {
@@ -21,7 +22,7 @@ fun ChainDSL<CardContext>.processFindUser(operation: CardOperation) = worker {
         fail(
             runError(
                 operation = operation,
-                fieldName = this.normalizedRequestUserUid.toFieldName(),
+                fieldName = this.normalizedRequestAppAuthId.toFieldName(),
                 description = "exception while get user",
                 exception = it,
             )

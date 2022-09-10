@@ -12,6 +12,11 @@ interface AppContext {
     var workMode: AppMode
     var debugCase: AppStub
     var requestId: AppRequestId
+
+    // get user:
+    var requestAppAuthId: AppAuthId
+    var normalizedRequestAppAuthId: AppAuthId
+    var contextUserEntity: AppUserEntity
 }
 
 private val none = Instant.fromEpochMilliseconds(Long.MIN_VALUE)

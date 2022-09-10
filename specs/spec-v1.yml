@@ -258,11 +258,14 @@ components:
               format: byte
 
     GetAllDictionariesRequest:
-      description: 'Request to read dictionaries'
+      description: 'Request to read dictionaries by userId'
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
+          properties:
+            userId:
+              type: string
 
     GetAllDictionariesResponse:
       allOf:
@@ -308,6 +311,7 @@ components:
                 $ref: '#/components/schemas/CardResource'
 
     GetAllCardsRequest:
+      description: 'Request to getl all cards by dictionaryId'
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'

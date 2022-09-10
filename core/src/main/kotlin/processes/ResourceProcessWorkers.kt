@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.core.process
+package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL

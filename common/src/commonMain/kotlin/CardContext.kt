@@ -17,11 +17,9 @@ data class CardContext(
     override var workMode: AppMode = AppMode.PROD,
     override var debugCase: AppStub = AppStub.NONE,
     override var requestId: AppRequestId = AppRequestId.NONE,
-
-    // get user:
-    var requestUserUid: UserUid = UserUid.NONE,
-    var normalizedRequestUserUid: UserUid = UserUid.NONE,
-    var contextUserEntity: UserEntity = UserEntity.EMPTY,
+    override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
+    override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
+    override var contextUserEntity: AppUserEntity = AppUserEntity.EMPTY,
 
     // get word resource by id (for TTS)
     var requestResourceGet: ResourceGet = ResourceGet.NONE,

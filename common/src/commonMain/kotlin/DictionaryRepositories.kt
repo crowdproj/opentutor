@@ -7,7 +7,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.NoOpDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.NoOpDbUserRepository
 
-class DictionaryRepositories(
+data class DictionaryRepositories(
     private val prodDictionaryRepository: DbDictionaryRepository = NoOpDbDictionaryRepository,
     private val testDictionaryRepository: DbDictionaryRepository = NoOpDbDictionaryRepository,
     private val prodUserRepository: DbUserRepository = NoOpDbUserRepository,

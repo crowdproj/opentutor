@@ -3,8 +3,6 @@ package com.gitlab.sszuev.flashcards
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
-import com.gitlab.sszuev.flashcards.model.domain.UserEntity
-import com.gitlab.sszuev.flashcards.model.domain.UserUid
 import kotlinx.datetime.Instant
 
 data class DictionaryContext(
@@ -17,11 +15,9 @@ data class DictionaryContext(
     override var workMode: AppMode = AppMode.PROD,
     override var debugCase: AppStub = AppStub.NONE,
     override var requestId: AppRequestId = AppRequestId.NONE,
-
-    // get user:
-    var requestUserUid: UserUid = UserUid.NONE,
-    var normalizedRequestUserUid: UserUid = UserUid.NONE,
-    var contextUserEntity: UserEntity = UserEntity.EMPTY,
+    override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
+    override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
+    override var contextUserEntity: AppUserEntity = AppUserEntity.EMPTY,
 
     // get all dictionaries list response:
     var responseDictionaryEntityList: List<DictionaryEntity> = listOf(),

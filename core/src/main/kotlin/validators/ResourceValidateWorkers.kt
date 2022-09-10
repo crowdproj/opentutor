@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.core.validation
+package com.gitlab.sszuev.flashcards.core.validators
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL

@@ -7,12 +7,15 @@ import com.gitlab.sszuev.flashcards.common.toEntityTranslations
 import com.gitlab.sszuev.flashcards.dbmem.dao.*
 import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
 import com.gitlab.sszuev.flashcards.model.Id
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.*
 import java.util.*
 
-internal fun User.toEntity() = UserEntity(
+internal fun User.toEntity() = AppUserEntity(
     id = id.asUserId(),
-    uid = uuid.asUserUid(),
+    authId = uuid.asUserUid(),
 )
 
 internal fun Dictionary.toEntity() = DictionaryEntity(
@@ -20,7 +23,7 @@ internal fun Dictionary.toEntity() = DictionaryEntity(
     name = this.name,
     sourceLangId = this.sourceLanguage.toDbLangId(),
     targetLangId = this.targetLanguage.toDbLangId(),
-    userId = this.userId?.asUserId() ?: UserId.NONE
+    userId = this.userId?.asUserId() ?: AppUserId.NONE
 )
 
 internal fun Card.toEntity() = CardEntity(
@@ -54,9 +57,9 @@ internal fun CardEntity.toDbRecord(cardId: Long, ids: IdSequences): Card {
     )
 }
 
-private fun Long.asUserId() = UserId(toString())
+private fun Long.asUserId() = AppUserId(toString())
 
-internal fun UUID.asUserUid() = UserUid(toString())
+internal fun UUID.asUserUid() = AppAuthId(toString())
 
 private fun Long.asDictionaryId() = DictionaryId(toString())
 

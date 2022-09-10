@@ -1,36 +1,51 @@
-package com.gitlab.sszuev.flashcards.core.utils
+package com.gitlab.sszuev.flashcards.core.normalizers
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.domain.*
 
-fun ChainDSL<CardContext>.normalize(operation: CardOperation) =
-    worker(name = "Make a normalized copy of ${operation.name.lowercase()} params") {
-        this.normalizedRequestUserUid = this.requestUserUid.normalize()
-        when (operation) {
-            CardOperation.GET_RESOURCE -> {
-                this.normalizedRequestResourceGet = this.requestResourceGet.normalize()
-            }
-            CardOperation.SEARCH_CARDS -> {
-                this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
-            }
-            CardOperation.GET_ALL_CARDS -> {
-                this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
-            }
-            CardOperation.GET_CARD, CardOperation.RESET_CARD, CardOperation.DELETE_CARD -> {
-                this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
-            }
-            CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD -> {
-                this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
-            }
-            CardOperation.LEARN_CARDS -> {
-                this.normalizedRequestCardLearnList = this.requestCardLearnList.map { it.normalize() }
-            }
-            else -> {}
+fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = worker(
+    name = "Make a normalized copy of ${operation.name.lowercase()} params"
+) {
+    this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
+}
+
+fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(
+    name = "Make a normalized copy of ${operation.name.lowercase()} params"
+) {
+    this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
+    when (operation) {
+        CardOperation.GET_RESOURCE -> {
+            this.normalizedRequestResourceGet = this.requestResourceGet.normalize()
         }
+
+        CardOperation.SEARCH_CARDS -> {
+            this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
+        }
+
+        CardOperation.GET_ALL_CARDS -> {
+            this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
+        }
+
+        CardOperation.GET_CARD, CardOperation.RESET_CARD, CardOperation.DELETE_CARD -> {
+            this.normalizedRequestCardEntityId = this.requestCardEntityId.normalize()
+        }
+
+        CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD -> {
+            this.normalizedRequestCardEntity = this.requestCardEntity.normalize()
+        }
+
+        CardOperation.LEARN_CARDS -> {
+            this.normalizedRequestCardLearnList = this.requestCardLearnList.map { it.normalize() }
+        }
+
+        else -> {}
     }
+}
 
 fun CardEntity.normalize(): CardEntity {
     return CardEntity(
@@ -69,8 +84,8 @@ fun ResourceGet.normalize(): ResourceGet {
     )
 }
 
-fun UserUid.normalize(): UserUid {
-    return UserUid(this.normalizeAsString())
+fun AppAuthId.normalize(): AppAuthId {
+    return AppAuthId(this.normalizeAsString())
 }
 
 fun CardId.normalize(): CardId {

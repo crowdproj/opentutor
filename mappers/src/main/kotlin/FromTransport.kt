@@ -2,13 +2,14 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.*
 
 fun CardContext.fromTransportToUser(request: String) {
-    this.requestUserUid = UserUid(request)
+    this.requestAppAuthId = AppAuthId(request)
 }
 
 fun CardContext.fromTransportToRequest(request: BaseRequest) = when (request) {

@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
@@ -17,7 +18,7 @@ import org.junit.jupiter.params.provider.MethodSource
 import java.util.*
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class CardCorProcessorValidationTest {
+internal class CardCorProcessorValidationTest {
 
     companion object {
         private const val parameterizedTestName =
@@ -38,7 +39,7 @@ class CardCorProcessorValidationTest {
 
         private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
             val context = CardContext(operation = op)
-            context.requestUserUid = UserUid("42")
+            context.requestAppAuthId = AppAuthId("42")
             context.workMode = mode
             context.requestId = AppRequestId(requestId)
             return context
@@ -53,7 +54,7 @@ class CardCorProcessorValidationTest {
         }
 
         private fun assertValidationError(expectedField: String, actual: AppError) {
-            Assertions.assertEquals("validation", actual.group)
+            Assertions.assertEquals("validators", actual.group)
             Assertions.assertEquals(expectedField, actual.field)
             Assertions.assertEquals("validation-$expectedField", actual.code)
         }
@@ -368,7 +369,7 @@ class CardCorProcessorValidationTest {
         sequenceOf(AppMode.TEST, AppMode.STUB).forEach { m ->
             val context = testContext(operation, m)
                 .copy(
-                    requestUserUid = UserUid(""),
+                    requestAppAuthId = AppAuthId(""),
                     requestResourceGet = ResourceGet("xxx", LangId("EN")),
                     requestCardLearnList = listOf(CardLearn(CardId("42"), details = mapOf(Stage.MOSAIC to 42))),
                     requestCardFilter = CardFilter(dictionaryIds = listOf(DictionaryId("42")), length = 42),

@@ -1,9 +1,9 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.domain.UserId
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 
 object NoOpDbDictionaryRepository : DbDictionaryRepository {
-    override fun getAllDictionaries(userId: UserId): DictionaryEntitiesDbResponse {
+    override fun getAllDictionaries(userId: AppUserId): DictionaryEntitiesDbResponse {
         noOp()
     }
 

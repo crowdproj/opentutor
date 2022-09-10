@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.logmappers
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.logs.models.*
 import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.domain.*
 import java.time.Instant
 import java.util.*
@@ -18,9 +19,9 @@ fun CardContext.toLogResource(logId: String) = LogResource(
     errors = this.errors.takeIf { it.isNotEmpty() }?.map { it.toLog() }
 )
 
-private fun UserEntity.toLog() = UserLogResource(
+private fun AppUserEntity.toLog() = UserLogResource(
     userId = id.asString(),
-    userUid = uid.asString(),
+    userUid = authId.asString(),
 )
 
 private fun AppError.toLog() = ErrorLogResource(

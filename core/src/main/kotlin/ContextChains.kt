@@ -10,8 +10,8 @@ import com.gitlab.sszuev.flashcards.model.common.AppStatus
 
 internal inline fun <reified Context : AppContext> ChainDSL<Context>.initContext() = worker {
     worker {
-        this.name = "start context ${Context::class.java.name}"
-        this.description = "prepare generic fields for context ${Context::class.java.name}"
+        this.name = "start context ${Context::class.java.simpleName}"
+        this.description = "prepare generic fields for context ${Context::class.java.simpleName}"
         test {
             this.status == AppStatus.INIT
         }

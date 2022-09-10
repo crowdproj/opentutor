@@ -2,7 +2,7 @@ package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionary
-import com.gitlab.sszuev.flashcards.model.domain.UserId
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionaryEntitiesDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -16,8 +16,8 @@ class PgDbDictionaryRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun getAllDictionaries(userId: UserId): DictionaryEntitiesDbResponse {
-        if (userId == UserId.NONE) {
+    override fun getAllDictionaries(userId: AppUserId): DictionaryEntitiesDbResponse {
+        if (userId == AppUserId.NONE) {
             DictionaryEntitiesDbResponse(dictionaries = emptyList())
         }
         return connection.execute {
