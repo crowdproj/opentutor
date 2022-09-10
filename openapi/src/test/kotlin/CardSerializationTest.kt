@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 /**
  * Acceptance test to control changes in the schema.
  */
-internal class SerializationTest {
+internal class CardSerializationTest {
 
     companion object {
         private val card = CardResource(
@@ -27,7 +27,7 @@ internal class SerializationTest {
             name = "XXX",
             sourceLang = "X",
             targetLang = "Y",
-            partOfSpeech = listOf("X", "Y"),
+            partsOfSpeech = listOf("X", "Y"),
             total = 1,
             learned = 42
         )
@@ -67,7 +67,7 @@ internal class SerializationTest {
             Assertions.assertTrue(json.contains("\"name\":\"XXX\""))
             Assertions.assertTrue(json.contains("\"sourceLang\":\"X\""))
             Assertions.assertTrue(json.contains("\"targetLang\":\"Y\""))
-            Assertions.assertTrue(json.contains("\"partOfSpeech\":[\"X\",\"Y\"]"))
+            Assertions.assertTrue(json.contains("\"partsOfSpeech\":[\"X\",\"Y\"]"))
             Assertions.assertTrue(json.contains("\"total\":1"))
             Assertions.assertTrue(json.contains("\"learned\":42"))
         }

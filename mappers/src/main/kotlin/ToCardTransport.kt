@@ -2,9 +2,6 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
-import com.gitlab.sszuev.flashcards.model.Id
-import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
@@ -101,19 +98,3 @@ private fun CardEntity.toCardResource(): CardResource? {
         answered = answered,
     )
 }
-
-private fun List<AppError>.toErrorResourceList(): List<ErrorResource>? = this
-    .map { it.toErrorResource() }
-    .toList()
-    .takeIf { it.isNotEmpty() }
-
-private fun AppError.toErrorResource() = ErrorResource(
-    code = code.takeIf { it.isNotBlank() },
-    group = group.takeIf { it.isNotBlank() },
-    field = field.takeIf { it.isNotBlank() },
-    message = message.takeIf { it.isNotBlank() },
-)
-
-private fun AppStatus.toResponseResult(): Result = if (this == AppStatus.OK) Result.SUCCESS else Result.ERROR
-
-private fun Id.toResponseId(): String? = this.asString().takeIf { it.isNotBlank() }

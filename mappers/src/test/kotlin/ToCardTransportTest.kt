@@ -11,7 +11,22 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
-class ToTransportTest {
+internal class ToCardTransportTest {
+
+    companion object {
+        private fun assertError(expected: AppError, actual: ErrorResource) {
+            Assertions.assertEquals(expected.code, actual.code)
+            Assertions.assertEquals(expected.message, actual.message)
+            Assertions.assertEquals(expected.field, actual.field)
+            Assertions.assertEquals(expected.group, actual.group)
+        }
+
+        private fun assertCard(expected: CardEntity, actual: CardResource) {
+            Assertions.assertEquals(if (expected.cardId != CardId.NONE) expected.cardId.asString() else null, actual.cardId)
+            Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
+            Assertions.assertEquals(expected.word, actual.word)
+        }
+    }
 
     @Test
     fun `test toGetCardResponse`() {
@@ -202,18 +217,5 @@ class ToTransportTest {
         val card = res.cards!!.get(0)
         Assertions.assertNotSame(responseEntity, card)
         Assertions.assertEquals(responseEntity, card)
-    }
-
-    private fun assertError(expected: AppError, actual: ErrorResource) {
-        Assertions.assertEquals(expected.code, actual.code)
-        Assertions.assertEquals(expected.message, actual.message)
-        Assertions.assertEquals(expected.field, actual.field)
-        Assertions.assertEquals(expected.group, actual.group)
-    }
-
-    private fun assertCard(expected: CardEntity, actual: CardResource) {
-        Assertions.assertEquals(if (expected.cardId != CardId.NONE) expected.cardId.asString() else null, actual.cardId)
-        Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
-        Assertions.assertEquals(expected.word, actual.word)
     }
 }
