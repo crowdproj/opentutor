@@ -25,7 +25,6 @@ fun CardContext.fromTransportToRequest(request: BaseRequest) = when (request) {
 }
 
 fun CardContext.fromGetGetAudioRequest(request: GetAudioRequest) {
-    this.operation = CardOperation.GET_RESOURCE
     this.requestId = request.requestId()
     this.requestResourceGet = ResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
     this.workMode = request.debug.transportToWorkMode()
@@ -33,7 +32,6 @@ fun CardContext.fromGetGetAudioRequest(request: GetAudioRequest) {
 }
 
 fun CardContext.fromGetCardRequest(request: GetCardRequest) {
-    this.operation = CardOperation.GET_CARD
     this.requestId = request.requestId()
     this.requestCardEntityId = toCardId(request.cardId)
     this.workMode = request.debug.transportToWorkMode()
@@ -41,7 +39,6 @@ fun CardContext.fromGetCardRequest(request: GetCardRequest) {
 }
 
 fun CardContext.fromGetAllCardsRequest(request: GetAllCardsRequest) {
-    this.operation = CardOperation.GET_ALL_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -49,7 +46,6 @@ fun CardContext.fromGetAllCardsRequest(request: GetAllCardsRequest) {
 }
 
 fun CardContext.fromSearchCardsRequest(request: SearchCardsRequest) {
-    this.operation = CardOperation.SEARCH_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -62,7 +58,6 @@ fun CardContext.fromSearchCardsRequest(request: SearchCardsRequest) {
 }
 
 fun CardContext.fromCreateCardRequest(request: CreateCardRequest) {
-    this.operation = CardOperation.CREATE_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -70,7 +65,6 @@ fun CardContext.fromCreateCardRequest(request: CreateCardRequest) {
 }
 
 fun CardContext.fromUpdateCardRequest(request: UpdateCardRequest) {
-    this.operation = CardOperation.UPDATE_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -78,7 +72,6 @@ fun CardContext.fromUpdateCardRequest(request: UpdateCardRequest) {
 }
 
 fun CardContext.fromDeleteCardRequest(request: DeleteCardRequest) {
-    this.operation = CardOperation.DELETE_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -86,7 +79,6 @@ fun CardContext.fromDeleteCardRequest(request: DeleteCardRequest) {
 }
 
 fun CardContext.fromLearnCardRequest(request: LearnCardsRequest) {
-    this.operation = CardOperation.LEARN_CARDS
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
@@ -94,7 +86,6 @@ fun CardContext.fromLearnCardRequest(request: LearnCardsRequest) {
 }
 
 fun CardContext.fromResetCardRequest(request: ResetCardRequest) {
-    this.operation = CardOperation.RESET_CARD
     this.requestId = request.requestId()
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()

@@ -15,4 +15,8 @@ class WorkerImpl<X>(
     override suspend fun process(context: X) = handler(context)
 
     override suspend fun onException(context: X, ex: Throwable) = exceptionHandler(context, ex)
+
+    override fun toString(): String {
+        return "Worker(title='$title', description='$description')"
+    }
 }

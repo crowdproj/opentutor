@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
@@ -8,6 +9,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.ResourceEntityTTSResponse
 import com.gitlab.sszuev.flashcards.repositories.ResourceIdTTSResponse
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -18,14 +20,17 @@ import org.junit.jupiter.api.Test
 internal class CardCorProcessorRunResourceTest {
     companion object {
 
-        private fun testContext(): CardContext {
-            val context = CardContext()
+        private fun testContext(repository: TTSResourceRepository): CardContext {
+            val context = CardContext(
+                operation = CardOperation.GET_RESOURCE,
+                repositories = CardRepositories().copy(
+                    testUserRepository = MockDbUserRepository(),
+                    testTTSClientRepository = repository
+                )
+            )
             context.requestUserUid = UserUid("42")
-            context.operation = CardOperation.GET_RESOURCE
             context.workMode = AppMode.TEST
             context.requestId = requestId()
-            context.repositories = context.repositories
-                .copy(testUserRepository = MockDbUserRepository())
             return context
         }
 
@@ -48,10 +53,10 @@ internal class CardCorProcessorRunResourceTest {
             invokeGetResource = { ResourceEntityTTSResponse(testResourceEntity) },
         )
 
-        val context = testContext()
+        val context = testContext(repository)
         context.requestResourceGet = testResourceGet
 
-        CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)
+        CardCorProcessor().execute(context)
 
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
@@ -77,10 +82,10 @@ internal class CardCorProcessorRunResourceTest {
             invokeGetResource = { testResourceEntity },
         )
 
-        val context = testContext()
+        val context = testContext(repository)
         context.requestResourceGet = testResourceGet
 
-        CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)
+        CardCorProcessor().execute(context)
 
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
@@ -108,10 +113,10 @@ internal class CardCorProcessorRunResourceTest {
             invokeGetResource = { throw TestException() },
         )
 
-        val context = testContext()
+        val context = testContext(repository)
         context.requestResourceGet = testResourceGet
 
-        CardCorProcessor(context.repositories.copy(testTTSClientRepository = repository)).execute(context)
+        CardCorProcessor().execute(context)
 
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)

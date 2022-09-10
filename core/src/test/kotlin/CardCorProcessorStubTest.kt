@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.stubs.*
@@ -19,7 +18,7 @@ import java.util.*
 internal class CardCorProcessorStubTest {
 
     companion object {
-        private val processor = CardCorProcessor(repositories = CardRepositories.DEFAULT)
+        private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
         private val testCard = stubCard.copy()
         private val testAudioResourceGet = ResourceGet(lang = LangId("xx"), word = "xxx")
@@ -36,8 +35,7 @@ internal class CardCorProcessorStubTest {
         )
 
         private fun testContext(op: CardOperation, case: AppStub): CardContext {
-            val context = CardContext()
-            context.operation = op
+            val context = CardContext(operation = op)
             context.workMode = AppMode.STUB
             context.debugCase = case
             context.requestId = AppRequestId(requestId)

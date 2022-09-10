@@ -14,4 +14,8 @@ abstract class BaseChainImpl<X>(
     override suspend fun onException(context: X, ex: Throwable) = exceptionHandler(context, ex)
 
     abstract override suspend fun process(context: X)
+
+    override fun toString(): String {
+        return "Chain(title='$title', description='$description')"
+    }
 }

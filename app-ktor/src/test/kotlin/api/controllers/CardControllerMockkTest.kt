@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.logslib.logger
 import com.gitlab.sszuev.flashcards.services.CardService
@@ -11,6 +12,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import io.mockk.coEvery
 import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -99,6 +101,9 @@ internal class CardControllerMockkTest {
         coEvery {
             service.serviceMethod(any())
         } throws TestException(msg)
+        every {
+            service.repositories()
+        } returns CardRepositories()
         val logger = logger(CardControllerMockkTest::class.java)
 
         routing {

@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards
 
 import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRepositories
 import com.gitlab.sszuev.flashcards.repositories.*
 
 data class CardRepositories(
@@ -10,12 +11,12 @@ data class CardRepositories(
     private val testCardRepository: DbCardRepository = NoOpDbCardRepository,
     private val prodUserRepository: DbUserRepository = NoOpDbUserRepository,
     private val testUserRepository: DbUserRepository = NoOpDbUserRepository,
-) {
+): AppRepositories {
     companion object {
-        val DEFAULT = CardRepositories()
+        val NO_OP_REPOSITORIES = CardRepositories()
     }
 
-    fun userRepository(mode: AppMode): DbUserRepository {
+    override fun userRepository(mode: AppMode): DbUserRepository {
         return when(mode) {
             AppMode.PROD -> prodUserRepository
             AppMode.TEST -> testUserRepository

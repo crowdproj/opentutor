@@ -20,7 +20,7 @@ fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.DELETE_CARD -> this.toDeleteCardResponse()
     CardOperation.LEARN_CARDS -> this.toLearnCardResponse()
     CardOperation.RESET_CARD -> this.toResetCardResponse()
-    CardOperation.NONE -> throw IllegalArgumentException("Not supported operation $op.")
+    else -> throw IllegalArgumentException("Not supported operation $op.")
 }
 
 fun CardContext.toGetAudioResponse() = GetAudioResponse(

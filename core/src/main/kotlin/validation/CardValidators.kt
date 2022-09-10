@@ -98,6 +98,7 @@ private fun ChainDSL<CardContext>.validateId(
     fieldName: String,
     getId: (CardContext) -> Id
 ) = chain {
+    name = "validate ids: fieldName=$fieldName"
     validateIdIsNotBlank(workerName = "Test $fieldName length", fieldName = fieldName, getId = getId)
     validateIdMatchPattern(workerName = "Test $fieldName pattern", fieldName = fieldName, getId = getId)
 }
@@ -143,6 +144,7 @@ private fun <V> ChainDSL<CardContext>.validateFields(
     getEntityCollection: (CardContext) -> Collection<V>,
     testIsWrong: (V) -> Boolean,
 ) = chain {
+    name = "validate fields: fieldName=$fieldName"
     validateCollectionIsNotEmpty(workerName, fieldName, getEntityCollection)
     validateCollectionFieldsAreCorrect(workerName, fieldName, getEntityCollection, testIsWrong)
 }

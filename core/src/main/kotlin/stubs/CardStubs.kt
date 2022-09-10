@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.core.stubs
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.core.title
 import com.gitlab.sszuev.flashcards.core.validation.fail
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
@@ -15,7 +14,7 @@ fun ChainDSL<CardContext>.stubSuccess(
     operation: CardOperation,
     configure: CardContext.() -> Unit = {}
 ) = worker {
-    name = "Stub :: ${operation.title()} success"
+    name = "Stub :: ${operation.name} success"
     test {
         this.debugCase == AppStub.SUCCESS && this.status == AppStatus.RUN
     }
@@ -26,7 +25,7 @@ fun ChainDSL<CardContext>.stubSuccess(
 }
 
 fun ChainDSL<CardContext>.stubError(operation: CardOperation) = worker {
-    this.name = "stub :: ${operation.title()} fail unknown"
+    this.name = "stub :: ${operation.name} fail unknown"
     test {
         this.debugCase == AppStub.UNKNOWN_ERROR && this.status == AppStatus.RUN
     }
@@ -36,7 +35,7 @@ fun ChainDSL<CardContext>.stubError(operation: CardOperation) = worker {
 }
 
 fun ChainDSL<CardContext>.stubError(operation: CardOperation, debugCase: AppStub) =
-    stubError("Stub :: ${operation.title()} fail ${debugCase.name}", debugCase)
+    stubError("Stub :: ${operation.name} fail ${debugCase.name}", debugCase)
 
 private fun ChainDSL<CardContext>.stubError(name: String, debugCase: AppStub) = worker {
     this.name = name
