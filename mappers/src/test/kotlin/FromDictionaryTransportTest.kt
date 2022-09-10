@@ -37,7 +37,7 @@ internal class FromDictionaryTransportTest {
             ),
         )
         val context = DictionaryContext()
-        context.fromTransportToRequest(req)
+        context.fromDictionaryTransport(req)
 
         assertContext(
             expectedStub = AppStub.SUCCESS,

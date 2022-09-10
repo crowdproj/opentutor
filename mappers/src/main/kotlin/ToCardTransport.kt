@@ -7,7 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
-fun CardContext.toResponse(): BaseResponse = when (val op = this.operation) {
+fun CardContext.toCardResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.GET_RESOURCE -> this.toGetAudioResponse()
     CardOperation.GET_ALL_CARDS -> this.toGetAllCardsResponse()
     CardOperation.SEARCH_CARDS -> this.toSearchCardsResponse()

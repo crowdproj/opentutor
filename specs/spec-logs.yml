@@ -37,6 +37,8 @@ components:
           $ref: '#/components/schemas/UserLogResource'
         cards:
           $ref: '#/components/schemas/CardsLogResource'
+        dictionaries:
+          $ref: '#/components/schemas/DictionariesLogResource'
         errors:
           type: array
           items:
@@ -72,6 +74,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CardEntityResource'
+
+    DictionariesLogResource:
+      title: A log resource for DictionaryContext
+      type: object
+      properties:
+        responseDictionaries:
+          type: array
+          items:
+            $ref: '#/components/schemas/DictionaryEntityResource'
 
     ErrorLogResource:
       type: object
@@ -147,3 +158,26 @@ components:
           additionalProperties:
             type: integer
             format: int64
+
+    DictionaryEntityResource:
+      description: A log resource for DictionaryEntity
+      type: object
+      properties:
+        dictionaryId:
+          type: string
+        name:
+          type: string
+        sourceLang:
+          type: string
+        targetLang:
+          type: string
+        partsOfSpeech:
+          type: array
+          items:
+            type: string
+        total:
+          type: integer
+          format: int32
+        learned:
+          type: integer
+          format: int32

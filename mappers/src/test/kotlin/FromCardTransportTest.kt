@@ -47,7 +47,7 @@ internal class FromCardTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.SUCCESS,
@@ -69,7 +69,7 @@ internal class FromCardTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.SUCCESS,
@@ -94,7 +94,7 @@ internal class FromCardTransportTest {
             dictionaryIds = listOf("a", "b", "c")
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -132,7 +132,7 @@ internal class FromCardTransportTest {
             card = card
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.SUCCESS,
@@ -165,7 +165,7 @@ internal class FromCardTransportTest {
             card = card
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -187,7 +187,7 @@ internal class FromCardTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -222,7 +222,7 @@ internal class FromCardTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,
@@ -250,7 +250,7 @@ internal class FromCardTransportTest {
             ),
         )
         val context = CardContext()
-        context.fromTransportToRequest(req)
+        context.fromCardTransport(req)
 
         assertContext(
             expectedStub = AppStub.UNKNOWN_ERROR,

@@ -1,4 +1,4 @@
-## Examples of requests for spec V1 (with stub-mode)
+## Examples of requests for cards api (V1, stub-mode)
 
 ### Create Card Success
 POST http://localhost:8080/v1/api/cards/create

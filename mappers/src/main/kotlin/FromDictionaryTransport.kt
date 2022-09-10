@@ -4,7 +4,7 @@ import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
 
-fun DictionaryContext.fromTransportToRequest(request: BaseRequest) = when (request) {
+fun DictionaryContext.fromDictionaryTransport(request: BaseRequest) = when (request) {
     is GetAllDictionariesRequest -> fromGetAllDictionariesRequest(request)
     else -> throw IllegalArgumentException("Unknown request ${request.javaClass.simpleName}")
 }

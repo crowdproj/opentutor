@@ -116,7 +116,8 @@ fun Application.module(
 
     install(Locations)
 
-    val service = cardService(repositoriesConfig.cardRepositories)
+    val cardService = cardService(repositoriesConfig.cardRepositories)
+    val dictionaryService = dictionaryService(repositoriesConfig.dictionaryRepositories)
     val logger = logger(Route::class.java)
 
     routing {
@@ -125,7 +126,7 @@ fun Application.module(
             resources(".")
         }
         authenticate("auth-jwt") {
-            this@authenticate.apiV1(service, logger)
+            this@authenticate.apiV1(cardService, dictionaryService, logger)
         }
         authenticate("keycloakOAuth") {
             location<Index> {

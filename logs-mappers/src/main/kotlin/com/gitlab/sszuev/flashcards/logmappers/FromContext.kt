@@ -1,34 +1,39 @@
 package com.gitlab.sszuev.flashcards.logmappers
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.logs.models.*
+import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.domain.*
 import java.time.Instant
 import java.util.*
 
-fun CardContext.toLogResource(logId: String) = LogResource(
+fun AppContext.toLogResource(logId: String) = LogResource(
     source = "flashcards",
     messageId = UUID.randomUUID().toString(),
     messageTime = Instant.now().toString(),
     logId = logId,
     requestId = this.requestId.asString(),
     user = this.contextUserEntity.toLog(),
-    cards = this.toLog(),
+    cards = if (this is CardContext) this.toLog() else null,
+    dictionaries = if (this is DictionaryContext) this.toLog() else null,
     errors = this.errors.takeIf { it.isNotEmpty() }?.map { it.toLog() }
 )
 
-private fun AppUserEntity.toLog() = UserLogResource(
-    userId = id.asString(),
-    userUid = authId.asString(),
+private fun DictionaryContext.toLog() = DictionariesLogResource(
+    responseDictionaries = this.responseDictionaryEntityList.takeIf { it.isNotEmpty() }?.map { it.toLog() }
 )
 
-private fun AppError.toLog() = ErrorLogResource(
-    code = this.code,
-    field = this.field,
-    group = this.group,
-    message = this.message,
+private fun DictionaryEntity.toLog() = DictionaryEntityResource(
+    dictionaryId = this.dictionaryId.asString(),
+    name = this.name,
+    partsOfSpeech = this.partsOfSpeech.takeIf { it.isNotEmpty() },
+    sourceLang = this.sourceLangId.takeIf { it != LangId.NONE }?.asString(),
+    targetLang = this.targetLangId.takeIf { it != LangId.NONE }?.asString(),
+    learned = this.learnedCardsCount,
+    total = this.totalCardsCount,
 )
 
 private fun CardContext.toLog() = CardsLogResource(
@@ -63,4 +68,16 @@ private fun CardFilter.toLog() = CardFilterResource(
 private fun CardLearn.toLog() = CardLearnResource(
     cardId = this.cardId.asString(),
     details = this.details.mapKeys { it.key.name }
+)
+
+private fun AppUserEntity.toLog() = UserLogResource(
+    userId = id.asString(),
+    userUid = authId.asString(),
+)
+
+private fun AppError.toLog() = ErrorLogResource(
+    code = this.code,
+    field = this.field,
+    group = this.group,
+    message = this.message,
 )

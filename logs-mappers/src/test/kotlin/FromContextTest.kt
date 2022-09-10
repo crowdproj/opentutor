@@ -1,9 +1,11 @@
 package com.gitlab.sszuev.flashcards.logmappers
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.logs.models.CardEntityResource
 import com.gitlab.sszuev.flashcards.logs.models.CardFilterResource
 import com.gitlab.sszuev.flashcards.logs.models.CardLearnResource
+import com.gitlab.sszuev.flashcards.logs.models.DictionaryEntityResource
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.domain.*
 import org.junit.jupiter.api.Assertions
@@ -29,6 +31,11 @@ internal class FromContextTest {
         fun assertCardLearn(expected: CardLearn, actual: CardLearnResource) {
             Assertions.assertEquals(expected.cardId.asString(), actual.cardId)
             Assertions.assertEquals(expected.details.mapKeys { it.key.name }, actual.details)
+        }
+
+        fun assertDictionaryEntity(expected: DictionaryEntity, actual: DictionaryEntityResource) {
+            Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
+            Assertions.assertEquals(expected.name, actual.name)
         }
     }
 
@@ -68,6 +75,7 @@ internal class FromContextTest {
 
         Assertions.assertFalse(actual.logId.isNullOrBlank())
         Assertions.assertNotNull(actual.cards)
+        Assertions.assertNull(actual.dictionaries)
         Assertions.assertEquals(context.requestId.asString(), actual.requestId)
         Assertions.assertEquals(context.requestCardEntityId.asString(), actual.cards!!.requestCardId)
         Assertions.assertEquals(context.requestDictionaryId.asString(), actual.cards!!.requestDictionaryId)
@@ -84,5 +92,28 @@ internal class FromContextTest {
             assertCardLearn(e, actual.cards!!.requestCardLearn!![i])
         }
         assertCardFilter(context.requestCardFilter, actual.cards!!.requestCardFilter!!)
+    }
+
+    @Test
+    fun `test get logs from dictionary-context`() {
+        val context = DictionaryContext()
+        context.requestId = AppRequestId("test-request-id")
+        context.responseDictionaryEntityList = listOf(
+            DictionaryEntity(dictionaryId = DictionaryId("A"), name = "A"),
+            DictionaryEntity(dictionaryId = DictionaryId("B"), name = "B"),
+        )
+
+        val actual = context.toLogResource("test-log")
+
+        Assertions.assertFalse(actual.logId.isNullOrBlank())
+        Assertions.assertNull(actual.cards)
+        Assertions.assertEquals(context.requestId.asString(), actual.requestId)
+        Assertions.assertEquals(
+            context.responseDictionaryEntityList.size,
+            actual.dictionaries!!.responseDictionaries!!.size
+        )
+        context.responseDictionaryEntityList.forEachIndexed { i, e ->
+            assertDictionaryEntity(e, actual.dictionaries!!.responseDictionaries!![i])
+        }
     }
 }

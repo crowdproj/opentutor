@@ -1,10 +1,26 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
+import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
+
+fun AppContext.fromTransport(request: BaseRequest) = when (this) {
+    is CardContext -> fromCardTransport(request)
+    is DictionaryContext -> fromDictionaryTransport(request)
+    else -> throw IllegalArgumentException("Unsupported request = $request")
+}
+
+fun AppContext.toResponse(): BaseResponse = when (this.operation) {
+    is CardOperation -> (this as CardContext).toCardResponse()
+    is DictionaryOperation -> (this as DictionaryContext).toDictionaryResponse()
+    else -> throw IllegalArgumentException("Unknown context = $this")
+}
 
 internal fun BaseRequest?.requestId() = this?.requestId?.let { AppRequestId(it) } ?: AppRequestId.NONE
 

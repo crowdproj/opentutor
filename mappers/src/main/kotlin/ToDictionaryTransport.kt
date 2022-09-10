@@ -7,7 +7,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 
-fun DictionaryContext.toResponse(): BaseResponse = when (val op = this.operation) {
+fun DictionaryContext.toDictionaryResponse(): BaseResponse = when (val op = this.operation) {
     DictionaryOperation.GET_ALL_DICTIONARIES -> this.toGetAllDictionaryResponse()
     else -> throw IllegalArgumentException("Not supported operation $op.")
 }

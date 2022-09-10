@@ -4,7 +4,7 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.model.domain.*
 
-fun CardContext.fromTransportToRequest(request: BaseRequest) = when (request) {
+fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
     is GetAudioRequest -> fromGetAudioRequest(request)
     is GetCardRequest -> fromGetCardRequest(request)
     is GetAllCardsRequest -> fromGetAllCardsRequest(request)
