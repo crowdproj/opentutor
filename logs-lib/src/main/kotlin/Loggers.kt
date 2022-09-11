@@ -8,6 +8,8 @@ fun noOpLogger(): ExtLogger = NoOpLogger
 
 fun logger(clazz: Class<out Any>): ExtLogger = logger(logger = LoggerFactory.getLogger(clazz) as Logger)
 
+fun logger(name: String): ExtLogger = logger(logger = LoggerFactory.getLogger(name) as Logger)
+
 fun logger(logger: Logger): ExtLogger = LogbackWrapper(
     logger = logger,
     loggerId = logger.name,

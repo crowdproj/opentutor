@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.gitlab.sszuev.flashcards.api.apiV1
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RepositoriesConfig
-import com.gitlab.sszuev.flashcards.logslib.logger
+import com.gitlab.sszuev.flashcards.config.RunConfig
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.*
@@ -30,20 +30,36 @@ import io.ktor.server.routing.*
 import io.ktor.server.thymeleaf.*
 import io.ktor.server.webjars.*
 import kotlinx.html.*
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.slf4j.event.Level
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import java.nio.charset.StandardCharsets
 import java.util.*
 
+private val logger: Logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.MainKt")
+
 // use to jetty, not netty, due to exception https://youtrack.jetbrains.com/issue/KTOR-4433
 fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)
 
+/**
+ * Backdoors for developing:
+ * - To disable ElK-logging use `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED` (or empty string)
+ * - To enable ELK-logging use `-DBOOTSTRAP_SERVERS=localhost:9094`
+ * - To disable authentication for debugging use `-DKEYCLOAK_DEBUG_AUTH=auth-uuid`
+ *
+ * Example: `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED -DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6`
+ */
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.module(
     repositoriesConfig: RepositoriesConfig = RepositoriesConfig(),
     keycloakConfig: KeycloakConfig = KeycloakConfig(environment.config),
 ) {
+    val debugAuth: String? = System.getProperty("KEYCLOAK_DEBUG_AUTH")
+    logger.info("BOOTSTRAP_SERVERS=${System.getProperty("BOOTSTRAP_SERVERS")}")
+    logger.info("KEYCLOAK_DEBUG_AUTH=$debugAuth")
+
     val port = environment.config.property("ktor.deployment.port").getString()
 
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
@@ -80,23 +96,25 @@ fun Application.module(
         this.allowCredentials = true
     }
 
-    install(Authentication) {
-        oauth("keycloakOAuth") {
-            client = HttpClient(Apache)
-            providerLookup = { keycloakProvider }
-            urlProvider = { "http://localhost:$port/" }
-        }
+    if (debugAuth == null) {
+        install(Authentication) {
+            oauth("keycloakOAuth") {
+                client = HttpClient(Apache)
+                providerLookup = { keycloakProvider }
+                urlProvider = { "http://localhost:$port/" }
+            }
 
-        jwt("auth-jwt") {
-            realm = keycloakConfig.realm
-            verifier(
-                JWT
-                    .require(Algorithm.HMAC256(Base64.getUrlDecoder().decode(keycloakConfig.secret)))
-                    .withClaimPresence("sub")
-                    .build()
-            )
-            validate { jwtCredential: JWTCredential ->
-                JWTPrincipal(jwtCredential.payload)
+            jwt("auth-jwt") {
+                realm = keycloakConfig.realm
+                verifier(
+                    JWT
+                        .require(Algorithm.HMAC256(Base64.getUrlDecoder().decode(keycloakConfig.secret)))
+                        .withClaimPresence("sub")
+                        .build()
+                )
+                validate { jwtCredential: JWTCredential ->
+                    JWTPrincipal(jwtCredential.payload)
+                }
             }
         }
     }
@@ -118,31 +136,38 @@ fun Application.module(
 
     val cardService = cardService(repositoriesConfig.cardRepositories)
     val dictionaryService = dictionaryService(repositoriesConfig.dictionaryRepositories)
-    val logger = logger(Route::class.java)
 
     routing {
         static("/static") {
             staticBasePackage = "static"
             resources(".")
         }
-        authenticate("auth-jwt") {
-            this@authenticate.apiV1(cardService, dictionaryService, logger)
-        }
-        authenticate("keycloakOAuth") {
-            location<Index> {
-                param("error") {
+
+        if (debugAuth == null) {
+            authenticate("auth-jwt") {
+                this@authenticate.apiV1(cardService, dictionaryService)
+            }
+            authenticate("keycloakOAuth") {
+                location<Index> {
+                    param("error") {
+                        handle {
+                            call.loginFailed(call.parameters.getAll("error").orEmpty())
+                        }
+                    }
                     handle {
-                        call.loginFailed(call.parameters.getAll("error").orEmpty())
+                        val principal = call.authentication.principal<OAuthAccessTokenResponse.OAuth2>()
+                        if (principal == null) {
+                            call.respond(HttpStatusCode.Unauthorized)
+                        } else {
+                            call.respond(ThymeleafContent("index", mapOf("user" to principal.name())))
+                        }
                     }
                 }
-                handle {
-                    val principal = call.authentication.principal<OAuthAccessTokenResponse.OAuth2>()
-                    if (principal == null) {
-                        call.respond(HttpStatusCode.Unauthorized)
-                    } else {
-                        call.respond(ThymeleafContent("index", mapOf("user" to principal.name())))
-                    }
-                }
+            }
+        } else {
+            apiV1(cardService, dictionaryService, RunConfig(debugAuth))
+            get("/") {
+                call.respond(ThymeleafContent("index", mapOf("user" to "dev")))
             }
         }
     }

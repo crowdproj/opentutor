@@ -4,7 +4,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.logmappers.toLogResource
 import com.gitlab.sszuev.flashcards.logslib.ExtLogger
 import com.gitlab.sszuev.flashcards.mappers.v1.fromTransport
-import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransport
+import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransportIfRequired
 import com.gitlab.sszuev.flashcards.mappers.v1.toResponse
 import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
@@ -25,10 +25,8 @@ internal suspend inline fun <reified Request : BaseRequest, reified Context : Ap
     val logId = operation.name
     try {
         logger.withLogging {
-            val requestUserUid = requestAuthId()
-            val request = receive<Request>()
-            context.fromTransport(request)
-            context.fromUserTransport(requestUserUid)
+            context.fromUserTransportIfRequired { requestAuthId() }
+            context.fromTransport(receive<Request>())
             logger.info(msg = "Request: $operation", data = context.toLogResource(logId))
             context.exec()
             logger.info(msg = "Response: $operation", data = context.toLogResource(logId))

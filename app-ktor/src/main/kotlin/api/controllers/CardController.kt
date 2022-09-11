@@ -3,62 +3,67 @@ package com.gitlab.sszuev.flashcards.api.controllers
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.logslib.ExtLogger
+import com.gitlab.sszuev.flashcards.logslib.logger
+import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransport
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.services.CardService
 import io.ktor.server.application.*
 import kotlinx.datetime.Clock
 
-suspend fun ApplicationCall.getResource(service: CardService, logger: ExtLogger) {
-    execute<GetAudioRequest>(CardOperation.GET_RESOURCE, service.repositories(), logger) {
+private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.CardControllerKt")
+
+suspend fun ApplicationCall.getResource(service: CardService, runConf: RunConfig) {
+    execute<GetAudioRequest>(CardOperation.GET_RESOURCE, service.repositories(), logger, runConf) {
         service.getResource(this)
     }
 }
 
-suspend fun ApplicationCall.createCard(service: CardService, logger: ExtLogger) {
-    execute<CreateCardRequest>(CardOperation.CREATE_CARD, service.repositories(), logger) {
+suspend fun ApplicationCall.createCard(service: CardService, runConf: RunConfig) {
+    execute<CreateCardRequest>(CardOperation.CREATE_CARD, service.repositories(), logger, runConf) {
         service.createCard(this)
     }
 }
 
-suspend fun ApplicationCall.updateCard(service: CardService, logger: ExtLogger) {
-    execute<UpdateCardRequest>(CardOperation.UPDATE_CARD, service.repositories(), logger) {
+suspend fun ApplicationCall.updateCard(service: CardService, runConf: RunConfig) {
+    execute<UpdateCardRequest>(CardOperation.UPDATE_CARD, service.repositories(), logger, runConf) {
         service.updateCard(this)
     }
 }
 
-suspend fun ApplicationCall.searchCards(service: CardService, logger: ExtLogger) {
-    execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS, service.repositories(), logger) {
+suspend fun ApplicationCall.searchCards(service: CardService, runConf: RunConfig) {
+    execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS, service.repositories(), logger, runConf) {
         service.searchCards(this)
     }
 }
 
-suspend fun ApplicationCall.getAllCards(service: CardService, logger: ExtLogger) {
-    execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS, service.repositories(), logger) {
+suspend fun ApplicationCall.getAllCards(service: CardService, runConf: RunConfig) {
+    execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS, service.repositories(), logger, runConf) {
         service.getAllCards(this)
     }
 }
 
-suspend fun ApplicationCall.getCard(service: CardService, logger: ExtLogger) {
-    execute<GetCardRequest>(CardOperation.GET_CARD, service.repositories(), logger) {
+suspend fun ApplicationCall.getCard(service: CardService, runConf: RunConfig) {
+    execute<GetCardRequest>(CardOperation.GET_CARD, service.repositories(), logger, runConf) {
         service.getCard(this)
     }
 }
 
-suspend fun ApplicationCall.learnCard(service: CardService, logger: ExtLogger) {
-    execute<LearnCardsRequest>(CardOperation.LEARN_CARDS, service.repositories(), logger) {
+suspend fun ApplicationCall.learnCard(service: CardService, runConf: RunConfig) {
+    execute<LearnCardsRequest>(CardOperation.LEARN_CARDS, service.repositories(), logger, runConf) {
         service.learnCard(this)
     }
 }
 
-suspend fun ApplicationCall.resetCard(service: CardService, logger: ExtLogger) {
-    execute<ResetCardRequest>(CardOperation.RESET_CARD, service.repositories(), logger) {
+suspend fun ApplicationCall.resetCard(service: CardService, runConf: RunConfig) {
+    execute<ResetCardRequest>(CardOperation.RESET_CARD, service.repositories(), logger, runConf) {
         service.resetCard(this)
     }
 }
 
-suspend fun ApplicationCall.deleteCard(service: CardService, logger: ExtLogger) {
-    execute<DeleteCardRequest>(CardOperation.DELETE_CARD, service.repositories(), logger) {
+suspend fun ApplicationCall.deleteCard(service: CardService, runConf: RunConfig) {
+    execute<DeleteCardRequest>(CardOperation.DELETE_CARD, service.repositories(), logger, runConf) {
         service.deleteCard(this)
     }
 }
@@ -67,8 +72,14 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     operation: CardOperation,
     repositories: CardRepositories,
     logger: ExtLogger,
+    runConf: RunConfig,
     noinline exec: suspend CardContext.() -> Unit,
 ) {
-    val context = CardContext(operation = operation, timestamp = Clock.System.now(), repositories = repositories)
+    val context = CardContext(
+        operation = operation,
+        timestamp = Clock.System.now(),
+        repositories = repositories
+    )
+    context.fromUserTransport(runConf.auth)
     execute<R, CardContext>(operation, context, logger, exec)
 }
