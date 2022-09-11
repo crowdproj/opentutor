@@ -2,9 +2,20 @@ package com.gitlab.sszuev.flashcards.stubs
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStub
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.*
 
 const val STUB_ERROR_GROUP = "StubErrors"
+
+val stubDictionaries = listOf(
+    DictionaryEntity(
+        dictionaryId = DictionaryId(42.toString()),
+        userId = AppUserId(1.toString()),
+        name = "Stub-dictionary",
+        sourceLangId = LangId("SL"),
+        targetLangId = LangId("TL")
+    )
+)
 
 val stubAudioResource = ResourceEntity(
     resourceId = ResourceId(42.toString()),

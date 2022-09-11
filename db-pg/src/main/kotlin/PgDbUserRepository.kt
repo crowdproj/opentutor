@@ -6,8 +6,8 @@ import com.gitlab.sszuev.flashcards.common.noUserFoundDbError
 import com.gitlab.sszuev.flashcards.common.wrongUserUUIDDbError
 import com.gitlab.sszuev.flashcards.dbpg.dao.User
 import com.gitlab.sszuev.flashcards.dbpg.dao.Users
-import com.gitlab.sszuev.flashcards.model.domain.UserEntity
-import com.gitlab.sszuev.flashcards.model.domain.UserUid
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -23,12 +23,12 @@ class PgDbUserRepository(
     }
     private val cache: Cache<UUID, User> = Caffeine.newBuilder().build()
 
-    override fun getUser(uid: UserUid): UserEntityDbResponse {
+    override fun getUser(authId: AppAuthId): UserEntityDbResponse {
         val uuid = try {
-            UUID.fromString(uid.asString())
+            UUID.fromString(authId.asString())
         } catch (ex: IllegalArgumentException) {
             return UserEntityDbResponse(
-                user = UserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", uid))
+                user = AppUserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", authId))
             )
         }
         return connection.execute {
@@ -38,7 +38,7 @@ class PgDbUserRepository(
             val user = cache.getIfPresent(uuid) ?: User.find(Users.uuid eq uuid).singleOrNull()
             if (user == null) {
                 UserEntityDbResponse(
-                    user = UserEntity.EMPTY, errors = listOf(noUserFoundDbError("getUser", uid))
+                    user = AppUserEntity.EMPTY, errors = listOf(noUserFoundDbError("getUser", authId))
                 )
             } else {
                 cache.put(uuid, user)

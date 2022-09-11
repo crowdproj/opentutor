@@ -75,7 +75,7 @@ class DictionaryStore private constructor(
         /**
          * Global dictionary store registry.
          */
-        private val stores = ConcurrentHashMap<String, DictionaryStore>()
+        private val stores = ConcurrentHashMap<Configuration, DictionaryStore>()
 
         /**
          * Back door for testing
@@ -97,8 +97,9 @@ class DictionaryStore private constructor(
             dbConfig: MemDbConfig = MemDbConfig(),
             sysConfig: SysConfig = SysConfig(),
         ): DictionaryStore {
-            return stores.computeIfAbsent(location.toString()) {
-                DictionaryStore(loadDatabaseFromDirectory(it, ids), ids, dbConfig, sysConfig)
+            val key = Configuration(location.toString(), dbConfig, sysConfig)
+            return stores.computeIfAbsent(key) {
+                DictionaryStore(loadDatabaseFromDirectory(key.location, ids), ids, dbConfig, sysConfig)
             }
         }
 
@@ -115,7 +116,10 @@ class DictionaryStore private constructor(
             dbConfig: MemDbConfig = MemDbConfig(),
             sysConfig: SysConfig = SysConfig(),
         ): DictionaryStore {
-            return stores.computeIfAbsent(location) { DictionaryStore(loadDatabase(it, ids), ids, dbConfig, sysConfig) }
+            val key = Configuration(location, dbConfig, sysConfig)
+            return stores.computeIfAbsent(key) {
+                DictionaryStore(loadDatabase(key.location, ids), ids, dbConfig, sysConfig)
+            }
         }
 
         private fun loadDatabase(location: String, ids: IdSequences): MutableMap<Long, Pair<Path, Dictionary>> {
@@ -186,5 +190,11 @@ class DictionaryStore private constructor(
             logger.info("For location=$directoryLocation there are ${res.size} dictionaries loaded.")
             return res.associateByTo(ConcurrentHashMap<Long, Pair<Path, Dictionary>>()) { it.second.id }
         }
+
+        data class Configuration(
+            val location: String,
+            val dbConfig: MemDbConfig,
+            val sysConfig: SysConfig
+        )
     }
 }

@@ -2,8 +2,8 @@ package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.noUserFoundDbError
 import com.gitlab.sszuev.flashcards.common.wrongUserUUIDDbError
-import com.gitlab.sszuev.flashcards.model.domain.UserEntity
-import com.gitlab.sszuev.flashcards.model.domain.UserUid
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import java.util.*
@@ -17,17 +17,17 @@ class MemDbUserRepository(
         dbConfig = dbConfig,
     )
 
-    override fun getUser(uid: UserUid): UserEntityDbResponse {
+    override fun getUser(authId: AppAuthId): UserEntityDbResponse {
         val uuid = try {
-            UUID.fromString(uid.asString())
+            UUID.fromString(authId.asString())
         } catch (ex: IllegalArgumentException) {
             return UserEntityDbResponse(
-                user = UserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", uid))
+                user = AppUserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", authId))
             )
         }
         val res = users[uuid]
             ?: return UserEntityDbResponse(
-                user = UserEntity.EMPTY, errors = listOf(noUserFoundDbError("getUser", uid))
+                user = AppUserEntity.EMPTY, errors = listOf(noUserFoundDbError("getUser", authId))
             )
         return UserEntityDbResponse(user = res.toEntity())
     }

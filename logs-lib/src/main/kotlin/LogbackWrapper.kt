@@ -10,24 +10,24 @@ import org.slf4j.event.LoggingEvent
 class LogbackWrapper(
     val logger: Logger,
     val loggerId: String = ""
-) {
+): ExtLogger {
 
-    fun info(
-        msg: String = "",
-        data: Any? = null,
+    override fun info(
+        msg: String,
+        data: Any?,
         vararg args: Pair<String, Any>?
     ) = log(msg = msg, level = Level.INFO, data = data, args = args)
 
-    fun error(
-        msg: String = "",
-        throwable: Throwable? = null,
-        data: Any? = null,
+    override fun error(
+        msg: String,
+        throwable: Throwable?,
+        data: Any?,
         vararg args: Pair<String, Any>?
     ) = log(msg = msg, level = Level.ERROR, throwable = throwable, data = data, args = args)
 
-    suspend fun <R> withLogging(
-        id: String = "",
-        level: Level = Level.INFO,
+    override suspend fun <R> withLogging(
+        id: String,
+        level: Level,
         block: suspend () -> R,
     ): R = try {
         val start = System.currentTimeMillis()
@@ -42,12 +42,12 @@ class LogbackWrapper(
     }
 
     @Suppress("MemberVisibilityCanBePrivate")
-    fun log(
-        msg: String = "",
-        level: Level = Level.TRACE,
-        marker: Marker = SimpleMarker("DEV"),
-        throwable: Throwable? = null,
-        data: Any? = null,
+    override fun log(
+        msg: String,
+        level: Level,
+        marker: Marker,
+        throwable: Throwable?,
+        data: Any?,
         vararg args: Pair<String, Any>?
     ) {
         logger.log(object : LoggingEvent {

@@ -8,21 +8,18 @@ import kotlinx.datetime.Instant
  * Represents request context for card operations.
  */
 data class CardContext(
-    var repositories: CardRepositories = CardRepositories.DEFAULT,
-    var operation: CardOperation = CardOperation.NONE,
-    var status: AppStatus = AppStatus.INIT,
-    val errors: MutableList<AppError> = mutableListOf(),
+    override val operation: CardOperation = CardOperation.NONE,
+    override val timestamp: Instant = Instant.NONE,
+    override val repositories: CardRepositories = CardRepositories.NO_OP_REPOSITORIES,
+    override val errors: MutableList<AppError> = mutableListOf(),
 
-    var workMode: AppMode = AppMode.PROD,
-    var debugCase: AppStub = AppStub.NONE,
-
-    var requestId: AppRequestId = AppRequestId.NONE,
-    var timestamp: Instant = Instant.NONE,
-
-    // get user:
-    var requestUserUid: UserUid = UserUid.NONE,
-    var normalizedRequestUserUid: UserUid = UserUid.NONE,
-    var contextUserEntity: UserEntity = UserEntity.EMPTY,
+    override var status: AppStatus = AppStatus.INIT,
+    override var workMode: AppMode = AppMode.PROD,
+    override var debugCase: AppStub = AppStub.NONE,
+    override var requestId: AppRequestId = AppRequestId.NONE,
+    override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
+    override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
+    override var contextUserEntity: AppUserEntity = AppUserEntity.EMPTY,
 
     // get word resource by id (for TTS)
     var requestResourceGet: ResourceGet = ResourceGet.NONE,
@@ -50,4 +47,5 @@ data class CardContext(
     var responseCardEntity: CardEntity = CardEntity.EMPTY,
     // get cards list response:
     var responseCardEntityList: List<CardEntity> = listOf(),
-)
+): AppContext
+

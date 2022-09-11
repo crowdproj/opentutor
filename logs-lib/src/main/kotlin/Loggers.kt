@@ -3,9 +3,14 @@ package com.gitlab.sszuev.flashcards.logslib
 import ch.qos.logback.classic.Logger
 import org.slf4j.LoggerFactory
 
-fun logger(clazz: Class<out Any>): LogbackWrapper = logger(logger = LoggerFactory.getLogger(clazz) as Logger)
+@Suppress("unused")
+fun noOpLogger(): ExtLogger = NoOpLogger
 
-fun logger(logger: Logger): LogbackWrapper = LogbackWrapper(
+fun logger(clazz: Class<out Any>): ExtLogger = logger(logger = LoggerFactory.getLogger(clazz) as Logger)
+
+fun logger(name: String): ExtLogger = logger(logger = LoggerFactory.getLogger(name) as Logger)
+
+fun logger(logger: Logger): ExtLogger = LogbackWrapper(
     logger = logger,
     loggerId = logger.name,
 )

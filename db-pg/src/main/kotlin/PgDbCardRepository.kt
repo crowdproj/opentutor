@@ -14,7 +14,7 @@ class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
     private val sysConfig: SysConfig = SysConfig(),
 ) : DbCardRepository {
-    internal val connection by lazy {
+    private val connection by lazy {
         // lazy, to avoid initialization error when there is no real pg-database
         // and memory-storage is used instead
         PgDbConnector.connection(dbConfig)

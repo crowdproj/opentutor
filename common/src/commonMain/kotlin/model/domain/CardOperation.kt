@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
-enum class CardOperation {
+import com.gitlab.sszuev.flashcards.model.common.AppOperation
+
+enum class CardOperation: AppOperation {
     NONE,
     GET_RESOURCE,
     SEARCH_CARDS,
@@ -12,3 +14,4 @@ enum class CardOperation {
     LEARN_CARDS,
     RESET_CARD,
 }
+

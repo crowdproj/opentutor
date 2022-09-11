@@ -34,6 +34,7 @@ class LingvoDictionaryWriter(private val config: SysConfig) : DictionaryWriter {
         root.setAttribute("title", dictionary.name)
         val src: String = LingvoMappings.fromLanguageTag(dictionary.sourceLanguage.id)
         val dst: String = LingvoMappings.fromLanguageTag(dictionary.targetLanguage.id)
+        dictionary.userId?.let { root.setAttribute("userId", it.toString())}
         root.setAttribute("sourceLanguageId", src)
         root.setAttribute("destinationLanguageId", dst)
         root.setAttribute("targetNamespace", "http://www.abbyy.com/TutorDictionary")

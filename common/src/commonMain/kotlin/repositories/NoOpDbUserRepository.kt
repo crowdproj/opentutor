@@ -1,9 +1,9 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.domain.UserUid
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 
 object NoOpDbUserRepository: DbUserRepository {
-    override fun getUser(uid: UserUid): UserEntityDbResponse {
+    override fun getUser(authId: AppAuthId): UserEntityDbResponse {
         noOp()
     }
 

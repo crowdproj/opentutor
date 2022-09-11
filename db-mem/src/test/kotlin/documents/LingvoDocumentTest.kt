@@ -130,7 +130,8 @@ internal class LingvoDocumentTest {
             name = "The Test Dictionary",
             sourceLanguage = Language("en", "xxx"),
             targetLanguage = Language("ru", "xxx"),
-            cards = mutableMapOf(card1.id to card1, card2.id to card2, card3.id to card3)
+            cards = mutableMapOf(card1.id to card1, card2.id to card2, card3.id to card3),
+            userId = 42,
         )
         val out = ByteArrayOutputStream()
         createWriter().write(dictionary, out)
@@ -158,8 +159,20 @@ internal class LingvoDocumentTest {
     fun `test read-write round trip`(@TempDir dir: Path) {
         val orig = readResourceDictionary("/data/WeatherEnRu.xml")
         val tmp = dir.resolve("test-WeatherEnRu.xml")
+
         Files.newOutputStream(tmp).use { createWriter().write(orig, it) }
-        val reload = Files.newInputStream(tmp).use { createParser().parse(it) }
-        assertDictionary(orig, reload)
+        val reload1 = Files.newInputStream(tmp).use { createParser().parse(it) }
+        assertDictionary(orig, reload1)
+
+        Files.newOutputStream(tmp).use { createWriter().write(reload1, it) }
+        val reload2 = Files.newInputStream(tmp).use { createParser().parse(it) }
+        assertDictionary(orig, reload2)
+
+        Files.newOutputStream(tmp).use { createWriter().write(reload2, it) }
+        val reload3 = Files.newInputStream(tmp).use { createParser().parse(it) }
+        assertDictionary(orig, reload3)
+
+        assertDictionary(reload2, reload3)
+        assertDictionary(reload1, reload2)
     }
 }
