@@ -2,7 +2,7 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.logmappers.toLogResource
-import com.gitlab.sszuev.flashcards.logslib.LogbackWrapper
+import com.gitlab.sszuev.flashcards.logslib.ExtLogger
 import com.gitlab.sszuev.flashcards.mappers.v1.fromTransport
 import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransport
 import com.gitlab.sszuev.flashcards.mappers.v1.toResponse
@@ -19,7 +19,7 @@ import io.ktor.server.response.*
 internal suspend inline fun <reified Request : BaseRequest, reified Context : AppContext> ApplicationCall.execute(
     operation: AppOperation,
     context: Context,
-    logger: LogbackWrapper,
+    logger: ExtLogger,
     noinline exec: suspend Context.() -> Unit,
 ) {
     val logId = operation.name
