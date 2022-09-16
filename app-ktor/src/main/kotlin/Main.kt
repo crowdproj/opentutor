@@ -9,6 +9,7 @@ import com.gitlab.sszuev.flashcards.api.apiV1
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RepositoriesConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
+import com.gitlab.sszuev.flashcards.config.TutorConfig
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.*
@@ -47,18 +48,19 @@ fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)
  * - To disable ElK-logging use `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED` (or empty string)
  * - To enable ELK-logging use `-DBOOTSTRAP_SERVERS=localhost:9094`
  * - To disable authentication for debugging use `-DKEYCLOAK_DEBUG_AUTH=auth-uuid`
+ * - For run mode (prod, test, stub) use `-DRUN_MODE=mode`
  *
- * Example: `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED -DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6`
+ * Example: `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED -DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6 -DRUN_MODE=test`
  */
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.module(
     repositoriesConfig: RepositoriesConfig = RepositoriesConfig(),
     keycloakConfig: KeycloakConfig = KeycloakConfig(environment.config),
+    runConfig: RunConfig = RunConfig(environment.config),
+    tutorConfig: TutorConfig = TutorConfig(environment.config),
 ) {
-    val debugAuth: String? = System.getProperty("KEYCLOAK_DEBUG_AUTH")
-    logger.info("BOOTSTRAP_SERVERS=${System.getProperty("BOOTSTRAP_SERVERS")}")
-    logger.info("KEYCLOAK_DEBUG_AUTH=$debugAuth")
+    logger.info(printGeneralSettings(runConfig, keycloakConfig, tutorConfig))
 
     val port = environment.config.property("ktor.deployment.port").getString()
 
@@ -96,7 +98,7 @@ fun Application.module(
         this.allowCredentials = true
     }
 
-    if (debugAuth == null) {
+    if (runConfig.auth.isBlank()) {
         install(Authentication) {
             oauth("keycloakOAuth") {
                 client = HttpClient(Apache)
@@ -143,7 +145,7 @@ fun Application.module(
             resources(".")
         }
 
-        if (debugAuth == null) {
+        if (runConfig.auth.isBlank()) {
             authenticate("auth-jwt") {
                 this@authenticate.apiV1(cardService, dictionaryService)
             }
@@ -159,18 +161,59 @@ fun Application.module(
                         if (principal == null) {
                             call.respond(HttpStatusCode.Unauthorized)
                         } else {
-                            call.respond(ThymeleafContent("index", mapOf("user" to principal.name())))
+                            call.respond(content(runConfig, tutorConfig, keycloakConfig, principal))
                         }
                     }
                 }
             }
         } else {
-            apiV1(cardService, dictionaryService, RunConfig(debugAuth))
+            apiV1(cardService, dictionaryService, runConfig)
             get("/") {
-                call.respond(ThymeleafContent("index", mapOf("user" to "dev")))
+                call.respond(content(runConfig, tutorConfig, keycloakConfig, null))
             }
         }
     }
+}
+
+private fun content(
+    runConfig: RunConfig,
+    tutorConfig: TutorConfig,
+    keycloakConfig: KeycloakConfig,
+    principal: OAuthAccessTokenResponse.OAuth2?
+): ThymeleafContent {
+    val res = mutableMapOf<String, String>()
+    val userConfig = if (principal == null) {
+        mapOf(
+            "user" to "dev",
+            "devMode" to "true",
+        )
+    } else {
+        mapOf(
+            "user" to principal.name(),
+            "keycloakAuthURL" to "${keycloakConfig.address}/auth",
+            "keycloakAppRealm" to keycloakConfig.realm,
+            "keycloakAppClient" to keycloakConfig.clientId,
+        )
+    }
+    val commonConfig = mapOf(
+        "runMode" to runConfig.modeString(),
+        "numberOfWordsToShow" to tutorConfig.numberOfWordsToShow,
+        "numberOfWordsPerStage" to tutorConfig.numberOfWordsPerStage,
+        "numberOfRightAnswers" to tutorConfig.numberOfRightAnswers,
+        "numberOfOptionsPerWord" to tutorConfig.numberOfOptionsPerWord,
+    )
+    res.putAll(userConfig)
+    res.putAll(commonConfig)
+    return ThymeleafContent("index", res)
+}
+
+private fun OAuthAccessTokenResponse.OAuth2?.name(): String {
+    if (null == this) {
+        return "Unauthorized"
+    }
+    val jwtToken = accessToken
+    val token = JWT.decode(jwtToken)
+    return token.getClaim("name").asString() ?: "Noname"
 }
 
 @OptIn(KtorExperimentalLocationsAPI::class)
@@ -195,11 +238,26 @@ private suspend fun ApplicationCall.loginFailed(errors: List<String>) {
     }
 }
 
-private fun OAuthAccessTokenResponse.OAuth2?.name(): String {
-    if (null == this) {
-        return "Unauthorized"
-    }
-    val jwtToken = accessToken
-    val token = JWT.decode(jwtToken)
-    return token.getClaim("name").asString() ?: "Noname"
+private fun Application.printGeneralSettings(
+    runConfig: RunConfig,
+    keycloakConfig: KeycloakConfig,
+    tutorConfig: TutorConfig
+): String {
+    val bootstrapServices = System.getProperty("BOOTSTRAP_SERVERS")
+    val port = environment.config.property("ktor.deployment.port").getString()
+    return """
+            |
+            |bootstrap-services             = $bootstrapServices
+            |run-config-app-mode            = ${runConfig.mode}
+            |run-config-debug-auth          = ${runConfig.auth}
+            |keycloak-address               = ${keycloakConfig.address}
+            |keycloak-realm                 = ${keycloakConfig.realm}
+            |keycloak-client-id             = ${keycloakConfig.clientId}
+            |application-port               = $port
+            |=====================================================================
+            |numberOfWordsToShow            = ${tutorConfig.numberOfWordsToShow}
+            |numberOfWordsPerStage          = ${tutorConfig.numberOfWordsPerStage}
+            |numberOfRightAnswers           = ${tutorConfig.numberOfRightAnswers}
+            |numberOfOptionsPerWord         = ${tutorConfig.numberOfOptionsPerWord}
+            """.replaceIndentByMargin("\t")
 }

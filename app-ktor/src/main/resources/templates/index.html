@@ -5,8 +5,25 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.js"></script>
     <script src="/webjars/keycloak-js/dist/keycloak.js"></script>
+    <script src="/static/common.js"></script>
+    <script src="/static/api.js"></script>
+    <script src="/static/main.js"></script>
 </head>
-<body>
+<script th:inline="javascript">
+    const devMode = [[${devMode}]];
+    const keycloakAuthURL = [[${keycloakAuthURL}]];
+    const keycloakAppRealm = [[${keycloakAppRealm}]];
+    const keycloakAppClient = [[${keycloakAppClient}]];
+    const runMode = [[${runMode}]];
+    const numberOfWordsToShow = [[${numberOfWordsToShow}]];
+    const numberOfWordsPerStage = [[${numberOfWordsPerStage}]];
+    const numberOfRightAnswers = [[${numberOfRightAnswers}]];
+    const numberOfOptionsPerWord = [[${numberOfOptionsPerWord}]];
+</script>
+<body onload="renderPage()">
 <h1 class="container" th:text="'Hello, [' + ${user} + ']!'"></h1>
+<div class="page card container">
+    <button id="test-btn" type="button" class="btn btn-secondary">Test</button>
+</div>
 </body>
 </html>

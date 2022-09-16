@@ -38,8 +38,6 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
         timestamp = Clock.System.now(),
         repositories = repositories
     )
-    if (runConf != RunConfig.PROD) {
-        context.fromUserTransport(runConf.auth)
-    }
+    context.fromUserTransport(runConf.auth)
     execute<R, DictionaryContext>(operation, context, logger, exec)
 }
