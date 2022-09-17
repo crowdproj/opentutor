@@ -3,9 +3,9 @@
  */
 
 // selected dictionary resource (todo: support selecting several dictionaries)
-let dictionary;
+let selectedDictionary;
 // an array with card resources
-let data;
+let flashcards;
 
 async function renderPage() {
     if (devMode) {

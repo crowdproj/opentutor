@@ -5,9 +5,11 @@
 let keycloak
 
 const getAllDictionariesURL = '/v1/api/dictionaries/get-all'
-const getAllDictionariesType = 'getAllDictionaries'
 const getAllCardsURL = '/v1/api/cards/get-all'
+const searchCardsURL = '/v1/api/cards/search'
+const getAllDictionariesType = 'getAllDictionaries'
 const getAllCardsType = 'getAllCards'
+const searchCardsType = 'searchCards'
 
 async function initKeycloak() {
     if (devMode) {
@@ -58,6 +60,33 @@ function getCards(dictionaryId, onDone) {
     })
 }
 
+function getNextCardDeck(dictionaryId, length, onDone) {
+    if (length == null) {
+        length = numberOfWordsToShow
+    }
+    const data = {
+        'dictionaryIds': [dictionaryId],
+        'requestId': uuid(),
+        'requestType': searchCardsType,
+        'random': true,
+        'length': length,
+        'debug': {'mode': runMode}
+    }
+    post(searchCardsURL, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            onDone(res.cards)
+        }
+    })
+}
+
+function learnCard(cards, onDone) {
+    // TODO
+    console.log("learnCard")
+    onDone()
+}
+
 function uploadDictionary(data, onDone, onFail) {
     // TODO
     console.log("uploadDictionary")
@@ -66,16 +95,12 @@ function uploadDictionary(data, onDone, onFail) {
 function downloadDictionaryURL(id) {
     // TODO
     console.log("downloadDictionaryURL")
+    return ""
 }
 
 function deleteDictionary(id, onDone) {
     // TODO
     console.log("deleteDictionary")
-}
-
-function getNextCardDeck(id, length, onDone) {
-    // TODO
-    console.log("getNextCardDeck")
 }
 
 function createCard(item, onDone) {
@@ -96,11 +121,6 @@ function deleteCard(id, onDone) {
 function resetCard(id, onDone) {
     // TODO
     console.log("resetCard")
-}
-
-function patchCard(update, onDone) {
-    // TODO
-    console.log("patchCard")
 }
 
 function playAudio(resource, callback) {

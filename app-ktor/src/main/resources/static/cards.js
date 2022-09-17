@@ -3,16 +3,16 @@
  */
 
 function drawDictionaryPage() {
-    if (dictionary == null) {
+    if (selectedDictionary == null) {
         return;
     }
     resetRowSelection($('#dictionaries tbody'));
 
-    $('#words-title').html(dictionary.name);
+    $('#words-title').html(selectedDictionary.name);
     $('#words tbody').html('');
     initTableListeners('words', resetCardSelection);
     $('#words-table-row').css('height', calcInitTableHeight());
-    getCards(dictionary.dictionaryId, initCardsTable);
+    getCards(selectedDictionary.dictionaryId, initCardsTable);
 }
 
 function initCardsTable(cards) {
@@ -84,7 +84,7 @@ function selectCardItemForEdit(row, item) {
     btn.attr('word-txt', item.word);
     btn.attr('word-sound', item.sound);
 
-    const index = dictionary.partsOfSpeech.indexOf(item.partOfSpeech)
+    const index = selectedDictionary.partsOfSpeech.indexOf(item.partOfSpeech)
     if (index > -1) {
         $('#edit-card-dialog-part-of-speech option').eq(index + 1).prop('selected', true);
     }
@@ -148,7 +148,7 @@ function initCardDialog(dialogId, items) {
         onChangeCardDialogMains(dialogId);
     });
     const select = $('#' + dialogId + '-card-dialog-part-of-speech').html('').append($(`<option value="-1"></option>`));
-    $.each(dictionary.partsOfSpeech, function (index, value) {
+    $.each(selectedDictionary.partsOfSpeech, function (index, value) {
         select.append($(`<option value="${index}">${value}</option>`));
     });
 
@@ -224,7 +224,7 @@ function createResourceCardItem(dialogId, items) {
     const itemId = input.attr('item-id');
 
     const resItem = itemId ? jQuery.extend({}, findById(items, itemId)) : {};
-    resItem.dictionaryId = dictionary.id;
+    resItem.dictionaryId = selectedDictionary.dictionaryId;
     resItem.word = input.val().trim();
     resItem.transcription = $('#' + dialogId + '-card-dialog-transcription').val().trim();
     resItem.partOfSpeech = $('#' + dialogId + '-card-dialog-part-of-speech option:selected').text();
@@ -243,8 +243,8 @@ function cleanCardDialogLinks(dialogId) {
 
 function insertCardDialogLinks(dialogId) {
     const input = $('#' + dialogId + '-card-dialog-word');
-    const sl = dictionary.sourceLang;
-    const tl = dictionary.targetLang;
+    const sl = selectedDictionary.sourceLang;
+    const tl = selectedDictionary.targetLang;
     const text = input.val();
     if (!text) {
         return;
@@ -259,8 +259,8 @@ function createLink(parent, uri) {
 }
 
 function onCollapseLgFrame(dialogId) {
-    const sl = dictionary.sourceLang;
-    const tl = dictionary.targetLang;
+    const sl = selectedDictionary.sourceLang;
+    const tl = selectedDictionary.targetLang;
 
     const lgDiv = $('#' + dialogId + '-card-dialog-lg-collapse div');
     const dialogLinksDiv = $('#' + dialogId + '-card-dialog-links');

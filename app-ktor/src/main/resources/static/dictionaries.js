@@ -58,12 +58,12 @@ function uploadDictionaryFile(file) {
 }
 
 function downloadDictionaryFile() {
-    if (dictionary == null) {
+    if (selectedDictionary == null) {
         return;
     }
     const tmpLink = document.createElement("a");
-    tmpLink.href = downloadDictionaryURL(dictionary.id);
-    tmpLink.download = toFilename(dictionary.name) + '-' + new Date().toISOString().substring(0, 19) + '.xml';
+    tmpLink.href = downloadDictionaryURL(selectedDictionary.dictionaryId);
+    tmpLink.download = toFilename(selectedDictionary.name) + '-' + new Date().toISOString().substring(0, 19) + '.xml';
     document.body.appendChild(tmpLink);
     tmpLink.click();
     setTimeout(function () {
@@ -83,7 +83,7 @@ function initDictionaryDeletePrompt() {
 }
 
 function dictionaryRowOnClick(row, dict) {
-    dictionary = dict;
+    selectedDictionary = dict;
     const tbody = $('#dictionaries tbody');
     const btnRun = $('#dictionaries-btn-run');
     const btnEdit = $('#dictionaries-btn-edit');
@@ -102,7 +102,7 @@ function dictionaryRowOnClick(row, dict) {
 }
 
 function resetDictionarySelection() {
-    dictionary = null;
+    selectedDictionary = null;
     $('#dictionaries-btn-group button').each(function (i, b) {
         $(b).prop('disabled', true);
     });
@@ -110,12 +110,12 @@ function resetDictionarySelection() {
 }
 
 function drawRunPage() {
-    if (dictionary == null) {
+    if (selectedDictionary == null) {
         return;
     }
     resetRowSelection($('#dictionaries tbody'));
-    getNextCardDeck(dictionary.id, null, function (array) {
-        data = array;
+    getNextCardDeck(selectedDictionary.dictionaryId, null, function (array) {
+        flashcards = array;
         stageShow();
     });
 }
