@@ -1,14 +1,8 @@
 package com.gitlab.sszuev.flashcards.services
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardRepositories
 
 interface CardService {
-
-    /**
-     * Provides access to repositories configuration.
-     */
-    fun repositories(): CardRepositories
 
     /**
      * Gets a card-resource (byte array from TTS service).

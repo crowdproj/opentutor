@@ -5,7 +5,8 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
-import com.gitlab.sszuev.flashcards.api.apiV1
+import com.gitlab.sszuev.flashcards.api.cardApiV1
+import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RepositoriesConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
@@ -136,8 +137,8 @@ fun Application.module(
 
     install(Locations)
 
-    val cardService = cardService(repositoriesConfig.cardRepositories)
-    val dictionaryService = dictionaryService(repositoriesConfig.dictionaryRepositories)
+    val cardService = cardService()
+    val dictionaryService = dictionaryService()
 
     routing {
         static("/static") {
@@ -147,7 +148,12 @@ fun Application.module(
 
         if (runConfig.auth.isBlank()) {
             authenticate("auth-jwt") {
-                this@authenticate.apiV1(cardService, dictionaryService)
+                this@authenticate.cardApiV1(cardService, repositoriesConfig.cardRepositories, runConfig)
+                this@authenticate.dictionaryApiV1(
+                    dictionaryService,
+                    repositoriesConfig.dictionaryRepositories,
+                    runConfig
+                )
             }
             authenticate("keycloakOAuth") {
                 location<Index> {
@@ -167,7 +173,8 @@ fun Application.module(
                 }
             }
         } else {
-            apiV1(cardService, dictionaryService, runConfig)
+            cardApiV1(cardService, repositoriesConfig.cardRepositories, runConfig)
+            dictionaryApiV1(dictionaryService, repositoriesConfig.dictionaryRepositories, runConfig)
             get("/") {
                 call.respond(content(runConfig, tutorConfig, keycloakConfig, null))
             }

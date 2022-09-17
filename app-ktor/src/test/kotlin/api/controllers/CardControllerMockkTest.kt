@@ -11,7 +11,6 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -100,15 +99,13 @@ internal class CardControllerMockkTest {
         coEvery {
             service.serviceMethod(any())
         } throws TestException(msg)
-        every {
-            service.repositories()
-        } returns CardRepositories()
+        val repositories = mockk<CardRepositories>()
 
         routing {
             authenticate("auth-jwt") {
                 route("test/api") {
-                    cards(service)
-                    sounds(service)
+                    cards(service, repositories)
+                    sounds(service, repositories)
                 }
             }
         }
