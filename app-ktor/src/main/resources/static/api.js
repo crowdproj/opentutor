@@ -7,9 +7,14 @@ let keycloak
 const getAllDictionariesURL = '/v1/api/dictionaries/get-all'
 const getAllCardsURL = '/v1/api/cards/get-all'
 const searchCardsURL = '/v1/api/cards/search'
-const getAllDictionariesType = 'getAllDictionaries'
-const getAllCardsType = 'getAllCards'
-const searchCardsType = 'searchCards'
+const createCardURL = '/v1/api/cards/create'
+const updateCardURL = '/v1/api/cards/update'
+
+const getAllDictionariesRequestType = 'getAllDictionaries'
+const getAllCardsRequestType = 'getAllCards'
+const searchCardsRequestType = 'searchCards'
+const createCardRequestType = 'createCard'
+const updateCardRequestType = 'updateCard'
 
 async function initKeycloak() {
     if (devMode) {
@@ -32,7 +37,7 @@ async function initKeycloak() {
 function getDictionaries(onDone) {
     const data = {
         'requestId': uuid(),
-        'requestType': getAllDictionariesType,
+        'requestType': getAllDictionariesRequestType,
         'debug': {'mode': runMode}
     }
     post(getAllDictionariesURL, data, function (res) {
@@ -48,7 +53,7 @@ function getCards(dictionaryId, onDone) {
     const data = {
         'dictionaryId': dictionaryId,
         'requestId': uuid(),
-        'requestType': getAllCardsType,
+        'requestType': getAllCardsRequestType,
         'debug': {'mode': runMode}
     }
     post(getAllCardsURL, data, function (res) {
@@ -67,7 +72,7 @@ function getNextCardDeck(dictionaryId, length, onDone) {
     const data = {
         'dictionaryIds': [dictionaryId],
         'requestId': uuid(),
-        'requestType': searchCardsType,
+        'requestType': searchCardsRequestType,
         'random': true,
         'length': length,
         'debug': {'mode': runMode}
@@ -79,12 +84,6 @@ function getNextCardDeck(dictionaryId, length, onDone) {
             onDone(res.cards)
         }
     })
-}
-
-function learnCard(cards, onDone) {
-    // TODO
-    console.log("learnCard")
-    onDone()
 }
 
 function uploadDictionary(data, onDone, onFail) {
@@ -103,14 +102,36 @@ function deleteDictionary(id, onDone) {
     console.log("deleteDictionary")
 }
 
-function createCard(item, onDone) {
-    // TODO
-    console.log("createCard")
+function createCard(card, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': createCardRequestType,
+        'card' : card,
+        'debug': {'mode': runMode},
+    }
+    post(createCardURL, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            onDone(res.card.cardId)
+        }
+    })
 }
 
-function updateCard(item, onDone) {
-    // TODO
-    console.log("updateCard")
+function updateCard(card, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': updateCardRequestType,
+        'card' : card,
+        'debug': {'mode': runMode},
+    }
+    post(updateCardURL, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            onDone(res.card.cardId)
+        }
+    })
 }
 
 function deleteCard(id, onDone) {
@@ -121,6 +142,12 @@ function deleteCard(id, onDone) {
 function resetCard(id, onDone) {
     // TODO
     console.log("resetCard")
+}
+
+function learnCard(cards, onDone) {
+    // TODO
+    console.log("learnCard")
+    onDone()
 }
 
 function playAudio(resource, callback) {

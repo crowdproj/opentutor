@@ -75,7 +75,7 @@ function selectCardItemForEdit(row, item) {
     cleanCardDialogLinks('edit');
     const input = $('#edit-card-dialog-word');
     input.val(item.word);
-    input.attr('item-id', item.id);
+    input.attr('item-id', item.cardId);
 
     insertCardDialogLinks('edit');
     disableCardButton('edit', false);
@@ -118,7 +118,7 @@ function selectCardItemForAdd(row, word) {
 function selectCardItemForDeleteOrReset(item, actionId) {
     disableCardButton(actionId, false);
     const body = $('#' + actionId + '-card-prompt-body');
-    body.attr('item-id', item.id);
+    body.attr('item-id', item.cardId);
     body.html(item.word);
 }
 
@@ -160,12 +160,12 @@ function initCardDialog(dialogId, items) {
         const res = createResourceCardItem(dialogId, items);
         const onDone = function (id) {
             if (id === '') {
-                id = res.id;
+                id = res.cardId;
             }
             drawDictionaryPage();
             scrollToRow('#w' + id, '#words-table-row', markRowSelected);
         };
-        if (res.id == null) {
+        if (res.cardId == null) {
             createCard(res, onDone);
         } else {
             updateCard(res, onDone);
