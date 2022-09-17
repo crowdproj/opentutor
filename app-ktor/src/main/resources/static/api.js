@@ -22,7 +22,7 @@ async function initKeycloak() {
     await res.init({
         onLoad: 'check-sso',
     }).catch(function (error) {
-        throw new Error('ERROR::' + error)
+        throw new Error('keycloak-init-error::' + error)
     });
     keycloak = res
 }
@@ -159,5 +159,14 @@ function authPost(url, requestData, onDone, onFail, runAgain) {
         } else {
             onFail(error)
         }
+    });
+}
+
+function logout() {
+    if (devMode) {
+        return
+    }
+    keycloak.logout().catch(function (error) {
+        throw new Error('logout-error::' + error)
     });
 }
