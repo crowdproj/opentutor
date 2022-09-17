@@ -12,10 +12,10 @@ function drawDictionaryPage() {
     $('#words tbody').html('');
     initTableListeners('words', resetCardSelection);
     $('#words-table-row').css('height', calcInitTableHeight());
-    getCards(dictionary.id, initCardsTable);
+    getCards(dictionary.dictionaryId, initCardsTable);
 }
 
-function initCardsTable(items) {
+function initCardsTable(cards) {
     const tbody = $('#words tbody');
     const search = $('#words-search');
 
@@ -25,8 +25,8 @@ function initCardsTable(items) {
     const editPopup = bootstrap.Modal.getOrCreateInstance(document.getElementById('edit-card-dialog'));
     editPopup.hide();
 
-    initCardDialog('add', items);
-    initCardDialog('edit', items);
+    initCardDialog('add', cards);
+    initCardDialog('edit', cards);
     initCardPrompt('delete');
     initCardPrompt('reset');
 
@@ -34,19 +34,19 @@ function initCardsTable(items) {
 
     search.off('input').on('input', function () {
         resetCardSelection();
-        const item = findItem(items, search.val());
+        const item = findItem(cards, search.val());
         if (item == null) {
             selectCardItemForAdd(null, search.val());
             return;
         }
-        scrollToRow('#w' + item.id, '#words-table-row', markRowSelected);
-        const row = $('#w' + item.id);
+        scrollToRow('#w' + item.cardId, '#words-table-row', markRowSelected);
+        const row = $('#w' + item.cardId);
         selectCardItemForEdit(row, item);
         selectCardItemForAdd(row, search.val());
     });
 
-    $.each(items, function (key, item) {
-        let row = $(`<tr id="${'w' + item.id}">
+    $.each(cards, function (key, item) {
+        let row = $(`<tr id="${'w' + item.cardId}">
                             <td>${item.word}</td>
                             <td>${toTranslationString(item)}</td>
                             <td>${percentage(item)}</td>

@@ -6,6 +6,8 @@ let keycloak
 
 const getAllDictionariesURL = '/v1/api/dictionaries/get-all'
 const getAllDictionariesType = 'getAllDictionaries'
+const getAllCardsURL = '/v1/api/cards/get-all'
+const getAllCardsType = 'getAllCards'
 
 async function initKeycloak() {
     if (devMode) {
@@ -26,12 +28,32 @@ async function initKeycloak() {
 }
 
 function getDictionaries(onDone) {
-    const data = {'requestId': uuid(), 'requestType': getAllDictionariesType, 'debug': {'mode': runMode}}
+    const data = {
+        'requestId': uuid(),
+        'requestType': getAllDictionariesType,
+        'debug': {'mode': runMode}
+    }
     post(getAllDictionariesURL, data, function (res) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
             onDone(res.dictionaries)
+        }
+    })
+}
+
+function getCards(dictionaryId, onDone) {
+    const data = {
+        'dictionaryId': dictionaryId,
+        'requestId': uuid(),
+        'requestType': getAllCardsType,
+        'debug': {'mode': runMode}
+    }
+    post(getAllCardsURL, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            onDone(res.cards)
         }
     })
 }
@@ -49,11 +71,6 @@ function downloadDictionaryURL(id) {
 function deleteDictionary(id, onDone) {
     // TODO
     console.log("deleteDictionary")
-}
-
-function getCards(id, onDone) {
-    // TODO
-    console.log("getCards")
 }
 
 function getNextCardDeck(id, length, onDone) {

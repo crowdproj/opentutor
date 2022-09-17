@@ -170,14 +170,14 @@ function toTranslationArray(item) {
 
 /**
  * Returns learning percentage for card.
- * @param item - card resource
+ * @param cardItem - card resource
  * @returns {number} - int percentage
  */
-function percentage(item) {
-    if (item.answered > numberOfRightAnswers) {
+function percentage(cardItem) {
+    if (cardItem.answered > numberOfRightAnswers) {
         return 100;
     }
-    return Math.round(100.0 * item.answered / numberOfRightAnswers);
+    return Math.round(100.0 * cardItem.answered / numberOfRightAnswers);
 }
 
 /**
