@@ -1,0 +1,16 @@
+<div th:fragment="prompt (id)" class="modal fade" th:id="${id} + '-prompt'" tabindex="-1"
+     th:aria-labelledby="${id} + '-prompt-label'" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:id="${id}+ '-prompt-label'" th:text="${#strings.toUpperCase(id)}">delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" th:id="${id} + '-prompt-body'"></div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button th:id="${id} + '-prompt-confirm'" type="button" class="btn btn-primary">Confirm</button>
+            </div>
+        </div>
+    </div>
+</div>

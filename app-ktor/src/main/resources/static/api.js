@@ -7,7 +7,7 @@ let keycloak
 const getAllDictionariesURL = '/v1/api/dictionaries/get-all'
 const getAllDictionariesType = 'getAllDictionaries'
 
-function initKeycloak() {
+async function initKeycloak() {
     if (devMode) {
         keycloak = null
         return
@@ -17,26 +17,12 @@ function initKeycloak() {
         realm: keycloakAppRealm,
         clientId: keycloakAppClient,
     });
-    res.init({
+    await res.init({
         onLoad: 'check-sso',
     }).catch(function (error) {
         throw new Error('ERROR::' + error)
     });
     keycloak = res
-}
-
-/**
- * TODO: temporary, for debug
- */
-function testButtonOnClink() {
-    $('#test-btn').on('click', function () {
-        getDictionaries(function (response) {
-            console.log(response.length)
-            $.each(response, function (key, value) {
-                console.log(key + ':::' + value.name)
-            });
-        })
-    })
 }
 
 function getDictionaries(onDone) {
@@ -48,6 +34,61 @@ function getDictionaries(onDone) {
             onDone(res.dictionaries)
         }
     })
+}
+
+function uploadDictionary(data, onDone, onFail) {
+    // TODO
+    console.log("uploadDictionary")
+}
+
+function downloadDictionaryURL(id) {
+    // TODO
+    console.log("downloadDictionaryURL")
+}
+
+function deleteDictionary(id, onDone) {
+    // TODO
+    console.log("deleteDictionary")
+}
+
+function getCards(id, onDone) {
+    // TODO
+    console.log("getCards")
+}
+
+function getNextCardDeck(id, length, onDone) {
+    // TODO
+    console.log("getNextCardDeck")
+}
+
+function createCard(item, onDone) {
+    // TODO
+    console.log("createCard")
+}
+
+function updateCard(item, onDone) {
+    // TODO
+    console.log("updateCard")
+}
+
+function deleteCard(id, onDone) {
+    // TODO
+    console.log("deleteCard")
+}
+
+function resetCard(id, onDone) {
+    // TODO
+    console.log("resetCard")
+}
+
+function patchCard(update, onDone) {
+    // TODO
+    console.log("patchCard")
+}
+
+function playAudio(resource, callback) {
+    // TODO
+    console.log("playAudio")
 }
 
 function hasResponseErrors(res) {
