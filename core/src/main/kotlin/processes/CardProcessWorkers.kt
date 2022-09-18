@@ -5,6 +5,9 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
 
@@ -136,10 +139,18 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
     }
 }
 
-private fun CardContext.postProcess(res: CardEntitiesDbResponse) {
-    this.responseCardEntityList = res.cards
+private suspend fun CardContext.postProcess(res: CardEntitiesDbResponse) {
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
+    }
+    if (res.sourceLanguage != LangId.NONE) {
+        val tts = this.repositories.ttsClientRepository(this.workMode)
+        val responses = res.cards.associateWith { tts.findResourceId(ResourceGet(it.word, res.sourceLanguage)) }
+        this.errors.addAll(responses.flatMap { it.value.errors })
+        this.responseCardEntityList =
+            responses.map { if (it.value.id != ResourceId.NONE) it.key.copy(sound = it.value.id) else it.key }
+    } else {
+        this.responseCardEntityList = res.cards
     }
     this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
 }

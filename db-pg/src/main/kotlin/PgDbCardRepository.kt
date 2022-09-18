@@ -9,6 +9,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
@@ -36,16 +37,17 @@ class PgDbCardRepository(
 
     override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
         return connection.execute {
+            val dictionary = Dictionary.findById(id.asDbId())?.toEntity() ?: return@execute CardEntitiesDbResponse(
+                cards = emptyList(),
+                errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
+            )
             val cards = Card.find {
                 Cards.dictionaryId eq id.asDbId()
             }.with(Card::examples).with(Card::translations).map { it.toEntity() }
-
-            val errors = if (cards.isEmpty())
-                listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
-            else emptyList()
             CardEntitiesDbResponse(
                 cards = cards,
-                errors = errors
+                sourceLanguage = dictionary.sourceLangId,
+                errors = emptyList()
             )
         }
     }
@@ -55,6 +57,20 @@ class PgDbCardRepository(
         val learned = sysConfig.numberOfRightAnswers
         val random = CustomFunction<Double>("random", DoubleColumnType())
         return connection.execute {
+            val dictionaries = Dictionary.find(Dictionaries.id inList dictionaryIds).map { it.toEntity() }
+            val sourceLanguages = dictionaries.map { it.sourceLangId }.toSet()
+            val targetLanguages = dictionaries.map { it.targetLangId }.toSet()
+            if (sourceLanguages.size != 1 || targetLanguages.size != 1) {
+                return@execute CardEntitiesDbResponse(
+                    cards = emptyList(),
+                    errors = listOf(
+                        wrongDictionaryLanguageFamilies(
+                            operation = "searchCard",
+                            dictionaryIds = filter.dictionaryIds,
+                        )
+                    )
+                )
+            }
             val cards = Card.find {
                 Cards.dictionaryId inList dictionaryIds and
                         (if (filter.withUnknown) Op.TRUE else Cards.answered.isNull() or Cards.answered.lessEq(learned))
@@ -64,7 +80,7 @@ class PgDbCardRepository(
                 .with(Card::examples)
                 .with(Card::translations)
                 .map { it.toEntity() }
-            CardEntitiesDbResponse(cards = cards)
+            CardEntitiesDbResponse(cards = cards, sourceLanguage = sourceLanguages.single())
         }
     }
 

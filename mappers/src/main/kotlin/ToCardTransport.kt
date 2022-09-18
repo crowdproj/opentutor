@@ -87,14 +87,15 @@ private fun CardEntity.toCardResource(): CardResource? {
         return null
     }
     return CardResource(
-        cardId = cardId.takeIf { it != CardId.NONE }?.asString(),
-        dictionaryId = dictionaryId.takeIf { it != DictionaryId.NONE }?.asString(),
-        word = word,
-        partOfSpeech = partOfSpeech,
-        transcription = transcription,
-        translations = translations,
-        examples = examples,
-        details = details.mapKeys { it.key.name },
-        answered = answered,
+        cardId = this.cardId.takeIf { it != CardId.NONE }?.asString(),
+        dictionaryId = this.dictionaryId.takeIf { it != DictionaryId.NONE }?.asString(),
+        word = this.word,
+        partOfSpeech = this.partOfSpeech,
+        transcription = this.transcription,
+        translations = this.translations,
+        examples = this.examples,
+        details = this.details.mapKeys { it.key.name },
+        answered = this.answered,
+        sound = this.sound.asString().takeIf { it.isNotBlank() },
     )
 }

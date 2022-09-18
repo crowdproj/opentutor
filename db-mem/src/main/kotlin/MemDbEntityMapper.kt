@@ -21,8 +21,8 @@ internal fun User.toEntity() = AppUserEntity(
 internal fun Dictionary.toEntity() = DictionaryEntity(
     dictionaryId = this.id.asDictionaryId(),
     name = this.name,
-    sourceLangId = this.sourceLanguage.toDbLangId(),
-    targetLangId = this.targetLanguage.toDbLangId(),
+    sourceLangId = this.sourceLanguage.asLangId(),
+    targetLangId = this.targetLanguage.asLangId(),
     userId = this.userId?.asUserId() ?: AppUserId.NONE
 )
 
@@ -61,10 +61,10 @@ private fun Long.asUserId() = AppUserId(toString())
 
 internal fun UUID.asUserUid() = AppAuthId(toString())
 
-private fun Long.asDictionaryId() = DictionaryId(toString())
+internal fun Language.asLangId(): LangId = LangId(this.id)
 
 private fun Long.asCardId() = CardId(toString())
 
-private fun Id.asDbRecordId() = asString().toLong()
+private fun Long.asDictionaryId() = DictionaryId(toString())
 
-private fun Language.toDbLangId(): LangId = LangId(this.id)
+private fun Id.asDbRecordId() = asString().toLong()

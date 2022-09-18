@@ -95,6 +95,7 @@ private fun CardResource.toCardEntity(): CardEntity = CardEntity(
     examples = this.examples ?: emptyList(),
     details = this.details.toDetails(),
     answered = this.answered,
+    sound = this.sound?.takeIf { it.isNotBlank() }?.let { ResourceId(it) }?: ResourceId.NONE
 )
 
 private fun String.toStage(): Stage? {

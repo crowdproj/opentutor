@@ -5,6 +5,15 @@ import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
+fun wrongDictionaryLanguageFamilies(
+    operation: String,
+    dictionaryIds: Collection<DictionaryId>,
+) = dbError(
+    operation = operation,
+    fieldName = dictionaryIds.joinToString { it.asString() },
+    details = """specified dictionaries belong to different language families, ids="${dictionaryIds.map { it.asString() }}""""
+)
+
 fun noDictionaryFoundDbError(
     operation: String,
     id: DictionaryId,
@@ -22,7 +31,11 @@ fun noCardFoundDbError(
 fun noUserFoundDbError(
     operation: String,
     uid: AppAuthId,
-) = dbError(operation = operation, fieldName = uid.asString(), details = """user with uid="${uid.asString()}" not found""")
+) = dbError(
+    operation = operation,
+    fieldName = uid.asString(),
+    details = """user with uid="${uid.asString()}" not found"""
+)
 
 fun wrongUserUUIDDbError(
     operation: String,
