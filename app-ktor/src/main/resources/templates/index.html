@@ -5,8 +5,197 @@
     <script src="/webjars/jquery/jquery.min.js"></script>
     <script src="/webjars/bootstrap/js/bootstrap.js"></script>
     <script src="/webjars/keycloak-js/dist/keycloak.js"></script>
+    <script src="/static/common.js"></script>
+    <script src="/static/data.js"></script>
+    <script src="/static/api.js"></script>
+    <script src="/static/tables.js"></script>
+    <script src="/static/dictionaries.js"></script>
+    <script src="/static/cards.js"></script>
+    <script src="/static/tutor.js"></script>
+    <script src="/static/main.js"></script>
 </head>
-<body>
-<h1 class="container" th:text="'Hello, [' + ${user} + ']!'"></h1>
+<header th:insert="header.html :: header"></header>
+<script th:inline="javascript">
+    const devMode = [[${devMode}]];
+    const keycloakAuthURL = [[${keycloakAuthURL}]];
+    const keycloakAppRealm = [[${keycloakAppRealm}]];
+    const keycloakAppClient = [[${keycloakAppClient}]];
+    const runMode = [[${runMode}]];
+    const numberOfWordsToShow = [[${numberOfWordsToShow}]];
+    const numberOfWordsPerStage = [[${numberOfWordsPerStage}]];
+    const numberOfRightAnswers = [[${numberOfRightAnswers}]];
+    const numberOfOptionsPerWord = [[${numberOfOptionsPerWord}]];
+</script>
+<body onload="renderPage()">
+<div id="dictionaries" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h1 class="card-title">flashcards</h1>
+        <div id="dictionaries-table-row" class="row" style="overflow: auto">
+            <table class="table" style="height: 20px;">
+                <thead>
+                <tr>
+                    <th scope="col">Source language</th>
+                    <th scope="col">Target language</th>
+                    <th scope="col">Dictionary name</th>
+                    <th scope="col">Total number of words</th>
+                    <th scope="col">Number of learned words</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="row d-grid p-3">
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input value="&nbsp;" type="text" class="invisible"/>
+        </div>
+        <div class="row">
+            <div id="dictionaries-btn-group" class="btn-group" role="group" aria-label="Dictionaries group">
+                <button id="dictionaries-btn-run" type="button" class="btn btn-secondary" disabled>Run</button>
+                <button id="dictionaries-btn-edit" type="button" class="btn btn-secondary" disabled>Edit</button>
+                <button id="dictionaries-btn-delete" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#delete-dictionary-prompt" disabled>Delete</button>
+                <button id="dictionaries-btn-download" type="button" class="btn btn-secondary" disabled="">Download</button>
+                <label id="dictionaries-btn-upload-label" for="dictionaries-btn-upload"
+                       class="btn btn-secondary btn-file-upload">Upload</label>
+                <input id="dictionaries-btn-upload" type="file" style="display: none;"/>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="words" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h1 id="words-title" class="card-title">dictionary</h1>
+        <div id="words-table-row" class="row" style="overflow: auto">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Word</th>
+                    <th scope="col">Translation</th>
+                    <th scope="col">Status, %</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div class="row d-grid p-3">
+            <!--suppress HtmlFormInputWithoutLabel -->
+            <input id="words-search" type="text"/>
+        </div>
+        <div class="row">
+            <div id="words-btn-group" class="btn-group" role="group" aria-label="Dictionary group">
+                <button id="words-btn-add" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#add-card-dialog" disabled>Add</button>
+                <button id="words-btn-edit" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#edit-card-dialog" disabled>Edit</button>
+                <button id="words-btn-reset" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#reset-card-prompt" disabled>Reset status</button>
+                <button id="words-btn-delete" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#delete-card-prompt" disabled>Delete</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="card-dialog.html :: cardDialog(id='edit')"></div>
+<div th:replace="card-dialog.html :: cardDialog(id='add')"></div>
+<div th:replace="prompt.html :: prompt(id='delete-card')"></div>
+<div th:replace="prompt.html :: prompt(id='reset-card')"></div>
+<div th:replace="prompt.html :: prompt(id='delete-dictionary')"></div>
+
+<div id="show" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h6 class="card-title">flashcards:</h6>
+        <div class="row">
+            <div class="d-flex align-items-center justify-content-between">
+                <div><h1 class="word">word</h1></div>
+                <button th:insert="speaker.html :: svg" id="show-card-sound" type="button"
+                        class="sound btn btn-secondary" disabled></button>
+            </div>
+        </div>
+        <div class="row">
+            <h6 class="translations">translations</h6>
+        </div>
+        <div class="row">
+            <button id='show-next' class="d-flex align-items-end flex-column"><h4>next</h4></button>
+        </div>
+    </div>
+</div>
+<div id="self-test" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h6 class="card-title">flashcards:</h6>
+        <div class="row">
+            <div class="d-flex align-items-center justify-content-between">
+                <div><h1 class="word">word</h1></div>
+                <button th:insert="speaker.html :: svg" id="self-test-card-sound" type="button"
+                        class="sound btn btn-secondary" disabled></button>
+            </div>
+        </div>
+        <div class="row">
+            <div id="self-test-display-translation">
+                <button class="d-flex align-items-center p-5 w-100"><h6>display translation</h6></button>
+            </div>
+            <h6 class="translations p-5 w-100" style="display: none;">translations</h6>
+        </div>
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <button id="self-test-correct" class="d-flex w-100 justify-content-start"><h4>correct</h4></button>
+                <button id="self-test-wrong" class="d-flex w-100 justify-content-end"><h4>wrong</h4></button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="mosaic" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h6 class="card-title">flashcards:</h6>
+        <div class="card-group">
+            <div id="mosaic-left" class="card justify-content-center"></div>
+            <div id="mosaic-right" class="card"></div>
+        </div>
+    </div>
+</div>
+<div id="options" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h6 class="card-title">flashcards:</h6>
+        <div class="card-group">
+            <div id="options-left" class="card justify-content-center"></div>
+            <div id="options-right" class="card"></div>
+        </div>
+    </div>
+</div>
+<div id="writing" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h6 class="card-title">flashcards:</h6>
+        <div class="row">
+            <div class="d-flex align-items-center justify-content-between">
+                <div><h1 class="word">word</h1></div>
+                <button th:insert="speaker.html :: svg" id="writing-card-sound" type="button"
+                        class="sound btn btn-secondary" disabled></button>
+            </div>
+        </div>
+        <div class="row" id="writing-textarea"></div>
+        <div id="writing-test" class="row" style="display: none;">
+            <button class="d-flex align-items-end flex-column"><h4>test</h4></button>
+        </div>
+        <div id="writing-next" class="row" style="display: none;">
+            <button class="d-flex align-items-end flex-column"><h4>next</h4></button>
+        </div>
+    </div>
+</div>
+<div id="result" class="page card container container-table" style="display: none;">
+    <div class="card-body">
+        <h6 class="card-title">flashcards:</h6>
+        <div class="row card">
+            <h4>correct:</h4>
+            <h6 id="result-correct" class="p-5 w-100"></h6>
+        </div>
+        <div class="row card">
+            <h4>wrong:</h4>
+            <h6 id="result-wrong" class="p-5 w-100"></h6>
+        </div>
+        <div class="row card">
+            <h4>learned:</h4>
+            <h6 id="result-learned" class="p-5 w-100"></h6>
+        </div>
+    </div>
+</div>
 </body>
 </html>

@@ -1,52 +1,66 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
+import com.gitlab.sszuev.flashcards.CardRepositories
+import com.gitlab.sszuev.flashcards.DictionaryRepositories
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.DictionaryService
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
-fun Route.cards(service: CardService, runConf: RunConfig = RunConfig.PROD) {
+fun Route.cards(
+    service: CardService,
+    repositories: CardRepositories,
+    runConf: RunConfig = RunConfig.PROD
+) {
     route("cards") {
         post("create") {
-            call.createCard(service, runConf)
+            call.createCard(service, repositories, runConf)
         }
         post("update") {
-            call.updateCard(service, runConf)
+            call.updateCard(service, repositories, runConf)
         }
         post("search") {
-            call.searchCards(service, runConf)
+            call.searchCards(service, repositories, runConf)
         }
         post("get-all") {
-            call.getAllCards(service, runConf)
+            call.getAllCards(service, repositories, runConf)
         }
         post("get") {
-            call.getCard(service, runConf)
+            call.getCard(service, repositories, runConf)
         }
         post("learn") {
-            call.learnCard(service, runConf)
+            call.learnCard(service, repositories, runConf)
         }
         post("reset") {
-            call.resetCard(service, runConf)
+            call.resetCard(service, repositories, runConf)
         }
         post("delete") {
-            call.deleteCard(service, runConf)
+            call.deleteCard(service, repositories, runConf)
         }
     }
 }
 
-fun Route.sounds(service: CardService, runConf: RunConfig = RunConfig.PROD) {
+fun Route.sounds(
+    service: CardService,
+    repositories: CardRepositories,
+    runConf: RunConfig = RunConfig.PROD
+) {
     route("sounds") {
         post("get") {
-            call.getResource(service, runConf)
+            call.getResource(service, repositories, runConf)
         }
     }
 }
 
-fun Route.dictionaries(service: DictionaryService, runConf: RunConfig = RunConfig.PROD) {
+fun Route.dictionaries(
+    service: DictionaryService,
+    repositories: DictionaryRepositories,
+    runConf: RunConfig = RunConfig.PROD
+) {
     route("dictionaries") {
         post("get-all") {
-            call.getAllDictionaries(service, runConf)
+            call.getAllDictionaries(service, repositories, runConf)
         }
     }
 }

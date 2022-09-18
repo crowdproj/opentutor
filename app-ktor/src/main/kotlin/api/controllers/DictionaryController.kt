@@ -15,10 +15,14 @@ import kotlinx.datetime.Clock
 
 private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.DictionaryControllerKt")
 
-suspend fun ApplicationCall.getAllDictionaries(service: DictionaryService, runConf: RunConfig) {
+suspend fun ApplicationCall.getAllDictionaries(
+    service: DictionaryService,
+    repositories: DictionaryRepositories,
+    runConf: RunConfig
+) {
     execute<GetAllDictionariesRequest>(
         DictionaryOperation.GET_ALL_DICTIONARIES,
-        service.repositories(),
+        repositories,
         logger,
         runConf
     ) {
@@ -38,8 +42,6 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
         timestamp = Clock.System.now(),
         repositories = repositories
     )
-    if (runConf != RunConfig.PROD) {
-        context.fromUserTransport(runConf.auth)
-    }
+    context.fromUserTransport(runConf.auth)
     execute<R, DictionaryContext>(operation, context, logger, exec)
 }
