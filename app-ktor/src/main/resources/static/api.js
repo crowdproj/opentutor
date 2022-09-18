@@ -4,17 +4,21 @@
 
 let keycloak
 
-const getAllDictionariesURL = '/v1/api/dictionaries/get-all'
-const getAllCardsURL = '/v1/api/cards/get-all'
-const searchCardsURL = '/v1/api/cards/search'
-const createCardURL = '/v1/api/cards/create'
-const updateCardURL = '/v1/api/cards/update'
+const getAllDictionariesURI = '/v1/api/dictionaries/get-all'
+const getAllCardsURI = '/v1/api/cards/get-all'
+const searchCardsURI = '/v1/api/cards/search'
+const createCardURI = '/v1/api/cards/create'
+const updateCardURI = '/v1/api/cards/update'
+const resetCardURI = '/v1/api/cards/reset'
+const deleteCardURI = '/v1/api/cards/delete'
 
 const getAllDictionariesRequestType = 'getAllDictionaries'
 const getAllCardsRequestType = 'getAllCards'
 const searchCardsRequestType = 'searchCards'
 const createCardRequestType = 'createCard'
 const updateCardRequestType = 'updateCard'
+const resetCardRequestType = 'resetCard'
+const deleteCardRequestType = 'deleteCard'
 
 async function initKeycloak() {
     if (devMode) {
@@ -40,7 +44,7 @@ function getDictionaries(onDone) {
         'requestType': getAllDictionariesRequestType,
         'debug': {'mode': runMode}
     }
-    post(getAllDictionariesURL, data, function (res) {
+    post(getAllDictionariesURI, data, function (res) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
@@ -56,7 +60,7 @@ function getCards(dictionaryId, onDone) {
         'requestType': getAllCardsRequestType,
         'debug': {'mode': runMode}
     }
-    post(getAllCardsURL, data, function (res) {
+    post(getAllCardsURI, data, function (res) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
@@ -77,7 +81,7 @@ function getNextCardDeck(dictionaryId, length, onDone) {
         'length': length,
         'debug': {'mode': runMode}
     }
-    post(searchCardsURL, data, function (res) {
+    post(searchCardsURI, data, function (res) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
@@ -109,7 +113,7 @@ function createCard(card, onDone) {
         'card' : card,
         'debug': {'mode': runMode},
     }
-    post(createCardURL, data, function (res) {
+    post(createCardURI, data, function (res) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
@@ -125,7 +129,7 @@ function updateCard(card, onDone) {
         'card' : card,
         'debug': {'mode': runMode},
     }
-    post(updateCardURL, data, function (res) {
+    post(updateCardURI, data, function (res) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
@@ -134,14 +138,36 @@ function updateCard(card, onDone) {
     })
 }
 
-function deleteCard(id, onDone) {
-    // TODO
-    console.log("deleteCard")
+function deleteCard(cardId, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': deleteCardRequestType,
+        'cardId' : cardId,
+        'debug': {'mode': runMode},
+    }
+    post(deleteCardURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            onDone()
+        }
+    })
 }
 
-function resetCard(id, onDone) {
-    // TODO
-    console.log("resetCard")
+function resetCard(cardId, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': resetCardRequestType,
+        'cardId' : cardId,
+        'debug': {'mode': runMode},
+    }
+    post(resetCardURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            onDone()
+        }
+    })
 }
 
 function learnCard(cards, onDone) {
