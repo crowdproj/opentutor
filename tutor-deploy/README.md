@@ -6,11 +6,12 @@ The directory contains docker-compose files allowing to set up environment.
 - [keycloak](docker-compose-keycloak.yml). Authorization.
 - [elk-stack](docker-compose-elk-stack.yml), which consists from [elasticsearch](elasticsearch.Dockerfile), [logstash](logstash.Dockerfile) and [kibana](kibana.Dockerfile), also it contains kafka and kafdrop
 
-URLs
+URLs:
 - kafdrop: http://localhost:9000/
 - kibana: http://localhost:5601/
 - elasticsearch: http://localhost:9200/
 - keycloak: http://localhost:8081/
+- rabbitmq: http://localhost:15672/
 - application: http://localhost:8080/
 
 
@@ -24,7 +25,10 @@ docker cp ./pg-data-sample.sql flashcards-db:/tmp
 docker exec -it flashcards-db /bin/bash
 psql -U dev -d flashcards -a -f /tmp/pg-data-sample.sql
 ```
-Note that after starting container `flashcards-db` and before executing `pg-data-sample.sql`, 
-need to run the `:app-ktor` application to init database using the liquibase migration.
-Also note, there could be a problem with permissions, see https://stackoverflow.com/questions/44878062/initdb-could-not-change-permissions-of-directory-on-postgresql-container,
+Notes:
+- Note that after starting container `flashcards-db` and before executing `pg-data-sample.sql`, 
+need to run the `:app-ktor` application to init database with the liquibase migration.
+- For postgres there could be a problem with permissions, see https://stackoverflow.com/questions/44878062/initdb-could-not-change-permissions-of-directory-on-postgresql-container,
 do not use ntfs-3g
+- For rabbitmq the command `chmod -R 777 ./data/rabbitmq/log/` may help to resolve permissions denied error when starting
+- In case of external vpn may need to restart docker `sudo systemctl restart docker`

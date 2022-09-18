@@ -8,3 +8,4 @@ gradle/
 tutor-deploy/data/elasticsearch/*
 tutor-deploy/data/kafka/*
 tutor-deploy/data/postgres/*
+tutor-deploy/data/rabbitmq/*
