@@ -11,6 +11,8 @@ import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RepositoriesConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.config.TutorConfig
+import com.gitlab.sszuev.flashcards.logslib.ExtLogger
+import com.gitlab.sszuev.flashcards.logslib.logger
 import io.ktor.client.*
 import io.ktor.client.engine.apache.*
 import io.ktor.http.*
@@ -32,14 +34,12 @@ import io.ktor.server.routing.*
 import io.ktor.server.thymeleaf.*
 import io.ktor.server.webjars.*
 import kotlinx.html.*
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
 import org.slf4j.event.Level
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import java.nio.charset.StandardCharsets
 import java.util.*
 
-private val logger: Logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.MainKt")
+private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.MainKt")
 
 // use to jetty, not netty, due to exception https://youtrack.jetbrains.com/issue/KTOR-4433
 fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)

@@ -9,21 +9,9 @@ import org.slf4j.event.LoggingEvent
 
 class LogbackWrapper(
     val logger: Logger,
-    val loggerId: String = ""
-): ExtLogger {
-
-    override fun info(
-        msg: String,
-        data: Any?,
-        vararg args: Pair<String, Any>?
-    ) = log(msg = msg, level = Level.INFO, data = data, args = args)
-
-    override fun error(
-        msg: String,
-        throwable: Throwable?,
-        data: Any?,
-        vararg args: Pair<String, Any>?
-    ) = log(msg = msg, level = Level.ERROR, throwable = throwable, data = data, args = args)
+    val loggerId: String = "",
+    override val isDebugEnabled: Boolean = logger.isDebugEnabled,
+) : ExtLogger {
 
     override suspend fun <R> withLogging(
         id: String,
@@ -41,7 +29,6 @@ class LogbackWrapper(
         throw ex
     }
 
-    @Suppress("MemberVisibilityCanBePrivate")
     override fun log(
         msg: String,
         level: Level,
