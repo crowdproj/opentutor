@@ -10,13 +10,9 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.concurrent.timer
-import kotlin.io.path.createDirectories
-import kotlin.io.path.inputStream
-import kotlin.io.path.isDirectory
-import kotlin.io.path.isRegularFile
+import kotlin.io.path.*
 import kotlin.streams.asSequence
 
 /**
@@ -24,7 +20,7 @@ import kotlin.streams.asSequence
  * In the first case it is persistent.
  */
 class DictionaryStore private constructor(
-    private val resources: MutableMap<Long, Pair<Path, Dictionary>>,
+    private val resources: MutableMap<Long, Pair<String, Dictionary>>,
     internal val ids: IdSequences,
     dbConfig: MemDbConfig,
     sysConfig: SysConfig,
@@ -33,7 +29,7 @@ class DictionaryStore private constructor(
     /**
      * A queue to flushing data to disk.
      */
-    private val dictionariesToFlush = ConcurrentHashMap<Long, Pair<Path, Dictionary>>()
+    private val dictionariesToFlush = ConcurrentHashMap<Long, Pair<String, Dictionary>>()
 
     private val writer: DictionaryWriter = LingvoDictionaryWriter(sysConfig)
 
@@ -41,7 +37,7 @@ class DictionaryStore private constructor(
         timer("flush-dictionaries-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
             dictionariesToFlush.keys.toList().mapNotNull { dictionariesToFlush.remove(it) }.forEach {
                 logger.debug("Save dictionary ${it.second.id} to disk.")
-                Files.newOutputStream(it.first).use { out ->
+                Files.newOutputStream(Paths.get(it.first)).use { out ->
                     writer.write(it.second, out)
                 }
             }
@@ -63,13 +59,13 @@ class DictionaryStore private constructor(
      * It works only if this store is attached to physical directory.
      */
     fun flush(id: Long) {
-        resources[id]?.takeIf { it.first != classpathPathMarker }?.let {
+        resources[id]?.takeIf { !it.first.startsWith(classpathPrefix) }?.let {
             dictionariesToFlush[it.second.id] = it
         }
     }
 
     companion object {
-        private val classpathPathMarker: Path = Path.of(UUID.randomUUID().toString())
+        private const val classpathPrefix = "classpath:"
         private val logger = LoggerFactory.getLogger(DictionaryStore::class.java)
 
         /**
@@ -122,16 +118,16 @@ class DictionaryStore private constructor(
             }
         }
 
-        private fun loadDatabase(location: String, ids: IdSequences): MutableMap<Long, Pair<Path, Dictionary>> {
-            return if (location.startsWith("classpath:")) {
-                loadDatabaseFromClassPath(location.removePrefix("classpath:"), ids)
+        private fun loadDatabase(location: String, ids: IdSequences): MutableMap<Long, Pair<String, Dictionary>> {
+            return if (location.startsWith(classpathPrefix)) {
+                loadDatabaseFromClassPath(location.removePrefix(classpathPrefix), ids)
             } else loadDatabaseFromDirectory(location, ids)
         }
 
         private fun loadDatabaseFromClassPath(
             classpathLocation: String,
             ids: IdSequences
-        ): MutableMap<Long, Pair<Path, Dictionary>> {
+        ): MutableMap<Long, Pair<String, Dictionary>> {
             logger.info("Load dictionaries from classpath: $classpathLocation.")
             val reader = LingvoDictionaryReader(ids)
             val files: List<String> =
@@ -148,26 +144,26 @@ class DictionaryStore private constructor(
                         true
                     }
                 }.sorted() // sort to make output deterministic
-            val res: List<Pair<Path, Dictionary>> = files.map {
+            val res: List<Pair<String, Dictionary>> = files.map {
                 requireNotNull(DictionaryStore::class.java.getResourceAsStream("$classpathLocation/$it")) {
                     "Can't find classpath resource $classpathLocation/$it."
                 }.use { src ->
-                    classpathPathMarker to reader.parse(src)
+                    "${classpathPrefix}${classpathLocation}/$it" to reader.parse(src)
                 }
             }
             logger.info("For location=$classpathLocation there are ${res.size} dictionaries loaded.")
-            return res.associateByTo(ConcurrentHashMap<Long, Pair<Path, Dictionary>>()) { it.second.id }
+            return res.associateByTo(ConcurrentHashMap<Long, Pair<String, Dictionary>>()) { it.second.id }
         }
 
         private fun loadDatabaseFromDirectory(
             directoryLocation: String,
             ids: IdSequences
-        ): MutableMap<Long, Pair<Path, Dictionary>> {
+        ): MutableMap<Long, Pair<String, Dictionary>> {
             logger.info("Load dictionaries from directory: $directoryLocation.")
             val reader = LingvoDictionaryReader(ids)
             val dir = Paths.get(directoryLocation).createDirectories().toRealPath()
             require(dir.isDirectory()) { "Not a directory: $directoryLocation." }
-            val res: List<Pair<Path, Dictionary>> = Files.newDirectoryStream(dir).use { ds ->
+            val res: List<Pair<String, Dictionary>> = Files.newDirectoryStream(dir).use { ds ->
                 ds.mapNotNull { file ->
                     if (!file.isRegularFile()) {
                         logger.warn("Not a file: $file.")
@@ -184,11 +180,11 @@ class DictionaryStore private constructor(
                 it.fileName.toString()
             }.map { file ->
                 file.inputStream().use {
-                    file to reader.parse(it)
+                    file.toString() to reader.parse(it)
                 }
             }
             logger.info("For location=$directoryLocation there are ${res.size} dictionaries loaded.")
-            return res.associateByTo(ConcurrentHashMap<Long, Pair<Path, Dictionary>>()) { it.second.id }
+            return res.associateByTo(ConcurrentHashMap<Long, Pair<String, Dictionary>>()) { it.second.id }
         }
 
         data class Configuration(

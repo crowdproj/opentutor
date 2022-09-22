@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 
+import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.controllers.TextToSpeechProcessor
-import com.gitlab.sszuev.flashcards.speaker.services.TextToSpeechService
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.ConnectionFactory

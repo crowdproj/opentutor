@@ -1,8 +1,8 @@
 package com.gitlab.sszuev.flashcards.speaker
 
 import com.gitlab.sszuev.flashcards.speaker.controllers.TextToSpeechController
-import com.gitlab.sszuev.flashcards.speaker.services.DummyTextToSpeechServiceImpl
+import com.gitlab.sszuev.flashcards.speaker.impl.NoOpTextToSpeechService
 
 fun main() {
-    TextToSpeechController(DummyTextToSpeechServiceImpl()).start()
+    TextToSpeechController(NoOpTextToSpeechService).start()
 }
