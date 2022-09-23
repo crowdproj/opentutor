@@ -18,13 +18,17 @@ class TextToSpeechProcessorImpl(
 ) : BaseRabbitmqProcessor(config, { ConnectionFactory().configure(connectionConfig).newConnection() }),
     TextToSpeechProcessor {
 
+    companion object {
+        private val NULL = ByteArray(0)
+    }
+
     override suspend fun Channel.publishMessage(tag: String, message: Delivery) {
         val requestId = message.properties.messageId
         val responseRoutingKey = config.routingKeyResponsePrefix + requestId
         if (logger.isDebugEnabled) {
             logger.debug("[$tag]::: got request with id=${requestId}")
         }
-        val responseBody = service.getResource(requestId)
+        val responseBody = service.getResource(requestId) ?: NULL
         val responseId = config.messageSuccessResponsePrefix + requestId
 
         if (logger.isDebugEnabled) {

@@ -1,11 +1,10 @@
-package ccom.gitlab.sszuev.flashcards.speaker.impl
+package com.gitlab.sszuev.flashcards.speaker.impl
 
-import com.gitlab.sszuev.flashcards.speaker.impl.TarArchiveResourceStore
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.security.MessageDigest
 
-class TarArchiveResourceStoreTest {
+internal class TarArchiveResourceStoreTest {
     companion object {
         private const val archiveName = "weather.tar"
         private const val lang = "data/en"
@@ -19,7 +18,7 @@ class TarArchiveResourceStoreTest {
     }
 
     @Test
-    fun testGetResourceId() {
+    fun `test getResourcePath`() {
         val provider = TarArchiveResourceStore {
             TarArchiveResourceStoreTest::class.java.getResourceAsStream(resourceArchive)!!
         }
@@ -28,7 +27,7 @@ class TarArchiveResourceStoreTest {
     }
 
     @Test
-    fun testGetResource() {
+    fun `test getResource`() {
         val provider = TarArchiveResourceStore {
             TarArchiveResourceStoreTest::class.java.getResourceAsStream(resourceArchive)!!
         }
