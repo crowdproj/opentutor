@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -145,7 +146,7 @@ private suspend fun CardContext.postProcess(res: CardEntitiesDbResponse) {
     }
     if (res.sourceLanguage != LangId.NONE) {
         val tts = this.repositories.ttsClientRepository(this.workMode)
-        val responses = res.cards.associateWith { tts.findResourceId(ResourceGet(it.word, res.sourceLanguage)) }
+        val responses = res.cards.associateWith { tts.findResourceId(ResourceGet(it.word, res.sourceLanguage).normalize()) }
         this.errors.addAll(responses.flatMap { it.value.errors })
         this.responseCardEntityList =
             responses.map { if (it.value.id != ResourceId.NONE) it.key.copy(sound = it.value.id) else it.key }
