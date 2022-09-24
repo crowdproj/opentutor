@@ -6,7 +6,7 @@ import java.security.MessageDigest
 
 internal class TarArchiveResourceStoreTest {
     companion object {
-        private const val archiveName = "weather.tar"
+        private const val archiveName = "weather-light.tar"
         private const val lang = "data/en"
         private const val resourceArchive = "/$lang/$archiveName"
 
