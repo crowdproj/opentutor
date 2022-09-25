@@ -82,7 +82,13 @@ function selectCardItemForEdit(row, item) {
 
     const btn = $('#edit-card-dialog-sound');
     btn.attr('word-txt', item.word);
-    btn.attr('word-sound', item.sound);
+    if (item.sound) {
+        btn.prop('disabled', false);
+        btn.attr('word-sound', item.sound);
+    } else {
+        btn.prop('disabled', true);
+        btn.removeAttr('word-sound', item.sound);
+    }
 
     const index = selectedDictionary.partsOfSpeech.indexOf(item.partOfSpeech)
     if (index > -1) {
@@ -182,6 +188,7 @@ function initCardEditDialog() {
     soundBtn.off('click').on('click', function () {
         const audio = soundBtn.attr('word-sound');
         if (!audio) {
+            soundBtn.prop('disabled', true);
             return;
         }
         soundBtn.prop('disabled', true);

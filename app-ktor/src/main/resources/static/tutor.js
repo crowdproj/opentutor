@@ -393,12 +393,14 @@ function strikeText(textHolder) {
 }
 
 function drawAndPlayAudio(parent, audio) {
+    const btn = $('.sound', parent);
+    btn.unbind('click')
     if (!audio) {
+        btn.prop('disabled', true)
         return;
     }
-    const btn = $('.sound', parent);
     btn.prop('disabled', false);
-    btn.unbind('click').on('click', function () {
+    btn.on('click', function () {
         btn.prop('disabled', true);
         playAudio(audio, function () {
             btn.prop('disabled', false);

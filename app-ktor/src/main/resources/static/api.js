@@ -11,6 +11,7 @@ const createCardURI = '/v1/api/cards/create'
 const updateCardURI = '/v1/api/cards/update'
 const resetCardURI = '/v1/api/cards/reset'
 const deleteCardURI = '/v1/api/cards/delete'
+const getAudioURI = '/v1/api/sounds/get'
 
 const getAllDictionariesRequestType = 'getAllDictionaries'
 const getAllCardsRequestType = 'getAllCards'
@@ -19,6 +20,7 @@ const createCardRequestType = 'createCard'
 const updateCardRequestType = 'updateCard'
 const resetCardRequestType = 'resetCard'
 const deleteCardRequestType = 'deleteCard'
+const getAudioRequestType = 'getAudio'
 
 async function initKeycloak() {
     if (devMode) {
@@ -110,7 +112,7 @@ function createCard(card, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': createCardRequestType,
-        'card' : card,
+        'card': card,
         'debug': {'mode': runMode},
     }
     post(createCardURI, data, function (res) {
@@ -126,7 +128,7 @@ function updateCard(card, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': updateCardRequestType,
-        'card' : card,
+        'card': card,
         'debug': {'mode': runMode},
     }
     post(updateCardURI, data, function (res) {
@@ -142,7 +144,7 @@ function deleteCard(cardId, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': deleteCardRequestType,
-        'cardId' : cardId,
+        'cardId': cardId,
         'debug': {'mode': runMode},
     }
     post(deleteCardURI, data, function (res) {
@@ -158,7 +160,7 @@ function resetCard(cardId, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': resetCardRequestType,
-        'cardId' : cardId,
+        'cardId': cardId,
         'debug': {'mode': runMode},
     }
     post(resetCardURI, data, function (res) {
@@ -176,9 +178,29 @@ function learnCard(cards, onDone) {
     onDone()
 }
 
-function playAudio(resource, callback) {
-    // TODO
-    console.log("playAudio")
+function playAudio(resourcePath, callback) {
+    if (!callback) {
+        callback = () => {
+        };
+    }
+    const path = resourcePath.split(":")
+    const data = {
+        'requestId': uuid(),
+        'requestType': getAudioRequestType,
+        'lang': path[0],
+        'word': path[1],
+        'debug': {'mode': runMode},
+    }
+    post(getAudioURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            const bytes = base64StringToUint8Array(res.resource).buffer
+            const blob = new Blob([bytes], {type: 'audio/wav'});
+            const url = window.URL.createObjectURL(blob);
+            new Audio(url).play().then(callback);
+        }
+    })
 }
 
 function hasResponseErrors(res) {

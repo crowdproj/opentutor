@@ -79,3 +79,13 @@ function toArray(value, separator) {
 function toFilename(string) {
     return string.replace(/[^a-z\d]/gi, '_').toLowerCase();
 }
+
+function base64StringToUint8Array(base64) {
+    const str = window.atob(base64);
+    const length = str.length;
+    const uint8Array = new Uint8Array(length);
+    for (let i = 0; i < length; i++) {
+        uint8Array[i] = str.charCodeAt(i);
+    }
+    return uint8Array
+}
