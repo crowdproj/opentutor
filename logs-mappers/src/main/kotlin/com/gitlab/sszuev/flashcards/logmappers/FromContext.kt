@@ -56,6 +56,7 @@ private fun CardEntity.toLog() = CardEntityResource(
     answered = this.answered,
     translations = this.translations.takeIf { it.isNotEmpty() },
     examples = this.examples.takeIf { it.isNotEmpty() },
+    sound = this.sound.asString().takeIf { it.isNotBlank() },
 )
 
 private fun CardFilter.toLog() = CardFilterResource(

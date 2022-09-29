@@ -125,10 +125,10 @@ abstract class DbCardRepositoryTest {
         private fun assertSingleError(res: CardEntityDbResponse, field: String, op: String): AppError {
             Assertions.assertEquals(1, res.errors.size) { "Errors: ${res.errors}" }
             val error = res.errors[0]
-            Assertions.assertEquals("database::$op", error.code)
-            Assertions.assertEquals(field, error.field)
-            Assertions.assertEquals("database", error.group)
-            Assertions.assertNull(error.exception)
+            Assertions.assertEquals("database::$op", error.code) { error.toString() }
+            Assertions.assertEquals(field, error.field) { error.toString() }
+            Assertions.assertEquals("database", error.group) { error.toString() }
+            Assertions.assertNull(error.exception) { error.toString() }
             return error
         }
 
@@ -165,6 +165,9 @@ abstract class DbCardRepositoryTest {
         val res2 = repository.getAllCards(DictionaryId("2"))
         Assertions.assertEquals(65, res2.cards.size)
         Assertions.assertEquals(0, res2.errors.size)
+
+        Assertions.assertEquals(LangId("EN"), res1.sourceLanguage)
+        Assertions.assertEquals(LangId("EN"), res2.sourceLanguage)
     }
 
     @Test
@@ -231,6 +234,9 @@ abstract class DbCardRepositoryTest {
         Assertions.assertNotEquals(res1, res2)
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res1.cards.map { it.dictionaryId }.toSet())
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res2.cards.map { it.dictionaryId }.toSet())
+
+        Assertions.assertEquals(LangId("EN"), res1.sourceLanguage)
+        Assertions.assertEquals(LangId("EN"), res2.sourceLanguage)
     }
 
     @Test

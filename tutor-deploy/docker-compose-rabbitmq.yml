@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   rabbitmq:
-    image: rabbitmq:3.10.5-management-alpine
+    image: rabbitmq:3.10.7-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -10,3 +10,6 @@ services:
       RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
       RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
       RABBITMQ_DEFAULT_VHOST: /
+    volumes:
+      - "${DATA_DIR}/rabbitmq/data/:/var/lib/rabbitmq:z"
+      - "${DATA_DIR}/rabbitmq/log/:/var/log/rabbitmq:z"

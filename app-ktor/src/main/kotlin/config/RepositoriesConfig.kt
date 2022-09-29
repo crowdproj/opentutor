@@ -12,12 +12,12 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.speaker.createLocalTTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.RMQTTSResourceRepository
-import com.gitlab.sszuev.flashcards.speaker.test.NullTTSResourceRepository
 
 data class RepositoriesConfig(
     val prodTTSClientRepository: TTSResourceRepository = RMQTTSResourceRepository(),
-    val testTTSClientRepository: TTSResourceRepository = NullTTSResourceRepository,
+    val testTTSClientRepository: TTSResourceRepository = createLocalTTSResourceRepository(),
     val prodCardRepository: DbCardRepository = PgDbCardRepository(),
     val testCardRepository: DbCardRepository = MemDbCardRepository(),
     val prodDictionaryRepository: DbDictionaryRepository = PgDbDictionaryRepository(),

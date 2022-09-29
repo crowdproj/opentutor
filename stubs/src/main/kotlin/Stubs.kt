@@ -39,6 +39,7 @@ val stubCard = CardEntity(
     translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитация")),
     examples = listOf("That was the last candle stub I had.", "\$500 ticket stub."),
     details = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
+    sound = ResourceId("en:stub"),
 )
 
 val stubCards = IntRange(1, 3)

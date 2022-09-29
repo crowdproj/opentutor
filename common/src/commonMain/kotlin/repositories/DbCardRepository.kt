@@ -49,13 +49,20 @@ interface DbCardRepository {
     fun deleteCard(id: CardId): DeleteEntityDbResponse
 }
 
-data class CardEntitiesDbResponse(val cards: List<CardEntity>, val errors: List<AppError> = emptyList()) {
+data class CardEntitiesDbResponse(
+    val cards: List<CardEntity>,
+    val sourceLanguage: LangId = LangId.NONE,
+    val errors: List<AppError> = emptyList(),
+) {
     companion object {
         val EMPTY = CardEntitiesDbResponse(cards = emptyList(), errors = emptyList())
     }
 }
 
-data class CardEntityDbResponse(val card: CardEntity, val errors: List<AppError> = emptyList()) {
+data class CardEntityDbResponse(
+    val card: CardEntity,
+    val errors: List<AppError> = emptyList(),
+) {
     companion object {
         val EMPTY = CardEntityDbResponse(card = CardEntity.EMPTY)
     }

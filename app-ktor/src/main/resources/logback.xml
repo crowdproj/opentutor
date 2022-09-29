@@ -1,7 +1,7 @@
 <configuration debug="true">
 
     <!-- For ELK-Stack: Kafka log's host -->
-    <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-localhost:9094}"/>
+    <property name="LOGS_KAFKA_HOSTS" value="${BOOTSTRAP_SERVERS:-LOGS_KAFKA_HOSTS_IS_UNDEFINED}"/>
 
     <!-- For ELK-Stack: Kafka log's topic -->
     <property name="LOGS_KAFKA_TOPIC" value="${LOGS_KAFKA_TOPIC:-flashcards-logs}"/>

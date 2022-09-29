@@ -36,10 +36,13 @@ dependencies {
     val testContainersVersion: String by project
     val mockkVersion: String by project
     val typesafeConfigVersion: String by project
+    val commonsCompressVersion: String by project
 
     implementation("com.rabbitmq:amqp-client:$rabbitVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
+    implementation("org.apache.commons:commons-compress:$commonsCompressVersion")
+
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
 

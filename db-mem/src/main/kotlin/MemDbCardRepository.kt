@@ -35,8 +35,10 @@ class MemDbCardRepository(
                 cards = emptyList(),
                 errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
             )
+        val cards = dictionary.cards.values.map { it.toEntity() }
         return CardEntitiesDbResponse(
-            cards = dictionary.cards.values.map { it.toEntity() },
+            cards = cards,
+            sourceLanguage = dictionary.sourceLanguage.asLangId(),
             errors = emptyList()
         )
     }
@@ -48,6 +50,18 @@ class MemDbCardRepository(
         if (dictionaries.isEmpty()) {
             return CardEntitiesDbResponse(cards = emptyList())
         }
+        val sourceLanguages = dictionaries.map { it.sourceLanguage.asLangId() }.toSet()
+        val targetLanguages = dictionaries.map { it.targetLanguage.asLangId() }.toSet()
+        if (sourceLanguages.size != 1 || targetLanguages.size != 1) {
+            return CardEntitiesDbResponse(
+                cards = emptyList(),
+                errors = listOf(wrongDictionaryLanguageFamilies(
+                        operation = "searchCard",
+                        dictionaryIds = filter.dictionaryIds,
+                    )
+                )
+            )
+        }
         var fromDb = dictionaries.flatMap { it.cards.values }.asSequence()
         if (!filter.withUnknown) {
             fromDb = fromDb.filter { sysConfig.status(it.answered) != CardStatus.LEARNED }
@@ -56,7 +70,7 @@ class MemDbCardRepository(
             fromDb = fromDb.shuffled(Random.Default)
         }
         val cards = fromDb.take(filter.length).map { it.toEntity() }.toList()
-        return CardEntitiesDbResponse(cards = cards)
+        return CardEntitiesDbResponse(cards = cards, sourceLanguage = sourceLanguages.single())
     }
 
     override fun createCard(card: CardEntity): CardEntityDbResponse {

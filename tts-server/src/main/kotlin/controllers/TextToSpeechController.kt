@@ -1,9 +1,9 @@
 package com.gitlab.sszuev.flashcards.speaker.controllers
 
+import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.ConnectionConfig
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.ProcessorConfig
 import com.gitlab.sszuev.flashcards.speaker.rabbitmq.TextToSpeechProcessorImpl
-import com.gitlab.sszuev.flashcards.speaker.services.TextToSpeechService
 import kotlinx.coroutines.*
 import java.util.concurrent.Executors
 

@@ -17,6 +17,7 @@ dependencies {
     val typesafeConfigVersion: String by project
 
     implementation(project(":common"))
+    implementation(project(":tts-server"))
 
     implementation("com.rabbitmq:amqp-client:$rabbitVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
