@@ -1,10 +1,21 @@
-## OpenTutor - a flashcard system to learn words
+## OpenTutor - a service for compiling user dictionaries and learning foreign words
 
-A simple opensource application that provides flashcards to learn foreign words.    
-It is supposed to be similar to Lingvo Tutor.
+A simple open-source kotlin-ktor application for compiling custom dictionaries and learning foreign words through flashcards.         
+It is supposed to be an extended analogue of the desktop program *Lingvo Tutor*, which is a component of well-known [ABBYY Lingvo](https://www.lingvo.ru/multi/).
 
-#### It is a training project, which is used to demonstrate different technologies and approaches.
+This is a second edition, the first one is a java-spring application, which home is [here](https://gitlab.com/sszuev/flashcards)
 
-## OpenTutor - MVP
+#### Requirements: 
+- java-11+
+- gradle-7+
+- docker
 
-MVP exists and is runnable, the project home is https://gitlab.com/sszuev/flashcards
+#### Build and run:
+- [app-ktor/README](./app-ktor/README.md)
+
+#### License:
+- Apache License Version 2.0
+
+#### Example (dictionaries):
+
+![MVP: dictionaries](./mvp-dictionaries.png)
