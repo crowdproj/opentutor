@@ -9,6 +9,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 
 class PgDbCardRepository(
@@ -106,10 +107,10 @@ class PgDbCardRepository(
         return connection.execute({
             requireExiting(card)
             Examples.deleteWhere {
-                Examples.cardId eq card.cardId.asDbId()
+                cardId eq card.cardId.asDbId()
             }
             Translations.deleteWhere {
-                Translations.cardId eq card.cardId.asDbId()
+                cardId eq card.cardId.asDbId()
             }
             val record = Card.findById(card.cardId.asRecordId())
             if (record == null) {
