@@ -80,18 +80,29 @@ application {
 }
 
 docker {
+    val imageName: String
+    val tag = project.version.toString().toLowerCase()
+    val javaArgs = mutableListOf("-Xms256m", "-Xmx512m")
+    if (System.getProperty("demo") == null) {
+        imageName = "sszuev/open-tutor"
+    } else {
+        println("Build demo image")
+        imageName = "sszuev/open-tutor-demo"
+        // for demo, we path special parameters
+        javaArgs.add("-DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6")
+        javaArgs.add("-DRUN_MODE=test")
+    }
     javaApplication {
         mainClassName.set(application.mainClass.get())
         baseImage.set("adoptopenjdk/openjdk11:alpine-jre")
-        maintainer.set("ssz")
+        maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         ports.set(listOf(8080))
-        val imageName = project.name
         images.set(
             listOf(
-                "$imageName:${project.version}",
+                "$imageName:$tag",
                 "$imageName:latest"
             )
         )
-        jvmArgs.set(listOf("-Xms256m", "-Xmx512m"))
+        jvmArgs.set(javaArgs)
     }
 }
