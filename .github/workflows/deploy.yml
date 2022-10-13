@@ -1,0 +1,52 @@
+
+name: 'build & deploy open-tutor'
+run-name: ${{ github.actor }} - build, deploy image and push it to hub.docker.com
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the repo
+        uses: actions/checkout@v3
+
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Validate gradle wrapper
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Execute Gradle build
+        run: ./gradlew clean build dockerBuildImage -Ddemo=true >/dev/null 2>&1
+
+      - name: Extract project env details
+        run: cat ./app-ktor/project-tag.env >> $GITHUB_ENV
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: sszuev/open-tutor-demo
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v3
+        with:
+          context: ./app-ktor/build/docker/
+          push: true
+          tags: sszuev/open-tutor-demo:${{ env.PROJECT_TAG }},sszuev/open-tutor-demo:latest
+          labels: ${{ steps.meta.outputs.labels }}

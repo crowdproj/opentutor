@@ -1,3 +1,6 @@
+import java.nio.file.Files
+import java.nio.file.Paths
+
 plugins {
     kotlin("jvm")
     id("application")
@@ -77,6 +80,15 @@ tasks.test {
 
 application {
     mainClass.set("com.gitlab.sszuev.flashcards.MainKt")
+}
+
+tasks.create("createTagFile") {
+    val rootDir = project(":app-ktor").projectDir
+    val projectTagFile = Paths.get("$rootDir/project-tag.env")
+    val tag = project.version.toString().toLowerCase()
+    val projectTagFileContent = "PROJECT_TAG=$tag"
+    println(projectTagFileContent)
+    Files.writeString(projectTagFile, projectTagFileContent)
 }
 
 docker {
