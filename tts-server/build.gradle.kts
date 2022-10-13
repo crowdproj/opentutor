@@ -1,7 +1,6 @@
 plugins {
     kotlin("jvm")
     id("application")
-    id("com.bmuschko.docker-java-application")
 }
 
 group = rootProject.group
@@ -9,22 +8,6 @@ version = rootProject.version
 
 application {
     mainClass.set("com.gitlab.sszuev.flashcards.speaker.MainKt")
-}
-
-docker {
-    javaApplication {
-        mainClassName.set(application.mainClass.get())
-        baseImage.set("adoptopenjdk/openjdk11:alpine-jre")
-        maintainer.set("ssz")
-        val imageName = project.name
-        images.set(
-            listOf(
-                "$imageName:${project.version}",
-                "$imageName:latest"
-            )
-        )
-        jvmArgs.set(listOf("-Xms256m", "-Xmx512m"))
-    }
 }
 
 dependencies {
