@@ -1,13 +1,22 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.dbmem.DictionaryStore
+import com.gitlab.sszuev.flashcards.dbmem.IdSequences
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
 import io.ktor.client.call.*
+import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class DictionaryControllerRunTest {
+
+    @AfterEach
+    fun resetDb() {
+        IdSequences.globalIdsGenerator.reset()
+        DictionaryStore.clear()
+    }
 
     @Test
     fun `test get-all-dictionaries success`() = testSecuredApp {

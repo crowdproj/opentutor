@@ -53,8 +53,10 @@ internal class DictionaryCorProcessorRunTest {
             invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw TestException() }
         )
 
+        var wasCalled = false
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeGetAllDictionaries = {
+                wasCalled = true
                 DictionaryEntitiesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
             }
         )
@@ -63,6 +65,7 @@ internal class DictionaryCorProcessorRunTest {
 
         DictionaryCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.GET_ALL_DICTIONARIES), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())

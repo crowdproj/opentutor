@@ -11,6 +11,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
 import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
 
 fun ChainDSL<CardContext>.processGetCard() = worker {
     this.name = "process get-card request"
@@ -132,7 +133,7 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val res = this.repositories.cardRepository(this.workMode).resetCard(this.normalizedRequestCardEntityId)
+        val res = this.repositories.cardRepository(this.workMode).deleteCard(this.normalizedRequestCardEntityId)
         this.postProcess(res)
     }
     onException {
@@ -158,6 +159,13 @@ private suspend fun CardContext.postProcess(res: CardEntitiesDbResponse) {
 
 private fun CardContext.postProcess(res: CardEntityDbResponse) {
     this.responseCardEntity = res.card
+    if (res.errors.isNotEmpty()) {
+        this.errors.addAll(res.errors)
+    }
+    this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+}
+
+private fun CardContext.postProcess(res: DeleteEntityDbResponse) {
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
     }

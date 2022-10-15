@@ -177,9 +177,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/LearnCardsRequest'
+              $ref: '#/components/schemas/LearnCardsRequest'
         required: true
       responses:
         200:
@@ -200,9 +198,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/DeleteCardRequest'
+              $ref: '#/components/schemas/DeleteCardRequest'
         required: true
       responses:
         200:
@@ -223,9 +219,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/ResetCardRequest'
+              $ref: '#/components/schemas/ResetCardRequest'
         required: true
       responses:
         200:

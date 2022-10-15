@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.dbmem.dao
+package com.gitlab.sszuev.flashcards.dbmem
 
 import java.util.concurrent.atomic.AtomicLong
 
@@ -27,6 +27,17 @@ class IdSequences {
 
     fun nextTranslationId(): Long {
         return translationSequence.incrementAndGet()
+    }
+
+    /**
+     * Back door for testing
+     */
+    fun reset() {
+        userSequence.set(0)
+        dictionarySequence.set(0)
+        cardSequence.set(0)
+        exampleSequence.set(0)
+        translationSequence.set(0)
     }
 
     companion object {

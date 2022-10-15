@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.dbmem.dao.IdSequences
 import com.gitlab.sszuev.flashcards.dbmem.dao.User
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
@@ -47,9 +46,6 @@ class UserStore private constructor(
 
     val size: Long
         get() = resources.size.toLong()
-
-    val keys: Set<UUID>
-        get() = resources.keys
 
     operator fun get(id: UUID): User? {
         return resources[id]

@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.dbmem.dao.IdSequences
 import com.gitlab.sszuev.flashcards.dbmem.dao.User
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test

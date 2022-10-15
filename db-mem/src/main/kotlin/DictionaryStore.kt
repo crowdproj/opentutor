@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
-import com.gitlab.sszuev.flashcards.dbmem.dao.IdSequences
 import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryWriter
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryReader
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryWriter
@@ -21,7 +20,6 @@ import kotlin.streams.asSequence
  */
 class DictionaryStore private constructor(
     private val resources: MutableMap<Long, Pair<String, Dictionary>>,
-    internal val ids: IdSequences,
     dbConfig: MemDbConfig,
     sysConfig: SysConfig,
 ) {
@@ -76,7 +74,7 @@ class DictionaryStore private constructor(
         /**
          * Back door for testing
          */
-        internal fun clear() {
+        fun clear() {
             stores.clear()
         }
 
@@ -95,7 +93,7 @@ class DictionaryStore private constructor(
         ): DictionaryStore {
             val key = Configuration(location.toString(), dbConfig, sysConfig)
             return stores.computeIfAbsent(key) {
-                DictionaryStore(loadDatabaseFromDirectory(key.location, ids), ids, dbConfig, sysConfig)
+                DictionaryStore(loadDatabaseFromDirectory(key.location, ids), dbConfig, sysConfig)
             }
         }
 
@@ -114,7 +112,7 @@ class DictionaryStore private constructor(
         ): DictionaryStore {
             val key = Configuration(location, dbConfig, sysConfig)
             return stores.computeIfAbsent(key) {
-                DictionaryStore(loadDatabase(key.location, ids), ids, dbConfig, sysConfig)
+                DictionaryStore(loadDatabase(key.location, ids), dbConfig, sysConfig)
             }
         }
 

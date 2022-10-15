@@ -63,8 +63,10 @@ internal class CardCorProcessorRunCardsTest {
         val testId = CardId("42")
         val testResponseEntity = stubCard.copy(cardId = testId)
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeGetCard = {
+                wasCalled = true
                 CardEntityDbResponse(if (it == testId) testResponseEntity else CardEntity.EMPTY)
             }
         )
@@ -74,6 +76,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -85,9 +88,18 @@ internal class CardCorProcessorRunCardsTest {
     fun `test get-card error - unexpected fail`() = runTest {
         val testCardId = CardId("42")
 
-        val cardRepository = MockDbCardRepository(invokeGetCard = { throw TestException() })
+        var getUserWasCalled = false
+        var getCardWasCalled = false
+        val cardRepository = MockDbCardRepository(invokeGetCard = {
+            getCardWasCalled = true
+            throw TestException()
+        }
+        )
         val userRepository = MockDbUserRepository(
-            invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw TestException() }
+            invokeGetUser = {
+                getUserWasCalled = true
+                if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw TestException()
+            }
         )
 
         val context =
@@ -97,6 +109,8 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(getUserWasCalled)
+        Assertions.assertTrue(getCardWasCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_CARD), context.requestId)
         assertUnknownError(context, CardOperation.GET_CARD)
     }
@@ -106,8 +120,10 @@ internal class CardCorProcessorRunCardsTest {
         val testDictionaryId = DictionaryId("42")
         val testResponseEntities = stubCards
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeGetAllCards = {
+                wasCalled = true
                 CardEntitiesDbResponse(if (it == testDictionaryId) testResponseEntities else emptyList())
             }
         )
@@ -117,6 +133,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -129,12 +146,12 @@ internal class CardCorProcessorRunCardsTest {
         val testDictionaryId = DictionaryId("42")
         val testResponseEntities = stubCards
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeGetAllCards = {
+                wasCalled = true
                 CardEntitiesDbResponse(
-                    if (it != testDictionaryId)
-                        testResponseEntities
-                    else throw TestException()
+                    if (it != testDictionaryId) testResponseEntities else throw TestException()
                 )
             }
         )
@@ -144,6 +161,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
         Assertions.assertEquals(0, context.responseCardEntityList.size)
         assertUnknownError(context, CardOperation.GET_ALL_CARDS)
@@ -154,8 +172,10 @@ internal class CardCorProcessorRunCardsTest {
         val testResponseEntity = stubCard.copy(word = "HHH")
         val testRequestEntity = stubCard.copy(word = "XXX", cardId = CardId.NONE)
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeCreateCard = {
+                wasCalled = true
                 CardEntityDbResponse(if (it.word == testRequestEntity.word) testResponseEntity else testRequestEntity)
             }
         )
@@ -165,6 +185,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.CREATE_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status) { "Errors: ${context.errors}" }
         Assertions.assertTrue(context.errors.isEmpty())
@@ -176,8 +197,10 @@ internal class CardCorProcessorRunCardsTest {
     fun `test create-card unexpected fail`() = runTest {
         val testRequestEntity = stubCard.copy(word = "XXX", cardId = CardId.NONE)
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeCreateCard = {
+                wasCalled = true
                 CardEntityDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
             }
         )
@@ -187,6 +210,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.CREATE_CARD), context.requestId)
         Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
         assertUnknownError(context, CardOperation.CREATE_CARD)
@@ -202,8 +226,10 @@ internal class CardCorProcessorRunCardsTest {
         )
         val testResponseEntities = stubCards
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeSearchCards = {
+                wasCalled = true
                 CardEntitiesDbResponse(if (it == testFilter) testResponseEntities else emptyList())
             }
         )
@@ -213,6 +239,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.SEARCH_CARDS), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -230,12 +257,12 @@ internal class CardCorProcessorRunCardsTest {
         )
         val testResponseEntities = stubCards
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeSearchCards = {
+                wasCalled = true
                 CardEntitiesDbResponse(
-                    if (it != testFilter)
-                        testResponseEntities
-                    else throw TestException()
+                    if (it != testFilter) testResponseEntities else throw TestException()
                 )
             }
         )
@@ -244,6 +271,8 @@ internal class CardCorProcessorRunCardsTest {
         context.requestCardFilter = testFilter
 
         CardCorProcessor().execute(context)
+
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(0, context.responseCardEntityList.size)
         assertUnknownError(context, CardOperation.SEARCH_CARDS)
     }
@@ -254,8 +283,10 @@ internal class CardCorProcessorRunCardsTest {
         val testRequestEntity = stubCard.copy(word = "XXX", cardId = cardId)
         val testResponseEntity = stubCard.copy(word = "HHH")
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeUpdateCard = {
+                wasCalled = true
                 CardEntityDbResponse(if (it.cardId == cardId) testResponseEntity else testRequestEntity)
             }
         )
@@ -265,6 +296,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.UPDATE_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status) { "Errors: ${context.errors}" }
         Assertions.assertTrue(context.errors.isEmpty())
@@ -276,8 +308,10 @@ internal class CardCorProcessorRunCardsTest {
         val cardId = CardId("42")
         val testRequestEntity = stubCard.copy(word = "XXX", cardId = cardId)
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeUpdateCard = {
+                wasCalled = true
                 CardEntityDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
             }
         )
@@ -287,6 +321,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.UPDATE_CARD), context.requestId)
         Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
         assertUnknownError(context, CardOperation.UPDATE_CARD)
@@ -300,8 +335,10 @@ internal class CardCorProcessorRunCardsTest {
 
         val testResponseEntities = listOf(stubCard)
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeLearnCards = {
+                wasCalled = true
                 CardEntitiesDbResponse(
                     cards = if (it == testLearn) testResponseEntities else emptyList(),
                 )
@@ -313,6 +350,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.LEARN_CARDS), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -331,8 +369,10 @@ internal class CardCorProcessorRunCardsTest {
             AppError(code = "test")
         )
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeLearnCards = {
+                wasCalled = true
                 CardEntitiesDbResponse(
                     cards = if (it == testLearn) testResponseEntities else emptyList(),
                     errors = if (it == testLearn) testResponseErrors else emptyList()
@@ -345,6 +385,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.LEARN_CARDS), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(testResponseErrors, context.errors)
@@ -356,8 +397,10 @@ internal class CardCorProcessorRunCardsTest {
         val testId = CardId("42")
         val testResponseEntity = stubCard.copy(cardId = testId)
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeResetCard = {
+                wasCalled = true
                 CardEntityDbResponse(
                     card = if (it == testId) testResponseEntity else CardEntity.EMPTY,
                 )
@@ -369,6 +412,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.RESET_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -380,8 +424,10 @@ internal class CardCorProcessorRunCardsTest {
         val testId = CardId("42")
         val response = DeleteEntityDbResponse()
 
+        var wasCalled = false
         val repository = MockDbCardRepository(
             invokeDeleteCard = {
+                wasCalled = true
                 if (it == testId) response else throw TestException()
             }
         )
@@ -391,6 +437,7 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(CardOperation.DELETE_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -416,14 +463,16 @@ internal class CardCorProcessorRunCardsTest {
             length = 42,
         )
 
-        val cardRepository = MockDbCardRepository(invokeGetCard = { throw TestException() })
-        val userRepository =
-            MockDbUserRepository(invokeGetUser = {
-                UserEntityDbResponse(
-                    user = AppUserEntity.EMPTY,
-                    errors = listOf(testError)
-                )
-            })
+        var getUserWasCalled = false
+        var getCardWasCalled = false
+        val cardRepository = MockDbCardRepository(invokeGetCard = {
+            getCardWasCalled = true
+            throw TestException()
+        })
+        val userRepository = MockDbUserRepository(invokeGetUser = {
+            getUserWasCalled = true
+            UserEntityDbResponse(user = AppUserEntity.EMPTY, errors = listOf(testError))
+        })
 
         val context = testContext(op, cardRepository = cardRepository, userRepository = userRepository)
         context.requestAppAuthId = testUid
@@ -435,6 +484,8 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(getUserWasCalled)
+        Assertions.assertFalse(getCardWasCalled)
         Assertions.assertEquals(requestId(op), context.requestId)
         val actual = assertSingleError(context, op)
         Assertions.assertSame(testError, actual)

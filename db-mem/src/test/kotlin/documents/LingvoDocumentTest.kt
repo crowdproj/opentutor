@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem.documents
 
 import com.gitlab.sszuev.flashcards.common.SysConfig
+import com.gitlab.sszuev.flashcards.dbmem.IdSequences
 import com.gitlab.sszuev.flashcards.dbmem.dao.*
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryReader
 import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryWriter
