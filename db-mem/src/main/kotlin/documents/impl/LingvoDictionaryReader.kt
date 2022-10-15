@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem.documents.impl
 
 import com.gitlab.sszuev.flashcards.common.CardStatus
+import com.gitlab.sszuev.flashcards.dbmem.IdSequences
 import com.gitlab.sszuev.flashcards.dbmem.dao.*
 import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryReader
 import org.w3c.dom.Element

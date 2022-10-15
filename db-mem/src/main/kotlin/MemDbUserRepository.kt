@@ -9,12 +9,14 @@ import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import java.util.*
 
 class MemDbUserRepository(
-    dbConfig: MemDbConfig = MemDbConfig()
+    dbConfig: MemDbConfig = MemDbConfig(),
+    ids: IdSequences = IdSequences.globalIdsGenerator,
 ) : DbUserRepository {
 
     private val users = UserStore.load(
         location = dbConfig.dataLocation,
         dbConfig = dbConfig,
+        ids = ids,
     )
 
     override fun getUser(authId: AppAuthId): UserEntityDbResponse {

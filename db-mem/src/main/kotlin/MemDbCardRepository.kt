@@ -13,11 +13,13 @@ import kotlin.random.Random
 class MemDbCardRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
     private val sysConfig: SysConfig = SysConfig(),
+    private val ids: IdSequences = IdSequences.globalIdsGenerator,
 ) : DbCardRepository {
     private val dictionaries = DictionaryStore.load(
         location = dbConfig.dataLocation,
         dbConfig = dbConfig,
         sysConfig = sysConfig,
+        ids = ids,
     )
 
     override fun getCard(id: CardId): CardEntityDbResponse {
@@ -78,7 +80,7 @@ class MemDbCardRepository(
         val dictionaryId = card.dictionaryId.asDbId()
         val dictionary =
             dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "createCard")
-        val record = card.toDbRecord(dictionaries.ids.nextCardId(), dictionaries.ids)
+        val record = card.toDbRecord(ids.nextCardId(), ids)
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
         return CardEntityDbResponse(card = record.toEntity())
@@ -93,7 +95,7 @@ class MemDbCardRepository(
         if (!dictionary.cards.containsKey(id)) {
             return createNoCardResponseError(card.cardId, "updateCard")
         }
-        val record = card.toDbRecord(id, dictionaries.ids)
+        val record = card.toDbRecord(id, ids)
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
         return CardEntityDbResponse(card = record.toEntity())

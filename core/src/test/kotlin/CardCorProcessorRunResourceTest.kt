@@ -49,9 +49,17 @@ internal class CardCorProcessorRunResourceTest {
             data = ByteArray(42) { 42 }
         )
 
+        var findResourceIdWasCalled = false
+        var getResourceWasCalled = false
         val repository = MockTTSResourceRepository(
-            invokeFindResourceId = { ResourceIdTTSResponse(testResourceId) },
-            invokeGetResource = { ResourceEntityTTSResponse(testResourceEntity) },
+            invokeFindResourceId = {
+                findResourceIdWasCalled = true
+                ResourceIdTTSResponse(testResourceId)
+            },
+            invokeGetResource = {
+                getResourceWasCalled = true
+                ResourceEntityTTSResponse(testResourceEntity)
+            },
         )
 
         val context = testContext(repository)
@@ -59,6 +67,8 @@ internal class CardCorProcessorRunResourceTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(findResourceIdWasCalled)
+        Assertions.assertTrue(getResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -78,9 +88,17 @@ internal class CardCorProcessorRunResourceTest {
             data = ByteArray(42) { 42 }
         ))
 
+        var findResourceIdWasCalled = false
+        var getResourceWasCalled = false
         val repository = MockTTSResourceRepository(
-            invokeFindResourceId = { ResourceIdTTSResponse.EMPTY },
-            invokeGetResource = { testResourceEntity },
+            invokeFindResourceId = {
+                findResourceIdWasCalled = true
+                ResourceIdTTSResponse.EMPTY
+            },
+            invokeGetResource = {
+                getResourceWasCalled = true
+                testResourceEntity
+            },
         )
 
         val context = testContext(repository)
@@ -88,6 +106,8 @@ internal class CardCorProcessorRunResourceTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(findResourceIdWasCalled)
+        Assertions.assertFalse(getResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
@@ -109,9 +129,17 @@ internal class CardCorProcessorRunResourceTest {
         val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
         val testResourceIdFound = ResourceIdTTSResponse(ResourceId("test-id"))
 
+        var findResourceIdWasCalled = false
+        var getResourceWasCalled = false
         val repository = MockTTSResourceRepository(
-            invokeFindResourceId = { testResourceIdFound },
-            invokeGetResource = { throw TestException() },
+            invokeFindResourceId = {
+                findResourceIdWasCalled = true
+                testResourceIdFound
+            },
+            invokeGetResource = {
+                getResourceWasCalled = true
+                throw TestException()
+            },
         )
 
         val context = testContext(repository)
@@ -119,6 +147,8 @@ internal class CardCorProcessorRunResourceTest {
 
         CardCorProcessor().execute(context)
 
+        Assertions.assertTrue(findResourceIdWasCalled)
+        Assertions.assertTrue(getResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
