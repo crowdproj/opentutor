@@ -8,7 +8,7 @@ import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import com.gitlab.sszuev.flashcards.repositories.DictionaryEntitiesDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -57,7 +57,7 @@ internal class DictionaryCorProcessorRunTest {
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeGetAllDictionaries = {
                 wasCalled = true
-                DictionaryEntitiesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
+                DictionariesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
             }
         )
 

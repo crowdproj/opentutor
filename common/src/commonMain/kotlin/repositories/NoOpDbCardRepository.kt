@@ -3,35 +3,35 @@ package com.gitlab.sszuev.flashcards.repositories
 import com.gitlab.sszuev.flashcards.model.domain.*
 
 object NoOpDbCardRepository : DbCardRepository {
-    override fun getCard(id: CardId): CardEntityDbResponse {
+    override fun getCard(id: CardId): CardDbResponse {
         noOp()
     }
 
-    override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
+    override fun getAllCards(id: DictionaryId): CardsDbResponse {
         noOp()
     }
 
-    override fun searchCard(filter: CardFilter): CardEntitiesDbResponse {
+    override fun searchCard(filter: CardFilter): CardsDbResponse {
         noOp()
     }
 
-    override fun createCard(card: CardEntity): CardEntityDbResponse {
+    override fun createCard(card: CardEntity): CardDbResponse {
         noOp()
     }
 
-    override fun updateCard(card: CardEntity): CardEntityDbResponse {
+    override fun updateCard(card: CardEntity): CardDbResponse {
         noOp()
     }
 
-    override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
+    override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
         noOp()
     }
 
-    override fun resetCard(id: CardId): CardEntityDbResponse {
+    override fun resetCard(id: CardId): CardDbResponse {
         noOp()
     }
 
-    override fun deleteCard(id: CardId): DeleteEntityDbResponse {
+    override fun deleteCard(id: CardId): DeleteCardDbResponse {
         noOp()
     }
 

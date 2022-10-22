@@ -3,15 +3,17 @@ package com.gitlab.sszuev.flashcards.dbmem
 import com.gitlab.sszuev.flashcards.dbmem.dao.Card
 import com.gitlab.sszuev.flashcards.dbmem.dao.Translation
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 
+@Order(1)
 internal class DictionaryStoreTest {
 
     @Test
     fun `test load dictionaries from class-path`() {
-        val dictionaries = DictionaryStore.load(location = "classpath:/data", ids = IdSequences())
+        val dictionaries = DictionaryStore.load(location = "classpath:$classPathResourceDir", ids = IdSequences())
         Assertions.assertEquals(2, dictionaries.size)
         Assertions.assertEquals("Business vocabulary (Job)", dictionaries[1]!!.name)
         Assertions.assertEquals("Weather", dictionaries[2]!!.name)
@@ -22,7 +24,7 @@ internal class DictionaryStoreTest {
 
     @Test
     fun `test load dictionaries from directory & flush & reload`(@TempDir dir: Path) {
-        copyClassPathDataToDir(dir)
+        copyClassPathDataToDir(classPathResourceDir, dir)
         val dictionaries1 = DictionaryStore.load(location = dir, ids = IdSequences())
         Assertions.assertEquals(2, dictionaries1.size)
         Assertions.assertEquals("Business vocabulary (Job)", dictionaries1[1]!!.name)

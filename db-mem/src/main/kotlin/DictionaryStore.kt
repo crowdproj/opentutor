@@ -52,6 +52,10 @@ class DictionaryStore private constructor(
         return resources[id]?.second
     }
 
+    operator fun minus(id: Long): Dictionary? {
+        return resources.remove(id)?.second
+    }
+
     /**
      * Flushes the specified dictionary data to disk.
      * It works only if this store is attached to physical directory.

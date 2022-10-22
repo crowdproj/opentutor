@@ -67,7 +67,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeGetCard = {
                 wasCalled = true
-                CardEntityDbResponse(if (it == testId) testResponseEntity else CardEntity.EMPTY)
+                CardDbResponse(if (it == testId) testResponseEntity else CardEntity.EMPTY)
             }
         )
 
@@ -124,7 +124,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeGetAllCards = {
                 wasCalled = true
-                CardEntitiesDbResponse(if (it == testDictionaryId) testResponseEntities else emptyList())
+                CardsDbResponse(if (it == testDictionaryId) testResponseEntities else emptyList())
             }
         )
 
@@ -150,7 +150,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeGetAllCards = {
                 wasCalled = true
-                CardEntitiesDbResponse(
+                CardsDbResponse(
                     if (it != testDictionaryId) testResponseEntities else throw TestException()
                 )
             }
@@ -176,7 +176,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeCreateCard = {
                 wasCalled = true
-                CardEntityDbResponse(if (it.word == testRequestEntity.word) testResponseEntity else testRequestEntity)
+                CardDbResponse(if (it.word == testRequestEntity.word) testResponseEntity else testRequestEntity)
             }
         )
 
@@ -201,7 +201,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeCreateCard = {
                 wasCalled = true
-                CardEntityDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
+                CardDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
             }
         )
 
@@ -230,7 +230,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeSearchCards = {
                 wasCalled = true
-                CardEntitiesDbResponse(if (it == testFilter) testResponseEntities else emptyList())
+                CardsDbResponse(if (it == testFilter) testResponseEntities else emptyList())
             }
         )
 
@@ -261,7 +261,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeSearchCards = {
                 wasCalled = true
-                CardEntitiesDbResponse(
+                CardsDbResponse(
                     if (it != testFilter) testResponseEntities else throw TestException()
                 )
             }
@@ -287,7 +287,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeUpdateCard = {
                 wasCalled = true
-                CardEntityDbResponse(if (it.cardId == cardId) testResponseEntity else testRequestEntity)
+                CardDbResponse(if (it.cardId == cardId) testResponseEntity else testRequestEntity)
             }
         )
 
@@ -312,7 +312,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeUpdateCard = {
                 wasCalled = true
-                CardEntityDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
+                CardDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
             }
         )
 
@@ -339,7 +339,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeLearnCards = {
                 wasCalled = true
-                CardEntitiesDbResponse(
+                CardsDbResponse(
                     cards = if (it == testLearn) testResponseEntities else emptyList(),
                 )
             }
@@ -373,7 +373,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeLearnCards = {
                 wasCalled = true
-                CardEntitiesDbResponse(
+                CardsDbResponse(
                     cards = if (it == testLearn) testResponseEntities else emptyList(),
                     errors = if (it == testLearn) testResponseErrors else emptyList()
                 )
@@ -401,7 +401,7 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeResetCard = {
                 wasCalled = true
-                CardEntityDbResponse(
+                CardDbResponse(
                     card = if (it == testId) testResponseEntity else CardEntity.EMPTY,
                 )
             }
@@ -422,7 +422,7 @@ internal class CardCorProcessorRunCardsTest {
     @Test
     fun `test delete-card success`() = runTest {
         val testId = CardId("42")
-        val response = DeleteEntityDbResponse()
+        val response = DeleteCardDbResponse()
 
         var wasCalled = false
         val repository = MockDbCardRepository(

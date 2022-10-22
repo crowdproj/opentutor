@@ -146,7 +146,7 @@ internal class LingvoDocumentTest {
     fun `test LingvoDictionaryReader`() {
         // word + translations must be unique
         val cards: MutableSet<String> = HashSet()
-        val dic = readResourceDictionary("/data/BusinessEnRu.xml")
+        val dic = readResourceDictionary("/db-mem-test-data/BusinessEnRu.xml")
         dic.cards.values.forEach { c ->
             val w = toKey(c)
             LOGGER.info("{}", w)
@@ -158,7 +158,7 @@ internal class LingvoDocumentTest {
 
     @Test
     fun `test read-write round trip`(@TempDir dir: Path) {
-        val orig = readResourceDictionary("/data/WeatherEnRu.xml")
+        val orig = readResourceDictionary("/db-mem-test-data/WeatherEnRu.xml")
         val tmp = dir.resolve("test-WeatherEnRu.xml")
 
         Files.newOutputStream(tmp).use { createWriter().write(orig, it) }

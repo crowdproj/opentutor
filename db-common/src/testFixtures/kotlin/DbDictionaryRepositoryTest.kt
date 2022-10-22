@@ -4,16 +4,17 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.*
 
+@Suppress("FunctionName")
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 abstract class DbDictionaryRepositoryTest {
     abstract val repository: DbDictionaryRepository
 
+    @Order(1)
     @Test
     fun `test get all dictionaries by user-id success`() {
         val res = repository.getAllDictionaries(AppUserId("42"))
-        Assertions.assertEquals(2, res.dictionaries.size)
         Assertions.assertTrue(res.errors.isEmpty())
 
         val businessDictionary = res.dictionaries[0]
@@ -21,7 +22,6 @@ abstract class DbDictionaryRepositoryTest {
         Assertions.assertEquals("Business vocabulary (Job)", businessDictionary.name)
         Assertions.assertEquals(LangId("EN"), businessDictionary.sourceLangId)
         Assertions.assertEquals(LangId("RU"), businessDictionary.targetLangId)
-
         val weatherDictionary = res.dictionaries[1]
         Assertions.assertEquals(DictionaryId("2"), weatherDictionary.dictionaryId)
         Assertions.assertEquals("Weather", weatherDictionary.name)
@@ -29,6 +29,7 @@ abstract class DbDictionaryRepositoryTest {
         Assertions.assertEquals(LangId("RU"), weatherDictionary.targetLangId)
     }
 
+    @Order(2)
     @Test
     fun `test get all dictionaries by user-id nothing found`() {
         val res1 = repository.getAllDictionaries(AppUserId.NONE)
@@ -38,5 +39,29 @@ abstract class DbDictionaryRepositoryTest {
         val res2 = repository.getAllDictionaries(AppUserId("-42"))
         Assertions.assertEquals(0, res2.dictionaries.size)
         Assertions.assertTrue(res2.errors.isEmpty())
+    }
+
+    @Order(42)
+    @Test
+    fun `test delete dictionary success`() {
+        // Business vocabulary (Job)
+        val res = repository.deleteDictionary(DictionaryId("1"))
+        Assertions.assertTrue(res.errors.isEmpty())
+    }
+
+    @Order(42)
+    @Test
+    fun `test delete dictionary not found`() {
+        val id = DictionaryId("42")
+        val res = repository.deleteDictionary(id)
+        Assertions.assertEquals(1, res.errors.size)
+        val error = res.errors[0]
+        Assertions.assertEquals("database::deleteDictionary", error.code)
+        Assertions.assertEquals(id.asString(), error.field)
+        Assertions.assertEquals("database", error.group)
+        Assertions.assertEquals(
+            """Error while deleteDictionary: dictionary with id="${id.asString()}" not found""",
+            error.message
+        )
     }
 }

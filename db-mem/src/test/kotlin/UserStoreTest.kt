@@ -21,7 +21,7 @@ internal class UserStoreTest {
 
     @Test
     fun `test load users from class-path`() {
-        val users = UserStore.load(location = "classpath:/data", ids = IdSequences())
+        val users = UserStore.load(location = "classpath:$classPathResourceDir", ids = IdSequences())
         Assertions.assertEquals(1, users.size)
         val user = users[existingUUID]
         Assertions.assertNotNull(user)
@@ -36,7 +36,7 @@ internal class UserStoreTest {
             uuid = newUUID,
             role = 42,
         )
-        copyClassPathDataToDir(dir)
+        copyClassPathDataToDir(classPathResourceDir, dir)
         val store1 = UserStore.load(location = dir, ids = IdSequences())
         Assertions.assertEquals(1, store1.size)
         store1 + newUser
