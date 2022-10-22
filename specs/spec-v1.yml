@@ -61,6 +61,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAllDictionariesResponse'
 
+  /api/dictionaries/delete:
+    post:
+      tags:
+        - dictionary
+      summary: Deletes the given dictionary
+      operationId: deleteDictionary
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeleteDictionaryRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteDictionaryResponse'
+
   /api/cards/search:
     post:
       tags:
@@ -269,6 +290,21 @@ components:
               items:
                 $ref: '#/components/schemas/DictionaryResource'
 
+    DeleteDictionaryRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          properties:
+            dictionaryId:
+              type: string
+
+    DeleteDictionaryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: Delete dictionary
+
     SearchCardsRequest:
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
@@ -406,6 +442,8 @@ components:
     DeleteCardResponse:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: Delete card
 
     ResetCardRequest:
       allOf:
@@ -440,6 +478,7 @@ components:
         mapping:
           getAudio: '#/components/schemas/GetAudioRequest'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesRequest'
+          deleteDictionary: '#/components/schemas/DeleteDictionaryRequest'
           searchCards: '#/components/schemas/SearchCardsRequest'
           getAllCards: '#/components/schemas/GetAllCardsRequest'
           getCard: '#/components/schemas/GetCardRequest'
@@ -477,6 +516,7 @@ components:
         mapping:
           getAudio: '#/components/schemas/GetAudioResponse'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesResponse'
+          deleteDictionary: '#/components/schemas/DeleteDictionaryResponse'
           searchCards: '#/components/schemas/SearchCardsResponse'
           getAllCards: '#/components/schemas/GetAllCardsResponse'
           getCard: '#/components/schemas/GetCardResponse'
