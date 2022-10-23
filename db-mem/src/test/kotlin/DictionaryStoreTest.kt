@@ -1,7 +1,8 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.dbmem.dao.Card
-import com.gitlab.sszuev.flashcards.dbmem.dao.Translation
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
+import com.gitlab.sszuev.flashcards.dbmem.testutils.classPathResourceDir
+import com.gitlab.sszuev.flashcards.dbmem.testutils.copyClassPathDataToDir
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
@@ -33,11 +34,11 @@ internal class DictionaryStoreTest {
         Assertions.assertEquals(242, dictionaries1[1]!!.cards.size)
         Assertions.assertEquals(65, dictionaries1[2]!!.cards.size)
 
-        val card = Card(
+        val card = MemDbCard(
             id = -42,
             dictionaryId = 2,
             text = "word",
-            translations = listOf(Translation(id = -42, text = "слово", cardId = -42))
+            translations = listOf("слово")
         )
         dictionaries1[2]!!.cards[-42] = card
         dictionaries1.flush(2)
@@ -67,8 +68,8 @@ internal class DictionaryStoreTest {
         Assertions.assertNotNull(actual3)
         Assertions.assertNotSame(actual2, actual3)
         Assertions.assertEquals(card.transcription, actual3.transcription)
-        Assertions.assertEquals(card.translations.map { it.text }, actual3.translations.map { it.text })
-        Assertions.assertEquals(card.examples.map { it.text }, actual3.examples.map { it.text })
+        Assertions.assertEquals(card.translations, actual3.translations)
+        Assertions.assertEquals(card.examples, actual3.examples)
     }
 
 }

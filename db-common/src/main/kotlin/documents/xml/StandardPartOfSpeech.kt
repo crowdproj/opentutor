@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.dbmem.documents.impl
+package com.gitlab.sszuev.flashcards.common.documents.xml
 
 /**
  * Created by @ssz on 02.05.2021.
@@ -9,4 +9,3 @@ package com.gitlab.sszuev.flashcards.dbmem.documents.impl
 enum class StandardPartOfSpeech {
     NOUN, ADJECTIVE, VERB, ADVERB, PRONOUN, PREPOSITION, CONJUNCTION, INTERJECTION, ARTICLE
 }
-

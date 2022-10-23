@@ -1,11 +1,12 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.SysConfig
-import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
-import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryWriter
-import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryReader
-import com.gitlab.sszuev.flashcards.dbmem.documents.impl.LingvoDictionaryWriter
+import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentReader
+import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentWriter
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import org.slf4j.LoggerFactory
+import java.io.InputStream
+import java.io.OutputStream
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
@@ -19,7 +20,7 @@ import kotlin.streams.asSequence
  * In the first case it is persistent.
  */
 class DictionaryStore private constructor(
-    private val resources: MutableMap<Long, Pair<String, Dictionary>>,
+    private val resources: MutableMap<Long, Pair<String, MemDbDictionary>>,
     dbConfig: MemDbConfig,
     sysConfig: SysConfig,
 ) {
@@ -27,16 +28,14 @@ class DictionaryStore private constructor(
     /**
      * A queue to flushing data to disk.
      */
-    private val dictionariesToFlush = ConcurrentHashMap<Long, Pair<String, Dictionary>>()
-
-    private val writer: DictionaryWriter = LingvoDictionaryWriter(sysConfig)
+    private val dictionariesToFlush = ConcurrentHashMap<Long, Pair<String, MemDbDictionary>>()
 
     init {
         timer("flush-dictionaries-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
             dictionariesToFlush.keys.toList().mapNotNull { dictionariesToFlush.remove(it) }.forEach {
                 logger.debug("Save dictionary ${it.second.id} to disk.")
                 Files.newOutputStream(Paths.get(it.first)).use { out ->
-                    writer.write(it.second, out)
+                    write(it.second, out, sysConfig)
                 }
             }
         }
@@ -48,11 +47,11 @@ class DictionaryStore private constructor(
     val keys: Set<Long>
         get() = resources.keys
 
-    operator fun get(id: Long): Dictionary? {
+    operator fun get(id: Long): MemDbDictionary? {
         return resources[id]?.second
     }
 
-    operator fun minus(id: Long): Dictionary? {
+    operator fun minus(id: Long): MemDbDictionary? {
         return resources.remove(id)?.second
     }
 
@@ -120,7 +119,7 @@ class DictionaryStore private constructor(
             }
         }
 
-        private fun loadDatabase(location: String, ids: IdSequences): MutableMap<Long, Pair<String, Dictionary>> {
+        private fun loadDatabase(location: String, ids: IdSequences): MutableMap<Long, Pair<String, MemDbDictionary>> {
             return if (location.startsWith(classpathPrefix)) {
                 loadDatabaseFromClassPath(location.removePrefix(classpathPrefix), ids)
             } else loadDatabaseFromDirectory(location, ids)
@@ -129,9 +128,8 @@ class DictionaryStore private constructor(
         private fun loadDatabaseFromClassPath(
             classpathLocation: String,
             ids: IdSequences
-        ): MutableMap<Long, Pair<String, Dictionary>> {
+        ): MutableMap<Long, Pair<String, MemDbDictionary>> {
             logger.info("Load dictionaries from classpath: $classpathLocation.")
-            val reader = LingvoDictionaryReader(ids)
             val files: List<String> =
                 requireNotNull(DictionaryStore::class.java.getResourceAsStream(classpathLocation)) {
                     "Can't find classpath directory $classpathLocation."
@@ -146,26 +144,25 @@ class DictionaryStore private constructor(
                         true
                     }
                 }.sorted() // sort to make output deterministic
-            val res: List<Pair<String, Dictionary>> = files.map {
+            val res: List<Pair<String, MemDbDictionary>> = files.map {
                 requireNotNull(DictionaryStore::class.java.getResourceAsStream("$classpathLocation/$it")) {
                     "Can't find classpath resource $classpathLocation/$it."
                 }.use { src ->
-                    "${classpathPrefix}${classpathLocation}/$it" to reader.parse(src)
+                    "${classpathPrefix}${classpathLocation}/$it" to read(src, ids)
                 }
             }
             logger.info("For location=$classpathLocation there are ${res.size} dictionaries loaded.")
-            return res.associateByTo(ConcurrentHashMap<Long, Pair<String, Dictionary>>()) { it.second.id }
+            return res.associateByTo(ConcurrentHashMap<Long, Pair<String, MemDbDictionary>>()) { it.second.id }
         }
 
         private fun loadDatabaseFromDirectory(
             directoryLocation: String,
             ids: IdSequences
-        ): MutableMap<Long, Pair<String, Dictionary>> {
+        ): MutableMap<Long, Pair<String, MemDbDictionary>> {
             logger.info("Load dictionaries from directory: $directoryLocation.")
-            val reader = LingvoDictionaryReader(ids)
             val dir = Paths.get(directoryLocation).createDirectories().toRealPath()
             require(dir.isDirectory()) { "Not a directory: $directoryLocation." }
-            val res: List<Pair<String, Dictionary>> = Files.newDirectoryStream(dir).use { ds ->
+            val res: List<Pair<String, MemDbDictionary>> = Files.newDirectoryStream(dir).use { ds ->
                 ds.mapNotNull { file ->
                     if (!file.isRegularFile()) {
                         logger.warn("Not a file: $file.")
@@ -182,12 +179,22 @@ class DictionaryStore private constructor(
                 it.fileName.toString()
             }.map { file ->
                 file.inputStream().use {
-                    file.toString() to reader.parse(it)
+                    file.toString() to read(it, ids)
                 }
             }
             logger.info("For location=$directoryLocation there are ${res.size} dictionaries loaded.")
-            return res.associateByTo(ConcurrentHashMap<Long, Pair<String, Dictionary>>()) { it.second.id }
+            return res.associateByTo(ConcurrentHashMap<Long, Pair<String, MemDbDictionary>>()) { it.second.id }
         }
+
+        private fun read(inputStream: InputStream, generator: IdSequences): MemDbDictionary {
+            val res = LingvoDocumentReader(generator).parse(inputStream).toDbRecord()
+            generator.position(res)
+            return res
+        }
+
+        private fun write(dictionary: MemDbDictionary, outputStream: OutputStream, sysConfig: SysConfig): Unit =
+            LingvoDocumentWriter(sysConfig).write(dictionary.toDocument(), outputStream)
+
 
         data class Configuration(
             val location: String,

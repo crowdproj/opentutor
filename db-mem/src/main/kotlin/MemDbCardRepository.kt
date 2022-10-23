@@ -1,7 +1,9 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.*
-import com.gitlab.sszuev.flashcards.dbmem.dao.Card
+import com.gitlab.sszuev.flashcards.common.documents.CardStatus
+import com.gitlab.sszuev.flashcards.common.documents.status
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
@@ -80,7 +82,7 @@ class MemDbCardRepository(
         val dictionaryId = card.dictionaryId.asDbId()
         val dictionary =
             dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "createCard")
-        val record = card.toDbRecord(ids.nextCardId(), ids)
+        val record = card.toDbRecord(ids.nextCardId())
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
         return CardDbResponse(card = record.toEntity())
@@ -95,14 +97,14 @@ class MemDbCardRepository(
         if (!dictionary.cards.containsKey(id)) {
             return createNoCardResponseError(card.cardId, "updateCard")
         }
-        val record = card.toDbRecord(id, ids)
+        val record = card.toDbRecord(id)
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
         return CardDbResponse(card = record.toEntity())
     }
 
     override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
-        val cards = mutableSetOf<Card>()
+        val cards = mutableSetOf<MemDbCard>()
         val errors = mutableListOf<AppError>()
         learn.forEach { cardLearn ->
             learnCard(cardLearn, errors)?.let { cards.add(it) }
@@ -134,7 +136,7 @@ class MemDbCardRepository(
         return DeleteCardDbResponse()
     }
 
-    private fun learnCard(learn: CardLearn, errors: MutableList<AppError>): Card? {
+    private fun learnCard(learn: CardLearn, errors: MutableList<AppError>): MemDbCard? {
         val id = learn.cardId
         val card = findCard(id)
         if (card == null) {
@@ -147,7 +149,7 @@ class MemDbCardRepository(
         return record
     }
 
-    private fun findCard(id: CardId): Card? {
+    private fun findCard(id: CardId): MemDbCard? {
         return dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
     }
 

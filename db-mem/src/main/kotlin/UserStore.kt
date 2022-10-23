@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.dbmem.dao.User
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVPrinter
 import org.slf4j.LoggerFactory
@@ -21,7 +21,7 @@ import kotlin.streams.asSequence
 
 
 class UserStore private constructor(
-    private val resources: MutableMap<UUID, User>,
+    private val resources: MutableMap<UUID, MemDbUser>,
     private val file: Path?,
     dbConfig: MemDbConfig,
 ) {
@@ -30,7 +30,7 @@ class UserStore private constructor(
      * A queue to flushing data to disk.
      */
     @Volatile
-    private var usersToFlush: List<User>? = null
+    private var usersToFlush: List<MemDbUser>? = null
 
     init {
         timer("flush-users-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
@@ -47,11 +47,11 @@ class UserStore private constructor(
     val size: Long
         get() = resources.size.toLong()
 
-    operator fun get(id: UUID): User? {
+    operator fun get(id: UUID): MemDbUser? {
         return resources[id]
     }
 
-    operator fun plus(user: User): UserStore {
+    operator fun plus(user: MemDbUser): UserStore {
         resources[user.uuid] = user
         return this
     }
@@ -120,7 +120,7 @@ class UserStore private constructor(
             }
         }
 
-        private fun loadDatabase(location: String, ids: IdSequences): Pair<Path?, MutableMap<UUID, User>> {
+        private fun loadDatabase(location: String, ids: IdSequences): Pair<Path?, MutableMap<UUID, MemDbUser>> {
             return if (location.startsWith("classpath:")) {
                 null to loadDatabaseFromClassPath(location.removePrefix("classpath:"), ids)
             } else loadDatabaseFromDirectory(location, ids)
@@ -129,7 +129,7 @@ class UserStore private constructor(
         private fun loadDatabaseFromClassPath(
             classpathLocation: String,
             ids: IdSequences
-        ): MutableMap<UUID, User> {
+        ): MutableMap<UUID, MemDbUser> {
             logger.info("Load users from classpath: $classpathLocation.")
             val file = requireNotNull(UserStore::class.java.getResourceAsStream(classpathLocation)) {
                 "Can't find classpath directory $classpathLocation."
@@ -160,7 +160,7 @@ class UserStore private constructor(
         private fun loadDatabaseFromDirectory(
             directoryLocation: String,
             ids: IdSequences
-        ): Pair<Path?, MutableMap<UUID, User>> {
+        ): Pair<Path?, MutableMap<UUID, MemDbUser>> {
             logger.info("Load users from directory: $directoryLocation.")
             val dir = toDirectory(directoryLocation)
             return loadDatabaseFromDirectory(dir, ids)
@@ -169,7 +169,7 @@ class UserStore private constructor(
         private fun loadDatabaseFromDirectory(
             dir: Path,
             ids: IdSequences
-        ): Pair<Path?, MutableMap<UUID, User>> {
+        ): Pair<Path?, MutableMap<UUID, MemDbUser>> {
             val file: Path? = Files.newDirectoryStream(dir).use { d ->
                 d.mapNotNull { f ->
                     if (!f.isRegularFile()) {
@@ -194,7 +194,7 @@ class UserStore private constructor(
             return file to res
         }
 
-        private fun parse(reader: Reader, ids: IdSequences): Map<UUID, User> {
+        private fun parse(reader: Reader, ids: IdSequences): Map<UUID, MemDbUser> {
             return CSVFormat.DEFAULT.builder()
                 .setHeader("id", "uuid", "role")
                 .setSkipHeaderRecord(true)
@@ -214,12 +214,12 @@ class UserStore private constructor(
                         } else {
                             42
                         }
-                        uuid to User(id, uuid, role)
+                        uuid to MemDbUser(id, uuid, role)
                     }
                 }
         }
 
-        private fun write(writer: Writer, users: Collection<User>) {
+        private fun write(writer: Writer, users: Collection<MemDbUser>) {
             val format = CSVFormat.DEFAULT.builder()
                 .setHeader("id", "uuid", "role")
                 .build()

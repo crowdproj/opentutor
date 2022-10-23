@@ -18,6 +18,11 @@ dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testFixturesImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testFixturesImplementation(project(":common"))
+}
+
+tasks.test {
+    useJUnitPlatform()
 }

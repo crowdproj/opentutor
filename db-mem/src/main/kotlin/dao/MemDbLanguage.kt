@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem.dao
 
-data class Language(
+data class MemDbLanguage(
     val id: String,
     val partsOfSpeech: String,
 )
