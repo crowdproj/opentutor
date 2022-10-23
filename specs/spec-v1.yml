@@ -82,6 +82,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/DeleteDictionaryResponse'
 
+  /api/dictionaries/download:
+    post:
+      tags:
+        - dictionary
+      summary: Downloads the given dictionary
+      operationId: downloadDictionary
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DownloadDictionaryRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DownloadDictionaryResponse'
+
   /api/cards/search:
     post:
       tags:
@@ -295,6 +316,7 @@ components:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
+          description: Delete dictionary request
           properties:
             dictionaryId:
               type: string
@@ -303,7 +325,27 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
-          description: Delete dictionary
+          description: Delete dictionary response
+
+    DownloadDictionaryRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          description: Download dictionary request
+          properties:
+            dictionaryId:
+              type: string
+
+    DownloadDictionaryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: Download dictionary response
+          properties:
+            resource:
+              type: string
+              format: byte
 
     SearchCardsRequest:
       allOf:
@@ -479,6 +521,7 @@ components:
           getAudio: '#/components/schemas/GetAudioRequest'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesRequest'
           deleteDictionary: '#/components/schemas/DeleteDictionaryRequest'
+          downloadDictionary: '#/components/schemas/DownloadDictionaryRequest'
           searchCards: '#/components/schemas/SearchCardsRequest'
           getAllCards: '#/components/schemas/GetAllCardsRequest'
           getCard: '#/components/schemas/GetCardRequest'
@@ -517,6 +560,7 @@ components:
           getAudio: '#/components/schemas/GetAudioResponse'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesResponse'
           deleteDictionary: '#/components/schemas/DeleteDictionaryResponse'
+          downloadDictionary: '#/components/schemas/DownloadDictionaryResponse'
           searchCards: '#/components/schemas/SearchCardsResponse'
           getAllCards: '#/components/schemas/GetAllCardsResponse'
           getCard: '#/components/schemas/GetCardResponse'

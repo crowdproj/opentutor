@@ -73,4 +73,41 @@ internal class DictionarySerializationTest {
         Assertions.assertNotSame(req1, req2)
         Assertions.assertEquals(req1, req2)
     }
+
+    @Test
+    fun `test serialization for DownloadDictionaryRequest`() {
+        val res1 = DownloadDictionaryRequest(
+            requestId = "request=42",
+            dictionaryId = "dictionary=42"
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"downloadDictionary\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        Assertions.assertTrue(json.contains("\"dictionaryId\":\"dictionary=42\""))
+        val res2 = deserializeRequest<DownloadDictionaryRequest>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1.requestId, res2.requestId)
+    }
+
+    @Test
+    fun `test serialization for DownloadDictionaryResponse`() {
+        val res1 = DownloadDictionaryResponse(
+            resource = byteArrayOf(42),
+            result = Result.SUCCESS,
+            requestId = "request=42",
+            errors = listOf(error)
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"responseType\":\"downloadDictionary\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        Assertions.assertTrue(json.contains("\"result\":\"success\""))
+        assertError(json)
+        val res2 = deserializeResponse<DownloadDictionaryResponse>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1.responseType, res2.responseType)
+        Assertions.assertEquals(res1.result, res2.result)
+        Assertions.assertEquals(res1.requestId, res2.requestId)
+        Assertions.assertEquals(res1.errors, res2.errors)
+        Assertions.assertArrayEquals(res1.resource, res2.resource)
+    }
 }
