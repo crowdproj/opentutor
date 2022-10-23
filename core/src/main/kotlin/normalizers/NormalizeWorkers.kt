@@ -12,6 +12,12 @@ fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = wo
     name = "Make a normalized copy of ${operation.name.lowercase()} params"
 ) {
     this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
+    when (operation) {
+        DictionaryOperation.DELETE_DICTIONARY -> {
+            this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
+        }
+        else -> {}
+    }
 }
 
 fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(

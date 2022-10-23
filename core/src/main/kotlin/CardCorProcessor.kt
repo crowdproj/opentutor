@@ -80,7 +80,7 @@ class CardCorProcessor {
                 normalizers(CardOperation.GET_ALL_CARDS)
                 validators(CardOperation.GET_ALL_CARDS) {
                     validateUserId(CardOperation.GET_ALL_CARDS)
-                    validateDictionaryId { it.normalizedRequestDictionaryId }
+                    validateDictionaryId { (it as CardContext).normalizedRequestDictionaryId }
                 }
                 runs(CardOperation.GET_ALL_CARDS) {
                     processFindUser(CardOperation.GET_ALL_CARDS)

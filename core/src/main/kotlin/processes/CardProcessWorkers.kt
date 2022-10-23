@@ -171,13 +171,3 @@ private fun CardContext.postProcess(res: DeleteCardDbResponse) {
     }
     this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
 }
-
-private fun CardContext.handleThrowable(operation: CardOperation, ex: Throwable) {
-    fail(
-        runError(
-            operation = operation,
-            description = "exception",
-            exception = ex,
-        )
-    )
-}

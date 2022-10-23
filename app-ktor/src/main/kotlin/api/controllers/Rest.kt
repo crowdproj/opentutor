@@ -62,5 +62,8 @@ fun Route.dictionaries(
         post("get-all") {
             call.getAllDictionaries(service, repositories, runConf)
         }
+        post("delete") {
+            call.deleteDictionary(service, repositories, runConf)
+        }
     }
 }

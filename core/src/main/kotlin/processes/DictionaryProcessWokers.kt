@@ -32,3 +32,20 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         )
     }
 }
+
+fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
+    this.name = "process delete-dictionary request"
+    test {
+        this.status == AppStatus.RUN
+    }
+    process {
+        val res = this.repositories.dictionaryRepository(this.workMode).deleteDictionary(this.normalizedRequestDictionaryId)
+        if (res.errors.isNotEmpty()) {
+            this.errors.addAll(res.errors)
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+    }
+    onException {
+        this.handleThrowable(CardOperation.DELETE_CARD, it)
+    }
+}

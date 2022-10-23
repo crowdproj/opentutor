@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
-import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.Id
+import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -28,7 +28,17 @@ internal fun runError(
     exception = exception
 )
 
-internal fun CardContext.fail(error: AppError) {
+internal fun AppContext.handleThrowable(operation: AppOperation, ex: Throwable) {
+    fail(
+        runError(
+            operation = operation,
+            description = "exception",
+            exception = ex,
+        )
+    )
+}
+
+internal fun AppContext.fail(error: AppError) {
     this.status = AppStatus.FAIL
     this.errors.add(error)
 }
