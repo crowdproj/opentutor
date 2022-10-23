@@ -11,65 +11,65 @@ interface DbCardRepository {
     /**
      * Gets card by id.
      */
-    fun getCard(id: CardId): CardEntityDbResponse
+    fun getCard(id: CardId): CardDbResponse
 
     /**
      * Gets all cards by dictionaryId.
      */
-    fun getAllCards(id: DictionaryId): CardEntitiesDbResponse
+    fun getAllCards(id: DictionaryId): CardsDbResponse
 
     /**
      * Searches cards by filter.
      */
-    fun searchCard(filter: CardFilter): CardEntitiesDbResponse
+    fun searchCard(filter: CardFilter): CardsDbResponse
 
     /**
      * Creates card.
      */
-    fun createCard(card: CardEntity): CardEntityDbResponse
+    fun createCard(card: CardEntity): CardDbResponse
 
     /**
      * Updates.
      */
-    fun updateCard(card: CardEntity): CardEntityDbResponse
+    fun updateCard(card: CardEntity): CardDbResponse
 
     /**
      * Updates cards details.
      */
-    fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse
+    fun learnCards(learn: List<CardLearn>): CardsDbResponse
 
     /**
      * Resets status.
      */
-    fun resetCard(id: CardId): CardEntityDbResponse
+    fun resetCard(id: CardId): CardDbResponse
 
     /**
      * Deletes card by id.
      */
-    fun deleteCard(id: CardId): DeleteEntityDbResponse
+    fun deleteCard(id: CardId): DeleteCardDbResponse
 }
 
-data class CardEntitiesDbResponse(
+data class CardsDbResponse(
     val cards: List<CardEntity>,
     val sourceLanguage: LangId = LangId.NONE,
     val errors: List<AppError> = emptyList(),
 ) {
     companion object {
-        val EMPTY = CardEntitiesDbResponse(cards = emptyList(), errors = emptyList())
+        val EMPTY = CardsDbResponse(cards = emptyList(), errors = emptyList())
     }
 }
 
-data class CardEntityDbResponse(
+data class CardDbResponse(
     val card: CardEntity,
     val errors: List<AppError> = emptyList(),
 ) {
     companion object {
-        val EMPTY = CardEntityDbResponse(card = CardEntity.EMPTY)
+        val EMPTY = CardDbResponse(card = CardEntity.EMPTY)
     }
 }
 
-data class DeleteEntityDbResponse(val errors: List<AppError> = emptyList()) {
+data class DeleteCardDbResponse(val errors: List<AppError> = emptyList()) {
     companion object {
-        val EMPTY = DeleteEntityDbResponse(errors = emptyList())
+        val EMPTY = DeleteCardDbResponse(errors = emptyList())
     }
 }

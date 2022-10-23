@@ -5,6 +5,7 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
+import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
 
@@ -26,7 +27,7 @@ fun ChainDSL<CardContext>.validateCardEntityDictionaryId(getCardEntity: (CardCon
     validateId("dictionary-id") { getCardEntity(it).dictionaryId }
 }
 
-fun ChainDSL<CardContext>.validateDictionaryId(getDictionaryId: (CardContext) -> DictionaryId) = worker {
+fun <Context: AppContext> ChainDSL<Context>.validateDictionaryId(getDictionaryId: (Context) -> DictionaryId) = worker {
     validateId("dictionary-id") { getDictionaryId(it) }
 }
 
@@ -94,19 +95,19 @@ fun ChainDSL<CardContext>.validateCardLearnListDetails(getCardLearn: (CardContex
         score <= 0 || score > 42
     }
 
-private fun ChainDSL<CardContext>.validateId(
+private fun <Context: AppContext> ChainDSL<Context>.validateId(
     fieldName: String,
-    getId: (CardContext) -> Id
+    getId: (Context) -> Id
 ) = chain {
     name = "validate ids: fieldName=$fieldName"
     validateIdIsNotBlank(workerName = "Test $fieldName length", fieldName = fieldName, getId = getId)
     validateIdMatchPattern(workerName = "Test $fieldName pattern", fieldName = fieldName, getId = getId)
 }
 
-private fun ChainDSL<CardContext>.validateIdIsNotBlank(
+private fun <Context: AppContext> ChainDSL<Context>.validateIdIsNotBlank(
     workerName: String,
     fieldName: String,
-    getId: (CardContext) -> Id
+    getId: (Context) -> Id
 ) = worker {
     this.name = workerName
     test {
@@ -117,10 +118,10 @@ private fun ChainDSL<CardContext>.validateIdIsNotBlank(
     }
 }
 
-private fun ChainDSL<CardContext>.validateIdMatchPattern(
+private fun <Context: AppContext> ChainDSL<Context>.validateIdMatchPattern(
     workerName: String,
     fieldName: String,
-    getId: (CardContext) -> Id
+    getId: (Context) -> Id
 ) = worker {
     this.name = workerName
     test {

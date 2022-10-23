@@ -5,4 +5,5 @@ import com.gitlab.sszuev.flashcards.model.common.AppOperation
 enum class DictionaryOperation: AppOperation {
     NONE,
     GET_ALL_DICTIONARIES,
+    DELETE_DICTIONARY,
 }

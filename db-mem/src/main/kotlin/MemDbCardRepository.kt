@@ -4,10 +4,10 @@ import com.gitlab.sszuev.flashcards.common.*
 import com.gitlab.sszuev.flashcards.dbmem.dao.Card
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
-import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
+import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
-import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DeleteCardDbResponse
 import kotlin.random.Random
 
 class MemDbCardRepository(
@@ -22,40 +22,40 @@ class MemDbCardRepository(
         ids = ids,
     )
 
-    override fun getCard(id: CardId): CardEntityDbResponse {
+    override fun getCard(id: CardId): CardDbResponse {
         val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
-            ?: return CardEntityDbResponse(
+            ?: return CardDbResponse(
                 card = CardEntity.EMPTY,
                 errors = listOf(noCardFoundDbError(operation = "getCard", id = id))
             )
-        return CardEntityDbResponse(card = card.toEntity())
+        return CardDbResponse(card = card.toEntity())
     }
 
-    override fun getAllCards(id: DictionaryId): CardEntitiesDbResponse {
+    override fun getAllCards(id: DictionaryId): CardsDbResponse {
         val dictionary = dictionaries[id.asDbId()]
-            ?: return CardEntitiesDbResponse(
+            ?: return CardsDbResponse(
                 cards = emptyList(),
                 errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
             )
         val cards = dictionary.cards.values.map { it.toEntity() }
-        return CardEntitiesDbResponse(
+        return CardsDbResponse(
             cards = cards,
             sourceLanguage = dictionary.sourceLanguage.asLangId(),
             errors = emptyList()
         )
     }
 
-    override fun searchCard(filter: CardFilter): CardEntitiesDbResponse {
+    override fun searchCard(filter: CardFilter): CardsDbResponse {
         val dictionaries = filter.dictionaryIds.mapNotNull {
             dictionaries[it.asDbId()]
         }.sortedBy { it.id }
         if (dictionaries.isEmpty()) {
-            return CardEntitiesDbResponse(cards = emptyList())
+            return CardsDbResponse(cards = emptyList())
         }
         val sourceLanguages = dictionaries.map { it.sourceLanguage.asLangId() }.toSet()
         val targetLanguages = dictionaries.map { it.targetLanguage.asLangId() }.toSet()
         if (sourceLanguages.size != 1 || targetLanguages.size != 1) {
-            return CardEntitiesDbResponse(
+            return CardsDbResponse(
                 cards = emptyList(),
                 errors = listOf(wrongDictionaryLanguageFamilies(
                         operation = "searchCard",
@@ -72,10 +72,10 @@ class MemDbCardRepository(
             fromDb = fromDb.shuffled(Random.Default)
         }
         val cards = fromDb.take(filter.length).map { it.toEntity() }.toList()
-        return CardEntitiesDbResponse(cards = cards, sourceLanguage = sourceLanguages.single())
+        return CardsDbResponse(cards = cards, sourceLanguage = sourceLanguages.single())
     }
 
-    override fun createCard(card: CardEntity): CardEntityDbResponse {
+    override fun createCard(card: CardEntity): CardDbResponse {
         requireNew(card)
         val dictionaryId = card.dictionaryId.asDbId()
         val dictionary =
@@ -83,10 +83,10 @@ class MemDbCardRepository(
         val record = card.toDbRecord(ids.nextCardId(), ids)
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
-        return CardEntityDbResponse(card = record.toEntity())
+        return CardDbResponse(card = record.toEntity())
     }
 
-    override fun updateCard(card: CardEntity): CardEntityDbResponse {
+    override fun updateCard(card: CardEntity): CardDbResponse {
         requireExiting(card)
         val dictionaryId = card.dictionaryId.asDbId()
         val dictionary =
@@ -98,10 +98,10 @@ class MemDbCardRepository(
         val record = card.toDbRecord(id, ids)
         dictionary.cards[record.id] = record
         dictionaries.flush(dictionaryId)
-        return CardEntityDbResponse(card = record.toEntity())
+        return CardDbResponse(card = record.toEntity())
     }
 
-    override fun learnCards(learn: List<CardLearn>): CardEntitiesDbResponse {
+    override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
         val cards = mutableSetOf<Card>()
         val errors = mutableListOf<AppError>()
         learn.forEach { cardLearn ->
@@ -110,20 +110,20 @@ class MemDbCardRepository(
         cards.map { it.dictionaryId }.distinct().forEach {
             dictionaries.flush(it)
         }
-        return CardEntitiesDbResponse(cards = cards.map { it.toEntity() }, errors = errors)
+        return CardsDbResponse(cards = cards.map { it.toEntity() }, errors = errors)
     }
 
-    override fun resetCard(id: CardId): CardEntityDbResponse {
+    override fun resetCard(id: CardId): CardDbResponse {
         val card = findCard(id) ?: return createNoCardResponseError(id, "resetCard")
         val record = card.copy(answered = 0)
         val dictionary = dictionaries[card.dictionaryId]
         requireNotNull(dictionary).cards[card.id] = record
         dictionaries.flush(card.dictionaryId)
-        return CardEntityDbResponse(card = record.toEntity())
+        return CardDbResponse(card = record.toEntity())
     }
 
-    override fun deleteCard(id: CardId): DeleteEntityDbResponse {
-        val card = findCard(id) ?: return DeleteEntityDbResponse(
+    override fun deleteCard(id: CardId): DeleteCardDbResponse {
+        val card = findCard(id) ?: return DeleteCardDbResponse(
             errors = listOf(
                 noCardFoundDbError(operation = "deleteCard", id = id)
             )
@@ -131,7 +131,7 @@ class MemDbCardRepository(
         val dictionary = dictionaries[card.dictionaryId]
         requireNotNull(dictionary).cards.remove(card.id)
         dictionaries.flush(card.dictionaryId)
-        return DeleteEntityDbResponse()
+        return DeleteCardDbResponse()
     }
 
     private fun learnCard(learn: CardLearn, errors: MutableList<AppError>): Card? {
@@ -151,15 +151,15 @@ class MemDbCardRepository(
         return dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
     }
 
-    private fun createNoCardResponseError(id: CardId, operation: String): CardEntityDbResponse {
-        return CardEntityDbResponse(
+    private fun createNoCardResponseError(id: CardId, operation: String): CardDbResponse {
+        return CardDbResponse(
             card = CardEntity.EMPTY,
             errors = listOf(noCardFoundDbError(operation = operation, id = id))
         )
     }
 
-    private fun createNoDictionaryResponseError(id: DictionaryId, operation: String): CardEntityDbResponse {
-        return CardEntityDbResponse(
+    private fun createNoDictionaryResponseError(id: DictionaryId, operation: String): CardDbResponse {
+        return CardDbResponse(
             card = CardEntity.EMPTY,
             errors = listOf(noDictionaryFoundDbError(operation = operation, id = id))
         )

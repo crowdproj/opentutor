@@ -1,11 +1,17 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
-import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionary
+import com.gitlab.sszuev.flashcards.common.asDbId
+import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
+import com.gitlab.sszuev.flashcards.dbpg.dao.*
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DictionaryEntitiesDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.select
 
 class PgDbDictionaryRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
@@ -16,15 +22,40 @@ class PgDbDictionaryRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun getAllDictionaries(userId: AppUserId): DictionaryEntitiesDbResponse {
+    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
         if (userId == AppUserId.NONE) {
-            DictionaryEntitiesDbResponse(dictionaries = emptyList())
+            DictionariesDbResponse(dictionaries = emptyList())
         }
         return connection.execute {
             val dictionaries = Dictionary.find(
                 Dictionaries.userId eq userId.asRecordId()
             ).map { it.toEntity() }
-            DictionaryEntitiesDbResponse(dictionaries = dictionaries)
+            DictionariesDbResponse(dictionaries = dictionaries)
+        }
+    }
+
+    override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
+        return connection.execute {
+            val cardIds = Cards.select {
+                Cards.dictionaryId eq id.asDbId()
+            }.map {
+                it[Cards.id]
+            }
+            Examples.deleteWhere {
+                this.cardId inList cardIds
+            }
+            Translations.deleteWhere {
+                this.cardId inList cardIds
+            }
+            Cards.deleteWhere {
+                this.id inList cardIds
+            }
+            val res = Dictionaries.deleteWhere {
+                Dictionaries.id eq id.asDbId()
+            }
+            DeleteDictionaryDbResponse(
+                if (res == 0) listOf(noDictionaryFoundDbError(operation = "deleteDictionary", id = id)) else emptyList()
+            )
         }
     }
 

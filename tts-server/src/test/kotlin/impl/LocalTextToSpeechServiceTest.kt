@@ -11,7 +11,7 @@ internal class LocalTextToSpeechServiceTest {
 
     @Test
     fun `test load from classpath`() {
-        val res = LocalTextToSpeechService.load("classpath:/data")
+        val res = LocalTextToSpeechService.load("classpath:/tts-test-data")
         val libraries = (res as LocalTextToSpeechService).libraries
         Assertions.assertEquals(1, libraries.size)
         Assertions.assertNotNull(libraries["en"])

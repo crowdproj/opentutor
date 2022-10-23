@@ -2,15 +2,16 @@ package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Test
+import com.gitlab.sszuev.flashcards.repositories.DeleteCardDbResponse
+import org.junit.jupiter.api.*
 
 /**
  * Note: all implementations must have the same ids in tests for the same entities to have deterministic behavior.
  */
 @Suppress("FunctionName")
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 abstract class DbCardRepositoryTest {
 
     abstract val repository: DbCardRepository
@@ -82,18 +83,6 @@ abstract class DbCardRepositoryTest {
             details = emptyMap(),
         )
 
-        private val windCardEntity = CardEntity(
-            cardId = CardId("247"),
-            dictionaryId = DictionaryId("2"),
-            word = "wind",
-            transcription = "wind",
-            partOfSpeech = "NOUN",
-            translations = listOf(listOf("ветер")),
-            examples = listOf("a sudden gust of wind — внезапный порыв ветра"),
-            answered = null,
-            details = emptyMap(),
-        )
-
         private val newMurkyCardEntity = CardEntity(
             dictionaryId = DictionaryId("2"),
             word = "murky",
@@ -122,7 +111,7 @@ abstract class DbCardRepositoryTest {
             Assertions.assertEquals(expected.examples, actual.examples)
         }
 
-        private fun assertSingleError(res: CardEntityDbResponse, field: String, op: String): AppError {
+        private fun assertSingleError(res: CardDbResponse, field: String, op: String): AppError {
             Assertions.assertEquals(1, res.errors.size) { "Errors: ${res.errors}" }
             val error = res.errors[0]
             Assertions.assertEquals("database::$op", error.code) { error.toString() }
@@ -132,7 +121,11 @@ abstract class DbCardRepositoryTest {
             return error
         }
 
-        private fun assertNoErrors(res: CardEntityDbResponse) {
+        private fun assertNoErrors(res: CardDbResponse) {
+            Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
+        }
+
+        private fun assertNoErrors(res: DeleteCardDbResponse) {
             Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
         }
     }
@@ -154,6 +147,7 @@ abstract class DbCardRepositoryTest {
         Assertions.assertNull(error.exception)
     }
 
+    @Order(1)
     @Test
     fun `test get all cards success`() {
         // Business dictionary
@@ -170,6 +164,7 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(LangId("EN"), res2.sourceLanguage)
     }
 
+    @Order(2)
     @Test
     fun `test get all cards error unknown dictionary`() {
         val dictionaryId = "42"
@@ -187,6 +182,7 @@ abstract class DbCardRepositoryTest {
         Assertions.assertNull(error.exception)
     }
 
+    @Order(3)
     @Test
     fun `test create card success`() {
         val request = newMurkyCardEntity
@@ -196,6 +192,7 @@ abstract class DbCardRepositoryTest {
         Assertions.assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
     }
 
+    @Order(4)
     @Test
     fun `test create card error unknown dictionary`() {
         val dictionaryId = "42"
@@ -216,6 +213,7 @@ abstract class DbCardRepositoryTest {
         Assertions.assertNull(error.exception)
     }
 
+    @Order(5)
     @Test
     fun `test search cards random with unknown`() {
         val filter = CardFilter(
@@ -239,6 +237,7 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(LangId("EN"), res2.sourceLanguage)
     }
 
+    @Order(6)
     @Test
     fun `test get card & update card success`() {
         val expected = weatherCardEntity
@@ -255,6 +254,7 @@ abstract class DbCardRepositoryTest {
         assertCard(request, now)
     }
 
+    @Order(7)
     @Test
     fun `test update card error unknown card`() {
         val id = CardId("4200")
@@ -269,6 +269,7 @@ abstract class DbCardRepositoryTest {
         )
     }
 
+    @Order(8)
     @Test
     fun `test update card error unknown dictionary`() {
         val cardId = CardId("42")
@@ -284,6 +285,7 @@ abstract class DbCardRepositoryTest {
         )
     }
 
+    @Order(9)
     @Test
     fun `test learn cards success`() {
         val request = CardLearn(
@@ -298,6 +300,7 @@ abstract class DbCardRepositoryTest {
         assertCard(expected = expectedCard, actual = card)
     }
 
+    @Order(10)
     @Test
     fun `test get card & reset card success`() {
         val request = snowCardEntity
@@ -314,19 +317,14 @@ abstract class DbCardRepositoryTest {
         assertCard(expected, now)
     }
 
+    @Order(42)
     @Test
     fun `test get card & delete card success`() {
-        val request = windCardEntity
-        val prev = repository.getCard(request.cardId).card
-        assertCard(request, prev)
-
-        val expected = request.copy(answered = 0)
-        val res = repository.resetCard(request.cardId)
+        val id = CardId("300")
+        val res = repository.deleteCard(id)
         assertNoErrors(res)
-        val updated = res.card
-        assertCard(expected, updated)
 
-        val now = repository.getCard(request.cardId).card
-        assertCard(expected, now)
+        val now = repository.getCard(id).card
+        Assertions.assertSame(CardEntity.EMPTY, now)
     }
 }

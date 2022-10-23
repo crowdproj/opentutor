@@ -1,5 +1,7 @@
 package com.gitlab.sszuev.flashcards.api
 
+import com.gitlab.sszuev.flashcards.api.testutils.*
+import com.gitlab.sszuev.flashcards.api.testutils.debug
 import com.gitlab.sszuev.flashcards.api.v1.models.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -22,31 +24,9 @@ internal class CardSerializationTest {
             details = mapOf("A" to 2, "B" to 3),
         )
 
-        private val dictionary = DictionaryResource(
-            dictionaryId = "42",
-            name = "XXX",
-            sourceLang = "X",
-            targetLang = "Y",
-            partsOfSpeech = listOf("X", "Y"),
-            total = 1,
-            learned = 42
-        )
-
         private val update = LearnResource(
             cardId = "42",
             details = mapOf("A" to 2, "B" to 3),
-        )
-
-        private val error = ErrorResource(
-            code = "XXX",
-            group = "QQQ",
-            field = "VVV",
-            message = "mmm"
-        )
-
-        private val debug = DebugResource(
-            mode = RunMode.TEST,
-            stub = DebugStub.ERROR_UNKNOWN
         )
 
         private fun assertCard(json: String) {
@@ -62,32 +42,10 @@ internal class CardSerializationTest {
             assertDebug(json)
         }
 
-        private fun assertDictionary(json: String) {
-            Assertions.assertTrue(json.contains("\"dictionaryId\":\"42\""))
-            Assertions.assertTrue(json.contains("\"name\":\"XXX\""))
-            Assertions.assertTrue(json.contains("\"sourceLang\":\"X\""))
-            Assertions.assertTrue(json.contains("\"targetLang\":\"Y\""))
-            Assertions.assertTrue(json.contains("\"partsOfSpeech\":[\"X\",\"Y\"]"))
-            Assertions.assertTrue(json.contains("\"total\":1"))
-            Assertions.assertTrue(json.contains("\"learned\":42"))
-        }
-
         private fun assertUpdate(json: String) {
             Assertions.assertTrue(json.contains("\"cardId\":\"42\""))
             Assertions.assertTrue(json.contains("\"A\":2"))
             Assertions.assertTrue(json.contains("\"B\":3"))
-        }
-
-        private fun assertError(json: String) {
-            Assertions.assertTrue(json.contains("\"code\":\"XXX\""))
-            Assertions.assertTrue(json.contains("\"group\":\"QQQ\""))
-            Assertions.assertTrue(json.contains("\"field\":\"VVV\""))
-            Assertions.assertTrue(json.contains("\"message\":\"mmm\""))
-        }
-
-        private fun assertDebug(json: String) {
-            Assertions.assertTrue(json.contains("\"mode\":\"test\""))
-            Assertions.assertTrue(json.contains("\"stub\":\"error_unknown\""))
         }
     }
 
@@ -231,6 +189,20 @@ internal class CardSerializationTest {
     }
 
     @Test
+    fun `test serialization for DeleteCardResponse`() {
+        val req1 = DeleteCardResponse(
+            requestId = "request=42",
+            errors = listOf(error)
+        )
+        val json = serialize(req1)
+        Assertions.assertTrue(json.contains("\"responseType\":\"deleteCard\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        assertError(json)
+        val req2 = deserializeResponse<DeleteCardResponse>(json)
+        Assertions.assertNotSame(req1, req2)
+        Assertions.assertEquals(req1, req2)
+    }
+    @Test
     fun `test serialization for GetAllDictionaryRequest`() {
         val req1 = GetAllDictionariesRequest(
             requestId = "request=42",
@@ -255,7 +227,6 @@ internal class CardSerializationTest {
         val json = serialize(res1)
         Assertions.assertTrue(json.contains("\"responseType\":\"getAllDictionaries\""))
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
-        Assertions.assertTrue(json.contains("\"result\":\"error\""))
         assertError(json)
         assertDictionary(json)
 

@@ -9,9 +9,9 @@ import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.ResourceId
-import com.gitlab.sszuev.flashcards.repositories.CardEntitiesDbResponse
-import com.gitlab.sszuev.flashcards.repositories.CardEntityDbResponse
-import com.gitlab.sszuev.flashcards.repositories.DeleteEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
+import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DeleteCardDbResponse
 
 fun ChainDSL<CardContext>.processGetCard() = worker {
     this.name = "process get-card request"
@@ -141,7 +141,7 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
     }
 }
 
-private suspend fun CardContext.postProcess(res: CardEntitiesDbResponse) {
+private suspend fun CardContext.postProcess(res: CardsDbResponse) {
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
     }
@@ -157,7 +157,7 @@ private suspend fun CardContext.postProcess(res: CardEntitiesDbResponse) {
     this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
 }
 
-private fun CardContext.postProcess(res: CardEntityDbResponse) {
+private fun CardContext.postProcess(res: CardDbResponse) {
     this.responseCardEntity = res.card
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
@@ -165,19 +165,9 @@ private fun CardContext.postProcess(res: CardEntityDbResponse) {
     this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
 }
 
-private fun CardContext.postProcess(res: DeleteEntityDbResponse) {
+private fun CardContext.postProcess(res: DeleteCardDbResponse) {
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
     }
     this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
-}
-
-private fun CardContext.handleThrowable(operation: CardOperation, ex: Throwable) {
-    fail(
-        runError(
-            operation = operation,
-            description = "exception",
-            exception = ex,
-        )
-    )
 }

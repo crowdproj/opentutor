@@ -5,11 +5,9 @@ import com.gitlab.sszuev.flashcards.DictionaryRepositories
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.*
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
-import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import com.gitlab.sszuev.flashcards.repositories.DictionaryEntitiesDbResponse
-import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.*
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -57,7 +55,7 @@ internal class DictionaryCorProcessorRunTest {
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeGetAllDictionaries = {
                 wasCalled = true
-                DictionaryEntitiesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
+                DictionariesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
             }
         )
 
@@ -73,4 +71,27 @@ internal class DictionaryCorProcessorRunTest {
         Assertions.assertEquals(testResponseEntities, context.responseDictionaryEntityList)
     }
 
+    @Test
+    fun `test delete-dictionary success`() = runTest {
+        val testId = DictionaryId("42")
+        val response = DeleteDictionaryDbResponse()
+
+        var wasCalled = false
+        val repository = MockDbDictionaryRepository(
+            invokeDeleteDictionary = {
+                wasCalled = true
+                if (it == testId) response else throw TestException()
+            }
+        )
+
+        val context = testContext(DictionaryOperation.DELETE_DICTIONARY, repository)
+        context.requestDictionaryId = testId
+
+        DictionaryCorProcessor().execute(context)
+
+        Assertions.assertTrue(wasCalled)
+        Assertions.assertEquals(requestId(DictionaryOperation.DELETE_DICTIONARY), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+    }
 }

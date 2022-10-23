@@ -5,6 +5,7 @@
 let keycloak
 
 const getAllDictionariesURI = '/v1/api/dictionaries/get-all'
+const deleteDictionaryURI = '/v1/api/dictionaries/delete'
 const getAllCardsURI = '/v1/api/cards/get-all'
 const searchCardsURI = '/v1/api/cards/search'
 const createCardURI = '/v1/api/cards/create'
@@ -14,6 +15,7 @@ const deleteCardURI = '/v1/api/cards/delete'
 const getAudioURI = '/v1/api/sounds/get'
 
 const getAllDictionariesRequestType = 'getAllDictionaries'
+const deleteDictionaryRequestType = 'deleteDictionary'
 const getAllCardsRequestType = 'getAllCards'
 const searchCardsRequestType = 'searchCards'
 const createCardRequestType = 'createCard'
@@ -103,9 +105,20 @@ function downloadDictionaryURL(id) {
     return ""
 }
 
-function deleteDictionary(id, onDone) {
-    // TODO
-    console.log("deleteDictionary")
+function deleteDictionary(dictionaryId, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': deleteDictionaryRequestType,
+        'dictionaryId': dictionaryId,
+        'debug': {'mode': runMode},
+    }
+    post(deleteDictionaryURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            onDone()
+        }
+    })
 }
 
 function createCard(card, onDone) {

@@ -97,7 +97,7 @@ function dictionaryRowOnClick(row, dict) {
     btnDownload.prop('disabled', false);
 
     const body = $('#delete-dictionary-prompt-body');
-    body.attr('item-id', dict.id);
+    body.attr('item-id', dict.dictionaryId);
     body.html(dict.name);
 }
 

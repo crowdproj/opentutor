@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards
 
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import kotlinx.datetime.Instant
 
@@ -21,4 +22,9 @@ data class DictionaryContext(
 
     // get all dictionaries list response:
     var responseDictionaryEntityList: List<DictionaryEntity> = listOf(),
-): AppContext
+
+    // get-dictionary & delete-dictionary request:
+    var requestDictionaryId: DictionaryId = DictionaryId.NONE,
+    var normalizedRequestDictionaryId: DictionaryId = DictionaryId.NONE,
+
+) : AppContext

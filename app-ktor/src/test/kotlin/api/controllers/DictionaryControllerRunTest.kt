@@ -37,4 +37,19 @@ internal class DictionaryControllerRunTest {
         Assertions.assertEquals("EN", weather.sourceLang)
         Assertions.assertEquals("RU", weather.targetLang)
     }
+
+    @Test
+    fun `test delete-dictionary success`() = testSecuredApp {
+        val requestBody = DeleteDictionaryRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            dictionaryId = "1",
+        )
+        val response = testPost("/v1/api/dictionaries/delete", requestBody)
+        val res = response.body<DeleteDictionaryResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+    }
 }

@@ -8,4 +8,9 @@ interface DictionaryService {
      * Gets all dictionaries by user id.
      */
     suspend fun getAllDictionaries(context: DictionaryContext): DictionaryContext
+
+    /**
+     * Deletes the given dictionary.
+     */
+    suspend fun deleteDictionary(context: DictionaryContext): DictionaryContext
 }

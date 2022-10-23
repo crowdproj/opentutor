@@ -1,9 +1,14 @@
 package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 object NoOpDbDictionaryRepository : DbDictionaryRepository {
-    override fun getAllDictionaries(userId: AppUserId): DictionaryEntitiesDbResponse {
+    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
+        noOp()
+    }
+
+    override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
         noOp()
     }
 

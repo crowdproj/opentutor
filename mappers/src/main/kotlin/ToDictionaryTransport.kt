@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
@@ -9,6 +10,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 
 fun DictionaryContext.toDictionaryResponse(): BaseResponse = when (val op = this.operation) {
     DictionaryOperation.GET_ALL_DICTIONARIES -> this.toGetAllDictionaryResponse()
+    DictionaryOperation.DELETE_DICTIONARY -> this.toDeleteDictionaryResponse()
     else -> throw IllegalArgumentException("Not supported operation $op.")
 }
 
@@ -17,6 +19,12 @@ fun DictionaryContext.toGetAllDictionaryResponse() = GetAllDictionariesResponse(
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
     dictionaries = this.responseDictionaryEntityList.mapNotNull { it.toDictionaryResource() }
+)
+
+fun DictionaryContext.toDeleteDictionaryResponse() = DeleteDictionaryResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
 )
 
 private fun DictionaryEntity.toDictionaryResource(): DictionaryResource? {
