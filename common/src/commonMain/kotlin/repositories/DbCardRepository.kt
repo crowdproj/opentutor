@@ -51,7 +51,7 @@ interface DbCardRepository {
 
 data class CardsDbResponse(
     val cards: List<CardEntity>,
-    val sourceLanguage: LangId = LangId.NONE,
+    val sourceLanguageId: LangId = LangId.NONE,
     val errors: List<AppError> = emptyList(),
 ) {
     companion object {

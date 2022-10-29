@@ -29,9 +29,9 @@ private fun DictionaryContext.toLog() = DictionariesLogResource(
 private fun DictionaryEntity.toLog() = DictionaryEntityResource(
     dictionaryId = this.dictionaryId.asString(),
     name = this.name,
-    partsOfSpeech = this.partsOfSpeech.takeIf { it.isNotEmpty() },
-    sourceLang = this.sourceLangId.takeIf { it != LangId.NONE }?.asString(),
-    targetLang = this.targetLangId.takeIf { it != LangId.NONE }?.asString(),
+    partsOfSpeech = this.sourceLang.takeIf { it != LangEntity.EMPTY }?.partsOfSpeech?.takeIf { it.isNotEmpty() },
+    sourceLang = this.sourceLang.takeIf { it != LangEntity.EMPTY }?.langId?.asString(),
+    targetLang = this.targetLang.takeIf { it != LangEntity.EMPTY }?.langId?.asString(),
     learned = this.learnedCardsCount,
     total = this.totalCardsCount,
 )

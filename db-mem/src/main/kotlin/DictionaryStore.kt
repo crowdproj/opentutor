@@ -193,7 +193,7 @@ class DictionaryStore private constructor(
         }
 
         private fun write(dictionary: MemDbDictionary, outputStream: OutputStream, sysConfig: SysConfig): Unit =
-            LingvoDocumentWriter(sysConfig).write(dictionary.toDocument(), outputStream)
+            LingvoDocumentWriter().write(dictionary.toDocument { sysConfig.status(it) }, outputStream)
 
 
         data class Configuration(

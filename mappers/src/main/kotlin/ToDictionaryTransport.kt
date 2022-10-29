@@ -34,9 +34,9 @@ private fun DictionaryEntity.toDictionaryResource(): DictionaryResource? {
     return DictionaryResource(
         dictionaryId = this.dictionaryId.asString(),
         name = this.name,
-        sourceLang = this.sourceLangId.toResponseId(),
-        targetLang = this.targetLangId.toResponseId(),
-        partsOfSpeech = this.partsOfSpeech,
+        sourceLang = this.sourceLang.langId.toResponseId(),
+        targetLang = this.targetLang.langId.toResponseId(),
+        partsOfSpeech = this.sourceLang.partsOfSpeech,
         total = this.totalCardsCount,
         learned = this.learnedCardsCount,
     )

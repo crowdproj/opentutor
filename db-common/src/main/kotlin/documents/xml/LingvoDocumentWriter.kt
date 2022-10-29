@@ -1,7 +1,8 @@
 package com.gitlab.sszuev.flashcards.common.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.SysConfig
-import com.gitlab.sszuev.flashcards.common.documents.*
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
+import com.gitlab.sszuev.flashcards.common.documents.DocumentWriter
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.OutputStream
@@ -11,7 +12,7 @@ import javax.xml.transform.*
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-class LingvoDocumentWriter(private val config: SysConfig) : DocumentWriter {
+class LingvoDocumentWriter : DocumentWriter {
 
     override fun write(dictionary: DocumentDictionary, output: OutputStream) {
         val document = toXmlDocument(dictionary)
@@ -28,12 +29,12 @@ class LingvoDocumentWriter(private val config: SysConfig) : DocumentWriter {
         val root = res.createElement("dictionary")
         res.appendChild(root)
         root.setAttribute("title", dictionary.name)
-        val src: String = LingvoMappings.fromLanguageTag(dictionary.sourceLang.id)
-        val dst: String = LingvoMappings.fromLanguageTag(dictionary.targetLang.id)
+        val srcLangId = LingvoMappings.fromLanguageTag(dictionary.sourceLang.tag)
+        val dstLangId = LingvoMappings.fromLanguageTag(dictionary.targetLang.tag)
         dictionary.userId?.let { root.setAttribute("userId", it.toString()) }
         dictionary.id?.let { root.setAttribute("dictionaryId", it.toString()) }
-        root.setAttribute("sourceLanguageId", src)
-        root.setAttribute("destinationLanguageId", dst)
+        root.setAttribute("sourceLanguageId", srcLangId)
+        root.setAttribute("destinationLanguageId", dstLangId)
         root.setAttribute("targetNamespace", "http://www.abbyy.com/TutorDictionary")
         root.setAttribute("formatVersion", "6")
         root.setAttribute("nextWordId", "42")
@@ -68,11 +69,10 @@ class LingvoDocumentWriter(private val config: SysConfig) : DocumentWriter {
         val doc = meaning.ownerDocument
         val statistics = doc.createElement("statistics")
         meaning.appendChild(statistics)
-        val status: CardStatus = config.status(card.answered)
         if (card.answered != null) {
             statistics.setAttribute("answered", card.answered.toString())
         }
-        statistics.setAttribute("status", LingvoMappings.fromStatus(status))
+        statistics.setAttribute("status", LingvoMappings.fromStatus(card.status))
     }
 
     private fun writeText(parent: Element, tag: String, content: String) {

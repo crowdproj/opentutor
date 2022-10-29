@@ -21,8 +21,8 @@ internal fun User.toEntity() = AppUserEntity(
 internal fun Dictionary.toEntity() = DictionaryEntity(
     dictionaryId = this.id.asDictionaryId(),
     name = this.name,
-    sourceLangId = this.sourceLang.asLangId(),
-    targetLangId = this.targetLand.asLangId(),
+    sourceLang = this.sourceLang.toEntity(),
+    targetLang = this.targetLand.toEntity(),
 )
 
 internal fun Card.toEntity() = CardEntity(
@@ -35,6 +35,11 @@ internal fun Card.toEntity() = CardEntity(
     answered = this.answered,
     examples = this.examples.map { it.text },
     translations = this.translations.map { toEntityTranslations(it.text) },
+)
+
+internal fun Language.toEntity() = LangEntity(
+    langId = this.id.asLangId(),
+    partsOfSpeech = this.partsOfSpeech.split(",")
 )
 
 internal fun copyToDbEntityRecord(from: CardEntity, to: Card) {

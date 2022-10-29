@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.common.documents
 
-import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentReader
 import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentWriter
 import org.junit.jupiter.api.Assertions
@@ -25,7 +24,7 @@ internal class LingvoDocumentTest {
         }
 
         private fun createWriter(): DocumentWriter {
-            return LingvoDocumentWriter(config = SysConfig(numberOfRightAnswers = 5))
+            return LingvoDocumentWriter()
         }
 
         @Suppress("SameParameterValue")
@@ -42,8 +41,8 @@ internal class LingvoDocumentTest {
         private fun assertDictionary(expected: DocumentDictionary, actual: DocumentDictionary) {
             Assertions.assertEquals(expected.name, actual.name)
             Assertions.assertEquals(expected.cards.size, actual.cards.size)
-            Assertions.assertEquals(expected.targetLang.id, actual.targetLang.id)
-            Assertions.assertEquals(expected.sourceLang.id, actual.sourceLang.id)
+            Assertions.assertEquals(expected.targetLang, actual.targetLang)
+            Assertions.assertEquals(expected.sourceLang, actual.sourceLang)
             val expectedCards = expected.cards
             val actualCards = actual.cards
             Assertions.assertEquals(expectedCards.size, actualCards.size)
@@ -73,17 +72,19 @@ internal class LingvoDocumentTest {
             transcription = "rein",
             partOfSpeech = "noun",
             translations = listOf("дождь", "ливень"),
-            examples = listOf("The skies no longer rain death.","The sockets were filled with rain."),
+            examples = listOf("The skies no longer rain death.", "The sockets were filled with rain."),
             answered = 2,
+            status = CardStatus.IN_PROCESS,
         )
         val card2 = DocumentCard(
             id = null,
             text = "mutual",
             transcription = "ˈmjuːʧʊəl",
             partOfSpeech = "adjective",
-            translations = listOf("взаимный","обоюдный","общий","совместный"),
+            translations = listOf("взаимный", "обоюдный", "общий", "совместный"),
             examples = listOf("Twenty years of mutual vanity, and nothing more."),
             answered = 12,
+            status = CardStatus.LEARNED,
         )
         val card3 = DocumentCard(
             id = null,
@@ -91,14 +92,15 @@ internal class LingvoDocumentTest {
             transcription = "test",
             partOfSpeech = "verb",
             translations = listOf("тестировать"),
+            status = CardStatus.UNKNOWN,
         )
 
         val dictionary = DocumentDictionary(
             id = null,
             userId = null,
             name = "The Test Dictionary",
-            sourceLang = DocumentLang("en", "xxx"),
-            targetLang = DocumentLang("ru", "xxx"),
+            sourceLang = DocumentLang("en", emptyList()),
+            targetLang = DocumentLang("ru", emptyList()),
             cards = listOf(card1, card2, card3),
         )
         val out = ByteArrayOutputStream()

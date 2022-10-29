@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.common.documents
 
 data class DocumentLang(
-    val id: String,
-    val partsOfSpeech: String,
+    val tag: String,
+    val partsOfSpeech: List<String>,
 )

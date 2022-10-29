@@ -5,10 +5,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
-import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.*
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -22,14 +19,17 @@ internal class ToDictionaryTransportTest {
             )
             Assertions.assertEquals(expected.name, actual.name)
             Assertions.assertEquals(
-                if (expected.sourceLangId == LangId.NONE) null else expected.sourceLangId.asString(),
+                if (expected.sourceLang == LangEntity.EMPTY) null else expected.sourceLang.langId.asString(),
                 actual.sourceLang
             )
             Assertions.assertEquals(
-                if (expected.targetLangId == LangId.NONE) null else expected.targetLangId.asString(),
+                if (expected.targetLang == LangEntity.EMPTY) null else expected.targetLang.langId.asString(),
                 actual.targetLang
             )
-            Assertions.assertEquals(expected.partsOfSpeech, actual.partsOfSpeech)
+            Assertions.assertEquals(
+                expected.sourceLang.takeIf { it != LangEntity.EMPTY }?.partsOfSpeech,
+                actual.partsOfSpeech
+            )
             Assertions.assertEquals(expected.totalCardsCount, actual.total)
             Assertions.assertEquals(expected.learnedCardsCount, actual.learned)
         }
@@ -44,18 +44,17 @@ internal class ToDictionaryTransportTest {
                 DictionaryEntity(
                     dictionaryId = DictionaryId("J"),
                     name = "xxx",
-                    partsOfSpeech = listOf("verb", "adjective"),
                     totalCardsCount = 42,
                     learnedCardsCount = 21,
-                    sourceLangId = LangId("XX"),
-                    targetLangId = LangId("XX"),
+                    sourceLang = LangEntity(LangId("XX"), listOf("a", "b")),
+                    targetLang = LangEntity(LangId("XX")),
                 ),
                 DictionaryEntity(
                     dictionaryId = DictionaryId("M"),
                     name = "yyy",
                     totalCardsCount = 42000,
-                    sourceLangId = LangId("GG"),
-                    targetLangId = LangId("DD"),
+                    sourceLang = LangEntity(LangId("GG")),
+                    targetLang = LangEntity(LangId("DD"), listOf("d", "f")),
                 ),
             ),
             errors = mutableListOf(),

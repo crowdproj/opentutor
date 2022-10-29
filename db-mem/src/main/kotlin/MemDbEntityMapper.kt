@@ -1,12 +1,10 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.*
+import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
 import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
-import com.gitlab.sszuev.flashcards.common.toDbRecordDetails
-import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
-import com.gitlab.sszuev.flashcards.common.toEntityDetails
-import com.gitlab.sszuev.flashcards.common.toEntityTranslations
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbLanguage
@@ -31,30 +29,20 @@ internal fun DocumentDictionary.toDbRecord(): MemDbDictionary {
         name = this.name,
         sourceLanguage = this.sourceLang.toDbRecord(),
         targetLanguage = this.targetLang.toDbRecord(),
-        cards = this.cards.asSequence().map { it.toDbRecord(dictionaryId) }.associateBy { it.id }.toMutableMap()
+        cards = this.cards.asSequence().map { it.toDbRecord(dictionaryId) }.associateBy { it.id }.toMutableMap(),
     )
 }
 
-internal fun MemDbDictionary.toDocument(): DocumentDictionary {
+internal fun MemDbDictionary.toDocument(mapStatus: (Int?) -> CardStatus): DocumentDictionary {
     return DocumentDictionary(
         userId = this.userId,
         id = this.id,
         name = this.name,
         sourceLang = this.sourceLanguage.toDocument(),
         targetLang = this.targetLanguage.toDocument(),
-        cards = this.cards.values.map { it.toDocument() }
+        cards = this.cards.values.map { it.toDocument(mapStatus) },
     )
 }
-
-private fun DocumentLang.toDbRecord() = MemDbLanguage(
-    id = this.id,
-    partsOfSpeech = this.partsOfSpeech,
-)
-
-private fun MemDbLanguage.toDocument() = DocumentLang(
-    id = this.id,
-    partsOfSpeech = this.partsOfSpeech,
-)
 
 private fun DocumentCard.toDbRecord(dictionaryId: Long) = MemDbCard(
     id = requireNotNull(this.id) { "no card id found" },
@@ -68,7 +56,7 @@ private fun DocumentCard.toDbRecord(dictionaryId: Long) = MemDbCard(
     examples = this.examples,
 )
 
-private fun MemDbCard.toDocument() = DocumentCard(
+private fun MemDbCard.toDocument(mapStatus: (Int?) -> CardStatus) = DocumentCard(
     id = this.id,
     text = this.text,
     transcription = this.transcription,
@@ -77,13 +65,14 @@ private fun MemDbCard.toDocument() = DocumentCard(
     answered = this.answered,
     translations = this.translations,
     examples = this.examples,
+    status = mapStatus(this.answered),
 )
 
 internal fun MemDbDictionary.toEntity() = DictionaryEntity(
     dictionaryId = this.id.asDictionaryId(),
     name = this.name,
-    sourceLangId = this.sourceLanguage.asLangId(),
-    targetLangId = this.targetLanguage.asLangId(),
+    sourceLang = this.sourceLanguage.toEntity(),
+    targetLang = this.targetLanguage.toEntity(),
     userId = this.userId?.asUserId() ?: AppUserId.NONE
 )
 
@@ -114,14 +103,41 @@ internal fun CardEntity.toDbRecord(cardId: Long): MemDbCard {
     )
 }
 
+internal fun MemDbLanguage.toEntity() = LangEntity(
+    langId = this.id.asLangId(),
+    partsOfSpeech = this.partsOfSpeech,
+)
+
+private fun DocumentLang.toDbRecord() = MemDbLanguage(
+    id = this.tag,
+    partsOfSpeech = this.partsOfSpeech,
+)
+
+private fun MemDbLanguage.toDocument() = DocumentLang(
+    tag = this.id,
+    partsOfSpeech = this.partsOfSpeech,
+)
+
 private fun Long.asUserId() = AppUserId(toString())
 
 internal fun UUID.asUserUid() = AppAuthId(toString())
 
-internal fun MemDbLanguage.asLangId(): LangId = LangId(this.id)
+internal fun String.asLangId(): LangId = LangId(this)
 
 private fun Long.asCardId() = CardId(toString())
 
 private fun Long.asDictionaryId() = DictionaryId(toString())
 
 private fun Id.asDbRecordId() = asString().toLong()
+
+fun SysConfig.status(answered: Int?): CardStatus {
+    return if (answered == null) {
+        CardStatus.UNKNOWN
+    } else {
+        if (answered >= this.numberOfRightAnswers) {
+            CardStatus.LEARNED
+        } else {
+            CardStatus.IN_PROCESS
+        }
+    }
+}

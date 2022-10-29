@@ -9,4 +9,5 @@ data class DocumentCard(
     val answered: Int? = null,
     val translations: List<String>,
     val examples: List<String> = emptyList(),
+    val status: CardStatus,
 )

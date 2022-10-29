@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.*
 import com.gitlab.sszuev.flashcards.common.documents.CardStatus
-import com.gitlab.sszuev.flashcards.common.documents.status
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.*
@@ -42,7 +41,7 @@ class MemDbCardRepository(
         val cards = dictionary.cards.values.map { it.toEntity() }
         return CardsDbResponse(
             cards = cards,
-            sourceLanguage = dictionary.sourceLanguage.asLangId(),
+            sourceLanguageId = dictionary.sourceLanguage.toEntity().langId,
             errors = emptyList()
         )
     }
@@ -54,8 +53,8 @@ class MemDbCardRepository(
         if (dictionaries.isEmpty()) {
             return CardsDbResponse(cards = emptyList())
         }
-        val sourceLanguages = dictionaries.map { it.sourceLanguage.asLangId() }.toSet()
-        val targetLanguages = dictionaries.map { it.targetLanguage.asLangId() }.toSet()
+        val sourceLanguages = dictionaries.map { it.sourceLanguage.toEntity().langId }.toSet()
+        val targetLanguages = dictionaries.map { it.targetLanguage.toEntity().langId }.toSet()
         if (sourceLanguages.size != 1 || targetLanguages.size != 1) {
             return CardsDbResponse(
                 cards = emptyList(),
@@ -74,7 +73,7 @@ class MemDbCardRepository(
             fromDb = fromDb.shuffled(Random.Default)
         }
         val cards = fromDb.take(filter.length).map { it.toEntity() }.toList()
-        return CardsDbResponse(cards = cards, sourceLanguage = sourceLanguages.single())
+        return CardsDbResponse(cards = cards, sourceLanguageId = sourceLanguages.single())
     }
 
     override fun createCard(card: CardEntity): CardDbResponse {

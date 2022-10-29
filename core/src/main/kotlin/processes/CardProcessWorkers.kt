@@ -145,9 +145,9 @@ private suspend fun CardContext.postProcess(res: CardsDbResponse) {
     if (res.errors.isNotEmpty()) {
         this.errors.addAll(res.errors)
     }
-    if (res.sourceLanguage != LangId.NONE) {
+    if (res.sourceLanguageId != LangId.NONE) {
         val tts = this.repositories.ttsClientRepository(this.workMode)
-        val responses = res.cards.associateWith { tts.findResourceId(ResourceGet(it.word, res.sourceLanguage).normalize()) }
+        val responses = res.cards.associateWith { tts.findResourceId(ResourceGet(it.word, res.sourceLanguageId).normalize()) }
         this.errors.addAll(responses.flatMap { it.value.errors })
         this.responseCardEntityList =
             responses.map { if (it.value.id != ResourceId.NONE) it.key.copy(sound = it.value.id) else it.key }

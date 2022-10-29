@@ -29,13 +29,13 @@ class LingvoDocumentReader(private val ids: IdGenerator?) : DocumentReader {
         val root = doc.documentElement
 
         val dictionaryId = root.parseId("dictionaryId") ?: ids?.nextDictionaryId()
-        val src: DocumentLang = root.parseLanguage("sourceLanguageId")
-        val dst: DocumentLang = root.parseLanguage("destinationLanguageId")
+        val srcLang = root.parseLanguage("sourceLanguageId")
+        val dstLang = root.parseLanguage("destinationLanguageId")
         return DocumentDictionary(
             id = dictionaryId,
             name = root.getAttribute("title"),
-            sourceLang = src,
-            targetLang = dst,
+            sourceLang = srcLang,
+            targetLang = dstLang,
             cards = root.parseCardList(),
             userId = root.parseId("userId"),
         )
@@ -76,11 +76,14 @@ class LingvoDocumentReader(private val ids: IdGenerator?) : DocumentReader {
             examples = examples,
             answered = answered,
             details = "parsed from lingvo xml",
+            status = status,
         )
     }
 
     private fun Element.parseLanguage(id: String): DocumentLang {
-        return DocumentLang(id = LingvoMappings.toLanguageTag(getAttribute(id)), partsOfSpeech = "unknown")
+        val tag = LingvoMappings.toLanguageTag(getAttribute(id))
+        val pos = LingvoMappings.toPartsOfSpeech(tag)
+        return DocumentLang(tag = tag, partsOfSpeech = pos)
     }
 
     private fun Element.parseId(idAttribute: String): Long? {

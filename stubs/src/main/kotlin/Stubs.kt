@@ -12,8 +12,8 @@ val stubDictionaries = listOf(
         dictionaryId = DictionaryId(42.toString()),
         userId = AppUserId(1.toString()),
         name = "Stub-dictionary",
-        sourceLangId = LangId("SL"),
-        targetLangId = LangId("TL")
+        sourceLang = LangEntity(LangId("SL"), listOf("A", "B", "C")),
+        targetLang = LangEntity(LangId("TL"), listOf("X", "Y")),
     )
 )
 

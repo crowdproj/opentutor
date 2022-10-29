@@ -8,6 +8,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
+import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.deleteWhere
@@ -29,7 +30,7 @@ class PgDbDictionaryRepository(
         return connection.execute {
             val dictionaries = Dictionary.find(
                 Dictionaries.userId eq userId.asRecordId()
-            ).map { it.toEntity() }
+            ).with(Dictionary::sourceLang).with(Dictionary::targetLand).map { it.toEntity() }
             DictionariesDbResponse(dictionaries = dictionaries)
         }
     }
