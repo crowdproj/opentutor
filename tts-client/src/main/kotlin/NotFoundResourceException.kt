@@ -1,5 +1,5 @@
 package com.gitlab.sszuev.flashcards.speaker
 
-import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 
-class NotFoundResourceException(id: ResourceId, message: String) : BaseResourceException(id, message)
+class NotFoundResourceException(id: TTSResourceId, message: String) : BaseResourceException(id, message)

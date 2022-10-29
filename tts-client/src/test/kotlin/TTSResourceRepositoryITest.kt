@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 
-import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
 import com.gitlab.sszuev.flashcards.speaker.TTSClientConfig
@@ -114,8 +115,8 @@ internal class TTSResourceRepositoryITest {
             return requestId.replace("^.*\\D(\\d+)$".toRegex(), "$1").toByte()
         }
 
-        private fun testRequestId(id: Byte, status: Boolean = true): ResourceId {
-            return ResourceId("${if (status) "ok" else "error"}-test-request-id=$id")
+        private fun testRequestId(id: Byte, status: Boolean = true): TTSResourceId {
+            return TTSResourceId("${if (status) "ok" else "error"}-test-request-id=$id")
         }
 
         private fun mustBeError(requestId: String): Boolean {
@@ -143,7 +144,7 @@ internal class TTSResourceRepositoryITest {
             }
         }
 
-        private suspend fun testSendRequestSuccess(repository: TTSResourceRepository, testRequestId: ResourceId) {
+        private suspend fun testSendRequestSuccess(repository: TTSResourceRepository, testRequestId: TTSResourceId) {
             val expectedDataSize = extractSize(testRequestId.asString())
             val expectedDataArray = ByteArray(expectedDataSize.toInt()) { expectedDataSize }
             val res = repository.getResource(testRequestId)
@@ -182,7 +183,7 @@ internal class TTSResourceRepositoryITest {
 
             val res = repository.getResource(testRequestId)
 
-            Assertions.assertEquals(ResourceId.NONE, res.resource.resourceId)
+            Assertions.assertEquals(ResourceEntity.DUMMY, res.resource)
             Assertions.assertEquals(1, res.errors.size)
             Assertions.assertArrayEquals(ByteArray(0), res.resource.data)
             val error = res.errors[0]
@@ -243,7 +244,7 @@ internal class TTSResourceRepositoryITest {
                 requestTimeoutInMs = 4200,
             )
             val res = repository.getResource(testRequestId)
-            Assertions.assertEquals(ResourceId.NONE, res.resource.resourceId)
+            Assertions.assertEquals(ResourceEntity.DUMMY, res.resource)
             Assertions.assertEquals(1, res.errors.size)
             Assertions.assertArrayEquals(ByteArray(0), res.resource.data)
             val error = res.errors[0]

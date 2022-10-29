@@ -7,8 +7,8 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangId
-import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
-import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DeleteCardDbResponse
@@ -147,10 +147,10 @@ private suspend fun CardContext.postProcess(res: CardsDbResponse) {
     }
     if (res.sourceLanguageId != LangId.NONE) {
         val tts = this.repositories.ttsClientRepository(this.workMode)
-        val responses = res.cards.associateWith { tts.findResourceId(ResourceGet(it.word, res.sourceLanguageId).normalize()) }
+        val responses = res.cards.associateWith { tts.findResourceId(TTSResourceGet(it.word, res.sourceLanguageId).normalize()) }
         this.errors.addAll(responses.flatMap { it.value.errors })
         this.responseCardEntityList =
-            responses.map { if (it.value.id != ResourceId.NONE) it.key.copy(sound = it.value.id) else it.key }
+            responses.map { if (it.value.id != TTSResourceId.NONE) it.key.copy(sound = it.value.id) else it.key }
     } else {
         this.responseCardEntityList = res.cards
     }

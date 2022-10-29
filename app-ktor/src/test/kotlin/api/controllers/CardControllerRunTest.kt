@@ -36,7 +36,7 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(1, res.errors!!.size)
         Assertions.assertEquals(Result.ERROR, res.result)
         Assertions.assertEquals(
-            "Error while GET_RESOURCE: no resource found. filter=ResourceGet(word=xxx, lang=LangId(id=xx))",
+            "Error while GET_RESOURCE: no resource found. filter=TTSResourceGet(word=xxx, lang=LangId(id=xx))",
             res.errors!![0].message
         )
         Assertions.assertArrayEquals(ResourceEntity.DUMMY.data, res.resource)

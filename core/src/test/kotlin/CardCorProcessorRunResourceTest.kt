@@ -8,8 +8,8 @@ import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.repositories.ResourceEntityTTSResponse
-import com.gitlab.sszuev.flashcards.repositories.ResourceIdTTSResponse
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,8 +42,8 @@ internal class CardCorProcessorRunResourceTest {
 
     @Test
     fun `test get resource success`() = runTest {
-        val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
-        val testResourceId = ResourceId("test-id")
+        val testResourceGet = TTSResourceGet(word = "xxx", lang = LangId("EN"))
+        val testResourceId = TTSResourceId("test-id")
         val testResourceEntity = ResourceEntity(
             resourceId = testResourceId,
             data = ByteArray(42) { 42 }
@@ -54,11 +54,11 @@ internal class CardCorProcessorRunResourceTest {
         val repository = MockTTSResourceRepository(
             invokeFindResourceId = {
                 findResourceIdWasCalled = true
-                ResourceIdTTSResponse(testResourceId)
+                TTSResourceIdResponse(testResourceId)
             },
             invokeGetResource = {
                 getResourceWasCalled = true
-                ResourceEntityTTSResponse(testResourceEntity)
+                TTSResourceEntityResponse(testResourceEntity)
             },
         )
 
@@ -81,9 +81,9 @@ internal class CardCorProcessorRunResourceTest {
 
     @Test
     fun `test get resource fail no resource found`() = runTest {
-        val testResourceGet = ResourceGet(word = "xxx", lang = LangId("en"))
-        val testResourceId = ResourceId("test-id")
-        val testResourceEntity = ResourceEntityTTSResponse(ResourceEntity(
+        val testResourceGet = TTSResourceGet(word = "xxx", lang = LangId("en"))
+        val testResourceId = TTSResourceId("test-id")
+        val testResourceEntity = TTSResourceEntityResponse(ResourceEntity(
             resourceId = testResourceId,
             data = ByteArray(42) { 42 }
         ))
@@ -93,7 +93,7 @@ internal class CardCorProcessorRunResourceTest {
         val repository = MockTTSResourceRepository(
             invokeFindResourceId = {
                 findResourceIdWasCalled = true
-                ResourceIdTTSResponse.EMPTY
+                TTSResourceIdResponse.EMPTY
             },
             invokeGetResource = {
                 getResourceWasCalled = true
@@ -126,8 +126,8 @@ internal class CardCorProcessorRunResourceTest {
 
     @Test
     fun `test get resource fail exception`() = runTest {
-        val testResourceGet = ResourceGet(word = "xxx", lang = LangId("EN"))
-        val testResourceIdFound = ResourceIdTTSResponse(ResourceId("test-id"))
+        val testResourceGet = TTSResourceGet(word = "xxx", lang = LangId("EN"))
+        val testResourceIdFound = TTSResourceIdResponse(TTSResourceId("test-id"))
 
         var findResourceIdWasCalled = false
         var getResourceWasCalled = false

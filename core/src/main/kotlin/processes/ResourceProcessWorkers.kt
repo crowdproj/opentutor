@@ -6,7 +6,7 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 
 fun ChainDSL<CardContext>.processResource() = worker {
     this.name = "process audio resource request"
@@ -17,7 +17,7 @@ fun ChainDSL<CardContext>.processResource() = worker {
             this.errors.addAll(foundId.errors)
             this.status = AppStatus.FAIL
             return@process
-        } else if (foundId.id == ResourceId.NONE) {
+        } else if (foundId.id == TTSResourceId.NONE) {
             this.errors.add(
                 runError(
                     operation = CardOperation.GET_RESOURCE,

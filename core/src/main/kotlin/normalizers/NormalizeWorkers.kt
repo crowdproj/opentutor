@@ -83,8 +83,8 @@ fun CardLearn.normalize(): CardLearn {
     )
 }
 
-fun ResourceGet.normalize(): ResourceGet {
-    return ResourceGet(
+fun TTSResourceGet.normalize(): TTSResourceGet {
+    return TTSResourceGet(
         word = this.word.trim(),
         lang = this.lang.normalize(),
     )

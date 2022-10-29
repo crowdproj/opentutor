@@ -10,7 +10,7 @@ data class CardEntity(
     val answered: Int? = null,
     val translations: List<List<String>> = emptyList(),
     val examples: List<String> = emptyList(),
-    val sound: ResourceId = ResourceId.NONE,
+    val sound: TTSResourceId = TTSResourceId.NONE,
 ) {
     companion object {
         val EMPTY = CardEntity()

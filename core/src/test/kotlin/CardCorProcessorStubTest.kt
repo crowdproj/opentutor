@@ -21,7 +21,7 @@ internal class CardCorProcessorStubTest {
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
         private val testCard = stubCard.copy()
-        private val testAudioResourceGet = ResourceGet(lang = LangId("xx"), word = "xxx")
+        private val testAudioResourceGet = TTSResourceGet(lang = LangId("xx"), word = "xxx")
 
         private val testCardFilter = CardFilter(
             dictionaryIds = listOf(2, 4, 42).map { DictionaryId(it.toString()) },
