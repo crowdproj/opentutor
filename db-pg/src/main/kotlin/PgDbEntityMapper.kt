@@ -1,9 +1,9 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.common.toDbRecordDetails
-import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
-import com.gitlab.sszuev.flashcards.common.toEntityDetails
-import com.gitlab.sszuev.flashcards.common.toEntityTranslations
+import com.gitlab.sszuev.flashcards.common.*
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
+import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
 import com.gitlab.sszuev.flashcards.dbpg.dao.*
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionary
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
@@ -11,7 +11,29 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.*
 import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.sql.SizedIterable
 import java.util.*
+
+internal fun Dictionary.toDownloadResource(sysConfig: SysConfig, cards: SizedIterable<Card>) = DocumentDictionary(
+    id = null,
+    userId = null,
+    name = this.name,
+    sourceLang = this.sourceLang.toDocument(),
+    targetLang = this.targetLand.toDocument(),
+    cards = cards.map { it.toDownloadResource(sysConfig) }
+)
+
+internal fun Card.toDownloadResource(sysConfig: SysConfig) = DocumentCard(
+    id = null,
+    text = this.text,
+    transcription = this.transcription,
+    details = this.details ?: "",
+    partOfSpeech = this.partOfSpeech,
+    answered = this.answered,
+    examples = this.examples.map { it.text },
+    translations = this.translations.map { it.text },
+    status = sysConfig.status(this.answered),
+)
 
 internal fun User.toEntity() = AppUserEntity(
     id = this.id.asUserId(),
@@ -39,6 +61,11 @@ internal fun Card.toEntity() = CardEntity(
 
 internal fun Language.toEntity() = LangEntity(
     langId = this.id.asLangId(),
+    partsOfSpeech = this.partsOfSpeech.split(",")
+)
+
+private fun Language.toDocument() = DocumentLang(
+    tag = this.id.value,
     partsOfSpeech = this.partsOfSpeech.split(",")
 )
 

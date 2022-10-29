@@ -4,7 +4,7 @@ import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
-object LingvoMappings {
+internal object LingvoMappings {
     /**
      * Impl notes:
      * Uses [StandardCharsets.UTF_16],
@@ -43,8 +43,8 @@ object LingvoMappings {
         return byValue(LANGUAGE_MAP, tag)
     }
 
-    fun toPartOfSpeechTag(id: String): String {
-        return byKey(PART_OF_SPEECH_MAP, id).name
+    fun toPartOfSpeechTag(lingvoId: String): String {
+        return byKey(PART_OF_SPEECH_MAP, lingvoId).term()
     }
 
     fun fromPartOfSpeechTag(tag: String): String {

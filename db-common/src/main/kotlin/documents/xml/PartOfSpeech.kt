@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.common.documents.xml
 
 
-interface PartOfSpeech {
+internal interface PartOfSpeech {
     fun term(): String
 }
 

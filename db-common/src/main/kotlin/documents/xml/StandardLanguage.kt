@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.common.documents.xml
 
-enum class StandardLanguage {
+internal enum class StandardLanguage {
     EN {
         override fun partsOfSpeech(): List<String> {
             return EnPartOfSpeech.values().map { it.term() }

@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.common
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -114,4 +115,16 @@ internal fun splitIntoWords(phrase: String): List<String> {
         i++
     }
     return res
+}
+
+fun SysConfig.status(answered: Int?): CardStatus {
+    return if (answered == null) {
+        CardStatus.UNKNOWN
+    } else {
+        if (answered >= this.numberOfRightAnswers) {
+            CardStatus.LEARNED
+        } else {
+            CardStatus.IN_PROCESS
+        }
+    }
 }

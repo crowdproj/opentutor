@@ -12,7 +12,7 @@ import javax.xml.transform.*
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-class LingvoDocumentWriter : DocumentWriter {
+internal class LingvoDocumentWriter : DocumentWriter {
 
     override fun write(dictionary: DocumentDictionary, output: OutputStream) {
         val document = toXmlDocument(dictionary)

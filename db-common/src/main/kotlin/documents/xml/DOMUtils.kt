@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.common.documents.xml
 import org.w3c.dom.Element
 import org.w3c.dom.Node
 
-object DOMUtils {
+internal object DOMUtils {
     /**
      * Gets element by the specified tag or throws an error.
      *

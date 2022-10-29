@@ -1,13 +1,17 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
+import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.common.asDbId
+import com.gitlab.sszuev.flashcards.common.documents.createWriter
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.dbpg.dao.*
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionaryResourceDbResponse
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
@@ -16,6 +20,7 @@ import org.jetbrains.exposed.sql.select
 
 class PgDbDictionaryRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
+    private val sysConfig: SysConfig = SysConfig(),
 ) : DbDictionaryRepository {
     private val connection by lazy {
         // lazy, to avoid initialization error when there is no real pg-database
@@ -57,6 +62,22 @@ class PgDbDictionaryRepository(
             DeleteDictionaryDbResponse(
                 if (res == 0) listOf(noDictionaryFoundDbError(operation = "deleteDictionary", id = id)) else emptyList()
             )
+        }
+    }
+
+    override fun downloadDictionary(id: DictionaryId): DictionaryResourceDbResponse {
+        return connection.execute {
+            val dictionary = Dictionary.findById(id.asDbId())
+                ?: return@execute DictionaryResourceDbResponse(
+                    resource = ResourceEntity.DUMMY,
+                    listOf(noDictionaryFoundDbError(operation = "downloadDictionary", id = id))
+                )
+            val cards = Card.find {
+                Cards.dictionaryId eq id.asDbId()
+            }.with(Card::examples).with(Card::translations)
+            val res = dictionary.toDownloadResource(sysConfig, cards)
+            val data = createWriter().write(res)
+            DictionaryResourceDbResponse(resource = ResourceEntity(id, data))
         }
     }
 

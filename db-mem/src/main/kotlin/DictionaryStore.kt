@@ -1,8 +1,9 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.SysConfig
-import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentReader
-import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentWriter
+import com.gitlab.sszuev.flashcards.common.documents.createReader
+import com.gitlab.sszuev.flashcards.common.documents.createWriter
+import com.gitlab.sszuev.flashcards.common.status
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import org.slf4j.LoggerFactory
 import java.io.InputStream
@@ -187,13 +188,13 @@ class DictionaryStore private constructor(
         }
 
         private fun read(inputStream: InputStream, generator: IdSequences): MemDbDictionary {
-            val res = LingvoDocumentReader(generator).parse(inputStream).toDbRecord()
+            val res = createReader(generator).parse(inputStream).toDbRecord()
             generator.position(res)
             return res
         }
 
         private fun write(dictionary: MemDbDictionary, outputStream: OutputStream, sysConfig: SysConfig): Unit =
-            LingvoDocumentWriter().write(dictionary.toDocument { sysConfig.status(it) }, outputStream)
+            createWriter().write(dictionary.toDocument { sysConfig.status(it) }, outputStream)
 
 
         data class Configuration(

@@ -1,10 +1,13 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.*
 import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
 import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
+import com.gitlab.sszuev.flashcards.common.toDbRecordDetails
+import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
+import com.gitlab.sszuev.flashcards.common.toEntityDetails
+import com.gitlab.sszuev.flashcards.common.toEntityTranslations
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbLanguage
@@ -33,14 +36,14 @@ internal fun DocumentDictionary.toDbRecord(): MemDbDictionary {
     )
 }
 
-internal fun MemDbDictionary.toDocument(mapStatus: (Int?) -> CardStatus): DocumentDictionary {
+internal fun MemDbDictionary.toDocument(withIds: Boolean = true, mapStatus: (Int?) -> CardStatus): DocumentDictionary {
     return DocumentDictionary(
-        userId = this.userId,
-        id = this.id,
+        userId = if (withIds) this.userId else null,
+        id = if (withIds) this.id else null,
         name = this.name,
         sourceLang = this.sourceLanguage.toDocument(),
         targetLang = this.targetLanguage.toDocument(),
-        cards = this.cards.values.map { it.toDocument(mapStatus) },
+        cards = this.cards.values.map { it.toDocument(withIds, mapStatus) },
     )
 }
 
@@ -56,8 +59,8 @@ private fun DocumentCard.toDbRecord(dictionaryId: Long) = MemDbCard(
     examples = this.examples,
 )
 
-private fun MemDbCard.toDocument(mapStatus: (Int?) -> CardStatus) = DocumentCard(
-    id = this.id,
+private fun MemDbCard.toDocument(withIds: Boolean = true, mapStatus: (Int?) -> CardStatus) = DocumentCard(
+    id = if (withIds) this.id else null,
     text = this.text,
     transcription = this.transcription,
     partOfSpeech = this.partOfSpeech,
@@ -129,15 +132,3 @@ private fun Long.asCardId() = CardId(toString())
 private fun Long.asDictionaryId() = DictionaryId(toString())
 
 private fun Id.asDbRecordId() = asString().toLong()
-
-fun SysConfig.status(answered: Int?): CardStatus {
-    return if (answered == null) {
-        CardStatus.UNKNOWN
-    } else {
-        if (answered >= this.numberOfRightAnswers) {
-            CardStatus.LEARNED
-        } else {
-            CardStatus.IN_PROCESS
-        }
-    }
-}

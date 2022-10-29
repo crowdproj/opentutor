@@ -10,7 +10,7 @@ import javax.xml.XMLConstants
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
 
-class LingvoDocumentReader(private val ids: IdGenerator?) : DocumentReader {
+internal class LingvoDocumentReader(private val ids: IdGenerator?) : DocumentReader {
 
     override fun parse(input: InputStream): DocumentDictionary {
         return try {

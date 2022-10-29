@@ -74,6 +74,18 @@ abstract class DbDictionaryRepositoryTest {
         Assertions.assertTrue(res2.errors.isEmpty())
     }
 
+    @Order(3)
+    @Test
+    fun `test download dictionary`() {
+        // Weather
+        val res = repository.downloadDictionary(DictionaryId("2"))
+        Assertions.assertTrue(res.errors.isEmpty())
+        val xml = res.resource.data.toString(Charsets.UTF_16)
+        Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16" standalone="yes"?>"""))
+        Assertions.assertEquals(66, xml.split("<card>").size)
+        Assertions.assertTrue(xml.substring(29000).endsWith("</dictionary>\n"))
+    }
+
     @Order(42)
     @Test
     fun `test delete dictionary success`() {
@@ -97,4 +109,5 @@ abstract class DbDictionaryRepositoryTest {
             error.message
         )
     }
+
 }

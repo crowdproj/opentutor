@@ -76,7 +76,7 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(res.card)
         Assertions.assertEquals("weather", res.card!!.word)
         Assertions.assertEquals("'weðə", res.card!!.transcription)
-        Assertions.assertEquals("NOUN", res.card!!.partOfSpeech)
+        Assertions.assertEquals("noun", res.card!!.partOfSpeech)
         Assertions.assertEquals(listOf(listOf("погода")), res.card!!.translations)
         Assertions.assertEquals(
             listOf(
