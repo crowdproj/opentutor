@@ -29,7 +29,7 @@ class CardCorProcessor {
             operation(CardOperation.GET_RESOURCE) {
                 stubs(CardOperation.GET_RESOURCE) {
                     cardStubSuccess(CardOperation.GET_RESOURCE) {
-                        this.responseResourceEntity = stubAudioResource
+                        this.responseTTSResourceEntity = stubAudioResource
                     }
                     stubError(CardOperation.GET_RESOURCE)
                     stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_WRONG_RESOURCE_ID)

@@ -2,8 +2,8 @@ package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
-import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 
 /**
  * Generic (TextToSpeech) interface to provide access to [ResourceEntity]s.
@@ -13,27 +13,27 @@ interface TTSResourceRepository {
 
     /**
      * Returns a resource identifier that corresponds to the given [filter].
-     * @param [filter][ResourceGet]
-     * @return [ResourceIdTTSResponse]
+     * @param [filter][TTSResourceGet]
+     * @return [TTSResourceIdResponse]
      */
-    suspend fun findResourceId(filter: ResourceGet): ResourceIdTTSResponse
+    suspend fun findResourceId(filter: TTSResourceGet): TTSResourceIdResponse
 
     /**
      * Gets resource by its id.
-     * @param [id][ResourceId]
-     * @return [ResourceEntityTTSResponse]
+     * @param [id][TTSResourceId]
+     * @return [TTSResourceEntityResponse]
      */
-    suspend fun getResource(id: ResourceId): ResourceEntityTTSResponse
+    suspend fun getResource(id: TTSResourceId): TTSResourceEntityResponse
 }
 
-data class ResourceEntityTTSResponse(val resource: ResourceEntity, val errors: List<AppError> = emptyList()) {
+data class TTSResourceEntityResponse(val resource: ResourceEntity, val errors: List<AppError> = emptyList()) {
     companion object {
-        val EMPTY = ResourceEntityTTSResponse(resource = ResourceEntity.DUMMY)
+        val EMPTY = TTSResourceEntityResponse(resource = ResourceEntity.DUMMY)
     }
 }
 
-data class ResourceIdTTSResponse(val id: ResourceId, val errors: List<AppError> = emptyList()) {
+data class TTSResourceIdResponse(val id: TTSResourceId, val errors: List<AppError> = emptyList()) {
     companion object {
-        val EMPTY = ResourceIdTTSResponse(id = ResourceId.NONE)
+        val EMPTY = TTSResourceIdResponse(id = TTSResourceId.NONE)
     }
 }

@@ -19,7 +19,7 @@ fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
 
 fun CardContext.fromGetAudioRequest(request: GetAudioRequest) {
     this.requestId = request.requestId()
-    this.requestResourceGet = ResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
+    this.requestTTSResourceGet = TTSResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
 }
@@ -95,7 +95,7 @@ private fun CardResource.toCardEntity(): CardEntity = CardEntity(
     examples = this.examples ?: emptyList(),
     details = this.details.toDetails(),
     answered = this.answered,
-    sound = this.sound?.takeIf { it.isNotBlank() }?.let { ResourceId(it) }?: ResourceId.NONE
+    sound = this.sound?.takeIf { it.isNotBlank() }?.let { TTSResourceId(it) }?: TTSResourceId.NONE
 )
 
 private fun String.toStage(): Stage? {

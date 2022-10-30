@@ -7,7 +7,7 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 fun ChainDSL<CardContext>.validateResourceGetLangId() = worker {
     this.name = "validate get resource lang id"
     test {
-        !isCorrectLangId(this.normalizedRequestResourceGet.lang.asString())
+        !isCorrectLangId(this.normalizedRequestTTSResourceGet.lang.asString())
     }
     process {
         fail(validationError(fieldName = "audio-resource-lang-id", description = "invalid resource lang-id"))
@@ -17,7 +17,7 @@ fun ChainDSL<CardContext>.validateResourceGetLangId() = worker {
 fun ChainDSL<CardContext>.validateResourceGetWord() = worker {
     this.name = "validate get resource word"
     test {
-        !isCorrectWrong(this.normalizedRequestResourceGet.word)
+        !isCorrectWrong(this.normalizedRequestTTSResourceGet.word)
     }
     process {
         fail(validationError(fieldName = "audio-resource-word", description = "invalid resource word"))

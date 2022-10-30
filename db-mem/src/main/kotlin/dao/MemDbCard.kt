@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem.dao
 
-data class Card(
+data class MemDbCard(
     val id: Long,
     val dictionaryId: Long,
     val text: String,
@@ -8,7 +8,7 @@ data class Card(
     val partOfSpeech: String? = null,
     val details: String = "{}",
     val answered: Int? = null,
-    val translations: List<Translation>,
-    val examples: List<Example> = emptyList(),
+    val translations: List<String>,
+    val examples: List<String> = emptyList(),
 )
 

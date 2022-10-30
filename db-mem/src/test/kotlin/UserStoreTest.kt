@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.dbmem.dao.User
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
+import com.gitlab.sszuev.flashcards.dbmem.testutils.classPathResourceDir
+import com.gitlab.sszuev.flashcards.dbmem.testutils.copyClassPathDataToDir
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
@@ -12,7 +14,7 @@ internal class UserStoreTest {
     companion object {
         val existingUUID: UUID = UUID.fromString("c9a414f5-3f75-4494-b664-f4c8b33ff4e6")
         val newUUID: UUID = UUID.fromString("45a34bd8-5472-491e-8e27-84290314ee38")
-        val existingUser = User(
+        val existingUser = MemDbUser(
             id = 42,
             uuid = existingUUID,
             role = 2,
@@ -31,7 +33,7 @@ internal class UserStoreTest {
 
     @Test
     fun `test load users from directory & flush & reload`(@TempDir dir: Path) {
-        val newUser = User(
+        val newUser = MemDbUser(
             id = -42,
             uuid = newUUID,
             role = 42,

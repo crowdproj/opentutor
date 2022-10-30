@@ -22,10 +22,10 @@ data class CardContext(
     override var contextUserEntity: AppUserEntity = AppUserEntity.EMPTY,
 
     // get word resource by id (for TTS)
-    var requestResourceGet: ResourceGet = ResourceGet.NONE,
-    var normalizedRequestResourceGet: ResourceGet = ResourceGet.NONE,
+    var requestTTSResourceGet: TTSResourceGet = TTSResourceGet.NONE,
+    var normalizedRequestTTSResourceGet: TTSResourceGet = TTSResourceGet.NONE,
     // get word response (for TTS)
-    var responseResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
+    var responseTTSResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
 
     // get-all cards request:
     var requestDictionaryId: DictionaryId = DictionaryId.NONE,

@@ -12,6 +12,8 @@ class DictionaryServiceImpl : DictionaryService {
 
     override suspend fun deleteDictionary(context: DictionaryContext): DictionaryContext = context.exec()
 
+    override suspend fun downloadDictionary(context: DictionaryContext): DictionaryContext = context.exec()
+
     private suspend fun DictionaryContext.exec(): DictionaryContext {
         processor.execute(this)
         return this

@@ -337,7 +337,7 @@ internal class CardCorProcessorValidationTest {
     @MethodSource(value = ["wrongLangIds"])
     fun `test get resource - validate request LangId`(id: String, m: AppMode) = runTest {
         val context = testContext(CardOperation.GET_RESOURCE, m)
-        context.requestResourceGet = ResourceGet(lang = LangId(id), word = "xxx")
+        context.requestTTSResourceGet = TTSResourceGet(lang = LangId(id), word = "xxx")
         processor.execute(context)
         val error = error(context)
         assertValidationError("audio-resource-lang-id", error)
@@ -347,7 +347,7 @@ internal class CardCorProcessorValidationTest {
     @MethodSource(value = ["wrongWordsGetResource"])
     fun `test get resource - validate request word`(word: String, m: AppMode) = runTest {
         val context = testContext(CardOperation.GET_RESOURCE, m)
-        context.requestResourceGet = ResourceGet(lang = LangId("EN"), word = word)
+        context.requestTTSResourceGet = TTSResourceGet(lang = LangId("EN"), word = word)
         processor.execute(context)
         val error = error(context)
         assertValidationError("audio-resource-word", error)
@@ -370,7 +370,7 @@ internal class CardCorProcessorValidationTest {
             val context = testContext(operation, m)
                 .copy(
                     requestAppAuthId = AppAuthId(""),
-                    requestResourceGet = ResourceGet("xxx", LangId("EN")),
+                    requestTTSResourceGet = TTSResourceGet("xxx", LangId("EN")),
                     requestCardLearnList = listOf(CardLearn(CardId("42"), details = mapOf(Stage.MOSAIC to 42))),
                     requestCardFilter = CardFilter(dictionaryIds = listOf(DictionaryId("42")), length = 42),
                     requestCardEntityId = CardId("42"),

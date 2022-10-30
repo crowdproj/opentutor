@@ -12,13 +12,13 @@ val stubDictionaries = listOf(
         dictionaryId = DictionaryId(42.toString()),
         userId = AppUserId(1.toString()),
         name = "Stub-dictionary",
-        sourceLangId = LangId("SL"),
-        targetLangId = LangId("TL")
+        sourceLang = LangEntity(LangId("SL"), listOf("A", "B", "C")),
+        targetLang = LangEntity(LangId("TL"), listOf("X", "Y")),
     )
 )
 
 val stubAudioResource = ResourceEntity(
-    resourceId = ResourceId(42.toString()),
+    resourceId = TTSResourceId(42.toString()),
     data = ByteArray(42) { 42 },
 )
 
@@ -39,7 +39,7 @@ val stubCard = CardEntity(
     translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитация")),
     examples = listOf("That was the last candle stub I had.", "\$500 ticket stub."),
     details = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
-    sound = ResourceId("en:stub"),
+    sound = TTSResourceId("en:stub"),
 )
 
 val stubCards = IntRange(1, 3)

@@ -24,7 +24,7 @@ fun CardContext.toGetAudioResponse() = GetAudioResponse(
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
-    resource = this.responseResourceEntity.data,
+    resource = this.responseTTSResourceEntity.data,
 )
 
 fun CardContext.toGetCardResponse() = GetCardResponse(

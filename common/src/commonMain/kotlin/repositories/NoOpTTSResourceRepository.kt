@@ -1,15 +1,15 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
-import com.gitlab.sszuev.flashcards.model.domain.ResourceId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 
 object NoOpTTSResourceRepository: TTSResourceRepository {
 
-    override suspend fun findResourceId(filter: ResourceGet): ResourceIdTTSResponse {
+    override suspend fun findResourceId(filter: TTSResourceGet): TTSResourceIdResponse {
         noOp()
     }
 
-    override suspend fun getResource(id: ResourceId): ResourceEntityTTSResponse {
+    override suspend fun getResource(id: TTSResourceId): TTSResourceEntityResponse {
         noOp()
     }
 

@@ -6,4 +6,5 @@ enum class DictionaryOperation: AppOperation {
     NONE,
     GET_ALL_DICTIONARIES,
     DELETE_DICTIONARY,
+    DOWNLOAD_DICTIONARY,
 }

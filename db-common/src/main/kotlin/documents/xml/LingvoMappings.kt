@@ -1,10 +1,10 @@
-package com.gitlab.sszuev.flashcards.dbmem.documents.impl
+package com.gitlab.sszuev.flashcards.common.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.CardStatus
+import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
-object LingvoMappings {
+internal object LingvoMappings {
     /**
      * Impl notes:
      * Uses [StandardCharsets.UTF_16],
@@ -17,9 +17,9 @@ object LingvoMappings {
         "1049" to StandardLanguage.RU
     )
     private val PART_OF_SPEECH_MAP = mapOf(
-        "1" to StandardPartOfSpeech.NOUN,
-        "2" to StandardPartOfSpeech.ADJECTIVE,
-        "3" to StandardPartOfSpeech.VERB
+        "1" to EnPartOfSpeech.NOUN,
+        "2" to EnPartOfSpeech.ADJECTIVE,
+        "3" to EnPartOfSpeech.VERB
     )
     private val STATUS_MAP = mapOf(
         "2" to CardStatus.UNKNOWN,
@@ -27,16 +27,24 @@ object LingvoMappings {
         "4" to CardStatus.LEARNED
     )
 
-    fun toLanguageTag(id: String): String {
-        return byKey(LANGUAGE_MAP, id).name
+    fun toLanguageTag(lingvoId: String): String {
+        return byKey(LANGUAGE_MAP, lingvoId).name
+    }
+
+    fun toPartsOfSpeech(tag: String): List<String> {
+        return try {
+            StandardLanguage.valueOf(tag.uppercase()).partsOfSpeech()
+        } catch (ignore: IllegalArgumentException) {
+            emptyList()
+        }
     }
 
     fun fromLanguageTag(tag: String): String {
         return byValue(LANGUAGE_MAP, tag)
     }
 
-    fun toPartOfSpeechTag(id: String): String {
-        return byKey(PART_OF_SPEECH_MAP, id).name
+    fun toPartOfSpeechTag(lingvoId: String): String {
+        return byKey(PART_OF_SPEECH_MAP, lingvoId).term()
     }
 
     fun fromPartOfSpeechTag(tag: String): String {

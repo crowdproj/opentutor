@@ -65,5 +65,8 @@ fun Route.dictionaries(
         post("delete") {
             call.deleteDictionary(service, repositories, runConf)
         }
+        post("download") {
+            call.downloadDictionary(service, repositories, runConf)
+        }
     }
 }

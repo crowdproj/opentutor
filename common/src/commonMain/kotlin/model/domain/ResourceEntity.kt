@@ -1,11 +1,13 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
+import com.gitlab.sszuev.flashcards.model.Id
+
 /**
- * Describes audio-resource.
+ * To hold byte array.
  */
 data class ResourceEntity(
-    val resourceId: ResourceId = ResourceId.NONE,
-    val data: ByteArray = ByteArray(0),
+    val resourceId: Id,
+    val data: ByteArray,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -24,6 +26,11 @@ data class ResourceEntity(
     }
 
     companion object {
-        val DUMMY = ResourceEntity()
+        private val NONE: Id = object : Id {
+            override fun asString(): String {
+                return ""
+            }
+        }
+        val DUMMY = ResourceEntity(resourceId = NONE, data = ByteArray(0))
     }
 }

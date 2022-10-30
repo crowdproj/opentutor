@@ -49,3 +49,21 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
         this.handleThrowable(CardOperation.DELETE_CARD, it)
     }
 }
+
+fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
+    this.name = "process download-dictionary request"
+    test {
+        this.status == AppStatus.RUN
+    }
+    process {
+        val res = this.repositories.dictionaryRepository(this.workMode).downloadDictionary(this.normalizedRequestDictionaryId)
+        this.responseDictionaryResourceEntity = res.resource
+        if (res.errors.isNotEmpty()) {
+            this.errors.addAll(res.errors)
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+    }
+    onException {
+        this.handleThrowable(CardOperation.DELETE_CARD, it)
+    }
+}

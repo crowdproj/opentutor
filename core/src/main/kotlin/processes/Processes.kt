@@ -5,9 +5,9 @@ import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 
-internal fun ResourceGet.toFieldName(): String {
+internal fun TTSResourceGet.toFieldName(): String {
     return toString()
 }
 

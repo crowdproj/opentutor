@@ -36,7 +36,7 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(1, res.errors!!.size)
         Assertions.assertEquals(Result.ERROR, res.result)
         Assertions.assertEquals(
-            "Error while GET_RESOURCE: no resource found. filter=ResourceGet(word=xxx, lang=LangId(id=xx))",
+            "Error while GET_RESOURCE: no resource found. filter=TTSResourceGet(word=xxx, lang=LangId(id=xx))",
             res.errors!![0].message
         )
         Assertions.assertArrayEquals(ResourceEntity.DUMMY.data, res.resource)
@@ -76,7 +76,7 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(res.card)
         Assertions.assertEquals("weather", res.card!!.word)
         Assertions.assertEquals("'weðə", res.card!!.transcription)
-        Assertions.assertEquals("NOUN", res.card!!.partOfSpeech)
+        Assertions.assertEquals("noun", res.card!!.partOfSpeech)
         Assertions.assertEquals(listOf(listOf("погода")), res.card!!.translations)
         Assertions.assertEquals(
             listOf(

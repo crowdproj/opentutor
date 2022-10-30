@@ -21,7 +21,7 @@ internal class CardCorProcessorStubTest {
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
         private val testCard = stubCard.copy()
-        private val testAudioResourceGet = ResourceGet(lang = LangId("xx"), word = "xxx")
+        private val testAudioResourceGet = TTSResourceGet(lang = LangId("xx"), word = "xxx")
 
         private val testCardFilter = CardFilter(
             dictionaryIds = listOf(2, 4, 42).map { DictionaryId(it.toString()) },
@@ -252,10 +252,10 @@ internal class CardCorProcessorStubTest {
     @Test
     fun `test get audio resource`() = runTest {
         val context = testContext(CardOperation.GET_RESOURCE, AppStub.SUCCESS)
-        context.requestResourceGet = testAudioResourceGet
+        context.requestTTSResourceGet = testAudioResourceGet
         processor.execute(context)
         assertSuccess(context)
-        Assertions.assertEquals(stubAudioResource, context.responseResourceEntity)
+        Assertions.assertEquals(stubAudioResource, context.responseTTSResourceEntity)
     }
 
     @ParameterizedTest
@@ -269,7 +269,7 @@ internal class CardCorProcessorStubTest {
     )
     fun `test get-audion resource specific fail`(case: AppStub) = runTest {
         val context = testContext(CardOperation.GET_RESOURCE, case)
-        context.requestResourceGet = testAudioResourceGet
+        context.requestTTSResourceGet = testAudioResourceGet
         processor.execute(context)
         assertFail(context, stubErrorForCode(case))
     }

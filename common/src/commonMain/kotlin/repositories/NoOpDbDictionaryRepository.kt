@@ -12,6 +12,10 @@ object NoOpDbDictionaryRepository : DbDictionaryRepository {
         noOp()
     }
 
+    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
+        noOp()
+    }
+
     private fun noOp(): Nothing {
         error("Must not be called.")
     }

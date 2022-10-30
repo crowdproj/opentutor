@@ -1,26 +1,24 @@
-package com.gitlab.sszuev.flashcards.dbmem.documents
+package com.gitlab.sszuev.flashcards.common.documents
 
-import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
 import java.io.InputStream
 
-interface DictionaryReader {
-
+interface DocumentReader {
     /**
      * Parses the document representing the result as a dictionary.
      * The caller is responsible for closing `input`.
      *
      * @param [input][InputStream]
-     * @return [Dictionary]
+     * @return [DocumentDictionary]
      */
-    fun parse(input: InputStream): Dictionary
+    fun parse(input: InputStream): DocumentDictionary
 
     /**
      * Parses the document representing the result as a dictionary.
      *
      * @param [resource][ByteArray]
-     * @return [Dictionary]
+     * @return [DocumentDictionary]
      */
-    fun parse(resource: ByteArray): Dictionary {
+    fun parse(resource: ByteArray): DocumentDictionary {
         return parse(resource.inputStream())
     }
 }

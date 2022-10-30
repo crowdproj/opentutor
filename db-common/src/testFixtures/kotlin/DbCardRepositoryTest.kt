@@ -23,7 +23,7 @@ abstract class DbCardRepositoryTest {
             dictionaryId = DictionaryId("2"),
             word = "weather",
             transcription = "'weðə",
-            partOfSpeech = "NOUN",
+            partOfSpeech = "noun",
             answered = null,
             translations = listOf(listOf("погода")),
             examples = listOf(
@@ -41,7 +41,7 @@ abstract class DbCardRepositoryTest {
             word = "climate",
             transcription = "ˈklaɪmɪt",
             details = mapOf(Stage.SELF_TEST to 3),
-            partOfSpeech = "Unknown",
+            partOfSpeech = "noun",
             answered = null,
             translations = listOf(listOf("климат", "атмосфера", "обстановка"), listOf("климатические условия")),
             examples = listOf(
@@ -55,7 +55,7 @@ abstract class DbCardRepositoryTest {
             dictionaryId = DictionaryId("2"),
             word = "snow",
             transcription = "snəu",
-            partOfSpeech = "NOUN",
+            partOfSpeech = "noun",
             translations = listOf(listOf("снег")),
             examples = listOf(
                 "It snows. -- Идет снег.",
@@ -71,7 +71,7 @@ abstract class DbCardRepositoryTest {
             dictionaryId = DictionaryId("2"),
             word = "rain",
             transcription = "rein",
-            partOfSpeech = "NOUN",
+            partOfSpeech = "noun",
             translations = listOf(listOf("дождь")),
             examples = listOf(
                 "It rains. -- Идет дождь.",
@@ -160,8 +160,8 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(65, res2.cards.size)
         Assertions.assertEquals(0, res2.errors.size)
 
-        Assertions.assertEquals(LangId("EN"), res1.sourceLanguage)
-        Assertions.assertEquals(LangId("EN"), res2.sourceLanguage)
+        Assertions.assertEquals(LangId("EN"), res1.sourceLanguageId)
+        Assertions.assertEquals(LangId("EN"), res2.sourceLanguageId)
     }
 
     @Order(2)
@@ -182,7 +182,7 @@ abstract class DbCardRepositoryTest {
         Assertions.assertNull(error.exception)
     }
 
-    @Order(3)
+    @Order(21)
     @Test
     fun `test create card success`() {
         val request = newMurkyCardEntity
@@ -233,8 +233,8 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res1.cards.map { it.dictionaryId }.toSet())
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res2.cards.map { it.dictionaryId }.toSet())
 
-        Assertions.assertEquals(LangId("EN"), res1.sourceLanguage)
-        Assertions.assertEquals(LangId("EN"), res2.sourceLanguage)
+        Assertions.assertEquals(LangId("EN"), res1.sourceLanguageId)
+        Assertions.assertEquals(LangId("EN"), res2.sourceLanguageId)
     }
 
     @Order(6)

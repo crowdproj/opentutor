@@ -1,11 +1,8 @@
-package com.gitlab.sszuev.flashcards.dbmem.documents.impl
+package com.gitlab.sszuev.flashcards.common.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.CardStatus
-import com.gitlab.sszuev.flashcards.common.SysConfig
-import com.gitlab.sszuev.flashcards.common.status
-import com.gitlab.sszuev.flashcards.dbmem.dao.Card
-import com.gitlab.sszuev.flashcards.dbmem.dao.Dictionary
-import com.gitlab.sszuev.flashcards.dbmem.documents.DictionaryWriter
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
+import com.gitlab.sszuev.flashcards.common.documents.DocumentWriter
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.OutputStream
@@ -15,9 +12,9 @@ import javax.xml.transform.*
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
-class LingvoDictionaryWriter(private val config: SysConfig) : DictionaryWriter {
+internal class LingvoDocumentWriter : DocumentWriter {
 
-    override fun write(dictionary: Dictionary, output: OutputStream) {
+    override fun write(dictionary: DocumentDictionary, output: OutputStream) {
         val document = toXmlDocument(dictionary)
         val transformer = createXmlTransformer()
         try {
@@ -27,30 +24,32 @@ class LingvoDictionaryWriter(private val config: SysConfig) : DictionaryWriter {
         }
     }
 
-    private fun toXmlDocument(dictionary: Dictionary): Document {
+    private fun toXmlDocument(dictionary: DocumentDictionary): Document {
         val res = newXmlDocument()
         val root = res.createElement("dictionary")
         res.appendChild(root)
         root.setAttribute("title", dictionary.name)
-        val src: String = LingvoMappings.fromLanguageTag(dictionary.sourceLanguage.id)
-        val dst: String = LingvoMappings.fromLanguageTag(dictionary.targetLanguage.id)
-        dictionary.userId?.let { root.setAttribute("userId", it.toString())}
-        root.setAttribute("sourceLanguageId", src)
-        root.setAttribute("destinationLanguageId", dst)
+        val srcLangId = LingvoMappings.fromLanguageTag(dictionary.sourceLang.tag)
+        val dstLangId = LingvoMappings.fromLanguageTag(dictionary.targetLang.tag)
+        dictionary.userId?.let { root.setAttribute("userId", it.toString()) }
+        dictionary.id?.let { root.setAttribute("dictionaryId", it.toString()) }
+        root.setAttribute("sourceLanguageId", srcLangId)
+        root.setAttribute("destinationLanguageId", dstLangId)
         root.setAttribute("targetNamespace", "http://www.abbyy.com/TutorDictionary")
         root.setAttribute("formatVersion", "6")
         root.setAttribute("nextWordId", "42")
         dictionary.cards.forEach { card ->
             val element = res.createElement("card")
             root.appendChild(element)
-            writeCard(element, card.value)
+            writeCard(element, card)
         }
         return res
     }
 
-    private fun writeCard(parent: Element, card: Card) {
+    private fun writeCard(parent: Element, card: DocumentCard) {
         val doc = parent.ownerDocument
-        writeWord(parent, card.text)
+        card.id?.also { parent.setAttribute("cardId", it.toString()) }
+        writeText(parent, "word", card.text)
         val meanings = doc.createElement("meanings")
         parent.appendChild(meanings)
         val meaning = doc.createElement("meaning")
@@ -60,30 +59,25 @@ class LingvoDictionaryWriter(private val config: SysConfig) : DictionaryWriter {
         writeMeaningStatistics(meaning, card)
         val translations = doc.createElement("translations")
         meaning.appendChild(translations)
-        card.translations.forEach { writeWord(translations, it.text) }
+        card.translations.forEach { writeText(translations, "word", it) }
         val examples = doc.createElement("examples")
         meaning.appendChild(examples)
-        card.examples.forEach { writeText(examples, "example", it.text) }
+        card.examples.forEach { writeText(examples, "example", it) }
     }
 
-    private fun writeMeaningStatistics(meaning: Element, card: Card) {
+    private fun writeMeaningStatistics(meaning: Element, card: DocumentCard) {
         val doc = meaning.ownerDocument
         val statistics = doc.createElement("statistics")
         meaning.appendChild(statistics)
-        val status: CardStatus = config.status(card.answered)
         if (card.answered != null) {
             statistics.setAttribute("answered", card.answered.toString())
         }
-        statistics.setAttribute("status", LingvoMappings.fromStatus(status))
+        statistics.setAttribute("status", LingvoMappings.fromStatus(card.status))
     }
 
-    private fun writeWord(parent: Element, txt: String) {
-        writeText(parent, "word", txt)
-    }
-
-    private fun writeText(parent: Element, tag: String, txt: String) {
+    private fun writeText(parent: Element, tag: String, content: String) {
         val word = parent.ownerDocument.createElement(tag)
-        word.textContent = txt
+        word.textContent = content
         parent.appendChild(word)
     }
 

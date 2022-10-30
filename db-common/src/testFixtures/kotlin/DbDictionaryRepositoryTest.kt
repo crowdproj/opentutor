@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import org.junit.jupiter.api.*
@@ -10,6 +11,38 @@ import org.junit.jupiter.api.*
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 abstract class DbDictionaryRepositoryTest {
     abstract val repository: DbDictionaryRepository
+
+    companion object {
+        private val EN = LangEntity(
+            LangId("EN"), listOf(
+                "noun",
+                "verb",
+                "adjective",
+                "adverb",
+                "pronoun",
+                "preposition",
+                "conjunction",
+                "interjection",
+                "article"
+            )
+        )
+        private val RU = LangEntity(
+            LangId("RU"),
+            listOf(
+                "существительное",
+                "прилагательное",
+                "числительное",
+                "местоимение",
+                "глагол",
+                "наречие",
+                "причастие",
+                "предлог",
+                "союз",
+                "частица",
+                "междометие"
+            )
+        )
+    }
 
     @Order(1)
     @Test
@@ -20,13 +53,13 @@ abstract class DbDictionaryRepositoryTest {
         val businessDictionary = res.dictionaries[0]
         Assertions.assertEquals(DictionaryId("1"), businessDictionary.dictionaryId)
         Assertions.assertEquals("Business vocabulary (Job)", businessDictionary.name)
-        Assertions.assertEquals(LangId("EN"), businessDictionary.sourceLangId)
-        Assertions.assertEquals(LangId("RU"), businessDictionary.targetLangId)
+        Assertions.assertEquals(EN, businessDictionary.sourceLang)
+        Assertions.assertEquals(RU, businessDictionary.targetLang)
         val weatherDictionary = res.dictionaries[1]
         Assertions.assertEquals(DictionaryId("2"), weatherDictionary.dictionaryId)
         Assertions.assertEquals("Weather", weatherDictionary.name)
-        Assertions.assertEquals(LangId("EN"), weatherDictionary.sourceLangId)
-        Assertions.assertEquals(LangId("RU"), weatherDictionary.targetLangId)
+        Assertions.assertEquals(EN, weatherDictionary.sourceLang)
+        Assertions.assertEquals(RU, weatherDictionary.targetLang)
     }
 
     @Order(2)
@@ -39,6 +72,18 @@ abstract class DbDictionaryRepositoryTest {
         val res2 = repository.getAllDictionaries(AppUserId("-42"))
         Assertions.assertEquals(0, res2.dictionaries.size)
         Assertions.assertTrue(res2.errors.isEmpty())
+    }
+
+    @Order(3)
+    @Test
+    fun `test download dictionary`() {
+        // Weather
+        val res = repository.downloadDictionary(DictionaryId("2"))
+        Assertions.assertTrue(res.errors.isEmpty())
+        val xml = res.resource.data.toString(Charsets.UTF_16)
+        Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16" standalone="yes"?>"""))
+        Assertions.assertEquals(66, xml.split("<card>").size)
+        Assertions.assertTrue(xml.substring(29000).endsWith("</dictionary>\n"))
     }
 
     @Order(42)
@@ -64,4 +109,5 @@ abstract class DbDictionaryRepositoryTest {
             error.message
         )
     }
+
 }

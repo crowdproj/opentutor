@@ -47,7 +47,7 @@ class PgDbCardRepository(
             }.with(Card::examples).with(Card::translations).map { it.toEntity() }
             CardsDbResponse(
                 cards = cards,
-                sourceLanguage = dictionary.sourceLangId,
+                sourceLanguageId = dictionary.sourceLang.langId,
                 errors = emptyList()
             )
         }
@@ -58,9 +58,12 @@ class PgDbCardRepository(
         val learned = sysConfig.numberOfRightAnswers
         val random = CustomFunction<Double>("random", DoubleColumnType())
         return connection.execute {
-            val dictionaries = Dictionary.find(Dictionaries.id inList dictionaryIds).map { it.toEntity() }
-            val sourceLanguages = dictionaries.map { it.sourceLangId }.toSet()
-            val targetLanguages = dictionaries.map { it.targetLangId }.toSet()
+            val dictionaries = Dictionary.find(Dictionaries.id inList dictionaryIds)
+                .with(Dictionary::sourceLang)
+                .with(Dictionary::targetLand)
+                .map { it.toEntity() }
+            val sourceLanguages = dictionaries.map { it.sourceLang }.toSet()
+            val targetLanguages = dictionaries.map { it.targetLang }.toSet()
             if (sourceLanguages.size != 1 || targetLanguages.size != 1) {
                 return@execute CardsDbResponse(
                     cards = emptyList(),
@@ -81,7 +84,7 @@ class PgDbCardRepository(
                 .with(Card::examples)
                 .with(Card::translations)
                 .map { it.toEntity() }
-            CardsDbResponse(cards = cards, sourceLanguage = sourceLanguages.single())
+            CardsDbResponse(cards = cards, sourceLanguageId = sourceLanguages.single().langId)
         }
     }
 

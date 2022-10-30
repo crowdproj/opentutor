@@ -4,10 +4,11 @@ import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 
-class Dictionary(id: EntityID<Long>): Entity<Long>(id) {
+class Dictionary(id: EntityID<Long>) : Entity<Long>(id) {
     companion object : EntityClass<Long, Dictionary>(Dictionaries)
+
     var userId by Dictionaries.userId
     var name by Dictionaries.name
-    val sourceLang by Dictionaries.sourceLanguage
-    val targetLand by Dictionaries.targetLanguage
+    val sourceLang by Language referencedOn Dictionaries.sourceLanguage
+    val targetLand by Language referencedOn Dictionaries.targetLanguage
 }

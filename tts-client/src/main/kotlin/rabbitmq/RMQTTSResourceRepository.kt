@@ -2,10 +2,10 @@ package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.model.domain.ResourceGet
-import com.gitlab.sszuev.flashcards.model.domain.ResourceId
-import com.gitlab.sszuev.flashcards.repositories.ResourceEntityTTSResponse
-import com.gitlab.sszuev.flashcards.repositories.ResourceIdTTSResponse
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.NotFoundResourceException
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
@@ -46,16 +46,16 @@ class RMQTTSResourceRepository(
             .asCoroutineDispatcher() + CoroutineName("thread-rabbitmq-test-client")
     )
 
-    override suspend fun findResourceId(filter: ResourceGet): ResourceIdTTSResponse {
-        return ResourceIdTTSResponse(ResourceId("${filter.lang.asString()}:${filter.word}"))
+    override suspend fun findResourceId(filter: TTSResourceGet): TTSResourceIdResponse {
+        return TTSResourceIdResponse(TTSResourceId("${filter.lang.asString()}:${filter.word}"))
     }
 
     /**
      * Gets the resource data from Rabbit MQ message with timeout.
-     * @param [id][ResourceId]
-     * @return [ResourceEntityTTSResponse]
+     * @param [id][TTSResourceId]
+     * @return [TTSResourceEntityResponse]
      */
-    override suspend fun getResource(id: ResourceId): ResourceEntityTTSResponse {
+    override suspend fun getResource(id: TTSResourceId): TTSResourceEntityResponse {
         val errors: MutableList<AppError> = mutableListOf()
         val entity = try {
             val res: Deferred<ByteArray> = scope.async(context = Dispatchers.IO) {
@@ -73,18 +73,18 @@ class RMQTTSResourceRepository(
             errors.add(ex.asError())
             ResourceEntity.DUMMY
         }
-        return ResourceEntityTTSResponse(entity, errors)
+        return TTSResourceEntityResponse(entity, errors)
     }
 
     /**
      * Gets the byte-array from Rabbit MQ message.
-     * @param [id][ResourceId]
+     * @param [id][TTSResourceId]
      * @return [ByteArray]
      * @throws IllegalStateException
      * @throws NotFoundResourceException
      * @throws ServerResourceException
      */
-    private suspend fun retrieveData(id: ResourceId): ByteArray {
+    private suspend fun retrieveData(id: TTSResourceId): ByteArray {
         return connectionFactory.connection.createChannel().use { channel ->
             var res: Any? = null
             val responseRoutingKey = config.routingKeyResponsePrefix + id.asString()
