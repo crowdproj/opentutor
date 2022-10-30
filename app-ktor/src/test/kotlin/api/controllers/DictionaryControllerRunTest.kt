@@ -52,4 +52,21 @@ internal class DictionaryControllerRunTest {
         Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
     }
+
+    @Test
+    fun `test download-dictionary success`() = testSecuredApp {
+        val requestBody = DownloadDictionaryRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            dictionaryId = "1",
+        )
+        val response = testPost("/v1/api/dictionaries/download", requestBody)
+        val res = response.body<DownloadDictionaryResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNotNull(res.resource)
+        Assertions.assertEquals(58138, res.resource!!.size)
+    }
 }

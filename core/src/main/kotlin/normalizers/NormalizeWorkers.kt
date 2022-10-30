@@ -13,7 +13,7 @@ fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = wo
 ) {
     this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
     when (operation) {
-        DictionaryOperation.DELETE_DICTIONARY -> {
+        DictionaryOperation.DELETE_DICTIONARY, DictionaryOperation.DOWNLOAD_DICTIONARY -> {
             this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
         }
         else -> {}
@@ -26,7 +26,7 @@ fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(
     this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
     when (operation) {
         CardOperation.GET_RESOURCE -> {
-            this.normalizedRequestResourceGet = this.requestResourceGet.normalize()
+            this.normalizedRequestTTSResourceGet = this.requestTTSResourceGet.normalize()
         }
 
         CardOperation.SEARCH_CARDS -> {

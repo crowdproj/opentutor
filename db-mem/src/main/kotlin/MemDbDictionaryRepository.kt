@@ -11,7 +11,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
-import com.gitlab.sszuev.flashcards.repositories.DictionaryResourceDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DownloadDictionaryDbResponse
 
 class MemDbDictionaryRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
@@ -41,13 +41,13 @@ class MemDbDictionaryRepository(
         return DeleteDictionaryDbResponse(errors = errors)
     }
 
-    override fun downloadDictionary(id: DictionaryId): DictionaryResourceDbResponse {
+    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
         val dictionary = dictionaries[id.asDbId()]
         return if (dictionary != null) {
             val res = createWriter().write(dictionary.toDocument(false) { sysConfig.status(it) })
-            DictionaryResourceDbResponse(resource = ResourceEntity(resourceId = id, data = res))
+            DownloadDictionaryDbResponse(resource = ResourceEntity(resourceId = id, data = res))
         } else {
-            DictionaryResourceDbResponse(
+            DownloadDictionaryDbResponse(
                 resource = ResourceEntity.DUMMY,
                 errors = listOf(noDictionaryFoundDbError(operation = "downloadDictionary", id = id))
             )

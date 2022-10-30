@@ -13,4 +13,9 @@ interface DictionaryService {
      * Deletes the given dictionary.
      */
     suspend fun deleteDictionary(context: DictionaryContext): DictionaryContext
+
+    /**
+     * Download dictionary.
+     */
+    suspend fun downloadDictionary(context: DictionaryContext): DictionaryContext
 }

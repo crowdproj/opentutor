@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.*
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.*
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -91,6 +92,31 @@ internal class DictionaryCorProcessorRunTest {
 
         Assertions.assertTrue(wasCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.DELETE_DICTIONARY), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+    }
+
+    @Test
+    fun `test download-dictionary success`() = runTest {
+        val testId = DictionaryId("42")
+        val testData = ResourceEntity(testId, ByteArray(42) { 42 })
+        val response = DownloadDictionaryDbResponse(testData)
+
+        var wasCalled = false
+        val repository = MockDbDictionaryRepository(
+            invokeDownloadDictionary = {
+                wasCalled = true
+                if (it == testId) response else throw TestException()
+            }
+        )
+
+        val context = testContext(DictionaryOperation.DOWNLOAD_DICTIONARY, repository)
+        context.requestDictionaryId = testId
+
+        DictionaryCorProcessor().execute(context)
+
+        Assertions.assertTrue(wasCalled)
+        Assertions.assertEquals(requestId(DictionaryOperation.DOWNLOAD_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
     }

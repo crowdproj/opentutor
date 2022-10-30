@@ -19,7 +19,7 @@ fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
 
 fun CardContext.fromGetAudioRequest(request: GetAudioRequest) {
     this.requestId = request.requestId()
-    this.requestResourceGet = TTSResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
+    this.requestTTSResourceGet = TTSResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
 }

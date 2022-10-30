@@ -12,7 +12,7 @@ object NoOpDbDictionaryRepository : DbDictionaryRepository {
         noOp()
     }
 
-    override fun downloadDictionary(id: DictionaryId): DictionaryResourceDbResponse {
+    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
         noOp()
     }
 

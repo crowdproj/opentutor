@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.core.normalizers.normalizers
 import com.gitlab.sszuev.flashcards.core.processes.processDeleteDictionary
+import com.gitlab.sszuev.flashcards.core.processes.processDownloadDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processFindUser
 import com.gitlab.sszuev.flashcards.core.processes.processGetAllDictionary
 import com.gitlab.sszuev.flashcards.core.stubs.dictionaryStubSuccess
@@ -46,6 +47,18 @@ class DictionaryCorProcessor {
                 runs(DictionaryOperation.DELETE_DICTIONARY) {
                     processFindUser(DictionaryOperation.DELETE_DICTIONARY)
                     processDeleteDictionary()
+                }
+            }
+
+            operation(DictionaryOperation.DOWNLOAD_DICTIONARY) {
+                normalizers(DictionaryOperation.DOWNLOAD_DICTIONARY)
+                validators(DictionaryOperation.DOWNLOAD_DICTIONARY) {
+                    validateUserId(DictionaryOperation.DOWNLOAD_DICTIONARY)
+                    validateDictionaryId { (it as DictionaryContext).normalizedRequestDictionaryId }
+                }
+                runs(DictionaryOperation.DOWNLOAD_DICTIONARY) {
+                    processFindUser(DictionaryOperation.DOWNLOAD_DICTIONARY)
+                    processDownloadDictionary()
                 }
             }
         }.build()

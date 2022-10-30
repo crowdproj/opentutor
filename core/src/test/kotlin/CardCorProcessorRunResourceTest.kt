@@ -63,7 +63,7 @@ internal class CardCorProcessorRunResourceTest {
         )
 
         val context = testContext(repository)
-        context.requestResourceGet = testResourceGet
+        context.requestTTSResourceGet = testResourceGet
 
         CardCorProcessor().execute(context)
 
@@ -73,7 +73,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
 
-        Assertions.assertEquals(testResourceEntity, context.responseResourceEntity)
+        Assertions.assertEquals(testResourceEntity, context.responseTTSResourceEntity)
 
         Assertions.assertEquals(1, repository.findResourceIdCounts.get())
         Assertions.assertEquals(1, repository.getResourceCounts.get())
@@ -102,7 +102,7 @@ internal class CardCorProcessorRunResourceTest {
         )
 
         val context = testContext(repository)
-        context.requestResourceGet = testResourceGet
+        context.requestTTSResourceGet = testResourceGet
 
         CardCorProcessor().execute(context)
 
@@ -111,7 +111,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
-        Assertions.assertEquals(ResourceEntity.DUMMY, context.responseResourceEntity)
+        Assertions.assertEquals(ResourceEntity.DUMMY, context.responseTTSResourceEntity)
 
         val error = context.errors[0]
         Assertions.assertEquals("run::${CardOperation.GET_RESOURCE}", error.code)
@@ -143,7 +143,7 @@ internal class CardCorProcessorRunResourceTest {
         )
 
         val context = testContext(repository)
-        context.requestResourceGet = testResourceGet
+        context.requestTTSResourceGet = testResourceGet
 
         CardCorProcessor().execute(context)
 
@@ -152,7 +152,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
-        Assertions.assertEquals(ResourceEntity.DUMMY, context.responseResourceEntity)
+        Assertions.assertEquals(ResourceEntity.DUMMY, context.responseTTSResourceEntity)
 
         val error = context.errors[0]
         Assertions.assertEquals("run::${CardOperation.GET_RESOURCE}", error.code)

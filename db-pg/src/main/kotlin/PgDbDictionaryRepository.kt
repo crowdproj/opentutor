@@ -11,7 +11,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
-import com.gitlab.sszuev.flashcards.repositories.DictionaryResourceDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DownloadDictionaryDbResponse
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
@@ -65,10 +65,10 @@ class PgDbDictionaryRepository(
         }
     }
 
-    override fun downloadDictionary(id: DictionaryId): DictionaryResourceDbResponse {
+    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
         return connection.execute {
             val dictionary = Dictionary.findById(id.asDbId())
-                ?: return@execute DictionaryResourceDbResponse(
+                ?: return@execute DownloadDictionaryDbResponse(
                     resource = ResourceEntity.DUMMY,
                     listOf(noDictionaryFoundDbError(operation = "downloadDictionary", id = id))
                 )
@@ -77,7 +77,7 @@ class PgDbDictionaryRepository(
             }.with(Card::examples).with(Card::translations)
             val res = dictionary.toDownloadResource(sysConfig, cards)
             val data = createWriter().write(res)
-            DictionaryResourceDbResponse(resource = ResourceEntity(id, data))
+            DownloadDictionaryDbResponse(resource = ResourceEntity(id, data))
         }
     }
 
