@@ -61,14 +61,8 @@ function downloadDictionaryFile() {
     if (selectedDictionary == null) {
         return;
     }
-    const tmpLink = document.createElement("a");
-    tmpLink.href = downloadDictionaryURL(selectedDictionary.dictionaryId);
-    tmpLink.download = toFilename(selectedDictionary.name) + '-' + new Date().toISOString().substring(0, 19) + '.xml';
-    document.body.appendChild(tmpLink);
-    tmpLink.click();
-    setTimeout(function () {
-        document.body.removeChild(tmpLink);
-    }, 0);
+    const filename = toFilename(selectedDictionary.name) + '-' + new Date().toISOString().substring(0, 19) + '.xml';
+    downloadDictionary(selectedDictionary.dictionaryId, filename);
 }
 
 function initDictionaryDeletePrompt() {

@@ -6,6 +6,7 @@ let keycloak
 
 const getAllDictionariesURI = '/v1/api/dictionaries/get-all'
 const deleteDictionaryURI = '/v1/api/dictionaries/delete'
+const downloadDictionaryURI = '/v1/api/dictionaries/download'
 const getAllCardsURI = '/v1/api/cards/get-all'
 const searchCardsURI = '/v1/api/cards/search'
 const createCardURI = '/v1/api/cards/create'
@@ -16,6 +17,7 @@ const getAudioURI = '/v1/api/sounds/get'
 
 const getAllDictionariesRequestType = 'getAllDictionaries'
 const deleteDictionaryRequestType = 'deleteDictionary'
+const downloadDictionaryRequestType = 'downloadDictionary'
 const getAllCardsRequestType = 'getAllCards'
 const searchCardsRequestType = 'searchCards'
 const createCardRequestType = 'createCard'
@@ -99,10 +101,29 @@ function uploadDictionary(data, onDone, onFail) {
     console.log("uploadDictionary")
 }
 
-function downloadDictionaryURL(id) {
-    // TODO
-    console.log("downloadDictionaryURL")
-    return ""
+function downloadDictionary(dictionaryId, downloadFilename, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': downloadDictionaryRequestType,
+        'dictionaryId': dictionaryId,
+        'debug': {'mode': runMode},
+    }
+    post(downloadDictionaryURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            const bytes = base64StringToUint8Array(res.resource).buffer;
+            const blob = new Blob([bytes], {type: "application/xml"});
+            const link = document.createElement('a');
+            link.href = window.URL.createObjectURL(blob);
+            link.download = downloadFilename;
+            link.click();
+            setTimeout(function () {
+                document.body.removeChild(link);
+            }, 0);
+            onDone();
+        }
+    })
 }
 
 function deleteDictionary(dictionaryId, onDone) {
