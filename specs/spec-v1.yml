@@ -103,6 +103,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/DownloadDictionaryResponse'
 
+  /api/dictionaries/upload:
+    post:
+      tags:
+        - dictionary
+      summary: Uploads the given dictionary
+      operationId: uploadDictionary
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UploadDictionaryRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UploadDictionaryResponse'
+
   /api/cards/search:
     post:
       tags:
@@ -347,6 +368,26 @@ components:
               type: string
               format: byte
 
+    UploadDictionaryRequest:
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
+          description: Upload dictionary request
+          properties:
+            resource:
+              type: string
+              format: byte
+
+    UploadDictionaryResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: Upload dictionary response
+          properties:
+            dictionary:
+              $ref: '#/components/schemas/DictionaryResource'
+
     SearchCardsRequest:
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
@@ -522,6 +563,7 @@ components:
           getAllDictionaries: '#/components/schemas/GetAllDictionariesRequest'
           deleteDictionary: '#/components/schemas/DeleteDictionaryRequest'
           downloadDictionary: '#/components/schemas/DownloadDictionaryRequest'
+          uploadDictionary: '#/components/schemas/UploadDictionaryRequest'
           searchCards: '#/components/schemas/SearchCardsRequest'
           getAllCards: '#/components/schemas/GetAllCardsRequest'
           getCard: '#/components/schemas/GetCardRequest'
@@ -561,6 +603,7 @@ components:
           getAllDictionaries: '#/components/schemas/GetAllDictionariesResponse'
           deleteDictionary: '#/components/schemas/DeleteDictionaryResponse'
           downloadDictionary: '#/components/schemas/DownloadDictionaryResponse'
+          uploadDictionary: '#/components/schemas/UploadDictionaryResponse'
           searchCards: '#/components/schemas/SearchCardsResponse'
           getAllCards: '#/components/schemas/GetAllCardsResponse'
           getCard: '#/components/schemas/GetCardResponse'
