@@ -2,6 +2,8 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCard
+import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertError
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -12,21 +14,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
 internal class ToCardTransportTest {
-
-    companion object {
-        private fun assertError(expected: AppError, actual: ErrorResource) {
-            Assertions.assertEquals(expected.code, actual.code)
-            Assertions.assertEquals(expected.message, actual.message)
-            Assertions.assertEquals(expected.field, actual.field)
-            Assertions.assertEquals(expected.group, actual.group)
-        }
-
-        private fun assertCard(expected: CardEntity, actual: CardResource) {
-            Assertions.assertEquals(if (expected.cardId != CardId.NONE) expected.cardId.asString() else null, actual.cardId)
-            Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
-            Assertions.assertEquals(expected.word, actual.word)
-        }
-    }
 
     @Test
     fun `test toGetCardResponse`() {

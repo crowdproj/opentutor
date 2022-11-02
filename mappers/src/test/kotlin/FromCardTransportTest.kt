@@ -2,10 +2,10 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCard
+import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCardId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppStub
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import org.junit.jupiter.api.Assertions
@@ -23,16 +23,6 @@ internal class FromCardTransportTest {
             Assertions.assertEquals(expectedStub, actual.debugCase)
             Assertions.assertEquals(expectedMode, actual.workMode)
             Assertions.assertEquals(expectedRequestId, actual.requestId.asString())
-        }
-
-        private fun assertCard(expected: CardResource, actual: CardEntity) {
-            assertCardId(expected.cardId, actual.cardId)
-            Assertions.assertEquals(expected.dictionaryId, actual.dictionaryId.asString())
-            Assertions.assertEquals(expected.word, actual.word)
-        }
-
-        private fun assertCardId(expected: String?, actual: CardId) {
-            Assertions.assertEquals(expected?.let { CardId(it) } ?: CardId.NONE, actual)
         }
     }
 

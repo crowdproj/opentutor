@@ -9,6 +9,7 @@ fun DictionaryContext.toDictionaryResponse(): BaseResponse = when (val op = this
     DictionaryOperation.GET_ALL_DICTIONARIES -> this.toGetAllDictionaryResponse()
     DictionaryOperation.DELETE_DICTIONARY -> this.toDeleteDictionaryResponse()
     DictionaryOperation.DOWNLOAD_DICTIONARY -> this.toDownloadDictionaryResponse()
+    DictionaryOperation.UPLOAD_DICTIONARY -> this.toUploadDictionaryResponse()
     else -> throw IllegalArgumentException("Not supported operation $op.")
 }
 
@@ -30,6 +31,13 @@ fun DictionaryContext.toDownloadDictionaryResponse() = DownloadDictionaryRespons
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
     resource = this.responseDictionaryResourceEntity.data,
+)
+
+fun DictionaryContext.toUploadDictionaryResponse() = UploadDictionaryResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+    dictionary = this.responseDictionaryEntity.toDictionaryResource(),
 )
 
 private fun DictionaryEntity.toDictionaryResource(): DictionaryResource? {
