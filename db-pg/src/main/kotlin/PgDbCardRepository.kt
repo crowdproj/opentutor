@@ -24,7 +24,7 @@ class PgDbCardRepository(
 
     override fun getCard(id: CardId): CardDbResponse {
         return connection.execute {
-            val card = Card.findById(id.asDbId())
+            val card = Card.findById(id.asLong())
             if (card == null) {
                 CardDbResponse(
                     card = CardEntity.EMPTY,
@@ -38,12 +38,12 @@ class PgDbCardRepository(
 
     override fun getAllCards(id: DictionaryId): CardsDbResponse {
         return connection.execute {
-            val dictionary = Dictionary.findById(id.asDbId())?.toEntity() ?: return@execute CardsDbResponse(
+            val dictionary = Dictionary.findById(id.asLong())?.toEntity() ?: return@execute CardsDbResponse(
                 cards = emptyList(),
                 errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
             )
             val cards = Card.find {
-                Cards.dictionaryId eq id.asDbId()
+                Cards.dictionaryId eq id.asLong()
             }.with(Card::examples).with(Card::translations).map { it.toEntity() }
             CardsDbResponse(
                 cards = cards,
@@ -54,7 +54,7 @@ class PgDbCardRepository(
     }
 
     override fun searchCard(filter: CardFilter): CardsDbResponse {
-        val dictionaryIds = filter.dictionaryIds.map { it.asDbId() }
+        val dictionaryIds = filter.dictionaryIds.map { it.asLong() }
         val learned = sysConfig.numberOfRightAnswers
         val random = CustomFunction<Double>("random", DoubleColumnType())
         return connection.execute {
@@ -110,10 +110,10 @@ class PgDbCardRepository(
         return connection.execute({
             requireExiting(card)
             Examples.deleteWhere {
-                this.cardId eq card.cardId.asDbId()
+                this.cardId eq card.cardId.asLong()
             }
             Translations.deleteWhere {
-                this.cardId eq card.cardId.asDbId()
+                this.cardId eq card.cardId.asLong()
             }
             val record = Card.findById(card.cardId.asRecordId())
             if (record == null) {
@@ -138,7 +138,7 @@ class PgDbCardRepository(
 
     override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
         return connection.execute {
-            val cardLearns = learn.associateBy { it.cardId.asDbId() }
+            val cardLearns = learn.associateBy { it.cardId.asLong() }
             val records = Card.find {
                 Cards.id inList cardLearns.keys
             }.associateBy { it.id.value }
@@ -146,7 +146,7 @@ class PgDbCardRepository(
                 noCardFoundDbError(operation = "getCard", id = CardId(it.toString()))
             }
             val cards = cardLearns.values.mapNotNull { learn ->
-                val record = records[learn.cardId.asDbId()] ?: return@mapNotNull null
+                val record = records[learn.cardId.asLong()] ?: return@mapNotNull null
                 record.details = toDbRecordDetails(learn.details)
                 record.toEntity()
             }
@@ -156,7 +156,7 @@ class PgDbCardRepository(
 
     override fun resetCard(id: CardId): CardDbResponse {
         return connection.execute {
-            val card = Card.findById(id.asDbId())
+            val card = Card.findById(id.asLong())
             if (card == null) {
                 CardDbResponse(
                     card = CardEntity.EMPTY,
@@ -172,13 +172,13 @@ class PgDbCardRepository(
     override fun deleteCard(id: CardId): DeleteCardDbResponse {
         return connection.execute {
             Examples.deleteWhere {
-                this.cardId eq id.asDbId()
+                this.cardId eq id.asLong()
             }
             Translations.deleteWhere {
-                this.cardId eq id.asDbId()
+                this.cardId eq id.asLong()
             }
             val res = Cards.deleteWhere {
-                this.id eq id.asDbId()
+                this.id eq id.asLong()
             }
             DeleteCardDbResponse(
                 if (res == 0) listOf(noCardFoundDbError(operation = "deleteCard", id = id)) else emptyList()

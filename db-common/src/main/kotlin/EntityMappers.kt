@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gitlab.sszuev.flashcards.common.documents.CardStatus
+import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -23,18 +24,10 @@ fun requireExiting(entity: CardEntity) {
     require(entity.dictionaryId != DictionaryId.NONE) { "Dictionary id is required" }
 }
 
-fun DictionaryId.asDbId(): Long {
-    if (asString().matches("\\d+".toRegex())) {
-        return asString().toLong()
-    }
-    throw IllegalArgumentException("Wrong dictionary id ${asString()}.")
-}
-
-fun CardId.asDbId(): Long {
-    if (asString().matches("\\d+".toRegex())) {
-        return asString().toLong()
-    }
-    throw IllegalArgumentException("Wrong card id ${asString()}.")
+fun Id.asLong(): Long = if (this.asString().matches("\\d+".toRegex())) {
+    this.asString().toLong()
+} else {
+    throw IllegalArgumentException("Wrong id specified: $this")
 }
 
 fun toEntityDetails(fromDb: String?): Map<Stage, Long> {

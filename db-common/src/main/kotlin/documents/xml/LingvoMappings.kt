@@ -1,5 +1,7 @@
 package com.gitlab.sszuev.flashcards.common.documents.xml
 
+import com.gitlab.sszuev.flashcards.common.EnPartOfSpeech
+import com.gitlab.sszuev.flashcards.common.StandardLanguage
 import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets

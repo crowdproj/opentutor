@@ -78,6 +78,15 @@ internal fun copyToDbEntityRecord(from: CardEntity, to: Card) {
     to.details = toDbRecordDetails(from.details)
 }
 
+internal fun copyToDbEntityRecord(dictionaryId: EntityID<Long>, from: DocumentCard, to: Card) {
+    to.dictionaryId = dictionaryId
+    to.text = from.text
+    to.transcription = from.transcription
+    to.partOfSpeech = from.partOfSpeech
+    to.answered = from.answered
+    to.details = from.details
+}
+
 internal fun copyToDbExampleRecord(txt: String, card: Card, to: Example) {
     to.cardId = card.id
     to.text = txt
@@ -98,14 +107,14 @@ internal fun EntityID<Long>.asDictionaryId() = DictionaryId(value.toString())
 
 internal fun EntityID<Long>.asCardId() = CardId(value.toString())
 
-internal fun AppUserId.asRecordId(): EntityID<Long> {
-    return if (asString().matches("\\d+".toRegex())) {
-        EntityID(asString().toLong(), Dictionaries)
-    } else {
-        EntityID(-42, Dictionaries)
-    }
+internal fun AppUserId.asRecordId(): EntityID<Long> = EntityID(asLong(), Users)
+
+internal fun DictionaryId.asRecordId() = EntityID(asLong(), Dictionaries)
+
+internal fun CardId.asRecordId() = EntityID(asLong(), Cards)
+
+internal fun String.asRecordId() = EntityID(this, Languages)
+
+internal fun partsOfSpeechToRecordTxt(partsOfSpeech: Collection<String>): String {
+    return partsOfSpeech.joinToString(",")
 }
-
-internal fun DictionaryId.asRecordId() = EntityID(asString().toLong(), Dictionaries)
-
-internal fun CardId.asRecordId() = EntityID(asString().toLong(), Cards)

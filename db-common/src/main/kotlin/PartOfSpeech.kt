@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.common.documents.xml
+package com.gitlab.sszuev.flashcards.common
 
 
 internal interface PartOfSpeech {
