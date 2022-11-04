@@ -3,10 +3,7 @@ package com.gitlab.sszuev.flashcards.api.controllers
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.DictionaryRepositories
 import com.gitlab.sszuev.flashcards.api.services.DictionaryService
-import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.*
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.logslib.ExtLogger
 import com.gitlab.sszuev.flashcards.logslib.logger
@@ -59,6 +56,21 @@ suspend fun ApplicationCall.downloadDictionary(
         runConf
     ) {
         service.downloadDictionary(this)
+    }
+}
+
+suspend fun ApplicationCall.uploadDictionary(
+    service: DictionaryService,
+    repositories: DictionaryRepositories,
+    runConf: RunConfig
+) {
+    execute<UploadDictionaryRequest>(
+        DictionaryOperation.UPLOAD_DICTIONARY,
+        repositories,
+        logger,
+        runConf
+    ) {
+        service.uploadDictionary(this)
     }
 }
 

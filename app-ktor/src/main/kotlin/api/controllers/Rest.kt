@@ -68,5 +68,8 @@ fun Route.dictionaries(
         post("download") {
             call.downloadDictionary(service, repositories, runConf)
         }
+        post("upload") {
+            call.uploadDictionary(service, repositories, runConf)
+        }
     }
 }

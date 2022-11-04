@@ -18,9 +18,14 @@ class DictionaryService {
     suspend fun deleteDictionary(context: DictionaryContext): DictionaryContext = context.exec()
 
     /**
-     * Download dictionary.
+     * Downloads dictionary.
      */
     suspend fun downloadDictionary(context: DictionaryContext): DictionaryContext = context.exec()
+
+    /**
+     * Uploads dictionary.
+     */
+    suspend fun uploadDictionary(context: DictionaryContext): DictionaryContext = context.exec()
 
     private suspend fun DictionaryContext.exec(): DictionaryContext {
         processor.execute(this)

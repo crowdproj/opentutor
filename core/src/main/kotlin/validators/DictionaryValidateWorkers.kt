@@ -7,9 +7,14 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 fun ChainDSL<DictionaryContext>.validateDictionaryResource() = worker {
     this.name = "Test upload dictionary resource"
     test {
-        this.requestDictionaryResourceEntity.data.size < 1000
+        this.requestDictionaryResourceEntity.data.size < 300
     }
     process {
-        fail(validationError(fieldName = "dictionary-resource", description = "uploaded byte-array is suspicious small"))
+        fail(
+            validationError(
+                fieldName = "dictionary-resource",
+                description = "uploaded byte-array is suspicious small: ${this.requestDictionaryResourceEntity.data.size} bytes"
+            )
+        )
     }
 }
