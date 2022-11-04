@@ -5,7 +5,7 @@ import com.gitlab.sszuev.flashcards.core.validators.fail
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 
 fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     this.name = "process get-all-dictionary request"
@@ -24,7 +24,7 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     onException {
         fail(
             runError(
-                operation = CardOperation.GET_ALL_CARDS,
+                operation = DictionaryOperation.GET_ALL_DICTIONARIES,
                 fieldName = this.contextUserEntity.id.toFieldName(),
                 description = "exception",
                 exception = it
@@ -39,14 +39,15 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val res = this.repositories.dictionaryRepository(this.workMode).deleteDictionary(this.normalizedRequestDictionaryId)
+        val res =
+            this.repositories.dictionaryRepository(this.workMode).deleteDictionary(this.normalizedRequestDictionaryId)
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
-        this.handleThrowable(CardOperation.DELETE_CARD, it)
+        this.handleThrowable(DictionaryOperation.DELETE_DICTIONARY, it)
     }
 }
 
@@ -56,7 +57,8 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val res = this.repositories.dictionaryRepository(this.workMode).downloadDictionary(this.normalizedRequestDictionaryId)
+        val res =
+            this.repositories.dictionaryRepository(this.workMode).downloadDictionary(this.normalizedRequestDictionaryId)
         this.responseDictionaryResourceEntity = res.resource
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
@@ -64,6 +66,27 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
-        this.handleThrowable(CardOperation.DELETE_CARD, it)
+        this.handleThrowable(DictionaryOperation.DOWNLOAD_DICTIONARY, it)
+    }
+}
+
+fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
+    this.name = "process upload-dictionary request"
+    test {
+        this.status == AppStatus.RUN
+    }
+    process {
+        val res = this.repositories.dictionaryRepository(this.workMode).uploadDictionary(
+            userId = this.contextUserEntity.id,
+            resource = this.requestDictionaryResourceEntity
+        )
+        this.responseDictionaryEntity = res.dictionary
+        if (res.errors.isNotEmpty()) {
+            this.errors.addAll(res.errors)
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+    }
+    onException {
+        this.handleThrowable(DictionaryOperation.UPLOAD_DICTIONARY, it)
     }
 }

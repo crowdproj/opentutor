@@ -5,9 +5,11 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
-import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 
 fun ChainDSL<CardContext>.validateCardEntityHasValidCardId(getCardEntity: (CardContext) -> CardEntity) = worker {
     validateId("card-id") { getCardEntity(it).cardId }
@@ -25,10 +27,6 @@ fun ChainDSL<CardContext>.validateCardEntityHasNoCardId(getEntity: (CardContext)
 
 fun ChainDSL<CardContext>.validateCardEntityDictionaryId(getCardEntity: (CardContext) -> CardEntity) = worker {
     validateId("dictionary-id") { getCardEntity(it).dictionaryId }
-}
-
-fun <Context: AppContext> ChainDSL<Context>.validateDictionaryId(getDictionaryId: (Context) -> DictionaryId) = worker {
-    validateId("dictionary-id") { getDictionaryId(it) }
 }
 
 fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = worker {
@@ -95,44 +93,6 @@ fun ChainDSL<CardContext>.validateCardLearnListDetails(getCardLearn: (CardContex
         score <= 0 || score > 42
     }
 
-private fun <Context: AppContext> ChainDSL<Context>.validateId(
-    fieldName: String,
-    getId: (Context) -> Id
-) = chain {
-    name = "validate ids: fieldName=$fieldName"
-    validateIdIsNotBlank(workerName = "Test $fieldName length", fieldName = fieldName, getId = getId)
-    validateIdMatchPattern(workerName = "Test $fieldName pattern", fieldName = fieldName, getId = getId)
-}
-
-private fun <Context: AppContext> ChainDSL<Context>.validateIdIsNotBlank(
-    workerName: String,
-    fieldName: String,
-    getId: (Context) -> Id
-) = worker {
-    this.name = workerName
-    test {
-        isIdBlank(getId(this))
-    }
-    process {
-        fail(validationError(fieldName = fieldName, description = "it is blank"))
-    }
-}
-
-private fun <Context: AppContext> ChainDSL<Context>.validateIdMatchPattern(
-    workerName: String,
-    fieldName: String,
-    getId: (Context) -> Id
-) = worker {
-    this.name = workerName
-    test {
-        val id = getId(this)
-        !isIdBlank(id) && isIdWrong(id)
-    }
-    process {
-        fail(validationError(fieldName = fieldName, description = "must be integer number"))
-    }
-}
-
 private fun ChainDSL<CardContext>.validateIds(
     workerName: String,
     fieldName: String,
@@ -184,12 +144,4 @@ private fun <V> ChainDSL<CardContext>.validateCollectionFieldsAreCorrect(
             this.status = AppStatus.FAIL
         }
     }
-}
-
-private fun isIdBlank(id: Id): Boolean {
-    return id.asString().isBlank()
-}
-
-private fun isIdWrong(id: Id): Boolean {
-    return !id.asString().matches(Regex("\\d+"))
 }
