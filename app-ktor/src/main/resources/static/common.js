@@ -7,7 +7,7 @@ function uuid() {
     for (let i = 0; i < 32; i++) {
         res += Math.floor(Math.random() * 16).toString(16).toUpperCase();
     }
-    return insertAt(insertAt(insertAt(insertAt(res,20, '-'), 16, '-'), 12, '-'), 8, '-')
+    return insertAt(insertAt(insertAt(insertAt(res, 20, '-'), 16, '-'), 12, '-'), 8, '-')
 }
 
 function insertAt(string, position, char) {
@@ -88,4 +88,14 @@ function base64StringToUint8Array(base64) {
         uint8Array[i] = str.charCodeAt(i);
     }
     return uint8Array
+}
+
+function arrayBufferToBase64(buffer) {
+    let binary = '';
+    const bytes = new Uint8Array(buffer);
+    const len = bytes.byteLength;
+    for (let i = 0; i < len; i++) {
+        binary += String.fromCharCode(bytes[i]);
+    }
+    return window.btoa(binary);
 }

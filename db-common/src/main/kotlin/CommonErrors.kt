@@ -48,7 +48,7 @@ fun wrongUserUUIDDbError(
 
 fun wrongResourceDbError(exception: Throwable) = dbError(
     operation = "uploadDictionary",
-    details = """can't load dictionary for byte-array""",
+    details = """can't parse dictionary from byte-array""",
     exception = exception,
 )
 

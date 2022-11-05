@@ -78,7 +78,7 @@ abstract class DbDictionaryRepositoryTest {
         val res = repository.downloadDictionary(DictionaryId("2"))
         Assertions.assertTrue(res.errors.isEmpty())
         val xml = res.resource.data.toString(Charsets.UTF_16)
-        Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16" standalone="yes"?>"""))
+        Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16"?>"""))
         Assertions.assertEquals(66, xml.split("<card>").size)
         Assertions.assertTrue(xml.endsWith("</dictionary>" + System.lineSeparator()))
     }

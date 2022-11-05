@@ -102,7 +102,6 @@ internal class LingvoDocumentWriter : DocumentWriter {
         }
         transformer.setOutputProperty(OutputKeys.ENCODING, LingvoMappings.charset.name())
         transformer.setOutputProperty(OutputKeys.INDENT, "yes")
-        transformer.setOutputProperty(OutputKeys.STANDALONE, "yes")
         return transformer
     }
 }
