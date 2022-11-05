@@ -29,15 +29,25 @@ internal suspend inline fun <reified Request : BaseRequest, reified Context : Ap
             context.fromTransport(receive<Request>())
             logger.info(msg = "Request: $operation", data = context.toLogResource(logId))
             context.exec()
-            logger.info(msg = "Response: $operation", data = context.toLogResource(logId))
+            if (context.status == AppStatus.FAIL) {
+                logger.error(
+                    msg = "$operation :: errors: ${context.errors.map { it.message }}",
+                    data = context.toLogResource(logId)
+                )
+            } else {
+                logger.info(msg = "Response: $operation", data = context.toLogResource(logId))
+            }
             val response = context.toResponse()
             respond(response)
         }
     } catch (ex: Exception) {
         val msg = "Problem with request=${context.requestId.asString()} :: ${ex.message}"
-        logger.error(msg = msg, throwable = ex, data = context.toLogResource(logId))
         context.status = AppStatus.FAIL
         context.errors.add(ex.asError(message = msg))
+        logger.error(
+            msg = "$operation :: exceptions: ${context.errors.map { it.message }}",
+            data = context.toLogResource(logId)
+        )
         val response = context.toResponse()
         respond(response)
     }

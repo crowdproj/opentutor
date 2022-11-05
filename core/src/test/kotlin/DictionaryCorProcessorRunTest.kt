@@ -10,6 +10,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.*
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
+import com.gitlab.sszuev.flashcards.stubs.stubDictionary
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -24,7 +25,9 @@ internal class DictionaryCorProcessorRunTest {
         private fun testContext(
             op: DictionaryOperation,
             dictionaryRepository: DbDictionaryRepository,
-            userRepository: DbUserRepository = MockDbUserRepository()
+            userRepository: DbUserRepository = MockDbUserRepository(
+                invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw AssertionError() }
+            )
         ): DictionaryContext {
             val context = DictionaryContext(
                 operation = op,
@@ -48,10 +51,6 @@ internal class DictionaryCorProcessorRunTest {
     fun `test get-all-dictionary success`() = runTest {
         val testResponseEntities = stubDictionaries
 
-        val userRepository = MockDbUserRepository(
-            invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw TestException() }
-        )
-
         var wasCalled = false
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeGetAllDictionaries = {
@@ -60,7 +59,7 @@ internal class DictionaryCorProcessorRunTest {
             }
         )
 
-        val context = testContext(DictionaryOperation.GET_ALL_DICTIONARIES, dictionaryRepository, userRepository)
+        val context = testContext(DictionaryOperation.GET_ALL_DICTIONARIES, dictionaryRepository)
 
         DictionaryCorProcessor().execute(context)
 
@@ -81,7 +80,7 @@ internal class DictionaryCorProcessorRunTest {
         val repository = MockDbDictionaryRepository(
             invokeDeleteDictionary = {
                 wasCalled = true
-                if (it == testId) response else throw TestException()
+                if (it == testId) response else throw AssertionError()
             }
         )
 
@@ -106,7 +105,7 @@ internal class DictionaryCorProcessorRunTest {
         val repository = MockDbDictionaryRepository(
             invokeDownloadDictionary = {
                 wasCalled = true
-                if (it == testId) response else throw TestException()
+                if (it == testId) response else throw AssertionError()
             }
         )
 
@@ -119,5 +118,31 @@ internal class DictionaryCorProcessorRunTest {
         Assertions.assertEquals(requestId(DictionaryOperation.DOWNLOAD_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
+    }
+
+    @Test
+    fun `test upload-dictionary success`() = runTest {
+        val testData = ResourceEntity(DictionaryId.NONE, ByteArray(4200) { 42 })
+        val response = UploadDictionaryDbResponse(dictionary = stubDictionary)
+
+        var wasCalled = false
+        val repository = MockDbDictionaryRepository(
+            invokeUploadDictionary = { id, bytes ->
+                wasCalled = true
+                if (id != testUser.id) throw AssertionError()
+                if (bytes != testData) throw AssertionError()
+                response
+            }
+        )
+
+        val context = testContext(DictionaryOperation.UPLOAD_DICTIONARY, repository)
+        context.requestDictionaryResourceEntity = testData
+
+        DictionaryCorProcessor().execute(context)
+
+        Assertions.assertTrue(context.errors.isEmpty()) { "errors: ${context.errors}" }
+        Assertions.assertTrue(wasCalled)
+        Assertions.assertEquals(requestId(DictionaryOperation.UPLOAD_DICTIONARY), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
     }
 }

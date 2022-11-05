@@ -14,7 +14,8 @@ internal class DictionaryStoreTest {
 
     @Test
     fun `test load dictionaries from class-path`() {
-        val dictionaries = DictionaryStore.load(location = "classpath:$classPathResourceDir", ids = IdSequences())
+        val config = MemDbConfig().copy(dataLocation = "classpath:$classPathResourceDir")
+        val dictionaries = DictionaryStore.load(dbConfig = config, ids = IdSequences())
         Assertions.assertEquals(2, dictionaries.size)
         Assertions.assertEquals("Business vocabulary (Job)", dictionaries[1]!!.name)
         Assertions.assertEquals("Weather", dictionaries[2]!!.name)
@@ -26,7 +27,8 @@ internal class DictionaryStoreTest {
     @Test
     fun `test load dictionaries from directory & flush & reload`(@TempDir dir: Path) {
         copyClassPathDataToDir(classPathResourceDir, dir)
-        val dictionaries1 = DictionaryStore.load(location = dir, ids = IdSequences())
+        val dictionaries1 =
+            DictionaryStore.load(dbConfig = MemDbConfig().copy(dataLocation = dir.toString()), ids = IdSequences())
         Assertions.assertEquals(2, dictionaries1.size)
         Assertions.assertEquals("Business vocabulary (Job)", dictionaries1[1]!!.name)
         Assertions.assertEquals("Weather", dictionaries1[2]!!.name)
@@ -43,7 +45,8 @@ internal class DictionaryStoreTest {
         dictionaries1[2]!!.cards[-42] = card
         dictionaries1.flush(2)
 
-        val dictionaries2 = DictionaryStore.load(location = dir, ids = IdSequences())
+        val dictionaries2 =
+            DictionaryStore.load(dbConfig = MemDbConfig().copy(dataLocation = dir.toString()), ids = IdSequences())
         Assertions.assertSame(dictionaries1, dictionaries2)
         Assertions.assertEquals(2, dictionaries2.size)
         Assertions.assertEquals(242, dictionaries2[1]!!.cards.size)
@@ -58,7 +61,8 @@ internal class DictionaryStoreTest {
         // clear to avoid caching
         DictionaryStore.clear()
 
-        val dictionaries3 = DictionaryStore.load(location = dir, ids = IdSequences())
+        val dictionaries3 =
+            DictionaryStore.load(dbConfig = MemDbConfig().copy(dataLocation = dir.toString()), ids = IdSequences())
         Assertions.assertNotSame(dictionaries1, dictionaries3)
         Assertions.assertEquals(2, dictionaries3.size)
         Assertions.assertEquals(242, dictionaries3[1]!!.cards.size)

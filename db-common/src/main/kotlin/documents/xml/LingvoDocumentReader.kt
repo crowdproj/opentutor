@@ -28,7 +28,7 @@ internal class LingvoDocumentReader(private val ids: IdGenerator?) : DocumentRea
         val doc = db.parse(source)
         val root = doc.documentElement
 
-        val dictionaryId = root.parseId("dictionaryId") ?: ids?.nextDictionaryId()
+        val dictionaryId = ids?.nextDictionaryId() ?: root.parseId("dictionaryId")
         val srcLang = root.parseLanguage("sourceLanguageId")
         val dstLang = root.parseLanguage("destinationLanguageId")
         return DocumentDictionary(
@@ -52,7 +52,7 @@ internal class LingvoDocumentReader(private val ids: IdGenerator?) : DocumentRea
     }
 
     private fun Element.parseMeaning(word: String): DocumentCard {
-        val cardId = parseId("cardId") ?: ids?.nextCardId()
+        val cardId = ids?.nextCardId() ?: parseId("cardId")
         val transcription = getAttribute("transcription").takeIf { it.isNotBlank() }
         val posId = getAttribute("partOfSpeech")
         val pos: String? = if (posId.isBlank()) null else LingvoMappings.toPartOfSpeechTag(posId)

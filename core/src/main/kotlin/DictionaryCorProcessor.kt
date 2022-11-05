@@ -2,13 +2,11 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.core.normalizers.normalizers
-import com.gitlab.sszuev.flashcards.core.processes.processDeleteDictionary
-import com.gitlab.sszuev.flashcards.core.processes.processDownloadDictionary
-import com.gitlab.sszuev.flashcards.core.processes.processFindUser
-import com.gitlab.sszuev.flashcards.core.processes.processGetAllDictionary
+import com.gitlab.sszuev.flashcards.core.processes.*
 import com.gitlab.sszuev.flashcards.core.stubs.dictionaryStubSuccess
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryId
+import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryResource
 import com.gitlab.sszuev.flashcards.core.validators.validateUserId
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
@@ -59,6 +57,18 @@ class DictionaryCorProcessor {
                 runs(DictionaryOperation.DOWNLOAD_DICTIONARY) {
                     processFindUser(DictionaryOperation.DOWNLOAD_DICTIONARY)
                     processDownloadDictionary()
+                }
+            }
+
+            operation(DictionaryOperation.UPLOAD_DICTIONARY) {
+                normalizers(DictionaryOperation.UPLOAD_DICTIONARY)
+                validators(DictionaryOperation.UPLOAD_DICTIONARY) {
+                    validateUserId(DictionaryOperation.UPLOAD_DICTIONARY)
+                    validateDictionaryResource()
+                }
+                runs(DictionaryOperation.UPLOAD_DICTIONARY) {
+                    processFindUser(DictionaryOperation.UPLOAD_DICTIONARY)
+                    processUploadDictionary()
                 }
             }
         }.build()

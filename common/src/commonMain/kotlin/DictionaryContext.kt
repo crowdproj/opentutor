@@ -29,5 +29,8 @@ data class DictionaryContext(
     var normalizedRequestDictionaryId: DictionaryId = DictionaryId.NONE,
     // download-dictionary
     var responseDictionaryResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
-
+    // upload-dictionary
+    var requestDictionaryResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
+    // upload-dictionary
+    var responseDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,
 ) : AppContext

@@ -69,4 +69,50 @@ internal class DictionaryControllerRunTest {
         Assertions.assertNotNull(res.resource)
         Assertions.assertTrue(res.resource!!.size in 58001..59999)
     }
+
+    @Test
+    fun `test upload-dictionary success`() = testSecuredApp {
+        val txt = """
+            <?xml version="1.0" encoding="UTF-16"?>
+            <dictionary 
+                formatVersion="6"  
+                title="Test Dictionary"  
+                userId="777" 
+                sourceLanguageId="1033" 
+                destinationLanguageId="1049" 
+                targetNamespace="http://www.abbyy.com/TutorDictionary">
+            </dictionary>
+        """.trimIndent()
+        val requestBody = UploadDictionaryRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            resource = txt.toByteArray(Charsets.UTF_16),
+        )
+        val response = testPost("/v1/api/dictionaries/upload", requestBody)
+        val res = response.body<UploadDictionaryResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNotNull(res.dictionary)
+        Assertions.assertTrue(res.dictionary!!.dictionaryId!!.matches("\\d+".toRegex()))
+        Assertions.assertEquals("Test Dictionary", res.dictionary!!.name)
+        Assertions.assertEquals("EN", res.dictionary!!.sourceLang)
+        Assertions.assertEquals("RU", res.dictionary!!.targetLang)
+        Assertions.assertNotNull(res.dictionary!!.total)
+        Assertions.assertNotNull(res.dictionary!!.learned)
+        Assertions.assertEquals(
+            listOf(
+                "noun",
+                "verb",
+                "adjective",
+                "adverb",
+                "pronoun",
+                "preposition",
+                "conjunction",
+                "interjection",
+                "article"
+            ), res.dictionary!!.partsOfSpeech
+        )
+    }
 }

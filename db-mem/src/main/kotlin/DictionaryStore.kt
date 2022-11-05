@@ -9,11 +9,13 @@ import org.slf4j.LoggerFactory
 import java.io.InputStream
 import java.io.OutputStream
 import java.nio.file.Files
-import java.nio.file.Path
 import java.nio.file.Paths
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.concurrent.timer
-import kotlin.io.path.*
+import kotlin.io.path.createDirectories
+import kotlin.io.path.inputStream
+import kotlin.io.path.isDirectory
+import kotlin.io.path.isRegularFile
 import kotlin.streams.asSequence
 
 /**
@@ -31,12 +33,16 @@ class DictionaryStore private constructor(
      */
     private val dictionariesToFlush = ConcurrentHashMap<Long, Pair<String, MemDbDictionary>>()
 
+    private val isFromFileSystem = !dbConfig.dataLocation.startsWith(classpathPrefix)
+
     init {
-        timer("flush-dictionaries-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
-            dictionariesToFlush.keys.toList().mapNotNull { dictionariesToFlush.remove(it) }.forEach {
-                logger.debug("Save dictionary ${it.second.id} to disk.")
-                Files.newOutputStream(Paths.get(it.first)).use { out ->
-                    write(it.second, out, sysConfig)
+        if (isFromFileSystem) {
+            timer("flush-dictionaries-to-disk", daemon = true, period = dbConfig.dataFlushPeriodInMs) {
+                dictionariesToFlush.keys.toList().mapNotNull { dictionariesToFlush.remove(it) }.forEach {
+                    logger.debug("Save dictionary ${it.second.id} to disk.")
+                    Files.newOutputStream(Paths.get(it.first)).use { out ->
+                        write(it.second, out, sysConfig)
+                    }
                 }
             }
         }
@@ -52,6 +58,16 @@ class DictionaryStore private constructor(
         return resources[id]?.second
     }
 
+    operator fun set(id: Long, record: MemDbDictionary) {
+        val location = if (isFromFileSystem) {
+            record.file()
+        } else {
+            classpathPrefix + record.file()
+        }
+        val value = location to record
+        resources[id] = value
+    }
+
     operator fun minus(id: Long): MemDbDictionary? {
         return resources.remove(id)?.second
     }
@@ -61,8 +77,10 @@ class DictionaryStore private constructor(
      * It works only if this store is attached to physical directory.
      */
     fun flush(id: Long) {
-        resources[id]?.takeIf { !it.first.startsWith(classpathPrefix) }?.let {
-            dictionariesToFlush[it.second.id] = it
+        if (isFromFileSystem) {
+            resources[id]?.let {
+                dictionariesToFlush[it.second.id] = it
+            }
         }
     }
 
@@ -83,47 +101,29 @@ class DictionaryStore private constructor(
         }
 
         /**
-         * Loads dictionary store from directory.
-         * @param [location][Path] - path to directory
-         * @param [ids][IdSequences]
-         * @param [dbConfig][MemDbConfig]
-         * @param [sysConfig][SysConfig]
-         */
-        fun load(
-            location: Path,
-            ids: IdSequences = IdSequences.globalIdsGenerator,
-            dbConfig: MemDbConfig = MemDbConfig(),
-            sysConfig: SysConfig = SysConfig(),
-        ): DictionaryStore {
-            val key = Configuration(location.toString(), dbConfig, sysConfig)
-            return stores.computeIfAbsent(key) {
-                DictionaryStore(loadDatabaseFromDirectory(key.location, ids), dbConfig, sysConfig)
-            }
-        }
-
-        /**
          * Loads dictionary store from classpath or directory.
-         * @param [location][String] - either dir path or classpath to dir with data
          * @param [ids][IdSequences]
          * @param [dbConfig][MemDbConfig]
          * @param [sysConfig][SysConfig]
          */
         fun load(
-            location: String,
             ids: IdSequences = IdSequences.globalIdsGenerator,
             dbConfig: MemDbConfig = MemDbConfig(),
             sysConfig: SysConfig = SysConfig(),
         ): DictionaryStore {
-            val key = Configuration(location, dbConfig, sysConfig)
+            val location = dbConfig.dataLocation
+            val fromClassPath = dbConfig.dataLocation.startsWith(classpathPrefix)
+            val key = Configuration(dbConfig, sysConfig)
             return stores.computeIfAbsent(key) {
-                DictionaryStore(loadDatabase(key.location, ids), dbConfig, sysConfig)
+                val resources = if (fromClassPath) {
+                    loadDatabaseFromClassPath(location.removePrefix(classpathPrefix), ids)
+                } else loadDatabaseFromDirectory(location, ids)
+                DictionaryStore(
+                    resources = resources,
+                    dbConfig = dbConfig,
+                    sysConfig = sysConfig,
+                )
             }
-        }
-
-        private fun loadDatabase(location: String, ids: IdSequences): MutableMap<Long, Pair<String, MemDbDictionary>> {
-            return if (location.startsWith(classpathPrefix)) {
-                loadDatabaseFromClassPath(location.removePrefix(classpathPrefix), ids)
-            } else loadDatabaseFromDirectory(location, ids)
         }
 
         private fun loadDatabaseFromClassPath(
@@ -187,6 +187,10 @@ class DictionaryStore private constructor(
             return res.associateByTo(ConcurrentHashMap<Long, Pair<String, MemDbDictionary>>()) { it.second.id }
         }
 
+        private fun MemDbDictionary.file(): String {
+            return "dictionary-${this.id}.xml"
+        }
+
         private fun read(inputStream: InputStream, generator: IdSequences): MemDbDictionary {
             val res = createReader(generator).parse(inputStream).toDbRecord()
             generator.position(res)
@@ -196,9 +200,7 @@ class DictionaryStore private constructor(
         private fun write(dictionary: MemDbDictionary, outputStream: OutputStream, sysConfig: SysConfig): Unit =
             createWriter().write(dictionary.toDocument { sysConfig.status(it) }, outputStream)
 
-
         data class Configuration(
-            val location: String,
             val dbConfig: MemDbConfig,
             val sysConfig: SysConfig
         )

@@ -12,6 +12,8 @@ interface DbDictionaryRepository {
     fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse
 
     fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse
+
+    fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): UploadDictionaryDbResponse
 }
 
 data class DictionariesDbResponse(
@@ -32,5 +34,11 @@ data class DeleteDictionaryDbResponse(val errors: List<AppError> = emptyList()) 
 data class DownloadDictionaryDbResponse(val resource: ResourceEntity, val errors: List<AppError> = emptyList()) {
     companion object {
         val EMPTY = DownloadDictionaryDbResponse(resource = ResourceEntity.DUMMY)
+    }
+}
+
+data class UploadDictionaryDbResponse(val dictionary: DictionaryEntity, val errors: List<AppError> = emptyList()) {
+    companion object {
+        val EMPTY = UploadDictionaryDbResponse(dictionary = DictionaryEntity.EMPTY)
     }
 }

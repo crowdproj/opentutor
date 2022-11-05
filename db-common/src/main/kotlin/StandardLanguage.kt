@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.common.documents.xml
+package com.gitlab.sszuev.flashcards.common
 
 internal enum class StandardLanguage {
     EN {
@@ -12,5 +12,5 @@ internal enum class StandardLanguage {
         }
     };
 
-    internal abstract fun partsOfSpeech(): List<String>
+    abstract fun partsOfSpeech(): List<String>
 }

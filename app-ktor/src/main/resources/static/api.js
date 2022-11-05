@@ -7,6 +7,7 @@ let keycloak
 const getAllDictionariesURI = '/v1/api/dictionaries/get-all'
 const deleteDictionaryURI = '/v1/api/dictionaries/delete'
 const downloadDictionaryURI = '/v1/api/dictionaries/download'
+const uploadDictionaryURI = '/v1/api/dictionaries/upload'
 const getAllCardsURI = '/v1/api/cards/get-all'
 const searchCardsURI = '/v1/api/cards/search'
 const createCardURI = '/v1/api/cards/create'
@@ -18,6 +19,7 @@ const getAudioURI = '/v1/api/sounds/get'
 const getAllDictionariesRequestType = 'getAllDictionaries'
 const deleteDictionaryRequestType = 'deleteDictionary'
 const downloadDictionaryRequestType = 'downloadDictionary'
+const uploadDictionaryRequestType = 'uploadDictionary'
 const getAllCardsRequestType = 'getAllCards'
 const searchCardsRequestType = 'searchCards'
 const createCardRequestType = 'createCard'
@@ -54,7 +56,9 @@ function getDictionaries(onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone(res.dictionaries)
+            if (onDone !== undefined) {
+                onDone(res.dictionaries)
+            }
         }
     })
 }
@@ -70,7 +74,9 @@ function getCards(dictionaryId, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone(res.cards)
+            if (onDone !== undefined) {
+                onDone(res.cards)
+            }
         }
     })
 }
@@ -91,14 +97,31 @@ function getNextCardDeck(dictionaryId, length, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone(res.cards)
+            if (onDone !== undefined) {
+                onDone(res.cards)
+            }
         }
     })
 }
 
-function uploadDictionary(data, onDone, onFail) {
-    // TODO
-    console.log("uploadDictionary")
+function uploadDictionary(arrayBuffer, onDone, onFail) {
+    const base64 = arrayBufferToBase64(arrayBuffer);
+    const data = {
+        'requestId': uuid(),
+        'requestType': uploadDictionaryRequestType,
+        'resource': base64,
+        'debug': {'mode': runMode},
+    }
+    post(uploadDictionaryURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+            onFail()
+        } else {
+            if (onDone !== undefined) {
+                onDone()
+            }
+        }
+    })
 }
 
 function downloadDictionary(dictionaryId, downloadFilename, onDone) {
@@ -119,9 +142,11 @@ function downloadDictionary(dictionaryId, downloadFilename, onDone) {
             link.download = downloadFilename;
             link.click();
             setTimeout(function () {
-                document.body.removeChild(link);
+                window.URL.revokeObjectURL(link);
             }, 0);
-            onDone();
+            if (onDone !== undefined) {
+                onDone()
+            }
         }
     })
 }
@@ -153,7 +178,9 @@ function createCard(card, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone(res.card.cardId)
+            if (onDone !== undefined) {
+                onDone(res.card.cardId)
+            }
         }
     })
 }
@@ -185,7 +212,9 @@ function deleteCard(cardId, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone()
+            if (onDone !== undefined) {
+                onDone()
+            }
         }
     })
 }
@@ -201,7 +230,9 @@ function resetCard(cardId, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone()
+            if (onDone !== undefined) {
+                onDone()
+            }
         }
     })
 }

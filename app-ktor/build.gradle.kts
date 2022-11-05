@@ -25,7 +25,6 @@ dependencies {
     implementation(project(":mappers"))
     implementation(project(":common"))
     implementation(project(":tts-client"))
-    implementation(project(":services"))
     implementation(project(":stubs"))
     implementation(project(":core"))
     implementation(project(":db-common"))

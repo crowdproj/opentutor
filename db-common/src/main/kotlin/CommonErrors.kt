@@ -46,6 +46,12 @@ fun wrongUserUUIDDbError(
     details = """wrong uuid="${uid.asString()}"""",
 )
 
+fun wrongResourceDbError(exception: Throwable) = dbError(
+    operation = "uploadDictionary",
+    details = """can't parse dictionary from byte-array""",
+    exception = exception,
+)
+
 fun dbError(
     operation: String,
     fieldName: String = "",

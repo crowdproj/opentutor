@@ -1,18 +1,14 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.*
 import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
 import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
-import com.gitlab.sszuev.flashcards.common.toDbRecordDetails
-import com.gitlab.sszuev.flashcards.common.toDbRecordTranslations
-import com.gitlab.sszuev.flashcards.common.toEntityDetails
-import com.gitlab.sszuev.flashcards.common.toEntityTranslations
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbLanguage
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
-import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
@@ -24,15 +20,15 @@ internal fun MemDbUser.toEntity() = AppUserEntity(
     authId = uuid.asUserUid(),
 )
 
-internal fun DocumentDictionary.toDbRecord(): MemDbDictionary {
-    val dictionaryId = requireNotNull(this.id) { "no dictionary id found" }
+internal fun DocumentDictionary.toDbRecord(userId: AppUserId? = null): MemDbDictionary {
+    val id = requireNotNull(this.id) { "no dictionary id found" }
     return MemDbDictionary(
-        userId = this.userId,
-        id = dictionaryId,
+        userId = userId?.asLong() ?: this.userId,
+        id = id,
         name = this.name,
         sourceLanguage = this.sourceLang.toDbRecord(),
         targetLanguage = this.targetLang.toDbRecord(),
-        cards = this.cards.asSequence().map { it.toDbRecord(dictionaryId) }.associateBy { it.id }.toMutableMap(),
+        cards = this.cards.asSequence().map { it.toDbRecord(id) }.associateBy { it.id }.toMutableMap(),
     )
 }
 
@@ -92,7 +88,7 @@ internal fun MemDbCard.toEntity() = CardEntity(
 )
 
 internal fun CardEntity.toDbRecord(cardId: Long): MemDbCard {
-    val dictionaryId = dictionaryId.asDbRecordId()
+    val dictionaryId = dictionaryId.asLong()
     return MemDbCard(
         id = cardId,
         dictionaryId = dictionaryId,
@@ -123,12 +119,10 @@ private fun MemDbLanguage.toDocument() = DocumentLang(
 
 private fun Long.asUserId() = AppUserId(toString())
 
-internal fun UUID.asUserUid() = AppAuthId(toString())
+private fun UUID.asUserUid() = AppAuthId(toString())
 
-internal fun String.asLangId(): LangId = LangId(this)
+private fun String.asLangId(): LangId = LangId(this)
 
 private fun Long.asCardId() = CardId(toString())
 
 private fun Long.asDictionaryId() = DictionaryId(toString())
-
-private fun Id.asDbRecordId() = asString().toLong()

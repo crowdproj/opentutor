@@ -17,14 +17,13 @@ class MemDbCardRepository(
     private val ids: IdSequences = IdSequences.globalIdsGenerator,
 ) : DbCardRepository {
     private val dictionaries = DictionaryStore.load(
-        location = dbConfig.dataLocation,
         dbConfig = dbConfig,
         sysConfig = sysConfig,
         ids = ids,
     )
 
     override fun getCard(id: CardId): CardDbResponse {
-        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
+        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asLong()] }.singleOrNull()
             ?: return CardDbResponse(
                 card = CardEntity.EMPTY,
                 errors = listOf(noCardFoundDbError(operation = "getCard", id = id))
@@ -33,7 +32,7 @@ class MemDbCardRepository(
     }
 
     override fun getAllCards(id: DictionaryId): CardsDbResponse {
-        val dictionary = dictionaries[id.asDbId()]
+        val dictionary = dictionaries[id.asLong()]
             ?: return CardsDbResponse(
                 cards = emptyList(),
                 errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
@@ -48,7 +47,7 @@ class MemDbCardRepository(
 
     override fun searchCard(filter: CardFilter): CardsDbResponse {
         val dictionaries = filter.dictionaryIds.mapNotNull {
-            dictionaries[it.asDbId()]
+            dictionaries[it.asLong()]
         }.sortedBy { it.id }
         if (dictionaries.isEmpty()) {
             return CardsDbResponse(cards = emptyList())
@@ -78,7 +77,7 @@ class MemDbCardRepository(
 
     override fun createCard(card: CardEntity): CardDbResponse {
         requireNew(card)
-        val dictionaryId = card.dictionaryId.asDbId()
+        val dictionaryId = card.dictionaryId.asLong()
         val dictionary =
             dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "createCard")
         val record = card.toDbRecord(ids.nextCardId())
@@ -89,10 +88,10 @@ class MemDbCardRepository(
 
     override fun updateCard(card: CardEntity): CardDbResponse {
         requireExiting(card)
-        val dictionaryId = card.dictionaryId.asDbId()
+        val dictionaryId = card.dictionaryId.asLong()
         val dictionary =
             dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "updateCard")
-        val id = card.cardId.asDbId()
+        val id = card.cardId.asLong()
         if (!dictionary.cards.containsKey(id)) {
             return createNoCardResponseError(card.cardId, "updateCard")
         }
@@ -149,7 +148,7 @@ class MemDbCardRepository(
     }
 
     private fun findCard(id: CardId): MemDbCard? {
-        return dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asDbId()] }.singleOrNull()
+        return dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asLong()] }.singleOrNull()
     }
 
     private fun createNoCardResponseError(id: CardId, operation: String): CardDbResponse {

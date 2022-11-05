@@ -2,9 +2,9 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.DictionaryRepositories
+import com.gitlab.sszuev.flashcards.api.services.CardService
+import com.gitlab.sszuev.flashcards.api.services.DictionaryService
 import com.gitlab.sszuev.flashcards.config.RunConfig
-import com.gitlab.sszuev.flashcards.services.CardService
-import com.gitlab.sszuev.flashcards.services.DictionaryService
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 
@@ -67,6 +67,9 @@ fun Route.dictionaries(
         }
         post("download") {
             call.downloadDictionary(service, repositories, runConf)
+        }
+        post("upload") {
+            call.uploadDictionary(service, repositories, runConf)
         }
     }
 }

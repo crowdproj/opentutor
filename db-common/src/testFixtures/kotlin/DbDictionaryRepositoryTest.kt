@@ -4,6 +4,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import org.junit.jupiter.api.*
 
@@ -65,13 +66,9 @@ abstract class DbDictionaryRepositoryTest {
     @Order(2)
     @Test
     fun `test get all dictionaries by user-id nothing found`() {
-        val res1 = repository.getAllDictionaries(AppUserId.NONE)
-        Assertions.assertEquals(0, res1.dictionaries.size)
-        Assertions.assertTrue(res1.errors.isEmpty())
-
-        val res2 = repository.getAllDictionaries(AppUserId("-42"))
-        Assertions.assertEquals(0, res2.dictionaries.size)
-        Assertions.assertTrue(res2.errors.isEmpty())
+        val res = repository.getAllDictionaries(AppUserId("42000"))
+        Assertions.assertEquals(0, res.dictionaries.size)
+        Assertions.assertTrue(res.errors.isEmpty())
     }
 
     @Order(3)
@@ -81,7 +78,7 @@ abstract class DbDictionaryRepositoryTest {
         val res = repository.downloadDictionary(DictionaryId("2"))
         Assertions.assertTrue(res.errors.isEmpty())
         val xml = res.resource.data.toString(Charsets.UTF_16)
-        Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16" standalone="yes"?>"""))
+        Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16"?>"""))
         Assertions.assertEquals(66, xml.split("<card>").size)
         Assertions.assertTrue(xml.endsWith("</dictionary>" + System.lineSeparator()))
     }
@@ -108,6 +105,45 @@ abstract class DbDictionaryRepositoryTest {
             """Error while deleteDictionary: dictionary with id="${id.asString()}" not found""",
             error.message
         )
+    }
+
+    @Order(42)
+    @Test
+    fun `test upload dictionary`() {
+        val txt = """
+            <?xml version="1.0" encoding="UTF-16"?>
+            <dictionary 
+                formatVersion="6"  
+                title="Test Dictionary"  
+                userId="777" 
+                sourceLanguageId="1033" 
+                destinationLanguageId="1049" 
+                targetNamespace="http://www.abbyy.com/TutorDictionary">
+                <card>
+                    <word>test</word>
+                    <meanings>
+                        <meaning partOfSpeech="3" transcription="test">
+                            <statistics status="2"/>
+                            <translations>
+                                <word>тестировать</word>
+                            </translations>
+                            <examples/>
+                        </meaning>
+                    </meanings>
+                </card>
+            </dictionary>
+        """.trimIndent()
+        val bytes = txt.toByteArray(Charsets.UTF_16)
+        val res = repository.uploadDictionary(AppUserId("42"), ResourceEntity(DictionaryId.NONE, bytes))
+        Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
+
+        Assertions.assertEquals("Test Dictionary", res.dictionary.name)
+        Assertions.assertTrue(res.dictionary.dictionaryId.asString().isNotBlank())
+        Assertions.assertEquals("42", res.dictionary.userId.asString())
+        Assertions.assertEquals(EN, res.dictionary.sourceLang)
+        Assertions.assertEquals(RU, res.dictionary.targetLang)
+        Assertions.assertEquals(0, res.dictionary.totalCardsCount)
+        Assertions.assertEquals(0, res.dictionary.learnedCardsCount)
     }
 
 }
