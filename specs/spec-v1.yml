@@ -61,6 +61,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/GetAllDictionariesResponse'
 
+  /api/dictionaries/create:
+    post:
+      tags:
+        - dictionary
+      summary: Creates dictionary
+      operationId: createDictionary
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateDictionaryRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateDictionaryResponse'
+
   /api/dictionaries/delete:
     post:
       tags:
@@ -295,6 +316,7 @@ paths:
 components:
   schemas:
     GetAudioRequest:
+      description: Request to get audio resource (byte array)
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -306,6 +328,7 @@ components:
               type: string
 
     GetAudioResponse:
+      description: Get audio resource response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -315,80 +338,100 @@ components:
               format: byte
 
     GetAllDictionariesRequest:
-      description: 'Request to read dictionaries'
+      description: Request to read dictionaries
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
 
     GetAllDictionariesResponse:
+      description: List of dictionaries
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
-          description: List of dictionaries
           properties:
             dictionaries:
               type: array
               items:
                 $ref: '#/components/schemas/DictionaryResource'
 
-    DeleteDictionaryRequest:
+    CreateDictionaryRequest:
+      description: Create dictionary request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
-          description: Delete dictionary request
+          properties:
+            dictionary:
+              $ref: '#/components/schemas/DictionaryResource'
+
+    CreateDictionaryResponse:
+      description: Create dictionary response
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            dictionary:
+              $ref: '#/components/schemas/DictionaryResource'
+
+    DeleteDictionaryRequest:
+      description: Delete dictionary request
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - $ref: '#/components/schemas/DebugRequest'
+        - type: object
           properties:
             dictionaryId:
               type: string
 
     DeleteDictionaryResponse:
+      description: Delete dictionary response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
-          description: Delete dictionary response
 
     DownloadDictionaryRequest:
+      description: Download dictionary request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
-          description: Download dictionary request
           properties:
             dictionaryId:
               type: string
 
     DownloadDictionaryResponse:
+      description: Download dictionary response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
-          description: Download dictionary response
           properties:
             resource:
               type: string
               format: byte
 
     UploadDictionaryRequest:
+      description: Upload dictionary request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
         - type: object
-          description: Upload dictionary request
           properties:
             resource:
               type: string
               format: byte
 
     UploadDictionaryResponse:
+      description: Upload dictionary response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
-          description: Upload dictionary response
           properties:
             dictionary:
               $ref: '#/components/schemas/DictionaryResource'
 
     SearchCardsRequest:
+      description: Search cards request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -410,6 +453,7 @@ components:
                 type: string
 
     SearchCardsResponse:
+      description: Search cards response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -421,7 +465,7 @@ components:
                 $ref: '#/components/schemas/CardResource'
 
     GetAllCardsRequest:
-      description: 'Request to getl all cards by dictionaryId'
+      description: Request to get all cards by dictionaryId
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -431,6 +475,7 @@ components:
               type: string
 
     GetAllCardsResponse:
+      description: Get all cards by dictionaryId response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -442,6 +487,7 @@ components:
                 $ref: '#/components/schemas/CardResource'
 
     GetCardRequest:
+      description: Get card by id request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -451,6 +497,7 @@ components:
               type: string
 
     GetCardResponse:
+      description: Get card by id response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -459,6 +506,7 @@ components:
               $ref: '#/components/schemas/CardResource'
 
     CreateCardRequest:
+      description: Create card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -468,6 +516,7 @@ components:
               $ref: '#/components/schemas/CardResource'
 
     CreateCardResponse:
+      description: Create card response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -476,6 +525,7 @@ components:
               $ref: '#/components/schemas/CardResource'
 
     UpdateCardRequest:
+      description: Update card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -485,6 +535,7 @@ components:
               $ref: '#/components/schemas/CardResource'
 
     UpdateCardResponse:
+      description: Update card response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -493,6 +544,7 @@ components:
               $ref: '#/components/schemas/CardResource'
 
     LearnCardsRequest:
+      description: Learn card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -504,6 +556,7 @@ components:
                 $ref: '#/components/schemas/LearnResource'
 
     LearnCardsResponse:
+      description: Learn card response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -514,6 +567,7 @@ components:
                 $ref: '#/components/schemas/CardResource'
 
     DeleteCardRequest:
+      description: Delete card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -523,12 +577,14 @@ components:
               type: string
 
     DeleteCardResponse:
+      description: Delete card response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
           description: Delete card
 
     ResetCardRequest:
+      description: Reset card status request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - $ref: '#/components/schemas/DebugRequest'
@@ -538,6 +594,7 @@ components:
               type: string
 
     ResetCardResponse:
+      description: Reset card status response
       allOf:
         - $ref: '#/components/schemas/BaseResponse'
         - type: object
@@ -561,6 +618,7 @@ components:
         mapping:
           getAudio: '#/components/schemas/GetAudioRequest'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesRequest'
+          createDictionary: '#/components/schemas/CreateDictionaryRequest'
           deleteDictionary: '#/components/schemas/DeleteDictionaryRequest'
           downloadDictionary: '#/components/schemas/DownloadDictionaryRequest'
           uploadDictionary: '#/components/schemas/UploadDictionaryRequest'
@@ -601,6 +659,7 @@ components:
         mapping:
           getAudio: '#/components/schemas/GetAudioResponse'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesResponse'
+          createDictionary: '#/components/schemas/CreateDictionaryResponse'
           deleteDictionary: '#/components/schemas/DeleteDictionaryResponse'
           downloadDictionary: '#/components/schemas/DownloadDictionaryResponse'
           uploadDictionary: '#/components/schemas/UploadDictionaryResponse'
