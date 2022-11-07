@@ -51,15 +51,14 @@ internal class ToDictionaryTransportTest {
         val context = DictionaryContext(
             requestId = AppRequestId("request=42"),
             operation = DictionaryOperation.UPLOAD_DICTIONARY,
-            responseDictionaryEntity =
-                DictionaryEntity(
-                    dictionaryId = DictionaryId("J"),
-                    name = "xxx",
-                    totalCardsCount = 42,
-                    learnedCardsCount = 21,
-                    sourceLang = LangEntity(LangId("XX"), listOf("a", "b")),
-                    targetLang = LangEntity(LangId("XX")),
-                ),
+            responseDictionaryEntity = DictionaryEntity(
+                dictionaryId = DictionaryId("J"),
+                name = "xxx",
+                totalCardsCount = 42,
+                learnedCardsCount = 21,
+                sourceLang = LangEntity(LangId("XX"), listOf("a", "b")),
+                targetLang = LangEntity(LangId("XX")),
+            ),
             errors = mutableListOf(),
             status = AppStatus.OK
         )
@@ -69,6 +68,31 @@ internal class ToDictionaryTransportTest {
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNull(res.errors)
         Assertions.assertNotNull(res.dictionary)
-        assertDictionary(res.dictionary!!, context.responseDictionaryEntity)
+        assertDictionary(context.responseDictionaryEntity, res.dictionary!!)
+    }
+
+    @Test
+    fun `test toCreateDictionaryResponse`() {
+        val context = DictionaryContext(
+            requestId = AppRequestId("request=42"),
+            operation = DictionaryOperation.CREATE_DICTIONARY,
+            responseDictionaryEntity = DictionaryEntity(
+                dictionaryId = DictionaryId("I"),
+                name = "test-dictionary",
+                totalCardsCount = 1,
+                learnedCardsCount = 2,
+                sourceLang = LangEntity(LangId("S"), listOf("a", "b")),
+                targetLang = LangEntity(LangId("T"), listOf("c", "d")),
+            ),
+            errors = mutableListOf(),
+            status = AppStatus.OK
+        )
+        val res = context.toCreateDictionaryResponse()
+
+        Assertions.assertEquals(context.requestId.asString(), res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNull(res.errors)
+        Assertions.assertNotNull(res.dictionary)
+        assertDictionary(context.responseDictionaryEntity, res.dictionary!!)
     }
 }

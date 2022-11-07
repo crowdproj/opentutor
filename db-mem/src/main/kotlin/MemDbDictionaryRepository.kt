@@ -20,10 +20,11 @@ class MemDbDictionaryRepository(
     )
 
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
+        val uid = userId.asLong()
         val dictionaries = this.dictionaries.keys
             .mapNotNull { dictionaries[it] }
+            .filter { it.userId == uid }
             .map { it.toEntity() }
-            .filter { it.userId == userId }
         return DictionariesDbResponse(dictionaries = dictionaries)
     }
 

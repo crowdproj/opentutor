@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 
 fun DictionaryContext.toDictionaryResponse(): BaseResponse = when (val op = this.operation) {
     DictionaryOperation.GET_ALL_DICTIONARIES -> this.toGetAllDictionaryResponse()
+    DictionaryOperation.CREATE_DICTIONARY -> this.toCreateDictionaryResponse()
     DictionaryOperation.DELETE_DICTIONARY -> this.toDeleteDictionaryResponse()
     DictionaryOperation.DOWNLOAD_DICTIONARY -> this.toDownloadDictionaryResponse()
     DictionaryOperation.UPLOAD_DICTIONARY -> this.toUploadDictionaryResponse()
@@ -18,6 +19,13 @@ fun DictionaryContext.toGetAllDictionaryResponse() = GetAllDictionariesResponse(
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
     dictionaries = this.responseDictionaryEntityList.mapNotNull { it.toDictionaryResource() }
+)
+
+fun DictionaryContext.toCreateDictionaryResponse() = CreateDictionaryResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+    dictionary = this.responseDictionaryEntity.toDictionaryResource(),
 )
 
 fun DictionaryContext.toDeleteDictionaryResponse() = DeleteDictionaryResponse(

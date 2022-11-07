@@ -116,7 +116,6 @@ class PgDbDictionaryRepository(
                 }
             }
             val res = DictionaryEntity(
-                userId = userId,
                 dictionaryId = dictionaryId.asDictionaryId(),
                 name = document.name,
                 sourceLang = sourceLang.toEntity(),

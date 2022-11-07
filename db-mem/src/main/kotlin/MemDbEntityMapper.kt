@@ -72,7 +72,6 @@ internal fun MemDbDictionary.toEntity() = DictionaryEntity(
     name = this.name,
     sourceLang = this.sourceLanguage.toEntity(),
     targetLang = this.targetLanguage.toEntity(),
-    userId = this.userId?.asUserId() ?: AppUserId.NONE
 )
 
 internal fun MemDbCard.toEntity() = CardEntity(

@@ -2,14 +2,12 @@ package com.gitlab.sszuev.flashcards.stubs
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStub
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.*
 
 const val STUB_ERROR_GROUP = "StubErrors"
 
 val stubDictionary = DictionaryEntity(
     dictionaryId = DictionaryId(42.toString()),
-    userId = AppUserId(1.toString()),
     name = "Stub-dictionary",
     sourceLang = LangEntity(LangId("SL"), listOf("A", "B", "C")),
     targetLang = LangEntity(LangId("TL"), listOf("X", "Y")),

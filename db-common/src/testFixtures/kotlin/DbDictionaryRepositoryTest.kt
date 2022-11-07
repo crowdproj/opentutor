@@ -139,7 +139,6 @@ abstract class DbDictionaryRepositoryTest {
 
         Assertions.assertEquals("Test Dictionary", res.dictionary.name)
         Assertions.assertTrue(res.dictionary.dictionaryId.asString().isNotBlank())
-        Assertions.assertEquals("42", res.dictionary.userId.asString())
         Assertions.assertEquals(EN, res.dictionary.sourceLang)
         Assertions.assertEquals(RU, res.dictionary.targetLang)
         Assertions.assertEquals(0, res.dictionary.totalCardsCount)
