@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.DictionaryRepositories
+import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.*
@@ -69,6 +70,39 @@ internal class DictionaryCorProcessorRunTest {
         Assertions.assertTrue(context.errors.isEmpty())
 
         Assertions.assertEquals(testResponseEntities, context.responseDictionaryEntityList)
+    }
+
+    @Test
+    fun `test create-dictionary success`() = runTest {
+        val testDictionaryId = DictionaryId("42")
+        val givenDictionary =
+            stubDictionary.copy(dictionaryId = DictionaryId.NONE, name = " ${stubDictionary.name} ")
+        val expectedDictionary =
+            stubDictionary.copy(
+                dictionaryId = testDictionaryId,
+                sourceLang = stubDictionary.sourceLang.normalize(),
+                targetLang = stubDictionary.targetLang.normalize(),
+            )
+
+        var wasCalled = false
+        val repository = MockDbDictionaryRepository(
+            invokeCreateDictionary = { _, d ->
+                wasCalled = true
+                DictionaryDbResponse(dictionary = d.copy(testDictionaryId))
+            }
+        )
+
+        val context = testContext(DictionaryOperation.CREATE_DICTIONARY, repository)
+        context.requestDictionaryEntity = givenDictionary
+
+        DictionaryCorProcessor().execute(context)
+
+        Assertions.assertTrue(context.errors.isEmpty()) { "Has errors: ${context.errors}" }
+        Assertions.assertTrue(wasCalled)
+        Assertions.assertEquals(requestId(DictionaryOperation.CREATE_DICTIONARY), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+        Assertions.assertEquals(expectedDictionary, context.responseDictionaryEntity)
     }
 
     @Test

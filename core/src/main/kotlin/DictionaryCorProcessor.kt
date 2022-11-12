@@ -5,9 +5,7 @@ import com.gitlab.sszuev.flashcards.core.normalizers.normalizers
 import com.gitlab.sszuev.flashcards.core.processes.*
 import com.gitlab.sszuev.flashcards.core.stubs.dictionaryStubSuccess
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
-import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryId
-import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryResource
-import com.gitlab.sszuev.flashcards.core.validators.validateUserId
+import com.gitlab.sszuev.flashcards.core.validators.*
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
@@ -33,6 +31,20 @@ class DictionaryCorProcessor {
                 runs(DictionaryOperation.GET_ALL_DICTIONARIES) {
                     processFindUser(DictionaryOperation.GET_ALL_DICTIONARIES)
                     processGetAllDictionary()
+                }
+            }
+
+            operation(DictionaryOperation.CREATE_DICTIONARY) {
+                normalizers(DictionaryOperation.CREATE_DICTIONARY)
+                validators(DictionaryOperation.CREATE_DICTIONARY) {
+                    validateUserId(DictionaryOperation.CREATE_DICTIONARY)
+                    validateDictionaryEntityHasNoCardId { it.normalizedRequestDictionaryEntity }
+                    validateDictionaryLangId("source-lang") { it.normalizedRequestDictionaryEntity.sourceLang.langId }
+                    validateDictionaryLangId("target-lang") { it.normalizedRequestDictionaryEntity.targetLang.langId }
+                }
+                runs(DictionaryOperation.CREATE_DICTIONARY) {
+                    processFindUser(DictionaryOperation.CREATE_DICTIONARY)
+                    processCreateDictionary()
                 }
             }
 

@@ -16,6 +16,11 @@ fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = wo
         DictionaryOperation.DELETE_DICTIONARY, DictionaryOperation.DOWNLOAD_DICTIONARY -> {
             this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
         }
+
+        DictionaryOperation.CREATE_DICTIONARY -> {
+            this.normalizedRequestDictionaryEntity = this.requestDictionaryEntity.normalize()
+        }
+
         else -> {}
     }
 }
@@ -53,19 +58,31 @@ fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(
     }
 }
 
-fun CardEntity.normalize(): CardEntity {
-    return CardEntity(
-        cardId = this.cardId.normalize(),
-        dictionaryId = this.dictionaryId.normalize(),
-        word = this.word.trim(),
-        transcription = this.transcription?.trim(),
-        partOfSpeech = this.partOfSpeech?.lowercase()?.trim(),
-        details = this.details,
-        answered = this.answered,
-        translations = this.translations,
-        examples = this.examples.asSequence().map { it.trim() }.filter { it.isNotBlank() }.toList(),
-    )
-}
+fun CardEntity.normalize() = CardEntity(
+    cardId = this.cardId.normalize(),
+    dictionaryId = this.dictionaryId.normalize(),
+    word = this.word.trim(),
+    transcription = this.transcription?.trim(),
+    partOfSpeech = this.partOfSpeech?.lowercase()?.trim(),
+    details = this.details,
+    answered = this.answered,
+    translations = this.translations,
+    examples = this.examples.asSequence().map { it.trim() }.filter { it.isNotBlank() }.toList(),
+)
+
+fun DictionaryEntity.normalize() = DictionaryEntity(
+    dictionaryId = this.dictionaryId.normalize(),
+    name = this.name.trim(),
+    sourceLang = this.sourceLang.normalize(),
+    targetLang = this.targetLang.normalize(),
+    totalCardsCount = this.totalCardsCount,
+    learnedCardsCount = this.learnedCardsCount,
+)
+
+fun LangEntity.normalize() = LangEntity(
+    langId = this.langId.normalize(),
+    partsOfSpeech = this.partsOfSpeech.map { it.trim() }
+)
 
 fun CardFilter.normalize(): CardFilter {
     return CardFilter(
