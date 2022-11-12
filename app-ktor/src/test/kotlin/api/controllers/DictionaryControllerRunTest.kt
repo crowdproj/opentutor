@@ -39,6 +39,30 @@ internal class DictionaryControllerRunTest {
     }
 
     @Test
+    fun `test create-dictionary success`() = testSecuredApp {
+        val requestBody = CreateDictionaryRequest(
+            requestId = "success-request",
+            debug = DebugResource(mode = RunMode.TEST),
+            dictionary = DictionaryResource(
+                name = "xxx ",
+                sourceLang = "sS",
+                targetLang = "TT",
+            ),
+        )
+        val response = testPost("/v1/api/dictionaries/create", requestBody)
+        val res = response.body<CreateDictionaryResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNotNull(res.dictionary)
+        Assertions.assertEquals(true, res.dictionary!!.dictionaryId?.matches("\\d+".toRegex()))
+        Assertions.assertEquals("xxx", res.dictionary!!.name)
+        Assertions.assertEquals("ss", res.dictionary!!.sourceLang)
+        Assertions.assertEquals("tt", res.dictionary!!.targetLang)
+    }
+
+    @Test
     fun `test delete-dictionary success`() = testSecuredApp {
         val requestBody = DeleteDictionaryRequest(
             requestId = "success-request",
