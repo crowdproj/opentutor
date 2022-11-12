@@ -227,9 +227,7 @@ function onChangeCardDialogMains(dialogId) {
 
 function createResourceCardItem(dialogId, items) {
     const input = $('#' + dialogId + '-card-dialog-word');
-
     const itemId = input.attr('item-id');
-
     const resItem = itemId ? jQuery.extend({}, findById(items, itemId)) : {};
     resItem.dictionaryId = selectedDictionary.dictionaryId;
     resItem.word = input.val().trim();

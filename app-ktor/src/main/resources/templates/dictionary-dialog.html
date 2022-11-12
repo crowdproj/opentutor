@@ -1,0 +1,46 @@
+<div th:fragment="dictionaryDialog (id)" class="modal fade" th:id="${id} + '-dictionary-dialog'" tabindex="-1"
+     th:aria-labelledby="${id} + '-dictionary-dialog-label'" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" th:id="${id} + '-dictionary-dialog-label'" th:text="${#strings.toUpperCase(id)}">edit dictionary</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="input-group input-group-sm mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" th:id="${id} + '-dictionary-dialog-name-sizing-sm'">dictionary name</span>
+                        </div>
+                        <input th:id="${id} + '-dictionary-dialog-name'" type="text" class="form-control"
+                               aria-label="Dictionary name"
+                               th:aria-describedby="${id} + 'edit-dictionary-dialog-name-sizing-sm'"/>
+                        <div class="input-group-prepend d-flex align-items-stretch">
+                            <div class="input-group-prepend d-flex align-items-stretch">
+                                <span style="width: 140px" class="input-group-text"
+                                      th:id="${id} + '-dictionary-dialog-source-lang-sizing-sm'">source language</span>
+                            </div>
+                            <span style="width: 70px">
+                                <select th:id="${id} + '-dictionary-dialog-source-lang'" class="form-select"
+                                        aria-label="Select source language"><option value="-1"></option></select>
+                            </span>
+                            <div class="input-group-prepend d-flex align-items-stretch">
+                                <span style="width: 140px" class="input-group-text"
+                                      th:id="${id} + '-dictionary-dialog-target-lang-sizing-sm'">target language</span>
+                            </div>
+                            <span style="width: 70px">
+                                <select th:id="${id} + '-dictionary-dialog-target-lang'" class="form-select"
+                                        aria-label="Select target language"><option value="-1"></option></select>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button th:id="${id} + '-dictionary-dialog-save'" type="button" class="btn btn-primary" disabled>Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
