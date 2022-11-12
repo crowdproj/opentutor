@@ -1,10 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.LangEntity
-import com.gitlab.sszuev.flashcards.model.domain.LangId
-import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import org.junit.jupiter.api.*
 
@@ -50,6 +47,7 @@ abstract class DbDictionaryRepositoryTest {
     fun `test get all dictionaries by user-id success`() {
         val res = repository.getAllDictionaries(AppUserId("42"))
         Assertions.assertTrue(res.errors.isEmpty())
+        Assertions.assertEquals(2, res.dictionaries.size)
 
         val businessDictionary = res.dictionaries[0]
         Assertions.assertEquals(DictionaryId("1"), businessDictionary.dictionaryId)
@@ -76,14 +74,14 @@ abstract class DbDictionaryRepositoryTest {
     fun `test download dictionary`() {
         // Weather
         val res = repository.downloadDictionary(DictionaryId("2"))
-        Assertions.assertTrue(res.errors.isEmpty())
+        Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
         val xml = res.resource.data.toString(Charsets.UTF_16)
         Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16"?>"""))
         Assertions.assertEquals(66, xml.split("<card>").size)
         Assertions.assertTrue(xml.endsWith("</dictionary>" + System.lineSeparator()))
     }
 
-    @Order(42)
+    @Order(4)
     @Test
     fun `test delete dictionary success`() {
         // Business vocabulary (Job)
@@ -91,7 +89,7 @@ abstract class DbDictionaryRepositoryTest {
         Assertions.assertTrue(res.errors.isEmpty())
     }
 
-    @Order(42)
+    @Order(4)
     @Test
     fun `test delete dictionary not found`() {
         val id = DictionaryId("42")
@@ -107,7 +105,7 @@ abstract class DbDictionaryRepositoryTest {
         )
     }
 
-    @Order(42)
+    @Order(5)
     @Test
     fun `test upload dictionary`() {
         val txt = """
@@ -145,4 +143,16 @@ abstract class DbDictionaryRepositoryTest {
         Assertions.assertEquals(0, res.dictionary.learnedCardsCount)
     }
 
+    @Order(6)
+    @Test
+    fun `test create dictionary success`() {
+        val given = DictionaryEntity(name = "test-dictionary", sourceLang = RU, targetLang = EN)
+        val res = repository.createDictionary(AppUserId("42"), given)
+        Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(given.name, res.dictionary.name)
+        Assertions.assertEquals(RU, res.dictionary.sourceLang)
+        Assertions.assertEquals(EN, res.dictionary.targetLang)
+        Assertions.assertNotEquals(DictionaryId.NONE, res.dictionary.dictionaryId)
+        Assertions.assertTrue(res.dictionary.dictionaryId.asString().matches("\\d+".toRegex()))
+    }
 }

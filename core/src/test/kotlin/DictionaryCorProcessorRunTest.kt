@@ -123,7 +123,7 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test upload-dictionary success`() = runTest {
         val testData = ResourceEntity(DictionaryId.NONE, ByteArray(4200) { 42 })
-        val response = UploadDictionaryDbResponse(dictionary = stubDictionary)
+        val response = DictionaryDbResponse(dictionary = stubDictionary)
 
         var wasCalled = false
         val repository = MockDbDictionaryRepository(

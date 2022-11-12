@@ -42,6 +42,18 @@ class PgDbDictionaryRepository(
         }
     }
 
+    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
+        return connection.execute {
+            val dictionaryId = Dictionaries.insertAndGetId {
+                it[sourceLanguage] = entity.sourceLang.langId.asString()
+                it[targetLanguage] = entity.targetLang.langId.asString()
+                it[name] = entity.name
+                it[Dictionaries.userId] = userId.asLong()
+            }
+            DictionaryDbResponse(entity.copy(dictionaryId = dictionaryId.asDictionaryId()))
+        }
+    }
+
     override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
         return connection.execute {
             val cardIds = Cards.select {
@@ -83,11 +95,11 @@ class PgDbDictionaryRepository(
         }
     }
 
-    override fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): UploadDictionaryDbResponse {
+    override fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
         val document = try {
             createReader().parse(resource.data)
         } catch (ex: Exception) {
-            return UploadDictionaryDbResponse(DictionaryEntity.EMPTY, listOf(wrongResourceDbError(ex)))
+            return DictionaryDbResponse(DictionaryEntity.EMPTY, listOf(wrongResourceDbError(ex)))
         }
         return connection.execute {
             val sourceLang = document.sourceLang.getOrInsert()
@@ -121,7 +133,7 @@ class PgDbDictionaryRepository(
                 sourceLang = sourceLang.toEntity(),
                 targetLang = targetLang.toEntity(),
             )
-            UploadDictionaryDbResponse(res)
+            DictionaryDbResponse(res)
         }
     }
 
