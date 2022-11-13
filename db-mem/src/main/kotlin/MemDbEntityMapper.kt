@@ -72,7 +72,15 @@ internal fun MemDbDictionary.toEntity() = DictionaryEntity(
     name = this.name,
     sourceLang = this.sourceLanguage.toEntity(),
     targetLang = this.targetLanguage.toEntity(),
-    userId = this.userId?.asUserId() ?: AppUserId.NONE
+)
+
+internal fun DictionaryEntity.toDbRecord(userId: AppUserId) = MemDbDictionary(
+    userId = userId.asLong(),
+    id = this.dictionaryId.asLong(),
+    name = this.name,
+    sourceLanguage = this.sourceLang.toDbRecord(),
+    targetLanguage = this.targetLang.toDbRecord(),
+    cards = mutableMapOf(),
 )
 
 internal fun MemDbCard.toEntity() = CardEntity(
@@ -87,10 +95,10 @@ internal fun MemDbCard.toEntity() = CardEntity(
     answered = answered,
 )
 
-internal fun CardEntity.toDbRecord(cardId: Long): MemDbCard {
+internal fun CardEntity.toDbRecord(cardId: Long? = null): MemDbCard {
     val dictionaryId = dictionaryId.asLong()
     return MemDbCard(
-        id = cardId,
+        id = cardId ?: this.cardId.asLong(),
         dictionaryId = dictionaryId,
         text = word,
         transcription = transcription,
@@ -104,6 +112,11 @@ internal fun CardEntity.toDbRecord(cardId: Long): MemDbCard {
 
 internal fun MemDbLanguage.toEntity() = LangEntity(
     langId = this.id.asLangId(),
+    partsOfSpeech = this.partsOfSpeech,
+)
+
+internal fun LangEntity.toDbRecord() = MemDbLanguage(
+    id = this.langId.asString(),
     partsOfSpeech = this.partsOfSpeech,
 )
 

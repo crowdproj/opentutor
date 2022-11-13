@@ -20,11 +20,19 @@ class MemDbDictionaryRepository(
     )
 
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
+        val uid = userId.asLong()
         val dictionaries = this.dictionaries.keys
             .mapNotNull { dictionaries[it] }
+            .filter { it.userId == uid }
             .map { it.toEntity() }
-            .filter { it.userId == userId }
         return DictionariesDbResponse(dictionaries = dictionaries)
+    }
+
+    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
+        val newEntity = entity.copy(dictionaryId = DictionaryId(ids.nextDictionaryId().toString()))
+        val res = newEntity.toDbRecord(userId)
+        this.dictionaries[res.id] = res
+        return DictionaryDbResponse(dictionary = newEntity)
     }
 
     override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
@@ -50,13 +58,13 @@ class MemDbDictionaryRepository(
         }
     }
 
-    override fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): UploadDictionaryDbResponse {
+    override fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
         val dictionary = try {
             createReader(ids).parse(resource.data).toDbRecord(userId = userId)
         } catch (ex: Exception) {
-            return UploadDictionaryDbResponse(DictionaryEntity.EMPTY, listOf(wrongResourceDbError(ex)))
+            return DictionaryDbResponse(DictionaryEntity.EMPTY, listOf(wrongResourceDbError(ex)))
         }
         dictionaries[dictionary.id] = dictionary
-        return UploadDictionaryDbResponse(dictionary.toEntity())
+        return DictionaryDbResponse(dictionary.toEntity())
     }
 }

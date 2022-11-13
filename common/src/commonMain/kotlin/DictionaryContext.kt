@@ -23,7 +23,9 @@ data class DictionaryContext(
 
     // get all dictionaries list response:
     var responseDictionaryEntityList: List<DictionaryEntity> = listOf(),
-
+    // update/create request:
+    var requestDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,
+    var normalizedRequestDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,
     // get-dictionary & delete-dictionary request:
     var requestDictionaryId: DictionaryId = DictionaryId.NONE,
     var normalizedRequestDictionaryId: DictionaryId = DictionaryId.NONE,
@@ -31,6 +33,6 @@ data class DictionaryContext(
     var responseDictionaryResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
     // upload-dictionary
     var requestDictionaryResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
-    // upload-dictionary
+    // upload/create/update dictionary response
     var responseDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,
 ) : AppContext

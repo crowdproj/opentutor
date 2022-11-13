@@ -143,4 +143,34 @@ internal class DictionarySerializationTest {
         Assertions.assertNotSame(res1, res2)
         Assertions.assertEquals(res1, res2)
     }
+
+    @Test
+    fun `test serialization for CreateDictionaryRequest`() {
+        val res1 = CreateDictionaryRequest(
+            dictionary = dictionary,
+            requestId = "request=42",
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"createDictionary\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        assertDictionary(json)
+        val res2 = deserializeRequest<CreateDictionaryRequest>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1, res2)
+    }
+
+    @Test
+    fun `test serialization for CreateDictionaryResponse`() {
+        val res1 = CreateDictionaryResponse(
+            dictionary = dictionary,
+            requestId = "request=42",
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"responseType\":\"createDictionary\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        assertDictionary(json)
+        val res2 = deserializeResponse<CreateDictionaryResponse>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1, res2)
+    }
 }

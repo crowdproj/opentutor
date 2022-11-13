@@ -6,5 +6,6 @@ import org.junit.jupiter.api.Order
 
 @Order(42)
 internal class MemDbDictionaryRepositoryTest : DbDictionaryRepositoryTest() {
-    override val repository: DbDictionaryRepository = MemDbDictionaryRepository()
+    override val repository: DbDictionaryRepository =
+        MemDbDictionaryRepository(dbConfig = MemDbConfig(dataLocation = "classpath:/db-mem-test-data"))
 }

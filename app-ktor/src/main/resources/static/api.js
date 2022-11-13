@@ -5,6 +5,7 @@
 let keycloak
 
 const getAllDictionariesURI = '/v1/api/dictionaries/get-all'
+const createDictionaryURI = '/v1/api/dictionaries/create'
 const deleteDictionaryURI = '/v1/api/dictionaries/delete'
 const downloadDictionaryURI = '/v1/api/dictionaries/download'
 const uploadDictionaryURI = '/v1/api/dictionaries/upload'
@@ -17,6 +18,7 @@ const deleteCardURI = '/v1/api/cards/delete'
 const getAudioURI = '/v1/api/sounds/get'
 
 const getAllDictionariesRequestType = 'getAllDictionaries'
+const createDictionaryRequestType = 'createDictionary'
 const deleteDictionaryRequestType = 'deleteDictionary'
 const downloadDictionaryRequestType = 'downloadDictionary'
 const uploadDictionaryRequestType = 'uploadDictionary'
@@ -146,6 +148,24 @@ function downloadDictionary(dictionaryId, downloadFilename, onDone) {
             }, 0);
             if (onDone !== undefined) {
                 onDone()
+            }
+        }
+    })
+}
+
+function createDictionary(dictionaryEntity, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': createDictionaryRequestType,
+        'dictionary': dictionaryEntity,
+        'debug': {'mode': runMode},
+    }
+    post(createDictionaryURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            if (onDone !== undefined) {
+                onDone(res.dictionary.dictionaryId)
             }
         }
     })

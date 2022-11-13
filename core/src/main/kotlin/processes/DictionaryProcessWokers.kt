@@ -13,8 +13,8 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val id = this.contextUserEntity.id
-        val res = this.repositories.dictionaryRepository(this.workMode).getAllDictionaries(id)
+        val userId = this.contextUserEntity.id
+        val res = this.repositories.dictionaryRepository(this.workMode).getAllDictionaries(userId)
         this.responseDictionaryEntityList = res.dictionaries
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
@@ -30,6 +30,26 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
                 exception = it
             )
         )
+    }
+}
+
+fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
+    this.name = "process create-dictionary request"
+    test {
+        this.status == AppStatus.RUN
+    }
+    process {
+        val userId = this.contextUserEntity.id
+        val res =
+            this.repositories.dictionaryRepository(this.workMode).createDictionary(userId, this.normalizedRequestDictionaryEntity)
+        this.responseDictionaryEntity = res.dictionary
+        if (res.errors.isNotEmpty()) {
+            this.errors.addAll(res.errors)
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+    }
+    onException {
+        this.handleThrowable(DictionaryOperation.CREATE_DICTIONARY, it)
     }
 }
 

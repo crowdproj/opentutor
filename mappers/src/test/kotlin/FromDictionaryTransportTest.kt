@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertDictionary
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -66,5 +67,34 @@ internal class FromDictionaryTransportTest {
             expectedRequestId = "request=42",
             actual = context
         )
+    }
+
+    @Test
+    fun `test fromCreateDictionaryRequest`() {
+        val req = CreateDictionaryRequest(
+            requestId = "request=42",
+            debug = DebugResource(
+                mode = RunMode.TEST,
+                stub = DebugStub.SUCCESS
+            ),
+            dictionary = DictionaryResource(
+                name = "xxx",
+                sourceLang = "1",
+                targetLang = "2",
+                partsOfSpeech = listOf("a", "b"),
+                total = 3,
+                learned = 4,
+            )
+        )
+        val context = DictionaryContext()
+        context.fromDictionaryTransport(req)
+
+        assertContext(
+            expectedStub = AppStub.SUCCESS,
+            expectedMode = AppMode.TEST,
+            expectedRequestId = "request=42",
+            actual = context
+        )
+        assertDictionary(req.dictionary!!, context.requestDictionaryEntity)
     }
 }

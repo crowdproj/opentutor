@@ -26,7 +26,7 @@ fun ChainDSL<CardContext>.validateCardEntityHasNoCardId(getEntity: (CardContext)
 }
 
 fun ChainDSL<CardContext>.validateCardEntityDictionaryId(getCardEntity: (CardContext) -> CardEntity) = worker {
-    validateId("dictionary-id") { getCardEntity(it).dictionaryId }
+    validateDictionaryId { getCardEntity(it).dictionaryId }
 }
 
 fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = worker {

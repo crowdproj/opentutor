@@ -29,6 +29,21 @@ suspend fun ApplicationCall.getAllDictionaries(
     }
 }
 
+suspend fun ApplicationCall.createDictionary(
+    service: DictionaryService,
+    repositories: DictionaryRepositories,
+    runConf: RunConfig
+) {
+    execute<CreateDictionaryRequest>(
+        DictionaryOperation.CREATE_DICTIONARY,
+        repositories,
+        logger,
+        runConf
+    ) {
+        service.createDictionary(this)
+    }
+}
+
 suspend fun ApplicationCall.deleteDictionary(
     service: DictionaryService,
     repositories: DictionaryRepositories,

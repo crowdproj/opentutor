@@ -9,11 +9,13 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 interface DbDictionaryRepository {
     fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse
 
+    fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse
+
     fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse
 
     fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse
 
-    fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): UploadDictionaryDbResponse
+    fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse
 }
 
 data class DictionariesDbResponse(
@@ -37,8 +39,8 @@ data class DownloadDictionaryDbResponse(val resource: ResourceEntity, val errors
     }
 }
 
-data class UploadDictionaryDbResponse(val dictionary: DictionaryEntity, val errors: List<AppError> = emptyList()) {
+data class DictionaryDbResponse(val dictionary: DictionaryEntity, val errors: List<AppError> = emptyList()) {
     companion object {
-        val EMPTY = UploadDictionaryDbResponse(dictionary = DictionaryEntity.EMPTY)
+        val EMPTY = DictionaryDbResponse(dictionary = DictionaryEntity.EMPTY)
     }
 }
