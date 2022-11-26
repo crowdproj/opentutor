@@ -7,10 +7,6 @@ import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import java.util.concurrent.atomic.AtomicLong
 
-/**
- * Does not work with `io.mockk:mockk`
- * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
- */
 class MockTTSResourceRepository(
     val findResourceIdCounts: AtomicLong = AtomicLong(),
     val getResourceCounts: AtomicLong = AtomicLong(),

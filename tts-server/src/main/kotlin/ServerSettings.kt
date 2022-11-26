@@ -26,8 +26,6 @@ object ServerSettings {
         conf.get("tts-server.rabbitmq.message-id-response-error-prefix", default = "response-error=")
     val messageStatusHeader = conf.get("tts-server.rabbitmq.message-status-header", default = "status")
 
-    val localDataDirectory = conf.get("tts-server.local.data-directory", default = "classpath:/data")
-
     init {
         logger.info(printDetails())
     }
@@ -47,7 +45,6 @@ object ServerSettings {
             |message-success-prefix         = $messageSuccessResponsePrefix  
             |message-error-prefix           = $messageErrorResponsePrefix
             |message-status-header          = $messageStatusHeader
-            |local-data-directory           = $localDataDirectory
             """.replaceIndentByMargin("\t")
     }
 

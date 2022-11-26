@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":openapi"))
     implementation(project(":mappers"))
     implementation(project(":common"))
+    implementation(project(":tts-lib"))
     implementation(project(":tts-client"))
     implementation(project(":stubs"))
     implementation(project(":core"))

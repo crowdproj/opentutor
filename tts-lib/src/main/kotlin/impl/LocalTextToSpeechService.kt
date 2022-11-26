@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker.impl
 
-import com.gitlab.sszuev.flashcards.speaker.ServerSettings
+import com.gitlab.sszuev.flashcards.speaker.TTSSettings
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import java.io.BufferedReader
 import java.io.InputStream
@@ -38,7 +38,7 @@ class LocalTextToSpeechService(
         private const val classpathPrefix = "classpath:"
 
         fun load(
-            location: String = ServerSettings.localDataDirectory,
+            location: String = TTSSettings.localDataDirectory,
             resourceIdMapper: (String) -> Pair<String, String> = { toResourcePath(it) },
         ): TextToSpeechService {
             val libraries = if (location.startsWith(classpathPrefix)) {

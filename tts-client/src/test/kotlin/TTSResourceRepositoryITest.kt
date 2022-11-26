@@ -150,7 +150,7 @@ internal class TTSResourceRepositoryITest {
             val res = repository.getResource(testRequestId)
             Assertions.assertArrayEquals(expectedDataArray, res.resource.data) { "expected: $expectedDataSize." }
             Assertions.assertTrue(res.errors.isEmpty())
-            Assertions.assertEquals(testRequestId, res.resource.resourceId)
+            Assertions.assertEquals(testRequestId.asString(), res.resource.resourceId.asString())
         }
     }
 

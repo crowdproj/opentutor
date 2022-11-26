@@ -35,5 +35,5 @@ class DirectTTSResourceRepository(private val service: TextToSpeechService) : TT
     }
 }
 
-fun createLocalTTSResourceRepository(location: String = ServerSettings.localDataDirectory) =
+fun createLocalTTSResourceRepository(location: String = TTSSettings.localDataDirectory) =
     DirectTTSResourceRepository(LocalTextToSpeechService.load(location))

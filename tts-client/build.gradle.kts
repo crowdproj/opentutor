@@ -1,6 +1,5 @@
 plugins {
     kotlin("jvm")
-    id("java-test-fixtures")
 }
 
 group = rootProject.group
@@ -13,11 +12,10 @@ dependencies {
     val junitVersion: String by project
     val slf4jVersion: String by project
     val testContainersVersion: String by project
-    val mockkVersion: String by project
     val typesafeConfigVersion: String by project
 
     implementation(project(":common"))
-    implementation(project(":tts-server"))
+    implementation(project(":tts-lib"))
 
     implementation("com.rabbitmq:amqp-client:$rabbitVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
@@ -29,8 +27,6 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
     testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
-    testImplementation("io.mockk:mockk:$mockkVersion")
-    testFixturesImplementation(project(":common"))
 }
 
 tasks.test {

@@ -1,8 +1,8 @@
 #### Text To Speech Server
 
-A module that responsible for the voicing words: 
-it accepts resource identifier and returns byte array (audio data, wav).
-The service uses [RabbitMQ](https://www.rabbitmq.com/) as transport. 
+The service uses [RabbitMQ](https://www.rabbitmq.com/) as transport to deliver audio-resources.
+It uses [tts-lib](../tts-lib).  
+TTS client is located [here](../tts-client). 
 
 The server has the following settings (example):
 ```
