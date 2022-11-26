@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.speaker.impl
 
 import com.gitlab.sszuev.flashcards.speaker.TTSSettings
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
+import com.gitlab.sszuev.flashcards.speaker.toResourcePath
 import java.io.BufferedReader
 import java.io.InputStream
 import java.nio.file.Files
@@ -12,12 +13,12 @@ import kotlin.io.path.isRegularFile
 import kotlin.streams.asSequence
 
 class LocalTextToSpeechService(
-    internal val resourceIdMapper: (String) -> Pair<String, String>,
     internal val libraries: Map<String, List<ResourceStore>>,
+    internal val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
 ) : TextToSpeechService {
 
     override fun getResource(id: String, vararg args: String?): ByteArray? {
-        val langAndWord = resourceIdMapper(id)
+        val langAndWord = resourceIdMapper(id)?: return null
         val lang = langAndWord.first
         val word = langAndWord.second
         val stores = libraries[lang] ?: return null
@@ -27,7 +28,7 @@ class LocalTextToSpeechService(
     }
 
     override fun containsResource(id: String): Boolean {
-        val langAndWord = resourceIdMapper(id)
+        val langAndWord = resourceIdMapper(id) ?: return false
         val lang = langAndWord.first
         val word = langAndWord.second
         val stores = libraries[lang] ?: return false
@@ -39,7 +40,7 @@ class LocalTextToSpeechService(
 
         fun load(
             location: String = TTSSettings.localDataDirectory,
-            resourceIdMapper: (String) -> Pair<String, String> = { toResourcePath(it) },
+            resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
         ): TextToSpeechService {
             val libraries = if (location.startsWith(classpathPrefix)) {
                 collectClasspathTarLibraries(location.removePrefix(classpathPrefix))
@@ -47,10 +48,6 @@ class LocalTextToSpeechService(
                 collectDirectoryTarLibraries(location)
             }
             return LocalTextToSpeechService(resourceIdMapper = resourceIdMapper, libraries = libraries)
-        }
-
-        private fun toResourcePath(path: String): Pair<String, String> {
-            return path.substringBefore(":") to path.substringAfter(":")
         }
 
         private fun collectClasspathTarLibraries(classpathRootDir: String): Map<String, List<TarArchiveResourceStore>> {

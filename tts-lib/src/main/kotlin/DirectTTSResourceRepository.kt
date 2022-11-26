@@ -7,6 +7,10 @@ import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.impl.LocalTextToSpeechService
+import com.gitlab.sszuev.flashcards.speaker.impl.VoicerssTextToSpeechService
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger(DirectTTSResourceRepository::class.java)
 
 class DirectTTSResourceRepository(private val service: TextToSpeechService) : TTSResourceRepository {
 
@@ -35,5 +39,17 @@ class DirectTTSResourceRepository(private val service: TextToSpeechService) : TT
     }
 }
 
+fun createDirectTTSResourceRepository(): TTSResourceRepository {
+    return if (TTSSettings.ttsServiceVoicerssKey.isBlank() || TTSSettings.ttsServiceVoicerssKey == "secret") {
+        logger.info("::init voicerss tts-service")
+        createLocalTTSResourceRepository()
+    } else {
+        logger.info("::init local tts-service")
+        createVoicerssTTSResourceRepository()
+    }
+}
+
 fun createLocalTTSResourceRepository(location: String = TTSSettings.localDataDirectory) =
     DirectTTSResourceRepository(LocalTextToSpeechService.load(location))
+
+fun createVoicerssTTSResourceRepository() = DirectTTSResourceRepository(VoicerssTextToSpeechService())
