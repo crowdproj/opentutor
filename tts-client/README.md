@@ -1,6 +1,6 @@
 ### flashcard-kt ::: tts-client
 
-A Rabbit MQ based client for [TTS-server](../tts-server).
+A Rabbit MQ based client for [tts-server](../tts-server), which uses [tts-lib](../tts-lib).
 
 The client has the following settings (example):
 ```

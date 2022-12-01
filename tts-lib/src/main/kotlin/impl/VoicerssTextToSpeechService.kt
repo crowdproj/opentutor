@@ -13,23 +13,23 @@ import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
 
 class VoicerssTextToSpeechService(
-    val clientProducer: () -> HttpClient = {
+    internal val clientProducer: () -> HttpClient = {
         HttpClient {
             install(HttpTimeout)
             expectSuccess = true
         }
     },
     internal val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
-    val config: TTSConfig = TTSConfig(),
+    internal val config: TTSConfig = TTSConfig(),
 ) : TextToSpeechService {
 
     companion object {
         private val logger = LoggerFactory.getLogger(VoicerssTextToSpeechService::class.java)
-        private val defaultLanguages = VOICERSS_LANGUAGES.keys.sorted().associateBy { it.substringBefore("-") }
+        private val defaultLanguages = voicerssLanguages.keys.sorted().associateBy { it.substringBefore("-") }
 
         private fun languageByTag(tag: String): String? {
             val key = normalize(tag)
-            return VOICERSS_LANGUAGES[key] ?: defaultLanguages[key]
+            return voicerssLanguages[key] ?: defaultLanguages[key]
         }
 
         private fun normalize(tag: String): String {
@@ -40,9 +40,8 @@ class VoicerssTextToSpeechService(
     override fun getResource(id: String, vararg args: String?): ByteArray? {
         val langToWord = resourceIdMapper(id) ?: return null
         val lang = languageByTag(langToWord.first) ?: return null
-        val timeout = config.httpClientRequestTimeoutMs + config.httpClientConnectTimeoutMs + 500
         return runBlocking {
-            withTimeout(timeout) {
+            withTimeout(config.getResourceTimeoutMs) {
                 readBytes(lang, langToWord.second)
             }
         }
@@ -78,7 +77,7 @@ class VoicerssTextToSpeechService(
     }
 }
 
-private val VOICERSS_LANGUAGES = mapOf(
+private val voicerssLanguages = mapOf(
     "ar-eg" to "Arabic (Egypt)",
     "ar-sa" to "Arabic (Saudi Arabia)",
     "bg-bg" to "Bulgarian",

@@ -26,7 +26,7 @@ interface TextToSpeechService {
  * @param [resourceId] of resource
  * @return lang-tag to word pair
  */
-fun toResourcePath(resourceId: String): Pair<String, String>? {
+internal fun toResourcePath(resourceId: String): Pair<String, String>? {
     if (!resourceId.contains(":")) {
         return null
     }
