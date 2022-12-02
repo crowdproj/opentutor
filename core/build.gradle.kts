@@ -17,7 +17,7 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitVersion")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:$kotlinCoroutinesVersion")
-    testImplementation(testFixtures(project(":tts-client")))
+    testImplementation(testFixtures(project(":tts-lib")))
     testImplementation(testFixtures(project(":db-common")))
 }
 

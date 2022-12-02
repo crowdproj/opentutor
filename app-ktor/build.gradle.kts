@@ -24,6 +24,7 @@ dependencies {
     implementation(project(":openapi"))
     implementation(project(":mappers"))
     implementation(project(":common"))
+    implementation(project(":tts-lib"))
     implementation(project(":tts-client"))
     implementation(project(":stubs"))
     implementation(project(":core"))
@@ -105,7 +106,7 @@ docker {
     }
     javaApplication {
         mainClassName.set(application.mainClass.get())
-        baseImage.set("adoptopenjdk/openjdk11:alpine-jre")
+        baseImage.set("sszuev/ubuntu:openjdk11-jre-espeak-ng")
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         ports.set(listOf(8080))
         images.set(

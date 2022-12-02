@@ -6,7 +6,12 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.speaker.impl.EspeakNgTestToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.impl.LocalTextToSpeechService
+import com.gitlab.sszuev.flashcards.speaker.impl.VoicerssTextToSpeechService
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger(DirectTTSResourceRepository::class.java)
 
 class DirectTTSResourceRepository(private val service: TextToSpeechService) : TTSResourceRepository {
 
@@ -35,5 +40,22 @@ class DirectTTSResourceRepository(private val service: TextToSpeechService) : TT
     }
 }
 
-fun createLocalTTSResourceRepository(location: String = ServerSettings.localDataDirectory) =
+fun createDirectTTSResourceRepository(): TTSResourceRepository {
+    return if (TTSSettings.ttsServiceVoicerssKey.isNotBlank() && TTSSettings.ttsServiceVoicerssKey != "secret") {
+        logger.info("::[TTS-SERVICE] init voicerss service")
+        createVoicerssTTSResourceRepository()
+    } else if (EspeakNgTestToSpeechService.isEspeakNgAvailable()) {
+        logger.info("::[TTS-SERVICE] init espeak-ng service")
+        createEspeakNgTTSResourceRepository()
+    } else {
+        logger.info("::[TTS-SERVICE] init local (test) service")
+        createLocalTTSResourceRepository()
+    }
+}
+
+fun createLocalTTSResourceRepository(location: String = TTSSettings.localDataDirectory) =
     DirectTTSResourceRepository(LocalTextToSpeechService.load(location))
+
+fun createVoicerssTTSResourceRepository() = DirectTTSResourceRepository(VoicerssTextToSpeechService())
+
+fun createEspeakNgTTSResourceRepository() = DirectTTSResourceRepository(EspeakNgTestToSpeechService())

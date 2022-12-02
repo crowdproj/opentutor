@@ -21,3 +21,22 @@ interface TextToSpeechService {
         return true
     }
 }
+
+/**
+ * @param [resourceId] of resource
+ * @return lang-tag to word pair
+ */
+internal fun toResourcePath(resourceId: String): Pair<String, String>? {
+    if (!resourceId.contains(":")) {
+        return null
+    }
+    val lang = resourceId.substringBefore(":").trim()
+    if (lang.isBlank()) {
+        return null
+    }
+    val word = resourceId.substringAfter(":").trim()
+    if (word.isBlank()) {
+        return null
+    }
+    return lang to word
+}
