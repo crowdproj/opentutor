@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.common.documents
 
-class DocumentDictionary(
+data class DocumentDictionary(
     val id: Long?,
     val userId: Long?,
     val name: String,

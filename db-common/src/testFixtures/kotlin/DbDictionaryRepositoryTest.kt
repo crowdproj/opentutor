@@ -51,7 +51,7 @@ abstract class DbDictionaryRepositoryTest {
 
         val businessDictionary = res.dictionaries[0]
         Assertions.assertEquals(DictionaryId("1"), businessDictionary.dictionaryId)
-        Assertions.assertEquals("Business vocabulary (Job)", businessDictionary.name)
+        Assertions.assertEquals("Irregular Verbs", businessDictionary.name)
         Assertions.assertEquals(EN, businessDictionary.sourceLang)
         Assertions.assertEquals(RU, businessDictionary.targetLang)
         val weatherDictionary = res.dictionaries[1]

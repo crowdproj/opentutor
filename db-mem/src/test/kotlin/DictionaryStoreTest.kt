@@ -17,10 +17,10 @@ internal class DictionaryStoreTest {
         val config = MemDbConfig().copy(dataLocation = "classpath:$classPathResourceDir")
         val dictionaries = DictionaryStore.load(dbConfig = config, ids = IdSequences())
         Assertions.assertEquals(2, dictionaries.size)
-        Assertions.assertEquals("Business vocabulary (Job)", dictionaries[1]!!.name)
+        Assertions.assertEquals("Irregular Verbs", dictionaries[1]!!.name)
         Assertions.assertEquals("Weather", dictionaries[2]!!.name)
 
-        Assertions.assertEquals(242, dictionaries[1]!!.cards.size)
+        Assertions.assertEquals(244, dictionaries[1]!!.cards.size)
         Assertions.assertEquals(65, dictionaries[2]!!.cards.size)
     }
 
@@ -30,10 +30,10 @@ internal class DictionaryStoreTest {
         val dictionaries1 =
             DictionaryStore.load(dbConfig = MemDbConfig().copy(dataLocation = dir.toString()), ids = IdSequences())
         Assertions.assertEquals(2, dictionaries1.size)
-        Assertions.assertEquals("Business vocabulary (Job)", dictionaries1[1]!!.name)
+        Assertions.assertEquals("Irregular Verbs", dictionaries1[1]!!.name)
         Assertions.assertEquals("Weather", dictionaries1[2]!!.name)
 
-        Assertions.assertEquals(242, dictionaries1[1]!!.cards.size)
+        Assertions.assertEquals(244, dictionaries1[1]!!.cards.size)
         Assertions.assertEquals(65, dictionaries1[2]!!.cards.size)
 
         val card = MemDbCard(
@@ -49,7 +49,7 @@ internal class DictionaryStoreTest {
             DictionaryStore.load(dbConfig = MemDbConfig().copy(dataLocation = dir.toString()), ids = IdSequences())
         Assertions.assertSame(dictionaries1, dictionaries2)
         Assertions.assertEquals(2, dictionaries2.size)
-        Assertions.assertEquals(242, dictionaries2[1]!!.cards.size)
+        Assertions.assertEquals(244, dictionaries2[1]!!.cards.size)
         Assertions.assertEquals(66, dictionaries2[2]!!.cards.size)
         val actual2 = dictionaries2[2]!!.cards.values.first { it.text == card.text }
         Assertions.assertNotNull(actual2)
@@ -65,7 +65,7 @@ internal class DictionaryStoreTest {
             DictionaryStore.load(dbConfig = MemDbConfig().copy(dataLocation = dir.toString()), ids = IdSequences())
         Assertions.assertNotSame(dictionaries1, dictionaries3)
         Assertions.assertEquals(2, dictionaries3.size)
-        Assertions.assertEquals(242, dictionaries3[1]!!.cards.size)
+        Assertions.assertEquals(244, dictionaries3[1]!!.cards.size)
         Assertions.assertEquals(66, dictionaries3[2]!!.cards.size)
 
         val actual3 = dictionaries3[2]!!.cards.values.first { it.text == card.text }

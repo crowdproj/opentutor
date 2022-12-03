@@ -19,7 +19,7 @@ abstract class DbCardRepositoryTest {
     companion object {
 
         private val weatherCardEntity = CardEntity(
-            cardId = CardId("244"),
+            cardId = CardId("246"),
             dictionaryId = DictionaryId("2"),
             word = "weather",
             transcription = "'weðə",
@@ -51,7 +51,7 @@ abstract class DbCardRepositoryTest {
         )
 
         private val snowCardEntity = CardEntity(
-            cardId = CardId("245"),
+            cardId = CardId("247"),
             dictionaryId = DictionaryId("2"),
             word = "snow",
             transcription = "snəu",
@@ -67,7 +67,7 @@ abstract class DbCardRepositoryTest {
         )
 
         private val rainCardEntity = CardEntity(
-            cardId = CardId("246"),
+            cardId = CardId("248"),
             dictionaryId = DictionaryId("2"),
             word = "rain",
             transcription = "rein",
@@ -152,7 +152,7 @@ abstract class DbCardRepositoryTest {
     fun `test get all cards success`() {
         // Business dictionary
         val res1 = repository.getAllCards(DictionaryId("1"))
-        Assertions.assertEquals(242, res1.cards.size)
+        Assertions.assertEquals(244, res1.cards.size)
         Assertions.assertEquals(0, res1.errors.size)
 
         // Weather dictionary

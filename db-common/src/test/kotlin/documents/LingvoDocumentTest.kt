@@ -115,13 +115,13 @@ internal class LingvoDocumentTest {
     fun `test LingvoDictionaryReader`() {
         // word + translations must be unique
         val cards: MutableSet<String> = mutableSetOf()
-        val dic = readResourceDictionary("/documents/BusinessEnRu.xml")
+        val dic = readResourceDictionary("/documents/IrregularVerbsEnRu.xml")
         dic.cards.forEach { card ->
             val textWithTranslations = "${card.text} => ${card.translations.sorted().joinToString(", ")}"
             Assertions.assertTrue(cards.add(textWithTranslations))
             Assertions.assertFalse(textWithTranslations.contains("\n"))
         }
-        Assertions.assertEquals(242, dic.cards.size)
+        Assertions.assertEquals(244, dic.cards.size)
     }
 
     @Test
