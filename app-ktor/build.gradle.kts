@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":common"))
     implementation(project(":tts-lib"))
     implementation(project(":tts-client"))
-    implementation(project(":stubs"))
+    implementation(project(":specs"))
     implementation(project(":core"))
     implementation(project(":db-common"))
     implementation(project(":db-pg"))
