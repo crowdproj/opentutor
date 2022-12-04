@@ -47,7 +47,7 @@ internal class CardControllerRunTest {
         val requestBody = GetAllCardsRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
-            dictionaryId = "1",
+            dictionaryId = "2",
         )
         val response = testPost("/v1/api/cards/get-all", requestBody)
         val res = response.body<GetAllCardsResponse>()
@@ -65,7 +65,7 @@ internal class CardControllerRunTest {
         val requestBody = GetCardRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
-            cardId = "2",
+            cardId = "246",
         )
         val response = testPost("/v1/api/cards/get", requestBody)
         val res = response.body<GetCardResponse>()
@@ -176,7 +176,7 @@ internal class CardControllerRunTest {
         val requestBody = LearnCardsRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
-            cards = listOf(LearnResource(cardId = "2", details = mapOf("mosaic" to 42L)))
+            cards = listOf(LearnResource(cardId = "246", details = mapOf("mosaic" to 42L)))
         )
         val response = testPost("/v1/api/cards/learn", requestBody)
         val res = response.body<LearnCardsResponse>()
@@ -193,7 +193,7 @@ internal class CardControllerRunTest {
         val requestBody = ResetCardRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
-            cardId = "2",
+            cardId = "246",
         )
         val response = testPost("/v1/api/cards/reset", requestBody)
         val res = response.body<ResetCardResponse>()
