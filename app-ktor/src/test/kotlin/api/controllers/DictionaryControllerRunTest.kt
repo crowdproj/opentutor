@@ -31,8 +31,8 @@ internal class DictionaryControllerRunTest {
         Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNotNull(res.dictionaries)
-        Assertions.assertEquals(1, res.dictionaries!!.size)
-        val weather = res.dictionaries!![0]
+        Assertions.assertEquals(2, res.dictionaries!!.size)
+        val weather = res.dictionaries!![1]
         Assertions.assertEquals("Weather", weather.name)
         Assertions.assertEquals("EN", weather.sourceLang)
         Assertions.assertEquals("RU", weather.targetLang)
@@ -82,7 +82,7 @@ internal class DictionaryControllerRunTest {
         val requestBody = DownloadDictionaryRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
-            dictionaryId = "1",
+            dictionaryId = "2",
         )
         val response = testPost("/v1/api/dictionaries/download", requestBody)
         val res = response.body<DownloadDictionaryResponse>()
