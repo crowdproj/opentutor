@@ -20,7 +20,7 @@ internal class LingvoDocumentTest {
         }
 
         private fun createParser(): DocumentReader {
-            return LingvoDocumentReader(ids = null)
+            return LingvoDocumentReader()
         }
 
         private fun createWriter(): DocumentWriter {
@@ -50,9 +50,7 @@ internal class LingvoDocumentTest {
                 val actualCard = actualCards[i]
                 Assertions.assertEquals(expectedCard.text, actualCard.text)
                 Assertions.assertEquals(expectedCard.transcription, actualCard.transcription)
-                Assertions.assertEquals(expectedCard.details, actualCard.details)
                 Assertions.assertEquals(expectedCard.partOfSpeech, actualCard.partOfSpeech)
-                Assertions.assertEquals(expectedCard.answered, actualCard.answered)
                 val origTranslations = expectedCard.translations.toList()
                 val actualTranslations = actualCard.translations.toList()
                 Assertions.assertEquals(origTranslations, actualTranslations)
@@ -67,27 +65,22 @@ internal class LingvoDocumentTest {
     fun `test LingvoDictionaryWriter`() {
         val expected = normalize(readDataAsString("/documents/TestDictionaryEnRu.xml"))
         val card1 = DocumentCard(
-            id = null,
             text = "rain",
             transcription = "rein",
             partOfSpeech = "noun",
             translations = listOf("дождь", "ливень"),
             examples = listOf("The skies no longer rain death.", "The sockets were filled with rain."),
-            answered = 2,
             status = CardStatus.IN_PROCESS,
         )
         val card2 = DocumentCard(
-            id = null,
             text = "mutual",
             transcription = "ˈmjuːʧʊəl",
             partOfSpeech = "adjective",
             translations = listOf("взаимный", "обоюдный", "общий", "совместный"),
             examples = listOf("Twenty years of mutual vanity, and nothing more."),
-            answered = 12,
             status = CardStatus.LEARNED,
         )
         val card3 = DocumentCard(
-            id = null,
             text = "test",
             transcription = "test",
             partOfSpeech = "verb",
@@ -96,11 +89,9 @@ internal class LingvoDocumentTest {
         )
 
         val dictionary = DocumentDictionary(
-            id = null,
-            userId = null,
             name = "The Test Dictionary",
-            sourceLang = DocumentLang("en", emptyList()),
-            targetLang = DocumentLang("ru", emptyList()),
+            sourceLang = "en",
+            targetLang = "ru",
             cards = listOf(card1, card2, card3),
         )
         val out = ByteArrayOutputStream()

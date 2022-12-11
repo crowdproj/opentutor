@@ -1,13 +1,17 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 object NoOpDbCardRepository : DbCardRepository {
-    override fun getCard(id: CardId): CardDbResponse {
+    override fun getCard(cardId: CardId): CardDbResponse {
         noOp()
     }
 
-    override fun getAllCards(id: DictionaryId): CardsDbResponse {
+    override fun getAllCards(dictionaryId: DictionaryId): CardsDbResponse {
         noOp()
     }
 
@@ -15,23 +19,23 @@ object NoOpDbCardRepository : DbCardRepository {
         noOp()
     }
 
-    override fun createCard(card: CardEntity): CardDbResponse {
+    override fun createCard(cardEntity: CardEntity): CardDbResponse {
         noOp()
     }
 
-    override fun updateCard(card: CardEntity): CardDbResponse {
+    override fun updateCard(cardEntity: CardEntity): CardDbResponse {
         noOp()
     }
 
-    override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
+    override fun learnCards(cardLearn: List<CardLearn>): CardsDbResponse {
         noOp()
     }
 
-    override fun resetCard(id: CardId): CardDbResponse {
+    override fun resetCard(cardId: CardId): CardDbResponse {
         noOp()
     }
 
-    override fun deleteCard(id: CardId): DeleteCardDbResponse {
+    override fun deleteCard(cardId: CardId): DeleteCardDbResponse {
         noOp()
     }
 

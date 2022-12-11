@@ -1,11 +1,23 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
-import com.gitlab.sszuev.flashcards.api.v1.models.*
-import com.gitlab.sszuev.flashcards.dbmem.DictionaryStore
-import com.gitlab.sszuev.flashcards.dbmem.IdSequences
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
+import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.RunMode
+import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryResponse
+import com.gitlab.sszuev.flashcards.dbmem.MemDatabase
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
-import io.ktor.client.call.*
+import io.ktor.client.call.body
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -14,8 +26,7 @@ internal class DictionaryControllerRunTest {
 
     @AfterEach
     fun resetDb() {
-        IdSequences.globalIdsGenerator.reset()
-        DictionaryStore.clear()
+        MemDatabase.clear()
     }
 
     @Test
@@ -34,8 +45,8 @@ internal class DictionaryControllerRunTest {
         Assertions.assertEquals(2, res.dictionaries!!.size)
         val weather = res.dictionaries!![1]
         Assertions.assertEquals("Weather", weather.name)
-        Assertions.assertEquals("EN", weather.sourceLang)
-        Assertions.assertEquals("RU", weather.targetLang)
+        Assertions.assertEquals("en", weather.sourceLang)
+        Assertions.assertEquals("ru", weather.targetLang)
     }
 
     @Test
@@ -121,8 +132,8 @@ internal class DictionaryControllerRunTest {
         Assertions.assertNotNull(res.dictionary)
         Assertions.assertTrue(res.dictionary!!.dictionaryId!!.matches("\\d+".toRegex()))
         Assertions.assertEquals("Test Dictionary", res.dictionary!!.name)
-        Assertions.assertEquals("EN", res.dictionary!!.sourceLang)
-        Assertions.assertEquals("RU", res.dictionary!!.targetLang)
+        Assertions.assertEquals("en", res.dictionary!!.sourceLang)
+        Assertions.assertEquals("ru", res.dictionary!!.targetLang)
         Assertions.assertNotNull(res.dictionary!!.total)
         Assertions.assertNotNull(res.dictionary!!.learned)
         Assertions.assertEquals(

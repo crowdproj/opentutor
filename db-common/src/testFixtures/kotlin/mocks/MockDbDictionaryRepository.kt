@@ -4,7 +4,11 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.repositories.*
+import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
+import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DownloadDictionaryDbResponse
 
 class MockDbDictionaryRepository(
     private val invokeGetAllDictionaries: (AppUserId) -> DictionariesDbResponse = { DictionariesDbResponse.EMPTY },
@@ -22,12 +26,12 @@ class MockDbDictionaryRepository(
         return invokeCreateDictionary(userId, entity)
     }
 
-    override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
-        return invokeDeleteDictionary(id)
+    override fun deleteDictionary(dictionaryId: DictionaryId): DeleteDictionaryDbResponse {
+        return invokeDeleteDictionary(dictionaryId)
     }
 
-    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
-        return invokeDownloadDictionary(id)
+    override fun downloadDictionary(dictionaryId: DictionaryId): DownloadDictionaryDbResponse {
+        return invokeDownloadDictionary(dictionaryId)
     }
 
     override fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {

@@ -1,6 +1,10 @@
 package com.gitlab.sszuev.flashcards.dbcommon.mocks
 
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
@@ -21,35 +25,35 @@ class MockDbCardRepository(
     private val invokeDeleteCard: (CardId) -> DeleteCardDbResponse = { DeleteCardDbResponse.EMPTY },
 ) : DbCardRepository {
 
-    override fun getCard(id: CardId): CardDbResponse {
-        return invokeGetCard(id)
+    override fun getCard(cardId: CardId): CardDbResponse {
+        return invokeGetCard(cardId)
     }
 
-    override fun getAllCards(id: DictionaryId): CardsDbResponse {
-        return invokeGetAllCards(id)
+    override fun getAllCards(dictionaryId: DictionaryId): CardsDbResponse {
+        return invokeGetAllCards(dictionaryId)
     }
 
     override fun searchCard(filter: CardFilter): CardsDbResponse {
         return invokeSearchCards(filter)
     }
 
-    override fun createCard(card: CardEntity): CardDbResponse {
-        return invokeCreateCard(card)
+    override fun createCard(cardEntity: CardEntity): CardDbResponse {
+        return invokeCreateCard(cardEntity)
     }
 
-    override fun updateCard(card: CardEntity): CardDbResponse {
-        return invokeUpdateCard(card)
+    override fun updateCard(cardEntity: CardEntity): CardDbResponse {
+        return invokeUpdateCard(cardEntity)
     }
 
-    override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
-        return invokeLearnCards(learn)
+    override fun learnCards(cardLearn: List<CardLearn>): CardsDbResponse {
+        return invokeLearnCards(cardLearn)
     }
 
-    override fun resetCard(id: CardId): CardDbResponse {
-        return invokeResetCard(id)
+    override fun resetCard(cardId: CardId): CardDbResponse {
+        return invokeResetCard(cardId)
     }
 
-    override fun deleteCard(id: CardId): DeleteCardDbResponse {
-        return invokeDeleteCard(id)
+    override fun deleteCard(cardId: CardId): DeleteCardDbResponse {
+        return invokeDeleteCard(cardId)
     }
 }

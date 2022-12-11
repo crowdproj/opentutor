@@ -14,11 +14,11 @@ object NoOpDbDictionaryRepository : DbDictionaryRepository {
         noOp()
     }
 
-    override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
+    override fun deleteDictionary(dictionaryId: DictionaryId): DeleteDictionaryDbResponse {
         noOp()
     }
 
-    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
+    override fun downloadDictionary(dictionaryId: DictionaryId): DownloadDictionaryDbResponse {
         noOp()
     }
 

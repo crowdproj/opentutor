@@ -1,154 +1,142 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.*
+import com.gitlab.sszuev.flashcards.common.SysConfig
+import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.documents.CardStatus
+import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
+import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
+import com.gitlab.sszuev.flashcards.common.requireExiting
+import com.gitlab.sszuev.flashcards.common.requireNew
+import com.gitlab.sszuev.flashcards.common.status
+import com.gitlab.sszuev.flashcards.common.wrongDictionaryLanguageFamilies
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteCardDbResponse
+import java.time.LocalDateTime
 import kotlin.random.Random
 
 class MemDbCardRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
     private val sysConfig: SysConfig = SysConfig(),
-    private val ids: IdSequences = IdSequences.globalIdsGenerator,
 ) : DbCardRepository {
-    private val dictionaries = DictionaryStore.load(
-        dbConfig = dbConfig,
-        sysConfig = sysConfig,
-        ids = ids,
-    )
+    private val database = MemDatabase.get(dbConfig.dataLocation)
 
-    override fun getCard(id: CardId): CardDbResponse {
-        val card = dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asLong()] }.singleOrNull()
-            ?: return CardDbResponse(
-                card = CardEntity.EMPTY,
-                errors = listOf(noCardFoundDbError(operation = "getCard", id = id))
-            )
-        return CardDbResponse(card = card.toEntity())
+    override fun getCard(cardId: CardId): CardDbResponse {
+        val card = database.findCardById(cardId.asLong()) ?: return CardDbResponse(
+            card = CardEntity.EMPTY,
+            errors = listOf(noCardFoundDbError(operation = "getCard", id = cardId))
+        )
+        return CardDbResponse(card = card.toCardEntity())
     }
 
-    override fun getAllCards(id: DictionaryId): CardsDbResponse {
-        val dictionary = dictionaries[id.asLong()]
+    override fun getAllCards(dictionaryId: DictionaryId): CardsDbResponse {
+        val id = dictionaryId.asLong()
+        val dictionary = database.findDictionaryById(id)
             ?: return CardsDbResponse(
                 cards = emptyList(),
-                errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
+                errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = dictionaryId))
             )
-        val cards = dictionary.cards.values.map { it.toEntity() }
+        val cards = database.findCardsByDictionaryId(id).map { it.toCardEntity() }.toList()
         return CardsDbResponse(
             cards = cards,
-            sourceLanguageId = dictionary.sourceLanguage.toEntity().langId,
+            sourceLanguageId = dictionary.sourceLanguage.toLangEntity().langId,
             errors = emptyList()
         )
     }
 
     override fun searchCard(filter: CardFilter): CardsDbResponse {
-        val dictionaries = filter.dictionaryIds.mapNotNull {
-            dictionaries[it.asLong()]
-        }.sortedBy { it.id }
+        val ids = filter.dictionaryIds.map { it.asLong() }
+        val dictionaries = database.findDictionariesByIds(ids).sortedBy { it.id }.toSet()
         if (dictionaries.isEmpty()) {
             return CardsDbResponse(cards = emptyList())
         }
-        val sourceLanguages = dictionaries.map { it.sourceLanguage.toEntity().langId }.toSet()
-        val targetLanguages = dictionaries.map { it.targetLanguage.toEntity().langId }.toSet()
+        val sourceLanguages = dictionaries.map { it.sourceLanguage.toLangEntity().langId }.toSet()
+        val targetLanguages = dictionaries.map { it.targetLanguage.toLangEntity().langId }.toSet()
         if (sourceLanguages.size != 1 || targetLanguages.size != 1) {
             return CardsDbResponse(
                 cards = emptyList(),
-                errors = listOf(wrongDictionaryLanguageFamilies(
-                        operation = "searchCard",
-                        dictionaryIds = filter.dictionaryIds,
-                    )
+                errors = listOf(
+                    wrongDictionaryLanguageFamilies(operation = "searchCard", dictionaryIds = filter.dictionaryIds)
                 )
             )
         }
-        var fromDb = dictionaries.flatMap { it.cards.values }.asSequence()
+        var cardsFromDb = database.findCardsByDictionaryIds(ids)
         if (!filter.withUnknown) {
-            fromDb = fromDb.filter { sysConfig.status(it.answered) != CardStatus.LEARNED }
+            cardsFromDb = cardsFromDb.filter { sysConfig.status(it.answered) != CardStatus.LEARNED }
         }
         if (filter.random) {
-            fromDb = fromDb.shuffled(Random.Default)
+            cardsFromDb = cardsFromDb.shuffled(Random.Default)
         }
-        val cards = fromDb.take(filter.length).map { it.toEntity() }.toList()
+        val cards = cardsFromDb.take(filter.length).map { it.toCardEntity() }.toList()
         return CardsDbResponse(cards = cards, sourceLanguageId = sourceLanguages.single())
     }
 
-    override fun createCard(card: CardEntity): CardDbResponse {
-        requireNew(card)
-        val dictionaryId = card.dictionaryId.asLong()
-        val dictionary =
-            dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "createCard")
-        val record = card.toDbRecord(ids.nextCardId())
-        dictionary.cards[record.id] = record
-        dictionaries.flush(dictionaryId)
-        return CardDbResponse(card = record.toEntity())
-    }
-
-    override fun updateCard(card: CardEntity): CardDbResponse {
-        requireExiting(card)
-        val dictionaryId = card.dictionaryId.asLong()
-        val dictionary =
-            dictionaries[dictionaryId] ?: return createNoDictionaryResponseError(card.dictionaryId, "updateCard")
-        val id = card.cardId.asLong()
-        if (!dictionary.cards.containsKey(id)) {
-            return createNoCardResponseError(card.cardId, "updateCard")
-        }
-        val record = card.toDbRecord(id)
-        dictionary.cards[record.id] = record
-        dictionaries.flush(dictionaryId)
-        return CardDbResponse(card = record.toEntity())
-    }
-
-    override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
-        val cards = mutableSetOf<MemDbCard>()
-        val errors = mutableListOf<AppError>()
-        learn.forEach { cardLearn ->
-            learnCard(cardLearn, errors)?.let { cards.add(it) }
-        }
-        cards.map { it.dictionaryId }.distinct().forEach {
-            dictionaries.flush(it)
-        }
-        return CardsDbResponse(cards = cards.map { it.toEntity() }, errors = errors)
-    }
-
-    override fun resetCard(id: CardId): CardDbResponse {
-        val card = findCard(id) ?: return createNoCardResponseError(id, "resetCard")
-        val record = card.copy(answered = 0)
-        val dictionary = dictionaries[card.dictionaryId]
-        requireNotNull(dictionary).cards[card.id] = record
-        dictionaries.flush(card.dictionaryId)
-        return CardDbResponse(card = record.toEntity())
-    }
-
-    override fun deleteCard(id: CardId): DeleteCardDbResponse {
-        val card = findCard(id) ?: return DeleteCardDbResponse(
-            errors = listOf(
-                noCardFoundDbError(operation = "deleteCard", id = id)
-            )
+    override fun createCard(cardEntity: CardEntity): CardDbResponse {
+        requireNew(cardEntity)
+        val dictionaryId = cardEntity.dictionaryId.asLong()
+        database.findDictionaryById(dictionaryId) ?: return createNoDictionaryResponseError(
+            id = cardEntity.dictionaryId,
+            operation = "createCard"
         )
-        val dictionary = dictionaries[card.dictionaryId]
-        requireNotNull(dictionary).cards.remove(card.id)
-        dictionaries.flush(card.dictionaryId)
-        return DeleteCardDbResponse()
+        return CardDbResponse(card = database.saveCard(cardEntity.toMemDbCard()).toCardEntity())
     }
 
-    private fun learnCard(learn: CardLearn, errors: MutableList<AppError>): MemDbCard? {
+    override fun updateCard(cardEntity: CardEntity): CardDbResponse {
+        requireExiting(cardEntity)
+        val dictionaryId = cardEntity.dictionaryId.asLong()
+        database.findDictionaryById(dictionaryId) ?: return createNoDictionaryResponseError(
+            id = cardEntity.dictionaryId,
+            operation = "updateCard"
+        )
+        val cardId = cardEntity.cardId.asLong()
+        database.findCardById(cardId) ?: return createNoCardResponseError(cardEntity.cardId, "updateCard")
+        return CardDbResponse(
+            card = database.saveCard(cardEntity.toMemDbCard().copy(changedAt = LocalDateTime.now())).toCardEntity()
+        )
+    }
+
+    override fun learnCards(cardLearn: List<CardLearn>): CardsDbResponse {
+        val timestamp = LocalDateTime.now()
+        val errors = mutableListOf<AppError>()
+        val cards = cardLearn.mapNotNull { learnCard(it, errors, timestamp) }
+        return CardsDbResponse(cards = cards.map { it.toCardEntity() }, errors = errors)
+    }
+
+    override fun resetCard(cardId: CardId): CardDbResponse {
+        val card = database.findCardById(cardId.asLong()) ?: return createNoCardResponseError(cardId, "resetCard")
+        val res = database.saveCard(card.copy(answered = 0, changedAt = LocalDateTime.now()))
+        return CardDbResponse(card = res.toCardEntity())
+    }
+
+    override fun deleteCard(cardId: CardId): DeleteCardDbResponse {
+        return if (database.deleteCardById(cardId.asLong())) {
+            DeleteCardDbResponse()
+        } else {
+            DeleteCardDbResponse(errors = listOf(noCardFoundDbError(operation = "deleteCard", id = cardId)))
+        }
+    }
+
+    private fun learnCard(
+        learn: CardLearn,
+        errors: MutableList<AppError>,
+        changeAt: LocalDateTime,
+    ): MemDbCard? {
         val id = learn.cardId
-        val card = findCard(id)
+        val card = database.findCardById(id.asLong())
         if (card == null) {
             errors.add(noCardFoundDbError(operation = "learnCard", id = id))
             return null
         }
-        val record = card.copy(details = toDbRecordDetails(learn.details))
-        val dictionary = requireNotNull(dictionaries[card.dictionaryId])
-        dictionary.cards[record.id] = record
-        return record
-    }
-
-    private fun findCard(id: CardId): MemDbCard? {
-        return dictionaries.keys.mapNotNull { dictionaries[it] }.mapNotNull { it.cards[id.asLong()] }.singleOrNull()
+        val record = card.copy(details = cardEntityDetailsToMemDbCardDetails(learn.details), changedAt = changeAt)
+        return database.saveCard(record)
     }
 
     private fun createNoCardResponseError(id: CardId, operation: String): CardDbResponse {
@@ -164,6 +152,5 @@ class MemDbCardRepository(
             errors = listOf(noDictionaryFoundDbError(operation = operation, id = id))
         )
     }
-
 }
 

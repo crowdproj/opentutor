@@ -16,10 +16,12 @@ dependencies {
     val logbackVersion: String by project
     val typesafeConfigVersion: String by project
     val caffeineVersion: String by project
+    val jacksonVersion: String by project
 
     implementation(project(":common"))
     implementation(project(":db-common"))
 
+    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")

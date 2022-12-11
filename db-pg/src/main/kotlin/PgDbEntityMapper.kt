@@ -1,35 +1,54 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.common.*
+import com.fasterxml.jackson.core.JsonProcessingException
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.gitlab.sszuev.flashcards.common.LanguageRepository
+import com.gitlab.sszuev.flashcards.common.SysConfig
+import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
-import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
-import com.gitlab.sszuev.flashcards.dbpg.dao.*
+import com.gitlab.sszuev.flashcards.common.status
+import com.gitlab.sszuev.flashcards.common.toDocumentTranslations
+import com.gitlab.sszuev.flashcards.common.toEntityTranslations
+import com.gitlab.sszuev.flashcards.dbpg.dao.Card
+import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
+import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionary
+import com.gitlab.sszuev.flashcards.dbpg.dao.Example
+import com.gitlab.sszuev.flashcards.dbpg.dao.Language
+import com.gitlab.sszuev.flashcards.dbpg.dao.Translation
+import com.gitlab.sszuev.flashcards.dbpg.dao.User
+import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
 import org.jetbrains.exposed.dao.id.EntityID
 import org.jetbrains.exposed.sql.SizedIterable
-import java.util.*
+import java.util.UUID
+
+private val mapper: ObjectMapper = ObjectMapper()
+private val detailsTypeReference: TypeReference<Map<Stage, Long>> =
+    object : TypeReference<Map<Stage, Long>>() {}
 
 internal fun Dictionary.toDownloadResource(sysConfig: SysConfig, cards: SizedIterable<Card>) = DocumentDictionary(
-    id = null,
-    userId = null,
     name = this.name,
-    sourceLang = this.sourceLang.toDocument(),
-    targetLang = this.targetLand.toDocument(),
+    sourceLang = this.sourceLang.id.value,
+    targetLang = this.targetLand.id.value,
     cards = cards.map { it.toDownloadResource(sysConfig) }
 )
 
 internal fun Card.toDownloadResource(sysConfig: SysConfig) = DocumentCard(
-    id = null,
     text = this.text,
     transcription = this.transcription,
-    details = this.details ?: "",
     partOfSpeech = this.partOfSpeech,
-    answered = this.answered,
     examples = this.examples.map { it.text },
     translations = this.translations.map { it.text },
     status = sysConfig.status(this.answered),
@@ -64,11 +83,6 @@ internal fun Language.toEntity() = LangEntity(
     partsOfSpeech = this.partsOfSpeech.split(",")
 )
 
-private fun Language.toDocument() = DocumentLang(
-    tag = this.id.value,
-    partsOfSpeech = this.partsOfSpeech.split(",")
-)
-
 internal fun copyToDbEntityRecord(from: CardEntity, to: Card) {
     to.dictionaryId = from.dictionaryId.asRecordId()
     to.text = from.word
@@ -83,8 +97,7 @@ internal fun copyToDbEntityRecord(dictionaryId: EntityID<Long>, from: DocumentCa
     to.text = from.text
     to.transcription = from.transcription
     to.partOfSpeech = from.partOfSpeech
-    to.answered = from.answered
-    to.details = from.details
+    to.details = "{}"
 }
 
 internal fun copyToDbExampleRecord(txt: String, card: Card, to: Example) {
@@ -94,7 +107,25 @@ internal fun copyToDbExampleRecord(txt: String, card: Card, to: Example) {
 
 internal fun copyToDbTranslationRecord(txt: List<String>, card: Card, to: Translation) {
     to.cardId = card.id
-    to.text = toDbRecordTranslations(txt)
+    to.text = toDocumentTranslations(txt)
+}
+
+fun toEntityDetails(fromDb: String?): Map<Stage, Long> {
+    return if (fromDb.isNullOrBlank()) {
+        emptyMap()
+    } else try {
+        mapper.readValue(fromDb, detailsTypeReference)
+    } catch (e: JsonProcessingException) {
+        emptyMap()
+    }
+}
+
+fun toDbRecordDetails(details: Map<Stage, Long>): String {
+    return try {
+        mapper.writeValueAsString(details)
+    } catch (e: JsonProcessingException) {
+        throw IllegalStateException("Can't convert $details to string", e)
+    }
 }
 
 internal fun EntityID<String>.asLangId() = LangId(value)
@@ -113,8 +144,7 @@ internal fun DictionaryId.asRecordId() = EntityID(asLong(), Dictionaries)
 
 internal fun CardId.asRecordId() = EntityID(asLong(), Cards)
 
-internal fun String.asRecordId() = EntityID(this, Languages)
-
-internal fun partsOfSpeechToRecordTxt(partsOfSpeech: Collection<String>): String {
-    return partsOfSpeech.joinToString(",")
-}
+internal fun createLangEntity(tag: String) = LangEntity(
+    langId = LangId(tag),
+    partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
+)

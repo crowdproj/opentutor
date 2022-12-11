@@ -11,9 +11,9 @@ interface DbDictionaryRepository {
 
     fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse
 
-    fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse
+    fun deleteDictionary(dictionaryId: DictionaryId): DeleteDictionaryDbResponse
 
-    fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse
+    fun downloadDictionary(dictionaryId: DictionaryId): DownloadDictionaryDbResponse
 
     fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse
 }

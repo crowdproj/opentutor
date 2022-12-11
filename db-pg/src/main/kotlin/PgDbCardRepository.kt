@@ -1,16 +1,40 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.common.*
-import com.gitlab.sszuev.flashcards.dbpg.dao.*
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.common.SysConfig
+import com.gitlab.sszuev.flashcards.common.asLong
+import com.gitlab.sszuev.flashcards.common.dbError
+import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
+import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
+import com.gitlab.sszuev.flashcards.common.requireExiting
+import com.gitlab.sszuev.flashcards.common.requireNew
+import com.gitlab.sszuev.flashcards.common.wrongDictionaryLanguageFamilies
+import com.gitlab.sszuev.flashcards.dbpg.dao.Card
+import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
+import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
+import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionary
+import com.gitlab.sszuev.flashcards.dbpg.dao.Example
+import com.gitlab.sszuev.flashcards.dbpg.dao.Examples
+import com.gitlab.sszuev.flashcards.dbpg.dao.Translation
+import com.gitlab.sszuev.flashcards.dbpg.dao.Translations
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DeleteCardDbResponse
 import org.jetbrains.exposed.dao.with
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.CustomFunction
+import org.jetbrains.exposed.sql.DoubleColumnType
+import org.jetbrains.exposed.sql.Op
+import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.or
 
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
@@ -22,13 +46,13 @@ class PgDbCardRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun getCard(id: CardId): CardDbResponse {
+    override fun getCard(cardId: CardId): CardDbResponse {
         return connection.execute {
-            val card = Card.findById(id.asLong())
+            val card = Card.findById(cardId.asLong())
             if (card == null) {
                 CardDbResponse(
                     card = CardEntity.EMPTY,
-                    errors = listOf(noCardFoundDbError(operation = "getCard", id = id))
+                    errors = listOf(noCardFoundDbError(operation = "getCard", id = cardId))
                 )
             } else {
                 CardDbResponse(card = card.toEntity())
@@ -36,14 +60,14 @@ class PgDbCardRepository(
         }
     }
 
-    override fun getAllCards(id: DictionaryId): CardsDbResponse {
+    override fun getAllCards(dictionaryId: DictionaryId): CardsDbResponse {
         return connection.execute {
-            val dictionary = Dictionary.findById(id.asLong())?.toEntity() ?: return@execute CardsDbResponse(
+            val dictionary = Dictionary.findById(dictionaryId.asLong())?.toEntity() ?: return@execute CardsDbResponse(
                 cards = emptyList(),
-                errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = id))
+                errors = listOf(noDictionaryFoundDbError(operation = "getAllCards", id = dictionaryId))
             )
             val cards = Card.find {
-                Cards.dictionaryId eq id.asLong()
+                Cards.dictionaryId eq dictionaryId.asLong()
             }.with(Card::examples).with(Card::translations).map { it.toEntity() }
             CardsDbResponse(
                 cards = cards,
@@ -88,57 +112,57 @@ class PgDbCardRepository(
         }
     }
 
-    override fun createCard(card: CardEntity): CardDbResponse {
+    override fun createCard(cardEntity: CardEntity): CardDbResponse {
         return connection.execute({
-            requireNew(card)
+            requireNew(cardEntity)
             val record = Card.new {
-                copyToDbEntityRecord(from = card, to = this)
+                copyToDbEntityRecord(from = cardEntity, to = this)
             }
-            createExamplesAndTranslations(card, record)
+            createExamplesAndTranslations(cardEntity, record)
             CardDbResponse(card = record.toEntity())
         }, {
             val error = if (this.message?.contains(UNKNOWN_DICTIONARY) == true) {
-                noDictionaryFoundDbError(operation = "createCard", card.dictionaryId)
+                noDictionaryFoundDbError(operation = "createCard", cardEntity.dictionaryId)
             } else {
-                dbError(operation = "createCard", fieldName = card.cardId.asString(), exception = this)
+                dbError(operation = "createCard", fieldName = cardEntity.cardId.asString(), exception = this)
             }
             CardDbResponse(card = CardEntity.EMPTY, errors = listOf(error))
         })
     }
 
-    override fun updateCard(card: CardEntity): CardDbResponse {
+    override fun updateCard(cardEntity: CardEntity): CardDbResponse {
         return connection.execute({
-            requireExiting(card)
+            requireExiting(cardEntity)
             Examples.deleteWhere {
-                this.cardId eq card.cardId.asLong()
+                this.cardId eq cardEntity.cardId.asLong()
             }
             Translations.deleteWhere {
-                this.cardId eq card.cardId.asLong()
+                this.cardId eq cardEntity.cardId.asLong()
             }
-            val record = Card.findById(card.cardId.asRecordId())
+            val record = Card.findById(cardEntity.cardId.asRecordId())
             if (record == null) {
                 CardDbResponse(
                     card = CardEntity.EMPTY,
-                    errors = listOf(noCardFoundDbError("updateCard", card.cardId))
+                    errors = listOf(noCardFoundDbError("updateCard", cardEntity.cardId))
                 )
             } else {
-                copyToDbEntityRecord(from = card, to = record)
-                createExamplesAndTranslations(card, record)
+                copyToDbEntityRecord(from = cardEntity, to = record)
+                createExamplesAndTranslations(cardEntity, record)
                 CardDbResponse(card = record.toEntity())
             }
         }, {
             val error = if (this.message?.contains(UNKNOWN_DICTIONARY) == true) {
-                noDictionaryFoundDbError(operation = "updateCard", card.dictionaryId)
+                noDictionaryFoundDbError(operation = "updateCard", cardEntity.dictionaryId)
             } else {
-                dbError(operation = "updateCard", fieldName = card.cardId.asString(), exception = this)
+                dbError(operation = "updateCard", fieldName = cardEntity.cardId.asString(), exception = this)
             }
             CardDbResponse(card = CardEntity.EMPTY, errors = listOf(error))
         })
     }
 
-    override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
+    override fun learnCards(cardLearn: List<CardLearn>): CardsDbResponse {
         return connection.execute {
-            val cardLearns = learn.associateBy { it.cardId.asLong() }
+            val cardLearns = cardLearn.associateBy { it.cardId.asLong() }
             val records = Card.find {
                 Cards.id inList cardLearns.keys
             }.associateBy { it.id.value }
@@ -154,13 +178,13 @@ class PgDbCardRepository(
         }
     }
 
-    override fun resetCard(id: CardId): CardDbResponse {
+    override fun resetCard(cardId: CardId): CardDbResponse {
         return connection.execute {
-            val card = Card.findById(id.asLong())
+            val card = Card.findById(cardId.asLong())
             if (card == null) {
                 CardDbResponse(
                     card = CardEntity.EMPTY,
-                    errors = listOf(noCardFoundDbError(operation = "resetCard", id = id))
+                    errors = listOf(noCardFoundDbError(operation = "resetCard", id = cardId))
                 )
             } else {
                 card.answered = 0
@@ -169,19 +193,19 @@ class PgDbCardRepository(
         }
     }
 
-    override fun deleteCard(id: CardId): DeleteCardDbResponse {
+    override fun deleteCard(cardId: CardId): DeleteCardDbResponse {
         return connection.execute {
             Examples.deleteWhere {
-                this.cardId eq id.asLong()
+                this.cardId eq cardId.asLong()
             }
             Translations.deleteWhere {
-                this.cardId eq id.asLong()
+                this.cardId eq cardId.asLong()
             }
             val res = Cards.deleteWhere {
-                this.id eq id.asLong()
+                this.id eq cardId.asLong()
             }
             DeleteCardDbResponse(
-                if (res == 0) listOf(noCardFoundDbError(operation = "deleteCard", id = id)) else emptyList()
+                if (res == 0) listOf(noCardFoundDbError(operation = "deleteCard", id = cardId)) else emptyList()
             )
         }
     }

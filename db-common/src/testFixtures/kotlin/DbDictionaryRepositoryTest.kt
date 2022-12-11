@@ -12,7 +12,7 @@ abstract class DbDictionaryRepositoryTest {
 
     companion object {
         private val EN = LangEntity(
-            LangId("EN"), listOf(
+            LangId("en"), listOf(
                 "noun",
                 "verb",
                 "adjective",
@@ -25,7 +25,7 @@ abstract class DbDictionaryRepositoryTest {
             )
         )
         private val RU = LangEntity(
-            LangId("RU"),
+            LangId("ru"),
             listOf(
                 "существительное",
                 "прилагательное",

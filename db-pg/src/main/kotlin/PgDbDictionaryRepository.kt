@@ -2,17 +2,27 @@ package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.common.asLong
-import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
 import com.gitlab.sszuev.flashcards.common.documents.createReader
 import com.gitlab.sszuev.flashcards.common.documents.createWriter
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.wrongResourceDbError
-import com.gitlab.sszuev.flashcards.dbpg.dao.*
+import com.gitlab.sszuev.flashcards.dbpg.dao.Card
+import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
+import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
+import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionary
+import com.gitlab.sszuev.flashcards.dbpg.dao.Example
+import com.gitlab.sszuev.flashcards.dbpg.dao.Examples
+import com.gitlab.sszuev.flashcards.dbpg.dao.Translation
+import com.gitlab.sszuev.flashcards.dbpg.dao.Translations
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.repositories.*
+import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
+import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DownloadDictionaryDbResponse
 import org.jetbrains.exposed.dao.with
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
@@ -54,10 +64,10 @@ class PgDbDictionaryRepository(
         }
     }
 
-    override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
+    override fun deleteDictionary(dictionaryId: DictionaryId): DeleteDictionaryDbResponse {
         return connection.execute {
             val cardIds = Cards.select {
-                Cards.dictionaryId eq id.asLong()
+                Cards.dictionaryId eq dictionaryId.asLong()
             }.map {
                 it[Cards.id]
             }
@@ -71,27 +81,27 @@ class PgDbDictionaryRepository(
                 this.id inList cardIds
             }
             val res = Dictionaries.deleteWhere {
-                Dictionaries.id eq id.asLong()
+                Dictionaries.id eq dictionaryId.asLong()
             }
             DeleteDictionaryDbResponse(
-                if (res == 0) listOf(noDictionaryFoundDbError(operation = "deleteDictionary", id = id)) else emptyList()
+                if (res == 0) listOf(noDictionaryFoundDbError(operation = "deleteDictionary", id = dictionaryId)) else emptyList()
             )
         }
     }
 
-    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
+    override fun downloadDictionary(dictionaryId: DictionaryId): DownloadDictionaryDbResponse {
         return connection.execute {
-            val dictionary = Dictionary.findById(id.asLong())
+            val dictionary = Dictionary.findById(dictionaryId.asLong())
                 ?: return@execute DownloadDictionaryDbResponse(
                     resource = ResourceEntity.DUMMY,
-                    listOf(noDictionaryFoundDbError(operation = "downloadDictionary", id = id))
+                    listOf(noDictionaryFoundDbError(operation = "downloadDictionary", id = dictionaryId))
                 )
             val cards = Card.find {
-                Cards.dictionaryId eq id.asLong()
+                Cards.dictionaryId eq dictionaryId.asLong()
             }.with(Card::examples).with(Card::translations)
             val res = dictionary.toDownloadResource(sysConfig, cards)
             val data = createWriter().write(res)
-            DownloadDictionaryDbResponse(resource = ResourceEntity(id, data))
+            DownloadDictionaryDbResponse(resource = ResourceEntity(dictionaryId, data))
         }
     }
 
@@ -102,11 +112,11 @@ class PgDbDictionaryRepository(
             return DictionaryDbResponse(DictionaryEntity.EMPTY, listOf(wrongResourceDbError(ex)))
         }
         return connection.execute {
-            val sourceLang = document.sourceLang.getOrInsert()
-            val targetLang = document.targetLang.getOrInsert()
+            val sourceLang = document.sourceLang
+            val targetLang = document.targetLang
             val dictionaryId = Dictionaries.insertAndGetId {
-                it[sourceLanguage] = sourceLang.id
-                it[targetLanguage] = targetLang.id
+                it[sourceLanguage] = sourceLang
+                it[targetLanguage] = targetLang
                 it[name] = document.name
                 it[Dictionaries.userId] = userId.asLong()
             }
@@ -130,19 +140,10 @@ class PgDbDictionaryRepository(
             val res = DictionaryEntity(
                 dictionaryId = dictionaryId.asDictionaryId(),
                 name = document.name,
-                sourceLang = sourceLang.toEntity(),
-                targetLang = targetLang.toEntity(),
+                sourceLang = createLangEntity(sourceLang),
+                targetLang = createLangEntity(targetLang),
             )
             DictionaryDbResponse(res)
         }
     }
-
-    private fun DocumentLang.getOrInsert(): Language {
-        val id = this.tag.asRecordId()
-        val partsOfSpeech = partsOfSpeechToRecordTxt(this.partsOfSpeech)
-        return Language.findById(id) ?: Language.new(this.tag) {
-            this.partsOfSpeech = partsOfSpeech
-        }
-    }
-
 }

@@ -1,38 +1,66 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.documents.CardStatus
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
-import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbExample
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class EntityMapperTest {
 
-    @Test
-    fun `test map card`() {
-        val card = MemDbCard(
-            id = 1,
-            dictionaryId = 42,
+    companion object {
+        private val testDocumentCard = DocumentCard(
             text = "snowfall",
             transcription = "ˈsnəʊfɔːl",
             partOfSpeech = "noun",
             translations = listOf("снегопад"),
-            examples = listOf("Due to the heavy snowfall, all flights have been cancelled..."),
-            answered = 42,
-            details = """
-                { "MOSAIC": 42, "WRITING": 21 }
-            """.trimIndent()
+            examples = listOf(
+                "Due to the heavy snowfall, all flights have been cancelled... -- Из-за сильного снегопада все рейсы отменены...",
+                "It's the first snowfall of Christmas.",
+            ),
+            status = CardStatus.LEARNED,
         )
-        val expectedTranslations = listOf(card.translations)
-        val expectedDetails = mapOf(Stage.MOSAIC to 42L, Stage.WRITING to 21L)
-        val res = card.toEntity()
-        Assertions.assertEquals(card.text, res.word)
-        Assertions.assertEquals(card.id.toString(), res.cardId.asString())
-        Assertions.assertEquals(card.dictionaryId.toString(), res.dictionaryId.asString())
-        Assertions.assertEquals(card.partOfSpeech, res.partOfSpeech)
-        Assertions.assertEquals(card.transcription, res.transcription)
-        Assertions.assertEquals(expectedDetails, res.details)
-        Assertions.assertEquals(card.answered, res.answered)
-        Assertions.assertEquals(expectedTranslations, res.translations)
-        Assertions.assertEquals(card.examples, res.examples)
+
+        private val testMemDbCard = MemDbCard(
+            text = "snowfall",
+            details = emptyMap(),
+            words = listOf(
+                MemDbWord(
+                    word = "snowfall",
+                    transcription = "ˈsnəʊfɔːl",
+                    partOfSpeech = "noun",
+                    translations = listOf(listOf("снегопад")),
+                    examples = listOf(
+                        MemDbExample(
+                            translation = "Из-за сильного снегопада все рейсы отменены...",
+                            example = "Due to the heavy snowfall, all flights have been cancelled...",
+                        ),
+                        MemDbExample(example = "It's the first snowfall of Christmas.")
+                    )
+                )
+            ),
+            answered = 42,
+        )
     }
+
+    @Test
+    fun `test map document-card to mem-db-card`() {
+        val givenCard = testDocumentCard.copy(status = CardStatus.LEARNED)
+        val actualCard = givenCard.toMemDbCard {
+            if (it == givenCard.status) testMemDbCard.answered!! else throw AssertionError()
+        }
+        Assertions.assertEquals(testMemDbCard, actualCard)
+    }
+
+    @Test
+    fun `test map mem-db-card to document-card`() {
+        val givenCard = testMemDbCard.copy(id = 1, dictionaryId = 2, answered = 42, details = mapOf("a" to "b"))
+        val actualCard = givenCard.toDocumentCard {
+            if (it == givenCard.answered) testDocumentCard.status else throw AssertionError()
+        }
+        Assertions.assertEquals(testDocumentCard, actualCard)
+    }
+
 }

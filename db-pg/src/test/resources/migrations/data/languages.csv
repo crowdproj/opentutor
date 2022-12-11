@@ -1,3 +1,3 @@
 id;parts_of_speech
-EN;noun,verb,adjective,adverb,pronoun,preposition,conjunction,interjection,article
-RU;существительное,прилагательное,числительное,местоимение,глагол,наречие,причастие,предлог,союз,частица,междометие
+en;noun,verb,adjective,adverb,pronoun,preposition,conjunction,interjection,article
+ru;существительное,прилагательное,числительное,местоимение,глагол,наречие,причастие,предлог,союз,частица,междометие

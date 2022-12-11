@@ -160,8 +160,8 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(65, res2.cards.size)
         Assertions.assertEquals(0, res2.errors.size)
 
-        Assertions.assertEquals(LangId("EN"), res1.sourceLanguageId)
-        Assertions.assertEquals(LangId("EN"), res2.sourceLanguageId)
+        Assertions.assertEquals(LangId("en"), res1.sourceLanguageId)
+        Assertions.assertEquals(LangId("en"), res2.sourceLanguageId)
     }
 
     @Order(2)
@@ -233,8 +233,8 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res1.cards.map { it.dictionaryId }.toSet())
         Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res2.cards.map { it.dictionaryId }.toSet())
 
-        Assertions.assertEquals(LangId("EN"), res1.sourceLanguageId)
-        Assertions.assertEquals(LangId("EN"), res2.sourceLanguageId)
+        Assertions.assertEquals(LangId("en"), res1.sourceLanguageId)
+        Assertions.assertEquals(LangId("en"), res2.sourceLanguageId)
     }
 
     @Order(6)

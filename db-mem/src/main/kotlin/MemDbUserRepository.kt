@@ -6,18 +6,13 @@ import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
-import java.util.*
+import java.util.UUID
 
 class MemDbUserRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
-    ids: IdSequences = IdSequences.globalIdsGenerator,
 ) : DbUserRepository {
 
-    private val users = UserStore.load(
-        location = dbConfig.dataLocation,
-        dbConfig = dbConfig,
-        ids = ids,
-    )
+    private val database = MemDatabase.get(dbConfig.dataLocation)
 
     override fun getUser(authId: AppAuthId): UserEntityDbResponse {
         val uuid = try {
@@ -27,10 +22,10 @@ class MemDbUserRepository(
                 user = AppUserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", authId))
             )
         }
-        val res = users[uuid]
+        val res = database.findUserByUuid(uuid)
             ?: return UserEntityDbResponse(
                 user = AppUserEntity.EMPTY, errors = listOf(noUserFoundDbError("getUser", authId))
             )
-        return UserEntityDbResponse(user = res.toEntity())
+        return UserEntityDbResponse(user = res.toAppUserEntity())
     }
 }
