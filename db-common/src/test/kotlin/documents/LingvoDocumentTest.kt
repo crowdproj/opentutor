@@ -70,7 +70,7 @@ internal class LingvoDocumentTest {
             partOfSpeech = "noun",
             translations = listOf("дождь", "ливень"),
             examples = listOf("The skies no longer rain death.", "The sockets were filled with rain."),
-            status = CardStatus.IN_PROCESS,
+            status = DocumentCardStatus.IN_PROCESS,
         )
         val card2 = DocumentCard(
             text = "mutual",
@@ -78,14 +78,14 @@ internal class LingvoDocumentTest {
             partOfSpeech = "adjective",
             translations = listOf("взаимный", "обоюдный", "общий", "совместный"),
             examples = listOf("Twenty years of mutual vanity, and nothing more."),
-            status = CardStatus.LEARNED,
+            status = DocumentCardStatus.LEARNED,
         )
         val card3 = DocumentCard(
             text = "test",
             transcription = "test",
             partOfSpeech = "verb",
             translations = listOf("тестировать"),
-            status = CardStatus.UNKNOWN,
+            status = DocumentCardStatus.UNKNOWN,
         )
 
         val dictionary = DocumentDictionary(

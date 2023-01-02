@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbExample
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
@@ -20,7 +20,7 @@ internal class EntityMapperTest {
                 "Due to the heavy snowfall, all flights have been cancelled... -- Из-за сильного снегопада все рейсы отменены...",
                 "It's the first snowfall of Christmas.",
             ),
-            status = CardStatus.LEARNED,
+            status = DocumentCardStatus.LEARNED,
         )
 
         private val testMemDbCard = MemDbCard(
@@ -35,9 +35,9 @@ internal class EntityMapperTest {
                     examples = listOf(
                         MemDbExample(
                             translation = "Из-за сильного снегопада все рейсы отменены...",
-                            example = "Due to the heavy snowfall, all flights have been cancelled...",
+                            text = "Due to the heavy snowfall, all flights have been cancelled...",
                         ),
-                        MemDbExample(example = "It's the first snowfall of Christmas.")
+                        MemDbExample(text = "It's the first snowfall of Christmas.")
                     )
                 )
             ),
@@ -47,7 +47,7 @@ internal class EntityMapperTest {
 
     @Test
     fun `test map document-card to mem-db-card`() {
-        val givenCard = testDocumentCard.copy(status = CardStatus.LEARNED)
+        val givenCard = testDocumentCard.copy(status = DocumentCardStatus.LEARNED)
         val actualCard = givenCard.toMemDbCard {
             if (it == givenCard.status) testMemDbCard.answered!! else throw AssertionError()
         }

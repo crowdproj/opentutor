@@ -16,12 +16,10 @@ dependencies {
     val logbackVersion: String by project
     val typesafeConfigVersion: String by project
     val caffeineVersion: String by project
-    val jacksonVersion: String by project
 
     implementation(project(":common"))
     implementation(project(":db-common"))
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
@@ -33,6 +31,7 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+    implementation("org.jetbrains.exposed:exposed-java-time:$exposedVersion")
 
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")

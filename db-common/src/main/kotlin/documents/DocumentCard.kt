@@ -6,5 +6,5 @@ data class DocumentCard(
     val partOfSpeech: String? = null,
     val translations: List<String>,
     val examples: List<String> = emptyList(),
-    val status: CardStatus,
+    val status: DocumentCardStatus,
 )

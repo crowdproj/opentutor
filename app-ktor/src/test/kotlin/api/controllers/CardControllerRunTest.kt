@@ -100,10 +100,10 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(listOf(listOf("погода")), res.card!!.translations)
         Assertions.assertEquals(
             listOf(
-                "weather forecast -- прогноз погоды",
-                "weather bureau -- бюро погоды",
-                "nasty weather -- ненастная погода",
-                "spell of cold weather -- похолодание"
+                "weather forecast",
+                "weather bureau",
+                "nasty weather",
+                "spell of cold weather"
             ), res.card!!.examples
         )
         Assertions.assertNull(res.card!!.sound)

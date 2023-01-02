@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.common.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.documents.CardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
 import com.gitlab.sszuev.flashcards.common.documents.DocumentReader
 import com.gitlab.sszuev.flashcards.common.documents.xml.DOMUtils.element
@@ -57,7 +57,7 @@ internal class LingvoDocumentReader : DocumentReader {
         val posId = getAttribute("partOfSpeech")
         val pos: String? = if (posId.isBlank()) null else LingvoMappings.toPartOfSpeechTag(posId)
         val statistics = element("statistics")
-        val status: CardStatus = LingvoMappings.toStatus(statistics.getAttribute("status"))
+        val status: DocumentCardStatus = LingvoMappings.toStatus(statistics.getAttribute("status"))
         val translations = element("translations").elements("word")
             .map { DOMUtils.normalizeContent(it) }.toList()
         val examples = elements("examples").singleOrNull()?.elements("example")?.map { DOMUtils.normalizeContent(it) }

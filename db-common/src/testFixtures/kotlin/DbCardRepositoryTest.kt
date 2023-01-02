@@ -27,10 +27,10 @@ abstract class DbCardRepositoryTest {
             answered = null,
             translations = listOf(listOf("погода")),
             examples = listOf(
-                "weather forecast -- прогноз погоды",
-                "weather bureau -- бюро погоды",
-                "nasty weather -- ненастная погода",
-                "spell of cold weather -- похолодание"
+                "weather forecast",
+                "weather bureau",
+                "nasty weather",
+                "spell of cold weather"
             ),
             details = emptyMap(),
         )
@@ -58,9 +58,9 @@ abstract class DbCardRepositoryTest {
             partOfSpeech = "noun",
             translations = listOf(listOf("снег")),
             examples = listOf(
-                "It snows. -- Идет снег.",
-                "a flake of snow -- снежинка",
-                "snow depth -- высота снежного покрова"
+                "It snows.",
+                "a flake of snow",
+                "snow depth"
             ),
             answered = null,
             details = emptyMap(),
@@ -74,10 +74,10 @@ abstract class DbCardRepositoryTest {
             partOfSpeech = "noun",
             translations = listOf(listOf("дождь")),
             examples = listOf(
-                "It rains. -- Идет дождь.",
-                "heavy rain -- проливной дождь, ливень",
-                "drizzling rain -- изморось",
-                "torrential rain -- проливной дождь",
+                "It rains.",
+                "heavy rain",
+                "drizzling rain",
+                "torrential rain",
             ),
             answered = null,
             details = emptyMap(),
@@ -259,7 +259,7 @@ abstract class DbCardRepositoryTest {
     fun `test update card error unknown card`() {
         val id = CardId("4200")
         val request = CardEntity.EMPTY.copy(
-            cardId = id, dictionaryId = DictionaryId("2"), translations = listOf(listOf("xxx"))
+            word = "XXX", cardId = id, dictionaryId = DictionaryId("2"), translations = listOf(listOf("xxx"))
         )
         val res = repository.updateCard(request)
         val error = assertSingleError(res, id.asString(), "updateCard")
@@ -275,7 +275,10 @@ abstract class DbCardRepositoryTest {
         val cardId = CardId("42")
         val dictionaryId = DictionaryId("4200")
         val request = CardEntity.EMPTY.copy(
-            cardId = cardId, dictionaryId = dictionaryId, translations = listOf(listOf("xxx"))
+            cardId = cardId,
+            word = "XXX",
+            dictionaryId = dictionaryId,
+            translations = listOf(listOf("xxx")),
         )
         val res = repository.updateCard(request)
         val error = assertSingleError(res, dictionaryId.asString(), "updateCard")

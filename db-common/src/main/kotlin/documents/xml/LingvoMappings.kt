@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.common.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.documents.CardStatus
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 
@@ -22,9 +22,9 @@ internal object LingvoMappings {
         "3" to "verb",
     )
     private val STATUS_MAP = mapOf(
-        "2" to CardStatus.UNKNOWN,
-        "3" to CardStatus.IN_PROCESS,
-        "4" to CardStatus.LEARNED
+        "2" to DocumentCardStatus.UNKNOWN,
+        "3" to DocumentCardStatus.IN_PROCESS,
+        "4" to DocumentCardStatus.LEARNED
     )
 
     fun toLanguageTag(lingvoId: String): String {
@@ -43,11 +43,11 @@ internal object LingvoMappings {
         return byValue(PART_OF_SPEECH_MAP, tag)
     }
 
-    fun toStatus(id: String): CardStatus {
+    fun toStatus(id: String): DocumentCardStatus {
         return requireNotNull(STATUS_MAP[id])
     }
 
-    fun fromStatus(status: CardStatus): String {
+    fun fromStatus(status: DocumentCardStatus): String {
         return STATUS_MAP.entries.single { it.value == status }.key
     }
 

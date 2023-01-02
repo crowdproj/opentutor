@@ -2,12 +2,12 @@ package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.common.asLong
-import com.gitlab.sszuev.flashcards.common.documents.CardStatus
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
-import com.gitlab.sszuev.flashcards.common.requireExiting
-import com.gitlab.sszuev.flashcards.common.requireNew
 import com.gitlab.sszuev.flashcards.common.status
+import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
+import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
 import com.gitlab.sszuev.flashcards.common.wrongDictionaryLanguageFamilies
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.model.common.AppError
@@ -70,7 +70,7 @@ class MemDbCardRepository(
         }
         var cardsFromDb = database.findCardsByDictionaryIds(ids)
         if (!filter.withUnknown) {
-            cardsFromDb = cardsFromDb.filter { sysConfig.status(it.answered) != CardStatus.LEARNED }
+            cardsFromDb = cardsFromDb.filter { sysConfig.status(it.answered) != DocumentCardStatus.LEARNED }
         }
         if (filter.random) {
             cardsFromDb = cardsFromDb.shuffled(Random.Default)
@@ -80,7 +80,7 @@ class MemDbCardRepository(
     }
 
     override fun createCard(cardEntity: CardEntity): CardDbResponse {
-        requireNew(cardEntity)
+        validateCardEntityForCreate(cardEntity)
         val dictionaryId = cardEntity.dictionaryId.asLong()
         database.findDictionaryById(dictionaryId) ?: return createNoDictionaryResponseError(
             id = cardEntity.dictionaryId,
@@ -90,7 +90,7 @@ class MemDbCardRepository(
     }
 
     override fun updateCard(cardEntity: CardEntity): CardDbResponse {
-        requireExiting(cardEntity)
+        validateCardEntityForUpdate(cardEntity)
         val dictionaryId = cardEntity.dictionaryId.asLong()
         database.findDictionaryById(dictionaryId) ?: return createNoDictionaryResponseError(
             id = cardEntity.dictionaryId,
@@ -135,7 +135,7 @@ class MemDbCardRepository(
             errors.add(noCardFoundDbError(operation = "learnCard", id = id))
             return null
         }
-        val record = card.copy(details = cardEntityDetailsToMemDbCardDetails(learn.details), changedAt = changeAt)
+        val record = card.copy(details = learn.details.toMemDbCardDetails(), changedAt = changeAt)
         return database.saveCard(record)
     }
 
