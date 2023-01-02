@@ -224,6 +224,8 @@ private fun String.asLangId(): LangId = LangId(this)
 
 private fun Long.asCardId(): CardId = CardId(toString())
 
-private fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
+internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
+
+internal fun Long?.asDictionaryId(): DictionaryId = DictionaryId(checkNotNull(this).toString())
 
 private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())

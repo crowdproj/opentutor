@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.noUserFoundDbError
-import com.gitlab.sszuev.flashcards.common.wrongUserUUIDDbError
+import com.gitlab.sszuev.flashcards.common.wrongUserUuidDbError
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
@@ -19,7 +19,7 @@ class MemDbUserRepository(
             UUID.fromString(authId.asString())
         } catch (ex: IllegalArgumentException) {
             return UserEntityDbResponse(
-                user = AppUserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", authId))
+                user = AppUserEntity.EMPTY, errors = listOf(wrongUserUuidDbError("getUser", authId))
             )
         }
         val res = database.findUserByUuid(uuid)

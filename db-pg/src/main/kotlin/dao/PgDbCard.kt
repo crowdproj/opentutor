@@ -4,8 +4,8 @@ import org.jetbrains.exposed.dao.Entity
 import org.jetbrains.exposed.dao.EntityClass
 import org.jetbrains.exposed.dao.id.EntityID
 
-class DbPgCard(id: EntityID<Long>) : Entity<Long>(id) {
-    companion object : EntityClass<Long, DbPgCard>(Cards)
+class PgDbCard(id: EntityID<Long>) : Entity<Long>(id) {
+    companion object : EntityClass<Long, PgDbCard>(Cards)
 
     var dictionaryId by Cards.dictionaryId
     var text by Cards.text

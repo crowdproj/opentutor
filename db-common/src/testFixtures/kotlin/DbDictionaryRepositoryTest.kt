@@ -11,6 +11,8 @@ abstract class DbDictionaryRepositoryTest {
     abstract val repository: DbDictionaryRepository
 
     companion object {
+        private val userId = AppUserId("42")
+
         private val EN = LangEntity(
             LangId("en"), listOf(
                 "noun",
@@ -73,7 +75,7 @@ abstract class DbDictionaryRepositoryTest {
     @Test
     fun `test download dictionary`() {
         // Weather
-        val res = repository.downloadDictionary(DictionaryId("2"))
+        val res = repository.importDictionary(userId, DictionaryId("2"))
         Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
         val xml = res.resource.data.toString(Charsets.UTF_16)
         Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16"?>"""))
@@ -85,7 +87,7 @@ abstract class DbDictionaryRepositoryTest {
     @Test
     fun `test delete dictionary success`() {
         // Business vocabulary (Job)
-        val res = repository.deleteDictionary(DictionaryId("1"))
+        val res = repository.removeDictionary(userId, DictionaryId("1"))
         Assertions.assertTrue(res.errors.isEmpty())
     }
 
@@ -93,14 +95,14 @@ abstract class DbDictionaryRepositoryTest {
     @Test
     fun `test delete dictionary not found`() {
         val id = DictionaryId("42")
-        val res = repository.deleteDictionary(id)
+        val res = repository.removeDictionary(userId, id)
         Assertions.assertEquals(1, res.errors.size)
         val error = res.errors[0]
-        Assertions.assertEquals("database::deleteDictionary", error.code)
+        Assertions.assertEquals("database::removeDictionary", error.code)
         Assertions.assertEquals(id.asString(), error.field)
         Assertions.assertEquals("database", error.group)
         Assertions.assertEquals(
-            """Error while deleteDictionary: dictionary with id="${id.asString()}" not found""",
+            """Error while removeDictionary: dictionary with id="${id.asString()}" not found""",
             error.message
         )
     }
@@ -132,7 +134,7 @@ abstract class DbDictionaryRepositoryTest {
             </dictionary>
         """.trimIndent()
         val bytes = txt.toByteArray(Charsets.UTF_16)
-        val res = repository.uploadDictionary(AppUserId("42"), ResourceEntity(DictionaryId.NONE, bytes))
+        val res = repository.exportDictionary(AppUserId("42"), ResourceEntity(DictionaryId.NONE, bytes))
         Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
 
         Assertions.assertEquals("Test Dictionary", res.dictionary.name)

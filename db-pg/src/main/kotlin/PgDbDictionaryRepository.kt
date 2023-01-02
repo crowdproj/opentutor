@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
 import com.gitlab.sszuev.flashcards.common.documents.createReader
 import com.gitlab.sszuev.flashcards.common.documents.createWriter
+import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
 import com.gitlab.sszuev.flashcards.common.status
@@ -13,18 +14,19 @@ import com.gitlab.sszuev.flashcards.common.toDocumentExamples
 import com.gitlab.sszuev.flashcards.common.toDocumentTranslations
 import com.gitlab.sszuev.flashcards.common.wrongResourceDbError
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
-import com.gitlab.sszuev.flashcards.dbpg.dao.DbPgCard
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
+import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbDictionary
+import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DeleteDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
-import com.gitlab.sszuev.flashcards.repositories.DownloadDictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.deleteWhere
@@ -43,9 +45,6 @@ class PgDbDictionaryRepository(
     }
 
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
-        if (userId == AppUserId.NONE) {
-            DictionariesDbResponse(dictionaries = emptyList())
-        }
         return connection.execute {
             val dictionaries =
                 PgDbDictionary.find(Dictionaries.userId eq userId.asRecordId()).map { it.toDictionaryEntity() }
@@ -63,14 +62,20 @@ class PgDbDictionaryRepository(
                 it[Dictionaries.userId] = userId.asLong()
                 it[changedAt] = timestamp
             }
-            DictionaryDbResponse(entity.copy(dictionaryId = dictionaryId.asDictionaryId()))
+            DictionaryDbResponse(dictionary = entity.copy(dictionaryId = dictionaryId.asDictionaryId()))
         }
     }
 
-    override fun deleteDictionary(dictionaryId: DictionaryId): DeleteDictionaryDbResponse {
+    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
         return connection.execute {
+            val errors = mutableListOf<AppError>()
+            val found = checkDictionaryUser("removeDictionary", userId, dictionaryId, errors)
+            if (errors.isNotEmpty()) {
+                return@execute RemoveDictionaryDbResponse(errors = errors)
+            }
+            checkNotNull(found)
             val cardIds = Cards.select {
-                Cards.dictionaryId eq dictionaryId.asLong()
+                Cards.dictionaryId eq found.id
             }.map {
                 it[Cards.id]
             }
@@ -78,31 +83,31 @@ class PgDbDictionaryRepository(
                 this.id inList cardIds
             }
             val res = Dictionaries.deleteWhere {
-                Dictionaries.id eq dictionaryId.asLong()
+                Dictionaries.id eq found.id
             }
-            DeleteDictionaryDbResponse(
-                if (res == 0)
-                    listOf(noDictionaryFoundDbError(operation = "deleteDictionary", id = dictionaryId))
+            RemoveDictionaryDbResponse(
+                errors = if (res == 0)
+                    listOf(noDictionaryFoundDbError(operation = "removeDictionary", id = dictionaryId))
                 else emptyList()
             )
         }
     }
 
-    override fun downloadDictionary(dictionaryId: DictionaryId): DownloadDictionaryDbResponse {
+    override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse {
         return connection.execute {
-            val dictionary = PgDbDictionary.findById(dictionaryId.asLong())
-                ?: return@execute DownloadDictionaryDbResponse(
-                    resource = ResourceEntity.DUMMY,
-                    listOf(noDictionaryFoundDbError(operation = "downloadDictionary", id = dictionaryId))
-                )
-            val cards = DbPgCard.find {
-                Cards.dictionaryId eq dictionaryId.asLong()
+            val errors = mutableListOf<AppError>()
+            val found = checkDictionaryUser("importDictionary", userId, dictionaryId, errors)
+            if (errors.isNotEmpty()) {
+                return@execute ImportDictionaryDbResponse(errors = errors)
             }
-
+            checkNotNull(found)
+            val cards = PgDbCard.find {
+                Cards.dictionaryId eq found.id
+            }
             val res = DocumentDictionary(
-                name = dictionary.name,
-                sourceLang = dictionary.sourceLang,
-                targetLang = dictionary.targetLang,
+                name = found.name,
+                sourceLang = found.sourceLang,
+                targetLang = found.targetLang,
                 cards = cards.map { card ->
                     val word = parseCardWordsJson(card.words).firstOrNull()
                     DocumentCard(
@@ -115,19 +120,23 @@ class PgDbDictionaryRepository(
                     )
                 }
             )
-            val data = createWriter().write(res)
-            DownloadDictionaryDbResponse(resource = ResourceEntity(dictionaryId, data))
+            val data = try {
+                createWriter().write(res)
+            } catch (ex: Exception) {
+                return@execute ImportDictionaryDbResponse(wrongResourceDbError(ex))
+            }
+            ImportDictionaryDbResponse(resource = ResourceEntity(dictionaryId, data))
         }
     }
 
-    override fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
+    override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
+        val timestamp = LocalDateTime.now()
         val document = try {
             createReader().parse(resource.data)
         } catch (ex: Exception) {
-            return DictionaryDbResponse(DictionaryEntity.EMPTY, listOf(wrongResourceDbError(ex)))
+            return DictionaryDbResponse(wrongResourceDbError(ex))
         }
         return connection.execute {
-            val timestamp = LocalDateTime.now()
             val sourceLang = document.sourceLang
             val targetLang = document.targetLang
             val dictionaryId = Dictionaries.insertAndGetId {
@@ -138,7 +147,7 @@ class PgDbDictionaryRepository(
                 it[changedAt] = timestamp
             }
             document.cards.forEach {
-                DbPgCard.new {
+                PgDbCard.new {
                     this.dictionaryId = dictionaryId
                     this.text = it.text
                     this.words = it.toPgDbCardWordsJson()
@@ -152,7 +161,26 @@ class PgDbDictionaryRepository(
                 sourceLang = createLangEntity(sourceLang),
                 targetLang = createLangEntity(targetLang),
             )
-            DictionaryDbResponse(res)
+            DictionaryDbResponse(dictionary = res)
         }
+    }
+
+    @Suppress("DuplicatedCode")
+    private fun checkDictionaryUser(
+        operation: String,
+        userId: AppUserId,
+        dictionaryId: DictionaryId,
+        errors: MutableList<AppError>
+    ): PgDbDictionary? {
+        val dictionary = PgDbDictionary.findById(dictionaryId.asLong())
+        if (dictionary == null) {
+            errors.add(noDictionaryFoundDbError(operation, dictionaryId))
+            return null
+        }
+        if (dictionary.userId.value == userId.asLong()) {
+            return dictionary
+        }
+        errors.add(forbiddenEntityDbError(operation, dictionaryId, userId))
+        return null
     }
 }

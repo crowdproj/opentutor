@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.dbpg
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import com.gitlab.sszuev.flashcards.common.noUserFoundDbError
-import com.gitlab.sszuev.flashcards.common.wrongUserUUIDDbError
+import com.gitlab.sszuev.flashcards.common.wrongUserUuidDbError
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
 import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
@@ -28,7 +28,7 @@ class PgDbUserRepository(
             UUID.fromString(authId.asString())
         } catch (ex: IllegalArgumentException) {
             return UserEntityDbResponse(
-                user = AppUserEntity.EMPTY, errors = listOf(wrongUserUUIDDbError("getUser", authId))
+                user = AppUserEntity.EMPTY, errors = listOf(wrongUserUuidDbError("getUser", authId))
             )
         }
         return connection.execute {

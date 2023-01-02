@@ -9,8 +9,8 @@ import com.gitlab.sszuev.flashcards.common.toCommonCardDtoDetails
 import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
 import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
-import com.gitlab.sszuev.flashcards.dbpg.dao.DbPgCard
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
+import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbDictionary
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
 import com.gitlab.sszuev.flashcards.dbpg.dao.Users
@@ -40,7 +40,7 @@ internal fun PgDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryE
     targetLang = createLangEntity(this.targetLang),
 )
 
-internal fun DbPgCard.toCardEntity(): CardEntity {
+internal fun PgDbCard.toCardEntity(): CardEntity {
     val word = parseCardWordsJson(this.words).first()
     val details =
         parseCardDetailsJson(this.details).mapKeys { Stage.valueOf(it.key) }.mapValues { it.value.toString().toLong() }
@@ -57,7 +57,7 @@ internal fun DbPgCard.toCardEntity(): CardEntity {
     )
 }
 
-internal fun writeCardEntityToPgDbCard(from: CardEntity, to: DbPgCard, timestamp: LocalDateTime) {
+internal fun writeCardEntityToPgDbCard(from: CardEntity, to: PgDbCard, timestamp: LocalDateTime) {
     to.dictionaryId = from.dictionaryId.asRecordId()
     to.text = from.word
     to.words = from.toPgDbCardWordsJson()
@@ -74,9 +74,9 @@ internal fun DocumentCard.toPgDbCardWordsJson(): String = toCommonWordDtoList().
 
 internal fun EntityID<Long>.asUserId(): AppUserId = AppUserId(value.toString())
 
-internal fun EntityID<Long>.asDictionaryId(): DictionaryId = DictionaryId(value.toString())
+internal fun EntityID<Long>.asDictionaryId(): DictionaryId = value.asDictionaryId()
 
-internal fun EntityID<Long>.asCardId(): CardId = CardId(value.toString())
+internal fun EntityID<Long>.asCardId(): CardId = value.asCardId()
 
 internal fun AppUserId.asRecordId(): EntityID<Long> = EntityID(asLong(), Users)
 
@@ -90,3 +90,7 @@ internal fun createLangEntity(tag: String) = LangEntity(
 )
 
 private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())
+
+internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
+
+internal fun Long.asCardId(): CardId = CardId(toString())

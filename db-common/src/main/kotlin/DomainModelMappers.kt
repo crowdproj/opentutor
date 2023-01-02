@@ -3,43 +3,49 @@ package com.gitlab.sszuev.flashcards.common
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 
 fun validateCardEntityForCreate(entity: CardEntity) {
     val errors = mutableListOf<String>()
     if (entity.cardId != CardId.NONE) {
-        errors.add("No card-id specified")
+        errors.add("no card-id specified")
     }
     errors.addAll(validateCardEntity(entity))
     require(errors.isEmpty()) {
-        "Wrong card specified. Errors=$errors. Card=$entity"
+        "Card $entity does not pass the validation. Errors = $errors"
     }
 }
 
 fun validateCardEntityForUpdate(entity: CardEntity) {
     val errors = mutableListOf<String>()
     if (entity.cardId == CardId.NONE) {
-        errors.add("No card-id specified")
+        errors.add("no card-id specified.")
     }
     errors.addAll(validateCardEntity(entity))
     require(errors.isEmpty()) {
-        "Wrong card specified. Errors=$errors. Card=$entity"
+        "Card $entity does not pass the validation. Errors = $errors"
     }
 }
 
 private fun validateCardEntity(entity: CardEntity): List<String> {
     val errors = mutableListOf<String>()
     if (entity.dictionaryId == DictionaryId.NONE) {
-        errors.add("dictionary-id is required")
+        errors.add("no dictionary-id specified")
     }
     if (entity.word.isBlank()) {
-        errors.add("word is mandatory")
+        errors.add("blank word specified")
     }
     if (!entity.translations.flatten().any { it.isNotBlank() }) {
-        errors.add("translation is required")
+        errors.add("no translations specified")
     }
     return errors
+}
+
+fun validateCardLearns(learns: Collection<CardLearn>) {
+    val ids = learns.groupBy { it.cardId }.filter { it.value.size > 1 }.map { it.key }
+    require(ids.isEmpty()) { "Duplicate card ids: $ids" }
 }
 
 fun CardEntity.toCommonWordDtoList(): List<CommonWordDto> {

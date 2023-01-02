@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
@@ -16,46 +17,46 @@ interface DbCardRepository {
     /**
      * Gets card by id.
      */
-    fun getCard(cardId: CardId): CardDbResponse
+    fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse
 
     /**
      * Gets all cards by dictionaryId.
      */
-    fun getAllCards(dictionaryId: DictionaryId): CardsDbResponse
+    fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse
 
     /**
      * Searches cards by filter.
      */
-    fun searchCard(filter: CardFilter): CardsDbResponse
+    fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse
 
     /**
      * Creates card.
      */
-    fun createCard(cardEntity: CardEntity): CardDbResponse
+    fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse
 
     /**
      * Updates.
      */
-    fun updateCard(cardEntity: CardEntity): CardDbResponse
+    fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse
 
     /**
      * Updates cards details.
      */
-    fun learnCards(cardLearn: List<CardLearn>): CardsDbResponse
+    fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse
 
     /**
      * Resets status.
      */
-    fun resetCard(cardId: CardId): CardDbResponse
+    fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse
 
     /**
      * Deletes card by id.
      */
-    fun deleteCard(cardId: CardId): DeleteCardDbResponse
+    fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse
 }
 
 data class CardsDbResponse(
-    val cards: List<CardEntity>,
+    val cards: List<CardEntity> = emptyList(),
     val sourceLanguageId: LangId = LangId.NONE,
     val errors: List<AppError> = emptyList(),
 ) {
@@ -65,16 +66,23 @@ data class CardsDbResponse(
 }
 
 data class CardDbResponse(
-    val card: CardEntity,
+    val card: CardEntity = CardEntity.EMPTY,
     val errors: List<AppError> = emptyList(),
 ) {
+    constructor(error: AppError) : this(errors = listOf(error))
+
     companion object {
         val EMPTY = CardDbResponse(card = CardEntity.EMPTY)
     }
 }
 
-data class DeleteCardDbResponse(val errors: List<AppError> = emptyList()) {
+data class RemoveCardDbResponse(
+    val card: CardEntity = CardEntity.EMPTY,
+    val errors: List<AppError> = emptyList(),
+) {
+    constructor(error: AppError) : this(errors = listOf(error))
+
     companion object {
-        val EMPTY = DeleteCardDbResponse(errors = emptyList())
+        val EMPTY = RemoveCardDbResponse(errors = emptyList())
     }
 }
