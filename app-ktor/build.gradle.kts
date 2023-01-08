@@ -91,30 +91,32 @@ tasks.create("createTagFile") {
     Files.writeString(projectTagFile, projectTagFileContent)
 }
 
+tasks.dockerCreateDockerfile {
+    copyFile("./resources/data/users.csv", "/app/userdata/users.csv")
+    copyFile("./resources/data/dictionaries.csv", "/app/userdata/dictionaries.csv")
+    copyFile("./resources/data/cards.csv", "/app/userdata/cards.csv")
+}
+
 docker {
     val imageName: String
     val tag = project.version.toString().toLowerCase()
     val javaArgs = mutableListOf("-Xms256m", "-Xmx512m")
-    if (System.getProperty("demo") == null) {
+    if (System.getProperty("standalone") == null) {
         imageName = "sszuev/open-tutor"
     } else {
-        println("Build demo image")
-        imageName = "sszuev/open-tutor-demo"
-        // for demo, we path special parameters
+        println("Build standalone image")
+        imageName = "sszuev/open-tutor-standalone"
+        // for standalone app, use special (builtin) user uuid & builtin user data (located in /app/userdata)
         javaArgs.add("-DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6")
         javaArgs.add("-DRUN_MODE=test")
+        javaArgs.add("-DDATA_DIRECTORY=/app/userdata")
     }
     javaApplication {
         mainClassName.set(application.mainClass.get())
         baseImage.set("sszuev/ubuntu:openjdk11-jre-espeak-ng")
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         ports.set(listOf(8080))
-        images.set(
-            listOf(
-                "$imageName:$tag",
-                "$imageName:latest"
-            )
-        )
+        images.set(listOf("$imageName:$tag", "$imageName:latest"))
         jvmArgs.set(javaArgs)
     }
 }

@@ -1,55 +1,60 @@
 package com.gitlab.sszuev.flashcards.dbcommon.mocks
 
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
-import com.gitlab.sszuev.flashcards.repositories.DeleteCardDbResponse
+import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 
 /**
  * Does not work with `io.mockk:mockk`
  * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
  */
 class MockDbCardRepository(
-    private val invokeGetCard: (CardId) -> CardDbResponse = { CardDbResponse.EMPTY },
-    private val invokeGetAllCards: (DictionaryId) -> CardsDbResponse = { CardsDbResponse.EMPTY },
-    private val invokeSearchCards: (CardFilter) -> CardsDbResponse = { CardsDbResponse.EMPTY },
-    private val invokeCreateCard: (CardEntity) -> CardDbResponse = { CardDbResponse.EMPTY },
-    private val invokeUpdateCard: (CardEntity) -> CardDbResponse = { CardDbResponse.EMPTY },
-    private val invokeLearnCards: (List<CardLearn>) -> CardsDbResponse = { CardsDbResponse.EMPTY },
-    private val invokeResetCard: (CardId) -> CardDbResponse = { CardDbResponse.EMPTY },
-    private val invokeDeleteCard: (CardId) -> DeleteCardDbResponse = { DeleteCardDbResponse.EMPTY },
+    private val invokeGetCard: (AppUserId, CardId) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
+    private val invokeGetAllCards: (AppUserId, DictionaryId) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
+    private val invokeSearchCards: (AppUserId, CardFilter) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
+    private val invokeCreateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
+    private val invokeUpdateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
+    private val invokeLearnCards: (AppUserId, List<CardLearn>) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
+    private val invokeResetCard: (AppUserId, CardId) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
+    private val invokeDeleteCard: (AppUserId, CardId) -> RemoveCardDbResponse = { _, _ -> RemoveCardDbResponse.EMPTY },
 ) : DbCardRepository {
 
-    override fun getCard(id: CardId): CardDbResponse {
-        return invokeGetCard(id)
+    override fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse {
+        return invokeGetCard(userId, cardId)
     }
 
-    override fun getAllCards(id: DictionaryId): CardsDbResponse {
-        return invokeGetAllCards(id)
+    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse {
+        return invokeGetAllCards(userId, dictionaryId)
     }
 
-    override fun searchCard(filter: CardFilter): CardsDbResponse {
-        return invokeSearchCards(filter)
+    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
+        return invokeSearchCards(userId, filter)
     }
 
-    override fun createCard(card: CardEntity): CardDbResponse {
-        return invokeCreateCard(card)
+    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
+        return invokeCreateCard(userId, cardEntity)
     }
 
-    override fun updateCard(card: CardEntity): CardDbResponse {
-        return invokeUpdateCard(card)
+    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
+        return invokeUpdateCard(userId, cardEntity)
     }
 
-    override fun learnCards(learn: List<CardLearn>): CardsDbResponse {
-        return invokeLearnCards(learn)
+    override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
+        return invokeLearnCards(userId, cardLearns)
     }
 
-    override fun resetCard(id: CardId): CardDbResponse {
-        return invokeResetCard(id)
+    override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {
+        return invokeResetCard(userId, cardId)
     }
 
-    override fun deleteCard(id: CardId): DeleteCardDbResponse {
-        return invokeDeleteCard(id)
+    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse {
+        return invokeDeleteCard(userId, cardId)
     }
 }

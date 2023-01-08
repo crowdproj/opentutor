@@ -11,11 +11,11 @@ interface DbDictionaryRepository {
 
     fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse
 
-    fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse
+    fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse
 
-    fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse
+    fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse
 
-    fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse
+    fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse
 }
 
 data class DictionariesDbResponse(
@@ -27,20 +27,35 @@ data class DictionariesDbResponse(
     }
 }
 
-data class DeleteDictionaryDbResponse(val errors: List<AppError> = emptyList()) {
+data class RemoveDictionaryDbResponse(
+    val dictionary: DictionaryEntity = DictionaryEntity.EMPTY,
+    val errors: List<AppError> = emptyList(),
+) {
+    constructor(error: AppError) : this(errors = listOf(error))
+
     companion object {
-        val EMPTY = DeleteDictionaryDbResponse(errors = emptyList())
+        val EMPTY = RemoveDictionaryDbResponse()
     }
 }
 
-data class DownloadDictionaryDbResponse(val resource: ResourceEntity, val errors: List<AppError> = emptyList()) {
+data class ImportDictionaryDbResponse(
+    val resource: ResourceEntity = ResourceEntity.DUMMY,
+    val errors: List<AppError> = emptyList()
+) {
+    constructor(error: AppError) : this(errors = listOf(error))
+
     companion object {
-        val EMPTY = DownloadDictionaryDbResponse(resource = ResourceEntity.DUMMY)
+        val EMPTY = ImportDictionaryDbResponse()
     }
 }
 
-data class DictionaryDbResponse(val dictionary: DictionaryEntity, val errors: List<AppError> = emptyList()) {
+data class DictionaryDbResponse(
+    val dictionary: DictionaryEntity = DictionaryEntity.EMPTY,
+    val errors: List<AppError> = emptyList()
+) {
+    constructor(error: AppError) : this(errors = listOf(error))
+
     companion object {
-        val EMPTY = DictionaryDbResponse(dictionary = DictionaryEntity.EMPTY)
+        val EMPTY = DictionaryDbResponse()
     }
 }

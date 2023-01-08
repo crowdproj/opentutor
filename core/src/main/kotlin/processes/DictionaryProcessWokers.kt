@@ -59,8 +59,9 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
+        val userId = this.contextUserEntity.id
         val res =
-            this.repositories.dictionaryRepository(this.workMode).deleteDictionary(this.normalizedRequestDictionaryId)
+            this.repositories.dictionaryRepository(this.workMode).removeDictionary(userId, this.normalizedRequestDictionaryId)
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
         }
@@ -77,8 +78,9 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
+        val userId = this.contextUserEntity.id
         val res =
-            this.repositories.dictionaryRepository(this.workMode).downloadDictionary(this.normalizedRequestDictionaryId)
+            this.repositories.dictionaryRepository(this.workMode).importDictionary(userId, this.normalizedRequestDictionaryId)
         this.responseDictionaryResourceEntity = res.resource
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
@@ -96,7 +98,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val res = this.repositories.dictionaryRepository(this.workMode).uploadDictionary(
+        val res = this.repositories.dictionaryRepository(this.workMode).exportDictionary(
             userId = this.contextUserEntity.id,
             resource = this.requestDictionaryResourceEntity
         )

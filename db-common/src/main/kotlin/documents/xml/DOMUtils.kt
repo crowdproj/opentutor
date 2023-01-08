@@ -7,46 +7,22 @@ internal object DOMUtils {
     /**
      * Gets element by the specified tag or throws an error.
      *
-     * @param [parent][Element]
      * @param [tag][String]
      * @return [Element]
      * @throws IllegalStateException if no element found
      */
-    fun getElement(parent: Element, tag: String): Element {
-        return elements(parent, tag).single()
-    }
-
-    /**
-     * Finds element by the specified tag or throws an error.
-     *
-     * @param [parent][Element]
-     * @param [tag][String]
-     * @return [Element] or `null`
-     * @throws IllegalStateException if there is more than one element found
-     */
-    fun findElement(parent: Element, tag: String): Element? {
-        val list = elements(parent, tag).toList()
-        if (list.size == 1) {
-            return list[0]
-        } else if (list.isEmpty()) {
-            return null
-        }
-        throw IllegalStateException("Expected not more than one member for tag='$tag'")
+    fun Element.element(tag: String): Element {
+        return elements(tag).single()
     }
 
     /**
      * Lists elements by tag.
      *
-     * @param [parent][Element]
      * @param [tag][String]
      * @return [Sequence] of [Element]s
      */
-    fun elements(parent: Element, tag: String): Sequence<Element> {
-        return children(parent)
-            .mapNotNull { it as? Element }
-            .filter {
-                it.tagName == tag
-            }
+    fun Element.elements(tag: String): Sequence<Element> {
+        return children(this).mapNotNull { it as? Element } .filter { it.tagName == tag }
     }
 
     /**

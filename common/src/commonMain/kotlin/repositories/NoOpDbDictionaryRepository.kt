@@ -14,15 +14,15 @@ object NoOpDbDictionaryRepository : DbDictionaryRepository {
         noOp()
     }
 
-    override fun deleteDictionary(id: DictionaryId): DeleteDictionaryDbResponse {
+    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
         noOp()
     }
 
-    override fun downloadDictionary(id: DictionaryId): DownloadDictionaryDbResponse {
+    override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse {
         noOp()
     }
 
-    override fun uploadDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
+    override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
         noOp()
     }
 

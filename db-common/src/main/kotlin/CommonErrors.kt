@@ -1,11 +1,13 @@
 package com.gitlab.sszuev.flashcards.common
 
+import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
-fun wrongDictionaryLanguageFamilies(
+fun wrongDictionaryLanguageFamiliesDbError(
     operation: String,
     dictionaryIds: Collection<DictionaryId>,
 ) = dbError(
@@ -13,6 +15,22 @@ fun wrongDictionaryLanguageFamilies(
     fieldName = dictionaryIds.joinToString { it.asString() },
     details = """specified dictionaries belong to different language families, ids="${dictionaryIds.map { it.asString() }}""""
 )
+
+fun forbiddenEntityDbError(
+    operation: String,
+    entityId: Id,
+    userId: AppUserId,
+): AppError {
+    return dbError(
+        operation = operation,
+        fieldName = entityId.asString(),
+        details = when (entityId) {
+            is DictionaryId -> "access denied: the dictionary (id=${entityId.asString()}) is not owned by the used (id=${userId.asString()})"
+            is CardId -> "access denied: the card (id=${entityId.asString()}) is not owned by the the used (id=${userId.asString()})"
+            else -> throw IllegalArgumentException()
+        },
+    )
+}
 
 fun noDictionaryFoundDbError(
     operation: String,
@@ -37,7 +55,7 @@ fun noUserFoundDbError(
     details = """user with uid="${uid.asString()}" not found"""
 )
 
-fun wrongUserUUIDDbError(
+fun wrongUserUuidDbError(
     operation: String,
     uid: AppAuthId,
 ) = dbError(

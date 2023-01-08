@@ -12,7 +12,7 @@ This is a second edition, the first one is a java-spring application, which home
 
 #### Build and run:
 
-- `docker pull sszuev/open-tutor-demo:latest && docker run --name open-tutor-demo-app -p 8080:8080 sszuev/open-tutor-demo:latest`
+- `docker pull sszuev/open-tutor-standalone:latest && docker run --name open-tutor-standalone-app -p 8080:8080 sszuev/open-tutor-standalone:latest`
 - [app-ktor/README](./app-ktor/README.md)
 
 #### License:

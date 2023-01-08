@@ -1,2 +1,2 @@
-id,uuid,role
-42,c9a414f5-3f75-4494-b664-f4c8b33ff4e6,2
+id,uuid,details,changed_at
+42,c9a414f5-3f75-4494-b664-f4c8b33ff4e6,{},2022-12-26T16:04:14

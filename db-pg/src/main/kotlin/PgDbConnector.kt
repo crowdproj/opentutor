@@ -27,12 +27,14 @@ class PgDbConnector(config: PgDbConfig) {
     }
 
     init {
-        Liquibase(
-            "/migrations/changelog.xml",
-            ClassLoaderResourceAccessor(),
-            DatabaseFactory.getInstance().findCorrectDatabaseImplementation(JdbcConnection(dataSource.connection))
-        ).run {
-            update(Contexts(), LabelExpression())
+        dataSource.connection.use {
+            Liquibase(
+                "/migrations/changelog.xml",
+                ClassLoaderResourceAccessor(),
+                DatabaseFactory.getInstance().findCorrectDatabaseImplementation(JdbcConnection(it))
+            ).run {
+                update(Contexts(), LabelExpression())
+            }
         }
     }
 

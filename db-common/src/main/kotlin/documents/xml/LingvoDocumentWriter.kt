@@ -8,7 +8,11 @@ import org.w3c.dom.Element
 import java.io.OutputStream
 import javax.xml.parsers.DocumentBuilderFactory
 import javax.xml.parsers.ParserConfigurationException
-import javax.xml.transform.*
+import javax.xml.transform.OutputKeys
+import javax.xml.transform.Transformer
+import javax.xml.transform.TransformerConfigurationException
+import javax.xml.transform.TransformerException
+import javax.xml.transform.TransformerFactory
 import javax.xml.transform.dom.DOMSource
 import javax.xml.transform.stream.StreamResult
 
@@ -29,10 +33,8 @@ internal class LingvoDocumentWriter : DocumentWriter {
         val root = res.createElement("dictionary")
         res.appendChild(root)
         root.setAttribute("title", dictionary.name)
-        val srcLangId = LingvoMappings.fromLanguageTag(dictionary.sourceLang.tag)
-        val dstLangId = LingvoMappings.fromLanguageTag(dictionary.targetLang.tag)
-        dictionary.userId?.let { root.setAttribute("userId", it.toString()) }
-        dictionary.id?.let { root.setAttribute("dictionaryId", it.toString()) }
+        val srcLangId = LingvoMappings.fromLanguageTag(dictionary.sourceLang)
+        val dstLangId = LingvoMappings.fromLanguageTag(dictionary.targetLang)
         root.setAttribute("sourceLanguageId", srcLangId)
         root.setAttribute("destinationLanguageId", dstLangId)
         root.setAttribute("targetNamespace", "http://www.abbyy.com/TutorDictionary")
@@ -48,7 +50,6 @@ internal class LingvoDocumentWriter : DocumentWriter {
 
     private fun writeCard(parent: Element, card: DocumentCard) {
         val doc = parent.ownerDocument
-        card.id?.also { parent.setAttribute("cardId", it.toString()) }
         writeText(parent, "word", card.text)
         val meanings = doc.createElement("meanings")
         parent.appendChild(meanings)
@@ -69,9 +70,6 @@ internal class LingvoDocumentWriter : DocumentWriter {
         val doc = meaning.ownerDocument
         val statistics = doc.createElement("statistics")
         meaning.appendChild(statistics)
-        if (card.answered != null) {
-            statistics.setAttribute("answered", card.answered.toString())
-        }
         statistics.setAttribute("status", LingvoMappings.fromStatus(card.status))
     }
 
