@@ -10,11 +10,12 @@ import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import io.ktor.server.application.*
-import io.ktor.server.auth.*
-import io.ktor.server.auth.jwt.*
-import io.ktor.server.request.*
-import io.ktor.server.response.*
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.auth.jwt.JWTPrincipal
+import io.ktor.server.auth.principal
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import org.slf4j.event.Level
 
 internal suspend inline fun <reified Request : BaseRequest, reified Context : AppContext> ApplicationCall.execute(
     operation: AppOperation,
@@ -24,7 +25,7 @@ internal suspend inline fun <reified Request : BaseRequest, reified Context : Ap
 ) {
     val logId = operation.name
     try {
-        logger.withLogging {
+        logger.withLogging(level = Level.DEBUG) {
             context.fromUserTransportIfRequired { requestAuthId() }
             context.fromTransport(receive<Request>())
             logger.info(msg = "Request: $operation", data = context.toLogResource(logId))
