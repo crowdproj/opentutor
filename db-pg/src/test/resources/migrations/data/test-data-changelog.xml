@@ -5,24 +5,27 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-    <changeSet id="test-data" author="sszuev">
-        <loadData file="languages.csv"
-                  quotchar="'"
+    <changeSet id="001-01-change-json-to-text-workaround" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="001-01-before-load-test-data.sql"/>
+        <comment>Workaround to load json data: change `user.details` type JSON -> TEXT</comment>
+    </changeSet>
+
+    <changeSet id="001-02-load-test-data" author="sszuev">
+        <loadData catalogName="users"
+                  commentLineStartsWith="//"
+                  file="001-02-test-users.csv"
                   relativeToChangelogFile="true"
                   schemaName="public"
-                  separator=";"
-                  tableName="languages"
+                  tableName="users"
                   usePreparedStatements="true">
         </loadData>
-        <loadData file="dictionaries.csv"
-                  quotchar="'"
+        <loadData file="001-02-test-dictionaries.csv"
                   relativeToChangelogFile="true"
                   schemaName="public"
-                  separator=";"
                   tableName="dictionaries"
                   usePreparedStatements="true">
         </loadData>
-        <loadData file="cards.csv"
+        <loadData file="001-02-test-cards.csv"
                   relativeToChangelogFile="true"
                   schemaName="public"
                   tableName="cards"
@@ -31,25 +34,16 @@
             <column name="transcription" type="string"/>
             <column name="details" type="string"/>
         </loadData>
-        <loadData file="examples.csv"
-                  relativeToChangelogFile="true"
-                  schemaName="public"
-                  tableName="examples"
-                  usePreparedStatements="true">
-            <column name="text" type="string"/>
-        </loadData>
-        <loadData file="translations.csv"
-                  relativeToChangelogFile="true"
-                  schemaName="public"
-                  tableName="translations"
-                  usePreparedStatements="true">
-            <column name="text" type="string"/>
-        </loadData>
     </changeSet>
 
-    <changeSet id="test-data-sequences" author="sszuev">
-        <sqlFile relativeToChangelogFile="true" path="data-sequences.sql"/>
+    <changeSet id="001-03-test-data-sequences" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="001-03-test-data-sequences.sql"/>
         <comment>Seq next data sequence primary keys</comment>
+    </changeSet>
+
+    <changeSet id="001-04-change-text-to-json-workaround" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="001-04-after-load-test-data.sql"/>
+        <comment>Workaround to load json data: change `user.details` type TEXT -> JSON</comment>
     </changeSet>
 
 </databaseChangeLog>

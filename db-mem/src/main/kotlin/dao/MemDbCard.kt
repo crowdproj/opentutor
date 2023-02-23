@@ -1,14 +1,16 @@
 package com.gitlab.sszuev.flashcards.dbmem.dao
 
+import java.time.LocalDateTime
+
+/**
+ * id,dictionary_id,text,word,examples,details,answered,changed_at
+ */
 data class MemDbCard(
-    val id: Long,
-    val dictionaryId: Long,
-    val text: String,
-    val transcription: String? = null,
-    val partOfSpeech: String? = null,
-    val details: String = "{}",
+    val id: Long? = null,
+    val dictionaryId: Long? = null,
+    val words: List<MemDbWord>,
+    val details: Map<String, String> = emptyMap(),
     val answered: Int? = null,
-    val translations: List<String>,
-    val examples: List<String> = emptyList(),
+    val changedAt: LocalDateTime? = null,
 )
 

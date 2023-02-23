@@ -26,8 +26,6 @@ docker exec -it flashcards-db /bin/bash
 psql -U dev -d flashcards -a -f /tmp/pg-data-sample.sql
 ```
 Notes:
-- Note that after starting container `flashcards-db` and before executing `pg-data-sample.sql`, 
-need to run the `:app-ktor` application to init database with the liquibase migration.
 - For postgres there could be a problem with permissions, see https://stackoverflow.com/questions/44878062/initdb-could-not-change-permissions-of-directory-on-postgresql-container,
 do not use ntfs-3g
 - For rabbitmq the command `chmod -R 777 ./data/rabbitmq/log/` may help to resolve permissions denied error when starting

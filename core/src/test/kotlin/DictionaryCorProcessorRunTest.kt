@@ -108,11 +108,11 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test delete-dictionary success`() = runTest {
         val testId = DictionaryId("42")
-        val response = DeleteDictionaryDbResponse()
+        val response = RemoveDictionaryDbResponse()
 
         var wasCalled = false
         val repository = MockDbDictionaryRepository(
-            invokeDeleteDictionary = {
+            invokeDeleteDictionary = { _, it ->
                 wasCalled = true
                 if (it == testId) response else throw AssertionError()
             }
@@ -133,11 +133,11 @@ internal class DictionaryCorProcessorRunTest {
     fun `test download-dictionary success`() = runTest {
         val testId = DictionaryId("42")
         val testData = ResourceEntity(testId, ByteArray(42) { 42 })
-        val response = DownloadDictionaryDbResponse(testData)
+        val response = ImportDictionaryDbResponse(resource = testData)
 
         var wasCalled = false
         val repository = MockDbDictionaryRepository(
-            invokeDownloadDictionary = {
+            invokeDownloadDictionary = { _, it ->
                 wasCalled = true
                 if (it == testId) response else throw AssertionError()
             }

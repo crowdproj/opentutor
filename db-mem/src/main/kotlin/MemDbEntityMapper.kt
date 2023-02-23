@@ -1,141 +1,229 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.*
-import com.gitlab.sszuev.flashcards.common.documents.CardStatus
+import com.gitlab.sszuev.flashcards.common.CommonCardDetailsDto
+import com.gitlab.sszuev.flashcards.common.CommonDictionaryDetailsDto
+import com.gitlab.sszuev.flashcards.common.CommonExampleDto
+import com.gitlab.sszuev.flashcards.common.CommonUserDetailsDto
+import com.gitlab.sszuev.flashcards.common.CommonWordDto
+import com.gitlab.sszuev.flashcards.common.LanguageRepository
+import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
-import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
+import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
+import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
+import com.gitlab.sszuev.flashcards.common.parseDictionaryDetailsJson
+import com.gitlab.sszuev.flashcards.common.parseUserDetailsJson
+import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
+import com.gitlab.sszuev.flashcards.common.toCommonCardDetailsDto
+import com.gitlab.sszuev.flashcards.common.toCommonCardDtoDetails
+import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
+import com.gitlab.sszuev.flashcards.common.toDocumentExamples
+import com.gitlab.sszuev.flashcards.common.toDocumentTranslations
+import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbExample
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbLanguage
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.*
-import java.util.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
+import java.util.UUID
 
-internal fun MemDbUser.toEntity() = AppUserEntity(
-    id = id.asUserId(),
-    authId = uuid.asUserUid(),
+internal fun MemDbUser.detailsAsJsonString(): String {
+    return CommonUserDetailsDto(details).toJsonString()
+}
+
+internal fun fromJsonStringToMemDbUserDetails(json: String): Map<String, String> {
+    return parseUserDetailsJson(json).mapValues { it.toString() }
+}
+
+internal fun MemDbDictionary.detailsAsJsonString(): String {
+    return CommonDictionaryDetailsDto(this.details).toJsonString()
+}
+
+internal fun fromJsonStringToMemDbDictionaryDetails(json: String): Map<String, String> {
+    return parseDictionaryDetailsJson(json).mapValues { it.toString() }
+}
+
+internal fun MemDbCard.detailsAsJsonString(): String {
+    return toCommonCardDetailsDto().toJsonString()
+}
+
+internal fun fromJsonStringToMemDbCardDetails(json: String): Map<String, String> {
+    return parseCardDetailsJson(json).mapValues { it.toString() }
+}
+
+internal fun MemDbCard.wordsAsJsonString(): String {
+    return words.map { it.toCommonWordDto() }.toJsonString()
+}
+
+internal fun fromJsonStringToMemDbWords(json: String): List<MemDbWord> {
+    return parseCardWordsJson(json).map { it.toMemDbWord() }
+}
+
+internal fun MemDbUser.toAppUserEntity(): AppUserEntity = AppUserEntity(
+    id = id?.asUserId() ?: AppUserId.NONE,
+    authId = uuid.asAppAuthId(),
 )
 
-internal fun DocumentDictionary.toDbRecord(userId: AppUserId? = null): MemDbDictionary {
-    val id = requireNotNull(this.id) { "no dictionary id found" }
+internal fun DocumentDictionary.toMemDbCards(mapAnswered: (DocumentCardStatus) -> Int): List<MemDbCard> {
+    return this.cards.map { it.toMemDbCard(mapAnswered) }
+}
+
+internal fun DocumentDictionary.toMemDbDictionary(): MemDbDictionary {
     return MemDbDictionary(
-        userId = userId?.asLong() ?: this.userId,
-        id = id,
         name = this.name,
-        sourceLanguage = this.sourceLang.toDbRecord(),
-        targetLanguage = this.targetLang.toDbRecord(),
-        cards = this.cards.asSequence().map { it.toDbRecord(id) }.associateBy { it.id }.toMutableMap(),
+        sourceLanguage = createMemDbLanguage(this.sourceLang),
+        targetLanguage = createMemDbLanguage(this.targetLang),
+        details = emptyMap(),
     )
 }
 
-internal fun MemDbDictionary.toDocument(withIds: Boolean = true, mapStatus: (Int?) -> CardStatus): DocumentDictionary {
+internal fun fromDatabaseToDocumentDictionary(
+    dictionary: MemDbDictionary,
+    cards: List<MemDbCard>,
+    mapStatus: (Int?) -> DocumentCardStatus
+): DocumentDictionary {
     return DocumentDictionary(
-        userId = if (withIds) this.userId else null,
-        id = if (withIds) this.id else null,
-        name = this.name,
-        sourceLang = this.sourceLanguage.toDocument(),
-        targetLang = this.targetLanguage.toDocument(),
-        cards = this.cards.values.map { it.toDocument(withIds, mapStatus) },
+        name = dictionary.name,
+        sourceLang = dictionary.sourceLanguage.id,
+        targetLang = dictionary.targetLanguage.id,
+        cards = cards.map { it.toDocumentCard(mapStatus) },
     )
 }
 
-private fun DocumentCard.toDbRecord(dictionaryId: Long) = MemDbCard(
-    id = requireNotNull(this.id) { "no card id found" },
-    dictionaryId = dictionaryId,
-    text = this.text,
-    transcription = this.transcription,
-    partOfSpeech = this.partOfSpeech,
-    details = this.details,
-    answered = this.answered,
-    translations = this.translations,
-    examples = this.examples,
-)
-
-private fun MemDbCard.toDocument(withIds: Boolean = true, mapStatus: (Int?) -> CardStatus) = DocumentCard(
-    id = if (withIds) this.id else null,
-    text = this.text,
-    transcription = this.transcription,
-    partOfSpeech = this.partOfSpeech,
-    details = this.details,
-    answered = this.answered,
-    translations = this.translations,
-    examples = this.examples,
-    status = mapStatus(this.answered),
-)
-
-internal fun MemDbDictionary.toEntity() = DictionaryEntity(
-    dictionaryId = this.id.asDictionaryId(),
-    name = this.name,
-    sourceLang = this.sourceLanguage.toEntity(),
-    targetLang = this.targetLanguage.toEntity(),
-)
-
-internal fun DictionaryEntity.toDbRecord(userId: AppUserId) = MemDbDictionary(
-    userId = userId.asLong(),
-    id = this.dictionaryId.asLong(),
-    name = this.name,
-    sourceLanguage = this.sourceLang.toDbRecord(),
-    targetLanguage = this.targetLang.toDbRecord(),
-    cards = mutableMapOf(),
-)
-
-internal fun MemDbCard.toEntity() = CardEntity(
-    cardId = id.asCardId(),
-    dictionaryId = dictionaryId.asDictionaryId(),
-    word = text,
-    transcription = transcription,
-    translations = translations.map { toEntityTranslations(it) },
-    examples = examples,
-    partOfSpeech = partOfSpeech,
-    details = toEntityDetails(details),
-    answered = answered,
-)
-
-internal fun CardEntity.toDbRecord(cardId: Long? = null): MemDbCard {
-    val dictionaryId = dictionaryId.asLong()
+internal fun DocumentCard.toMemDbCard(mapAnswered: (DocumentCardStatus) -> Int): MemDbCard {
     return MemDbCard(
-        id = cardId ?: this.cardId.asLong(),
-        dictionaryId = dictionaryId,
-        text = word,
-        transcription = transcription,
-        translations = translations.map { toDbRecordTranslations(it) },
-        examples = examples,
-        partOfSpeech = partOfSpeech,
-        details = toDbRecordDetails(details),
+        words = this.toMemDbWords(),
+        details = emptyMap(),
+        answered = mapAnswered(this.status),
+    )
+}
+
+private fun DocumentCard.toMemDbWords(): List<MemDbWord> {
+    return toCommonWordDtoList().map { it.toMemDbWord() }
+}
+
+internal fun MemDbCard.toDocumentCard(mapStatus: (Int?) -> DocumentCardStatus): DocumentCard {
+    val word = this.words.first().toCommonWordDto()
+    return DocumentCard(
+        text = word.word,
+        transcription = word.transcription,
+        partOfSpeech = word.partOfSpeech,
+        translations = word.toDocumentTranslations(),
+        examples = word.toDocumentExamples(),
+        status = mapStatus(this.answered),
+    )
+}
+
+internal fun MemDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryEntity(
+    dictionaryId = this.id?.asDictionaryId() ?: DictionaryId.NONE,
+    name = this.name,
+    sourceLang = this.sourceLanguage.toLangEntity(),
+    targetLang = this.targetLanguage.toLangEntity(),
+)
+
+internal fun DictionaryEntity.toMemDbDictionary(): MemDbDictionary = MemDbDictionary(
+    id = if (this.dictionaryId == DictionaryId.NONE) null else this.dictionaryId.asLong(),
+    name = this.name,
+    sourceLanguage = this.sourceLang.toMemDbLanguage(),
+    targetLanguage = this.targetLang.toMemDbLanguage(),
+    details = emptyMap(),
+)
+
+internal fun MemDbCard.toCardEntity(): CardEntity {
+    val word = this.words.first().toCommonWordDto()
+    val details = this.toCommonCardDetailsDto().toCardEntityDetails()
+    return CardEntity(
+        cardId = id?.asCardId() ?: CardId.NONE,
+        dictionaryId = dictionaryId?.asDictionaryId() ?: DictionaryId.NONE,
+        word = word.word,
+        transcription = word.transcription,
+        translations = word.translations,
+        examples = word.examples.map { it.text },
+        partOfSpeech = word.partOfSpeech,
+        details = details,
         answered = answered,
     )
 }
 
-internal fun MemDbLanguage.toEntity() = LangEntity(
+internal fun CardEntity.toMemDbCard(): MemDbCard {
+    val dictionaryId = dictionaryId.asLong()
+    return MemDbCard(
+        id = if (this.cardId == CardId.NONE) null else this.cardId.asLong(),
+        dictionaryId = dictionaryId,
+        words = this.toCommonWordDtoList().map { it.toMemDbWord() },
+        details = this.toCommonCardDetailsDto().toMemDbCardDetails(),
+        answered = answered,
+        changedAt = null,
+    )
+}
+
+internal fun MemDbLanguage.toLangEntity(): LangEntity = LangEntity(
     langId = this.id.asLangId(),
     partsOfSpeech = this.partsOfSpeech,
 )
 
-internal fun LangEntity.toDbRecord() = MemDbLanguage(
+internal fun createMemDbLanguage(tag: String): MemDbLanguage = MemDbLanguage(
+    id = tag,
+    partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
+)
+
+internal fun LangEntity.toMemDbLanguage(): MemDbLanguage = MemDbLanguage(
     id = this.langId.asString(),
     partsOfSpeech = this.partsOfSpeech,
 )
 
-private fun DocumentLang.toDbRecord() = MemDbLanguage(
-    id = this.tag,
-    partsOfSpeech = this.partsOfSpeech,
+private fun MemDbWord.toCommonWordDto(): CommonWordDto = CommonWordDto(
+    word = word,
+    transcription = transcription,
+    translations = translations,
+    partOfSpeech = partOfSpeech,
+    examples = examples.map { it.toCommonExampleDto() }
 )
 
-private fun MemDbLanguage.toDocument() = DocumentLang(
-    tag = this.id,
-    partsOfSpeech = this.partsOfSpeech,
+private fun MemDbExample.toCommonExampleDto(): CommonExampleDto = CommonExampleDto(
+    text = text,
+    translation = translation,
 )
 
-private fun Long.asUserId() = AppUserId(toString())
+private fun CommonWordDto.toMemDbWord(): MemDbWord = MemDbWord(
+    word = word,
+    transcription = transcription,
+    translations = translations,
+    partOfSpeech = partOfSpeech,
+    examples = examples.map { it.toMemDbExample() }
+)
 
-private fun UUID.asUserUid() = AppAuthId(toString())
+private fun CommonExampleDto.toMemDbExample(): MemDbExample = MemDbExample(
+    text = text,
+    translation = translation,
+)
+
+internal fun MemDbCard.toCommonCardDetailsDto(): CommonCardDetailsDto = CommonCardDetailsDto(this.details)
+
+private fun CommonCardDetailsDto.toMemDbCardDetails(): Map<String, String> = this.mapValues { it.value.toString() }
+
+internal fun Map<Stage, Long>.toMemDbCardDetails(): Map<String, String> = toCommonCardDtoDetails().toMemDbCardDetails()
+
+private fun Long.asUserId(): AppUserId = AppUserId(toString())
 
 private fun String.asLangId(): LangId = LangId(this)
 
-private fun Long.asCardId() = CardId(toString())
+private fun Long.asCardId(): CardId = CardId(toString())
 
-private fun Long.asDictionaryId() = DictionaryId(toString())
+internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
+
+internal fun Long?.asDictionaryId(): DictionaryId = DictionaryId(checkNotNull(this).toString())
+
+private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())

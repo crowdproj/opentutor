@@ -1,0 +1,310 @@
+id,dictionary_id,words,details,answered,changed_at
+1,1,"[{""word"":""arise"",""partOfSpeech"":""verb"",""translations"":[[""возникать""],[""появляться""]]},{""word"":""arose""},{""word"":""arisen""}]",{},,2022-12-26T16:04:14
+2,1,"[{""word"":""awake"",""partOfSpeech"":""verb"",""translations"":[[""будить""],[""проснуться""]]},{""word"":""awakened | awoke""},{""word"":""awakened | awoken""}]",{},,2022-12-26T16:04:14
+3,1,"[{""word"":""backslide"",""partOfSpeech"":""verb"",""translations"":[[""отказываться от прежних убеждений""]]},{""word"":""backslid""},{""word"":""backslidden | backslid""}]",{},,2022-12-26T16:04:14
+4,1,"[{""word"":""bear"",""partOfSpeech"":""verb"",""translations"":[[""родить""]]},{""word"":""bore""},{""word"":""born | borne""}]",{},,2022-12-26T16:04:14
+5,1,"[{""word"":""beat"",""partOfSpeech"":""verb"",""translations"":[[""бить""]]},{""word"":""beat""},{""word"":""beaten | beat""}]",{},,2022-12-26T16:04:14
+6,1,"[{""word"":""become"",""partOfSpeech"":""verb"",""translations"":[[""становиться""],[""делаться""]]},{""word"":""became""},{""word"":""become""}]",{},,2022-12-26T16:04:14
+7,1,"[{""word"":""begin"",""partOfSpeech"":""verb"",""translations"":[[""начинать""]]},{""word"":""began""},{""word"":""begun""}]",{},,2022-12-26T16:04:14
+8,1,"[{""word"":""bend"",""partOfSpeech"":""verb"",""translations"":[[""сгибать""],[""гнуть""]]},{""word"":""bent""},{""word"":""bent""}]",{},,2022-12-26T16:04:14
+9,1,"[{""word"":""bet"",""partOfSpeech"":""verb"",""translations"":[[""держать пари""]]},{""word"":""bet""},{""word"":""bet""}]",{},,2022-12-26T16:04:14
+10,1,"[{""word"":""bind"",""partOfSpeech"":""verb"",""translations"":[[""связать""]]},{""word"":""bound""},{""word"":""bound""}]",{},,2022-12-26T16:04:14
+11,1,"[{""word"":""bite"",""partOfSpeech"":""verb"",""translations"":[[""кусать""]]},{""word"":""bit""},{""word"":""bitten""}]",{},,2022-12-26T16:04:14
+12,1,"[{""word"":""bleed"",""partOfSpeech"":""verb"",""translations"":[[""кровоточить""]]},{""word"":""bled""},{""word"":""bled""}]",{},,2022-12-26T16:04:14
+13,1,"[{""word"":""blow"",""partOfSpeech"":""verb"",""translations"":[[""дуть""]]},{""word"":""blew""},{""word"":""blown""}]",{},,2022-12-26T16:04:14
+14,1,"[{""word"":""break"",""partOfSpeech"":""verb"",""translations"":[[""ломать""]]},{""word"":""broke""},{""word"":""broken""}]",{},,2022-12-26T16:04:14
+15,1,"[{""word"":""breed"",""partOfSpeech"":""verb"",""translations"":[[""выращивать""]]},{""word"":""bred""},{""word"":""bred""}]",{},,2022-12-26T16:04:14
+16,1,"[{""word"":""bring"",""partOfSpeech"":""verb"",""translations"":[[""приносить""]]},{""word"":""brought""},{""word"":""brought""}]",{},,2022-12-26T16:04:14
+17,1,"[{""word"":""broadcast"",""partOfSpeech"":""verb"",""translations"":[[""распространять""],[""разбрасывать""]]},{""word"":""broadcast | broadcasted""},{""word"":""broadcast | broadcasted""}]",{},,2022-12-26T16:04:14
+18,1,"[{""word"":""browbeat"",""partOfSpeech"":""verb"",""translations"":[[""запугивать""]]},{""word"":""browbeat""},{""word"":""browbeaten | browbeat""}]",{},,2022-12-26T16:04:14
+19,1,"[{""word"":""build"",""partOfSpeech"":""verb"",""translations"":[[""строить""]]},{""word"":""built""},{""word"":""built""}]",{},,2022-12-26T16:04:14
+20,1,"[{""word"":""burn"",""partOfSpeech"":""verb"",""translations"":[[""гореть""],[""жечь""]]},{""word"":""burned | burnt""},{""word"":""burned | burnt""}]",{},,2022-12-26T16:04:14
+21,1,"[{""word"":""burst"",""partOfSpeech"":""verb"",""translations"":[[""взрываться""],[""прорываться""]]},{""word"":""burst""},{""word"":""burst""}]",{},,2022-12-26T16:04:14
+22,1,"[{""word"":""bust"",""partOfSpeech"":""verb"",""translations"":[[""разжаловать""]]},{""word"":""busted | bust""},{""word"":""busted | bust""}]",{},,2022-12-26T16:04:14
+23,1,"[{""word"":""buy"",""partOfSpeech"":""verb"",""translations"":[[""покупать""]]},{""word"":""bought""},{""word"":""bought""}]",{},,2022-12-26T16:04:14
+24,1,"[{""word"":""can"",""partOfSpeech"":""verb"",""translations"":[[""мочь""],[""уметь""]]},{""word"":""could""},{""word"":""could""}]",{},,2022-12-26T16:04:14
+25,1,"[{""word"":""cast"",""partOfSpeech"":""verb"",""translations"":[[""бросить""],[""кинуть""],[""вышвырнуть""]]},{""word"":""cast""},{""word"":""cast""}]",{},,2022-12-26T16:04:14
+26,1,"[{""word"":""catch"",""partOfSpeech"":""verb"",""translations"":[[""ловить""],[""хватать""],[""успеть""]]},{""word"":""caught""},{""word"":""caught""}]",{},,2022-12-26T16:04:14
+27,1,"[{""word"":""choose"",""partOfSpeech"":""verb"",""translations"":[[""выбирать""]]},{""word"":""chose""},{""word"":""chosen""}]",{},,2022-12-26T16:04:14
+28,1,"[{""word"":""cling"",""partOfSpeech"":""verb"",""translations"":[[""цепляться""],[""льнуть""]]},{""word"":""clung""},{""word"":""clung""}]",{},,2022-12-26T16:04:14
+29,1,"[{""word"":""clothe"",""partOfSpeech"":""verb"",""translations"":[[""одевать (кого-либо)""]]},{""word"":""clothed | clad""},{""word"":""clothed | clad""}]",{},,2022-12-26T16:04:14
+30,1,"[{""word"":""come"",""partOfSpeech"":""verb"",""translations"":[[""приходить""]]},{""word"":""came""},{""word"":""come""}]",{},,2022-12-26T16:04:14
+31,1,"[{""word"":""cost"",""partOfSpeech"":""verb"",""translations"":[[""стоить""],[""обходиться (в какую-либо сумму)""]]},{""word"":""cost""},{""word"":""cost""}]",{},,2022-12-26T16:04:14
+32,1,"[{""word"":""creep"",""partOfSpeech"":""verb"",""translations"":[[""ползать""]]},{""word"":""crept""},{""word"":""crept""}]",{},,2022-12-26T16:04:14
+33,1,"[{""word"":""cut"",""partOfSpeech"":""verb"",""translations"":[[""резать""],[""разрезать""]]},{""word"":""cut""},{""word"":""cut""}]",{},,2022-12-26T16:04:14
+34,1,"[{""word"":""deal"",""partOfSpeech"":""verb"",""translations"":[[""иметь дело""]]},{""word"":""dealt""},{""word"":""dealt""}]",{},,2022-12-26T16:04:14
+35,1,"[{""word"":""dig"",""partOfSpeech"":""verb"",""translations"":[[""копать""]]},{""word"":""dug""},{""word"":""dug""}]",{},,2022-12-26T16:04:14
+36,1,"[{""word"":""dive"",""partOfSpeech"":""verb"",""translations"":[[""нырять""],[""погружаться""]]},{""word"":""dove | dived""},{""word"":""dived""}]",{},,2022-12-26T16:04:14
+37,1,"[{""word"":""do"",""partOfSpeech"":""verb"",""translations"":[[""делать""],[""выполнять""]]},{""word"":""did""},{""word"":""done""}]",{},,2022-12-26T16:04:14
+38,1,"[{""word"":""draw"",""partOfSpeech"":""verb"",""translations"":[[""рисовать""],[""чертить""]]},{""word"":""drew""},{""word"":""drawn""}]",{},,2022-12-26T16:04:14
+39,1,"[{""word"":""dream"",""partOfSpeech"":""verb"",""translations"":[[""грезить""],[""мечтать""]]},{""word"":""dreamed | dreamt""},{""word"":""dreamed | dreamt""}]",{},,2022-12-26T16:04:14
+40,1,"[{""word"":""drink"",""partOfSpeech"":""verb"",""translations"":[[""пить""]]},{""word"":""drank""},{""word"":""drunk""}]",{},,2022-12-26T16:04:14
+41,1,"[{""word"":""drive"",""partOfSpeech"":""verb"",""translations"":[[""управлять (авто)""]]},{""word"":""drove""},{""word"":""driven""}]",{},,2022-12-26T16:04:14
+42,1,"[{""word"":""dwell"",""partOfSpeech"":""verb"",""translations"":[[""обитать""],[""находиться""]]},{""word"":""dwelt | dwelled""},{""word"":""dwelt | dwelled""}]",{},,2022-12-26T16:04:14
+43,1,"[{""word"":""eat"",""partOfSpeech"":""verb"",""translations"":[[""есть""],[""кушать""]]},{""word"":""ate""},{""word"":""eaten""}]",{},,2022-12-26T16:04:14
+44,1,"[{""word"":""fall"",""partOfSpeech"":""verb"",""translations"":[[""падать""]]},{""word"":""fell""},{""word"":""fallen""}]",{},,2022-12-26T16:04:14
+45,1,"[{""word"":""feed"",""partOfSpeech"":""verb"",""translations"":[[""кормить""]]},{""word"":""fed""},{""word"":""fed""}]",{},,2022-12-26T16:04:14
+46,1,"[{""word"":""feel"",""partOfSpeech"":""verb"",""translations"":[[""чувствовать""]]},{""word"":""felt""},{""word"":""felt""}]",{},,2022-12-26T16:04:14
+47,1,"[{""word"":""fight"",""partOfSpeech"":""verb"",""translations"":[[""драться""],[""сражаться""],[""бороться""]]},{""word"":""fought""},{""word"":""fought""}]",{},,2022-12-26T16:04:14
+48,1,"[{""word"":""find"",""partOfSpeech"":""verb"",""translations"":[[""находить""]]},{""word"":""found""},{""word"":""found""}]",{},,2022-12-26T16:04:14
+49,1,"[{""word"":""fit"",""partOfSpeech"":""verb"",""translations"":[[""подходить по размеру""]]},{""word"":""fit""},{""word"":""fit""}]",{},,2022-12-26T16:04:14
+50,1,"[{""word"":""flee"",""partOfSpeech"":""verb"",""translations"":[[""убегать""],[""спасаться""]]},{""word"":""fled""},{""word"":""fled""}]",{},,2022-12-26T16:04:14
+51,1,"[{""word"":""fling"",""partOfSpeech"":""verb"",""translations"":[[""бросаться""],[""ринуться""]]},{""word"":""flung""},{""word"":""flung""}]",{},,2022-12-26T16:04:14
+52,1,"[{""word"":""fly"",""partOfSpeech"":""verb"",""translations"":[[""летать""]]},{""word"":""flew""},{""word"":""flown""}]",{},,2022-12-26T16:04:14
+53,1,"[{""word"":""forbid"",""partOfSpeech"":""verb"",""translations"":[[""запрещать""]]},{""word"":""forbade""},{""word"":""forbidden""}]",{},,2022-12-26T16:04:14
+54,1,"[{""word"":""forecast"",""partOfSpeech"":""verb"",""translations"":[[""предсказывать""],[""предвосхищать""]]},{""word"":""forecast""},{""word"":""forecast""}]",{},,2022-12-26T16:04:14
+55,1,"[{""word"":""foresee"",""partOfSpeech"":""verb"",""translations"":[[""предвидеть""]]},{""word"":""foresaw""},{""word"":""foreseen""}]",{},,2022-12-26T16:04:14
+56,1,"[{""word"":""foretell"",""partOfSpeech"":""verb"",""translations"":[[""предсказывать""],[""прогнозировать""]]},{""word"":""foretold""},{""word"":""foretold""}]",{},,2022-12-26T16:04:14
+57,1,"[{""word"":""forget"",""partOfSpeech"":""verb"",""translations"":[[""забывать""]]},{""word"":""forgot""},{""word"":""forgotten""}]",{},,2022-12-26T16:04:14
+58,1,"[{""word"":""forgive"",""partOfSpeech"":""verb"",""translations"":[[""прощать""]]},{""word"":""forgave""},{""word"":""forgiven""}]",{},,2022-12-26T16:04:14
+59,1,"[{""word"":""forsake"",""partOfSpeech"":""verb"",""translations"":[[""покидать""]]},{""word"":""forsook""},{""word"":""forsaken""}]",{},,2022-12-26T16:04:14
+60,1,"[{""word"":""freeze"",""partOfSpeech"":""verb"",""translations"":[[""замерзать""]]},{""word"":""froze""},{""word"":""frozen""}]",{},,2022-12-26T16:04:14
+61,1,"[{""word"":""get"",""partOfSpeech"":""verb"",""translations"":[[""получать""],[""достигать""]]},{""word"":""got""},{""word"":""gotten | got""}]",{},,2022-12-26T16:04:14
+62,1,"[{""word"":""give"",""partOfSpeech"":""verb"",""translations"":[[""давать""]]},{""word"":""gave""},{""word"":""given""}]",{},,2022-12-26T16:04:14
+63,1,"[{""word"":""go"",""partOfSpeech"":""verb"",""translations"":[[""идти""],[""ехать""]]},{""word"":""went""},{""word"":""gone""}]",{},,2022-12-26T16:04:14
+64,1,"[{""word"":""grind"",""partOfSpeech"":""verb"",""translations"":[[""молоть""],[""толочь""]]},{""word"":""ground""},{""word"":""ground""}]",{},,2022-12-26T16:04:14
+65,1,"[{""word"":""grow"",""partOfSpeech"":""verb"",""translations"":[[""расти""]]},{""word"":""grew""},{""word"":""grown""}]",{},,2022-12-26T16:04:14
+66,1,"[{""word"":""hang"",""partOfSpeech"":""verb"",""translations"":[[""вешать""],[""развешивать""]]},{""word"":""hung | hanged""},{""word"":""hung | hanged""}]",{},,2022-12-26T16:04:14
+67,1,"[{""word"":""hear"",""partOfSpeech"":""verb"",""translations"":[[""слышать""]]},{""word"":""heard""},{""word"":""heard""}]",{},,2022-12-26T16:04:14
+68,1,"[{""word"":""hew"",""partOfSpeech"":""verb"",""translations"":[[""рубить""]]},{""word"":""hewed""},{""word"":""hewn | hewed""}]",{},,2022-12-26T16:04:14
+69,1,"[{""word"":""hide"",""partOfSpeech"":""verb"",""translations"":[[""прятаться""],[""скрываться""]]},{""word"":""hid""},{""word"":""hidden""}]",{},,2022-12-26T16:04:14
+70,1,"[{""word"":""hit"",""partOfSpeech"":""verb"",""translations"":[[""ударять""],[""поражать""]]},{""word"":""hit""},{""word"":""hit""}]",{},,2022-12-26T16:04:14
+71,1,"[{""word"":""hold"",""partOfSpeech"":""verb"",""translations"":[[""держать""],[""удерживать""],[""фиксировать""]]},{""word"":""held""},{""word"":""held""}]",{},,2022-12-26T16:04:14
+72,1,"[{""word"":""hurt"",""partOfSpeech"":""verb"",""translations"":[[""ранить""],[""причинить боль""]]},{""word"":""hurt""},{""word"":""hurt""}]",{},,2022-12-26T16:04:14
+73,1,"[{""word"":""inlay"",""partOfSpeech"":""verb"",""translations"":[[""вкладывать""],[""вставлять""],[""выстилать""]]},{""word"":""inlaid""},{""word"":""inlaid""}]",{},,2022-12-26T16:04:14
+74,1,"[{""word"":""input"",""partOfSpeech"":""verb"",""translations"":[[""входить""]]},{""word"":""input | inputted""},{""word"":""input | inputted""}]",{},,2022-12-26T16:04:14
+75,1,"[{""word"":""interweave"",""partOfSpeech"":""verb"",""translations"":[[""воткать""],[""переплетать""],[""вплетать""]]},{""word"":""interwove""},{""word"":""interwoven""}]",{},,2022-12-26T16:04:14
+76,1,"[{""word"":""keep"",""partOfSpeech"":""verb"",""translations"":[[""держать""],[""хранить""]]},{""word"":""kept""},{""word"":""kept""}]",{},,2022-12-26T16:04:14
+77,1,"[{""word"":""kneel"",""partOfSpeech"":""verb"",""translations"":[[""становиться на колени""]]},{""word"":""knelt | kneeled""},{""word"":""knelt | kneeled""}]",{},,2022-12-26T16:04:14
+78,1,"[{""word"":""knit"",""partOfSpeech"":""verb"",""translations"":[[""вязать""]]},{""word"":""knitted | knit""},{""word"":""knitted | knit""}]",{},,2022-12-26T16:04:14
+79,1,"[{""word"":""know"",""partOfSpeech"":""verb"",""translations"":[[""знать""],[""иметь представление (о чем-либо)""]]},{""word"":""knew""},{""word"":""known""}]",{},,2022-12-26T16:04:14
+80,1,"[{""word"":""lay"",""partOfSpeech"":""verb"",""translations"":[[""класть""],[""положить""]]},{""word"":""laid""},{""word"":""laid""}]",{},,2022-12-26T16:04:14
+81,1,"[{""word"":""lead"",""partOfSpeech"":""verb"",""translations"":[[""вести""],[""руководить""],[""управлять""]]},{""word"":""led""},{""word"":""led""}]",{},,2022-12-26T16:04:14
+82,1,"[{""word"":""lean"",""partOfSpeech"":""verb"",""translations"":[[""опираться""],[""прислоняться""]]},{""word"":""leaned | leant""},{""word"":""leaned | leant""}]",{},,2022-12-26T16:04:14
+83,1,"[{""word"":""leap"",""partOfSpeech"":""verb"",""translations"":[[""прыгать""],[""скакать""]]},{""word"":""leaped | leapt""},{""word"":""leaped | leapt""}]",{},,2022-12-26T16:04:14
+84,1,"[{""word"":""learn"",""partOfSpeech"":""verb"",""translations"":[[""учить""]]},{""word"":""learnt | learned""},{""word"":""learnt | learned""}]",{},,2022-12-26T16:04:14
+85,1,"[{""word"":""leave"",""partOfSpeech"":""verb"",""translations"":[[""покидать""],[""оставлять""]]},{""word"":""left""},{""word"":""left""}]",{},,2022-12-26T16:04:14
+86,1,"[{""word"":""lend"",""partOfSpeech"":""verb"",""translations"":[[""одалживать""],[""давать взаймы""]]},{""word"":""lent""},{""word"":""lent""}]",{},,2022-12-26T16:04:14
+87,1,"[{""word"":""let"",""partOfSpeech"":""verb"",""translations"":[[""позволять""],[""предполагать""]]},{""word"":""let""},{""word"":""let""}]",{},,2022-12-26T16:04:14
+88,1,"[{""word"":""lie"",""partOfSpeech"":""verb"",""translations"":[[""лежать""]]},{""word"":""lay""},{""word"":""lain""}]",{},,2022-12-26T16:04:14
+89,1,"[{""word"":""light"",""partOfSpeech"":""verb"",""translations"":[[""освещать""]]},{""word"":""lit | lighted""},{""word"":""lit | lighted""}]",{},,2022-12-26T16:04:14
+90,1,"[{""word"":""lose"",""partOfSpeech"":""verb"",""translations"":[[""терять""]]},{""word"":""lost""},{""word"":""lost""}]",{},,2022-12-26T16:04:14
+91,1,"[{""word"":""make"",""partOfSpeech"":""verb"",""translations"":[[""делать""],[""производить""],[""создавать""]]},{""word"":""made""},{""word"":""made""}]",{},,2022-12-26T16:04:14
+92,1,"[{""word"":""may"",""partOfSpeech"":""verb"",""translations"":[[""мочь""],[""иметь возможность""]]},{""word"":""might""},{""word"":""might""}]",{},,2022-12-26T16:04:14
+93,1,"[{""word"":""mean"",""partOfSpeech"":""verb"",""translations"":[[""значить""],[""иметь в виду""]]},{""word"":""meant""},{""word"":""meant""}]",{},,2022-12-26T16:04:14
+94,1,"[{""word"":""meet"",""partOfSpeech"":""verb"",""translations"":[[""встречать""]]},{""word"":""met""},{""word"":""met""}]",{},,2022-12-26T16:04:14
+95,1,"[{""word"":""mow"",""partOfSpeech"":""verb"",""translations"":[[""косить""]]},{""word"":""mowed""},{""word"":""mowed | mown""}]",{},,2022-12-26T16:04:14
+96,1,"[{""word"":""offset"",""partOfSpeech"":""verb"",""translations"":[[""возмещать""],[""вознаграждать""],[""компенсировать""]]},{""word"":""offset""},{""word"":""offset""}]",{},,2022-12-26T16:04:14
+97,1,"[{""word"":""outbid"",""partOfSpeech"":""verb"",""translations"":[[""перебивать цену""]]},{""word"":""outbid""},{""word"":""outbid""}]",{},,2022-12-26T16:04:14
+98,1,"[{""word"":""outdo"",""partOfSpeech"":""verb"",""translations"":[[""превосходить""]]},{""word"":""outdid""},{""word"":""outdone""}]",{},,2022-12-26T16:04:14
+99,1,"[{""word"":""outfight"",""partOfSpeech"":""verb"",""translations"":[[""побеждать в бою""]]},{""word"":""outfought""},{""word"":""outfought""}]",{},,2022-12-26T16:04:14
+100,1,"[{""word"":""outgrow"",""partOfSpeech"":""verb"",""translations"":[[""вырастать из""]]},{""word"":""outgrew""},{""word"":""outgrown""}]",{},,2022-12-26T16:04:14
+101,1,"[{""word"":""output"",""partOfSpeech"":""verb"",""translations"":[[""выходить""]]},{""word"":""output | outputted""},{""word"":""output | outputted""}]",{},,2022-12-26T16:04:14
+102,1,"[{""word"":""outrun"",""partOfSpeech"":""verb"",""translations"":[[""перегонять""],[""опережать""]]},{""word"":""outran""},{""word"":""outrun""}]",{},,2022-12-26T16:04:14
+103,1,"[{""word"":""outsell"",""partOfSpeech"":""verb"",""translations"":[[""продавать лучше или дороже""]]},{""word"":""outsold""},{""word"":""outsold""}]",{},,2022-12-26T16:04:14
+104,1,"[{""word"":""outshine"",""partOfSpeech"":""verb"",""translations"":[[""затмевать""]]},{""word"":""outshone""},{""word"":""outshone""}]",{},,2022-12-26T16:04:14
+105,1,"[{""word"":""overbid"",""partOfSpeech"":""verb"",""translations"":[[""повелевать""]]},{""word"":""overbid""},{""word"":""overbid""}]",{},,2022-12-26T16:04:14
+106,1,"[{""word"":""overcome"",""partOfSpeech"":""verb"",""translations"":[[""компенсировать""]]},{""word"":""overcame""},{""word"":""overcome""}]",{},,2022-12-26T16:04:14
+107,1,"[{""word"":""overdo"",""partOfSpeech"":""verb"",""translations"":[[""пережари(ва)ть""]]},{""word"":""overdid""},{""word"":""overdone""}]",{},,2022-12-26T16:04:14
+108,1,"[{""word"":""overdraw"",""partOfSpeech"":""verb"",""translations"":[[""превышать""]]},{""word"":""overdrew""},{""word"":""overdrawn""}]",{},,2022-12-26T16:04:14
+109,1,"[{""word"":""overeat"",""partOfSpeech"":""verb"",""translations"":[[""объедаться""]]},{""word"":""overate""},{""word"":""overeaten""}]",{},,2022-12-26T16:04:14
+110,1,"[{""word"":""overfly"",""partOfSpeech"":""verb"",""translations"":[[""перелетать""]]},{""word"":""overflew""},{""word"":""overflown""}]",{},,2022-12-26T16:04:14
+111,1,"[{""word"":""overhang"",""partOfSpeech"":""verb"",""translations"":[[""нависать""]]},{""word"":""overhung""},{""word"":""overhung""}]",{},,2022-12-26T16:04:14
+112,1,"[{""word"":""overhear"",""partOfSpeech"":""verb"",""translations"":[[""подслуш(ив)ать""]]},{""word"":""overheard""},{""word"":""overheard""}]",{},,2022-12-26T16:04:14
+113,1,"[{""word"":""overlay"",""partOfSpeech"":""verb"",""translations"":[[""покры(ва)ть""]]},{""word"":""overlaid""},{""word"":""overlaid""}]",{},,2022-12-26T16:04:14
+114,1,"[{""word"":""overpay"",""partOfSpeech"":""verb"",""translations"":[[""переплачивать""]]},{""word"":""overpaid""},{""word"":""overpaid""}]",{},,2022-12-26T16:04:14
+115,1,"[{""word"":""override"",""partOfSpeech"":""verb"",""translations"":[[""отменять""],[""аннулировать""]]},{""word"":""overrode""},{""word"":""overridden""}]",{},,2022-12-26T16:04:14
+116,1,"[{""word"":""overrun"",""partOfSpeech"":""verb"",""translations"":[[""переливаться через край""]]},{""word"":""overran""},{""word"":""overrun""}]",{},,2022-12-26T16:04:14
+117,1,"[{""word"":""oversee"",""partOfSpeech"":""verb"",""translations"":[[""надзирать за""]]},{""word"":""oversaw""},{""word"":""overseen""}]",{},,2022-12-26T16:04:14
+118,1,"[{""word"":""overshoot"",""partOfSpeech"":""verb"",""translations"":[[""расстрелять""]]},{""word"":""overshot""},{""word"":""overshot""}]",{},,2022-12-26T16:04:14
+119,1,"[{""word"":""oversleep"",""partOfSpeech"":""verb"",""translations"":[[""проспать""],[""&nbsp;""]]},{""word"":""overslept""},{""word"":""overslept""}]",{},,2022-12-26T16:04:14
+120,1,"[{""word"":""overtake"",""partOfSpeech"":""verb"",""translations"":[[""догонять""]]},{""word"":""overtook""},{""word"":""overtaken""}]",{},,2022-12-26T16:04:14
+121,1,"[{""word"":""overthrow"",""partOfSpeech"":""verb"",""translations"":[[""свергать""]]},{""word"":""overthrew""},{""word"":""overthrown""}]",{},,2022-12-26T16:04:14
+122,1,"[{""word"":""partake"",""partOfSpeech"":""verb"",""translations"":[[""принимать участие""]]},{""word"":""partook""},{""word"":""partaken""}]",{},,2022-12-26T16:04:14
+123,1,"[{""word"":""pay"",""partOfSpeech"":""verb"",""translations"":[[""платить""]]},{""word"":""paid""},{""word"":""paid""}]",{},,2022-12-26T16:04:14
+124,1,"[{""word"":""plead"",""partOfSpeech"":""verb"",""translations"":[[""обращаться к суду""]]},{""word"":""pleaded | pled""},{""word"":""pleaded | pled""}]",{},,2022-12-26T16:04:14
+125,1,"[{""word"":""prepay"",""partOfSpeech"":""verb"",""translations"":[[""платить вперед""]]},{""word"":""prepaid""},{""word"":""prepaid""}]",{},,2022-12-26T16:04:14
+126,1,"[{""word"":""prove"",""partOfSpeech"":""verb"",""translations"":[[""доказывать""]]},{""word"":""proved""},{""word"":""proven | proved""}]",{},,2022-12-26T16:04:14
+127,1,"[{""word"":""put"",""partOfSpeech"":""verb"",""translations"":[[""класть""],[""ставить""],[""размещать""]]},{""word"":""put""},{""word"":""put""}]",{},,2022-12-26T16:04:14
+128,1,"[{""word"":""quit"",""partOfSpeech"":""verb"",""translations"":[[""выходить""],[""покидать""],[""оставлять""]]},{""word"":""quit | quitted""},{""word"":""quit | quitted""}]",{},,2022-12-26T16:04:14
+129,1,"[{""word"":""read"",""partOfSpeech"":""verb"",""translations"":[[""читать""]]},{""word"":""read""},{""word"":""read""}]",{},,2022-12-26T16:04:14
+130,1,"[{""word"":""rebind"",""partOfSpeech"":""verb"",""translations"":[[""перевязывать""]]},{""word"":""rebound""},{""word"":""rebound""}]",{},,2022-12-26T16:04:14
+131,1,"[{""word"":""rebuild"",""partOfSpeech"":""verb"",""translations"":[[""перестроить""]]},{""word"":""rebuilt""},{""word"":""rebuilt""}]",{},,2022-12-26T16:04:14
+132,1,"[{""word"":""recast"",""partOfSpeech"":""verb"",""translations"":[[""изменять""],[""перестраивать""]]},{""word"":""recast""},{""word"":""recast""}]",{},,2022-12-26T16:04:14
+133,1,"[{""word"":""redo"",""partOfSpeech"":""verb"",""translations"":[[""делать вновь""],[""переделывать""]]},{""word"":""redid""},{""word"":""redone""}]",{},,2022-12-26T16:04:14
+134,1,"[{""word"":""rehear"",""partOfSpeech"":""verb"",""translations"":[[""слушать вторично""]]},{""word"":""reheard""},{""word"":""reheard""}]",{},,2022-12-26T16:04:14
+135,1,"[{""word"":""remake"",""partOfSpeech"":""verb"",""translations"":[[""переделывать""]]},{""word"":""remade""},{""word"":""remade""}]",{},,2022-12-26T16:04:14
+136,1,"[{""word"":""rend"",""partOfSpeech"":""verb"",""translations"":[[""раздирать""]]},{""word"":""rent""},{""word"":""rent""}]",{},,2022-12-26T16:04:14
+137,1,"[{""word"":""repay"",""partOfSpeech"":""verb"",""translations"":[[""отдавать долг""]]},{""word"":""repaid""},{""word"":""repaid""}]",{},,2022-12-26T16:04:14
+138,1,"[{""word"":""rerun"",""partOfSpeech"":""verb"",""translations"":[[""выполнять повторно""]]},{""word"":""reran""},{""word"":""rerun""}]",{},,2022-12-26T16:04:14
+139,1,"[{""word"":""resell"",""partOfSpeech"":""verb"",""translations"":[[""перепродавать""]]},{""word"":""resold""},{""word"":""resold""}]",{},,2022-12-26T16:04:14
+140,1,"[{""word"":""reset"",""partOfSpeech"":""verb"",""translations"":[[""возвращать""]]},{""word"":""reset""},{""word"":""reset""}]",{},,2022-12-26T16:04:14
+141,1,"[{""word"":""resit"",""partOfSpeech"":""verb"",""translations"":[[""пересиживать""]]},{""word"":""resat""},{""word"":""resat""}]",{},,2022-12-26T16:04:14
+142,1,"[{""word"":""retake"",""partOfSpeech"":""verb"",""translations"":[[""забирать""]]},{""word"":""retook""},{""word"":""retaken""}]",{},,2022-12-26T16:04:14
+143,1,"[{""word"":""retell"",""partOfSpeech"":""verb"",""translations"":[[""пересказывать""]]},{""word"":""retold""},{""word"":""retold""}]",{},,2022-12-26T16:04:14
+144,1,"[{""word"":""rewrite"",""partOfSpeech"":""verb"",""translations"":[[""перезаписать""]]},{""word"":""rewrote""},{""word"":""rewritten""}]",{},,2022-12-26T16:04:14
+145,1,"[{""word"":""rid"",""partOfSpeech"":""verb"",""translations"":[[""избавлять""]]},{""word"":""rid""},{""word"":""rid""}]",{},,2022-12-26T16:04:14
+146,1,"[{""word"":""ride"",""partOfSpeech"":""verb"",""translations"":[[""ездить верхом""]]},{""word"":""rode""},{""word"":""ridden""}]",{},,2022-12-26T16:04:14
+147,1,"[{""word"":""ring"",""partOfSpeech"":""verb"",""translations"":[[""звонить""]]},{""word"":""rang""},{""word"":""rung""}]",{},,2022-12-26T16:04:14
+148,1,"[{""word"":""rise"",""partOfSpeech"":""verb"",""translations"":[[""подняться""]]},{""word"":""rose""},{""word"":""risen""}]",{},,2022-12-26T16:04:14
+149,1,"[{""word"":""run"",""partOfSpeech"":""verb"",""translations"":[[""бегать""]]},{""word"":""ran""},{""word"":""run""}]",{},,2022-12-26T16:04:14
+150,1,"[{""word"":""saw"",""partOfSpeech"":""verb"",""translations"":[[""пилить""]]},{""word"":""sawed""},{""word"":""sawed | sawn""}]",{},,2022-12-26T16:04:14
+151,1,"[{""word"":""say"",""partOfSpeech"":""verb"",""translations"":[[""сказать""],[""заявить""]]},{""word"":""said""},{""word"":""said""}]",{},,2022-12-26T16:04:14
+152,1,"[{""word"":""see"",""partOfSpeech"":""verb"",""translations"":[[""видеть""]]},{""word"":""saw""},{""word"":""seen""}]",{},,2022-12-26T16:04:14
+153,1,"[{""word"":""seek"",""partOfSpeech"":""verb"",""translations"":[[""искать""]]},{""word"":""sought""},{""word"":""sought""}]",{},,2022-12-26T16:04:14
+154,1,"[{""word"":""sell"",""partOfSpeech"":""verb"",""translations"":[[""продавать""]]},{""word"":""sold""},{""word"":""sold""}]",{},,2022-12-26T16:04:14
+155,1,"[{""word"":""send"",""partOfSpeech"":""verb"",""translations"":[[""посылать""]]},{""word"":""sent""},{""word"":""sent""}]",{},,2022-12-26T16:04:14
+156,1,"[{""word"":""set"",""partOfSpeech"":""verb"",""translations"":[[""ставить""],[""устанавливать""]]},{""word"":""set""},{""word"":""set""}]",{},,2022-12-26T16:04:14
+157,1,"[{""word"":""sew"",""partOfSpeech"":""verb"",""translations"":[[""шить""]]},{""word"":""sewed""},{""word"":""sewn | sewed""}]",{},,2022-12-26T16:04:14
+158,1,"[{""word"":""shake"",""partOfSpeech"":""verb"",""translations"":[[""трясти""]]},{""word"":""shook""},{""word"":""shaken""}]",{},,2022-12-26T16:04:14
+159,1,"[{""word"":""shave"",""partOfSpeech"":""verb"",""translations"":[[""бриться""]]},{""word"":""shaved""},{""word"":""shaved | shaven""}]",{},,2022-12-26T16:04:14
+160,1,"[{""word"":""shear"",""partOfSpeech"":""verb"",""translations"":[[""стричь""]]},{""word"":""sheared""},{""word"":""sheared | shorn""}]",{},,2022-12-26T16:04:14
+161,1,"[{""word"":""shed"",""partOfSpeech"":""verb"",""translations"":[[""проливать""]]},{""word"":""shed""},{""word"":""shed""}]",{},,2022-12-26T16:04:14
+162,1,"[{""word"":""shine"",""partOfSpeech"":""verb"",""translations"":[[""светить""],[""сиять""],[""озарять""]]},{""word"":""shined | shone""},{""word"":""shined | shone""}]",{},,2022-12-26T16:04:14
+163,1,"[{""word"":""shoot"",""partOfSpeech"":""verb"",""translations"":[[""стрелять""],[""давать побеги""]]},{""word"":""shot""},{""word"":""shot""}]",{},,2022-12-26T16:04:14
+164,1,"[{""word"":""show"",""partOfSpeech"":""verb"",""translations"":[[""показывать""]]},{""word"":""showed""},{""word"":""shown | showed""}]",{},,2022-12-26T16:04:14
+165,1,"[{""word"":""shrink"",""partOfSpeech"":""verb"",""translations"":[[""сокращаться""],[""сжиматься""]]},{""word"":""shrank | shrunk""},{""word"":""shrunk""}]",{},,2022-12-26T16:04:14
+166,1,"[{""word"":""shut"",""partOfSpeech"":""verb"",""translations"":[[""закрывать""],[""запирать""],[""затворять""]]},{""word"":""shut""},{""word"":""shut""}]",{},,2022-12-26T16:04:14
+167,1,"[{""word"":""sing"",""partOfSpeech"":""verb"",""translations"":[[""петь""]]},{""word"":""sang""},{""word"":""sung""}]",{},,2022-12-26T16:04:14
+168,1,"[{""word"":""sink"",""partOfSpeech"":""verb"",""translations"":[[""тонуть""],[""погружаться (под воду)""]]},{""word"":""sank | sunk""},{""word"":""sunk""}]",{},,2022-12-26T16:04:14
+169,1,"[{""word"":""sit"",""partOfSpeech"":""verb"",""translations"":[[""сидеть""]]},{""word"":""sat""},{""word"":""sat""}]",{},,2022-12-26T16:04:14
+170,1,"[{""word"":""slay"",""partOfSpeech"":""verb"",""translations"":[[""убивать""]]},{""word"":""slew | slayed""},{""word"":""slain | slayed""}]",{},,2022-12-26T16:04:14
+171,1,"[{""word"":""sleep"",""partOfSpeech"":""verb"",""translations"":[[""спать""]]},{""word"":""slept""},{""word"":""slept""}]",{},,2022-12-26T16:04:14
+172,1,"[{""word"":""slide"",""partOfSpeech"":""verb"",""translations"":[[""скользить""]]},{""word"":""slid""},{""word"":""slid""}]",{},,2022-12-26T16:04:14
+173,1,"[{""word"":""sling"",""partOfSpeech"":""verb"",""translations"":[[""бросать""],[""швырять""]]},{""word"":""slung""},{""word"":""slung""}]",{},,2022-12-26T16:04:14
+174,1,"[{""word"":""slink"",""partOfSpeech"":""verb"",""translations"":[[""красться""],[""идти крадучись""]]},{""word"":""slunk""},{""word"":""slunk""}]",{},,2022-12-26T16:04:14
+175,1,"[{""word"":""slit"",""partOfSpeech"":""verb"",""translations"":[[""разрезать""],[""рвать в длину""]]},{""word"":""slit""},{""word"":""slit""}]",{},,2022-12-26T16:04:14
+176,1,"[{""word"":""smell"",""partOfSpeech"":""verb"",""translations"":[[""пахнуть""],[""нюхать""]]},{""word"":""smelled | smelt""},{""word"":""smelled | smelt""}]",{},,2022-12-26T16:04:14
+177,1,"[{""word"":""sow"",""partOfSpeech"":""verb"",""translations"":[[""сеять""]]},{""word"":""sowed""},{""word"":""sown | sowed""}]",{},,2022-12-26T16:04:14
+178,1,"[{""word"":""speak"",""partOfSpeech"":""verb"",""translations"":[[""говорить""]]},{""word"":""spoke""},{""word"":""spoken""}]",{},,2022-12-26T16:04:14
+179,1,"[{""word"":""speed"",""partOfSpeech"":""verb"",""translations"":[[""ускорять""],[""спешить""]]},{""word"":""sped | speeded""},{""word"":""sped | speeded""}]",{},,2022-12-26T16:04:14
+180,1,"[{""word"":""spell"",""partOfSpeech"":""verb"",""translations"":[[""писать или читать по буквам""]]},{""word"":""spelled | spelt""},{""word"":""spelled | spelt""}]",{},,2022-12-26T16:04:14
+181,1,"[{""word"":""spend"",""partOfSpeech"":""verb"",""translations"":[[""тратить""],[""расходовать""]]},{""word"":""spent""},{""word"":""spent""}]",{},,2022-12-26T16:04:14
+182,1,"[{""word"":""spill"",""partOfSpeech"":""verb"",""translations"":[[""проливать""],[""разливать""]]},{""word"":""spilled | spilt""},{""word"":""spilled | spilt""}]",{},,2022-12-26T16:04:14
+183,1,"[{""word"":""spin"",""partOfSpeech"":""verb"",""translations"":[[""прясть""]]},{""word"":""spun""},{""word"":""spun""}]",{},,2022-12-26T16:04:14
+184,1,"[{""word"":""spit"",""partOfSpeech"":""verb"",""translations"":[[""плевать""]]},{""word"":""spit | spat""},{""word"":""spit | spat""}]",{},,2022-12-26T16:04:14
+185,1,"[{""word"":""split"",""partOfSpeech"":""verb"",""translations"":[[""расщеплять""]]},{""word"":""split""},{""word"":""split""}]",{},,2022-12-26T16:04:14
+186,1,"[{""word"":""spoil"",""partOfSpeech"":""verb"",""translations"":[[""портить""]]},{""word"":""spoiled | spoilt""},{""word"":""spoiled | spoilt""}]",{},,2022-12-26T16:04:14
+187,1,"[{""word"":""spread"",""partOfSpeech"":""verb"",""translations"":[[""распространиться""]]},{""word"":""spread""},{""word"":""spread""}]",{},,2022-12-26T16:04:14
+188,1,"[{""word"":""spring"",""partOfSpeech"":""verb"",""translations"":[[""вскочить""],[""возникнуть""]]},{""word"":""sprang | sprung""},{""word"":""sprung""}]",{},,2022-12-26T16:04:14
+189,1,"[{""word"":""stand"",""partOfSpeech"":""verb"",""translations"":[[""стоять""]]},{""word"":""stood""},{""word"":""stood""}]",{},,2022-12-26T16:04:14
+190,1,"[{""word"":""steal"",""partOfSpeech"":""verb"",""translations"":[[""воровать""],[""красть""]]},{""word"":""stole""},{""word"":""stolen""}]",{},,2022-12-26T16:04:14
+191,1,"[{""word"":""stick"",""partOfSpeech"":""verb"",""translations"":[[""уколоть""],[""приклеить""]]},{""word"":""stuck""},{""word"":""stuck""}]",{},,2022-12-26T16:04:14
+192,1,"[{""word"":""sting"",""partOfSpeech"":""verb"",""translations"":[[""жалить""]]},{""word"":""stung""},{""word"":""stung""}]",{},,2022-12-26T16:04:14
+193,1,"[{""word"":""stink"",""partOfSpeech"":""verb"",""translations"":[[""вонять""]]},{""word"":""stunk | stank""},{""word"":""stunk""}]",{},,2022-12-26T16:04:14
+194,1,"[{""word"":""strew"",""partOfSpeech"":""verb"",""translations"":[[""усеять""],[""устлать""]]},{""word"":""strewed""},{""word"":""strewn | strewed""}]",{},,2022-12-26T16:04:14
+195,1,"[{""word"":""stride"",""partOfSpeech"":""verb"",""translations"":[[""шагать""],[""наносить удар""]]},{""word"":""strode""},{""word"":""stridden""}]",{},,2022-12-26T16:04:14
+196,1,"[{""word"":""strike"",""partOfSpeech"":""verb"",""translations"":[[""ударить""],[""бить""],[""бастовать""]]},{""word"":""struck""},{""word"":""struck""}]",{},,2022-12-26T16:04:14
+197,1,"[{""word"":""string"",""partOfSpeech"":""verb"",""translations"":[[""нанизать""],[""натянуть""]]},{""word"":""strung""},{""word"":""strung""}]",{},,2022-12-26T16:04:14
+198,1,"[{""word"":""strive"",""partOfSpeech"":""verb"",""translations"":[[""стараться""]]},{""word"":""strove | strived""},{""word"":""striven | strived""}]",{},,2022-12-26T16:04:14
+199,1,"[{""word"":""sublet"",""partOfSpeech"":""verb"",""translations"":[[""передавать в субаренду""]]},{""word"":""sublet""},{""word"":""sublet""}]",{},,2022-12-26T16:04:14
+200,1,"[{""word"":""swear"",""partOfSpeech"":""verb"",""translations"":[[""клясться""],[""присягать""]]},{""word"":""swore""},{""word"":""sworn""}]",{},,2022-12-26T16:04:14
+201,1,"[{""word"":""sweep"",""partOfSpeech"":""verb"",""translations"":[[""мести""],[""подметать""],[""сметать""]]},{""word"":""swept""},{""word"":""swept""}]",{},,2022-12-26T16:04:14
+202,1,"[{""word"":""swell"",""partOfSpeech"":""verb"",""translations"":[[""разбухать""]]},{""word"":""swelled""},{""word"":""swollen | swelled""}]",{},,2022-12-26T16:04:14
+203,1,"[{""word"":""swim"",""partOfSpeech"":""verb"",""translations"":[[""плавать""],[""плыть""]]},{""word"":""swam""},{""word"":""swum""}]",{},,2022-12-26T16:04:14
+204,1,"[{""word"":""swing"",""partOfSpeech"":""verb"",""translations"":[[""качать""],[""раскачивать""],[""вертеть""]]},{""word"":""swung""},{""word"":""swung""}]",{},,2022-12-26T16:04:14
+205,1,"[{""word"":""take"",""partOfSpeech"":""verb"",""translations"":[[""брать""],[""взять""]]},{""word"":""took""},{""word"":""taken""}]",{},,2022-12-26T16:04:14
+206,1,"[{""word"":""teach"",""partOfSpeech"":""verb"",""translations"":[[""учить""],[""обучать""]]},{""word"":""taught""},{""word"":""taught""}]",{},,2022-12-26T16:04:14
+207,1,"[{""word"":""tear"",""partOfSpeech"":""verb"",""translations"":[[""рвать""]]},{""word"":""tore""},{""word"":""torn""}]",{},,2022-12-26T16:04:14
+208,1,"[{""word"":""tell"",""partOfSpeech"":""verb"",""translations"":[[""рассказать""]]},{""word"":""told""},{""word"":""told""}]",{},,2022-12-26T16:04:14
+209,1,"[{""word"":""think"",""partOfSpeech"":""verb"",""translations"":[[""думать""]]},{""word"":""thought""},{""word"":""thought""}]",{},,2022-12-26T16:04:14
+210,1,"[{""word"":""throw"",""partOfSpeech"":""verb"",""translations"":[[""бросить""]]},{""word"":""threw""},{""word"":""thrown""}]",{},,2022-12-26T16:04:14
+211,1,"[{""word"":""thrust"",""partOfSpeech"":""verb"",""translations"":[[""колоть""],[""пронзать""]]},{""word"":""thrust""},{""word"":""thrust""}]",{},,2022-12-26T16:04:14
+212,1,"[{""word"":""tread"",""partOfSpeech"":""verb"",""translations"":[[""ступать""]]},{""word"":""trod""},{""word"":""trodden | trod""}]",{},,2022-12-26T16:04:14
+213,1,"[{""word"":""unbend"",""partOfSpeech"":""verb"",""translations"":[[""выпрямляться""],[""разгибаться""]]},{""word"":""unbent""},{""word"":""unbent""}]",{},,2022-12-26T16:04:14
+214,1,"[{""word"":""underbid"",""partOfSpeech"":""verb"",""translations"":[[""снижать цену""]]},{""word"":""underbid""},{""word"":""underbid""}]",{},,2022-12-26T16:04:14
+215,1,"[{""word"":""undercut"",""partOfSpeech"":""verb"",""translations"":[[""сбивать цены""]]},{""word"":""undercut""},{""word"":""undercut""}]",{},,2022-12-26T16:04:14
+216,1,"[{""word"":""undergo"",""partOfSpeech"":""verb"",""translations"":[[""испытывать""],[""переносить""]]},{""word"":""underwent""},{""word"":""undergone""}]",{},,2022-12-26T16:04:14
+217,1,"[{""word"":""underlie"",""partOfSpeech"":""verb"",""translations"":[[""лежать в основе""]]},{""word"":""underlay""},{""word"":""underlain""}]",{},,2022-12-26T16:04:14
+218,1,"[{""word"":""underpay"",""partOfSpeech"":""verb"",""translations"":[[""оплачивать слишком низко""]]},{""word"":""underpaid""},{""word"":""underpaid""}]",{},,2022-12-26T16:04:14
+219,1,"[{""word"":""undersell"",""partOfSpeech"":""verb"",""translations"":[[""продавать дешевле""]]},{""word"":""undersold""},{""word"":""undersold""}]",{},,2022-12-26T16:04:14
+220,1,"[{""word"":""understand"",""partOfSpeech"":""verb"",""translations"":[[""понимать""],[""постигать""]]},{""word"":""understood""},{""word"":""understood""}]",{},,2022-12-26T16:04:14
+221,1,"[{""word"":""undertake"",""partOfSpeech"":""verb"",""translations"":[[""предпринять""]]},{""word"":""undertook""},{""word"":""undertaken""}]",{},,2022-12-26T16:04:14
+222,1,"[{""word"":""underwrite"",""partOfSpeech"":""verb"",""translations"":[[""подписываться""]]},{""word"":""underwrote""},{""word"":""underwritten""}]",{},,2022-12-26T16:04:14
+223,1,"[{""word"":""undo"",""partOfSpeech"":""verb"",""translations"":[[""уничтожать сделанное""]]},{""word"":""undid""},{""word"":""undone""}]",{},,2022-12-26T16:04:14
+224,1,"[{""word"":""unfreeze"",""partOfSpeech"":""verb"",""translations"":[[""размораживать""]]},{""word"":""unfroze""},{""word"":""unfrozen""}]",{},,2022-12-26T16:04:14
+225,1,"[{""word"":""unsay"",""partOfSpeech"":""verb"",""translations"":[[""брать назад свои слова""]]},{""word"":""unsaid""},{""word"":""unsaid""}]",{},,2022-12-26T16:04:14
+226,1,"[{""word"":""unwind"",""partOfSpeech"":""verb"",""translations"":[[""развертывать""]]},{""word"":""unwound""},{""word"":""unwound""}]",{},,2022-12-26T16:04:14
+227,1,"[{""word"":""uphold"",""partOfSpeech"":""verb"",""translations"":[[""поддерживать""]]},{""word"":""upheld""},{""word"":""upheld""}]",{},,2022-12-26T16:04:14
+228,1,"[{""word"":""upset"",""partOfSpeech"":""verb"",""translations"":[[""опрокинуться""]]},{""word"":""upset""},{""word"":""upset""}]",{},,2022-12-26T16:04:14
+229,1,"[{""word"":""wake"",""partOfSpeech"":""verb"",""translations"":[[""просыпаться""]]},{""word"":""woke | waked""},{""word"":""woken | waked""}]",{},,2022-12-26T16:04:14
+230,1,"[{""word"":""waylay"",""partOfSpeech"":""verb"",""translations"":[[""подстерегать""]]},{""word"":""waylaid""},{""word"":""waylaid""}]",{},,2022-12-26T16:04:14
+231,1,"[{""word"":""wear"",""partOfSpeech"":""verb"",""translations"":[[""носить (одежду)""]]},{""word"":""wore""},{""word"":""worn""}]",{},,2022-12-26T16:04:14
+232,1,"[{""word"":""weave"",""partOfSpeech"":""verb"",""translations"":[[""ткать""]]},{""word"":""wove | weaved""},{""word"":""woven | weaved""}]",{},,2022-12-26T16:04:14
+233,1,"[{""word"":""wed"",""partOfSpeech"":""verb"",""translations"":[[""жениться""],[""выдавать замуж""]]},{""word"":""wed | wedded""},{""word"":""wed | wedded""}]",{},,2022-12-26T16:04:14
+234,1,"[{""word"":""weep"",""partOfSpeech"":""verb"",""translations"":[[""плакать""],[""рыдать""]]},{""word"":""wept""},{""word"":""wept""}]",{},,2022-12-26T16:04:14
+235,1,"[{""word"":""wet"",""partOfSpeech"":""verb"",""translations"":[[""мочить""],[""увлажнять""]]},{""word"":""wet | wetted""},{""word"":""wet | wetted""}]",{},,2022-12-26T16:04:14
+236,1,"[{""word"":""win"",""partOfSpeech"":""verb"",""translations"":[[""победить""],[""выиграть""]]},{""word"":""won""},{""word"":""won""}]",{},,2022-12-26T16:04:14
+237,1,"[{""word"":""wind"",""partOfSpeech"":""verb"",""translations"":[[""заводить (механизм)""]]},{""word"":""wound""},{""word"":""wound""}]",{},,2022-12-26T16:04:14
+238,1,"[{""word"":""withdraw"",""partOfSpeech"":""verb"",""translations"":[[""взять назад""],[""отозвать""]]},{""word"":""withdrew""},{""word"":""withdrawn""}]",{},,2022-12-26T16:04:14
+239,1,"[{""word"":""withhold"",""partOfSpeech"":""verb"",""translations"":[[""воздерживаться""],[""отказывать""]]},{""word"":""withheld""},{""word"":""withheld""}]",{},,2022-12-26T16:04:14
+240,1,"[{""word"":""withstand"",""partOfSpeech"":""verb"",""translations"":[[""противостоять""]]},{""word"":""withstood""},{""word"":""withstood""}]",{},,2022-12-26T16:04:14
+241,1,"[{""word"":""wring"",""partOfSpeech"":""verb"",""translations"":[[""скрутить""],[""сжимать""]]},{""word"":""wrung""},{""word"":""wrung""}]",{},,2022-12-26T16:04:14
+242,1,"[{""word"":""write"",""partOfSpeech"":""verb"",""translations"":[[""писать""]]},{""word"":""wrote""},{""word"":""written""}]",{},,2022-12-26T16:04:14
+243,1,"[{""word"":""be"",""partOfSpeech"":""verb"",""translations"":[[""быть""]]},{""word"":""was | were""},{""word"":""been""}]",{},,2022-12-26T16:04:14
+244,1,"[{""word"":""have | has"",""partOfSpeech"":""verb"",""translations"":[[""иметь""]]},{""word"":""had""},{""word"":""had""}]",{},,2022-12-26T16:04:14
+245,2,"[{""word"":""atmospheric"",""transcription"":""ˌætməs'ferik"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""atmospheric front"",""translation"":""атмосферный фронт""},{""text"":""atmospheric layer"",""translation"":""слой атмосферы""},{""text"":""atmospheric instability"",""translation"":""атмосферная нестабильность""}],""translations"":[[""атмосферный""]]}]",{},,2022-12-26T16:04:14
+246,2,"[{""word"":""weather"",""transcription"":""'weðə"",""partOfSpeech"":""noun"",""examples"":[{""text"":""weather forecast"",""translation"":""прогноз погоды""},{""text"":""weather bureau"",""translation"":""бюро погоды""},{""text"":""nasty weather"",""translation"":""ненастная погода""},{""text"":""spell of cold weather"",""translation"":""похолодание""}],""translations"":[[""погода""]]}]",{},,2022-12-26T16:04:14
+247,2,"[{""word"":""snow"",""transcription"":""snəu"",""partOfSpeech"":""noun"",""examples"":[{""text"":""It snows."",""translation"":""Идет снег.""},{""text"":""a flake of snow"",""translation"":""снежинка""},{""text"":""snow depth"",""translation"":""высота снежного покрова""}],""translations"":[[""снег""]]}]",{},,2022-12-26T16:04:14
+248,2,"[{""word"":""rain"",""transcription"":""rein"",""partOfSpeech"":""noun"",""examples"":[{""text"":""It rains."",""translation"":""Идет дождь.""},{""text"":""heavy rain"",""translation"":""проливной дождь, ливень""},{""text"":""drizzling rain"",""translation"":""изморось""},{""text"":""torrential rain"",""translation"":""проливной дождь""}],""translations"":[[""дождь""]]}]",{},,2022-12-26T16:04:14
+249,2,"[{""word"":""wind"",""transcription"":""wind"",""partOfSpeech"":""noun"",""examples"":[{""text"":""a sudden gust of wind — внезапный порыв ветра""}],""translations"":[[""ветер""]]}]",{},,2022-12-26T16:04:14
+250,2,"[{""word"":""hail"",""transcription"":""heil"",""partOfSpeech"":""noun"",""examples"":[{""text"":""It hails."",""translation"":""Идет град.""}],""translations"":[[""град""]]}]",{},,2022-12-26T16:04:14
+251,2,"[{""word"":""thunderstorm"",""transcription"":""'θʌndəstɔːm"",""partOfSpeech"":""noun"",""translations"":[[""гроза""]]}]",{},,2022-12-26T16:04:14
+252,2,"[{""word"":""precipitation"",""transcription"":""priˌsipi'teiʃ(ə)n"",""partOfSpeech"":""noun"",""translations"":[[""осадки""]]}]",{},,2022-12-26T16:04:14
+253,2,"[{""word"":""thunder"",""transcription"":""'θʌndə"",""partOfSpeech"":""noun"",""examples"":[{""text"":""It was thundering all night long."",""translation"":""Всю ночь гремел гром.""}],""translations"":[[""гром""]]}]",{},,2022-12-26T16:04:14
+254,2,"[{""word"":""lightning"",""transcription"":""'laitniŋ"",""partOfSpeech"":""noun"",""examples"":[{""text"":""a flash of lightning"",""translation"":""вспышка молнии""}],""translations"":[[""молния""]]}]",{},,2022-12-26T16:04:14
+255,2,"[{""word"":""anticyclone"",""transcription"":""'ænti'saikləun"",""partOfSpeech"":""noun"",""translations"":[[""антициклон""]]}]",{},,2022-12-26T16:04:14
+256,2,"[{""word"":""atmosphere"",""transcription"":""'ætməsfiə"",""partOfSpeech"":""noun"",""translations"":[[""атмосфера""]]}]",{},,2022-12-26T16:04:14
+257,2,"[{""word"":""barometer"",""transcription"":""bə'rɔmitə"",""partOfSpeech"":""noun"",""examples"":[{""text"":""The barometer is falling."",""translation"":""Барометр падает.""}],""translations"":[[""барометр""]]}]",{},,2022-12-26T16:04:14
+258,2,"[{""word"":""windy"",""transcription"":""'windi"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""windy weather"",""translation"":""ветреная погода""},{""text"":""It is windy."",""translation"":""Ветрено.""}],""translations"":[[""ветреный""]]}]",{},,2022-12-26T16:04:14
+259,2,"[{""word"":""humidity"",""transcription"":""hjuː'midəti"",""partOfSpeech"":""noun"",""examples"":[{""text"":""relative humidity"",""translation"":""относительная влажность""}],""translations"":[[""влажность""]]}]",{},,2022-12-26T16:04:14
+260,2,"[{""word"":""humid"",""transcription"":""'hjuːmid"",""partOfSpeech"":""adjective"",""translations"":[[""влажный""],[""мокрый""],[""сырой""]]}]",{},,2022-12-26T16:04:14
+261,2,"[{""word"":""moist"",""transcription"":""mɔist"",""partOfSpeech"":""adjective"",""translations"":[[""сырой""],[""влажный""],[""мокрый""]]}]",{},,2022-12-26T16:04:14
+262,2,"[{""word"":""damp"",""transcription"":""dæmp"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""damp air"",""translation"":""влажный воздух""}],""translations"":[[""сырой""],[""влажный""]]}]",{},,2022-12-26T16:04:14
+263,2,"[{""word"":""sunrise"",""transcription"":""'sʌnraiz"",""partOfSpeech"":""noun"",""translations"":[[""восход солнца""]]}]",{},,2022-12-26T16:04:14
+264,2,"[{""word"":""degree"",""transcription"":""di'griː"",""partOfSpeech"":""noun"",""examples"":[{""text"":""5 degrees above (below) zero"",""translation"":""5 градусов выше (ниже) нуля""}],""translations"":[[""градус""]]}]",{},,2022-12-26T16:04:14
+265,2,"[{""word"":""pressure"",""transcription"":""'preʃə"",""partOfSpeech"":""noun"",""examples"":[{""text"":""atmospheric pressure"",""translation"":""атмосферное давление""},{""text"":""low pressure area"",""translation"":""область пониженного давления""}],""translations"":[[""давление""]]}]",{},,2022-12-26T16:04:14
+266,2,"[{""word"":""stuffy"",""transcription"":""'stʌfi"",""partOfSpeech"":""adjective"",""translations"":[[""душный""]]}]",{},,2022-12-26T16:04:14
+267,2,"[{""word"":""heat"",""transcription"":""hiːt"",""partOfSpeech"":""noun"",""translations"":[[""жара""]]}]",{},,2022-12-26T16:04:14
+268,2,"[{""word"":""hot"",""transcription"":""hɔt"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""hot weather"",""translation"":""жаркая погода""},{""text"":""It is hot."",""translation"":""Жарко.""}],""translations"":[[""жаркий""]]}]",{},,2022-12-26T16:04:14
+269,2,"[{""word"":""sunset"",""transcription"":""'sʌnset"",""partOfSpeech"":""noun"",""translations"":[[""закат""]]}]",{},,2022-12-26T16:04:14
+270,2,"[{""word"":""frost"",""transcription"":""frɔst"",""partOfSpeech"":""noun"",""examples"":[{""text"":""hoar-frost"",""translation"":""иней, изморозь""}],""translations"":[[""мороз""],[""заморозки""]]}]",{},,2022-12-26T16:04:14
+271,2,"[{""word"":""drizzle"",""transcription"":""'drizl"",""partOfSpeech"":""noun"",""examples"":[{""text"":""It drizzles."",""translation"":""Идёт мелкий дождь.""}],""translations"":[[""изморось""],[""мелкий дождь""]]}]",{},,2022-12-26T16:04:14
+272,2,"[{""word"":""haze"",""transcription"":""heiz"",""partOfSpeech"":""noun"",""examples"":[{""text"":""heat haze"",""translation"":""марево""}],""translations"":[[""лёгкий туман""],[""дымка""],[""мгла""]]}]",{},,2022-12-26T16:04:14
+273,2,"[{""word"":""ice"",""transcription"":""ais"",""partOfSpeech"":""noun"",""examples"":[{""text"":""thin ice"",""translation"":""тонкий лед""}],""translations"":[[""лед""]]}]",{},,2022-12-26T16:04:14
+274,2,"[{""word"":""shower"",""transcription"":""'ʃəuə"",""partOfSpeech"":""noun"",""examples"":[{""text"":""scattered showers — местами проливные дожди""}],""translations"":[[""ливень""]]}]",{},,2022-12-26T16:04:14
+275,2,"[{""word"":""puddle"",""transcription"":""'pʌdl"",""partOfSpeech"":""noun"",""translations"":[[""лужа""]]}]",{},,2022-12-26T16:04:14
+276,2,"[{""word"":""meteorology"",""transcription"":""ˌmiːti(ə)'rɔləʤi"",""partOfSpeech"":""noun"",""translations"":[[""метеорология""]]}]",{},,2022-12-26T16:04:14
+277,2,"[{""word"":""cloudy"",""transcription"":""'klaudi"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""It is cloudy."",""translation"":""Облачно.""}],""translations"":[[""облачный""]]}]",{},,2022-12-26T16:04:14
+278,2,"[{""word"":""thaw"",""transcription"":""θɔː"",""partOfSpeech"":""noun"",""examples"":[{""text"":""The snow started to thaw."",""translation"":""Снег начал таять.""}],""translations"":[[""оттепель""]]}]",{},,2022-12-26T16:04:14
+279,2,"[{""word"":""cool"",""transcription"":""kuːl"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""cool breeze"",""translation"":""прохладный ветерок""}],""translations"":[[""прохладный""]]}]",{},,2022-12-26T16:04:14
+280,2,"[{""word"":""dusty"",""transcription"":""'dʌsti"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""dusty road"",""translation"":""пыльная дорога""}],""translations"":[[""пыльный""]]}]",{},,2022-12-26T16:04:14
+281,2,"[{""word"":""rainbow"",""transcription"":""'reinbəu"",""partOfSpeech"":""noun"",""translations"":[[""радуга""]]}]",{},,2022-12-26T16:04:14
+282,2,"[{""word"":""fresh"",""transcription"":""freʃ"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""fresh air"",""translation"":""свежий воздух""}],""translations"":[[""свежий""],[""чистый""]]}]",{},,2022-12-26T16:04:14
+283,2,"[{""word"":""slippery"",""transcription"":""'slipəri"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""slippery road"",""translation"":""скользкая дорога""}],""translations"":[[""скользкий""]]}]",{},,2022-12-26T16:04:14
+284,2,"[{""word"":""slush"",""transcription"":""slʌʃ"",""partOfSpeech"":""noun"",""translations"":[[""слякоть""]]}]",{},,2022-12-26T16:04:14
+285,2,"[{""word"":""smog"",""transcription"":""smɔg"",""partOfSpeech"":""noun"",""translations"":[[""смог""],[""густой туман с копотью""]]}]",{},,2022-12-26T16:04:14
+286,2,"[{""word"":""snowfall"",""partOfSpeech"":""noun"",""translations"":[[""снегопад""]]}]",{},,2022-12-26T16:04:14
+287,2,"[{""word"":""sunny"",""transcription"":""'sʌni"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""sunny day"",""translation"":""солнечный день""}],""translations"":[[""солнечный""]]}]",{},,2022-12-26T16:04:14
+288,2,"[{""word"":""dry"",""transcription"":""drai"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""dry air"",""translation"":""сухой воздух""}],""translations"":[[""сухой""]]}]",{},,2022-12-26T16:04:14
+289,2,"[{""word"":""wet"",""transcription"":""wet"",""partOfSpeech"":""adjective"",""translations"":[[""влажный""],[""сырой""]]}]",{},,2022-12-26T16:04:14
+290,2,"[{""word"":""temperature"",""transcription"":""'tempriʧə"",""partOfSpeech"":""noun"",""examples"":[{""text"":""What’s the temperature today?"",""translation"":""Какая сегодня температура?""}],""translations"":[[""температура""]]}]",{},,2022-12-26T16:04:14
+291,2,"[{""word"":""warm"",""transcription"":""wɔːm"",""partOfSpeech"":""adjective"",""translations"":[[""теплый""]]}]",{},,2022-12-26T16:04:14
+292,2,"[{""word"":""thermometer"",""transcription"":""θə'mɔmitə"",""partOfSpeech"":""noun"",""examples"":[{""text"":""Celsius / Centigrade thermometer"",""translation"":""термометр Цельсия / со шкалой Цельсия""},{""text"":""Fahrenheit thermometer"",""translation"":""термометр Фаренгейта / со шкалой Фаренгейта""}],""translations"":[[""градусник""],[""термометр""]]}]",{},,2022-12-26T16:04:14
+293,2,"[{""word"":""fog"",""transcription"":""fɔg"",""partOfSpeech"":""noun"",""examples"":[{""text"":""thick fog"",""translation"":""густой туман""}],""translations"":[[""туман""]]}]",{},,2022-12-26T16:04:14
+294,2,"[{""word"":""mist"",""transcription"":""mist"",""partOfSpeech"":""noun"",""examples"":[{""text"":""morning mist"",""translation"":""утренний туман, утренняя дымка""}],""translations"":[[""туман""],[""дымка""],[""пасмурность""]]}]",{},,2022-12-26T16:04:14
+295,2,"[{""word"":""foggy"",""transcription"":""'fɔgi"",""partOfSpeech"":""adjective"",""translations"":[[""туманный""]]}]",{},,2022-12-26T16:04:14
+296,2,"[{""word"":""water"",""transcription"":""'wɔːtə"",""partOfSpeech"":""noun"",""translations"":[[""вода""]]}]",{},,2022-12-26T16:04:14
+297,2,"[{""word"":""cold"",""transcription"":""kəuld"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""cold weather"",""translation"":""холодная погода""}],""translations"":[[""холодный""]]}]",{},,2022-12-26T16:04:14
+298,2,"[{""word"":""cyclone"",""transcription"":""'saikləun"",""partOfSpeech"":""noun"",""translations"":[[""циклон""]]}]",{},,2022-12-26T16:04:14
+299,2,"[{""word"":""storm"",""transcription"":""stɔːm"",""partOfSpeech"":""noun"",""examples"":[{""text"":""dust storm"",""translation"":""пыльная буря""}],""translations"":[[""буря""],[""гроза""],[""ураган""],[""шторм""]]}]",{},,2022-12-26T16:04:14
+300,2,"[{""word"":""clear"",""transcription"":""kliə"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""The sky was clear."",""translation"":""Небо было безоблачным.""}],""translations"":[[""ясный""],[""безоблачный""]]}]",{},,2022-12-26T16:04:14
+301,2,"[{""word"":""sleet"",""transcription"":""sliːt"",""partOfSpeech"":""noun"",""translations"":[[""дождь со снегом""]]}]",{},,2022-12-26T16:04:14
+302,2,"[{""word"":""cloud"",""transcription"":""klaud"",""partOfSpeech"":""noun"",""translations"":[[""облако""],[""туча""]]}]",{},,2022-12-26T16:04:14
+303,2,"[{""word"":""chilly"",""transcription"":""'ʧili"",""partOfSpeech"":""adjective"",""translations"":[[""промозглый""]]}]",{},,2022-12-26T16:04:14
+304,2,"[{""word"":""downpour"",""transcription"":""'daunpɔː"",""partOfSpeech"":""noun"",""translations"":[[""ливень""]]}]",{},,2022-12-26T16:04:14
+305,2,"[{""word"":""gale"",""transcription"":""geil"",""partOfSpeech"":""noun"",""examples"":[{""text"":""gale warning"",""translation"":""штормовое предупреждение""}],""translations"":[[""сильный ветер""],[""шторм""]]}]",{},,2022-12-26T16:04:14
+306,2,"[{""word"":""scorching"",""transcription"":""'skɔːʧiŋ"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""scorching sun"",""translation"":""палящее солнце""},{""text"":""scorching day"",""translation"":""знойный день""}],""translations"":[[""палящий""],[""знойный""]]}]",{},,2022-12-26T16:04:14
+307,2,"[{""word"":""dust"",""transcription"":""dʌst"",""partOfSpeech"":""noun"",""translations"":[[""пыль""]]}]",{},,2022-12-26T16:04:14
+308,2,"[{""word"":""blustery"",""transcription"":""'blʌstəri"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""blustery weather"",""translation"":""ветреная погода""},{""text"":""blustery wind"",""translation"":""порывистый ветер""}],""translations"":[[""ветреный""],[""порывистый""]]}]",{},,2022-12-26T16:04:14
+309,2,"[{""word"":""overcast"",""transcription"":""'əuvəkɑːst"",""partOfSpeech"":""adjective"",""examples"":[{""text"":""The sky is overcast."",""translation"":""Небо затянуто облаками.""}],""translations"":[[""покрытый облаками""]]}]",{},,2022-12-26T16:04:14

@@ -26,7 +26,7 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Execute Gradle build
-        run: ./gradlew clean build dockerBuildImage -Ddemo=true >/dev/null 2>&1
+        run: ./gradlew clean build dockerBuildImage -Dstandalone=true >/dev/null 2>&1
 
       - name: Extract project env details
         run: cat ./app-ktor/project-tag.env >> $GITHUB_ENV
@@ -41,12 +41,12 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: sszuev/open-tutor-demo
+          images: sszuev/open-tutor-standalone
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v3
         with:
           context: ./app-ktor/build/docker/
           push: true
-          tags: sszuev/open-tutor-demo:${{ env.PROJECT_TAG }},sszuev/open-tutor-demo:latest
+          tags: sszuev/open-tutor-standalone:${{ env.PROJECT_TAG }},sszuev/open-tutor-standalone:latest
           labels: ${{ steps.meta.outputs.labels }}

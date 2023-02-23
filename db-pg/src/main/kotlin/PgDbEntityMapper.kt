@@ -1,120 +1,95 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.common.*
+import com.gitlab.sszuev.flashcards.common.LanguageRepository
+import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
-import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
-import com.gitlab.sszuev.flashcards.common.documents.DocumentLang
-import com.gitlab.sszuev.flashcards.dbpg.dao.*
-import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionary
+import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
+import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
+import com.gitlab.sszuev.flashcards.common.toCommonCardDtoDetails
+import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
+import com.gitlab.sszuev.flashcards.common.toJsonString
+import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
+import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
+import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
+import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbDictionary
+import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
+import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
 import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.sql.SizedIterable
-import java.util.*
+import java.time.LocalDateTime
+import java.util.UUID
 
-internal fun Dictionary.toDownloadResource(sysConfig: SysConfig, cards: SizedIterable<Card>) = DocumentDictionary(
-    id = null,
-    userId = null,
-    name = this.name,
-    sourceLang = this.sourceLang.toDocument(),
-    targetLang = this.targetLand.toDocument(),
-    cards = cards.map { it.toDownloadResource(sysConfig) }
-)
-
-internal fun Card.toDownloadResource(sysConfig: SysConfig) = DocumentCard(
-    id = null,
-    text = this.text,
-    transcription = this.transcription,
-    details = this.details ?: "",
-    partOfSpeech = this.partOfSpeech,
-    answered = this.answered,
-    examples = this.examples.map { it.text },
-    translations = this.translations.map { it.text },
-    status = sysConfig.status(this.answered),
-)
-
-internal fun User.toEntity() = AppUserEntity(
+internal fun PgDbUser.toAppUserEntity(): AppUserEntity = AppUserEntity(
     id = this.id.asUserId(),
-    authId = this.uuid.asUserUid(),
+    authId = this.uuid.asAppAuthId(),
 )
 
-internal fun Dictionary.toEntity() = DictionaryEntity(
+internal fun PgDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryEntity(
     dictionaryId = this.id.asDictionaryId(),
     name = this.name,
-    sourceLang = this.sourceLang.toEntity(),
-    targetLang = this.targetLand.toEntity(),
+    sourceLang = createLangEntity(this.sourceLang),
+    targetLang = createLangEntity(this.targetLang),
 )
 
-internal fun Card.toEntity() = CardEntity(
-    cardId = this.id.asCardId(),
-    dictionaryId = this.dictionaryId.asDictionaryId(),
-    word = this.text,
-    transcription = this.transcription,
-    details = toEntityDetails(this.details),
-    partOfSpeech = this.partOfSpeech,
-    answered = this.answered,
-    examples = this.examples.map { it.text },
-    translations = this.translations.map { toEntityTranslations(it.text) },
-)
+internal fun PgDbCard.toCardEntity(): CardEntity {
+    val word = parseCardWordsJson(this.words).first()
+    val details =
+        parseCardDetailsJson(this.details).mapKeys { Stage.valueOf(it.key) }.mapValues { it.value.toString().toLong() }
+    return CardEntity(
+        cardId = this.id.asCardId(),
+        dictionaryId = this.dictionaryId.asDictionaryId(),
+        word = word.word,
+        transcription = word.transcription,
+        details = details,
+        partOfSpeech = word.partOfSpeech,
+        answered = this.answered,
+        examples = word.examples.map { it.text },
+        translations = word.translations,
+    )
+}
 
-internal fun Language.toEntity() = LangEntity(
-    langId = this.id.asLangId(),
-    partsOfSpeech = this.partsOfSpeech.split(",")
-)
-
-private fun Language.toDocument() = DocumentLang(
-    tag = this.id.value,
-    partsOfSpeech = this.partsOfSpeech.split(",")
-)
-
-internal fun copyToDbEntityRecord(from: CardEntity, to: Card) {
+internal fun writeCardEntityToPgDbCard(from: CardEntity, to: PgDbCard, timestamp: LocalDateTime) {
     to.dictionaryId = from.dictionaryId.asRecordId()
-    to.text = from.word
-    to.transcription = from.transcription
-    to.partOfSpeech = from.partOfSpeech
+    to.words = from.toPgDbCardWordsJson()
     to.answered = from.answered
-    to.details = toDbRecordDetails(from.details)
+    to.details = from.details.toPgDbCardDetailsJson()
+    to.changedAt = timestamp
 }
 
-internal fun copyToDbEntityRecord(dictionaryId: EntityID<Long>, from: DocumentCard, to: Card) {
-    to.dictionaryId = dictionaryId
-    to.text = from.text
-    to.transcription = from.transcription
-    to.partOfSpeech = from.partOfSpeech
-    to.answered = from.answered
-    to.details = from.details
-}
+internal fun Map<Stage, Long>.toPgDbCardDetailsJson(): String = toCommonCardDtoDetails().toJsonString()
 
-internal fun copyToDbExampleRecord(txt: String, card: Card, to: Example) {
-    to.cardId = card.id
-    to.text = txt
-}
+internal fun CardEntity.toPgDbCardWordsJson(): String = toCommonWordDtoList().toJsonString()
 
-internal fun copyToDbTranslationRecord(txt: List<String>, card: Card, to: Translation) {
-    to.cardId = card.id
-    to.text = toDbRecordTranslations(txt)
-}
+internal fun DocumentCard.toPgDbCardWordsJson(): String = toCommonWordDtoList().toJsonString()
 
-internal fun EntityID<String>.asLangId() = LangId(value)
+internal fun EntityID<Long>.asUserId(): AppUserId = AppUserId(value.toString())
 
-internal fun EntityID<Long>.asUserId() = AppUserId(value.toString())
+internal fun EntityID<Long>.asDictionaryId(): DictionaryId = value.asDictionaryId()
 
-internal fun UUID.asUserUid() = AppAuthId(toString())
-
-internal fun EntityID<Long>.asDictionaryId() = DictionaryId(value.toString())
-
-internal fun EntityID<Long>.asCardId() = CardId(value.toString())
+internal fun EntityID<Long>.asCardId(): CardId = value.asCardId()
 
 internal fun AppUserId.asRecordId(): EntityID<Long> = EntityID(asLong(), Users)
 
-internal fun DictionaryId.asRecordId() = EntityID(asLong(), Dictionaries)
+internal fun DictionaryId.asRecordId(): EntityID<Long> = EntityID(asLong(), Dictionaries)
 
-internal fun CardId.asRecordId() = EntityID(asLong(), Cards)
+internal fun CardId.asRecordId(): EntityID<Long> = EntityID(asLong(), Cards)
 
-internal fun String.asRecordId() = EntityID(this, Languages)
+internal fun createLangEntity(tag: String) = LangEntity(
+    langId = LangId(tag),
+    partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
+)
 
-internal fun partsOfSpeechToRecordTxt(partsOfSpeech: Collection<String>): String {
-    return partsOfSpeech.joinToString(",")
-}
+private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())
+
+internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
+
+internal fun Long.asCardId(): CardId = CardId(toString())

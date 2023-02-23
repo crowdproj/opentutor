@@ -1,0 +1,4 @@
+ALTER TABLE public.users ALTER COLUMN details TYPE VARCHAR;
+ALTER TABLE public.dictionaries ALTER COLUMN details TYPE VARCHAR;
+ALTER TABLE public.cards ALTER COLUMN details TYPE VARCHAR;
+ALTER TABLE public.cards ALTER COLUMN words TYPE VARCHAR;

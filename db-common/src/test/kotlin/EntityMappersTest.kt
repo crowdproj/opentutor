@@ -7,11 +7,11 @@ internal class EntityMappersTest {
 
     companion object {
         private fun assertSplitWords(expectedSize: Int, givenString: String) {
-            val actual1: List<String> = splitIntoWords(givenString)
+            val actual1: List<String> = fromDocumentCardTranslationToCommonWordDtoTranslation(givenString)
             Assertions.assertEquals(expectedSize, actual1.size)
             actual1.forEach { assertPhrasePart(it) }
-            Assertions.assertEquals(expectedSize, splitIntoWords(givenString).size)
-            val actual2: List<String> = splitIntoWords(givenString)
+            Assertions.assertEquals(expectedSize, fromDocumentCardTranslationToCommonWordDtoTranslation(givenString).size)
+            val actual2: List<String> = fromDocumentCardTranslationToCommonWordDtoTranslation(givenString)
             Assertions.assertEquals(actual1, actual2)
         }
 
