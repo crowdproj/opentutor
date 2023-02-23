@@ -109,13 +109,13 @@ class PgDbDictionaryRepository(
                 sourceLang = found.sourceLang,
                 targetLang = found.targetLang,
                 cards = cards.map { card ->
-                    val word = parseCardWordsJson(card.words).firstOrNull()
+                    val word = parseCardWordsJson(card.words).first()
                     DocumentCard(
-                        text = card.text,
-                        transcription = word?.transcription,
-                        partOfSpeech = word?.partOfSpeech,
-                        translations = word?.toDocumentTranslations() ?: emptyList(),
-                        examples = word?.toDocumentExamples() ?: emptyList(),
+                        text = word.word,
+                        transcription = word.transcription,
+                        partOfSpeech = word.partOfSpeech,
+                        translations = word.toDocumentTranslations(),
+                        examples = word.toDocumentExamples(),
                         status = sysConfig.status(card.answered),
                     )
                 }
@@ -149,7 +149,6 @@ class PgDbDictionaryRepository(
             document.cards.forEach {
                 PgDbCard.new {
                     this.dictionaryId = dictionaryId
-                    this.text = it.text
                     this.words = it.toPgDbCardWordsJson()
                     this.details = "{}"
                     this.changedAt = timestamp

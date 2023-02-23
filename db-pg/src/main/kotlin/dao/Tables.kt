@@ -31,7 +31,6 @@ object Dictionaries : LongIdTableWithSequence(
  */
 object Cards : LongIdTableWithSequence(tableName = "cards", idSeqName = "cards_id_seq", pkeyName = "cards_pkey") {
     val dictionaryId = reference("dictionary_id", id).index()
-    val text = text("text")
     val words = jsonb("words")
     val answered = integer("answered").nullable()
     val details = json("details")

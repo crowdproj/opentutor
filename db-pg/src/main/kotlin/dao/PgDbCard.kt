@@ -8,7 +8,6 @@ class PgDbCard(id: EntityID<Long>) : Entity<Long>(id) {
     companion object : EntityClass<Long, PgDbCard>(Cards)
 
     var dictionaryId by Cards.dictionaryId
-    var text by Cards.text
     var words by Cards.words
     var answered by Cards.answered
     var details by Cards.details

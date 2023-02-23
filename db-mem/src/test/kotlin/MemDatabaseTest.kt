@@ -35,7 +35,6 @@ internal class MemDatabaseTest {
         )
         private val testCard = MemDbCard(
             id = null,
-            text = "word",
             words = listOf(MemDbWord(word = "word", translations = listOf(listOf("слово")))),
         )
 

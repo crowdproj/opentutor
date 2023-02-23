@@ -47,7 +47,7 @@ internal fun PgDbCard.toCardEntity(): CardEntity {
     return CardEntity(
         cardId = this.id.asCardId(),
         dictionaryId = this.dictionaryId.asDictionaryId(),
-        word = this.text,
+        word = word.word,
         transcription = word.transcription,
         details = details,
         partOfSpeech = word.partOfSpeech,
@@ -59,7 +59,6 @@ internal fun PgDbCard.toCardEntity(): CardEntity {
 
 internal fun writeCardEntityToPgDbCard(from: CardEntity, to: PgDbCard, timestamp: LocalDateTime) {
     to.dictionaryId = from.dictionaryId.asRecordId()
-    to.text = from.word
     to.words = from.toPgDbCardWordsJson()
     to.answered = from.answered
     to.details = from.details.toPgDbCardDetailsJson()

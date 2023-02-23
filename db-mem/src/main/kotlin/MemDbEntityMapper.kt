@@ -104,7 +104,6 @@ internal fun fromDatabaseToDocumentDictionary(
 
 internal fun DocumentCard.toMemDbCard(mapAnswered: (DocumentCardStatus) -> Int): MemDbCard {
     return MemDbCard(
-        text = this.text,
         words = this.toMemDbWords(),
         details = emptyMap(),
         answered = mapAnswered(this.status),
@@ -118,7 +117,7 @@ private fun DocumentCard.toMemDbWords(): List<MemDbWord> {
 internal fun MemDbCard.toDocumentCard(mapStatus: (Int?) -> DocumentCardStatus): DocumentCard {
     val word = this.words.first().toCommonWordDto()
     return DocumentCard(
-        text = this.text,
+        text = word.word,
         transcription = word.transcription,
         partOfSpeech = word.partOfSpeech,
         translations = word.toDocumentTranslations(),
@@ -148,7 +147,7 @@ internal fun MemDbCard.toCardEntity(): CardEntity {
     return CardEntity(
         cardId = id?.asCardId() ?: CardId.NONE,
         dictionaryId = dictionaryId?.asDictionaryId() ?: DictionaryId.NONE,
-        word = text,
+        word = word.word,
         transcription = word.transcription,
         translations = word.translations,
         examples = word.examples.map { it.text },
@@ -163,7 +162,6 @@ internal fun CardEntity.toMemDbCard(): MemDbCard {
     return MemDbCard(
         id = if (this.cardId == CardId.NONE) null else this.cardId.asLong(),
         dictionaryId = dictionaryId,
-        text = word,
         words = this.toCommonWordDtoList().map { it.toMemDbWord() },
         details = this.toCommonCardDetailsDto().toMemDbCardDetails(),
         answered = answered,

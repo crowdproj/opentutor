@@ -18,7 +18,6 @@ CREATE TABLE public.dictionaries (
 CREATE TABLE public.cards (
     id BIGINT NOT NULL,
     dictionary_id BIGINT NOT NULL,
-    text TEXT NOT NULL,
     words JSONB NOT NULL DEFAULT '{}'::JSONB,
     answered INTEGER,
     details JSON NOT NULL DEFAULT '{}'::JSON,

@@ -24,7 +24,6 @@ internal class EntityMapperTest {
         )
 
         private val testMemDbCard = MemDbCard(
-            text = "snowfall",
             details = emptyMap(),
             words = listOf(
                 MemDbWord(

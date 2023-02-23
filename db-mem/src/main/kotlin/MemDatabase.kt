@@ -336,7 +336,7 @@ class MemDatabase private constructor(
             return res
         }
 
-        private fun readUsers(inputStream: InputStream) = userCsvFormat(false).read(inputStream).use {
+        private fun readUsers(inputStream: InputStream): List<MemDbUser> = userCsvFormat(false).read(inputStream).use {
             it.records.map { record ->
                 MemDbUser(
                     id = record.value("id").toLong(),
@@ -347,26 +347,26 @@ class MemDatabase private constructor(
             }
         }
 
-        private fun readDictionaries(inputStream: InputStream) = dictionaryCsvFormat(false).read(inputStream).use {
-            it.records.map { record ->
-                MemDbDictionary(
-                    id = record.value("id").toLong(),
-                    name = record.value("name"),
-                    userId = record.value("user_id").toLong(),
-                    sourceLanguage = createMemDbLanguage(record.get("source_lang")),
-                    targetLanguage = createMemDbLanguage(record.get("target_lang")),
-                    details = fromJsonStringToMemDbDictionaryDetails(record.value("details")),
-                    changedAt = LocalDateTime.parse(record.value("changed_at")),
-                )
+        private fun readDictionaries(inputStream: InputStream): List<MemDbDictionary> =
+            dictionaryCsvFormat(false).read(inputStream).use {
+                it.records.map { record ->
+                    MemDbDictionary(
+                        id = record.value("id").toLong(),
+                        name = record.value("name"),
+                        userId = record.value("user_id").toLong(),
+                        sourceLanguage = createMemDbLanguage(record.get("source_lang")),
+                        targetLanguage = createMemDbLanguage(record.get("target_lang")),
+                        details = fromJsonStringToMemDbDictionaryDetails(record.value("details")),
+                        changedAt = LocalDateTime.parse(record.value("changed_at")),
+                    )
+                }
             }
-        }
 
-        private fun readCards(inputStream: InputStream) = cardCsvFormat(false).read(inputStream).use {
+        private fun readCards(inputStream: InputStream): List<MemDbCard> = cardCsvFormat(false).read(inputStream).use {
             it.records.map { record ->
                 MemDbCard(
                     id = record.value("id").toLong(),
                     dictionaryId = record.value("dictionary_id").toLong(),
-                    text = record.value("text"),
                     words = fromJsonStringToMemDbWords(record.value("words")),
                     details = fromJsonStringToMemDbCardDetails(record.value("details")),
                     answered = record.valueOrNull("answered")?.toInt(),
@@ -374,7 +374,6 @@ class MemDatabase private constructor(
                 )
             }
         }
-
 
         private fun writeUsers(users: Collection<MemDbUser>, outputStream: OutputStream) =
             userCsvFormat(true).write(outputStream).use {
@@ -403,14 +402,12 @@ class MemDatabase private constructor(
                 }
             }
 
-
         private fun writeCards(cards: Collection<MemDbCard>, outputStream: OutputStream) =
             cardCsvFormat(true).write(outputStream).use {
                 cards.forEach { card ->
                     it.printRecord(
                         card.id,
                         card.dictionaryId,
-                        card.text,
                         card.wordsAsJsonString(),
                         card.detailsAsJsonString(),
                         card.answered,
@@ -451,7 +448,6 @@ class MemDatabase private constructor(
                 .setHeader(
                     "id",
                     "dictionary_id",
-                    "text",
                     "words",
                     "details",
                     "answered",
@@ -484,5 +480,6 @@ class MemDatabase private constructor(
         private fun resolveClasspathResource(classpathDir: String, classpathFilename: String): String {
             return "${classpathDir.substringAfter(classpathPrefix)}/$classpathFilename".replace("//", "/")
         }
+
     }
 }
