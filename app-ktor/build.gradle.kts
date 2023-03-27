@@ -15,9 +15,6 @@ dependencies {
     val junitVersion: String by project
     val slf4jVersion: String by project
     val mockkVersion: String by project
-    val bootstrapVersion: String by project
-    val jqueryVersion: String by project
-    val keycloakJsVersion: String by project
     val logbackKafkaVersion: String by project
     val janinoVersion: String by project
 
@@ -31,6 +28,7 @@ dependencies {
     implementation(project(":db-common"))
     implementation(project(":db-pg"))
     implementation(project(":db-mem"))
+    implementation(project(":frontend"))
 
     implementation(project(":logs-openapi"))
     implementation(project(":logs-mappers"))
@@ -57,11 +55,7 @@ dependencies {
 
     implementation("io.ktor:ktor-server-html-builder:$ktorVersion")
     implementation("io.ktor:ktor-server-thymeleaf:$ktorVersion")
-
     implementation("io.ktor:ktor-server-webjars:$ktorVersion")
-    implementation("org.webjars:bootstrap:$bootstrapVersion")
-    implementation("org.webjars:jquery:$jqueryVersion")
-    implementation("org.webjars.npm:keycloak-js:$keycloakJsVersion")
 
     implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
     implementation("org.codehaus.janino:janino:$janinoVersion")
