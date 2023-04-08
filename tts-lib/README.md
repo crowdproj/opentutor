@@ -15,4 +15,4 @@ can work with local tar archives in the shtooka format. See also https://shtooka
 to make it work please obtain voice-rss-api key and specify it using vm-option `tts.service.voicerss.key`
 
 - [EspeakNgTestToSpeechService](src/main/kotlin/impl/EspeakNgTestToSpeechService.kt) - enjoy mechanical voice provided by [espeak-ng](https://github.com/espeak-ng/espeak-ng). 
-There is also ubuntu image with preinstalled espeak-ng (`docker pull sszuev/ubuntu:openjdk11-jre-espeak-ng`), see https://hub.docker.com/repository/docker/sszuev/ubuntu
+There is also ubuntu image with preinstalled espeak-ng (`docker pull sszuev/ubuntu-jammy-openjdk-17-espeak-ng`), see https://hub.docker.com/repository/docker/sszuev/ubuntu

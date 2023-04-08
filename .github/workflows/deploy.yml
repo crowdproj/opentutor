@@ -5,7 +5,7 @@ run-name: ${{ github.actor }} - build, deploy image and push it to hub.docker.co
 on:
   push:
     branches:
-      - main
+      - tmp
 jobs:
   deploy:
     runs-on: ubuntu-latest

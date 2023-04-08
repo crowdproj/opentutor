@@ -6,7 +6,7 @@ The ktor-based web-application for composing custom dictionaries and learning wo
 There is a standalone edition for local single-user running. 
 This app version does not require any extra services and dependencies.         
 The user dictionaries and cards data is located in the directory `/app/userdata`, which can be mounted as a docker-volume.           
-By default, [espeak-ng](https://github.com/espeak-ng/espeak-ng) is used as Text-To-Speech service (it is pre-installed inside `sszuev/ubuntu:openjdk11-jre-espeak-ng`).        
+By default, [espeak-ng](https://github.com/espeak-ng/espeak-ng) is used as Text-To-Speech service (it is pre-installed inside `sszuev/ubuntu-jammy-openjdk-17-espeak-ng`).        
 To use [voicerss](https://www.voicerss.org/api/) TTS service (better quality) 
 obtain API-key and specify it as an environment variable `VOICERSS-KEY`, e.g. `docker run ... -e VOICERSS-KEY=${your-key} ...`
 
