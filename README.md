@@ -17,14 +17,14 @@ It is supposed to be an extended analogue of the desktop program *Lingvo Tutor*,
 At the moment, the application is only available as a docker image.
 The userdata with built-in dictionaries is stored in the `/userdata` directory (inside container), this allows to use docker volumes.
 
-By default, [espeak-ng](https://github.com/espeak-ng/espeak-ng) is used as Text-To-Speech service (it is pre-installed inside `sszuev/ubuntu:openjdk11-jre-espeak-ng` image).        
+By default, [espeak-ng](https://github.com/espeak-ng/espeak-ng) is used as Text-To-Speech service (it is pre-installed inside `sszuev/ubuntu-jammy-openjdk-17-espeak-ng` image).        
 To use [voicerss](https://www.voicerss.org/api/) TTS service (better quality)
 obtain API-key and specify it as an environment variable `VOICERSS-KEY`, e.g. `docker run ... -e VOICERSS-KEY=${your-key} ...`
 
 This is a second edition, the first one is a java-spring application, which home is [here](https://gitlab.com/sszuev/flashcards)
 
 #### Requirements (for dev): 
-- java-11+
+- java-17+
 - gradle-7+
 - docker
 
