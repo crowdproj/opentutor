@@ -107,7 +107,7 @@ docker {
     }
     javaApplication {
         mainClassName.set(application.mainClass.get())
-        baseImage.set("sszuev/ubuntu:openjdk11-jre-espeak-ng")
+        baseImage.set("sszuev/ubuntu-jammy-openjdk-17-espeak-ng")
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         ports.set(listOf(8080))
         images.set(listOf("$imageName:$tag", "$imageName:latest"))
