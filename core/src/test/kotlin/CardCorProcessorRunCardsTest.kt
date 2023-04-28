@@ -4,9 +4,27 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
-import com.gitlab.sszuev.flashcards.model.common.*
-import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.repositories.*
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
+import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
+import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
+import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
+import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
 import kotlinx.coroutines.test.runTest
@@ -168,14 +186,14 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test create-card success`() = runTest {
-        val testResponseEntity = stubCard.copy(word = "HHH")
-        val testRequestEntity = stubCard.copy(word = "XXX", cardId = CardId.NONE)
+        val testResponseEntity = stubCard.copy(words = listOf(CardWordEntity("HHH")))
+        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = CardId.NONE)
 
         var wasCalled = false
         val repository = MockDbCardRepository(
             invokeCreateCard = { _, it ->
                 wasCalled = true
-                CardDbResponse(if (it.word == testRequestEntity.word) testResponseEntity else testRequestEntity)
+                CardDbResponse(if (it.words == testRequestEntity.words) testResponseEntity else testRequestEntity)
             }
         )
 
@@ -194,18 +212,22 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test create-card unexpected fail`() = runTest {
-        val testRequestEntity = stubCard.copy(word = "XXX", cardId = CardId.NONE)
+        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = CardId.NONE)
 
         var wasCalled = false
         val repository = MockDbCardRepository(
             invokeCreateCard = { _, it ->
                 wasCalled = true
-                CardDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
+                CardDbResponse(if (it.words == testRequestEntity.words) throw TestException() else testRequestEntity)
             }
         )
 
         val context = testContext(CardOperation.CREATE_CARD, repository)
         context.requestCardEntity = testRequestEntity
+
+context.errors.forEach { // TODO
+    println(it)
+}
 
         CardCorProcessor().execute(context)
 
@@ -279,8 +301,8 @@ internal class CardCorProcessorRunCardsTest {
     @Test
     fun `test update-card success`() = runTest {
         val cardId = CardId("42")
-        val testRequestEntity = stubCard.copy(word = "XXX", cardId = cardId)
-        val testResponseEntity = stubCard.copy(word = "HHH")
+        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = cardId)
+        val testResponseEntity = stubCard.copy(words = listOf(CardWordEntity(word = "HHH")))
 
         var wasCalled = false
         val repository = MockDbCardRepository(
@@ -305,13 +327,13 @@ internal class CardCorProcessorRunCardsTest {
     @Test
     fun `test update-card unexpected fail`() = runTest {
         val cardId = CardId("42")
-        val testRequestEntity = stubCard.copy(word = "XXX", cardId = cardId)
+        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = cardId)
 
         var wasCalled = false
         val repository = MockDbCardRepository(
             invokeUpdateCard = { _, it ->
                 wasCalled = true
-                CardDbResponse(if (it.word == testRequestEntity.word) throw TestException() else testRequestEntity)
+                CardDbResponse(if (it.words == testRequestEntity.words) throw TestException() else testRequestEntity)
             }
         )
 
@@ -454,8 +476,12 @@ internal class CardCorProcessorRunCardsTest {
         val testCardEntity = CardEntity(
             cardId = if (op == CardOperation.UPDATE_CARD) testCardId else CardId.NONE,
             dictionaryId = testDictionaryId,
-            word = "xxx",
-            translations = listOf(listOf("fff")),
+            words = listOf(
+                CardWordEntity(
+                    word = "xxx",
+                    translations = listOf(listOf("fff")),
+                )
+            )
         )
         val testSearchFilter = CardFilter(
             dictionaryIds = listOf(testDictionaryId),

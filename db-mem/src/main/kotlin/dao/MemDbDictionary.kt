@@ -2,6 +2,9 @@ package com.gitlab.sszuev.flashcards.dbmem.dao
 
 import java.time.LocalDateTime
 
+/**
+ * id,name,user_id,source_lang,target_lang,details,changed_at
+ */
 data class MemDbDictionary(
     val name: String,
     val sourceLanguage: MemDbLanguage,

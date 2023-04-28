@@ -1,6 +1,31 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
-import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
+import com.gitlab.sszuev.flashcards.api.v1.models.DebugStub
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.ErrorResource
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetCardResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.RunMode
+import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardResponse
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
@@ -8,8 +33,8 @@ import com.gitlab.sszuev.flashcards.stubs.stubError
 import com.gitlab.sszuev.flashcards.stubs.stubLearnCardDetails
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
-import io.ktor.client.call.*
-import io.ktor.client.statement.*
+import io.ktor.client.call.body
+import io.ktor.client.statement.HttpResponse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -17,7 +42,7 @@ class CardControllerStubsTest {
 
     companion object {
         private val testCard = CardResource(
-            word = stubCard.word,
+            word = stubCard.words.single().word,
             cardId = stubCard.cardId.asString(),
             dictionaryId = stubCard.dictionaryId.asString()
         )
@@ -72,7 +97,7 @@ class CardControllerStubsTest {
         private fun assertCard(actual: CardEntity, expected: CardResource) {
             Assertions.assertEquals(actual.cardId.asString(), expected.cardId)
             Assertions.assertEquals(actual.dictionaryId.asString(), expected.dictionaryId)
-            Assertions.assertEquals(actual.word, expected.word)
+            Assertions.assertEquals(actual.words.single().word, expected.word)
         }
     }
 

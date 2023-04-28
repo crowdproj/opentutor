@@ -25,6 +25,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardResponse
 import com.gitlab.sszuev.flashcards.dbmem.MemDatabase
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.testPost
@@ -115,18 +116,22 @@ internal class CardControllerRunTest {
     fun `test create-card success`() = testSecuredApp {
         val expectedCard = CardEntity(
             dictionaryId = DictionaryId("1"),
-            word = "rainy",
-            transcription = "ˈreɪnɪ",
-            translations = listOf(listOf("дождливый")),
+            words = listOf(
+                CardWordEntity(
+                    word = "rainy",
+                    transcription = "ˈreɪnɪ",
+                    translations = listOf(listOf("дождливый")),
+                )
+            ),
         )
         val requestBody = CreateCardRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
             card = CardResource(
                 dictionaryId = expectedCard.dictionaryId.asString(),
-                word = expectedCard.word,
-                transcription = expectedCard.transcription,
-                translations = expectedCard.translations,
+                word = expectedCard.words.single().word,
+                transcription = expectedCard.words.single().transcription,
+                translations = expectedCard.words.single().translations,
             )
         )
         val response = testPost("/v1/api/cards/create", requestBody)
@@ -138,9 +143,9 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(res.card)
         Assertions.assertNotNull(res.card!!.cardId)
         Assertions.assertEquals(expectedCard.dictionaryId.asString(), res.card!!.dictionaryId)
-        Assertions.assertEquals(expectedCard.word, res.card!!.word)
-        Assertions.assertEquals(expectedCard.transcription, res.card!!.transcription)
-        Assertions.assertEquals(expectedCard.translations, res.card!!.translations!!)
+        Assertions.assertEquals(expectedCard.words.single().word, res.card!!.word)
+        Assertions.assertEquals(expectedCard.words.single().transcription, res.card!!.transcription)
+        Assertions.assertEquals(expectedCard.words.single().translations, res.card!!.translations!!)
         Assertions.assertTrue(res.card!!.examples!!.isEmpty())
     }
 

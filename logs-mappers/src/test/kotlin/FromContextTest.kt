@@ -7,7 +7,14 @@ import com.gitlab.sszuev.flashcards.logs.models.CardFilterResource
 import com.gitlab.sszuev.flashcards.logs.models.CardLearnResource
 import com.gitlab.sszuev.flashcards.logs.models.DictionaryEntityResource
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -17,8 +24,8 @@ internal class FromContextTest {
         fun assertCardEntity(expected: CardEntity, actual: CardEntityResource) {
             Assertions.assertEquals(expected.cardId.asString(), actual.cardId)
             Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
-            Assertions.assertEquals(expected.word, actual.word)
-            Assertions.assertEquals(expected.translations.takeIf { it.isNotEmpty() }, actual.translations)
+            Assertions.assertEquals(expected.words.firstOrNull()?.word?:"", actual.word)
+            Assertions.assertEquals(expected.words.firstOrNull()?.translations?.takeIf { it.isNotEmpty() }, actual.translations)
         }
 
         fun assertCardFilter(expected: CardFilter, actual: CardFilterResource) {
@@ -48,14 +55,22 @@ internal class FromContextTest {
         context.requestCardEntity = CardEntity(
             cardId = CardId("request-card-id"),
             dictionaryId = DictionaryId("request-dictionary-id"),
-            word = "XXX",
-            translations = listOf(listOf("a", "b"))
+            words = listOf(
+                CardWordEntity(
+                    word = "XXX",
+                    translations = listOf(listOf("a", "b"))
+                )
+            )
         )
         context.responseCardEntity = CardEntity(
             cardId = CardId("response-card-id"),
             dictionaryId = DictionaryId("response-dictionary-id"),
-            word = "xxx",
-            translations = listOf(listOf("c", "d"))
+            words = listOf(
+                CardWordEntity(
+                    word = "xxx",
+                    translations = listOf(listOf("c", "d"))
+                )
+            )
         )
         context.responseCardEntityList = listOf(
             CardEntity(cardId = CardId("A")), CardEntity(cardId = CardId("B")),

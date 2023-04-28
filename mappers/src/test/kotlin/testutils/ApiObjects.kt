@@ -4,7 +4,12 @@ import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
 import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
 import com.gitlab.sszuev.flashcards.api.v1.models.ErrorResource
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
 import org.junit.jupiter.api.Assertions
 
 
@@ -55,13 +60,13 @@ internal fun assertDictionary(expected: DictionaryResource, actual: DictionaryEn
 internal fun assertCard(expected: CardResource, actual: CardEntity) {
     assertCardId(expected.cardId, actual.cardId)
     Assertions.assertEquals(expected.dictionaryId, actual.dictionaryId.asString())
-    Assertions.assertEquals(expected.word, actual.word)
+    Assertions.assertEquals(expected.word, actual.words.single().word)
 }
 
 internal fun assertCard(expected: CardEntity, actual: CardResource) {
     Assertions.assertEquals(if (expected.cardId != CardId.NONE) expected.cardId.asString() else null, actual.cardId)
     Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
-    Assertions.assertEquals(expected.word, actual.word)
+    Assertions.assertEquals(expected.words.single().word, actual.word)
 }
 
 internal fun assertCardId(expected: String?, actual: CardId) {

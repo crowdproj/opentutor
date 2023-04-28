@@ -14,7 +14,6 @@ private val mapper = ObjectMapper()
 private val cardWordsTypeReference: TypeReference<List<CommonWordDto>> =
     object : TypeReference<List<CommonWordDto>>() {}
 
-@Suppress("UNCHECKED_CAST")
 fun parseUserDetailsJson(json: String): CommonUserDetailsDto {
     return mapper.readValue(json, CommonUserDetailsDto::class.java)
 }
@@ -23,7 +22,6 @@ fun CommonUserDetailsDto.toJsonString(): String {
     return mapper.writeValueAsString(this)
 }
 
-@Suppress("UNCHECKED_CAST")
 fun parseDictionaryDetailsJson(json: String): CommonDictionaryDetailsDto {
     return mapper.readValue(json, CommonDictionaryDetailsDto::class.java)
 }

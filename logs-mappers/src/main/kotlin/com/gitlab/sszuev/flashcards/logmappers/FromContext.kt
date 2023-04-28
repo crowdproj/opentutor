@@ -2,13 +2,27 @@ package com.gitlab.sszuev.flashcards.logmappers
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.logs.models.*
+import com.gitlab.sszuev.flashcards.logs.models.CardEntityResource
+import com.gitlab.sszuev.flashcards.logs.models.CardFilterResource
+import com.gitlab.sszuev.flashcards.logs.models.CardLearnResource
+import com.gitlab.sszuev.flashcards.logs.models.CardsLogResource
+import com.gitlab.sszuev.flashcards.logs.models.DictionariesLogResource
+import com.gitlab.sszuev.flashcards.logs.models.DictionaryEntityResource
+import com.gitlab.sszuev.flashcards.logs.models.ErrorLogResource
+import com.gitlab.sszuev.flashcards.logs.models.LogResource
+import com.gitlab.sszuev.flashcards.logs.models.UserLogResource
 import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import java.time.Instant
-import java.util.*
+import java.util.UUID
 
 fun AppContext.toLogResource(logId: String) = LogResource(
     source = "flashcards",
@@ -46,18 +60,21 @@ private fun CardContext.toLog() = CardsLogResource(
     responseCards = this.responseCardEntityList.takeIf { it.isNotEmpty() }?.map { it.toLog() },
 )
 
-private fun CardEntity.toLog() = CardEntityResource(
-    cardId = this.cardId.takeIf { it != CardId.NONE }?.asString(),
-    dictionaryId = this.dictionaryId.asString(),
-    word = this.word,
-    transcription = this.transcription,
-    partOfSpeech = this.partOfSpeech,
-    details = this.details.takeIf { it.isNotEmpty() }?.mapKeys { it.key.name },
-    answered = this.answered,
-    translations = this.translations.takeIf { it.isNotEmpty() },
-    examples = this.examples.takeIf { it.isNotEmpty() },
-    sound = this.sound.asString().takeIf { it.isNotBlank() },
-)
+private fun CardEntity.toLog(): CardEntityResource { // TODO: change to new model
+    val word = this.words.firstOrNull()
+    return CardEntityResource(
+        cardId = this.cardId.takeIf { it != CardId.NONE }?.asString(),
+        dictionaryId = this.dictionaryId.asString(),
+        word = word?.word?:"",
+        transcription = word?.transcription,
+        partOfSpeech = word?.partOfSpeech,
+        details = this.stats.takeIf { it.isNotEmpty() }?.mapKeys { it.key.name },
+        answered = this.answered,
+        translations = word?.translations?.takeIf { it.isNotEmpty() },
+        examples = word?.examples?.map { it.text }?.takeIf { it.isNotEmpty() },
+        sound = word?.sound?.asString()?.takeIf { it.isNotBlank() },
+    )
+}
 
 private fun CardFilter.toLog() = CardFilterResource(
     dictionaryIds = this.dictionaryIds.map { it.asString() },

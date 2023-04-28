@@ -156,7 +156,7 @@ internal class CardCorProcessorValidationTest {
         runTest {
             val context = testContext(operation, mode)
             val cardId = if (operation == CardOperation.CREATE_CARD) CardId.NONE else CardId("42")
-            context.requestCardEntity = testCard.copy(word = word, cardId = cardId)
+            context.requestCardEntity = testCard.copy(words = listOf(CardWordEntity(word = word)), cardId = cardId)
             processor.execute(context)
             val error = error(context)
             assertValidationError("card-word", error)
@@ -174,7 +174,7 @@ internal class CardCorProcessorValidationTest {
         val context = testContext(CardOperation.UPDATE_CARD, mode)
         context.requestCardEntity = testCard.copy(
             dictionaryId = DictionaryId(""),
-            word = "",
+            words = listOf(CardWordEntity(word = "")),
             cardId = CardId("xxxx")
         )
         processor.execute(context)
@@ -197,7 +197,7 @@ internal class CardCorProcessorValidationTest {
         val context = testContext(CardOperation.CREATE_CARD, mode)
         context.requestCardEntity = testCard.copy(
             dictionaryId = DictionaryId("sss"),
-            word = "",
+            words = listOf(CardWordEntity(word = "")),
             cardId = CardId("42")
         )
         processor.execute(context)
@@ -378,8 +378,12 @@ internal class CardCorProcessorValidationTest {
                     requestCardEntity = CardEntity(
                         cardId = if (operation == CardOperation.UPDATE_CARD) CardId("42") else CardId.NONE,
                         dictionaryId = DictionaryId("42"),
-                        word = "xxx",
-                        translations = listOf(listOf("kkk"))
+                        words = listOf(
+                            CardWordEntity(
+                                word = "xxx",
+                                translations = listOf(listOf("kkk"))
+                            )
+                        )
                     )
                 )
             processor.execute(context)

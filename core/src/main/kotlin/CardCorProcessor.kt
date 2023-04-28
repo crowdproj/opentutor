@@ -2,10 +2,32 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.normalizers.normalizers
-import com.gitlab.sszuev.flashcards.core.processes.*
+import com.gitlab.sszuev.flashcards.core.processes.processCardSearch
+import com.gitlab.sszuev.flashcards.core.processes.processCreateCard
+import com.gitlab.sszuev.flashcards.core.processes.processDeleteCard
+import com.gitlab.sszuev.flashcards.core.processes.processFindUser
+import com.gitlab.sszuev.flashcards.core.processes.processGetAllCards
+import com.gitlab.sszuev.flashcards.core.processes.processGetCard
+import com.gitlab.sszuev.flashcards.core.processes.processLearnCards
+import com.gitlab.sszuev.flashcards.core.processes.processResetCards
+import com.gitlab.sszuev.flashcards.core.processes.processResource
+import com.gitlab.sszuev.flashcards.core.processes.processUpdateCard
 import com.gitlab.sszuev.flashcards.core.stubs.cardStubSuccess
 import com.gitlab.sszuev.flashcards.core.stubs.stubError
-import com.gitlab.sszuev.flashcards.core.validators.*
+import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityDictionaryId
+import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityHasNoCardId
+import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityHasValidCardId
+import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityWords
+import com.gitlab.sszuev.flashcards.core.validators.validateCardFilterDictionaryIds
+import com.gitlab.sszuev.flashcards.core.validators.validateCardFilterLength
+import com.gitlab.sszuev.flashcards.core.validators.validateCardId
+import com.gitlab.sszuev.flashcards.core.validators.validateCardLearnListCardIds
+import com.gitlab.sszuev.flashcards.core.validators.validateCardLearnListDetails
+import com.gitlab.sszuev.flashcards.core.validators.validateCardLearnListStages
+import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryId
+import com.gitlab.sszuev.flashcards.core.validators.validateResourceGetLangId
+import com.gitlab.sszuev.flashcards.core.validators.validateResourceGetWord
+import com.gitlab.sszuev.flashcards.core.validators.validateUserId
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
@@ -108,7 +130,7 @@ class CardCorProcessor {
                     validateUserId(CardOperation.CREATE_CARD)
                     validateCardEntityHasNoCardId { it.normalizedRequestCardEntity }
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
-                    validateCardEntityWord { it.normalizedRequestCardEntity }
+                    validateCardEntityWords { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.CREATE_CARD) {
                     processFindUser(CardOperation.CREATE_CARD)
@@ -136,7 +158,7 @@ class CardCorProcessor {
                     validateUserId(CardOperation.UPDATE_CARD)
                     validateCardEntityHasValidCardId { it.normalizedRequestCardEntity }
                     validateCardEntityDictionaryId { it.normalizedRequestCardEntity }
-                    validateCardEntityWord { it.normalizedRequestCardEntity }
+                    validateCardEntityWords { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.UPDATE_CARD) {
                     processFindUser(CardOperation.UPDATE_CARD)

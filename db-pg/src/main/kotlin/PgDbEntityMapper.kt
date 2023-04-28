@@ -2,12 +2,17 @@ package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.common.LanguageRepository
 import com.gitlab.sszuev.flashcards.common.asLong
+import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
+import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
+import com.gitlab.sszuev.flashcards.common.toCardEntityStats
+import com.gitlab.sszuev.flashcards.common.toCardWordEntity
 import com.gitlab.sszuev.flashcards.common.toCommonCardDtoDetails
 import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
 import com.gitlab.sszuev.flashcards.common.toJsonString
+import com.gitlab.sszuev.flashcards.common.wordsAsCommonWordDtoList
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
@@ -41,19 +46,16 @@ internal fun PgDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryE
 )
 
 internal fun PgDbCard.toCardEntity(): CardEntity {
-    val word = parseCardWordsJson(this.words).first()
-    val details =
-        parseCardDetailsJson(this.details).mapKeys { Stage.valueOf(it.key) }.mapValues { it.value.toString().toLong() }
+    val words = parseCardWordsJson(this.words)
+    val details = parseCardDetailsJson(this.details)
     return CardEntity(
         cardId = this.id.asCardId(),
         dictionaryId = this.dictionaryId.asDictionaryId(),
-        word = word.word,
-        transcription = word.transcription,
-        details = details,
-        partOfSpeech = word.partOfSpeech,
+        words = words.map { it.toCardWordEntity() },
+        details = details.toCardEntityDetails(),
+        stats = details.toCardEntityStats(),
         answered = this.answered,
-        examples = word.examples.map { it.text },
-        translations = word.translations,
+        changedAt = this.changedAt,
     )
 }
 
@@ -61,13 +63,13 @@ internal fun writeCardEntityToPgDbCard(from: CardEntity, to: PgDbCard, timestamp
     to.dictionaryId = from.dictionaryId.asRecordId()
     to.words = from.toPgDbCardWordsJson()
     to.answered = from.answered
-    to.details = from.details.toPgDbCardDetailsJson()
+    to.details = from.detailsAsCommonCardDetailsDto().toJsonString()
     to.changedAt = timestamp
 }
 
 internal fun Map<Stage, Long>.toPgDbCardDetailsJson(): String = toCommonCardDtoDetails().toJsonString()
 
-internal fun CardEntity.toPgDbCardWordsJson(): String = toCommonWordDtoList().toJsonString()
+internal fun CardEntity.toPgDbCardWordsJson(): String = wordsAsCommonWordDtoList().toJsonString()
 
 internal fun DocumentCard.toPgDbCardWordsJson(): String = toCommonWordDtoList().toJsonString()
 
