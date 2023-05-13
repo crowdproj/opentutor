@@ -2,12 +2,13 @@ package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
+import kotlinx.datetime.Instant
 import org.junit.jupiter.api.*
-import java.time.LocalDateTime
 
 /**
  * Note: all implementations must have the same ids in tests for the same entities to have deterministic behavior.
@@ -126,12 +127,12 @@ abstract class DbCardRepositoryTest {
                 Assertions.assertEquals(expected.cardId, actual.cardId)
             }
             if (ignoreChangeAt) {
-                Assertions.assertNotEquals(LocalDateTime.MIN, actual.changedAt)
-                a = a.copy(changedAt = LocalDateTime.MIN)
+                Assertions.assertNotEquals(Instant.NONE, actual.changedAt)
+                a = a.copy(changedAt = Instant.NONE)
             } else {
                 Assertions.assertEquals(expected.changedAt, actual.changedAt)
             }
-            Assertions.assertNotEquals(LocalDateTime.MIN, actual.changedAt)
+            Assertions.assertNotEquals(Instant.NONE, actual.changedAt)
             Assertions.assertEquals(expected, a)
         }
 

@@ -6,6 +6,8 @@ import com.gitlab.sszuev.flashcards.common.CommonExampleDto
 import com.gitlab.sszuev.flashcards.common.CommonUserDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonWordDto
 import com.gitlab.sszuev.flashcards.common.LanguageRepository
+import com.gitlab.sszuev.flashcards.common.asJava
+import com.gitlab.sszuev.flashcards.common.asKotlin
 import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
@@ -40,7 +42,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
-import java.time.LocalDateTime
 import java.util.UUID
 
 internal fun MemDbUser.detailsAsJsonString(): String {
@@ -154,7 +155,7 @@ internal fun MemDbCard.toCardEntity(): CardEntity {
         details = details.toCardEntityDetails(),
         stats = details.toCardEntityStats(),
         answered = this.answered,
-        changedAt = this.changedAt ?: LocalDateTime.MIN,
+        changedAt = this.changedAt.asKotlin(),
     )
 }
 
@@ -165,8 +166,8 @@ internal fun CardEntity.toMemDbCard(): MemDbCard {
         dictionaryId = dictionaryId,
         words = this.wordsAsCommonWordDtoList().map { it.toMemDbWord() },
         details = this.detailsAsCommonCardDetailsDto().toMemDbCardDetails(),
-        answered = answered,
-        changedAt = null,
+        answered = this.answered,
+        changedAt = this.changedAt.asJava(),
     )
 }
 

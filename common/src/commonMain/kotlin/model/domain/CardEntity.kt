@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
-import java.time.LocalDateTime
+import com.gitlab.sszuev.flashcards.model.common.NONE
+import kotlinx.datetime.Instant
 
 data class CardEntity(
     val cardId: CardId = CardId.NONE,
@@ -9,7 +10,7 @@ data class CardEntity(
     val stats: Map<Stage, Long> = emptyMap(),
     val details: Map<String, Any> = emptyMap(),
     val answered: Int? = null,
-    val changedAt: LocalDateTime = LocalDateTime.MIN,
+    val changedAt: Instant = Instant.NONE,
 ) {
     companion object {
         val EMPTY = CardEntity()

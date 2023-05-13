@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.common.LanguageRepository
+import com.gitlab.sszuev.flashcards.common.asKotlin
 import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
@@ -55,7 +56,7 @@ internal fun PgDbCard.toCardEntity(): CardEntity {
         details = details.toCardEntityDetails(),
         stats = details.toCardEntityStats(),
         answered = this.answered,
-        changedAt = this.changedAt,
+        changedAt = this.changedAt.asKotlin(),
     )
 }
 
