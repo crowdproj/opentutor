@@ -8,7 +8,12 @@ version = rootProject.version
 
 dependencies {
     val jacksonVersion: String by project
+    val junitVersion: String by project
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+
+    testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
 
 tasks.test {
@@ -36,7 +41,6 @@ openApiGenerate {
     }
 
     configOptions.set(mapOf(
-        "dateLibrary" to "string",
         "enumPropertyNaming" to "UPPERCASE",
         "serializationLibrary" to "jackson",
         "collectionType" to "list"

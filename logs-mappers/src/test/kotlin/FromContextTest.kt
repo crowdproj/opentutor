@@ -2,45 +2,74 @@ package com.gitlab.sszuev.flashcards.logmappers
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.logs.models.CardEntityResource
-import com.gitlab.sszuev.flashcards.logs.models.CardFilterResource
-import com.gitlab.sszuev.flashcards.logs.models.CardLearnResource
-import com.gitlab.sszuev.flashcards.logs.models.DictionaryEntityResource
+import com.gitlab.sszuev.flashcards.logs.models.CardFilterLogResource
+import com.gitlab.sszuev.flashcards.logs.models.CardLearnLogResource
+import com.gitlab.sszuev.flashcards.logs.models.CardLogResource
+import com.gitlab.sszuev.flashcards.logs.models.CardWordExampleLogResource
+import com.gitlab.sszuev.flashcards.logs.models.CardWordLogResource
+import com.gitlab.sszuev.flashcards.logs.models.DictionaryLogResource
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 internal class FromContextTest {
 
     companion object {
-        fun assertCardEntity(expected: CardEntity, actual: CardEntityResource) {
+        fun assertCardEntity(expected: CardEntity, actual: CardLogResource) {
             Assertions.assertEquals(expected.cardId.asString(), actual.cardId)
             Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
-            Assertions.assertEquals(expected.words.firstOrNull()?.word?:"", actual.word)
-            Assertions.assertEquals(expected.words.firstOrNull()?.translations?.takeIf { it.isNotEmpty() }, actual.translations)
+            Assertions.assertEquals(expected.details, actual.details)
+            Assertions.assertEquals(expected.stats.mapKeys { it.key.name }.takeIf { it.isNotEmpty() }, actual.stats)
+            Assertions.assertEquals(expected.words.size, actual.words?.size)
+            expected.words.forEachIndexed { index, e ->
+                val a = actual.words?.get(index)
+                Assertions.assertNotNull(a)
+                assertCardWord(e, a!!)
+            }
         }
 
-        fun assertCardFilter(expected: CardFilter, actual: CardFilterResource) {
+        private fun assertCardWord(expected: CardWordEntity, actual: CardWordLogResource) {
+            Assertions.assertEquals(expected.sound.takeIf { it != TTSResourceId.NONE }?.asString(), actual.sound)
+            Assertions.assertEquals(expected.word, actual.word)
+            Assertions.assertEquals(expected.transcription, actual.transcription)
+            Assertions.assertEquals(expected.translations, actual.translations)
+            Assertions.assertEquals(expected.partOfSpeech, actual.partOfSpeech)
+            Assertions.assertEquals(expected.examples.size, actual.examples?.size)
+            expected.examples.forEachIndexed { index, e ->
+                val a = actual.examples?.get(index)
+                Assertions.assertNotNull(a)
+                assertCardExample(e, a!!)
+            }
+        }
+
+        private fun assertCardExample(expected: CardWordExampleEntity, actual: CardWordExampleLogResource) {
+            Assertions.assertEquals(expected.text, actual.text)
+            Assertions.assertEquals(expected.translation, actual.translation)
+        }
+
+        fun assertCardFilter(expected: CardFilter, actual: CardFilterLogResource) {
             Assertions.assertEquals(expected.dictionaryIds.map { it.asString() }, actual.dictionaryIds)
             Assertions.assertEquals(expected.length, actual.length)
             Assertions.assertEquals(expected.random, actual.random)
             Assertions.assertEquals(expected.withUnknown, actual.unknown)
         }
 
-        fun assertCardLearn(expected: CardLearn, actual: CardLearnResource) {
+        fun assertCardLearn(expected: CardLearn, actual: CardLearnLogResource) {
             Assertions.assertEquals(expected.cardId.asString(), actual.cardId)
             Assertions.assertEquals(expected.details.mapKeys { it.key.name }, actual.details)
         }
 
-        fun assertDictionaryEntity(expected: DictionaryEntity, actual: DictionaryEntityResource) {
+        fun assertDictionaryEntity(expected: DictionaryEntity, actual: DictionaryLogResource) {
             Assertions.assertEquals(expected.dictionaryId.asString(), actual.dictionaryId)
             Assertions.assertEquals(expected.name, actual.name)
         }
@@ -60,7 +89,9 @@ internal class FromContextTest {
                     word = "XXX",
                     translations = listOf(listOf("a", "b"))
                 )
-            )
+            ),
+            stats = mapOf(Stage.SELF_TEST to 42),
+            details = mapOf("a" to 42L, "b" to listOf(42), "c" to kotlinx.datetime.Clock.System.now()),
         )
         context.responseCardEntity = CardEntity(
             cardId = CardId("response-card-id"),
