@@ -1,10 +1,40 @@
 package com.gitlab.sszuev.flashcards.api
 
-import com.gitlab.sszuev.flashcards.api.testutils.*
+import com.gitlab.sszuev.flashcards.api.testutils.assertDebug
+import com.gitlab.sszuev.flashcards.api.testutils.assertDictionary
+import com.gitlab.sszuev.flashcards.api.testutils.assertError
 import com.gitlab.sszuev.flashcards.api.testutils.debug
-import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.api.testutils.deserializeRequest
+import com.gitlab.sszuev.flashcards.api.testutils.deserializeResponse
+import com.gitlab.sszuev.flashcards.api.testutils.dictionary
+import com.gitlab.sszuev.flashcards.api.testutils.error
+import com.gitlab.sszuev.flashcards.api.testutils.normalize
+import com.gitlab.sszuev.flashcards.api.testutils.serialize
+import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordExampleResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.time.LocalDate
+import java.time.LocalTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 /**
  * Acceptance test to control changes in the schema.
@@ -15,14 +45,64 @@ internal class CardSerializationTest {
         private val card = CardResource(
             cardId = "42",
             dictionaryId = "100500",
-            word = "XXX",
-            transcription = "YYY",
-            partOfSpeech = "POS",
-            translations = listOf(listOf("a", "b"), listOf("c", "d")),
-            examples = listOf("g", "h"),
+            words = listOf(
+                CardWordResource(
+                    word = "XXX",
+                    transcription = "YYY",
+                    partOfSpeech = "POS",
+                    translations = listOf(listOf("a", "b"), listOf("c", "d")),
+                    examples = listOf(
+                        CardWordExampleResource(example = "g"), CardWordExampleResource(example = "h")
+                    ),
+                )
+            ),
             answered = 42,
             details = mapOf("A" to 2, "B" to 3),
+            stats = mapOf("C" to 42, "D" to -42),
+            changedAt = OffsetDateTime.of(LocalDate.of(42, 4, 2), LocalTime.of(4, 2), ZoneOffset.UTC).plusDays(42)
         )
+
+        private val cardJson = """
+          "card": {
+            "cardId": "42",
+            "dictionaryId": "100500",
+            "words": [
+              {
+                "word": "XXX",
+                "transcription": "YYY",
+                "partOfSpeech": "POS",
+                "translations": [
+                  [
+                    "a",
+                    "b"
+                  ],
+                  [
+                    "c",
+                    "d"
+                  ]
+                ],
+                "examples": [
+                  {
+                    "example": "g"
+                  },
+                  {
+                    "example": "h"
+                  }
+                ]
+              }
+            ],
+            "stats": {
+              "C": 42,
+              "D": -42
+            },
+            "details": {
+              "A": 2,
+              "B": 3
+            },
+            "answered": 42,
+            "changedAt": -60830251080.000000000
+          }
+        """.normalize()
 
         private val update = LearnResource(
             cardId = "42",
@@ -30,15 +110,7 @@ internal class CardSerializationTest {
         )
 
         private fun assertCard(json: String) {
-            Assertions.assertTrue(json.contains("\"cardId\":\"42\""))
-            Assertions.assertTrue(json.contains("\"dictionaryId\":\"100500\""))
-            Assertions.assertTrue(json.contains("\"word\":\"XXX\""))
-            Assertions.assertTrue(json.contains("\"transcription\":\"YYY\""))
-            Assertions.assertTrue(json.contains("\"partOfSpeech\":\"POS\""))
-            Assertions.assertTrue(json.contains("\"translations\":[[\"a\",\"b\"],[\"c\",\"d\"]]"))
-            Assertions.assertTrue(json.contains("\"examples\":[\"g\",\"h\"]"))
-            Assertions.assertTrue(json.contains("\"details\":{\"A\":2,\"B\":3}}"))
-            Assertions.assertTrue(json.contains("\"answered\":42"))
+            Assertions.assertTrue(json.contains(cardJson))
             assertDebug(json)
         }
 
@@ -57,14 +129,60 @@ internal class CardSerializationTest {
             debug = debug
         )
         val json = serialize(req1)
-        Assertions.assertTrue(json.contains("\"requestType\":\"createCard\""))
-        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
-        assertCard(json)
+        Assertions.assertEquals(
+            """
+            {
+              "requestType": "createCard",
+              "requestId": "request=42",
+              "debug": {
+                "mode": "test",
+                "stub": "error_unknown"
+              },
+              "card": {
+                "cardId": "42",
+                "dictionaryId": "100500",
+                "words": [
+                  {
+                    "word": "XXX",
+                    "transcription": "YYY",
+                    "partOfSpeech": "POS",
+                    "translations": [
+                      [
+                        "a",
+                        "b"
+                      ],
+                      [
+                        "c",
+                        "d"
+                      ]
+                    ],
+                    "examples": [
+                      {
+                        "example": "g"
+                      },
+                      {
+                        "example": "h"
+                      }
+                    ]
+                  }
+                ],
+                "stats": {
+                  "C": 42,
+                  "D": -42
+                },
+                "details": {
+                  "A": 2,
+                  "B": 3
+                },
+                "answered": 42,
+                "changedAt": -60830251080.000000000
+              }
+            }
+        """.normalize(), json)
         val req2 = deserializeRequest<CreateCardRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "createCard"), req2)
     }
-
 
     @Test
     fun `test serialization for UpdateCardRequest`() {
@@ -79,7 +197,7 @@ internal class CardSerializationTest {
         assertCard(json)
         val req2 = deserializeRequest<UpdateCardRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "updateCard"), req2)
     }
 
     @Test
@@ -97,7 +215,7 @@ internal class CardSerializationTest {
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         val req2 = deserializeRequest<SearchCardsRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "searchCards"), req2)
     }
 
     @Test
@@ -111,7 +229,7 @@ internal class CardSerializationTest {
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         val res2 = deserializeResponse<SearchCardsResponse>(json)
         Assertions.assertNotSame(res1, res2)
-        Assertions.assertEquals(res1, res2)
+        Assertions.assertEquals(res1.copy(responseType = "searchCards"), res2)
     }
 
     @Test
@@ -126,7 +244,7 @@ internal class CardSerializationTest {
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         val req2 = deserializeRequest<GetAllCardsRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "getAllCards"), req2)
     }
 
     @Test
@@ -140,7 +258,7 @@ internal class CardSerializationTest {
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         val res2 = deserializeResponse<GetAllCardsResponse>(json)
         Assertions.assertNotSame(res1, res2)
-        Assertions.assertEquals(res1, res2)
+        Assertions.assertEquals(res1.copy(responseType = "getAllCards"), res2)
     }
 
     @Test
@@ -155,7 +273,7 @@ internal class CardSerializationTest {
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         val req2 = deserializeRequest<GetCardRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "getCard"), req2)
     }
 
     @Test
@@ -170,7 +288,7 @@ internal class CardSerializationTest {
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         val req2 = deserializeRequest<ResetCardRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "resetCard"), req2)
     }
 
     @Test
@@ -185,7 +303,7 @@ internal class CardSerializationTest {
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         val req2 = deserializeRequest<DeleteCardRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "deleteCard"), req2)
     }
 
     @Test
@@ -200,8 +318,9 @@ internal class CardSerializationTest {
         assertError(json)
         val req2 = deserializeResponse<DeleteCardResponse>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(responseType = "deleteCard"), req2)
     }
+
     @Test
     fun `test serialization for GetAllDictionaryRequest`() {
         val req1 = GetAllDictionariesRequest(
@@ -213,7 +332,7 @@ internal class CardSerializationTest {
 
         val req2 = deserializeRequest<GetAllDictionariesRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "getAllDictionaries"), req2)
     }
 
     @Test
@@ -232,7 +351,7 @@ internal class CardSerializationTest {
 
         val req1 = deserializeResponse<GetAllDictionariesResponse>(json)
         Assertions.assertNotSame(res1, req1)
-        Assertions.assertEquals(res1, req1)
+        Assertions.assertEquals(res1.copy(responseType = "getAllDictionaries"), req1)
     }
 
     @Test
@@ -245,7 +364,7 @@ internal class CardSerializationTest {
 
         val req2 = deserializeRequest<LearnCardsRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "learnCard"), req2)
     }
 
     @Test
@@ -263,7 +382,7 @@ internal class CardSerializationTest {
         assertError(json)
         val res2 = deserializeResponse<GetAudioResponse>(json)
         Assertions.assertNotSame(res1, res2)
-        Assertions.assertEquals(res1.responseType, res2.responseType)
+        Assertions.assertEquals("getAudio", res2.responseType)
         Assertions.assertEquals(res1.result, res2.result)
         Assertions.assertEquals(res1.requestId, res2.requestId)
         Assertions.assertEquals(res1.errors, res2.errors)

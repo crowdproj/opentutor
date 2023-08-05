@@ -3,6 +3,8 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordExampleResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
@@ -13,6 +15,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
+import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
@@ -22,6 +25,8 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toKotlinInstant
 
 fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
     is GetAudioRequest -> fromGetAudioRequest(request)
@@ -104,26 +109,33 @@ fun CardContext.fromResetCardRequest(request: ResetCardRequest) {
     this.requestCardEntityId = toCardId(request.cardId)
 }
 
-private fun CardResource.toCardEntity(): CardEntity = CardEntity( // TODO: change to new model
+private fun CardResource.toCardEntity(): CardEntity = CardEntity(
     cardId = toCardId(this.cardId),
     dictionaryId = toDictionaryId(this.dictionaryId),
-    words = listOf(
-        CardWordEntity(
-            word = this.word ?: "",
-            partOfSpeech = this.partOfSpeech,
-            transcription = this.transcription,
-            translations = this.translations ?: emptyList(),
-            examples = this.examples?.map { CardWordExampleEntity(it) } ?: emptyList(),
-            sound = this.sound?.takeIf { it.isNotBlank() }?.let { TTSResourceId(it) } ?: TTSResourceId.NONE
-        ),
-    ),
-    stats = this.details.toStats(),
+    words = this.words?.map { it.toCardWordEntity() } ?: emptyList(),
+    details = this.details ?: emptyMap(),
+    stats = this.stats.toStats(),
     answered = this.answered,
+    changedAt = this.changedAt?.toInstant()?.toKotlinInstant() ?: Instant.NONE,
+)
+
+private fun CardWordResource.toCardWordEntity(): CardWordEntity = CardWordEntity(
+    word = this.word ?: "",
+    partOfSpeech = this.partOfSpeech,
+    transcription = this.transcription,
+    translations = this.translations ?: emptyList(),
+    examples = this.examples?.map { it.toCardWordExampleEntity() } ?: emptyList(),
+    sound = this.sound?.takeIf { it.isNotBlank() }?.let { TTSResourceId(it) } ?: TTSResourceId.NONE,
+)
+
+private fun CardWordExampleResource.toCardWordExampleEntity() = CardWordExampleEntity(
+    text = this.example ?: "",
+    translation = this.translation,
 )
 
 private fun String.toStage(): Stage? {
     val str = this.replace("-", "_")
-    return Stage.values().firstOrNull { it.name.equals(other = str, ignoreCase = true) }
+    return Stage.entries.firstOrNull { it.name.equals(other = str, ignoreCase = true) }
 }
 
 private fun LearnResource?.toCardLearn(): CardLearn = CardLearn(

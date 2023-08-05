@@ -39,14 +39,15 @@ private fun validateCardEntity(entity: CardEntity): List<String> {
     if (entity.words.isEmpty()) {
         errors.add("no words specified")
     }
-    errors.addAll(entity.words.flatMap { validateCardWord(it) })
+    errors.addAll(validateCardWords(entity.words))
     return errors
 }
 
-private fun validateCardWord(entity: CardWordEntity): List<String> {
+private fun validateCardWords(words: List<CardWordEntity>): List<String> {
     val errors = mutableListOf<String>()
-    if (!entity.translations.flatten().any { it.isNotBlank() }) {
-        errors.add("no translations specified")
+    val translations = words.flatMap { it.translations.flatten() }.filter { it.isNotBlank() }
+    if (translations.isEmpty()) {
+        errors.add("${words.map { it.word }} :: no translations specified")
     }
     return errors
 }
@@ -89,12 +90,12 @@ fun CardWordExampleEntity.toCommonExampleDto(): CommonExampleDto = CommonExample
 )
 
 fun CommonCardDetailsDto.toCardEntityStats(): Map<Stage, Long> =
-    this.filterKeys { Stage.values().map { s -> s.name }.contains(it) }
+    this.filterKeys { Stage.entries.map { s -> s.name }.contains(it) }
         .mapKeys { Stage.valueOf(it.key) }
         .mapValues { it.value.toString().toLong() }
 
 fun CommonCardDetailsDto.toCardEntityDetails(): Map<String, Any> =
-    this.filterKeys { !Stage.values().map { s -> s.name }.contains(it) }
+    this.filterKeys { !Stage.entries.map { s -> s.name }.contains(it) }
 
 fun Id.asLong(): Long = if (this.asString().matches("\\d+".toRegex())) {
     this.asString().toLong()

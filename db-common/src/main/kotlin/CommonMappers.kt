@@ -8,13 +8,14 @@ import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import kotlinx.datetime.toJavaInstant
 import kotlinx.datetime.toKotlinInstant
-import java.time.ZoneOffset
+
+fun systemNow(): java.time.LocalDateTime = java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC).toLocalDateTime()
 
 fun kotlinx.datetime.Instant?.asJava(): java.time.LocalDateTime =
-    (this?:kotlinx.datetime.Instant.NONE).toJavaInstant().atOffset(ZoneOffset.UTC).toLocalDateTime()
+    (this?:kotlinx.datetime.Instant.NONE).toJavaInstant().atOffset(java.time.ZoneOffset.UTC).toLocalDateTime()
 
 fun java.time.LocalDateTime?.asKotlin(): kotlinx.datetime.Instant =
-    this?.toInstant(ZoneOffset.UTC)?.toKotlinInstant() ?: kotlinx.datetime.Instant.NONE
+    this?.toInstant(java.time.ZoneOffset.UTC)?.toKotlinInstant() ?: kotlinx.datetime.Instant.NONE
 
 private val mapper = ObjectMapper()
     .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)

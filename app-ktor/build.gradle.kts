@@ -17,6 +17,7 @@ dependencies {
     val mockkVersion: String by project
     val logbackKafkaVersion: String by project
     val janinoVersion: String by project
+    val jacksonVersion: String by project
 
     implementation(project(":openapi"))
     implementation(project(":mappers"))
@@ -57,6 +58,8 @@ dependencies {
     implementation("io.ktor:ktor-server-thymeleaf:$ktorVersion")
     implementation("io.ktor:ktor-server-webjars:$ktorVersion")
 
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+
     implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
     implementation("org.codehaus.janino:janino:$janinoVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
@@ -79,7 +82,7 @@ application {
 tasks.create("createTagFile") {
     val rootDir = project(":app-ktor").projectDir
     val projectTagFile = Paths.get("$rootDir/project-tag.env")
-    val tag = project.version.toString().toLowerCase()
+    val tag = project.version.toString().lowercase()
     val projectTagFileContent = "PROJECT_TAG=$tag"
     println(projectTagFileContent)
     Files.writeString(projectTagFile, projectTagFileContent)
@@ -93,7 +96,7 @@ tasks.dockerCreateDockerfile {
 
 docker {
     val imageName: String
-    val tag = project.version.toString().toLowerCase()
+    val tag = project.version.toString().lowercase()
     val javaArgs = mutableListOf("-Xms256m", "-Xmx512m")
     if (System.getProperty("standalone") == null) {
         imageName = "sszuev/open-tutor"

@@ -3,6 +3,8 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordExampleResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsResponse
@@ -15,7 +17,11 @@ import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardResponse
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import kotlinx.datetime.toJavaInstant
+import java.time.ZoneOffset
 
 fun CardContext.toCardResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.GET_RESOURCE -> this.toGetAudioResponse()
@@ -92,21 +98,31 @@ fun CardContext.toResetCardResponse() = ResetCardResponse(
     errors = this.errors.toErrorResourceList(),
 )
 
-private fun CardEntity.toCardResource(): CardResource? { // TODO: change to bew model
+private fun CardEntity.toCardResource(): CardResource? {
     if (this == CardEntity.EMPTY) {
         return null
     }
-    val word = this.words.first()
     return CardResource(
         cardId = this.cardId.takeIf { it != CardId.NONE }?.asString(),
         dictionaryId = this.dictionaryId.takeIf { it != DictionaryId.NONE }?.asString(),
-        word = word.word,
-        partOfSpeech = word.partOfSpeech,
-        transcription = word.transcription,
-        translations = word.translations,
-        examples = word.examples.map { it.text },
-        details = this.stats.mapKeys { it.key.name },
+        words = this.words.map { it.toCardWordResource() },
+        stats = this.stats.mapKeys { it.key.name.lowercase().replace("_", "-") },
+        details = this.details,
         answered = this.answered,
-        sound = word.sound.asString().takeIf { it.isNotBlank() },
+        changedAt = this.changedAt.toJavaInstant().atOffset(ZoneOffset.UTC),
     )
 }
+
+private fun CardWordEntity.toCardWordResource() = CardWordResource(
+    word = this.word,
+    partOfSpeech = this.partOfSpeech,
+    transcription = this.transcription,
+    translations = this.translations,
+    examples = this.examples.map { it.toCardWordExampleResource() },
+    sound = this.sound.asString().takeIf { it.isNotBlank() },
+)
+
+private fun CardWordExampleEntity.toCardWordExampleResource() = CardWordExampleResource(
+    example = this.text,
+    translation = this.translation,
+)

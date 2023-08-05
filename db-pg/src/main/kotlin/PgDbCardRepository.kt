@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.common.dbError
 import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
+import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
 import com.gitlab.sszuev.flashcards.common.validateCardLearns
@@ -36,7 +37,6 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.or
-import java.time.LocalDateTime
 
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
@@ -120,7 +120,7 @@ class PgDbCardRepository(
             if (errors.isNotEmpty()) {
                 return@execute CardDbResponse(errors = errors)
             }
-            val timestamp = LocalDateTime.now()
+            val timestamp = systemNow()
             val res = PgDbCard.new {
                 writeCardEntityToPgDbCard(from = cardEntity, to = this, timestamp = timestamp)
             }
@@ -131,7 +131,7 @@ class PgDbCardRepository(
     override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
         return connection.execute {
             validateCardEntityForUpdate(cardEntity)
-            val timestamp = LocalDateTime.now()
+            val timestamp = systemNow()
             val found = PgDbCard.findById(cardEntity.cardId.asRecordId()) ?: return@execute CardDbResponse(
                 noCardFoundDbError("updateCard", cardEntity.cardId)
             )
@@ -187,7 +187,7 @@ class PgDbCardRepository(
 
     override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {
         return connection.execute {
-            val timestamp = LocalDateTime.now()
+            val timestamp = systemNow()
             val found = PgDbCard.findById(cardId.asLong()) ?: return@execute CardDbResponse(
                 noCardFoundDbError("resetCard", cardId)
             )

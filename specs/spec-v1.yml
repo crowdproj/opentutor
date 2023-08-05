@@ -703,6 +703,30 @@ components:
           type: string
         dictionaryId:
           type: string
+        words:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardWordResource'
+        stats:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+        details:
+          type: object
+          additionalProperties:
+            type: object
+        answered:
+          type: integer
+          format: int32
+        changedAt:
+          type: string
+          format: date-time
+
+    CardWordResource:
+      description: 'A card word resource, information about particular word'
+      type: object
+      properties:
         word:
           type: string
         transcription:
@@ -718,17 +742,18 @@ components:
         examples:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/CardWordExampleResource'
         sound:
           type: string
-        answered:
-          type: integer
-          format: int32
-        details:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int64
+
+    CardWordExampleResource:
+      description: 'A card word example resource,  part of CardWordResource'
+      type: object
+      properties:
+        example:
+          type: string
+        translation:
+          type: string
 
     LearnResource:
       description: 'A card resource to update card stage details'

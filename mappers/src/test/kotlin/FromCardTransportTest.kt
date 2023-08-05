@@ -1,7 +1,20 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordExampleResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
+import com.gitlab.sszuev.flashcards.api.v1.models.DebugStub
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.RunMode
+import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
 import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCard
 import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCardId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
@@ -105,13 +118,29 @@ internal class FromCardTransportTest {
     fun `test fromCreateCardRequest`() {
         val card = CardResource(
             dictionaryId = "42",
-            word = "test",
-            partOfSpeech = "pos",
-            transcription = "test",
+            cardId = "42",
+            words = listOf(
+                CardWordResource(
+                    word = "WWW",
+                    partOfSpeech = "QQQ",
+                    transcription = "XXX",
+                    translations = listOf(listOf("A", "B"), listOf("C")),
+                    sound = null,
+                    examples = listOf(
+                        CardWordExampleResource(
+                            example = "EEE",
+                            translation = "ёёё",
+                        ),
+                        CardWordExampleResource(
+                            example = "TTT",
+                            translation = "ттт",
+                        ),
+                    )
+                )
+            ),
             answered = 42,
-            translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
-            examples = listOf("example1", "example2"),
-            details = mapOf("options" to 42, "self-test" to 21)
+            stats = mapOf("options" to 42, "self-test" to 21),
+            details = mapOf("VVV" to "NNN")
         )
         val req = CreateCardRequest(
             requestId = "req3",
@@ -119,7 +148,7 @@ internal class FromCardTransportTest {
                 mode = RunMode.TEST,
                 stub = DebugStub.SUCCESS
             ),
-            card = card
+            card = card,
         )
         val context = CardContext()
         context.fromCardTransport(req)
@@ -136,16 +165,23 @@ internal class FromCardTransportTest {
     @Test
     fun `test fromUpdateCardRequest`() {
         val card = CardResource(
-            cardId = "C",
             dictionaryId = "D",
-            word = "test",
-            partOfSpeech = "pos",
-            transcription = "test",
+            cardId = "C",
+            words = listOf(
+                CardWordResource(
+                    word = "test",
+                    partOfSpeech = "pos",
+                    transcription = "test",
+                    translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+                    sound = null,
+                    examples = listOf(
+                        CardWordExampleResource(example = "example1"),
+                        CardWordExampleResource(example = "example2"),
+                    )
+                )
+            ),
             answered = 42,
-            translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
-            examples = listOf("example1", "example2"),
-            details = mapOf("options" to 42, "self-test" to 21)
-        )
+            stats = mapOf("options" to 42, "self-test" to 21),        )
         val req = CreateCardRequest(
             requestId = "req4",
             debug = DebugResource(
@@ -225,7 +261,10 @@ internal class FromCardTransportTest {
         assertCardId("b", context.requestCardLearnList[1].cardId)
         assertCardId("e", context.requestCardLearnList[2].cardId)
         Assertions.assertTrue(context.requestCardLearnList[0].details.isEmpty())
-        Assertions.assertEquals(mapOf(Stage.SELF_TEST to 10L, Stage.MOSAIC to 8), context.requestCardLearnList[1].details)
+        Assertions.assertEquals(
+            mapOf(Stage.SELF_TEST to 10L, Stage.MOSAIC to 8),
+            context.requestCardLearnList[1].details
+        )
         Assertions.assertEquals(mapOf(Stage.OPTIONS to 42L), context.requestCardLearnList[2].details)
     }
 

@@ -33,6 +33,7 @@ internal suspend inline fun <reified Request : BaseRequest, reified Context : Ap
             if (context.status == AppStatus.FAIL) {
                 logger.error(
                     msg = "$operation :: errors: ${context.errors.map { it.message }}",
+                    throwable = context.errors.throwable(operation),
                     data = context.toLogResource(logId)
                 )
             } else {
@@ -47,6 +48,7 @@ internal suspend inline fun <reified Request : BaseRequest, reified Context : Ap
         context.errors.add(ex.asError(message = msg))
         logger.error(
             msg = "$operation :: exceptions: ${context.errors.map { it.message }}",
+            throwable = context.errors.throwable(operation),
             data = context.toLogResource(logId)
         )
         val response = context.toResponse()
@@ -74,3 +76,14 @@ internal fun Exception.asError(
     message = message,
     exception = this,
 )
+
+private fun Collection<AppError>.throwable(operation: AppOperation): Throwable? {
+    val exceptions = this.mapNotNull { it.exception }
+    if (exceptions.isEmpty()) return null
+    if (exceptions.size == 1) {
+        return exceptions.first()
+    }
+    val res = RuntimeException("[$operation] multiple exceptions")
+    exceptions.forEach { res.addSuppressed(it) }
+    return res
+}

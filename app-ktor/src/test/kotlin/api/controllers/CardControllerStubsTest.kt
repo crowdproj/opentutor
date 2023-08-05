@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
@@ -42,7 +43,7 @@ class CardControllerStubsTest {
 
     companion object {
         private val testCard = CardResource(
-            word = stubCard.words.single().word,
+            words = stubCard.words.map { CardWordResource(word = it.word) },
             cardId = stubCard.cardId.asString(),
             dictionaryId = stubCard.dictionaryId.asString()
         )
@@ -97,7 +98,10 @@ class CardControllerStubsTest {
         private fun assertCard(actual: CardEntity, expected: CardResource) {
             Assertions.assertEquals(actual.cardId.asString(), expected.cardId)
             Assertions.assertEquals(actual.dictionaryId.asString(), expected.dictionaryId)
-            Assertions.assertEquals(actual.words.single().word, expected.word)
+            Assertions.assertEquals(actual.words.size, expected.words!!.size)
+            actual.words.forEachIndexed { index, word ->
+                Assertions.assertEquals(word.word, expected.words!![index].word)
+            }
         }
     }
 

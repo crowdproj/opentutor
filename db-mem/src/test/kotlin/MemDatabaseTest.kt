@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
@@ -11,7 +12,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
 import java.time.LocalDateTime
-import java.util.*
+import java.util.UUID
 
 @Order(1)
 internal class MemDatabaseTest {
@@ -52,7 +53,7 @@ internal class MemDatabaseTest {
 
     @Test
     fun `test load from directory & reload & find-users & find-user-by-uuid & save-user`(@TempDir dir: Path) {
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         copyClassPathDataToDir(classPathResourceDir, dir)
         val database1 = MemDatabase.get(dir.toString())
         Assertions.assertEquals(listOf(existingUser), database1.findUsers().toList())

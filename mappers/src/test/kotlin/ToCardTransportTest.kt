@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
@@ -18,6 +17,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
+import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -145,22 +145,23 @@ internal class ToCardTransportTest {
         names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "RESET_CARD"]
     )
     fun `test toCreateUpdateCardResponse`(op: CardOperation) {
-        val responseEntity = CardResource(
-            cardId = "A",
-            dictionaryId = "G",
-            word = "xxx",
-            details = emptyMap(),
-            translations = emptyList(),
-            examples = emptyList(),
+        val cardEntity = CardEntity(
+            cardId = CardId("A"),
+            dictionaryId = DictionaryId("B"),
+            words = listOf(
+                CardWordEntity(
+                    word = "XXX",
+                    partOfSpeech = "pos",
+                    transcription = "test",
+                    translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+                )
+            ),
+            changedAt = Instant.fromEpochSeconds(42_424_242_424_242L),
         )
         val context = CardContext(
             requestId = AppRequestId(op.name),
             operation = op,
-            responseCardEntity = CardEntity(
-                cardId = CardId(responseEntity.cardId!!),
-                dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
-                words = listOf(CardWordEntity(responseEntity.word!!))
-            ),
+            responseCardEntity = cardEntity,
             errors = mutableListOf(),
             status = AppStatus.OK
         )
@@ -183,30 +184,21 @@ internal class ToCardTransportTest {
                 return
             }
         }
-        Assertions.assertNotSame(responseEntity, card)
-        Assertions.assertEquals(responseEntity, card)
+        Assertions.assertNotSame(cardEntity, card)
+        assertCard(cardEntity, card)
     }
 
     @Test
     fun `test toLearnCardResponse`() {
-        val responseEntity = CardResource(
-            cardId = "A",
-            dictionaryId = "G",
-            word = "xxx",
-            details = emptyMap(),
-            translations = emptyList(),
-            examples = emptyList(),
+        val cardEntity = CardEntity(
+            cardId = CardId("A"),
+            dictionaryId = DictionaryId("C"),
+            words = listOf(CardWordEntity(word = "xxx")),
         )
         val context = CardContext(
             requestId = AppRequestId(CardOperation.LEARN_CARDS.name),
             operation = CardOperation.LEARN_CARDS,
-            responseCardEntityList = listOf(
-                CardEntity(
-                    cardId = CardId(responseEntity.cardId!!),
-                    dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
-                    words = listOf(CardWordEntity(responseEntity.word!!))
-                )
-            ),
+            responseCardEntityList = listOf(cardEntity),
             errors = mutableListOf(),
             status = AppStatus.OK
         )
@@ -216,8 +208,7 @@ internal class ToCardTransportTest {
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNull(res.errors)
         Assertions.assertEquals(1, res.cards!!.size)
-        val card = res.cards!!.get(0)
-        Assertions.assertNotSame(responseEntity, card)
-        Assertions.assertEquals(responseEntity, card)
+        val card = res.cards!![0]
+        assertCard(cardEntity, card)
     }
 }
