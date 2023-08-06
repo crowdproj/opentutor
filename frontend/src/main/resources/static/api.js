@@ -39,12 +39,12 @@ async function initKeycloak() {
         url: keycloakAuthURL,
         realm: keycloakAppRealm,
         clientId: keycloakAppClient,
-    });
+    })
     await res.init({
         onLoad: 'check-sso',
     }).catch(function (error) {
         throw new Error('keycloak-init-error::' + error)
-    });
+    })
     keycloak = res
 }
 
@@ -107,7 +107,7 @@ function getNextCardDeck(dictionaryId, length, onDone) {
 }
 
 function uploadDictionary(arrayBuffer, onDone, onFail) {
-    const base64 = arrayBufferToBase64(arrayBuffer);
+    const base64 = arrayBufferToBase64(arrayBuffer)
     const data = {
         'requestId': uuid(),
         'requestType': uploadDictionaryRequestType,
@@ -137,15 +137,15 @@ function downloadDictionary(dictionaryId, downloadFilename, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            const bytes = base64StringToUint8Array(res.resource).buffer;
-            const blob = new Blob([bytes], {type: "application/xml"});
-            const link = document.createElement('a');
-            link.href = window.URL.createObjectURL(blob);
-            link.download = downloadFilename;
-            link.click();
+            const bytes = base64StringToUint8Array(res.resource).buffer
+            const blob = new Blob([bytes], {type: "application/xml"})
+            const link = document.createElement('a')
+            link.href = window.URL.createObjectURL(blob)
+            link.download = downloadFilename
+            link.click()
             setTimeout(function () {
-                window.URL.revokeObjectURL(link);
-            }, 0);
+                window.URL.revokeObjectURL(link)
+            }, 0)
             if (onDone !== undefined) {
                 onDone()
             }
@@ -266,7 +266,7 @@ function learnCard(cards, onDone) {
 function playAudio(resourcePath, callback) {
     if (!callback) {
         callback = () => {
-        };
+        }
     }
     const path = resourcePath.split(":")
     const data = {
@@ -281,9 +281,9 @@ function playAudio(resourcePath, callback) {
             handleResponseErrors(res)
         } else {
             const bytes = base64StringToUint8Array(res.resource).buffer
-            const blob = new Blob([bytes], {type: 'audio/wav'});
-            const url = window.URL.createObjectURL(blob);
-            new Audio(url).play().then(callback);
+            const blob = new Blob([bytes], {type: 'audio/wav'})
+            const url = window.URL.createObjectURL(blob)
+            new Audio(url).play().then(callback)
         }
     })
 }
@@ -294,7 +294,7 @@ function hasResponseErrors(res) {
 
 function handleResponseErrors(res) {
     if (devMode) {
-        console.log(res.errors)
+        console.log('errors: ' + res.errors.map(it => it.message))
     }
 }
 
@@ -302,7 +302,7 @@ function post(url, requestData, onDone, onFail) {
     if (onFail === undefined) {
         onFail = function (error) {
             if (devMode) {
-                console.log(error)
+                console.log('post-error: ' + error)
             }
         }
     }
@@ -312,7 +312,7 @@ function post(url, requestData, onDone, onFail) {
             url: url,
             contentType: 'application/json',
             data: JSON.stringify(requestData),
-        }).done(onDone).fail(onFail);
+        }).done(onDone).fail(onFail)
     } else {
         authPost(url, requestData, onDone, onFail)
     }
@@ -339,7 +339,7 @@ function authPost(url, requestData, onDone, onFail, runAgain) {
         } else {
             onFail(error)
         }
-    });
+    })
 }
 
 function logout() {
@@ -348,5 +348,5 @@ function logout() {
     }
     keycloak.logout().catch(function (error) {
         throw new Error('logout-error::' + error)
-    });
+    })
 }
