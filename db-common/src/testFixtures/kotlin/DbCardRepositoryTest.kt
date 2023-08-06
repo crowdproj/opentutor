@@ -2,10 +2,12 @@ package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.*
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
+import kotlinx.datetime.Instant
 import org.junit.jupiter.api.*
 
 /**
@@ -23,94 +25,115 @@ abstract class DbCardRepositoryTest {
         private val weatherCardEntity = CardEntity(
             cardId = CardId("246"),
             dictionaryId = DictionaryId("2"),
-            word = "weather",
-            transcription = "'weðə",
-            partOfSpeech = "noun",
-            answered = null,
-            translations = listOf(listOf("погода")),
-            examples = listOf(
-                "weather forecast",
-                "weather bureau",
-                "nasty weather",
-                "spell of cold weather"
+            words = listOf(
+                CardWordEntity(
+                    word = "weather",
+                    transcription = "'weðə",
+                    partOfSpeech = "noun",
+                    translations = listOf(listOf("погода")),
+                    examples = listOf(
+                        CardWordExampleEntity(text = "weather forecast", translation = "прогноз погоды"),
+                        CardWordExampleEntity(text = "weather bureau", translation = "бюро погоды"),
+                        CardWordExampleEntity(text = "nasty weather", translation = "ненастная погода"),
+                        CardWordExampleEntity(text = "spell of cold weather", translation = "похолодание"),
+                    ),
+                ),
             ),
-            details = emptyMap(),
         )
 
         private val climateCardEntity = CardEntity(
             cardId = weatherCardEntity.cardId,
             dictionaryId = DictionaryId("2"),
-            word = "climate",
-            transcription = "ˈklaɪmɪt",
-            details = mapOf(Stage.SELF_TEST to 3),
-            partOfSpeech = "noun",
-            answered = null,
-            translations = listOf(listOf("климат", "атмосфера", "обстановка"), listOf("климатические условия")),
-            examples = listOf(
-                "Create a climate of fear, and it's easy to keep the borders closed.",
-                "The clock of climate change is ticking in these magnificent landscapes.",
+            words = listOf(
+                CardWordEntity(
+                    word = "climate",
+                    transcription = "ˈklaɪmɪt",
+                    partOfSpeech = "noun",
+                    translations = listOf(listOf("климат", "атмосфера", "обстановка"), listOf("климатические условия")),
+                    examples = listOf(
+                        CardWordExampleEntity("Create a climate of fear, and it's easy to keep the borders closed."),
+                        CardWordExampleEntity("The clock of climate change is ticking in these magnificent landscapes."),
+                    ),
+                ),
             ),
+            stats = mapOf(Stage.SELF_TEST to 3),
         )
 
         private val snowCardEntity = CardEntity(
             cardId = CardId("247"),
             dictionaryId = DictionaryId("2"),
-            word = "snow",
-            transcription = "snəu",
-            partOfSpeech = "noun",
-            translations = listOf(listOf("снег")),
-            examples = listOf(
-                "It snows.",
-                "a flake of snow",
-                "snow depth"
+            words = listOf(
+                CardWordEntity(
+                    word = "snow",
+                    transcription = "snəu",
+                    partOfSpeech = "noun",
+                    translations = listOf(listOf("снег")),
+                    examples = listOf(
+                        CardWordExampleEntity(text = "It snows.", translation = "Идет снег."),
+                        CardWordExampleEntity(text = "a flake of snow", translation = "снежинка"),
+                        CardWordExampleEntity(text = "snow depth", translation = "высота снежного покрова"),
+                    ),
+                ),
             ),
-            answered = null,
-            details = emptyMap(),
         )
 
         private val rainCardEntity = CardEntity(
             cardId = CardId("248"),
             dictionaryId = DictionaryId("2"),
-            word = "rain",
-            transcription = "rein",
-            partOfSpeech = "noun",
-            translations = listOf(listOf("дождь")),
-            examples = listOf(
-                "It rains.",
-                "heavy rain",
-                "drizzling rain",
-                "torrential rain",
+            words = listOf(
+                CardWordEntity(
+                    word = "rain",
+                    transcription = "rein",
+                    partOfSpeech = "noun",
+                    translations = listOf(listOf("дождь")),
+                    examples = listOf(
+                        CardWordExampleEntity(text = "It rains.", translation = "Идет дождь."),
+                        CardWordExampleEntity(text = "heavy rain", translation = "проливной дождь, ливень"),
+                        CardWordExampleEntity(text = "drizzling rain", translation = "изморось"),
+                        CardWordExampleEntity(text = "torrential rain", translation = "проливной дождь"),
+                    ),
+                ),
             ),
-            answered = null,
-            details = emptyMap(),
         )
 
         private val newMurkyCardEntity = CardEntity(
             dictionaryId = DictionaryId("2"),
-            word = "murky",
-            transcription = "ˈmɜːkɪ",
-            partOfSpeech = "adjective",
-            translations = listOf(listOf("темный"), listOf("пасмурный")),
-            examples = listOf("Well, that's a murky issue, isn't it?"),
+            words = listOf(
+                CardWordEntity(
+                    word = "murky",
+                    transcription = "ˈmɜːkɪ",
+                    partOfSpeech = "adjective",
+                    translations = listOf(listOf("темный"), listOf("пасмурный")),
+                    examples = listOf(CardWordExampleEntity("Well, that's a murky issue, isn't it?")),
+                ),
+            ),
+            stats = mapOf(Stage.OPTIONS to 0),
             answered = 42,
-            details = mapOf(Stage.OPTIONS to 0),
         )
 
-        private fun assertCard(expected: CardEntity, actual: CardEntity) {
-            Assertions.assertEquals(expected.cardId, actual.cardId)
-            assertCardNoId(expected, actual)
-        }
-
-        private fun assertCardNoId(expected: CardEntity, actual: CardEntity) {
+        @Suppress("SameParameterValue")
+        private fun assertCard(
+            expected: CardEntity,
+            actual: CardEntity,
+            ignoreChangeAt: Boolean = true,
+            ignoreId: Boolean = false
+        ) {
             Assertions.assertNotSame(expected, actual)
-            Assertions.assertEquals(expected.dictionaryId, actual.dictionaryId)
-            Assertions.assertEquals(expected.word, actual.word)
-            Assertions.assertEquals(expected.transcription, actual.transcription)
-            Assertions.assertEquals(expected.partOfSpeech, actual.partOfSpeech)
-            Assertions.assertEquals(expected.answered, actual.answered)
-            Assertions.assertEquals(expected.details, actual.details)
-            Assertions.assertEquals(expected.translations, actual.translations)
-            Assertions.assertEquals(expected.examples, actual.examples)
+            var a = actual
+            if (ignoreId) {
+                Assertions.assertNotEquals(CardId.NONE, actual.cardId)
+                a = a.copy(cardId = CardId.NONE)
+            } else {
+                Assertions.assertEquals(expected.cardId, actual.cardId)
+            }
+            if (ignoreChangeAt) {
+                Assertions.assertNotEquals(Instant.NONE, actual.changedAt)
+                a = a.copy(changedAt = Instant.NONE)
+            } else {
+                Assertions.assertEquals(expected.changedAt, actual.changedAt)
+            }
+            Assertions.assertNotEquals(Instant.NONE, actual.changedAt)
+            Assertions.assertEquals(expected, a)
         }
 
         private fun assertSingleError(res: CardDbResponse, field: String, op: String): AppError {
@@ -190,7 +213,7 @@ abstract class DbCardRepositoryTest {
         val request = newMurkyCardEntity
         val res = repository.createCard(userId, request)
         assertNoErrors(res)
-        assertCardNoId(request, res.card)
+        assertCard(expected = request, actual = res.card, ignoreChangeAt = true, ignoreId = true)
         Assertions.assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
     }
 
@@ -200,9 +223,13 @@ abstract class DbCardRepositoryTest {
         val dictionaryId = "42"
         val request = CardEntity(
             dictionaryId = DictionaryId(dictionaryId),
-            word = "xxx",
-            transcription = "xxx",
-            translations = listOf(listOf("xxx")),
+            words = listOf(
+                CardWordEntity(
+                    word = "xxx",
+                    transcription = "xxx",
+                    translations = listOf(listOf("xxx")),
+                )
+            ),
             answered = 42,
         )
         val res = repository.createCard(userId, request)
@@ -244,16 +271,16 @@ abstract class DbCardRepositoryTest {
     fun `test get card & update card success`() {
         val expected = weatherCardEntity
         val prev = repository.getCard(userId, expected.cardId).card
-        assertCard(expected, prev)
+        assertCard(expected = expected, actual = prev, ignoreChangeAt = true, ignoreId = false)
 
         val request = climateCardEntity
 
         val res = repository.updateCard(userId, request)
         assertNoErrors(res)
         val updated = res.card
-        assertCard(request, updated)
+        assertCard(expected = request, actual = updated, ignoreChangeAt = true, ignoreId = false)
         val now = repository.getCard(userId, expected.cardId).card
-        assertCard(request, now)
+        assertCard(expected = request, actual = now, ignoreChangeAt = true, ignoreId = false)
     }
 
     @Order(7)
@@ -261,7 +288,11 @@ abstract class DbCardRepositoryTest {
     fun `test update card error unknown card`() {
         val id = CardId("4200")
         val request = CardEntity.EMPTY.copy(
-            word = "XXX", cardId = id, dictionaryId = DictionaryId("2"), translations = listOf(listOf("xxx"))
+            cardId = id,
+            dictionaryId = DictionaryId("2"),
+            words = listOf(
+                CardWordEntity(word = "XXX", translations = listOf(listOf("xxx"))),
+            ),
         )
         val res = repository.updateCard(userId, request)
         val error = assertSingleError(res, id.asString(), "updateCard")
@@ -278,9 +309,13 @@ abstract class DbCardRepositoryTest {
         val dictionaryId = DictionaryId("4200")
         val request = CardEntity.EMPTY.copy(
             cardId = cardId,
-            word = "XXX",
             dictionaryId = dictionaryId,
-            translations = listOf(listOf("xxx")),
+            words = listOf(
+                CardWordEntity(
+                    word = "XXX",
+                    translations = listOf(listOf("xxx")),
+                ),
+            )
         )
         val res = repository.updateCard(userId, request)
         val error = assertSingleError(res, dictionaryId.asString(), "updateCard")
@@ -301,8 +336,8 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(1, res.cards.size)
         val card = res.cards[0]
-        val expectedCard = rainCardEntity.copy(details = request.details)
-        assertCard(expected = expectedCard, actual = card)
+        val expectedCard = rainCardEntity.copy(stats = request.details)
+        assertCard(expected = expectedCard, actual = card, ignoreChangeAt = true, ignoreId = false)
     }
 
     @Order(10)
@@ -310,16 +345,16 @@ abstract class DbCardRepositoryTest {
     fun `test get card & reset card success`() {
         val request = snowCardEntity
         val prev = repository.getCard(userId, request.cardId).card
-        assertCard(request, prev)
+        assertCard(expected = request, actual = prev, ignoreChangeAt = true, ignoreId = false)
 
         val expected = request.copy(answered = 0)
         val res = repository.resetCard(userId, request.cardId)
         assertNoErrors(res)
         val updated = res.card
-        assertCard(expected, updated)
+        assertCard(expected = expected, actual = updated, ignoreChangeAt = true, ignoreId = false)
 
         val now = repository.getCard(userId, request.cardId).card
-        assertCard(expected, now)
+        assertCard(expected = expected, actual = now, ignoreChangeAt = true, ignoreId = false)
     }
 
     @Order(42)

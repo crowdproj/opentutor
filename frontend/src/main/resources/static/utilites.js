@@ -5,13 +5,13 @@
 function uuid() {
     let res = '';
     for (let i = 0; i < 32; i++) {
-        res += Math.floor(Math.random() * 16).toString(16).toUpperCase();
+        res += Math.floor(Math.random() * 16).toString(16).toUpperCase()
     }
     return insertAt(insertAt(insertAt(insertAt(res, 20, '-'), 16, '-'), 12, '-'), 8, '-')
 }
 
 function insertAt(string, position, char) {
-    return string.substring(0, position) + char + string.substring(position);
+    return string.substring(0, position) + char + string.substring(position)
 }
 
 /**
@@ -24,12 +24,12 @@ function randomArray(data, length) {
     if (length > data.length) {
         throw "Wrong input: " + length + " > " + data.length;
     }
-    const res = data.slice();
-    shuffleArray(res);
+    const res = data.slice()
+    shuffleArray(res)
     if (length === data.length) {
         return res;
     }
-    return res.slice(0, length);
+    return res.slice(0, length)
 }
 
 /**
@@ -52,8 +52,8 @@ function shuffleArray(array) {
 function removeDuplicates(array) {
     const res = [];
     $.each(array, function (i, e) {
-        if ($.inArray(e, res) === -1) res.push(e);
-    });
+        if ($.inArray(e, res) === -1) res.push(e)
+    })
     return res;
 }
 
@@ -64,11 +64,11 @@ function removeDuplicates(array) {
  * @returns {*[]|*|string[]}
  */
 function toArray(value, separator) {
-    value = value.trim();
+    value = value.trim()
     if (value === '') {
         return [];
     }
-    return value.split(separator).map(x => x.trim());
+    return value.split(separator).map(x => x.trim())
 }
 
 /**
@@ -77,25 +77,25 @@ function toArray(value, separator) {
  * @returns {string}
  */
 function toFilename(string) {
-    return string.replace(/[^a-z\d]/gi, '_').toLowerCase();
+    return string.replace(/[^a-z\d]/gi, '_').toLowerCase()
 }
 
 function base64StringToUint8Array(base64) {
-    const str = window.atob(base64);
+    const str = window.atob(base64)
     const length = str.length;
-    const uint8Array = new Uint8Array(length);
+    const uint8Array = new Uint8Array(length)
     for (let i = 0; i < length; i++) {
-        uint8Array[i] = str.charCodeAt(i);
+        uint8Array[i] = str.charCodeAt(i)
     }
     return uint8Array
 }
 
 function arrayBufferToBase64(buffer) {
     let binary = '';
-    const bytes = new Uint8Array(buffer);
+    const bytes = new Uint8Array(buffer)
     const len = bytes.byteLength;
     for (let i = 0; i < len; i++) {
-        binary += String.fromCharCode(bytes[i]);
+        binary += String.fromCharCode(bytes[i])
     }
-    return window.btoa(binary);
+    return window.btoa(binary)
 }

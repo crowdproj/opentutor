@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.dbmem.dao
 import java.time.LocalDateTime
 
 /**
- * id,dictionary_id,text,word,examples,details,answered,changed_at
+ * id,dictionary_id,words,details,answered,changed_at
  */
 data class MemDbCard(
     val id: Long? = null,

@@ -4,8 +4,18 @@ import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.core.type.TypeReference
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
+import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.Stage
+import kotlinx.datetime.toJavaInstant
+import kotlinx.datetime.toKotlinInstant
 
+fun systemNow(): java.time.LocalDateTime = java.time.OffsetDateTime.now(java.time.ZoneOffset.UTC).toLocalDateTime()
+
+fun kotlinx.datetime.Instant?.asJava(): java.time.LocalDateTime =
+    (this?:kotlinx.datetime.Instant.NONE).toJavaInstant().atOffset(java.time.ZoneOffset.UTC).toLocalDateTime()
+
+fun java.time.LocalDateTime?.asKotlin(): kotlinx.datetime.Instant =
+    this?.toInstant(java.time.ZoneOffset.UTC)?.toKotlinInstant() ?: kotlinx.datetime.Instant.NONE
 
 private val mapper = ObjectMapper()
     .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
@@ -14,7 +24,6 @@ private val mapper = ObjectMapper()
 private val cardWordsTypeReference: TypeReference<List<CommonWordDto>> =
     object : TypeReference<List<CommonWordDto>>() {}
 
-@Suppress("UNCHECKED_CAST")
 fun parseUserDetailsJson(json: String): CommonUserDetailsDto {
     return mapper.readValue(json, CommonUserDetailsDto::class.java)
 }
@@ -23,7 +32,6 @@ fun CommonUserDetailsDto.toJsonString(): String {
     return mapper.writeValueAsString(this)
 }
 
-@Suppress("UNCHECKED_CAST")
 fun parseDictionaryDetailsJson(json: String): CommonDictionaryDetailsDto {
     return mapper.readValue(json, CommonDictionaryDetailsDto::class.java)
 }

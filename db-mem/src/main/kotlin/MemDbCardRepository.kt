@@ -8,6 +8,7 @@ import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.status
+import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
 import com.gitlab.sszuev.flashcards.common.validateCardLearns
@@ -99,7 +100,7 @@ class MemDbCardRepository(
         if (errors.isNotEmpty()) {
             return CardDbResponse(errors = errors)
         }
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         return CardDbResponse(
             card = database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
         )
@@ -107,7 +108,7 @@ class MemDbCardRepository(
 
     override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
         validateCardEntityForUpdate(cardEntity)
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val found = database.findCardById(cardEntity.cardId.asLong()) ?: return CardDbResponse(
             noCardFoundDbError("updateCard", cardEntity.cardId)
         )
@@ -133,7 +134,7 @@ class MemDbCardRepository(
 
     override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
         validateCardLearns(cardLearns)
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val errors = mutableListOf<AppError>()
         val cards = cardLearns.mapNotNull { learnCard(it, userId, errors, timestamp) }
         if (errors.isNotEmpty()) {
@@ -143,7 +144,7 @@ class MemDbCardRepository(
     }
 
     override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val card =
             database.findCardById(cardId.asLong()) ?: return CardDbResponse(noCardFoundDbError("resetCard", cardId))
         val errors = mutableListOf<AppError>()
@@ -155,7 +156,7 @@ class MemDbCardRepository(
     }
 
     override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse {
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val card = database.findCardById(cardId.asLong()) ?: return RemoveCardDbResponse(
             noCardFoundDbError("removeCard", cardId)
         )

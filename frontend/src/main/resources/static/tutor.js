@@ -102,10 +102,10 @@ function drawShowCardPage(data, index, nextStage) {
     const current = data[index];
     const next = index + 1;
 
-    drawAndPlayAudio(page, current.sound);
+    drawAndPlayAudio(page, getCardFirstWordSound(current));
     displayTitle(page, 'show');
-    $('.word', page).html(current.word);
-    $('.translations', page).html(toTranslationString(current));
+    $('.word', page).html(getCardFirstWordWord(current));
+    $('.translations', page).html(getTranslationsAsString(current));
     $('#show-next').unbind('click').on('click', function () {
         drawShowCardPage(data, next, nextStage);
     });
@@ -124,11 +124,11 @@ function drawMosaicCardPage(data, nextStage) {
 
     leftPane.html('');
     dataLeft.forEach(function (card) {
-        let left = $(`<div class="card ${borderDefault}" id="${card.cardId}-left"><h4>${card.word}</h4></div>`);
+        let left = $(`<div class="card ${borderDefault}" id="${card.cardId}-left"><h4>${getCardFirstWordWord(card)}</h4></div>`);
         left.unbind('click').on('click', function () {
             setDefaultBorder($('#mosaic .card'));
             setBorderClass(left, borderSelected);
-            const sound = card.sound;
+            const sound = getCardFirstWordSound(card);
             if (sound != null) {
                 playAudio(sound);
             }
@@ -138,7 +138,7 @@ function drawMosaicCardPage(data, nextStage) {
 
     rightPane.html('');
     dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderDefault}" id="${value.cardId}-right"><h4>${toTranslationString(value)}</h4></div>`);
+        let right = $(`<div class="card ${borderDefault}" id="${value.cardId}-right"><h4>${getTranslationsAsString(value)}</h4></div>`);
         right.unbind('click').on('click', function () {
             const selected = $(`#mosaic-left .${borderSelected}`);
             if (!selected.length || !$('h4', selected).text().trim()) {
@@ -197,11 +197,11 @@ function drawOptionsCardPage(options, index, nextStage) {
     const dataLeft = options[index]['left'];
     const dataRight = options[index]['right'];
 
-    let left = $(`<div class="card ${borderDefault}" id="${dataLeft.cardId}-left"><h4>${dataLeft.word}</h4></div>`);
+    let left = $(`<div class="card ${borderDefault}" id="${dataLeft.cardId}-left"><h4>${getCardFirstWordWord(dataLeft)}</h4></div>`);
     left.unbind('click').on('click', function () {
         setBorderClass(left, borderSelected);
         setDefaultBorder($('#options-right .card'));
-        const sound = dataLeft.sound;
+        const sound = getCardFirstWordSound(dataLeft);
         if (sound != null) {
             playAudio(sound);
         }
@@ -211,7 +211,7 @@ function drawOptionsCardPage(options, index, nextStage) {
 
     rightPane.html('');
     dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderDefault}" id="${value.cardId}-right"><p class="h4">${toTranslationString(value)}</p></div>`);
+        let right = $(`<div class="card ${borderDefault}" id="${value.cardId}-right"><p class="h4">${getTranslationsAsString(value)}</p></div>`);
         right.unbind('click').on('click', function () {
             right.unbind('click');
             setBorderClass(left, borderDefault);
@@ -252,9 +252,9 @@ function drawWritingCardPage(writingData, index, nextStage) {
     const page = $('#writing');
     const current = writingData[index];
 
-    drawAndPlayAudio(page, current.sound);
+    drawAndPlayAudio(page, getCardFirstWordSound(current));
     displayTitle(page, stage);
-    $('.word', page).html(current.word);
+    $('.word', page).html(getCardFirstWordWord(current));
 
     const clazz = "d-flex justify-content-start p-5 w-100";
     const testDiv = $('#writing-test').show();
@@ -280,7 +280,7 @@ function drawWritingCardPage(writingData, index, nextStage) {
             res = false;
             prefixText = $(`<del><h6 class="text-danger">${givenAnswer}</h6></del>`);
         }
-        let suffixText = $(`<h6 class="text-primary">${toTranslationString(current)}</h6>`);
+        let suffixText = $(`<h6 class="text-primary">${getTranslationsAsString(current)}</h6>`);
         const translationsDiv = $(`<div class="${clazz}"></div>`)
             .append(prefixText).append(`<h6>&nbsp;&#8212;&nbsp;</h6>`)
             .append(suffixText);
@@ -312,10 +312,10 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const current = selfTestData[index];
     const next = index + 1;
 
-    drawAndPlayAudio(page, current.sound);
+    drawAndPlayAudio(page, getCardFirstWordSound(current));
     displayTitle(page, stage);
-    $('.word', page).html(current.word);
-    translation.html(toTranslationString(current));
+    $('.word', page).html(getCardFirstWordWord(current));
+    translation.html(getTranslationsAsString(current));
     correct.prop('disabled', true);
     wrong.prop('disabled', true);
     translation.hide();
@@ -342,12 +342,12 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
 
 function drawResultCardPage() {
     const page = $('#result');
-    const right = toWordString(flashcards.filter(card => isAnsweredRight(card)));
-    const wrong = toWordString(flashcards.filter(function (card) {
+    const right = getCardsWordsAsString(flashcards.filter(card => isAnsweredRight(card)));
+    const wrong = getCardsWordsAsString(flashcards.filter(function (card) {
         const res = isAnsweredRight(card);
         return res !== undefined && !res;
     }));
-    const learned = toWordString(flashcards.filter(card => card.answered >= numberOfRightAnswers));
+    const learned = getCardsWordsAsString(flashcards.filter(card => card.answered >= numberOfRightAnswers));
     displayTitle(page, 'result');
     $('#result-correct').html(right);
     $('#result-wrong').html(wrong);

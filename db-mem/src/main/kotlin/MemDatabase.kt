@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
@@ -12,6 +13,8 @@ import java.io.InputStream
 import java.io.OutputStream
 import java.nio.file.Paths
 import java.time.LocalDateTime
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.concurrent.timer
@@ -52,7 +55,7 @@ class MemDatabase private constructor(
     fun saveUser(user: MemDbUser): MemDbUser {
         require(user.id != null || user.changedAt == null)
         val id = user.id ?: idGenerator.nextUserId()
-        val res = user.copy(id = id, changedAt = LocalDateTime.now())
+        val res = user.copy(id = id, changedAt = systemNow())
         resources[id] = UserResource(res)
         usersChanged = true
         return res
@@ -79,7 +82,7 @@ class MemDatabase private constructor(
         val resource =
             requireNotNull(resources[dictionary.userId]) { "Unknown user ${dictionary.userId}" }
         val id = dictionary.id ?: idGenerator.nextDictionaryId()
-        val res = dictionary.copy(id = id, changedAt = dictionary.changedAt ?: LocalDateTime.now())
+        val res = dictionary.copy(id = id, changedAt = dictionary.changedAt ?: OffsetDateTime.now(ZoneOffset.UTC).toLocalDateTime())
         resource.dictionaries[id] = DictionaryResource(res)
         dictionariesChanged = true
         return res
@@ -117,7 +120,7 @@ class MemDatabase private constructor(
         val resource =
             requireNotNull(dictionaryResourceById(dictionaryId)) { "Can't find dictionary ${card.dictionaryId}" }
         val id = card.id ?: idGenerator.nextCardId()
-        val res = card.copy(id = id, changedAt = card.changedAt ?: LocalDateTime.now())
+        val res = card.copy(id = id, changedAt = card.changedAt ?: systemNow())
         resource.cards[id] = res
         cardsChanged = true
         return res

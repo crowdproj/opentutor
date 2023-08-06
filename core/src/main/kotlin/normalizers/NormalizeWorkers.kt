@@ -6,7 +6,19 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 
 fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = worker(
     name = "Make a normalized copy of ${operation.name.lowercase()} params"
@@ -61,13 +73,23 @@ fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(
 fun CardEntity.normalize() = CardEntity(
     cardId = this.cardId.normalize(),
     dictionaryId = this.dictionaryId.normalize(),
+    words = this.words.map { it.normalize() },
+    details = this.details,
+    stats = this.stats,
+    answered = this.answered,
+)
+
+fun CardWordEntity.normalize() = CardWordEntity(
     word = this.word.trim(),
     transcription = this.transcription?.trim(),
     partOfSpeech = this.partOfSpeech?.lowercase()?.trim(),
-    details = this.details,
-    answered = this.answered,
-    translations = this.translations,
-    examples = this.examples.asSequence().map { it.trim() }.filter { it.isNotBlank() }.toList(),
+    translations = this.translations.map { it.map { t -> t.trim() } },
+    examples = this.examples.map { it.normalize() },
+)
+
+fun CardWordExampleEntity.normalize() = CardWordExampleEntity(
+    text = this.text.trim(),
+    translation = this.translation?.trim(),
 )
 
 fun DictionaryEntity.normalize() = DictionaryEntity(

@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordExampleResource
+import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
@@ -25,6 +27,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardResponse
 import com.gitlab.sszuev.flashcards.dbmem.MemDatabase
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.testPost
@@ -33,8 +36,16 @@ import io.ktor.client.call.body
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
 
 internal class CardControllerRunTest {
+
+    companion object {
+        private fun CardResource.word() = this.words!!.single().word
+        private fun CardResource.translations() = this.words!!.single().translations
+        private fun CardResource.transcription() = this.words!!.single().transcription
+    }
 
     @AfterEach
     fun resetDb() {
@@ -94,19 +105,19 @@ internal class CardControllerRunTest {
         Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNotNull(res.card)
-        Assertions.assertEquals("weather", res.card!!.word)
-        Assertions.assertEquals("'weðə", res.card!!.transcription)
-        Assertions.assertEquals("noun", res.card!!.partOfSpeech)
-        Assertions.assertEquals(listOf(listOf("погода")), res.card!!.translations)
+        Assertions.assertEquals("weather", res.card!!.words!!.single().word)
+        Assertions.assertEquals("'weðə", res.card!!.words!!.single().transcription)
+        Assertions.assertEquals("noun", res.card!!.words!!.single().partOfSpeech)
+        Assertions.assertEquals(listOf(listOf("погода")), res.card!!.words!!.single().translations)
         Assertions.assertEquals(
             listOf(
                 "weather forecast",
                 "weather bureau",
                 "nasty weather",
                 "spell of cold weather"
-            ), res.card!!.examples
+            ), res.card!!.words!!.single().examples?.map { it.example }
         )
-        Assertions.assertNull(res.card!!.sound)
+        Assertions.assertNull(res.card!!.words!!.single().sound)
         Assertions.assertNull(res.card!!.answered)
         Assertions.assertEquals(emptyMap<String, Long>(), res.card!!.details)
     }
@@ -115,18 +126,27 @@ internal class CardControllerRunTest {
     fun `test create-card success`() = testSecuredApp {
         val expectedCard = CardEntity(
             dictionaryId = DictionaryId("1"),
-            word = "rainy",
-            transcription = "ˈreɪnɪ",
-            translations = listOf(listOf("дождливый")),
+            words = listOf(
+                CardWordEntity(
+                    word = "rainy",
+                    transcription = "ˈreɪnɪ",
+                    translations = listOf(listOf("дождливый")),
+                )
+            ),
         )
         val requestBody = CreateCardRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
             card = CardResource(
                 dictionaryId = expectedCard.dictionaryId.asString(),
-                word = expectedCard.word,
-                transcription = expectedCard.transcription,
-                translations = expectedCard.translations,
+                words = expectedCard.words.map {
+                    CardWordResource(
+                        word = it.word,
+                        transcription = it.transcription,
+                        partOfSpeech = it.partOfSpeech,
+                        translations = it.translations
+                    )
+                },
             )
         )
         val response = testPost("/v1/api/cards/create", requestBody)
@@ -138,38 +158,52 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(res.card)
         Assertions.assertNotNull(res.card!!.cardId)
         Assertions.assertEquals(expectedCard.dictionaryId.asString(), res.card!!.dictionaryId)
-        Assertions.assertEquals(expectedCard.word, res.card!!.word)
-        Assertions.assertEquals(expectedCard.transcription, res.card!!.transcription)
-        Assertions.assertEquals(expectedCard.translations, res.card!!.translations!!)
-        Assertions.assertTrue(res.card!!.examples!!.isEmpty())
+        Assertions.assertEquals(expectedCard.words.single().word, res.card!!.word())
+        Assertions.assertEquals(expectedCard.words.single().transcription, res.card!!.transcription())
+        Assertions.assertEquals(expectedCard.words.single().translations, res.card!!.translations())
+        Assertions.assertTrue(res.card!!.words!!.single().examples!!.isEmpty())
     }
 
     @Test
     fun `test update-card success`() = testSecuredApp {
+        val start = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1)
         val requestBody = UpdateCardRequest(
             requestId = "success-request",
             debug = DebugResource(mode = RunMode.TEST),
             card = CardResource(
                 cardId = "1",
                 dictionaryId = "1",
-                word = "climate",
-                transcription = "ˈklaɪmɪt",
-                translations = listOf(listOf("к-климат")),
-                examples = listOf("Create a climate of fear, and it's easy to keep the borders closed."),
+                words = listOf(
+                    CardWordResource(
+                        word = "climate",
+                        transcription = "ˈklaɪmɪt",
+                        translations = listOf(listOf("к-климат")),
+                        examples = listOf(
+                            CardWordExampleResource("Create a climate of fear, and it's easy to keep the borders closed.")
+                        ),
+                        partOfSpeech = "unknown"
+                    )
+                ),
                 answered = 42,
-                details = mapOf("SELF_TEST" to 42L),
-                partOfSpeech = "unknown"
+                stats = mapOf("self-test" to 42L),
             )
         )
         val response = testPost("/v1/api/cards/update", requestBody)
-        val res = response.body<UpdateCardResponse>()
+        val end = OffsetDateTime.now(ZoneOffset.UTC).plusMinutes(1)
+        val responseBody = response.body<UpdateCardResponse>()
         Assertions.assertEquals(200, response.status.value)
-        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
-        Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNotNull(res.card)
-        Assertions.assertNotNull(res.card!!.cardId)
-        Assertions.assertEquals(requestBody.card!!, res.card!!)
+        Assertions.assertNull(responseBody.errors) { "Has errors: ${responseBody.errors}" }
+        Assertions.assertEquals("success-request", responseBody.requestId)
+        Assertions.assertEquals(Result.SUCCESS, responseBody.result)
+        Assertions.assertNotNull(responseBody.card)
+        Assertions.assertNotNull(responseBody.card!!.cardId)
+        Assertions.assertEquals(
+            requestBody.card!!.copy(details = emptyMap()),
+            responseBody.card!!.copy(changedAt = null)
+        )
+        Assertions.assertEquals(0, responseBody.card!!.details!!.size)
+        val actualChangedAt = responseBody.card!!.changedAt!!
+        Assertions.assertTrue(start <= actualChangedAt && actualChangedAt <= end)
     }
 
     @Test
@@ -205,7 +239,7 @@ internal class CardControllerRunTest {
         Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertEquals(1, res.cards!!.size)
-        Assertions.assertEquals("weather", res.cards!![0].word)
+        Assertions.assertEquals("weather", res.cards!![0].word())
     }
 
     @Test
@@ -221,7 +255,7 @@ internal class CardControllerRunTest {
         Assertions.assertEquals("success-request", res.requestId)
         Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertEquals("weather", res.card!!.word)
+        Assertions.assertEquals("weather", res.card!!.word())
         Assertions.assertEquals(0, res.card!!.answered)
     }
 

@@ -10,6 +10,7 @@ import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
 import com.gitlab.sszuev.flashcards.common.status
+import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.toDocumentExamples
 import com.gitlab.sszuev.flashcards.common.toDocumentTranslations
 import com.gitlab.sszuev.flashcards.common.wrongResourceDbError
@@ -32,7 +33,6 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.select
-import java.time.LocalDateTime
 
 class PgDbDictionaryRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
@@ -54,7 +54,7 @@ class PgDbDictionaryRepository(
 
     override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
         return connection.execute {
-            val timestamp = LocalDateTime.now()
+            val timestamp = systemNow()
             val dictionaryId = Dictionaries.insertAndGetId {
                 it[sourceLanguage] = entity.sourceLang.langId.asString()
                 it[targetLanguage] = entity.targetLang.langId.asString()
@@ -130,7 +130,7 @@ class PgDbDictionaryRepository(
     }
 
     override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val document = try {
             createReader().parse(resource.data)
         } catch (ex: Exception) {

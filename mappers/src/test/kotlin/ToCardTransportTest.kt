@@ -1,13 +1,23 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardResponse
 import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCard
 import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertError
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
+import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -23,14 +33,17 @@ internal class ToCardTransportTest {
             responseCardEntity = CardEntity(
                 cardId = CardId("card=42"),
                 dictionaryId = DictionaryId("dictionary=42"),
-                word = "xxx",
-                partOfSpeech = "pos",
-                transcription = "test",
+                words = listOf(
+                    CardWordEntity(
+                        word = "xxx",
+                        partOfSpeech = "pos",
+                        transcription = "test",
+                        translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+                        examples = listOf("example1", "example2").map { CardWordExampleEntity(it) },
+                    ),
+                ),
                 answered = 42,
-                translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
-                examples = listOf("example1", "example2"),
-                details = mapOf(Stage.MOSAIC to 42, Stage.SELF_TEST to 21)
-
+                stats = mapOf(Stage.MOSAIC to 42, Stage.SELF_TEST to 21),
             ),
             errors = mutableListOf(
                 AppError(
@@ -60,12 +73,12 @@ internal class ToCardTransportTest {
                 CardEntity(
                     cardId = CardId("A"),
                     dictionaryId = DictionaryId("G"),
-                    word = "xxx"
+                    words = listOf(CardWordEntity(word = "xxx"))
                 ),
                 CardEntity(
                     cardId = CardId("B"),
                     dictionaryId = DictionaryId("F"),
-                    word = "yyy"
+                    words = listOf(CardWordEntity("yyy"))
                 ),
             ),
             errors = mutableListOf(
@@ -105,12 +118,12 @@ internal class ToCardTransportTest {
                 CardEntity(
                     cardId = CardId("H"),
                     dictionaryId = DictionaryId("J"),
-                    word = "xxx"
+                    words = listOf(CardWordEntity("xxx"))
                 ),
                 CardEntity(
                     cardId = CardId("K"),
                     dictionaryId = DictionaryId("M"),
-                    word = "yyy"
+                    words = listOf(CardWordEntity("yyy"))
                 ),
             ),
             errors = mutableListOf(),
@@ -132,22 +145,23 @@ internal class ToCardTransportTest {
         names = ["CREATE_CARD", "UPDATE_CARD", "DELETE_CARD", "RESET_CARD"]
     )
     fun `test toCreateUpdateCardResponse`(op: CardOperation) {
-        val responseEntity = CardResource(
-            cardId = "A",
-            dictionaryId = "G",
-            word = "xxx",
-            details = emptyMap(),
-            translations = emptyList(),
-            examples = emptyList(),
+        val cardEntity = CardEntity(
+            cardId = CardId("A"),
+            dictionaryId = DictionaryId("B"),
+            words = listOf(
+                CardWordEntity(
+                    word = "XXX",
+                    partOfSpeech = "pos",
+                    transcription = "test",
+                    translations = listOf(listOf("translation-1-1", "translation-1-2"), listOf("translation-2")),
+                )
+            ),
+            changedAt = Instant.fromEpochSeconds(42_424_242_424_242L),
         )
         val context = CardContext(
             requestId = AppRequestId(op.name),
             operation = op,
-            responseCardEntity = CardEntity(
-                cardId = CardId(responseEntity.cardId!!),
-                dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
-                word = responseEntity.word!!
-            ),
+            responseCardEntity = cardEntity,
             errors = mutableListOf(),
             status = AppStatus.OK
         )
@@ -170,28 +184,21 @@ internal class ToCardTransportTest {
                 return
             }
         }
-        Assertions.assertNotSame(responseEntity, card)
-        Assertions.assertEquals(responseEntity, card)
+        Assertions.assertNotSame(cardEntity, card)
+        assertCard(cardEntity, card)
     }
 
     @Test
     fun `test toLearnCardResponse`() {
-        val responseEntity = CardResource(
-            cardId = "A",
-            dictionaryId = "G",
-            word = "xxx",
-            details = emptyMap(),
-            translations = emptyList(),
-            examples = emptyList(),
+        val cardEntity = CardEntity(
+            cardId = CardId("A"),
+            dictionaryId = DictionaryId("C"),
+            words = listOf(CardWordEntity(word = "xxx")),
         )
         val context = CardContext(
             requestId = AppRequestId(CardOperation.LEARN_CARDS.name),
             operation = CardOperation.LEARN_CARDS,
-            responseCardEntityList = listOf(CardEntity(
-                cardId = CardId(responseEntity.cardId!!),
-                dictionaryId = DictionaryId(responseEntity.dictionaryId!!),
-                word = responseEntity.word!!
-            )),
+            responseCardEntityList = listOf(cardEntity),
             errors = mutableListOf(),
             status = AppStatus.OK
         )
@@ -201,8 +208,7 @@ internal class ToCardTransportTest {
         Assertions.assertEquals(Result.SUCCESS, res.result)
         Assertions.assertNull(res.errors)
         Assertions.assertEquals(1, res.cards!!.size)
-        val card = res.cards!!.get(0)
-        Assertions.assertNotSame(responseEntity, card)
-        Assertions.assertEquals(responseEntity, card)
+        val card = res.cards!![0]
+        assertCard(cardEntity, card)
     }
 }

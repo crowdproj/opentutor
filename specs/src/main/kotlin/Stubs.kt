@@ -2,7 +2,18 @@ package com.gitlab.sszuev.flashcards.stubs
 
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStub
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 
 const val STUB_ERROR_GROUP = "StubErrors"
 
@@ -29,15 +40,23 @@ val stubError = AppError(
 )
 
 val stubCard = CardEntity(
-    word = "stub",
     cardId = CardId(42.toString()),
     dictionaryId = DictionaryId(42.toString()),
-    partOfSpeech = "noun",
-    transcription = "stʌb",
-    translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитация")),
-    examples = listOf("That was the last candle stub I had.", "\$500 ticket stub."),
-    details = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
-    sound = TTSResourceId("en:stub"),
+    words = listOf(
+        CardWordEntity(
+            word = "stub",
+            partOfSpeech = "noun",
+            transcription = "stʌb",
+            translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитация")),
+            examples = listOf("That was the last candle stub I had.", "\$500 ticket stub.").map {
+                CardWordExampleEntity(
+                    it
+                )
+            },
+            sound = TTSResourceId("en:stub"),
+        ),
+    ),
+    stats = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
 )
 
 val stubCards = IntRange(1, 3)
@@ -46,7 +65,11 @@ val stubCards = IntRange(1, 3)
         stubCard.copy(
             cardId = CardId(it.second.toString()),
             dictionaryId = DictionaryId(it.first.toString()),
-            word = "XXX-${it.first}-${it.second}"
+            words = listOf(
+                CardWordEntity(
+                    word = "XXX-${it.first}-${it.second}"
+                ),
+            ),
         )
     }
 

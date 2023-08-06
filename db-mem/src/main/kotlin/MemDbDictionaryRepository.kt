@@ -8,6 +8,7 @@ import com.gitlab.sszuev.flashcards.common.documents.createWriter
 import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.status
+import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.wrongResourceDbError
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.model.common.AppError
@@ -20,7 +21,6 @@ import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
-import java.time.LocalDateTime
 
 class MemDbDictionaryRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
@@ -35,14 +35,14 @@ class MemDbDictionaryRepository(
     }
 
     override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val dictionary =
             database.saveDictionary(entity.toMemDbDictionary().copy(userId = userId.asLong(), changedAt = timestamp))
         return DictionaryDbResponse(dictionary = dictionary.toDictionaryEntity())
     }
 
     override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val errors = mutableListOf<AppError>()
         val found = checkDictionaryUser("removeDictionary", userId, dictionaryId, errors)
         if (errors.isNotEmpty()) {
@@ -77,7 +77,7 @@ class MemDbDictionaryRepository(
     }
 
     override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
-        val timestamp = LocalDateTime.now()
+        val timestamp = systemNow()
         val dictionaryDocument = try {
             createReader().parse(resource.data)
         } catch (ex: Exception) {

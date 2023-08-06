@@ -111,7 +111,8 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
     }
     process {
         val userId = this.contextUserEntity.id
-        val res = this.repositories.cardRepository(this.workMode).learnCards(userId, this.normalizedRequestCardLearnList)
+        val res =
+            this.repositories.cardRepository(this.workMode).learnCards(userId, this.normalizedRequestCardLearnList)
         this.postProcess(res)
     }
     onException {
@@ -155,10 +156,14 @@ private suspend fun CardContext.postProcess(res: CardsDbResponse) {
     }
     if (res.sourceLanguageId != LangId.NONE) {
         val tts = this.repositories.ttsClientRepository(this.workMode)
-        val responses = res.cards.associateWith { tts.findResourceId(TTSResourceGet(it.word, res.sourceLanguageId).normalize()) }
-        this.errors.addAll(responses.flatMap { it.value.errors })
-        this.responseCardEntityList =
-            responses.map { if (it.value.id != TTSResourceId.NONE) it.key.copy(sound = it.value.id) else it.key }
+        this.responseCardEntityList = res.cards.map { card ->
+            val words = card.words.map { word ->
+                val r = tts.findResourceId(TTSResourceGet(word.word, res.sourceLanguageId).normalize())
+                this.errors.addAll(r.errors)
+                if (r.id != TTSResourceId.NONE) word.copy(sound = r.id) else word
+            }
+            card.copy(words = words)
+        }
     } else {
         this.responseCardEntityList = res.cards
     }

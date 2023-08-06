@@ -1,7 +1,25 @@
 package com.gitlab.sszuev.flashcards.api
 
-import com.gitlab.sszuev.flashcards.api.testutils.*
-import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.api.testutils.assertDebug
+import com.gitlab.sszuev.flashcards.api.testutils.assertDictionary
+import com.gitlab.sszuev.flashcards.api.testutils.assertError
+import com.gitlab.sszuev.flashcards.api.testutils.debug
+import com.gitlab.sszuev.flashcards.api.testutils.deserializeRequest
+import com.gitlab.sszuev.flashcards.api.testutils.deserializeResponse
+import com.gitlab.sszuev.flashcards.api.testutils.dictionary
+import com.gitlab.sszuev.flashcards.api.testutils.error
+import com.gitlab.sszuev.flashcards.api.testutils.serialize
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryResponse
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -19,7 +37,7 @@ internal class DictionarySerializationTest {
 
         val req2 = deserializeRequest<GetAllDictionariesRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "getAllDictionaries"), req2)
     }
 
     @Test
@@ -34,7 +52,7 @@ internal class DictionarySerializationTest {
 
         val req2 = deserializeResponse<GetAllDictionariesResponse>(json)
         Assertions.assertNotSame(res1, req2)
-        Assertions.assertEquals(res1, req2)
+        Assertions.assertEquals(res1.copy(responseType = "getAllDictionaries"), req2)
     }
 
     @Test
@@ -53,7 +71,7 @@ internal class DictionarySerializationTest {
 
         val req2 = deserializeRequest<DeleteDictionaryRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(requestType = "deleteDictionary"), req2)
     }
 
     @Test
@@ -71,7 +89,7 @@ internal class DictionarySerializationTest {
 
         val req2 = deserializeResponse<DeleteDictionaryResponse>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1, req2)
+        Assertions.assertEquals(req1.copy(responseType = "deleteDictionary"), req2)
     }
 
     @Test
@@ -104,7 +122,7 @@ internal class DictionarySerializationTest {
         assertError(json)
         val res2 = deserializeResponse<DownloadDictionaryResponse>(json)
         Assertions.assertNotSame(res1, res2)
-        Assertions.assertEquals(res1.responseType, res2.responseType)
+        Assertions.assertEquals("downloadDictionary", res2.responseType)
         Assertions.assertEquals(res1.result, res2.result)
         Assertions.assertEquals(res1.requestId, res2.requestId)
         Assertions.assertEquals(res1.errors, res2.errors)
@@ -141,7 +159,7 @@ internal class DictionarySerializationTest {
         assertDictionary(json)
         val res2 = deserializeResponse<UploadDictionaryResponse>(json)
         Assertions.assertNotSame(res1, res2)
-        Assertions.assertEquals(res1, res2)
+        Assertions.assertEquals(res1.copy(responseType = "uploadDictionary"), res2)
     }
 
     @Test
@@ -156,7 +174,7 @@ internal class DictionarySerializationTest {
         assertDictionary(json)
         val res2 = deserializeRequest<CreateDictionaryRequest>(json)
         Assertions.assertNotSame(res1, res2)
-        Assertions.assertEquals(res1, res2)
+        Assertions.assertEquals(res1.copy(requestType = "createDictionary"), res2)
     }
 
     @Test
@@ -171,6 +189,6 @@ internal class DictionarySerializationTest {
         assertDictionary(json)
         val res2 = deserializeResponse<CreateDictionaryResponse>(json)
         Assertions.assertNotSame(res1, res2)
-        Assertions.assertEquals(res1, res2)
+        Assertions.assertEquals(res1.copy(responseType = "createDictionary"), res2)
     }
 }

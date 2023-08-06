@@ -6,7 +6,10 @@ import com.gitlab.sszuev.flashcards.common.CommonExampleDto
 import com.gitlab.sszuev.flashcards.common.CommonUserDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonWordDto
 import com.gitlab.sszuev.flashcards.common.LanguageRepository
+import com.gitlab.sszuev.flashcards.common.asJava
+import com.gitlab.sszuev.flashcards.common.asKotlin
 import com.gitlab.sszuev.flashcards.common.asLong
+import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
@@ -15,12 +18,14 @@ import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
 import com.gitlab.sszuev.flashcards.common.parseDictionaryDetailsJson
 import com.gitlab.sszuev.flashcards.common.parseUserDetailsJson
 import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
-import com.gitlab.sszuev.flashcards.common.toCommonCardDetailsDto
+import com.gitlab.sszuev.flashcards.common.toCardEntityStats
+import com.gitlab.sszuev.flashcards.common.toCardWordEntity
 import com.gitlab.sszuev.flashcards.common.toCommonCardDtoDetails
 import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
 import com.gitlab.sszuev.flashcards.common.toDocumentExamples
 import com.gitlab.sszuev.flashcards.common.toDocumentTranslations
 import com.gitlab.sszuev.flashcards.common.toJsonString
+import com.gitlab.sszuev.flashcards.common.wordsAsCommonWordDtoList
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbExample
@@ -56,7 +61,7 @@ internal fun fromJsonStringToMemDbDictionaryDetails(json: String): Map<String, S
 }
 
 internal fun MemDbCard.detailsAsJsonString(): String {
-    return toCommonCardDetailsDto().toJsonString()
+    return detailsAsCommonCardDetailsDto().toJsonString()
 }
 
 internal fun fromJsonStringToMemDbCardDetails(json: String): Map<String, String> {
@@ -142,18 +147,15 @@ internal fun DictionaryEntity.toMemDbDictionary(): MemDbDictionary = MemDbDictio
 )
 
 internal fun MemDbCard.toCardEntity(): CardEntity {
-    val word = this.words.first().toCommonWordDto()
-    val details = this.toCommonCardDetailsDto().toCardEntityDetails()
+    val details: CommonCardDetailsDto = this.detailsAsCommonCardDetailsDto()
     return CardEntity(
         cardId = id?.asCardId() ?: CardId.NONE,
         dictionaryId = dictionaryId?.asDictionaryId() ?: DictionaryId.NONE,
-        word = word.word,
-        transcription = word.transcription,
-        translations = word.translations,
-        examples = word.examples.map { it.text },
-        partOfSpeech = word.partOfSpeech,
-        details = details,
-        answered = answered,
+        words = this.words.map { it.toCommonWordDto() }.map { it.toCardWordEntity() },
+        details = details.toCardEntityDetails(),
+        stats = details.toCardEntityStats(),
+        answered = this.answered,
+        changedAt = this.changedAt.asKotlin(),
     )
 }
 
@@ -162,10 +164,10 @@ internal fun CardEntity.toMemDbCard(): MemDbCard {
     return MemDbCard(
         id = if (this.cardId == CardId.NONE) null else this.cardId.asLong(),
         dictionaryId = dictionaryId,
-        words = this.toCommonWordDtoList().map { it.toMemDbWord() },
-        details = this.toCommonCardDetailsDto().toMemDbCardDetails(),
-        answered = answered,
-        changedAt = null,
+        words = this.wordsAsCommonWordDtoList().map { it.toMemDbWord() },
+        details = this.detailsAsCommonCardDetailsDto().toMemDbCardDetails(),
+        answered = this.answered,
+        changedAt = this.changedAt.asJava(),
     )
 }
 
@@ -210,7 +212,7 @@ private fun CommonExampleDto.toMemDbExample(): MemDbExample = MemDbExample(
     translation = translation,
 )
 
-internal fun MemDbCard.toCommonCardDetailsDto(): CommonCardDetailsDto = CommonCardDetailsDto(this.details)
+internal fun MemDbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto = CommonCardDetailsDto(this.details)
 
 private fun CommonCardDetailsDto.toMemDbCardDetails(): Map<String, String> = this.mapValues { it.value.toString() }
 

@@ -45,7 +45,7 @@ components:
             $ref: '#/components/schemas/ErrorLogResource'
 
     UserLogResource:
-      title: A log resource for UserEntity
+      title: A log resource for User entity
       properties:
         userId:
           type: string
@@ -61,19 +61,19 @@ components:
         requestDictionaryId:
           type: string
         requestCard:
-          $ref: '#/components/schemas/CardEntityResource'
+          $ref: '#/components/schemas/CardLogResource'
         requestCardFilter:
-          $ref: '#/components/schemas/CardFilterResource'
+          $ref: '#/components/schemas/CardFilterLogResource'
         responseCard:
-          $ref: '#/components/schemas/CardEntityResource'
+          $ref: '#/components/schemas/CardLogResource'
         requestCardLearn:
           type: array
           items:
-            $ref: '#/components/schemas/CardLearnResource'
+            $ref: '#/components/schemas/CardLearnLogResource'
         responseCards:
           type: array
           items:
-            $ref: '#/components/schemas/CardEntityResource'
+            $ref: '#/components/schemas/CardLogResource'
 
     DictionariesLogResource:
       title: A log resource for DictionaryContext
@@ -82,7 +82,7 @@ components:
         responseDictionaries:
           type: array
           items:
-            $ref: '#/components/schemas/DictionaryEntityResource'
+            $ref: '#/components/schemas/DictionaryLogResource'
 
     ErrorLogResource:
       type: object
@@ -97,14 +97,38 @@ components:
         message:
           type: string
 
-    CardEntityResource:
-      title: A log resource for CardEntity
+    CardLogResource:
+      title: A log resource for Card entity
       type: object
       properties:
         cardId:
           type: string
         dictionaryId:
           type: string
+        words:
+          type: array
+          items:
+            $ref: '#/components/schemas/CardWordLogResource'
+        answered:
+          type: integer
+          format: int32
+        stats:
+          type: object
+          additionalProperties:
+            type: integer
+            format: int64
+        details:
+          type: object
+          additionalProperties:
+            type: object
+        changed-at:
+          type: string
+          format: date-time
+
+    CardWordLogResource:
+      title: A log resource for Card Word entity
+      type: object
+      properties:
         word:
           type: string
         transcription:
@@ -120,19 +144,20 @@ components:
         examples:
           type: array
           items:
-            type: string
+            $ref: '#/components/schemas/CardWordExampleLogResource'
         sound:
           type: string
-        answered:
-          type: integer
-          format: int32
-        details:
-          type: object
-          additionalProperties:
-            type: integer
-            format: int64
 
-    CardFilterResource:
+    CardWordExampleLogResource:
+      title: A log resource for Card Word Example entity
+      type: object
+      properties:
+        text:
+          type: string
+        translation:
+          type: string
+
+    CardFilterLogResource:
       title: A log resource for CardFilter
       properties:
         random:
@@ -147,7 +172,7 @@ components:
           items:
             type: string
 
-    CardLearnResource:
+    CardLearnLogResource:
       description: A log resource for CardLearn
       type: object
       properties:
@@ -159,8 +184,8 @@ components:
             type: integer
             format: int64
 
-    DictionaryEntityResource:
-      description: A log resource for DictionaryEntity
+    DictionaryLogResource:
+      description: A log resource for Dictionary entity
       type: object
       properties:
         dictionaryId:

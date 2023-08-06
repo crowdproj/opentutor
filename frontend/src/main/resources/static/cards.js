@@ -45,58 +45,58 @@ function initCardsTable(cards) {
         selectCardItemForAdd(row, search.val());
     });
 
-    $.each(cards, function (key, item) {
-        let row = $(`<tr id="${'w' + item.cardId}">
-                            <td>${item.word}</td>
-                            <td>${toTranslationString(item)}</td>
-                            <td>${percentage(item)}</td>
+    $.each(cards, function (key, card) {
+        let row = $(`<tr id="${'w' + card.cardId}">
+                            <td>${getAllWordsAsString(card)}</td>
+                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${percentage(card)}</td>
                           </tr>`);
         row.off('click').on('click', function () {
-            cardRowOnClick(row, item);
+            cardRowOnClick(row, card);
         });
         row.off('dblclick').dblclick(function () {
-            cardRowOnClick(row, item);
+            cardRowOnClick(row, card);
             editPopup.show();
         });
         tbody.append(row);
     });
 }
 
-function cardRowOnClick(row, item) {
+function cardRowOnClick(row, card) {
     resetCardSelection();
     markRowSelected(row);
-    selectCardItemForEdit(row, item);
-    selectCardItemForAdd(row, item.word);
-    selectCardItemForDeleteOrReset(item, 'delete');
-    selectCardItemForDeleteOrReset(item, 'reset');
+    selectCardItemForEdit(row, card);
+    selectCardItemForAdd(row, getCardFirstWordWord(card));
+    selectCardItemForDeleteOrReset(card, 'delete');
+    selectCardItemForDeleteOrReset(card, 'reset');
 }
 
-function selectCardItemForEdit(row, item) {
+function selectCardItemForEdit(row, card) {
     cleanCardDialogLinks('edit');
     const input = $('#edit-card-dialog-word');
-    input.val(item.word);
-    input.attr('item-id', item.cardId);
+    input.val(getCardFirstWordWord(card));
+    input.attr('item-id', card.cardId);
 
     insertCardDialogLinks('edit');
     disableCardButton('edit', false);
 
     const btn = $('#edit-card-dialog-sound');
-    btn.attr('word-txt', item.word);
-    if (item.sound) {
+    btn.attr('word-txt', getCardFirstWordWord(card));
+    if (getCardFirstWordSound(card)) {
         btn.prop('disabled', false);
-        btn.attr('word-sound', item.sound);
+        btn.attr('word-sound', getCardFirstWordSound(card));
     } else {
         btn.prop('disabled', true);
-        btn.removeAttr('word-sound', item.sound);
+        btn.removeAttr('word-sound', getCardFirstWordSound(card));
     }
 
-    const index = selectedDictionary.partsOfSpeech.indexOf(item.partOfSpeech)
+    const index = selectedDictionary.partsOfSpeech.indexOf(getCardFirstWordPartOfSpeech(card))
     if (index > -1) {
         $('#edit-card-dialog-part-of-speech option').eq(index + 1).prop('selected', true);
     }
-    $('#edit-card-dialog-transcription').val(item.transcription);
-    const translations = item.translations.map(x => x.join(", "));
-    const examples = item.examples;
+    $('#edit-card-dialog-transcription').val(getCardFirstWordTranscriptionAsArrayArray(card));
+    const translations = getCardFirstWordTranslationsAsArrayArray(card).map(x => x.join(", "));
+    const examples = getCardFirstWordExamplesAsArray(card);
     const translationsArea = $('#edit-card-dialog-translation');
     const examplesArea = $('#edit-card-dialog-examples');
     translationsArea.attr('rows', translations.length);
@@ -121,11 +121,11 @@ function selectCardItemForAdd(row, word) {
     $('#add-card-dialog-examples').val('');
 }
 
-function selectCardItemForDeleteOrReset(item, actionId) {
+function selectCardItemForDeleteOrReset(card, actionId) {
     disableCardButton(actionId, false);
     const body = $('#' + actionId + '-card-prompt-body');
-    body.attr('item-id', item.cardId);
-    body.html(item.word);
+    body.attr('item-id', card.cardId);
+    body.html(getCardFirstWordWord(card));
 }
 
 function resetCardSelection() {
@@ -142,7 +142,7 @@ function disableCardButton(suffix, disable) {
     $('#words-btn-' + suffix).prop('disabled', disable);
 }
 
-function initCardDialog(dialogId, items) {
+function initCardDialog(dialogId, cards) {
     $('#' + dialogId + '-card-dialog-lg-collapse').off('show.bs.collapse').on('show.bs.collapse', function () {
         onCollapseLgFrame(dialogId);
     });
@@ -163,7 +163,7 @@ function initCardDialog(dialogId, items) {
         onChangeCardDialogMains('add');
     });
     $('#' + dialogId + '-card-dialog-save').off('click').on('click', function () { // push save dialog button
-        const res = createResourceCardItem(dialogId, items);
+        const res = createResourceCardItem(dialogId, cards);
         const onDone = function (id) {
             if (id === '') {
                 id = res.cardId;
@@ -225,18 +225,18 @@ function onChangeCardDialogMains(dialogId) {
     $('#' + dialogId + '-card-dialog-save').prop('disabled', !(word.val() && translation.val()));
 }
 
-function createResourceCardItem(dialogId, items) {
+function createResourceCardItem(dialogId, cards) {
     const input = $('#' + dialogId + '-card-dialog-word');
     const itemId = input.attr('item-id');
-    const resItem = itemId ? jQuery.extend({}, findById(items, itemId)) : {};
-    resItem.dictionaryId = selectedDictionary.dictionaryId;
-    resItem.word = input.val().trim();
-    resItem.transcription = $('#' + dialogId + '-card-dialog-transcription').val().trim();
-    resItem.partOfSpeech = $('#' + dialogId + '-card-dialog-part-of-speech option:selected').text();
-    resItem.examples = toArray($('#' + dialogId + '-card-dialog-examples').val(), '\n');
-    resItem.translations = toArray($('#' + dialogId + '-card-dialog-translation').val(), '\n')
-        .map(x => toArray(x, ','));
-    return resItem;
+    const resCard = itemId ? jQuery.extend({}, findById(cards, itemId)) : {};
+    resCard.dictionaryId = selectedDictionary.dictionaryId;
+    setCardFirstWordWord(resCard, input.val().trim());
+    setCardFirstWordTranscription(resCard, $('#' + dialogId + '-card-dialog-transcription').val().trim());
+    setCardFirstWordPartOfSpeech(resCard, $('#' + dialogId + '-card-dialog-part-of-speech option:selected').text());
+    setCardFirstWordExamplesArray(resCard, toArray($('#' + dialogId + '-card-dialog-examples').val(), '\n'));
+    setCardFirstWordTranslationsArrayArray(resCard,
+        toArray($('#' + dialogId + '-card-dialog-translation').val(), '\n').map(x => toArray(x, ',')));
+    return resCard;
 }
 
 function cleanCardDialogLinks(dialogId) {

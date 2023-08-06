@@ -1,42 +1,69 @@
 /*!
  * js-library to work with app data (card-resources).
- */
+ *
+ * card:
+ * ```js
+ * {
+ *  "cardId": "...",
+ *  "dictionaryId": "...",
+ *  "words": [
+ *    {
+ *      "word": "...",
+ *      "transcription": "...",
+ *      "partOfSpeech": "...",
+ *      "translations": [
+ *        [ "..." ]
+ *      ],
+ *      "examples": [
+ *        {
+ *          "example": "...",
+ *          "translation": "..."
+ *        }
+ *      ]
+ *    }
+ *  ],
+ *  "stats": {},
+ *  "details": {}
+ * }
+ * ```
+ *
+*/
 
 function findById(cards, cardId) {
-    return cards.find(e => e.cardId.toString() === cardId.toString());
+    return cards.find(card => card.cardId.toString() === cardId.toString())
 }
 
 function rememberAnswer(card, stage, booleanAnswer) {
     if (card.currentDetails == null) {
-        card.currentDetails = {};
+        card.currentDetails = {}
     }
-    card.currentDetails[stage] = booleanAnswer;
+    card.currentDetails[stage] = booleanAnswer
 }
 
 function hasStage(card, stage) {
-    return card.currentDetails != null && card.currentDetails[stage] != null;
+    return card.currentDetails != null && card.currentDetails[stage] != null
 }
 
 /**
- * Answers true iif the card is fully answered.
+ * Answers true if the card is fully answered.
  * If there is a wrong answer for any stage, then the method returns false.
  * @param card a data (card)
  * @returns {boolean|undefined}
  */
 function isAnsweredRight(card) {
-    const details = card.currentDetails;
+    const details = card.currentDetails
     if (details == null || !Object.keys(details).length) {
-        return undefined;
+        return undefined
     }
     for (let key in details) {
         if (!details.hasOwnProperty(key)) {
-            continue;
+            continue
         }
         if (!details[key]) {
-            return false;
+            return false
         }
     }
-    return true;
+    return true
 }
 
 /**
@@ -46,57 +73,227 @@ function isAnsweredRight(card) {
  * @returns {*[]} array of items to process
  */
 function selectNonAnswered(cards, limit) {
-    const res = [];
+    const res = []
     for (let i = 0; i < cards.length; i++) {
-        let item = cards[i];
-        if (item.answered == null || item.answered < numberOfRightAnswers) {
-            res.push(item);
+        let card = cards[i]
+        if (card.answered == null || card.answered < numberOfRightAnswers) {
+            res.push(card)
         }
         if (limit && res.length === limit) {
-            return res;
+            return res
         }
     }
-    return res;
+    return res
 }
 
 /**
- * Represents an array of card-resources as a string, containing only words.
- * @param cards
- * @returns {string}
+ * **[TODO] For first word only.**
+ * @param card
+ * @returns {*}
  */
-function toWordString(cards) {
-    return cards.map(d => d.word).sort().join(', ');
+function getCardFirstWordWord(card) {
+    return card.words[0].word
 }
 
 /**
- * Finds translation string from the item that starts with the specified substring ignoring case.
- * @param item - card resource
- * @param test string to test
- * @returns {string} or undefined
+ * **[TODO] For first word only.**
+ * @param card
+ * @returns {*}
  */
-function findTranslationStartsWith(item, test) {
-    test = test.toLowerCase();
-    return toTranslationArray(item).find((s) => s.toLowerCase().startsWith(test));
+function getCardFirstWordTranscriptionAsArrayArray(card) {
+    return card.words[0].transcription
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @returns {Array}
+ */
+function getCardFirstWordExamplesAsArray(card) {
+    return card.words[0].examples.map(it => it.example)
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @returns {*}
+ */
+function getCardFirstWordTranslationsAsArrayArray(card) {
+    return card.words[0].translations
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @returns {*}
+ */
+function getCardFirstWordPartOfSpeech(card) {
+    return card.words[0].partOfSpeech
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @returns {*}
+ */
+function getCardFirstWordSound(card) {
+    return card.words[0].sound
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @param word
+ */
+function setCardFirstWordWord(card, word) {
+    if (card.words == null) {
+        card.words = []
+    }
+    if (card.words.length === 0) {
+        card.words.push({})
+    }
+    card.words[0].word = word
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @param transcription
+ */
+function setCardFirstWordTranscription(card, transcription) {
+    if (card.words == null) {
+        card.words = []
+    }
+    if (card.words.length === 0) {
+        card.words.push({})
+    }
+    card.words[0].transcription = transcription
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @param pos
+ */
+function setCardFirstWordPartOfSpeech(card, pos) {
+    if (card.words == null) {
+        card.words = []
+    }
+    if (card.words.length === 0) {
+        card.words.push({})
+    }
+    card.words[0].partOfSpeech = pos
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @param examples
+ */
+function setCardFirstWordExamplesArray(card, examples) {
+    if (card.words == null) {
+        card.words = []
+    }
+    if (card.words.length === 0) {
+        card.words.push({})
+    }
+    card.words[0].examples = []
+    examples.forEach(function(example) {
+        let ex = { example: example }
+        card.words[0].examples.push(ex)
+    })
+}
+
+/**
+ * **[TODO] For first word only.**
+ * @param card
+ * @param translations
+ */
+function setCardFirstWordTranslationsArrayArray(card, translations) {
+    if (card.words == null) {
+        card.words = []
+    }
+    if (card.words.length === 0) {
+        card.words.push({})
+    }
+    card.words[0].translations = translations
+}
+
+/**
+ * @param card
+ * @returns {*}
+ */
+function getAllWordsAsString(card) {
+    return card.words.map(it => it.word).join(', ')
 }
 
 /**
  * Represents an item translations as a single string.
- * @param item - card resource
+ * @param card - card resource
  * @returns {string}
  */
-function toTranslationString(item) {
-    return toTranslationArray(item).join(', ');
+function getAllTranslationsAsString(card) {
+    let arrayOfArrays =  $.map(card.words.map(it => it.translations), function (n) {
+        return n
+    })
+    return $.each(arrayOfArrays, function (n) {
+        return n
+    }).join(', ')
+}
+
+/**
+ * Represents an array of card-resources as a string, containing only words.
+ * **[TODO] For first word only.**
+ * For report stage.
+ * @param cards
+ * @returns {string}
+ */
+function getCardsWordsAsString(cards) {
+    return cards.map(it => it.words[0]).map(it => it.word).sort().join(', ')
+}
+
+/**
+ * Finds translation string from the item that starts with the specified substring ignoring case.
+ * **[TODO] For first word only.**
+ * @param card - card resource
+ * @param test string to test
+ * @returns {string} or undefined
+ */
+function findTranslationStartsWith(card, test) {
+    test = test.toLowerCase()
+    return getCardFirstWordTranslationsAsArray(card).find((s) => s.toLowerCase().startsWith(test))
+}
+
+/**
+ * Represents an item translations as a single string.
+ * **[TODO] For first word only.**
+ * @param card - card resource
+ * @returns {string}
+ */
+function getTranslationsAsString(card) {
+    return getCardFirstWordTranslationsAsArray(card).join(', ')
 }
 
 /**
  * Represents an item translations as a flat array.
- * @param item - card resource
+ * **[TODO] For first word only.**
+ * @param card - card resource
  * @returns {array}
  */
-function toTranslationArray(item) {
-    return $.map(item.translations, function (n) {
-        return n;
-    });
+function getCardFirstWordTranslationsAsArray(card) {
+    // first word
+    return getWordTranslationsAsArray(card.words[0])
+}
+
+/**
+ *
+ * @param word
+ * @returns {*}
+ */
+function getWordTranslationsAsArray(word) {
+    return $.map(word.translations, function (n) {
+        return n
+    })
 }
 
 /**
@@ -106,9 +303,9 @@ function toTranslationArray(item) {
  */
 function percentage(cardItem) {
     if (cardItem.answered > numberOfRightAnswers) {
-        return 100;
+        return 100
     }
-    return Math.round(100.0 * cardItem.answered / numberOfRightAnswers);
+    return Math.round(100.0 * cardItem.answered / numberOfRightAnswers)
 }
 
 /**
@@ -119,8 +316,8 @@ function percentage(cardItem) {
  * @returns {string} an uri
  */
 function toLgURI(itemWord, sourceLang, targetLang) {
-    let fragment = sourceLang.toLowerCase() + '-' + targetLang.toLowerCase() + "/" + encodeURIComponent(itemWord);
-    return "https://www.lingvolive.com/en-us/translate/" + fragment;
+    let fragment = sourceLang.toLowerCase() + '-' + targetLang.toLowerCase() + "/" + encodeURIComponent(itemWord)
+    return "https://www.lingvolive.com/en-us/translate/" + fragment
 }
 
 /**
@@ -132,8 +329,8 @@ function toLgURI(itemWord, sourceLang, targetLang) {
  */
 function toGlURI(itemWord, sourceLang, targetLang) {
     let fragment = '?sl=' + sourceLang.toLowerCase() + '&tl=' + targetLang.toLowerCase() +
-        "&text=" + encodeURIComponent(itemWord);
-    return "https://translate.google.com/" + fragment;
+        "&text=" + encodeURIComponent(itemWord)
+    return "https://translate.google.com/" + fragment
 }
 
 /**
@@ -145,8 +342,8 @@ function toGlURI(itemWord, sourceLang, targetLang) {
  */
 function toYaURI(itemWord, sourceLang, targetLang) {
     let fragment = '?lang=' + sourceLang.toLowerCase() + '-' + targetLang.toLowerCase() +
-        "&text=" + encodeURIComponent(itemWord);
-    return "https://translate.yandex.ru/" + fragment;
+        "&text=" + encodeURIComponent(itemWord)
+    return "https://translate.yandex.ru/" + fragment
 }
 
 /**
@@ -157,8 +354,8 @@ function toYaURI(itemWord, sourceLang, targetLang) {
  */
 function findItem(array, prefix) {
     if (!prefix.trim()) {
-        return null;
+        return null
     }
-    prefix = prefix.trim().toLowerCase();
-    return array.find((s) => s.word.toLowerCase().startsWith(prefix));
+    prefix = prefix.trim().toLowerCase()
+    return array.find((s) => s.word.toLowerCase().startsWith(prefix))
 }
