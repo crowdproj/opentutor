@@ -1,8 +1,35 @@
 /*!
- * page:cards js-script library.
+ * Page:cards js-script library.
+ * To create/edit dictionary's cards.
  */
 
-function drawDictionaryPage() {
+/**
+ * selected dictionary resource (for edit/delete/download)
+ * ```json
+ *   {
+ *     "dictionaryId": "2",
+ *     "name": "Weather",
+ *     "sourceLang": "en",
+ *     "targetLang": "ru",
+ *     "partsOfSpeech": [
+ *       "noun",
+ *       "verb",
+ *       "adjective",
+ *       "adverb",
+ *       "pronoun",
+ *       "preposition",
+ *       "conjunction",
+ *       "interjection",
+ *       "article"
+ *     ],
+ *     "total": 0,
+ *     "learned": 0
+ *   }
+ * ```
+ */
+let selectedDictionary;
+
+function drawDictionaryCardsPage() {
     if (selectedDictionary == null) {
         return;
     }
@@ -32,16 +59,18 @@ function initCardsTable(cards) {
 
     displayPage('words');
 
+    toggleManageCardsButton('add', false);
+
     search.off('input').on('input', function () {
         resetCardSelection();
-        const item = findItem(cards, search.val());
-        if (item == null) {
+        const card = findCardByWordPrefix(cards, search.val());
+        if (card == null) {
             selectCardItemForAdd(null, search.val());
             return;
         }
-        scrollToRow('#w' + item.cardId, '#words-table-row', markRowSelected);
-        const row = $('#w' + item.cardId);
-        selectCardItemForEdit(row, item);
+        scrollToRow('#w' + card.cardId, '#words-table-row', markRowSelected);
+        const row = $('#w' + card.cardId);
+        selectCardItemForEdit(row, card);
         selectCardItemForAdd(row, search.val());
     });
 
@@ -78,7 +107,7 @@ function selectCardItemForEdit(row, card) {
     input.attr('item-id', card.cardId);
 
     insertCardDialogLinks('edit');
-    disableCardButton('edit', false);
+    toggleManageCardsButton('edit', false);
 
     const btn = $('#edit-card-dialog-sound');
     btn.attr('word-txt', getCardFirstWordWord(card));
@@ -112,7 +141,7 @@ function selectCardItemForAdd(row, word) {
     }
     $('#add-card-dialog-word').val(word);
     insertCardDialogLinks('add');
-    disableCardButton('add', false);
+    toggleManageCardsButton('add', false);
 
     $('#add-card-dialog-part-of-speech option:selected').prop('selected', false);
 
@@ -122,23 +151,23 @@ function selectCardItemForAdd(row, word) {
 }
 
 function selectCardItemForDeleteOrReset(card, actionId) {
-    disableCardButton(actionId, false);
+    toggleManageCardsButton(actionId, false);
     const body = $('#' + actionId + '-card-prompt-body');
     body.attr('item-id', card.cardId);
     body.html(getCardFirstWordWord(card));
 }
 
 function resetCardSelection() {
-    disableCardButton('add', true);
-    disableCardButton('edit', true);
-    disableCardButton('delete', true);
-    disableCardButton('reset', true);
+    toggleManageCardsButton('add', true);
+    toggleManageCardsButton('edit', true);
+    toggleManageCardsButton('delete', true);
+    toggleManageCardsButton('reset', true);
     cleanCardDialogLinks('add');
     cleanCardDialogLinks('edit');
     resetRowSelection($('#words tbody'));
 }
 
-function disableCardButton(suffix, disable) {
+function toggleManageCardsButton(suffix, disable) {
     $('#words-btn-' + suffix).prop('disabled', disable);
 }
 
@@ -168,7 +197,7 @@ function initCardDialog(dialogId, cards) {
             if (id === '') {
                 id = res.cardId;
             }
-            drawDictionaryPage();
+            drawDictionaryCardsPage();
             scrollToRow('#w' + id, '#words-table-row', markRowSelected);
         };
         if (res.cardId == null) {
@@ -206,7 +235,7 @@ function initCardPrompt(actionId) {
             return;
         }
         const onDone = function () {
-            drawDictionaryPage();
+            drawDictionaryCardsPage();
             if (actionId !== 'delete') {
                 scrollToRow('#w' + id, '#words-table-row', markRowSelected);
             }
@@ -282,4 +311,15 @@ function onCollapseLgFrame(dialogId) {
     frame.attr('height', height);
     lgDiv.html('').append(frame);
     dialogLinksDiv.attr('word-txt', text);
+}
+
+function findCardByWordPrefix(cards, prefix) {
+    if (prefix === null || prefix === undefined) {
+        return null;
+    }
+    const search = prefix.trim().toLowerCase();
+    if (search.length === 0) {
+        return null;
+    }
+    return cards.find((card) => getCardFirstWordWord(card).toLowerCase().startsWith(search));
 }

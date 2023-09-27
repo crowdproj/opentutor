@@ -2,6 +2,37 @@
  * tutor (flashcards) js-script library.
  */
 
+/**
+ * an array with card resources.
+ * card:
+ * ```json
+ * {
+ *  "cardId": "...",
+ *  "dictionaryId": "...",
+ *  "dictionaryName": "...",
+ *  "words": [
+ *    {
+ *      "word": "...",
+ *      "transcription": "...",
+ *      "partOfSpeech": "...",
+ *      "translations": [
+ *        [ "..." ]
+ *      ],
+ *      "examples": [
+ *        {
+ *          "example": "...",
+ *          "translation": "..."
+ *        }
+ *      ]
+ *    }
+ *  ],
+ *  "stats": {},
+ *  "details": {}
+ * }
+ * ```
+ */
+let flashcards;
+
 const borderDefault = 'border-white';
 const borderSelected = 'border-primary';
 const borderSuccess = 'border-success';
@@ -44,7 +75,9 @@ function stageOptions() {
     }
     const dataLeft = randomArray(data, numberOfWordsPerStage);
     const length = dataLeft.length * numberOfOptionsPerWord;
-    getNextCardDeck(selectedDictionary.dictionaryId, length, function (words) {
+
+    const dictionaryIds = dataLeft.map(it => it.dictionaryId);
+    getNextCardDeck(dictionaryIds, length, function (words) {
         const options = prepareOptionsDataArray(dataLeft, words);
         displayPage('options');
         drawOptionsCardPage(options, 0, () => stageWriting());
@@ -103,7 +136,7 @@ function drawShowCardPage(data, index, nextStage) {
     const next = index + 1;
 
     drawAndPlayAudio(page, getCardFirstWordSound(current));
-    displayTitle(page, 'show');
+    displayTitle(page, 'show: ' + current.dictionaryName);
     $('.word', page).html(getCardFirstWordWord(current));
     $('.translations', page).html(getTranslationsAsString(current));
     $('#show-next').unbind('click').on('click', function () {
@@ -189,13 +222,13 @@ function drawOptionsCardPage(options, index, nextStage) {
         return;
     }
 
-    displayTitle($('#options'), stage);
-
     const leftPane = $('#options-left');
     const rightPane = $('#options-right');
 
     const dataLeft = options[index]['left'];
     const dataRight = options[index]['right'];
+
+    displayTitle($('#options'), stage + ": " + dataLeft.dictionaryName);
 
     let left = $(`<div class="card ${borderDefault}" id="${dataLeft.cardId}-left"><h4>${getCardFirstWordWord(dataLeft)}</h4></div>`);
     left.unbind('click').on('click', function () {
@@ -253,7 +286,7 @@ function drawWritingCardPage(writingData, index, nextStage) {
     const current = writingData[index];
 
     drawAndPlayAudio(page, getCardFirstWordSound(current));
-    displayTitle(page, stage);
+    displayTitle(page, stage + ': ' + current.dictionaryName);
     $('.word', page).html(getCardFirstWordWord(current));
 
     const clazz = "d-flex justify-content-start p-5 w-100";
@@ -313,7 +346,7 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const next = index + 1;
 
     drawAndPlayAudio(page, getCardFirstWordSound(current));
-    displayTitle(page, stage);
+    displayTitle(page, stage + ': ' + current.dictionaryName);
     $('.word', page).html(getCardFirstWordWord(current));
     translation.html(getTranslationsAsString(current));
     correct.prop('disabled', true);
@@ -376,8 +409,8 @@ function prepareOptionsDataArray(dataLeft, dataRight) {
     return res;
 }
 
-function displayTitle(page, stage) {
-    $('.card-title', page).html(selectedDictionary.name + ": " + stage);
+function displayTitle(page, title) {
+    $('.card-title', page).html(title);
 }
 
 function setDefaultBorder(array) {

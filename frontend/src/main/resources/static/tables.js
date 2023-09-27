@@ -5,19 +5,19 @@
 const tableHeightRation = 2. / 3;
 const lgFrameHeightRation = 7. / 18;
 
-function initTableListeners(id, resetSelection) {
+function initTableListeners(id, onResetSelection) {
     const thead = $('#' + id + ' thead');
     const title = $('#' + id + ' .card-title');
     const tbody = $('#' + id + ' tbody');
 
-    resetSelection();
+    onResetSelection();
     thead.off('click').on('click', function () {
         resetRowSelection(tbody);
-        resetSelection();
+        onResetSelection();
     });
     title.off('click').on('click', function () {
         resetRowSelection(tbody);
-        resetSelection();
+        onResetSelection();
     });
 }
 
@@ -48,6 +48,16 @@ function scrollToRow(rowSelector, headerSelector, onScroll) {
 
 function markRowSelected(row) {
     row.addClass('table-success');
+}
+
+function isRowSelected(row) {
+    return row.hasClass('table-success');
+}
+
+function findSelectedRows(tbody) {
+    return tbody.find('tr').filter(function () {
+        return isRowSelected($(this));
+    });
 }
 
 function calcInitTableHeight() {
