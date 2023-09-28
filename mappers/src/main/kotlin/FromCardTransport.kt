@@ -67,7 +67,7 @@ fun CardContext.fromSearchCardsRequest(request: SearchCardsRequest) {
     this.workMode = request.debug.transportToWorkMode()
     this.debugCase = request.debug.transportToStubCase()
     this.requestCardFilter = CardFilter(
-        dictionaryIds = request.dictionaryIds?.map { toDictionaryId(it) } ?: mutableListOf(),
+        dictionaryIds = request.dictionaryIds?.map { toDictionaryId(it) } ?: listOf(),
         length = request.length ?: 0,
         random = request.random ?: false,
         withUnknown = request.unknown ?: false,

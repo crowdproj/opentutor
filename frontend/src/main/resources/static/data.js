@@ -1,11 +1,12 @@
 /*!
  * js-library to work with app data (card-resources).
  *
- * card:
+ * CARD:
  * ```js
  * {
  *  "cardId": "...",
  *  "dictionaryId": "...",
+ *  "dictionaryName": "...",
  *  "words": [
  *    {
  *      "word": "...",
@@ -26,8 +27,29 @@
  *  "details": {}
  * }
  * ```
- *
-*/
+ * DICTIONARY:
+ * ```json
+ *   {
+ *     "dictionaryId": "2",
+ *     "name": "Weather",
+ *     "sourceLang": "en",
+ *     "targetLang": "ru",
+ *     "partsOfSpeech": [
+ *       "noun",
+ *       "verb",
+ *       "adjective",
+ *       "adverb",
+ *       "pronoun",
+ *       "preposition",
+ *       "conjunction",
+ *       "interjection",
+ *       "article"
+ *     ],
+ *     "total": 0,
+ *     "learned": 0
+ *   }
+ * ```
+ */
 
 function findById(cards, cardId) {
     return cards.find(card => card.cardId.toString() === cardId.toString())
@@ -67,7 +89,7 @@ function isAnsweredRight(card) {
 }
 
 /**
- * Answers of array with non-answered items to process.
+ * Answers of an array with non-answered items to process.
  * @param cards input array
  * @param limit max length of returned array
  * @returns {*[]} array of items to process
@@ -344,18 +366,4 @@ function toYaURI(itemWord, sourceLang, targetLang) {
     let fragment = '?lang=' + sourceLang.toLowerCase() + '-' + targetLang.toLowerCase() +
         "&text=" + encodeURIComponent(itemWord)
     return "https://translate.yandex.ru/" + fragment
-}
-
-/**
- * Finds first item from the array of cards by the specified prefix.
- * @param array {array} of resource cards
- * @param prefix {string}
- * @returns item
- */
-function findItem(array, prefix) {
-    if (!prefix.trim()) {
-        return null
-    }
-    prefix = prefix.trim().toLowerCase()
-    return array.find((s) => s.word.toLowerCase().startsWith(prefix))
 }

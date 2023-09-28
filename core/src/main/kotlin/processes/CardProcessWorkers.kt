@@ -65,9 +65,7 @@ fun ChainDSL<CardContext>.processCardSearch() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
-        val res = this.repositories.cardRepository(this.workMode).searchCard(userId, this.normalizedRequestCardFilter)
-        this.postProcess(res)
+        this.postProcess(this.findCardDeck())
     }
     onException {
         this.handleThrowable(CardOperation.SEARCH_CARDS, it)
@@ -158,9 +156,9 @@ private suspend fun CardContext.postProcess(res: CardsDbResponse) {
         val tts = this.repositories.ttsClientRepository(this.workMode)
         this.responseCardEntityList = res.cards.map { card ->
             val words = card.words.map { word ->
-                val r = tts.findResourceId(TTSResourceGet(word.word, res.sourceLanguageId).normalize())
-                this.errors.addAll(r.errors)
-                if (r.id != TTSResourceId.NONE) word.copy(sound = r.id) else word
+                val audio = tts.findResourceId(TTSResourceGet(word.word, res.sourceLanguageId).normalize())
+                this.errors.addAll(audio.errors)
+                if (audio.id != TTSResourceId.NONE) word.copy(sound = audio.id) else word
             }
             card.copy(words = words)
         }

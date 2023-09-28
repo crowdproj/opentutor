@@ -83,12 +83,12 @@ function getCards(dictionaryId, onDone) {
     })
 }
 
-function getNextCardDeck(dictionaryId, length, onDone) {
+function getNextCardDeck(dictionaryIds, length, onDone) {
     if (length == null) {
         length = numberOfWordsToShow
     }
     const data = {
-        'dictionaryIds': [dictionaryId],
+        'dictionaryIds': dictionaryIds,
         'requestId': uuid(),
         'requestType': searchCardsRequestType,
         'random': true,

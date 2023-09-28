@@ -3,7 +3,7 @@
  */
 
 function drawDictionariesPage() {
-    getDictionaries(function (response) {
+    getDictionaries(function (dictionaries) {
         displayPage('dictionaries');
 
         const tbody = $('#dictionaries tbody');
@@ -13,8 +13,16 @@ function drawDictionariesPage() {
 
         $('#dictionaries-table-row').css('height', calcInitTableHeight());
 
-        $('#dictionaries-btn-run').off().on('click', drawRunPage);
-        $('#dictionaries-btn-cards').off().on('click', drawDictionaryPage);
+        $('#dictionaries-btn-run').off().on('click', function () {
+            drawRunPage(dictionaries)
+        });
+        $('#dictionaries-btn-cards').off().on('click', function () {
+            const selectedDictionaries = findSelectedDictionaries(dictionaries);
+            if (selectedDictionaries.length === 1) {
+                selectedDictionary = selectedDictionaries[0];
+                drawDictionaryCardsPage();
+            }
+        });
         $('#dictionaries-btn-upload').off().on('click', () => {
             $('#dictionaries-btn-upload-label').removeClass('btn-outline-danger');
         }).on('change', (e) => {
@@ -23,26 +31,57 @@ function drawDictionariesPage() {
                 uploadDictionaryFile(file);
             }
         });
-        $('#dictionaries-btn-download').off().on('click', downloadDictionaryFile);
+        $('#dictionaries-btn-download').off().on('click', function () {
+            downloadDictionaryFile(dictionaries);
+        });
 
         bootstrap.Modal.getOrCreateInstance(document.getElementById('delete-dictionary-prompt')).hide();
         bootstrap.Modal.getOrCreateInstance(document.getElementById('add-dictionary-dialog')).hide();
         initDictionaryDeletePrompt();
         initDictionaryDialog('add');
 
-        $.each(response, function (key, value) {
-            let row = $(`<tr id="${'d' + value.dictionaryId}">
-                            <td>${value.sourceLang}</td>
-                            <td>${value.targetLang}</td>
-                            <td>${value.name}</td>
-                            <td>${value.total}</td>
-                            <td>${value.learned}</td>
+        $.each(dictionaries, function (index, dictionary) {
+            let row = $(`<tr id="${'d' + dictionary.dictionaryId}">
+                            <td>${dictionary.sourceLang}</td>
+                            <td>${dictionary.targetLang}</td>
+                            <td>${dictionary.name}</td>
+                            <td>${dictionary.total}</td>
+                            <td>${dictionary.learned}</td>
                           </tr>`);
-            row.on('click', function () {
-                dictionaryRowOnClick(row, value);
+            row.dblclick(function () {
+                resetRowSelection(tbody);
+                markRowSelected(row)
+                drawRunPage(dictionaries)
             });
-            row.dblclick(drawRunPage);
             tbody.append(row);
+        });
+
+        const rows = tbody.find('tr');
+        let lastSelectedRow = null;
+        rows.on('click', function (event) {
+            if (!event.shiftKey) {
+                resetRowSelection(tbody);
+            }
+            if (event.shiftKey && lastSelectedRow) {
+                // multiple rows selected
+                const start = lastSelectedRow.index();
+                const end = $(this).index();
+                const selectedRows = rows.slice(Math.min(start, end), Math.max(start, end) + 1)
+                if (selectedRows.length > 1) {
+                    $('#dictionaries-btn-run').prop('disabled', false);
+                    toggleManageDictionariesPageButtons(true);
+                }
+                $.each(selectedRows, function (index, item) {
+                    markRowSelected($(item));
+                })
+            } else {
+                // single row selected
+                $('#dictionaries-btn-run').prop('disabled', false);
+                toggleManageDictionariesPageButtons(false);
+                markRowSelected($(this));
+                onSelectDictionary(dictionaries);
+                lastSelectedRow = $(this);
+            }
         });
     });
 }
@@ -60,10 +99,12 @@ function uploadDictionaryFile(file) {
     $('#dictionaries-btn-upload').val('');
 }
 
-function downloadDictionaryFile() {
-    if (selectedDictionary == null) {
+function downloadDictionaryFile(dictionaries) {
+    const selectedDictionaries = findSelectedDictionaries(dictionaries);
+    if (selectedDictionaries.length !== 1) {
         return;
     }
+    const selectedDictionary = selectedDictionaries[0]
     const filename = toFilename(selectedDictionary.name) + '-' + new Date().toISOString().substring(0, 19) + '.xml';
     downloadDictionary(selectedDictionary.dictionaryId, filename);
 }
@@ -136,41 +177,70 @@ function createResourceDictionaryEntity(dialogId) {
     return dictionaryEntity;
 }
 
-function dictionaryRowOnClick(row, dict) {
-    selectedDictionary = dict;
-    const tbody = $('#dictionaries tbody');
-    const btnRun = $('#dictionaries-btn-run');
-    const btnEdit = $('#dictionaries-btn-cards');
-    const btnDelete = $('#dictionaries-btn-delete');
-    const btnDownload = $('#dictionaries-btn-download');
-    resetRowSelection(tbody);
-    markRowSelected(row);
-    btnRun.prop('disabled', false);
-    btnEdit.prop('disabled', false);
-    btnDelete.prop('disabled', false);
-    btnDownload.prop('disabled', false);
-
+function onSelectDictionary(dictionaries) {
+    const selectedDictionaries = findSelectedDictionaries(dictionaries);
+    if (selectedDictionaries.length !== 1) {
+        return;
+    }
+    const selectedDictionary = selectedDictionaries[0];
     const body = $('#delete-dictionary-prompt-body');
-    body.attr('item-id', dict.dictionaryId);
-    body.html(dict.name);
+    body.attr('item-id', selectedDictionary.dictionaryId);
+    body.html(selectedDictionary.name);
 }
 
 function resetDictionarySelection() {
-    selectedDictionary = null;
-    $('#dictionaries-btn-group button').each(function (i, b) {
-        $(b).prop('disabled', true);
-    });
+    disableDictionariesPageButtons();
     $('#dictionaries-btn-add').prop('disabled', false)
     $('#dictionaries-btn-upload-label').removeClass('btn-outline-danger');
 }
 
-function drawRunPage() {
-    if (selectedDictionary == null) {
+function drawRunPage(allDictionaries) {
+    const selectedDictionaries = findSelectedDictionaries(allDictionaries)
+    if (selectedDictionaries.length === 0) {
         return;
     }
+    $('#dictionaries-btn-run').prop('disabled', true);
+    toggleManageDictionariesPageButtons(true);
+    const dictionaryMap = new Map(selectedDictionaries.map(function (dictionary) {
+        return [dictionary.dictionaryId, dictionary.name];
+    }));
     resetRowSelection($('#dictionaries tbody'));
-    getNextCardDeck(selectedDictionary.dictionaryId, null, function (array) {
-        flashcards = array;
+    getNextCardDeck(Array.from(dictionaryMap.keys()), null, function (cards) {
+        flashcards = cards;
+        $.each(cards, function (index, card) {
+            card.dictionaryName = dictionaryMap.get(card.dictionaryId);
+        });
         stageShow();
+    });
+}
+
+function findSelectedDictionaries(dictionaries) {
+    const tbody = $('#dictionaries tbody');
+    return findSelectedRows(tbody).map(function (index, row) {
+        const rowId = $(row).attr('id');
+        const id = rowId.slice(1);
+        const res = dictionaries.find(it => it.dictionaryId === id);
+        if (res === undefined) {
+            return null;
+        } else {
+            return res;
+        }
+    }).filter(function (item) {
+        return item != null;
+    }).get();
+}
+
+function toggleManageDictionariesPageButtons(disabled) {
+    const btnEdit = $('#dictionaries-btn-cards');
+    const btnDelete = $('#dictionaries-btn-delete');
+    const btnDownload = $('#dictionaries-btn-download');
+    btnEdit.prop('disabled', disabled);
+    btnDelete.prop('disabled', disabled);
+    btnDownload.prop('disabled', disabled);
+}
+
+function disableDictionariesPageButtons() {
+    $('#dictionaries-btn-group button').each(function (i, b) {
+        $(b).prop('disabled', true);
     });
 }
