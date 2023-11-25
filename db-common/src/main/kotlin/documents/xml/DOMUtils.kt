@@ -1,11 +1,14 @@
+@file:Suppress("MemberVisibilityCanBePrivate")
+
 package com.gitlab.sszuev.flashcards.common.documents.xml
 
 import org.w3c.dom.Element
 import org.w3c.dom.Node
+import org.w3c.dom.NodeList
 
 internal object DOMUtils {
     /**
-     * Gets element by the specified tag or throws an error.
+     * Gets an element by the specified tag or throws an error.
      *
      * @param [tag][String]
      * @return [Element]
@@ -22,31 +25,14 @@ internal object DOMUtils {
      * @return [Sequence] of [Element]s
      */
     fun Element.elements(tag: String): Sequence<Element> {
-        return children(this).mapNotNull { it as? Element } .filter { it.tagName == tag }
+        return this.children().mapNotNull { it as? Element }.filter { it.tagName == tag }
     }
 
-    /**
-     * Lists all direct children of the given element.
-     *
-     * @param [parent][Element]
-     * @return [Sequence] of [Element]s
-     */
-    private fun children(parent: Element): Sequence<Node> {
-        return listChildren(parent).asSequence()
-    }
+    fun Element.children(): Sequence<Node> = this.childNodes.children()
 
-    private fun listChildren(parent: Element): Iterator<Node> {
-        val list = parent.childNodes
-        val length = list.length
-        return object : Iterator<Node> {
-            var index = 0
-            override fun hasNext(): Boolean {
-                return index < length - 1
-            }
-
-            override fun next(): Node {
-                return list.item(index++) as Node
-            }
+    fun NodeList.children(): Sequence<Node> = sequence {
+        (0 until this@children.length).forEach {
+            yield(this@children.item(it))
         }
     }
 

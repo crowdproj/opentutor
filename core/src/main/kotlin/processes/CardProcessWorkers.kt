@@ -6,7 +6,6 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
@@ -149,21 +148,21 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
 }
 
 private suspend fun CardContext.postProcess(res: CardsDbResponse) {
-    if (res.errors.isNotEmpty()) {
-        this.errors.addAll(res.errors)
-    }
-    if (res.sourceLanguageId != LangId.NONE) {
-        val tts = this.repositories.ttsClientRepository(this.workMode)
-        this.responseCardEntityList = res.cards.map { card ->
-            val words = card.words.map { word ->
-                val audio = tts.findResourceId(TTSResourceGet(word.word, res.sourceLanguageId).normalize())
-                this.errors.addAll(audio.errors)
-                if (audio.id != TTSResourceId.NONE) word.copy(sound = audio.id) else word
+    this.errors.addAll(res.errors)
+    val sourceLangByDictionary = res.dictionaries.associate { it.dictionaryId to it.sourceLang.langId }
+    val tts = this.repositories.ttsClientRepository(this.workMode)
+    this.responseCardEntityList = res.cards.map { card ->
+        val sourceLang = sourceLangByDictionary[card.dictionaryId] ?: return@map card
+        val words = card.words.map { word ->
+            val audio = tts.findResourceId(TTSResourceGet(word.word, sourceLang).normalize())
+            this.errors.addAll(audio.errors)
+            if (audio.id != TTSResourceId.NONE) {
+                word.copy(sound = audio.id)
+            } else {
+                word
             }
-            card.copy(words = words)
         }
-    } else {
-        this.responseCardEntityList = res.cards
+        card.copy(words = words)
     }
     this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
 }

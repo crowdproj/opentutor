@@ -3,12 +3,24 @@ package com.gitlab.sszuev.flashcards.dbcommon
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.common.NONE
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 import kotlinx.datetime.Instant
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 
 /**
  * Note: all implementations must have the same ids in tests for the same entities to have deterministic behavior.
@@ -179,14 +191,18 @@ abstract class DbCardRepositoryTest {
         val res1 = repository.getAllCards(userId, DictionaryId("1"))
         Assertions.assertEquals(244, res1.cards.size)
         Assertions.assertEquals(0, res1.errors.size)
+        Assertions.assertEquals(1, res1.dictionaries.size)
+        Assertions.assertEquals("1", res1.dictionaries.single().dictionaryId.asString())
 
         // Weather dictionary
         val res2 = repository.getAllCards(userId, DictionaryId("2"))
         Assertions.assertEquals(65, res2.cards.size)
         Assertions.assertEquals(0, res2.errors.size)
+        Assertions.assertEquals(1, res2.dictionaries.size)
+        Assertions.assertEquals("2", res2.dictionaries.single().dictionaryId.asString())
 
-        Assertions.assertEquals(LangId("en"), res1.sourceLanguageId)
-        Assertions.assertEquals(LangId("en"), res2.sourceLanguageId)
+        Assertions.assertEquals(LangId("en"), res1.dictionaries.single().sourceLang.langId)
+        Assertions.assertEquals(LangId("en"), res2.dictionaries.single().sourceLang.langId)
     }
 
     @Order(2)
@@ -259,11 +275,16 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(300, res1.cards.size)
         Assertions.assertEquals(300, res2.cards.size)
         Assertions.assertNotEquals(res1, res2)
-        Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res1.cards.map { it.dictionaryId }.toSet())
-        Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res2.cards.map { it.dictionaryId }.toSet())
-
-        Assertions.assertEquals(LangId("en"), res1.sourceLanguageId)
-        Assertions.assertEquals(LangId("en"), res2.sourceLanguageId)
+        Assertions.assertEquals(setOf("1", "2"), res1.cards.map { it.dictionaryId }.map { it.asString() }.toSet())
+        Assertions.assertEquals(setOf("1", "2"), res2.cards.map { it.dictionaryId }.map { it.asString() }.toSet())
+        Assertions.assertEquals(
+            setOf("1", "2"),
+            res1.dictionaries.map { it.dictionaryId }.map { it.asString() }.toSet()
+        )
+        Assertions.assertEquals(
+            setOf("1", "2"),
+            res2.dictionaries.map { it.dictionaryId }.map { it.asString() }.toSet()
+        )
     }
 
     @Order(6)
