@@ -148,6 +148,7 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
 }
 
 private suspend fun CardContext.postProcess(res: CardsDbResponse) {
+    check(res != CardsDbResponse.EMPTY) { "Null response" }
     this.errors.addAll(res.errors)
     val sourceLangByDictionary = res.dictionaries.associate { it.dictionaryId to it.sourceLang.langId }
     val tts = this.repositories.ttsClientRepository(this.workMode)

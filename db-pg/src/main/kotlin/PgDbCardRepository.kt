@@ -78,6 +78,7 @@ class PgDbCardRepository(
     }
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
+        require(filter.length != 0) { "zero length is specified" }
         val dictionaryIds = filter.dictionaryIds.map { it.asLong() }
         val learned = sysConfig.numberOfRightAnswers
         val random = CustomFunction<Double>("random", DoubleColumnType())
@@ -94,13 +95,15 @@ class PgDbCardRepository(
             }
             val dictionaries =
                 dictionariesFromDb.filterNot { it.id.value in forbiddenIds }.map { it.toDictionaryEntity() }
-            val cards = PgDbCard.find {
+            var cardsIterable = PgDbCard.find {
                 Cards.dictionaryId inList dictionaryIds and
                     (if (filter.withUnknown) Op.TRUE else Cards.answered.isNull() or Cards.answered.lessEq(learned))
             }.orderBy(random to SortOrder.ASC)
                 .orderBy(Cards.dictionaryId to SortOrder.ASC)
-                .limit(filter.length)
-                .map { it.toCardEntity() }
+            if (filter.length > 0) {
+                cardsIterable = cardsIterable.limit(filter.length)
+            }
+            val cards = cardsIterable.map { it.toCardEntity() }
             CardsDbResponse(cards = cards, dictionaries = dictionaries)
         }
     }

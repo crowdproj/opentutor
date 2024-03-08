@@ -63,6 +63,7 @@ class MemDbCardRepository(
     }
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
+        require(filter.length != 0) { "zero length is specified" }
         val ids = filter.dictionaryIds.map { it.asLong() }
         val dictionariesFromDb = database.findDictionariesByIds(ids).sortedBy { it.id }.toSet()
         if (dictionariesFromDb.isEmpty()) {
@@ -82,7 +83,8 @@ class MemDbCardRepository(
         if (filter.random) {
             cardsFromDb = cardsFromDb.shuffled(Random.Default)
         }
-        val cards = cardsFromDb.take(filter.length).map { it.toCardEntity() }.toList()
+        val cards =
+            (if (filter.length < 0) cardsFromDb else cardsFromDb.take(filter.length)).map { it.toCardEntity() }.toList()
         return CardsDbResponse(cards = cards, dictionaries = dictionaries)
     }
 

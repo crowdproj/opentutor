@@ -241,7 +241,7 @@ context.errors.forEach { // TODO
     fun `test search-cards success`() = runTest {
         val testFilter = CardFilter(
             dictionaryIds = listOf(DictionaryId("21"), DictionaryId("42")),
-            random = true,
+            random = false,
             withUnknown = true,
             length = 42,
         )
