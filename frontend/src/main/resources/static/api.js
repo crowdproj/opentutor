@@ -13,6 +13,7 @@ const getAllCardsURI = '/v1/api/cards/get-all'
 const searchCardsURI = '/v1/api/cards/search'
 const createCardURI = '/v1/api/cards/create'
 const updateCardURI = '/v1/api/cards/update'
+const learnCardURI = '/v1/api/cards/learn'
 const resetCardURI = '/v1/api/cards/reset'
 const deleteCardURI = '/v1/api/cards/delete'
 const getAudioURI = '/v1/api/sounds/get'
@@ -26,6 +27,7 @@ const getAllCardsRequestType = 'getAllCards'
 const searchCardsRequestType = 'searchCards'
 const createCardRequestType = 'createCard'
 const updateCardRequestType = 'updateCard'
+const learnCardRequestType = 'learnCard'
 const resetCardRequestType = 'resetCard'
 const deleteCardRequestType = 'deleteCard'
 const getAudioRequestType = 'getAudio'
@@ -257,10 +259,22 @@ function resetCard(cardId, onDone) {
     })
 }
 
-function learnCard(cards, onDone) {
-    // TODO
-    console.log("learnCard")
-    onDone()
+function learnCard(learns, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': learnCardRequestType,
+        'debug': {'mode': runMode},
+        'cards': learns
+    }
+    post(learnCardURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            if (onDone !== undefined) {
+                onDone()
+            }
+        }
+    })
 }
 
 function playAudio(resourcePath, callback) {

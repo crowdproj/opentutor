@@ -59,7 +59,7 @@ function rememberAnswer(card, stage, booleanAnswer) {
     if (card.currentDetails == null) {
         card.currentDetails = {}
     }
-    card.currentDetails[stage] = booleanAnswer
+    card.currentDetails[stage] = booleanAnswer ? 1 : -1
 }
 
 function hasStage(card, stage) {
@@ -81,11 +81,35 @@ function isAnsweredRight(card) {
         if (!details.hasOwnProperty(key)) {
             continue
         }
-        if (!details[key]) {
+        if (details[key] !== 1) {
             return false
         }
     }
     return true
+}
+
+/**
+ * Sums all answers to get a number to add to `card.answered`.
+ * @param card
+ * @returns {number}
+ */
+function sumAnswers(card) {
+    const details = card.currentDetails
+    if (details == null || !Object.keys(details).length) {
+        return 0
+    }
+    let res = 0
+    for (let key in details) {
+        if (!details.hasOwnProperty(key)) {
+            continue
+        }
+        if (details[key]) {
+            res += 1
+        } else {
+            res -= 1
+        }
+    }
+    return res
 }
 
 /**

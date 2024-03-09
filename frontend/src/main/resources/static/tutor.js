@@ -443,21 +443,20 @@ function drawAndPlayAudio(parent, audio) {
 }
 
 function updateCardAndCallNext(cards, nextStageCallback) {
+    const res = []
     cards.forEach(function (card) {
         if (card.answered === undefined) {
             card.answered = 0
         }
-        if (isAnsweredRight(card)) {
-            if (!card.wascorrect) {
-                card.answered++
-                card.wascorrect = true
-            }
-        } else {
-            if (card.wascorrect && !card.incorrect) {
-                card.answered--
-                card.incorrect = true
-            }
+        card.answered += sumAnswers(card)
+        if (card.answered < 0) {
+            card.answered = 0
         }
+        const learn = {}
+        learn['cardId'] = card.cardId
+        learn['details'] = card.currentDetails
+        res.push(learn)
+        card.currentDetails = {}
     })
-    learnCard(cards, () => nextStageCallback())
+    learnCard(res, () => nextStageCallback())
 }
