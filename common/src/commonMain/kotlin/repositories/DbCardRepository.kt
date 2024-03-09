@@ -40,6 +40,11 @@ interface DbCardRepository {
     fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse
 
     /**
+     * Performs bulk update.
+     */
+    fun updateCards(userId: AppUserId, cardIds: Iterable<CardId>, update: (CardEntity) -> CardEntity): CardsDbResponse
+
+    /**
      * Updates cards details.
      */
     fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse

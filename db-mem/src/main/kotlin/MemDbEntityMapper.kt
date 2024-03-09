@@ -222,7 +222,7 @@ private fun Long.asUserId(): AppUserId = AppUserId(toString())
 
 private fun String.asLangId(): LangId = LangId(this)
 
-private fun Long.asCardId(): CardId = CardId(toString())
+internal fun Long.asCardId(): CardId = CardId(toString())
 
 internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
 

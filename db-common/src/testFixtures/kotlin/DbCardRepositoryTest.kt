@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
+import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.common.NONE
@@ -15,6 +16,7 @@ import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.MethodOrderer
@@ -33,6 +35,43 @@ abstract class DbCardRepositoryTest {
 
     companion object {
         private val userId = AppUserId("42")
+
+        private val drawCardEntity = CardEntity(
+            cardId = CardId("38"),
+            dictionaryId = DictionaryId("1"),
+            words = listOf(
+                CardWordEntity(
+                    word = "draw",
+                    partOfSpeech = "verb",
+                    translations = listOf(listOf("рисовать"), listOf("чертить")),
+                    examples = emptyList(),
+                ),
+                CardWordEntity(
+                    word = "drew",
+                ),
+                CardWordEntity(
+                    word = "drawn",
+                ),
+            ),
+        )
+        private val forgiveCardEntity = CardEntity(
+            cardId = CardId("58"),
+            dictionaryId = DictionaryId("1"),
+            words = listOf(
+                CardWordEntity(
+                    word = "forgive",
+                    partOfSpeech = "verb",
+                    translations = listOf(listOf("прощать")),
+                    examples = emptyList(),
+                ),
+                CardWordEntity(
+                    word = "forgave",
+                ),
+                CardWordEntity(
+                    word = "forgiven",
+                ),
+            ),
+        )
 
         private val weatherCardEntity = CardEntity(
             cardId = CardId("246"),
@@ -223,16 +262,6 @@ abstract class DbCardRepositoryTest {
         Assertions.assertNull(error.exception)
     }
 
-    @Order(21)
-    @Test
-    fun `test create card success`() {
-        val request = newMurkyCardEntity
-        val res = repository.createCard(userId, request)
-        assertNoErrors(res)
-        assertCard(expected = request, actual = res.card, ignoreChangeAt = true, ignoreId = true)
-        Assertions.assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
-    }
-
     @Order(4)
     @Test
     fun `test create card error unknown dictionary`() {
@@ -376,6 +405,37 @@ abstract class DbCardRepositoryTest {
 
         val now = repository.getCard(userId, request.cardId).card
         assertCard(expected = expected, actual = now, ignoreChangeAt = true, ignoreId = false)
+    }
+
+    @Order(11)
+    @Test
+    fun `test bulk update success`() {
+        val now = Clock.System.now()
+        val res = repository.updateCards(
+            userId,
+            setOf(forgiveCardEntity.cardId, snowCardEntity.cardId, drawCardEntity.cardId),
+        ) {
+            it.copy(answered = 42)
+        }
+        Assertions.assertEquals(0, res.errors.size)
+        Assertions.assertEquals(3, res.cards.size)
+        val actual = res.cards.sortedBy { it.cardId.asLong() }
+        assertCard(expected = drawCardEntity.copy(answered = 42), actual = actual[0], ignoreChangeAt = true)
+        assertCard(expected = forgiveCardEntity.copy(answered = 42), actual = actual[1], ignoreChangeAt = true)
+        assertCard(expected = snowCardEntity.copy(answered = 42), actual = actual[2], ignoreChangeAt = true)
+        actual.forEach {
+            Assertions.assertTrue(it.changedAt >= now)
+        }
+    }
+
+    @Order(21)
+    @Test
+    fun `test create card success`() {
+        val request = newMurkyCardEntity
+        val res = repository.createCard(userId, request)
+        assertNoErrors(res)
+        assertCard(expected = request, actual = res.card, ignoreChangeAt = true, ignoreId = true)
+        Assertions.assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
     }
 
     @Order(42)

@@ -28,6 +28,14 @@ object NoOpDbCardRepository : DbCardRepository {
         noOp()
     }
 
+    override fun updateCards(
+        userId: AppUserId,
+        cardIds: Iterable<CardId>,
+        update: (CardEntity) -> CardEntity
+    ): CardsDbResponse {
+        noOp()
+    }
+
     override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
         noOp()
     }

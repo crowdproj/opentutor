@@ -21,6 +21,7 @@ class MockDbCardRepository(
     private val invokeSearchCards: (AppUserId, CardFilter) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
     private val invokeCreateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeUpdateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
+    private val invokeUpdateCards: (AppUserId, Iterable<CardId>, (CardEntity) -> CardEntity) -> CardsDbResponse = { _, _, _ -> CardsDbResponse.EMPTY },
     private val invokeLearnCards: (AppUserId, List<CardLearn>) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
     private val invokeResetCard: (AppUserId, CardId) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeDeleteCard: (AppUserId, CardId) -> RemoveCardDbResponse = { _, _ -> RemoveCardDbResponse.EMPTY },
@@ -44,6 +45,14 @@ class MockDbCardRepository(
 
     override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
         return invokeUpdateCard(userId, cardEntity)
+    }
+
+    override fun updateCards(
+        userId: AppUserId,
+        cardIds: Iterable<CardId>,
+        update: (CardEntity) -> CardEntity
+    ): CardsDbResponse {
+        return invokeUpdateCards(userId, cardIds, update)
     }
 
     override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {

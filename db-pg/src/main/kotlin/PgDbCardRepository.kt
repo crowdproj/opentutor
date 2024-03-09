@@ -151,6 +151,46 @@ class PgDbCardRepository(
         }
     }
 
+    override fun updateCards(
+        userId: AppUserId,
+        cardIds: Iterable<CardId>,
+        update: (CardEntity) -> CardEntity
+    ): CardsDbResponse {
+        return connection.execute {
+            val timestamp = systemNow()
+            val ids = cardIds.map { it.asLong() }
+            val dbCards = PgDbCard.find { Cards.id inList ids }.associateBy { it.id.value }
+            val errors = mutableListOf<AppError>()
+            ids.filterNot { it in dbCards.keys }.forEach {
+                errors.add(noCardFoundDbError(operation = "updateCards", id = it.asCardId()))
+            }
+            val dbDictionaries = mutableMapOf<Long, PgDbDictionary>()
+            dbCards.forEach {
+                val dictionary = dbDictionaries.computeIfAbsent(it.value.dictionaryId.value) { k ->
+                    checkNotNull(PgDbDictionary.findById(k))
+                }
+                if (dictionary.userId.value != userId.asLong()) {
+                    errors.add(forbiddenEntityDbError("updateCards", it.key.asCardId(), userId))
+                }
+            }
+            if (errors.isNotEmpty()) {
+                return@execute CardsDbResponse(errors = errors)
+            }
+            val cards = dbCards.values.onEach {
+                val new = update(it.toCardEntity())
+                writeCardEntityToPgDbCard(from = new, to = it, timestamp = timestamp)
+            }.map {
+                it.toCardEntity()
+            }
+            val dictionaries = dbDictionaries.values.map { it.toDictionaryEntity() }
+            CardsDbResponse(
+                cards = cards,
+                dictionaries = dictionaries,
+                errors = emptyList(),
+            )
+        }
+    }
+
     override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
         validateCardLearns(cardLearns)
         return connection.execute {

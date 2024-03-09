@@ -127,6 +127,39 @@ class MemDbCardRepository(
         )
     }
 
+    override fun updateCards(
+        userId: AppUserId,
+        cardIds: Iterable<CardId>,
+        update: (CardEntity) -> CardEntity
+    ): CardsDbResponse {
+        val timestamp = systemNow()
+        val ids = cardIds.map { it.asLong() }
+        val dbCards = database.findCardsById(ids).associateBy { checkNotNull(it.id) }
+        val errors = mutableListOf<AppError>()
+        val dbDictionaries = mutableMapOf<Long, MemDbDictionary>()
+        dbCards.forEach {
+            val dictionary = dbDictionaries.computeIfAbsent(checkNotNull(it.value.dictionaryId)) { k ->
+                checkNotNull(database.findDictionaryById(k))
+            }
+            if (dictionary.userId != userId.asLong()) {
+                errors.add(forbiddenEntityDbError("updateCards", it.key.asCardId(), userId))
+            }
+        }
+        if (errors.isNotEmpty()) {
+            return CardsDbResponse(errors = errors)
+        }
+        val cards = dbCards.values.map {
+            val dbCard = update(it.toCardEntity()).toMemDbCard().copy(changedAt = timestamp)
+            database.saveCard(dbCard).toCardEntity()
+        }
+        val dictionaries = dbDictionaries.values.map { it.toDictionaryEntity() }
+        return CardsDbResponse(
+            cards = cards,
+            dictionaries = dictionaries,
+            errors = emptyList(),
+        )
+    }
+
     override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
         validateCardLearns(cardLearns)
         val timestamp = systemNow()

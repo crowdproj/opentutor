@@ -115,6 +115,14 @@ class MemDatabase private constructor(
         return dictionaryResources().mapNotNull { it.cards[cardId] }.singleOrNull()
     }
 
+    fun findCardsById(cardIds: Collection<Long>): Sequence<MemDbCard> {
+        val ids = cardIds.toSet()
+        return dictionaryResources()
+            .flatMap { it.cards.entries.asSequence() }
+            .filter { ids.contains(it.key) }
+            .map { it.value }
+    }
+
     fun saveCard(card: MemDbCard): MemDbCard {
         val dictionaryId = requireNotNull(card.dictionaryId) { "No dictionaryId in the card $card" }
         val resource =
