@@ -7,7 +7,6 @@ import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -123,25 +122,6 @@ abstract class DbCardRepositoryTest {
                         CardWordExampleEntity(text = "It snows.", translation = "Идет снег."),
                         CardWordExampleEntity(text = "a flake of snow", translation = "снежинка"),
                         CardWordExampleEntity(text = "snow depth", translation = "высота снежного покрова"),
-                    ),
-                ),
-            ),
-        )
-
-        private val rainCardEntity = CardEntity(
-            cardId = CardId("248"),
-            dictionaryId = DictionaryId("2"),
-            words = listOf(
-                CardWordEntity(
-                    word = "rain",
-                    transcription = "rein",
-                    partOfSpeech = "noun",
-                    translations = listOf(listOf("дождь")),
-                    examples = listOf(
-                        CardWordExampleEntity(text = "It rains.", translation = "Идет дождь."),
-                        CardWordExampleEntity(text = "heavy rain", translation = "проливной дождь, ливень"),
-                        CardWordExampleEntity(text = "drizzling rain", translation = "изморось"),
-                        CardWordExampleEntity(text = "torrential rain", translation = "проливной дождь"),
                     ),
                 ),
             ),
@@ -373,21 +353,6 @@ abstract class DbCardRepositoryTest {
             """Error while updateCard: dictionary with id="${dictionaryId.asString()}" not found""",
             error.message
         )
-    }
-
-    @Order(9)
-    @Test
-    fun `test learn cards success`() {
-        val request = CardLearn(
-            cardId = rainCardEntity.cardId,
-            details = mapOf(Stage.SELF_TEST to 3, Stage.WRITING to 4),
-        )
-        val res = repository.learnCards(userId, listOf(request))
-        Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
-        Assertions.assertEquals(1, res.cards.size)
-        val card = res.cards[0]
-        val expectedCard = rainCardEntity.copy(stats = request.details)
-        assertCard(expected = expectedCard, actual = card, ignoreChangeAt = true, ignoreId = false)
     }
 
     @Order(10)

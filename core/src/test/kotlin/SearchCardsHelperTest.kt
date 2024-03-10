@@ -35,4 +35,19 @@ internal class SearchCardsHelperTest {
         val card2 = CardEntity(words = listOf(CardWordEntity("word", translations = listOf(listOf("b", "slo")))))
         Assertions.assertTrue(card1.isSimilar(card2))
     }
+
+    @Test
+    fun `test isSimilar #5`() {
+        val card1 = CardEntity(
+            words = listOf(
+                CardWordEntity("moist", translations = listOf(listOf("сырой"), listOf("влажный"), listOf("мокрый")))
+            )
+        )
+        val card2 = CardEntity(
+            words = listOf(
+                CardWordEntity("wet", translations = listOf(listOf("влажный"), listOf("сырой")))
+            )
+        )
+        Assertions.assertTrue(card1.isSimilar(card2))
+    }
 }

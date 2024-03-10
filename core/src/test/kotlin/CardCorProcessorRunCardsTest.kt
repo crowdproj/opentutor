@@ -33,7 +33,6 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
-@Suppress("OPT_IN_USAGE")
 internal class CardCorProcessorRunCardsTest {
     companion object {
         private val testUser = AppUserEntity(AppUserId("42"), AppAuthId("00000000-0000-0000-0000-000000000000"))
@@ -225,10 +224,6 @@ internal class CardCorProcessorRunCardsTest {
         val context = testContext(CardOperation.CREATE_CARD, repository)
         context.requestCardEntity = testRequestEntity
 
-context.errors.forEach { // TODO
-    println(it)
-}
-
         CardCorProcessor().execute(context)
 
         Assertions.assertTrue(wasCalled)
@@ -358,10 +353,10 @@ context.errors.forEach { // TODO
 
         var wasCalled = false
         val repository = MockDbCardRepository(
-            invokeLearnCards = { _, it ->
+            invokeUpdateCards = { _, givenIds, _ ->
                 wasCalled = true
                 CardsDbResponse(
-                    cards = if (it == testLearn) testResponseEntities else emptyList(),
+                    cards = if (givenIds == setOf(stubCard.cardId)) testResponseEntities else emptyList(),
                 )
             }
         )
@@ -384,6 +379,7 @@ context.errors.forEach { // TODO
             CardLearn(cardId = CardId("1"), details = mapOf(Stage.SELF_TEST to 42)),
             CardLearn(cardId = CardId("2"), details = mapOf(Stage.OPTIONS to 2, Stage.MOSAIC to 3))
         )
+        val ids = testLearn.map { it.cardId }.toSet()
 
         val testResponseEntities = stubCards
         val testResponseErrors = listOf(
@@ -392,11 +388,11 @@ context.errors.forEach { // TODO
 
         var wasCalled = false
         val repository = MockDbCardRepository(
-            invokeLearnCards = { _, it ->
+            invokeUpdateCards = { _, givenIds, _ ->
                 wasCalled = true
                 CardsDbResponse(
-                    cards = if (it == testLearn) testResponseEntities else emptyList(),
-                    errors = if (it == testLearn) testResponseErrors else emptyList()
+                    cards = if (givenIds == ids) testResponseEntities else emptyList(),
+                    errors = if (givenIds == ids) testResponseErrors else emptyList()
                 )
             }
         )

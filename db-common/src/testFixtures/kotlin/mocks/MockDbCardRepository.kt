@@ -4,7 +4,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
@@ -22,7 +21,6 @@ class MockDbCardRepository(
     private val invokeCreateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeUpdateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeUpdateCards: (AppUserId, Iterable<CardId>, (CardEntity) -> CardEntity) -> CardsDbResponse = { _, _, _ -> CardsDbResponse.EMPTY },
-    private val invokeLearnCards: (AppUserId, List<CardLearn>) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
     private val invokeResetCard: (AppUserId, CardId) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeDeleteCard: (AppUserId, CardId) -> RemoveCardDbResponse = { _, _ -> RemoveCardDbResponse.EMPTY },
 ) : DbCardRepository {
@@ -53,10 +51,6 @@ class MockDbCardRepository(
         update: (CardEntity) -> CardEntity
     ): CardsDbResponse {
         return invokeUpdateCards(userId, cardIds, update)
-    }
-
-    override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
-        return invokeLearnCards(userId, cardLearns)
     }
 
     override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {

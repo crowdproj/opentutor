@@ -56,14 +56,14 @@ function findById(cards, cardId) {
 }
 
 function rememberAnswer(card, stage, booleanAnswer) {
-    if (card.currentDetails == null) {
-        card.currentDetails = {}
+    if (card.stageStats == null) {
+        card.stageStats = {}
     }
-    card.currentDetails[stage] = booleanAnswer ? 1 : -1
+    card.stageStats[stage] = booleanAnswer ? 1 : -1
 }
 
 function hasStage(card, stage) {
-    return card.currentDetails != null && card.currentDetails[stage] != null
+    return card.stageStats != null && card.stageStats[stage] != null
 }
 
 /**
@@ -73,7 +73,7 @@ function hasStage(card, stage) {
  * @returns {boolean|undefined}
  */
 function isAnsweredRight(card) {
-    const details = card.currentDetails
+    const details = card.sessionStats
     if (details == null || !Object.keys(details).length) {
         return undefined
     }
@@ -94,7 +94,7 @@ function isAnsweredRight(card) {
  * @returns {number}
  */
 function sumAnswers(card) {
-    const details = card.currentDetails
+    const details = card.stageStats
     if (details == null || !Object.keys(details).length) {
         return 0
     }

@@ -9,7 +9,6 @@ import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
-import com.gitlab.sszuev.flashcards.common.validateCardLearns
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
@@ -20,7 +19,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
@@ -188,36 +186,6 @@ class PgDbCardRepository(
                 dictionaries = dictionaries,
                 errors = emptyList(),
             )
-        }
-    }
-
-    override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
-        validateCardLearns(cardLearns)
-        return connection.execute {
-            val learns = cardLearns.associateBy { it.cardId.asLong() }
-            val found = PgDbCard.find { Cards.id inList learns.keys }.associateBy { it.id.value }
-            val errors = mutableListOf<AppError>()
-            cardLearns.filterNot { it.cardId.asLong() in found.keys }.forEach {
-                errors.add(noCardFoundDbError(operation = "learnCards", id = it.cardId))
-            }
-            val dictionaries = mutableMapOf<Long, PgDbDictionary>()
-            found.forEach {
-                val dictionary = dictionaries.computeIfAbsent(it.value.dictionaryId.value) { k ->
-                    checkNotNull(PgDbDictionary.findById(k))
-                }
-                if (dictionary.userId.value != userId.asLong()) {
-                    errors.add(forbiddenEntityDbError("learnCards", it.key.asCardId(), userId))
-                }
-            }
-            if (errors.isNotEmpty()) {
-                return@execute CardsDbResponse(errors = errors)
-            }
-            val cards = learns.values.map { learn ->
-                val record = checkNotNull(found[learn.cardId.asLong()])
-                record.details = learn.details.toPgDbCardDetailsJson()
-                record.toCardEntity()
-            }
-            CardsDbResponse(cards = cards, errors = errors)
         }
     }
 

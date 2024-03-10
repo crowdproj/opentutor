@@ -5,7 +5,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
@@ -43,11 +42,6 @@ interface DbCardRepository {
      * Performs bulk update.
      */
     fun updateCards(userId: AppUserId, cardIds: Iterable<CardId>, update: (CardEntity) -> CardEntity): CardsDbResponse
-
-    /**
-     * Updates cards details.
-     */
-    fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse
 
     /**
      * Resets status.

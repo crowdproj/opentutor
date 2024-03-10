@@ -107,10 +107,7 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
-        val res =
-            this.repositories.cardRepository(this.workMode).learnCards(userId, this.normalizedRequestCardLearnList)
-        this.postProcess(res)
+        this.postProcess(this.learnCards())
     }
     onException {
         this.handleThrowable(CardOperation.LEARN_CARDS, it)

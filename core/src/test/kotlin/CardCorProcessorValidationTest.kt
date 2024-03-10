@@ -5,7 +5,16 @@ import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
@@ -15,7 +24,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
-import java.util.*
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CardCorProcessorValidationTest {
@@ -314,7 +323,7 @@ internal class CardCorProcessorValidationTest {
         val context = testContext(CardOperation.LEARN_CARDS)
         context.requestCardLearnList = listOf(
             testCardLearn.copy(cardId = CardId("42"), details = mapOf(Stage.OPTIONS to 4200, Stage.WRITING to 42)),
-            testCardLearn.copy(cardId = CardId("21"), details = mapOf(Stage.MOSAIC to -12, Stage.SELF_TEST to 0)),
+            testCardLearn.copy(cardId = CardId("21"), details = mapOf(Stage.MOSAIC to -4200, Stage.SELF_TEST to -4200)),
         )
         processor.execute(context)
         Assertions.assertEquals(3, context.errors.size)
