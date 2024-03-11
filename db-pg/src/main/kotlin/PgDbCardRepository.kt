@@ -9,8 +9,6 @@ import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
-import com.gitlab.sszuev.flashcards.common.validateCardLearns
-import com.gitlab.sszuev.flashcards.common.wrongDictionaryLanguageFamiliesDbError
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
@@ -21,9 +19,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
@@ -66,49 +62,47 @@ class PgDbCardRepository(
         return connection.execute {
             val errors = mutableListOf<AppError>()
             val dictionary = checkDictionaryUser("getAllCards", userId, dictionaryId, dictionaryId, errors)
-            if (errors.isNotEmpty()) {
+            if (errors.isNotEmpty() || dictionary == null) {
                 return@execute CardsDbResponse(errors = errors)
             }
             val cards = PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }
+            val dictionaries = listOf(dictionary.toDictionaryEntity())
             CardsDbResponse(
                 cards = cards,
-                sourceLanguageId = LangId(checkNotNull(dictionary).sourceLang),
-                errors = emptyList()
+                dictionaries = dictionaries,
+                errors = emptyList(),
             )
         }
     }
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
+        require(filter.length != 0) { "zero length is specified" }
         val dictionaryIds = filter.dictionaryIds.map { it.asLong() }
         val learned = sysConfig.numberOfRightAnswers
         val random = CustomFunction<Double>("random", DoubleColumnType())
         return connection.execute {
-            val dictionaries = PgDbDictionary.find(Dictionaries.id inList dictionaryIds)
-            val forbiddenIds = dictionaries.filter { it.userId.value != userId.asLong() }.map { it.id.value }.toSet()
-            val errors = forbiddenIds.map { forbiddenEntityDbError("searchCards", it.asDictionaryId(), userId) }
-                .toMutableList()
-            val candidates = dictionaries.filterNot { it.id.value in forbiddenIds }
-            val sourceLanguages = candidates.map { it.sourceLang }.toSet()
-            val targetLanguages = candidates.map { it.targetLang }.toSet()
-            if (sourceLanguages.size > 1 || targetLanguages.size > 1) {
-                errors.add(
-                    wrongDictionaryLanguageFamiliesDbError(
-                        operation = "searchCard",
-                        dictionaryIds = candidates.map { it.id.asDictionaryId() },
-                    )
-                )
+            val dictionariesFromDb = PgDbDictionary.find(Dictionaries.id inList dictionaryIds)
+            if (dictionariesFromDb.empty()) {
+                return@execute CardsDbResponse(cards = emptyList(), dictionaries = emptyList(), errors = emptyList())
             }
+            val forbiddenIds =
+                dictionariesFromDb.filter { it.userId.value != userId.asLong() }.map { it.id.value }.toSet()
+            val errors = forbiddenIds.map { forbiddenEntityDbError("searchCards", it.asDictionaryId(), userId) }
             if (errors.isNotEmpty()) {
                 return@execute CardsDbResponse(cards = emptyList(), errors = errors)
             }
-            val cards = PgDbCard.find {
+            val dictionaries =
+                dictionariesFromDb.filterNot { it.id.value in forbiddenIds }.map { it.toDictionaryEntity() }
+            var cardsIterable = PgDbCard.find {
                 Cards.dictionaryId inList dictionaryIds and
                     (if (filter.withUnknown) Op.TRUE else Cards.answered.isNull() or Cards.answered.lessEq(learned))
             }.orderBy(random to SortOrder.ASC)
                 .orderBy(Cards.dictionaryId to SortOrder.ASC)
-                .limit(filter.length)
-                .map { it.toCardEntity() }
-            CardsDbResponse(cards = cards, sourceLanguageId = LangId(sourceLanguages.single()))
+            if (filter.length > 0) {
+                cardsIterable = cardsIterable.limit(filter.length)
+            }
+            val cards = cardsIterable.map { it.toCardEntity() }
+            CardsDbResponse(cards = cards, dictionaries = dictionaries)
         }
     }
 
@@ -155,33 +149,43 @@ class PgDbCardRepository(
         }
     }
 
-    override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
-        validateCardLearns(cardLearns)
+    override fun updateCards(
+        userId: AppUserId,
+        cardIds: Iterable<CardId>,
+        update: (CardEntity) -> CardEntity
+    ): CardsDbResponse {
         return connection.execute {
-            val learns = cardLearns.associateBy { it.cardId.asLong() }
-            val found = PgDbCard.find { Cards.id inList learns.keys }.associateBy { it.id.value }
+            val timestamp = systemNow()
+            val ids = cardIds.map { it.asLong() }
+            val dbCards = PgDbCard.find { Cards.id inList ids }.associateBy { it.id.value }
             val errors = mutableListOf<AppError>()
-            cardLearns.filterNot { it.cardId.asLong() in found.keys }.forEach {
-                errors.add(noCardFoundDbError(operation = "learnCards", id = it.cardId))
+            ids.filterNot { it in dbCards.keys }.forEach {
+                errors.add(noCardFoundDbError(operation = "updateCards", id = it.asCardId()))
             }
-            val dictionaries = mutableMapOf<Long, PgDbDictionary>()
-            found.forEach {
-                val dictionary = dictionaries.computeIfAbsent(it.value.dictionaryId.value) { k ->
+            val dbDictionaries = mutableMapOf<Long, PgDbDictionary>()
+            dbCards.forEach {
+                val dictionary = dbDictionaries.computeIfAbsent(it.value.dictionaryId.value) { k ->
                     checkNotNull(PgDbDictionary.findById(k))
                 }
                 if (dictionary.userId.value != userId.asLong()) {
-                    errors.add(forbiddenEntityDbError("learnCards", it.key.asCardId(), userId))
+                    errors.add(forbiddenEntityDbError("updateCards", it.key.asCardId(), userId))
                 }
             }
             if (errors.isNotEmpty()) {
                 return@execute CardsDbResponse(errors = errors)
             }
-            val cards = learns.values.map { learn ->
-                val record = checkNotNull(found[learn.cardId.asLong()])
-                record.details = learn.details.toPgDbCardDetailsJson()
-                record.toCardEntity()
+            val cards = dbCards.values.onEach {
+                val new = update(it.toCardEntity())
+                writeCardEntityToPgDbCard(from = new, to = it, timestamp = timestamp)
+            }.map {
+                it.toCardEntity()
             }
-            CardsDbResponse(cards = cards, errors = errors)
+            val dictionaries = dbDictionaries.values.map { it.toDictionaryEntity() }
+            CardsDbResponse(
+                cards = cards,
+                dictionaries = dictionaries,
+                errors = emptyList(),
+            )
         }
     }
 

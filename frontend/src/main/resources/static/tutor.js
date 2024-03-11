@@ -387,7 +387,7 @@ function drawResultCardPage() {
     $('#result-learned').html(learned);
     // remove state details
     flashcards.forEach(function (item) {
-        delete item.currentDetails
+        delete item.stageStats
     });
 }
 
@@ -443,21 +443,24 @@ function drawAndPlayAudio(parent, audio) {
 }
 
 function updateCardAndCallNext(cards, nextStageCallback) {
+    const res = []
     cards.forEach(function (card) {
         if (card.answered === undefined) {
             card.answered = 0
         }
-        if (isAnsweredRight(card)) {
-            if (!card.wascorrect) {
-                card.answered++
-                card.wascorrect = true
-            }
-        } else {
-            if (card.wascorrect && !card.incorrect) {
-                card.answered--
-                card.incorrect = true
-            }
+        if (card.sessionStats === undefined) {
+            card.sessionStats = {}
         }
+        card.answered += sumAnswers(card)
+        if (card.answered < 0) {
+            card.answered = 0
+        }
+        const learn = {}
+        learn['cardId'] = card.cardId
+        learn['details'] = card.stageStats
+        res.push(learn)
+        card.sessionStats = {...card.sessionStats, ...card.stageStats}
+        card.stageStats = {}
     })
-    learnCard(cards, () => nextStageCallback())
+    learnCard(res, () => nextStageCallback())
 }

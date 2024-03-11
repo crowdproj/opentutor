@@ -20,7 +20,6 @@ import com.gitlab.sszuev.flashcards.common.parseUserDetailsJson
 import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
 import com.gitlab.sszuev.flashcards.common.toCardEntityStats
 import com.gitlab.sszuev.flashcards.common.toCardWordEntity
-import com.gitlab.sszuev.flashcards.common.toCommonCardDtoDetails
 import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
 import com.gitlab.sszuev.flashcards.common.toDocumentExamples
 import com.gitlab.sszuev.flashcards.common.toDocumentTranslations
@@ -41,7 +40,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
-import com.gitlab.sszuev.flashcards.model.domain.Stage
 import java.util.UUID
 
 internal fun MemDbUser.detailsAsJsonString(): String {
@@ -65,7 +63,7 @@ internal fun MemDbCard.detailsAsJsonString(): String {
 }
 
 internal fun fromJsonStringToMemDbCardDetails(json: String): Map<String, String> {
-    return parseCardDetailsJson(json).mapValues { it.toString() }
+    return parseCardDetailsJson(json).mapValues { it.value.toString() }
 }
 
 internal fun MemDbCard.wordsAsJsonString(): String {
@@ -216,13 +214,11 @@ internal fun MemDbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto = C
 
 private fun CommonCardDetailsDto.toMemDbCardDetails(): Map<String, String> = this.mapValues { it.value.toString() }
 
-internal fun Map<Stage, Long>.toMemDbCardDetails(): Map<String, String> = toCommonCardDtoDetails().toMemDbCardDetails()
-
 private fun Long.asUserId(): AppUserId = AppUserId(toString())
 
 private fun String.asLangId(): LangId = LangId(this)
 
-private fun Long.asCardId(): CardId = CardId(toString())
+internal fun Long.asCardId(): CardId = CardId(toString())
 
 internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
 

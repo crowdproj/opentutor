@@ -11,9 +11,6 @@ import com.gitlab.sszuev.flashcards.common.status
 import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
-import com.gitlab.sszuev.flashcards.common.validateCardLearns
-import com.gitlab.sszuev.flashcards.common.wrongDictionaryLanguageFamiliesDbError
-import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppError
@@ -21,13 +18,11 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
-import java.time.LocalDateTime
 import kotlin.random.Random
 
 class MemDbCardRepository(
@@ -37,8 +32,8 @@ class MemDbCardRepository(
     private val database = MemDatabase.get(dbConfig.dataLocation)
 
     override fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        val card = database.findCardById(cardId.asLong()) ?:
-            return CardDbResponse(noCardFoundDbError("getCard", cardId))
+        val card =
+            database.findCardById(cardId.asLong()) ?: return CardDbResponse(noCardFoundDbError("getCard", cardId))
         val errors = mutableListOf<AppError>()
         checkDictionaryUser("getCard", userId, card.dictionaryId.asDictionaryId(), cardId, errors)
         if (errors.isNotEmpty()) {
@@ -51,37 +46,32 @@ class MemDbCardRepository(
         val id = dictionaryId.asLong()
         val errors = mutableListOf<AppError>()
         val dictionary = checkDictionaryUser("getAllCards", userId, dictionaryId, dictionaryId, errors)
-        if (errors.isNotEmpty()) {
+        if (errors.isNotEmpty() || dictionary == null) {
             return CardsDbResponse(errors = errors)
         }
         val cards = database.findCardsByDictionaryId(id).map { it.toCardEntity() }.toList()
+        val dictionaries = listOf(dictionary.toDictionaryEntity())
         return CardsDbResponse(
             cards = cards,
-            sourceLanguageId = checkNotNull(dictionary).sourceLanguage.toLangEntity().langId,
+            dictionaries = dictionaries,
             errors = emptyList()
         )
     }
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
+        require(filter.length != 0) { "zero length is specified" }
         val ids = filter.dictionaryIds.map { it.asLong() }
-        val dictionaries = database.findDictionariesByIds(ids).sortedBy { it.id }.toSet()
-        if (dictionaries.isEmpty()) {
-            return CardsDbResponse(cards = emptyList())
+        val dictionariesFromDb = database.findDictionariesByIds(ids).sortedBy { it.id }.toSet()
+        if (dictionariesFromDb.isEmpty()) {
+            return CardsDbResponse()
         }
-        val forbiddenIds = dictionaries.filter { it.userId != userId.asLong() }.map { checkNotNull(it.id) }.toSet()
+        val forbiddenIds =
+            dictionariesFromDb.filter { it.userId != userId.asLong() }.map { checkNotNull(it.id) }.toSet()
         val errors = forbiddenIds.map { forbiddenEntityDbError("searchCards", it.asDictionaryId(), userId) }
-            .toMutableList()
-        val candidates = dictionaries.filterNot { it.id in forbiddenIds }
-        val sourceLanguages = candidates.map { it.sourceLanguage.toLangEntity().langId }.toSet()
-        val targetLanguages = candidates.map { it.targetLanguage.toLangEntity().langId }.toSet()
-        if (sourceLanguages.size > 1 || targetLanguages.size > 1) {
-            errors.add(
-                wrongDictionaryLanguageFamiliesDbError("searchCard", candidates.map { it.id.asDictionaryId() })
-            )
-        }
         if (errors.isNotEmpty()) {
-            return CardsDbResponse(cards = emptyList(), errors = errors)
+            return CardsDbResponse(cards = emptyList(), dictionaries = emptyList(), errors = errors)
         }
+        val dictionaries = dictionariesFromDb.filterNot { it.id in forbiddenIds }.map { it.toDictionaryEntity() }
         var cardsFromDb = database.findCardsByDictionaryIds(ids)
         if (!filter.withUnknown) {
             cardsFromDb = cardsFromDb.filter { sysConfig.status(it.answered) != DocumentCardStatus.LEARNED }
@@ -89,8 +79,9 @@ class MemDbCardRepository(
         if (filter.random) {
             cardsFromDb = cardsFromDb.shuffled(Random.Default)
         }
-        val cards = cardsFromDb.take(filter.length).map { it.toCardEntity() }.toList()
-        return CardsDbResponse(cards = cards, sourceLanguageId = sourceLanguages.single())
+        val cards =
+            (if (filter.length < 0) cardsFromDb else cardsFromDb.take(filter.length)).map { it.toCardEntity() }.toList()
+        return CardsDbResponse(cards = cards, dictionaries = dictionaries)
     }
 
     override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
@@ -132,15 +123,37 @@ class MemDbCardRepository(
         )
     }
 
-    override fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse {
-        validateCardLearns(cardLearns)
+    override fun updateCards(
+        userId: AppUserId,
+        cardIds: Iterable<CardId>,
+        update: (CardEntity) -> CardEntity
+    ): CardsDbResponse {
         val timestamp = systemNow()
+        val ids = cardIds.map { it.asLong() }
+        val dbCards = database.findCardsById(ids).associateBy { checkNotNull(it.id) }
         val errors = mutableListOf<AppError>()
-        val cards = cardLearns.mapNotNull { learnCard(it, userId, errors, timestamp) }
+        val dbDictionaries = mutableMapOf<Long, MemDbDictionary>()
+        dbCards.forEach {
+            val dictionary = dbDictionaries.computeIfAbsent(checkNotNull(it.value.dictionaryId)) { k ->
+                checkNotNull(database.findDictionaryById(k))
+            }
+            if (dictionary.userId != userId.asLong()) {
+                errors.add(forbiddenEntityDbError("updateCards", it.key.asCardId(), userId))
+            }
+        }
         if (errors.isNotEmpty()) {
             return CardsDbResponse(errors = errors)
         }
-        return CardsDbResponse(cards = cards.map { it.toCardEntity() }, errors = errors)
+        val cards = dbCards.values.map {
+            val dbCard = update(it.toCardEntity()).toMemDbCard().copy(changedAt = timestamp)
+            database.saveCard(dbCard).toCardEntity()
+        }
+        val dictionaries = dbDictionaries.values.map { it.toDictionaryEntity() }
+        return CardsDbResponse(
+            cards = cards,
+            dictionaries = dictionaries,
+            errors = emptyList(),
+        )
     }
 
     override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {
@@ -169,24 +182,6 @@ class MemDbCardRepository(
             return RemoveCardDbResponse(noCardFoundDbError("removeCard", cardId))
         }
         return RemoveCardDbResponse(card = card.copy(changedAt = timestamp).toCardEntity())
-    }
-
-    private fun learnCard(
-        learn: CardLearn,
-        userId: AppUserId,
-        errors: MutableList<AppError>,
-        timestamp: LocalDateTime,
-    ): MemDbCard? {
-        val cardId = learn.cardId
-        val card = database.findCardById(cardId.asLong())
-        if (card == null) {
-            errors.add(noCardFoundDbError("learnCard", cardId))
-            return null
-        }
-        if (checkDictionaryUser("learnCard", userId, card.dictionaryId.asDictionaryId(), cardId, errors) == null) {
-            return null
-        }
-        return database.saveCard(card.copy(details = learn.details.toMemDbCardDetails(), changedAt = timestamp))
     }
 
     @Suppress("DuplicatedCode")

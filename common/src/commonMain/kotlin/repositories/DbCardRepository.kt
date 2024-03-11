@@ -5,9 +5,8 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 
 /**
  * Database repository to work with cards.
@@ -40,9 +39,9 @@ interface DbCardRepository {
     fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse
 
     /**
-     * Updates cards details.
+     * Performs bulk update.
      */
-    fun learnCards(userId: AppUserId, cardLearns: List<CardLearn>): CardsDbResponse
+    fun updateCards(userId: AppUserId, cardIds: Iterable<CardId>, update: (CardEntity) -> CardEntity): CardsDbResponse
 
     /**
      * Resets status.
@@ -57,11 +56,12 @@ interface DbCardRepository {
 
 data class CardsDbResponse(
     val cards: List<CardEntity> = emptyList(),
-    val sourceLanguageId: LangId = LangId.NONE,
+    val dictionaries: List<DictionaryEntity> = emptyList(),
     val errors: List<AppError> = emptyList(),
 ) {
+
     companion object {
-        val EMPTY = CardsDbResponse(cards = emptyList(), errors = emptyList())
+        val EMPTY = CardsDbResponse(cards = emptyList(), dictionaries = emptyList(), errors = emptyList())
     }
 }
 

@@ -1,12 +1,16 @@
 package com.gitlab.sszuev.flashcards.speaker.impl
 
 import com.gitlab.sszuev.flashcards.speaker.TTSConfig
-import io.ktor.client.*
-import io.ktor.client.engine.*
-import io.ktor.client.engine.mock.*
-import io.ktor.client.plugins.*
-import io.ktor.http.*
-import io.ktor.utils.io.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.mock.MockEngine
+import io.ktor.client.engine.mock.MockRequestHandleScope
+import io.ktor.client.engine.mock.respond
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
+import io.ktor.http.headersOf
+import io.ktor.utils.io.ByteReadChannel
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -83,7 +87,7 @@ internal class VoicerssTextToSpeechServiceTest {
                 createMockEngine(
                     res = testData,
                     lang = "en-us",
-                    format = "8khz_8bit_mono",
+                    format = "16khz_16bit_stereo",
                     key = "secret",
                     word = "test-2",
                 )

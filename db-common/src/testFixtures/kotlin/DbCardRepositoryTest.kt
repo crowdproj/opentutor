@@ -1,14 +1,27 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
+import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.common.NONE
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
+import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 
 /**
  * Note: all implementations must have the same ids in tests for the same entities to have deterministic behavior.
@@ -21,6 +34,43 @@ abstract class DbCardRepositoryTest {
 
     companion object {
         private val userId = AppUserId("42")
+
+        private val drawCardEntity = CardEntity(
+            cardId = CardId("38"),
+            dictionaryId = DictionaryId("1"),
+            words = listOf(
+                CardWordEntity(
+                    word = "draw",
+                    partOfSpeech = "verb",
+                    translations = listOf(listOf("рисовать"), listOf("чертить")),
+                    examples = emptyList(),
+                ),
+                CardWordEntity(
+                    word = "drew",
+                ),
+                CardWordEntity(
+                    word = "drawn",
+                ),
+            ),
+        )
+        private val forgiveCardEntity = CardEntity(
+            cardId = CardId("58"),
+            dictionaryId = DictionaryId("1"),
+            words = listOf(
+                CardWordEntity(
+                    word = "forgive",
+                    partOfSpeech = "verb",
+                    translations = listOf(listOf("прощать")),
+                    examples = emptyList(),
+                ),
+                CardWordEntity(
+                    word = "forgave",
+                ),
+                CardWordEntity(
+                    word = "forgiven",
+                ),
+            ),
+        )
 
         private val weatherCardEntity = CardEntity(
             cardId = CardId("246"),
@@ -72,25 +122,6 @@ abstract class DbCardRepositoryTest {
                         CardWordExampleEntity(text = "It snows.", translation = "Идет снег."),
                         CardWordExampleEntity(text = "a flake of snow", translation = "снежинка"),
                         CardWordExampleEntity(text = "snow depth", translation = "высота снежного покрова"),
-                    ),
-                ),
-            ),
-        )
-
-        private val rainCardEntity = CardEntity(
-            cardId = CardId("248"),
-            dictionaryId = DictionaryId("2"),
-            words = listOf(
-                CardWordEntity(
-                    word = "rain",
-                    transcription = "rein",
-                    partOfSpeech = "noun",
-                    translations = listOf(listOf("дождь")),
-                    examples = listOf(
-                        CardWordExampleEntity(text = "It rains.", translation = "Идет дождь."),
-                        CardWordExampleEntity(text = "heavy rain", translation = "проливной дождь, ливень"),
-                        CardWordExampleEntity(text = "drizzling rain", translation = "изморось"),
-                        CardWordExampleEntity(text = "torrential rain", translation = "проливной дождь"),
                     ),
                 ),
             ),
@@ -179,14 +210,18 @@ abstract class DbCardRepositoryTest {
         val res1 = repository.getAllCards(userId, DictionaryId("1"))
         Assertions.assertEquals(244, res1.cards.size)
         Assertions.assertEquals(0, res1.errors.size)
+        Assertions.assertEquals(1, res1.dictionaries.size)
+        Assertions.assertEquals("1", res1.dictionaries.single().dictionaryId.asString())
 
         // Weather dictionary
         val res2 = repository.getAllCards(userId, DictionaryId("2"))
         Assertions.assertEquals(65, res2.cards.size)
         Assertions.assertEquals(0, res2.errors.size)
+        Assertions.assertEquals(1, res2.dictionaries.size)
+        Assertions.assertEquals("2", res2.dictionaries.single().dictionaryId.asString())
 
-        Assertions.assertEquals(LangId("en"), res1.sourceLanguageId)
-        Assertions.assertEquals(LangId("en"), res2.sourceLanguageId)
+        Assertions.assertEquals(LangId("en"), res1.dictionaries.single().sourceLang.langId)
+        Assertions.assertEquals(LangId("en"), res2.dictionaries.single().sourceLang.langId)
     }
 
     @Order(2)
@@ -205,16 +240,6 @@ abstract class DbCardRepositoryTest {
             error.message
         )
         Assertions.assertNull(error.exception)
-    }
-
-    @Order(21)
-    @Test
-    fun `test create card success`() {
-        val request = newMurkyCardEntity
-        val res = repository.createCard(userId, request)
-        assertNoErrors(res)
-        assertCard(expected = request, actual = res.card, ignoreChangeAt = true, ignoreId = true)
-        Assertions.assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
     }
 
     @Order(4)
@@ -259,11 +284,16 @@ abstract class DbCardRepositoryTest {
         Assertions.assertEquals(300, res1.cards.size)
         Assertions.assertEquals(300, res2.cards.size)
         Assertions.assertNotEquals(res1, res2)
-        Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res1.cards.map { it.dictionaryId }.toSet())
-        Assertions.assertEquals(setOf(DictionaryId("1"), DictionaryId("2")), res2.cards.map { it.dictionaryId }.toSet())
-
-        Assertions.assertEquals(LangId("en"), res1.sourceLanguageId)
-        Assertions.assertEquals(LangId("en"), res2.sourceLanguageId)
+        Assertions.assertEquals(setOf("1", "2"), res1.cards.map { it.dictionaryId }.map { it.asString() }.toSet())
+        Assertions.assertEquals(setOf("1", "2"), res2.cards.map { it.dictionaryId }.map { it.asString() }.toSet())
+        Assertions.assertEquals(
+            setOf("1", "2"),
+            res1.dictionaries.map { it.dictionaryId }.map { it.asString() }.toSet()
+        )
+        Assertions.assertEquals(
+            setOf("1", "2"),
+            res2.dictionaries.map { it.dictionaryId }.map { it.asString() }.toSet()
+        )
     }
 
     @Order(6)
@@ -325,21 +355,6 @@ abstract class DbCardRepositoryTest {
         )
     }
 
-    @Order(9)
-    @Test
-    fun `test learn cards success`() {
-        val request = CardLearn(
-            cardId = rainCardEntity.cardId,
-            details = mapOf(Stage.SELF_TEST to 3, Stage.WRITING to 4),
-        )
-        val res = repository.learnCards(userId, listOf(request))
-        Assertions.assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
-        Assertions.assertEquals(1, res.cards.size)
-        val card = res.cards[0]
-        val expectedCard = rainCardEntity.copy(stats = request.details)
-        assertCard(expected = expectedCard, actual = card, ignoreChangeAt = true, ignoreId = false)
-    }
-
     @Order(10)
     @Test
     fun `test get card & reset card success`() {
@@ -355,6 +370,37 @@ abstract class DbCardRepositoryTest {
 
         val now = repository.getCard(userId, request.cardId).card
         assertCard(expected = expected, actual = now, ignoreChangeAt = true, ignoreId = false)
+    }
+
+    @Order(11)
+    @Test
+    fun `test bulk update success`() {
+        val now = Clock.System.now()
+        val res = repository.updateCards(
+            userId,
+            setOf(forgiveCardEntity.cardId, snowCardEntity.cardId, drawCardEntity.cardId),
+        ) {
+            it.copy(answered = 42)
+        }
+        Assertions.assertEquals(0, res.errors.size)
+        Assertions.assertEquals(3, res.cards.size)
+        val actual = res.cards.sortedBy { it.cardId.asLong() }
+        assertCard(expected = drawCardEntity.copy(answered = 42), actual = actual[0], ignoreChangeAt = true)
+        assertCard(expected = forgiveCardEntity.copy(answered = 42), actual = actual[1], ignoreChangeAt = true)
+        assertCard(expected = snowCardEntity.copy(answered = 42), actual = actual[2], ignoreChangeAt = true)
+        actual.forEach {
+            Assertions.assertTrue(it.changedAt >= now)
+        }
+    }
+
+    @Order(21)
+    @Test
+    fun `test create card success`() {
+        val request = newMurkyCardEntity
+        val res = repository.createCard(userId, request)
+        assertNoErrors(res)
+        assertCard(expected = request, actual = res.card, ignoreChangeAt = true, ignoreId = true)
+        Assertions.assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
     }
 
     @Order(42)

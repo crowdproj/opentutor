@@ -35,7 +35,9 @@ fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = w
 
 fun ChainDSL<CardContext>.validateCardEntityWords(getCard: (CardContext) -> CardEntity) = worker {
     this.name = "Test card-word"
-    test { getCard(this).words.any { !isCorrectWrong(it.word) } }
+    test {
+        getCard(this).words.any { !isCorrectWrong(it.word) }
+    }
     process {
         fail(validationError(fieldName = "card-word"))
     }
@@ -47,7 +49,7 @@ fun ChainDSL<CardContext>.validateCardFilterLength(getCardFilter: (CardContext) 
         getCardFilter(this).length <= 0
     }
     process {
-        fail(validationError(fieldName = "card-filter-length", description = "must be greater zero"))
+        fail(validationError(fieldName = "card-filter-length", description = "must be greater than zero"))
     }
 }
 
@@ -89,8 +91,8 @@ fun ChainDSL<CardContext>.validateCardLearnListDetails(getCardLearn: (CardContex
             }
         }
     ) { (_, score) ->
-        // right not just check score is positive and not big
-        score <= 0 || score > 42
+        // right not just check score is not big
+        score < -42 || score > 42
     }
 
 private fun ChainDSL<CardContext>.validateIds(

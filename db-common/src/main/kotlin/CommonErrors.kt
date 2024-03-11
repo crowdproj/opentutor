@@ -7,15 +7,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
-fun wrongDictionaryLanguageFamiliesDbError(
-    operation: String,
-    dictionaryIds: Collection<DictionaryId>,
-) = dbError(
-    operation = operation,
-    fieldName = dictionaryIds.joinToString { it.asString() },
-    details = """specified dictionaries belong to different language families, ids="${dictionaryIds.map { it.asString() }}""""
-)
-
 fun forbiddenEntityDbError(
     operation: String,
     entityId: Id,
