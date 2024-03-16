@@ -244,8 +244,8 @@ function setCardFirstWordExamplesArray(card, examples) {
         card.words.push({})
     }
     card.words[0].examples = []
-    examples.forEach(function(example) {
-        let ex = { example: example }
+    examples.forEach(function (example) {
+        let ex = {example: example}
         card.words[0].examples.push(ex)
     })
 }
@@ -279,7 +279,7 @@ function getAllWordsAsString(card) {
  * @returns {string}
  */
 function getAllTranslationsAsString(card) {
-    let arrayOfArrays =  $.map(card.words.map(it => it.translations), function (n) {
+    let arrayOfArrays = $.map(card.words.map(it => it.translations), function (n) {
         return n
     })
     return $.each(arrayOfArrays, function (n) {

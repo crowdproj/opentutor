@@ -135,9 +135,9 @@ function drawShowCardPage(data, index, nextStage) {
     const current = data[index];
     const next = index + 1;
 
-    drawAndPlayAudio(page, getCardFirstWordSound(current));
+    drawAndPlayAudio(page, current.sound);
     displayTitle(page, 'show: ' + current.dictionaryName);
-    $('.word', page).html(getCardFirstWordWord(current));
+    $('.word', page).html(getAllWordsAsString(current));
     $('.translations', page).html(getTranslationsAsString(current));
     $('#show-next').unbind('click').on('click', function () {
         drawShowCardPage(data, next, nextStage);
@@ -157,11 +157,11 @@ function drawMosaicCardPage(data, nextStage) {
 
     leftPane.html('');
     dataLeft.forEach(function (card) {
-        let left = $(`<div class="card ${borderDefault}" id="${card.cardId}-left"><h4>${getCardFirstWordWord(card)}</h4></div>`);
+        let left = $(`<div class="card ${borderDefault}" id="${card.cardId}-left"><h4>${getAllWordsAsString(card)}</h4></div>`);
         left.unbind('click').on('click', function () {
             setDefaultBorder($('#mosaic .card'));
             setBorderClass(left, borderSelected);
-            const sound = getCardFirstWordSound(card);
+            const sound = card.sound;
             if (sound != null) {
                 playAudio(sound);
             }
@@ -230,11 +230,11 @@ function drawOptionsCardPage(options, index, nextStage) {
 
     displayTitle($('#options'), stage + ": " + dataLeft.dictionaryName);
 
-    let left = $(`<div class="card ${borderDefault}" id="${dataLeft.cardId}-left"><h4>${getCardFirstWordWord(dataLeft)}</h4></div>`);
+    let left = $(`<div class="card ${borderDefault}" id="${dataLeft.cardId}-left"><h4>${getAllWordsAsString(dataLeft)}</h4></div>`);
     left.unbind('click').on('click', function () {
         setBorderClass(left, borderSelected);
         setDefaultBorder($('#options-right .card'));
-        const sound = getCardFirstWordSound(dataLeft);
+        const sound = dataLeft.sound;
         if (sound != null) {
             playAudio(sound);
         }
@@ -285,9 +285,9 @@ function drawWritingCardPage(writingData, index, nextStage) {
     const page = $('#writing');
     const current = writingData[index];
 
-    drawAndPlayAudio(page, getCardFirstWordSound(current));
+    drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
-    $('.word', page).html(getCardFirstWordWord(current));
+    $('.word', page).html(getAllWordsAsString(current));
 
     const clazz = "d-flex justify-content-start p-5 w-100";
     const testDiv = $('#writing-test').show();
@@ -345,9 +345,9 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const current = selfTestData[index];
     const next = index + 1;
 
-    drawAndPlayAudio(page, getCardFirstWordSound(current));
+    drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
-    $('.word', page).html(getCardFirstWordWord(current));
+    $('.word', page).html(getAllWordsAsString(current));
     translation.html(getTranslationsAsString(current));
     correct.prop('disabled', true);
     wrong.prop('disabled', true);

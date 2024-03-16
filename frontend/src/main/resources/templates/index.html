@@ -27,7 +27,8 @@
     const numberOfOptionsPerWord = [[${numberOfOptionsPerWord}]];
 </script>
 <body onload="renderPage()">
-<div id="dictionaries" class="page card container container-table" style="display: none;">
+<div id="dictionaries" class="page card container container-table"
+     style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; ">
     <div class="card-body">
         <h1 class="card-title">flashcards</h1>
         <div id="dictionaries-table-row" class="row" style="overflow: auto">
@@ -53,10 +54,13 @@
                 <button id="dictionaries-btn-run" type="button" class="btn btn-secondary" disabled>Run</button>
                 <button id="dictionaries-btn-cards" type="button" class="btn btn-secondary" disabled>Cards</button>
                 <button id="dictionaries-btn-add" type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#add-dictionary-dialog">Create</button>
+                        data-bs-target="#add-dictionary-dialog">Create
+                </button>
                 <button id="dictionaries-btn-delete" type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#delete-dictionary-prompt" disabled>Delete</button>
-                <button id="dictionaries-btn-download" type="button" class="btn btn-secondary" disabled>Download</button>
+                        data-bs-target="#delete-dictionary-prompt" disabled>Delete
+                </button>
+                <button id="dictionaries-btn-download" type="button" class="btn btn-secondary" disabled>Download
+                </button>
                 <label id="dictionaries-btn-upload-label" for="dictionaries-btn-upload"
                        class="btn btn-secondary btn-file-upload">Upload</label>
                 <input id="dictionaries-btn-upload" type="file" style="display: none;"/>
@@ -86,13 +90,17 @@
         <div class="row">
             <div id="words-btn-group" class="btn-group" role="group" aria-label="Dictionary group">
                 <button id="words-btn-add" type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#add-card-dialog" disabled>Add</button>
+                        data-bs-target="#add-card-dialog" disabled>Add
+                </button>
                 <button id="words-btn-edit" type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#edit-card-dialog" disabled>Edit</button>
+                        data-bs-target="#edit-card-dialog" disabled>Edit
+                </button>
                 <button id="words-btn-reset" type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#reset-card-prompt" disabled>Reset status</button>
+                        data-bs-target="#reset-card-prompt" disabled>Reset status
+                </button>
                 <button id="words-btn-delete" type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                        data-bs-target="#delete-card-prompt" disabled>Delete</button>
+                        data-bs-target="#delete-card-prompt" disabled>Delete
+                </button>
             </div>
         </div>
     </div>

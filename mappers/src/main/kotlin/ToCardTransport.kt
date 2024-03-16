@@ -110,6 +110,7 @@ private fun CardEntity.toCardResource(): CardResource? {
         details = this.details,
         answered = this.answered,
         changedAt = this.changedAt.toJavaInstant().atOffset(ZoneOffset.UTC),
+        sound = this.sound.asString().takeIf { it.isNotBlank() },
     )
 }
 

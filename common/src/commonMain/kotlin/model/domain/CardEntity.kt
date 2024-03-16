@@ -11,6 +11,7 @@ data class CardEntity(
     val details: Map<String, Any> = emptyMap(),
     val answered: Int? = null,
     val changedAt: Instant = Instant.NONE,
+    val sound: TTSResourceId = TTSResourceId.NONE,
 ) {
     companion object {
         val EMPTY = CardEntity()
