@@ -15,10 +15,20 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     process {
         val userId = this.contextUserEntity.id
         val res = this.repositories.dictionaryRepository(this.workMode).getAllDictionaries(userId)
-        this.responseDictionaryEntityList = res.dictionaries
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
         }
+
+        // TODO: temporary solution
+        if (res.errors.isEmpty()) {
+            this.responseDictionaryEntityList = res.dictionaries.map { dictionary ->
+                val cards = this.repositories.cardRepository(this.workMode).getAllCards(userId, dictionary.dictionaryId)
+                val total = cards.cards.size
+                val known = cards.cards.mapNotNull { it.answered }.count { it >= config.numberOfRightAnswers }
+                dictionary.copy(totalCardsCount = total, learnedCardsCount = known)
+            }
+        }
+
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {

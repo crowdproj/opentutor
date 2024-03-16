@@ -3,21 +3,33 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.DictionaryRepositories
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
+import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
-import com.gitlab.sszuev.flashcards.model.common.*
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
+import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.repositories.*
+import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
+import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
+import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
+import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
+import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
+import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import com.gitlab.sszuev.flashcards.stubs.stubDictionary
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class DictionaryCorProcessorRunTest {
     companion object {
         private val testUser = AppUserEntity(AppUserId("42"), AppAuthId("00000000-0000-0000-0000-000000000000"))
@@ -28,13 +40,15 @@ internal class DictionaryCorProcessorRunTest {
             dictionaryRepository: DbDictionaryRepository,
             userRepository: DbUserRepository = MockDbUserRepository(
                 invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw AssertionError() }
-            )
+            ),
+            cardsRepository: DbCardRepository = MockDbCardRepository(),
         ): DictionaryContext {
             val context = DictionaryContext(
                 operation = op,
                 repositories = DictionaryRepositories().copy(
                     testUserRepository = userRepository,
-                    testDictionaryRepository = dictionaryRepository
+                    testDictionaryRepository = dictionaryRepository,
+                    testCardRepository = cardsRepository,
                 )
             )
             context.requestAppAuthId = testUser.authId
@@ -52,19 +66,31 @@ internal class DictionaryCorProcessorRunTest {
     fun `test get-all-dictionary success`() = runTest {
         val testResponseEntities = stubDictionaries
 
-        var wasCalled = false
+        var getAllDictionariesWasCalled = false
+        var getAllCardsWasCalled = false
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeGetAllDictionaries = {
-                wasCalled = true
+                getAllDictionariesWasCalled = true
                 DictionariesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
             }
         )
+        val cardsRepository = MockDbCardRepository(
+            invokeGetAllCards = { _, _ ->
+                getAllCardsWasCalled = true
+                CardsDbResponse.EMPTY
+            }
+        )
 
-        val context = testContext(DictionaryOperation.GET_ALL_DICTIONARIES, dictionaryRepository)
+        val context = testContext(
+            op = DictionaryOperation.GET_ALL_DICTIONARIES,
+            dictionaryRepository = dictionaryRepository,
+            cardsRepository = cardsRepository
+        )
 
         DictionaryCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(getAllDictionariesWasCalled)
+        Assertions.assertTrue(getAllCardsWasCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.GET_ALL_DICTIONARIES), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())

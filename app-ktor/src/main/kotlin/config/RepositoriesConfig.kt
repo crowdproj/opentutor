@@ -43,6 +43,8 @@ data class RepositoriesConfig(
             testDictionaryRepository = this.testDictionaryRepository,
             prodUserRepository = this.prodUserRepository,
             testUserRepository = this.testUserRepository,
+            prodCardRepository = this.prodCardRepository,
+            testCardRepository = this.testCardRepository,
         )
     }
 }
