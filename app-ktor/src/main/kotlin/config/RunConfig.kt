@@ -1,11 +1,14 @@
 package com.gitlab.sszuev.flashcards.config
 
 import com.gitlab.sszuev.flashcards.model.common.AppMode
-import io.ktor.server.config.*
+import io.ktor.server.config.ApplicationConfig
 
-data class RunConfig(val auth: String, val mode: AppMode) {
+data class RunConfig(
+    val auth: String,
+    val mode: AppMode,
+) {
 
-    constructor(config: ApplicationConfig): this(
+    constructor(config: ApplicationConfig) : this(
         auth = config.property("run-config.debug-auth").getString(),
         mode = AppMode.valueOf(config.property("run-config.mode").getString().uppercase()),
     )
@@ -18,9 +21,5 @@ data class RunConfig(val auth: String, val mode: AppMode) {
 
     fun modeString(): String {
         return mode.name.lowercase()
-    }
-
-    companion object {
-        val PROD = RunConfig(auth = "", mode = AppMode.PROD)
     }
 }
