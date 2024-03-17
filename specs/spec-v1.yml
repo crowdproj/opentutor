@@ -722,6 +722,8 @@ components:
         changedAt:
           type: string
           format: date-time
+        sound:
+          type: string
 
     CardWordResource:
       description: 'A card word resource, information about particular word'

@@ -4,39 +4,41 @@ import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.DictionaryRepositories
 import com.gitlab.sszuev.flashcards.api.services.CardService
 import com.gitlab.sszuev.flashcards.api.services.DictionaryService
-import com.gitlab.sszuev.flashcards.config.RunConfig
-import io.ktor.server.application.*
-import io.ktor.server.routing.*
+import com.gitlab.sszuev.flashcards.config.ContextConfig
+import io.ktor.server.application.call
+import io.ktor.server.routing.Route
+import io.ktor.server.routing.post
+import io.ktor.server.routing.route
 
 fun Route.cards(
     service: CardService,
     repositories: CardRepositories,
-    runConf: RunConfig = RunConfig.PROD
+    contextConfig: ContextConfig,
 ) {
     route("cards") {
         post("create") {
-            call.createCard(service, repositories, runConf)
+            call.createCard(service, repositories, contextConfig)
         }
         post("update") {
-            call.updateCard(service, repositories, runConf)
+            call.updateCard(service, repositories, contextConfig)
         }
         post("search") {
-            call.searchCards(service, repositories, runConf)
+            call.searchCards(service, repositories, contextConfig)
         }
         post("get-all") {
-            call.getAllCards(service, repositories, runConf)
+            call.getAllCards(service, repositories, contextConfig)
         }
         post("get") {
-            call.getCard(service, repositories, runConf)
+            call.getCard(service, repositories, contextConfig)
         }
         post("learn") {
-            call.learnCard(service, repositories, runConf)
+            call.learnCard(service, repositories, contextConfig)
         }
         post("reset") {
-            call.resetCard(service, repositories, runConf)
+            call.resetCard(service, repositories, contextConfig)
         }
         post("delete") {
-            call.deleteCard(service, repositories, runConf)
+            call.deleteCard(service, repositories, contextConfig)
         }
     }
 }
@@ -44,11 +46,11 @@ fun Route.cards(
 fun Route.sounds(
     service: CardService,
     repositories: CardRepositories,
-    runConf: RunConfig = RunConfig.PROD
+    contextConfig: ContextConfig,
 ) {
     route("sounds") {
         post("get") {
-            call.getResource(service, repositories, runConf)
+            call.getResource(service, repositories, contextConfig)
         }
     }
 }
@@ -56,23 +58,23 @@ fun Route.sounds(
 fun Route.dictionaries(
     service: DictionaryService,
     repositories: DictionaryRepositories,
-    runConf: RunConfig = RunConfig.PROD
+    contextConfig: ContextConfig,
 ) {
     route("dictionaries") {
         post("get-all") {
-            call.getAllDictionaries(service, repositories, runConf)
+            call.getAllDictionaries(service, repositories, contextConfig)
         }
         post("create") {
-            call.createDictionary(service, repositories, runConf)
+            call.createDictionary(service, repositories, contextConfig)
         }
         post("delete") {
-            call.deleteDictionary(service, repositories, runConf)
+            call.deleteDictionary(service, repositories, contextConfig)
         }
         post("download") {
-            call.downloadDictionary(service, repositories, runConf)
+            call.downloadDictionary(service, repositories, contextConfig)
         }
         post("upload") {
-            call.uploadDictionary(service, repositories, runConf)
+            call.uploadDictionary(service, repositories, contextConfig)
         }
     }
 }

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
+import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RepositoriesConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
@@ -162,6 +163,7 @@ fun Application.module(
 
     install(Locations)
 
+    val contextConfig = ContextConfig(runConfig, tutorConfig)
     val cardService = cardService()
     val dictionaryService = dictionaryService()
 
@@ -170,11 +172,15 @@ fun Application.module(
 
         if (runConfig.auth.isBlank()) {
             authenticate("auth-jwt") {
-                this@authenticate.cardApiV1(cardService, repositoriesConfig.cardRepositories, runConfig)
+                this@authenticate.cardApiV1(
+                    service = cardService,
+                    repositories = repositoriesConfig.cardRepositories,
+                    contextConfig = contextConfig,
+                )
                 this@authenticate.dictionaryApiV1(
-                    dictionaryService,
-                    repositoriesConfig.dictionaryRepositories,
-                    runConfig
+                    service = dictionaryService,
+                    repositories = repositoriesConfig.dictionaryRepositories,
+                    contextConfig = contextConfig,
                 )
             }
             authenticate("keycloakOAuth") {
@@ -189,22 +195,30 @@ fun Application.module(
                         if (principal == null) {
                             call.respond(HttpStatusCode.Unauthorized)
                         } else {
-                            call.respond(content(runConfig, tutorConfig, keycloakConfig, principal))
+                            call.respond(thymeleafContent(runConfig, tutorConfig, keycloakConfig, principal))
                         }
                     }
                 }
             }
         } else {
-            cardApiV1(cardService, repositoriesConfig.cardRepositories, runConfig)
-            dictionaryApiV1(dictionaryService, repositoriesConfig.dictionaryRepositories, runConfig)
+            cardApiV1(
+                service = cardService,
+                repositories = repositoriesConfig.cardRepositories,
+                contextConfig = contextConfig,
+            )
+            dictionaryApiV1(
+                service = dictionaryService,
+                repositories = repositoriesConfig.dictionaryRepositories,
+                contextConfig = contextConfig,
+            )
             get("/") {
-                call.respond(content(runConfig, tutorConfig, keycloakConfig, null))
+                call.respond(thymeleafContent(runConfig, tutorConfig, keycloakConfig, null))
             }
         }
     }
 }
 
-private fun content(
+private fun thymeleafContent(
     runConfig: RunConfig,
     tutorConfig: TutorConfig,
     keycloakConfig: KeycloakConfig,
@@ -226,10 +240,10 @@ private fun content(
     }
     val commonConfig = mapOf(
         "runMode" to runConfig.modeString(),
-        "numberOfWordsToShow" to tutorConfig.numberOfWordsToShow,
-        "numberOfWordsPerStage" to tutorConfig.numberOfWordsPerStage,
-        "numberOfRightAnswers" to tutorConfig.numberOfRightAnswers,
-        "numberOfOptionsPerWord" to tutorConfig.numberOfOptionsPerWord,
+        "numberOfWordsToShow" to tutorConfig.numberOfWordsToShow.toString(),
+        "numberOfWordsPerStage" to tutorConfig.numberOfWordsPerStage.toString(),
+        "numberOfRightAnswers" to tutorConfig.numberOfRightAnswers.toString(),
+        "numberOfOptionsPerWord" to tutorConfig.numberOfOptionsPerWord.toString(),
     )
     res.putAll(userConfig)
     res.putAll(commonConfig)

@@ -117,6 +117,7 @@ private fun CardResource.toCardEntity(): CardEntity = CardEntity(
     stats = this.stats.toStats(),
     answered = this.answered,
     changedAt = this.changedAt?.toInstant()?.toKotlinInstant() ?: Instant.NONE,
+    sound = this.sound?.takeIf { it.isNotBlank() }?.let { TTSResourceId(it) } ?: TTSResourceId.NONE,
 )
 
 private fun CardWordResource.toCardWordEntity(): CardWordEntity = CardWordEntity(

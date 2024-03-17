@@ -1,6 +1,14 @@
 package com.gitlab.sszuev.flashcards
 
-import com.gitlab.sszuev.flashcards.model.common.*
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.common.AppContext
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.common.AppStub
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
+import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
@@ -12,6 +20,7 @@ data class DictionaryContext(
     override val operation: DictionaryOperation = DictionaryOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
     override val errors: MutableList<AppError> = mutableListOf(),
+    override val config: AppConfig = AppConfig.DEFAULT,
 
     override var status: AppStatus = AppStatus.INIT,
     override var workMode: AppMode = AppMode.PROD,
@@ -21,7 +30,7 @@ data class DictionaryContext(
     override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
     override var contextUserEntity: AppUserEntity = AppUserEntity.EMPTY,
 
-    // get all dictionaries list response:
+    // get all dictionaries' list response:
     var responseDictionaryEntityList: List<DictionaryEntity> = listOf(),
     // update/create request:
     var requestDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,

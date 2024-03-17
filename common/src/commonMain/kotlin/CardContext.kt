@@ -1,7 +1,22 @@
 package com.gitlab.sszuev.flashcards
 
-import com.gitlab.sszuev.flashcards.model.common.*
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.common.AppContext
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.common.AppStub
+import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
+import com.gitlab.sszuev.flashcards.model.common.NONE
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import kotlinx.datetime.Instant
 
 /**
@@ -12,6 +27,7 @@ data class CardContext(
     override val timestamp: Instant = Instant.NONE,
     override val repositories: CardRepositories = CardRepositories.NO_OP_REPOSITORIES,
     override val errors: MutableList<AppError> = mutableListOf(),
+    override val config: AppConfig = AppConfig.DEFAULT,
 
     override var status: AppStatus = AppStatus.INIT,
     override var workMode: AppMode = AppMode.PROD,
