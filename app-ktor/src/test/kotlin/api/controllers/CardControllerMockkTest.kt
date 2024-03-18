@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.api.services.CardService
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
@@ -112,7 +112,7 @@ internal class CardControllerMockkTest {
         coEvery {
             service.serviceMethod(any())
         } throws TestException(msg)
-        val repositories = mockk<CardRepositories>()
+        val repositories = mockk<AppRepositories>()
 
         val tutorConfig = mockk<TutorConfig>(relaxed = true)
         val runConfig = mockk<RunConfig>(relaxed = true)

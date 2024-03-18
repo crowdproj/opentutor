@@ -1,27 +1,31 @@
 package com.gitlab.sszuev.flashcards
 
 import com.gitlab.sszuev.flashcards.model.common.AppMode
-import com.gitlab.sszuev.flashcards.model.common.AppRepositories
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.NoOpDbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.NoOpDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.NoOpDbUserRepository
+import com.gitlab.sszuev.flashcards.repositories.NoOpTTSResourceRepository
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 
-data class DictionaryRepositories(
+data class AppRepositories(
+    private val prodTTSClientRepository: TTSResourceRepository = NoOpTTSResourceRepository,
+    private val testTTSClientRepository: TTSResourceRepository = NoOpTTSResourceRepository,
     private val prodDictionaryRepository: DbDictionaryRepository = NoOpDbDictionaryRepository,
     private val testDictionaryRepository: DbDictionaryRepository = NoOpDbDictionaryRepository,
     private val prodUserRepository: DbUserRepository = NoOpDbUserRepository,
     private val testUserRepository: DbUserRepository = NoOpDbUserRepository,
     private val prodCardRepository: DbCardRepository = NoOpDbCardRepository,
     private val testCardRepository: DbCardRepository = NoOpDbCardRepository,
-): AppRepositories {
+) {
+
     companion object {
-        val NO_OP_REPOSITORIES = DictionaryRepositories()
+        val NO_OP_REPOSITORIES = AppRepositories()
     }
 
-    override fun userRepository(mode: AppMode): DbUserRepository {
+    fun userRepository(mode: AppMode): DbUserRepository {
         return when(mode) {
             AppMode.PROD -> prodUserRepository
             AppMode.TEST -> testUserRepository
@@ -42,6 +46,14 @@ data class DictionaryRepositories(
             AppMode.PROD -> prodCardRepository
             AppMode.TEST -> testCardRepository
             AppMode.STUB -> NoOpDbCardRepository
+        }
+    }
+
+    fun ttsClientRepository(mode: AppMode): TTSResourceRepository {
+        return when (mode) {
+            AppMode.PROD -> prodTTSClientRepository
+            AppMode.TEST -> testTTSClientRepository
+            AppMode.STUB -> NoOpTTSResourceRepository
         }
     }
 }

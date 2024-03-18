@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.DictionaryRepositories
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
@@ -45,7 +45,7 @@ internal class DictionaryCorProcessorRunTest {
         ): DictionaryContext {
             val context = DictionaryContext(
                 operation = op,
-                repositories = DictionaryRepositories().copy(
+                repositories = AppRepositories().copy(
                     testUserRepository = userRepository,
                     testDictionaryRepository = dictionaryRepository,
                     testCardRepository = cardsRepository,

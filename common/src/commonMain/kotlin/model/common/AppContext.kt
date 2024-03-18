@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.model.common
 
 import com.gitlab.sszuev.flashcards.AppConfig
+import com.gitlab.sszuev.flashcards.AppRepositories
 import kotlinx.datetime.Instant
 
 interface AppContext {

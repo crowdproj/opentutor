@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.core
 
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
@@ -44,7 +44,7 @@ internal class CardCorProcessorRunCardsTest {
         ): CardContext {
             val context = CardContext(
                 operation = op,
-                repositories = CardRepositories().copy(
+                repositories = AppRepositories().copy(
                     testUserRepository = userRepository,
                     testCardRepository = cardRepository
                 )

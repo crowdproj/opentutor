@@ -1,7 +1,7 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.api.services.CardService
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
@@ -26,7 +26,7 @@ private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.control
 
 suspend fun ApplicationCall.getResource(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<GetAudioRequest>(CardOperation.GET_RESOURCE, repositories, logger, contextConfig) {
@@ -36,7 +36,7 @@ suspend fun ApplicationCall.getResource(
 
 suspend fun ApplicationCall.createCard(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<CreateCardRequest>(CardOperation.CREATE_CARD, repositories, logger, contextConfig) {
@@ -46,7 +46,7 @@ suspend fun ApplicationCall.createCard(
 
 suspend fun ApplicationCall.updateCard(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<UpdateCardRequest>(CardOperation.UPDATE_CARD, repositories, logger, contextConfig) {
@@ -56,7 +56,7 @@ suspend fun ApplicationCall.updateCard(
 
 suspend fun ApplicationCall.searchCards(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS, repositories, logger, contextConfig) {
@@ -66,7 +66,7 @@ suspend fun ApplicationCall.searchCards(
 
 suspend fun ApplicationCall.getAllCards(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS, repositories, logger, contextConfig) {
@@ -76,7 +76,7 @@ suspend fun ApplicationCall.getAllCards(
 
 suspend fun ApplicationCall.getCard(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<GetCardRequest>(CardOperation.GET_CARD, repositories, logger, contextConfig) {
@@ -86,7 +86,7 @@ suspend fun ApplicationCall.getCard(
 
 suspend fun ApplicationCall.learnCard(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<LearnCardsRequest>(CardOperation.LEARN_CARDS, repositories, logger, contextConfig) {
@@ -96,7 +96,7 @@ suspend fun ApplicationCall.learnCard(
 
 suspend fun ApplicationCall.resetCard(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<ResetCardRequest>(CardOperation.RESET_CARD, repositories, logger, contextConfig) {
@@ -106,7 +106,7 @@ suspend fun ApplicationCall.resetCard(
 
 suspend fun ApplicationCall.deleteCard(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<DeleteCardRequest>(CardOperation.DELETE_CARD, repositories, logger, contextConfig) {
@@ -116,7 +116,7 @@ suspend fun ApplicationCall.deleteCard(
 
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     operation: CardOperation,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     logger: ExtLogger,
     contextConfig: ContextConfig,
     noinline exec: suspend CardContext.() -> Unit,

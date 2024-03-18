@@ -16,9 +16,9 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import kotlinx.datetime.Instant
 
 data class DictionaryContext(
-    override val repositories: DictionaryRepositories = DictionaryRepositories.NO_OP_REPOSITORIES,
     override val operation: DictionaryOperation = DictionaryOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
+    override val repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 

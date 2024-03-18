@@ -1,13 +1,17 @@
 package com.gitlab.sszuev.flashcards.core
 
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardRepositories
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
@@ -24,7 +28,7 @@ internal class CardCorProcessorRunResourceTest {
         private fun testContext(repository: TTSResourceRepository): CardContext {
             val context = CardContext(
                 operation = CardOperation.GET_RESOURCE,
-                repositories = CardRepositories().copy(
+                repositories = AppRepositories().copy(
                     testUserRepository = MockDbUserRepository(),
                     testTTSClientRepository = repository
                 )

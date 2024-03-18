@@ -25,7 +25,7 @@ import kotlinx.datetime.Instant
 data class CardContext(
     override val operation: CardOperation = CardOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
-    override val repositories: CardRepositories = CardRepositories.NO_OP_REPOSITORIES,
+    override val repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
