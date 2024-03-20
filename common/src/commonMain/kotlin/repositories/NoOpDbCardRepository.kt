@@ -7,41 +7,26 @@ import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 object NoOpDbCardRepository : DbCardRepository {
-    override fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        noOp()
-    }
 
-    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse {
-        noOp()
-    }
+    override fun findCard(cardId: CardId): CardEntity = noOp()
 
-    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
-        noOp()
-    }
+    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse = noOp()
 
-    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
-        noOp()
-    }
+    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse = noOp()
 
-    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
-        noOp()
-    }
+    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse = noOp()
+
+    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse = noOp()
 
     override fun updateCards(
         userId: AppUserId,
         cardIds: Iterable<CardId>,
         update: (CardEntity) -> CardEntity
-    ): CardsDbResponse {
-        noOp()
-    }
+    ): CardsDbResponse = noOp()
 
-    override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        noOp()
-    }
+    override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse = noOp()
 
-    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse {
-        noOp()
-    }
+    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse = noOp()
 
     private fun noOp(): Nothing {
         error("Must not be called.")

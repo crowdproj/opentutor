@@ -20,8 +20,20 @@ fun ChainDSL<CardContext>.processGetCard() = worker {
     process {
         val userId = this.contextUserEntity.id
         val cardId = this.normalizedRequestCardEntityId
-        val res = this.repositories.cardRepository(this.workMode).getCard(userId, cardId)
-        this.postProcess(res)
+        val card = this.repositories.cardRepository(this.workMode).findCard(cardId)
+        if (card == null) {
+            this.errors.add(noCardFoundDataError("getCard", cardId))
+        } else {
+            val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionary(card.dictionaryId)
+            if (dictionary == null) {
+                this.errors.add(noDictionaryFoundDataError("getCard", card.dictionaryId))
+            } else if (dictionary.userId != userId) {
+                this.errors.add(forbiddenEntityDataError("getCard", card.cardId, userId))
+            } else {
+                this.responseCardEntity = card
+            }
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
         fail(

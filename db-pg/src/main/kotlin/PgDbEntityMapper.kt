@@ -10,7 +10,6 @@ import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
 import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
 import com.gitlab.sszuev.flashcards.common.toCardEntityStats
 import com.gitlab.sszuev.flashcards.common.toCardWordEntity
-import com.gitlab.sszuev.flashcards.common.toCommonCardDtoDetails
 import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
 import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.common.wordsAsCommonWordDtoList
@@ -29,7 +28,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
-import com.gitlab.sszuev.flashcards.model.domain.Stage
 import org.jetbrains.exposed.dao.id.EntityID
 import java.time.LocalDateTime
 import java.util.UUID
@@ -41,6 +39,7 @@ internal fun PgDbUser.toAppUserEntity(): AppUserEntity = AppUserEntity(
 
 internal fun PgDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryEntity(
     dictionaryId = this.id.asDictionaryId(),
+    userId = this.userId.asUserId(),
     name = this.name,
     sourceLang = createLangEntity(this.sourceLang),
     targetLang = createLangEntity(this.targetLang),
@@ -67,8 +66,6 @@ internal fun writeCardEntityToPgDbCard(from: CardEntity, to: PgDbCard, timestamp
     to.details = from.detailsAsCommonCardDetailsDto().toJsonString()
     to.changedAt = timestamp
 }
-
-internal fun Map<Stage, Long>.toPgDbCardDetailsJson(): String = toCommonCardDtoDetails().toJsonString()
 
 internal fun CardEntity.toPgDbCardWordsJson(): String = wordsAsCommonWordDtoList().toJsonString()
 

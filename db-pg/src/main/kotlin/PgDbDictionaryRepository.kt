@@ -32,7 +32,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
-import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
 
 class PgDbDictionaryRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
@@ -42,6 +42,10 @@ class PgDbDictionaryRepository(
         // lazy, to avoid initialization error when there is no real pg-database
         // and memory-storage is used instead
         PgDbConnector.connection(dbConfig)
+    }
+
+    override fun findDictionary(dictionaryId: DictionaryId): DictionaryEntity? = connection.execute {
+        PgDbDictionary.findById(dictionaryId.asLong())?.toDictionaryEntity()
     }
 
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
@@ -74,7 +78,7 @@ class PgDbDictionaryRepository(
                 return@execute RemoveDictionaryDbResponse(errors = errors)
             }
             checkNotNull(found)
-            val cardIds = Cards.select {
+            val cardIds = Cards.selectAll().where {
                 Cards.dictionaryId eq found.id
             }.map {
                 it[Cards.id]

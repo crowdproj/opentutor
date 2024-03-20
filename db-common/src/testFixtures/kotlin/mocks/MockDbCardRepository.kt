@@ -15,7 +15,7 @@ import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
  * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
  */
 class MockDbCardRepository(
-    private val invokeGetCard: (AppUserId, CardId) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
+    private val invokeFindCard: (CardId) -> CardEntity? = { null },
     private val invokeGetAllCards: (AppUserId, DictionaryId) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
     private val invokeSearchCards: (AppUserId, CardFilter) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
     private val invokeCreateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
@@ -25,39 +25,26 @@ class MockDbCardRepository(
     private val invokeDeleteCard: (AppUserId, CardId) -> RemoveCardDbResponse = { _, _ -> RemoveCardDbResponse.EMPTY },
 ) : DbCardRepository {
 
-    override fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        return invokeGetCard(userId, cardId)
-    }
+    override fun findCard(cardId: CardId): CardEntity? = invokeFindCard(cardId)
 
-    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse {
-        return invokeGetAllCards(userId, dictionaryId)
-    }
+    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse =
+        invokeGetAllCards(userId, dictionaryId)
 
-    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
-        return invokeSearchCards(userId, filter)
-    }
+    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse = invokeSearchCards(userId, filter)
 
-    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
-        return invokeCreateCard(userId, cardEntity)
-    }
+    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse =
+        invokeCreateCard(userId, cardEntity)
 
-    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
-        return invokeUpdateCard(userId, cardEntity)
-    }
+    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse =
+        invokeUpdateCard(userId, cardEntity)
 
     override fun updateCards(
         userId: AppUserId,
         cardIds: Iterable<CardId>,
         update: (CardEntity) -> CardEntity
-    ): CardsDbResponse {
-        return invokeUpdateCards(userId, cardIds, update)
-    }
+    ): CardsDbResponse = invokeUpdateCards(userId, cardIds, update)
 
-    override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        return invokeResetCard(userId, cardId)
-    }
+    override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse = invokeResetCard(userId, cardId)
 
-    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse {
-        return invokeDeleteCard(userId, cardId)
-    }
+    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse = invokeDeleteCard(userId, cardId)
 }

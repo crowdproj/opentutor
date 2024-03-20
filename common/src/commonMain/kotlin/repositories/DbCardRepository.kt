@@ -14,9 +14,9 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 interface DbCardRepository {
 
     /**
-     * Gets card by id.
+     * Finds card by id returning `null` if nothing found.
      */
-    fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse
+    fun findCard(cardId: CardId): CardEntity?
 
     /**
      * Gets all cards by dictionaryId.

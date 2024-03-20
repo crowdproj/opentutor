@@ -1,9 +1,17 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 
 @Suppress("FunctionName")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
@@ -42,6 +50,20 @@ abstract class DbDictionaryRepositoryTest {
                 "междометие"
             )
         )
+    }
+
+    @Order(1)
+    @Test
+    fun `test get dictionary by id`() {
+        val res1 = repository.findDictionary(DictionaryId("2"))
+        Assertions.assertNotNull(res1)
+        Assertions.assertEquals("Weather", res1!!.name)
+        Assertions.assertEquals("42", res1.userId.asString())
+        val res2 = repository.findDictionary(DictionaryId("1"))
+        Assertions.assertNotNull(res2)
+        Assertions.assertEquals("Irregular Verbs", res2!!.name)
+        Assertions.assertEquals("42", res2.userId.asString())
+
     }
 
     @Order(1)

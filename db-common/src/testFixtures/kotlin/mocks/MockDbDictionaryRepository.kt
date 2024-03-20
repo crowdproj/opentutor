@@ -11,6 +11,7 @@ import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
 
 class MockDbDictionaryRepository(
+    private val invokeFindDictionary: (DictionaryId) -> DictionaryEntity? = { null },
     private val invokeGetAllDictionaries: (AppUserId) -> DictionariesDbResponse = { DictionariesDbResponse.EMPTY },
     private val invokeCreateDictionary: (AppUserId, DictionaryEntity) -> DictionaryDbResponse = { _, _ -> DictionaryDbResponse.EMPTY },
     private val invokeDeleteDictionary: (AppUserId, DictionaryId) -> RemoveDictionaryDbResponse = { _, _ -> RemoveDictionaryDbResponse.EMPTY },
@@ -18,23 +19,19 @@ class MockDbDictionaryRepository(
     private val invokeUploadDictionary: (AppUserId, ResourceEntity) -> DictionaryDbResponse = { _, _ -> DictionaryDbResponse.EMPTY },
 ) : DbDictionaryRepository {
 
-    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
-        return invokeGetAllDictionaries(userId)
-    }
+    override fun findDictionary(dictionaryId: DictionaryId): DictionaryEntity? = invokeFindDictionary(dictionaryId)
 
-    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
-        return invokeCreateDictionary(userId, entity)
-    }
+    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse = invokeGetAllDictionaries(userId)
 
-    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
-        return invokeDeleteDictionary(userId, dictionaryId)
-    }
+    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse =
+        invokeCreateDictionary(userId, entity)
 
-    override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse {
-        return invokeDownloadDictionary(userId, dictionaryId)
-    }
+    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse =
+        invokeDeleteDictionary(userId, dictionaryId)
 
-    override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
-        return invokeUploadDictionary(userId, resource)
-    }
+    override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse =
+        invokeDownloadDictionary(userId, dictionaryId)
+
+    override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse =
+        invokeUploadDictionary(userId, resource)
 }

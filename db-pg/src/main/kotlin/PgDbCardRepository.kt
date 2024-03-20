@@ -44,35 +44,23 @@ class PgDbCardRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        return connection.execute {
-            val card = PgDbCard.findById(cardId.asLong()) ?: return@execute CardDbResponse(
-                noCardFoundDbError(operation = "getCard", id = cardId)
-            )
-            val errors = mutableListOf<AppError>()
-            checkDictionaryUser("getCard", userId, checkNotNull(card.dictionaryId).asDictionaryId(), cardId, errors)
-            if (errors.isNotEmpty()) {
-                return@execute CardDbResponse(errors = errors)
-            }
-            CardDbResponse(card = card.toCardEntity())
-        }
+    override fun findCard(cardId: CardId): CardEntity? = connection.execute {
+        PgDbCard.findById(cardId.asLong())?.toCardEntity()
     }
 
-    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse {
-        return connection.execute {
-            val errors = mutableListOf<AppError>()
-            val dictionary = checkDictionaryUser("getAllCards", userId, dictionaryId, dictionaryId, errors)
-            if (errors.isNotEmpty() || dictionary == null) {
-                return@execute CardsDbResponse(errors = errors)
-            }
-            val cards = PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }
-            val dictionaries = listOf(dictionary.toDictionaryEntity())
-            CardsDbResponse(
-                cards = cards,
-                dictionaries = dictionaries,
-                errors = emptyList(),
-            )
+    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse = connection.execute {
+        val errors = mutableListOf<AppError>()
+        val dictionary = checkDictionaryUser("getAllCards", userId, dictionaryId, dictionaryId, errors)
+        if (errors.isNotEmpty() || dictionary == null) {
+            return@execute CardsDbResponse(errors = errors)
         }
+        val cards = PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }
+        val dictionaries = listOf(dictionary.toDictionaryEntity())
+        CardsDbResponse(
+            cards = cards,
+            dictionaries = dictionaries,
+            errors = emptyList(),
+        )
     }
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {

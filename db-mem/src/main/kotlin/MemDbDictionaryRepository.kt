@@ -29,6 +29,9 @@ class MemDbDictionaryRepository(
 
     private val database = MemDatabase.get(databaseLocation = dbConfig.dataLocation)
 
+    override fun findDictionary(dictionaryId: DictionaryId): DictionaryEntity? =
+        database.findDictionaryById(dictionaryId.asLong())?.toDictionaryEntity()
+
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
         val dictionaries = this.database.findDictionariesByUserId(userId.asLong())
         return DictionariesDbResponse(dictionaries = dictionaries.map { it.toDictionaryEntity() }.toList())

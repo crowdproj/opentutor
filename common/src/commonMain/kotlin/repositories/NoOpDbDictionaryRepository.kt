@@ -6,25 +6,18 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 
 object NoOpDbDictionaryRepository : DbDictionaryRepository {
-    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
-        noOp()
-    }
 
-    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
-        noOp()
-    }
+    override fun findDictionary(dictionaryId: DictionaryId): DictionaryEntity = noOp()
 
-    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
-        noOp()
-    }
+    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse = noOp()
 
-    override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse {
-        noOp()
-    }
+    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse = noOp()
 
-    override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse {
-        noOp()
-    }
+    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse = noOp()
+
+    override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse = noOp()
+
+    override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse = noOp()
 
     private fun noOp(): Nothing {
         error("Must not be called.")

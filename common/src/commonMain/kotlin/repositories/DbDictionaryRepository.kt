@@ -7,6 +7,8 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 
 interface DbDictionaryRepository {
+    fun findDictionary(dictionaryId: DictionaryId): DictionaryEntity?
+
     fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse
 
     fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse

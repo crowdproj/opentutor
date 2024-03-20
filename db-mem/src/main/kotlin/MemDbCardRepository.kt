@@ -31,16 +31,7 @@ class MemDbCardRepository(
 ) : DbCardRepository {
     private val database = MemDatabase.get(dbConfig.dataLocation)
 
-    override fun getCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        val card =
-            database.findCardById(cardId.asLong()) ?: return CardDbResponse(noCardFoundDbError("getCard", cardId))
-        val errors = mutableListOf<AppError>()
-        checkDictionaryUser("getCard", userId, card.dictionaryId.asDictionaryId(), cardId, errors)
-        if (errors.isNotEmpty()) {
-            return CardDbResponse(errors = errors)
-        }
-        return CardDbResponse(card = card.toCardEntity())
-    }
+    override fun findCard(cardId: CardId): CardEntity? = database.findCardById(cardId.asLong())?.toCardEntity()
 
     override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse {
         val id = dictionaryId.asLong()

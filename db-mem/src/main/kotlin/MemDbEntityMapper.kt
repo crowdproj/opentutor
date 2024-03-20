@@ -131,6 +131,7 @@ internal fun MemDbCard.toDocumentCard(mapStatus: (Int?) -> DocumentCardStatus): 
 
 internal fun MemDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryEntity(
     dictionaryId = this.id?.asDictionaryId() ?: DictionaryId.NONE,
+    userId = this.userId?.asUserId() ?: AppUserId.NONE,
     name = this.name,
     sourceLang = this.sourceLanguage.toLangEntity(),
     targetLang = this.targetLanguage.toLangEntity(),
