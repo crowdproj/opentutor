@@ -16,7 +16,7 @@ import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
  */
 class MockDbCardRepository(
     private val invokeFindCard: (CardId) -> CardEntity? = { null },
-    private val invokeGetAllCards: (AppUserId, DictionaryId) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
+    private val invokeFindCards: (DictionaryId) -> Sequence<CardEntity> = { emptySequence() },
     private val invokeSearchCards: (AppUserId, CardFilter) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
     private val invokeCreateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeUpdateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
@@ -27,8 +27,7 @@ class MockDbCardRepository(
 
     override fun findCard(cardId: CardId): CardEntity? = invokeFindCard(cardId)
 
-    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse =
-        invokeGetAllCards(userId, dictionaryId)
+    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = invokeFindCards(dictionaryId)
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse = invokeSearchCards(userId, filter)
 

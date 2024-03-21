@@ -47,7 +47,7 @@ val stubCard = CardEntity(
             word = "stub",
             partOfSpeech = "noun",
             transcription = "stʌb",
-            translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитация")),
+            translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитанция")),
             examples = listOf("That was the last candle stub I had.", "\$500 ticket stub.").map {
                 CardWordExampleEntity(
                     it
@@ -57,6 +57,7 @@ val stubCard = CardEntity(
         ),
     ),
     stats = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
+    sound = TTSResourceId("en:stub"),
 )
 
 val stubCards = IntRange(1, 3)
@@ -70,6 +71,7 @@ val stubCards = IntRange(1, 3)
                     word = "XXX-${it.first}-${it.second}"
                 ),
             ),
+            sound = TTSResourceId.NONE,
         )
     }
 

@@ -15,7 +15,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
@@ -75,9 +74,9 @@ internal class DictionaryCorProcessorRunTest {
             }
         )
         val cardsRepository = MockDbCardRepository(
-            invokeGetAllCards = { _, _ ->
+            invokeFindCards = { _ ->
                 getAllCardsWasCalled = true
-                CardsDbResponse.EMPTY
+                emptySequence()
             }
         )
 

@@ -48,19 +48,8 @@ class PgDbCardRepository(
         PgDbCard.findById(cardId.asLong())?.toCardEntity()
     }
 
-    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse = connection.execute {
-        val errors = mutableListOf<AppError>()
-        val dictionary = checkDictionaryUser("getAllCards", userId, dictionaryId, dictionaryId, errors)
-        if (errors.isNotEmpty() || dictionary == null) {
-            return@execute CardsDbResponse(errors = errors)
-        }
-        val cards = PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }
-        val dictionaries = listOf(dictionary.toDictionaryEntity())
-        CardsDbResponse(
-            cards = cards,
-            dictionaries = dictionaries,
-            errors = emptyList(),
-        )
+    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = connection.execute {
+        PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }.asSequence()
     }
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {

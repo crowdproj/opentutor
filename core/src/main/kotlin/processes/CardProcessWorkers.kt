@@ -5,7 +5,10 @@ import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
@@ -30,7 +33,7 @@ fun ChainDSL<CardContext>.processGetCard() = worker {
             } else if (dictionary.userId != userId) {
                 this.errors.add(forbiddenEntityDataError("getCard", card.cardId, userId))
             } else {
-                this.responseCardEntity = card
+                this.responseCardEntity = postProcess(card) { dictionary }
             }
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
@@ -55,8 +58,18 @@ fun ChainDSL<CardContext>.processGetAllCards() = worker {
     process {
         val userId = this.contextUserEntity.id
         val dictionaryId = this.normalizedRequestDictionaryId
-        val res = this.repositories.cardRepository(this.workMode).getAllCards(userId, dictionaryId)
-        this.postProcess(res)
+        val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionary(dictionaryId)
+        if (dictionary == null) {
+            this.errors.add(noDictionaryFoundDataError("getAllCards", dictionaryId))
+        } else if (dictionary.userId != userId) {
+            this.errors.add(forbiddenEntityDataError("getAllCards", dictionaryId, userId))
+        } else {
+            val cards = postProcess(
+                this.repositories.cardRepository(this.workMode).findCards(dictionaryId).iterator()
+            ) { dictionary }
+            this.responseCardEntityList = cards
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
         fail(
@@ -183,6 +196,45 @@ private suspend fun CardContext.postProcess(res: CardsDbResponse) {
         card.copy(words = words, sound = cardSound)
     }
     this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+}
+
+private suspend fun CardContext.postProcess(
+    cardsIterator: Iterator<CardEntity>,
+    dictionary: (DictionaryId) -> DictionaryEntity
+): List<CardEntity> {
+    val res = mutableListOf<CardEntity>()
+    while (cardsIterator.hasNext()) {
+        res.add(postProcess(cardsIterator.next(), dictionary))
+    }
+    return res
+}
+
+private suspend fun CardContext.postProcess(
+    card: CardEntity,
+    dictionary: (DictionaryId) -> DictionaryEntity
+): CardEntity {
+    check(card != CardEntity.EMPTY) { "Null card" }
+    val tts = this.repositories.ttsClientRepository(this.workMode)
+    val sourceLang = dictionary.invoke(card.dictionaryId).sourceLang.langId
+    val words = card.words.map { word ->
+        val wordAudioId = tts.findResourceId(TTSResourceGet(word.word, sourceLang).normalize())
+        this.errors.addAll(wordAudioId.errors)
+        if (wordAudioId.id != TTSResourceId.NONE) {
+            word.copy(sound = wordAudioId.id)
+        } else {
+            word
+        }
+    }
+
+    val cardAudioId = if (words.size == 1) {
+        words.single().sound
+    } else {
+        val cardAudioString = card.words.joinToString(",") { it.word }
+        val findResourceIdResponse = tts.findResourceId(TTSResourceGet(cardAudioString, sourceLang).normalize())
+        this.errors.addAll(findResourceIdResponse.errors)
+        findResourceIdResponse.id
+    }
+    return card.copy(words = words, sound = cardAudioId)
 }
 
 private fun CardContext.postProcess(res: CardDbResponse) {

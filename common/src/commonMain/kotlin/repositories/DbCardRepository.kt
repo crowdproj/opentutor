@@ -19,9 +19,9 @@ interface DbCardRepository {
     fun findCard(cardId: CardId): CardEntity?
 
     /**
-     * Gets all cards by dictionaryId.
+     * Finds cards by dictionary id.
      */
-    fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse
+    fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity>
 
     /**
      * Searches cards by filter.

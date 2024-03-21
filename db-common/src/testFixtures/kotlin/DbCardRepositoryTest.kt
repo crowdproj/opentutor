@@ -10,7 +10,6 @@ import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
@@ -202,39 +201,22 @@ abstract class DbCardRepositoryTest {
     @Test
     fun `test get all cards success`() {
         // Business dictionary
-        val res1 = repository.getAllCards(userId, DictionaryId("1"))
-        assertEquals(244, res1.cards.size)
-        assertEquals(0, res1.errors.size)
-        assertEquals(1, res1.dictionaries.size)
-        assertEquals("1", res1.dictionaries.single().dictionaryId.asString())
+        val res1 = repository.findCards(DictionaryId("1")).toList()
+        assertEquals(244, res1.size)
+        assertEquals("1", res1.map { it.dictionaryId.asString() }.toSet().single())
 
         // Weather dictionary
-        val res2 = repository.getAllCards(userId, DictionaryId("2"))
-        assertEquals(65, res2.cards.size)
-        assertEquals(0, res2.errors.size)
-        assertEquals(1, res2.dictionaries.size)
-        assertEquals("2", res2.dictionaries.single().dictionaryId.asString())
-
-        assertEquals(LangId("en"), res1.dictionaries.single().sourceLang.langId)
-        assertEquals(LangId("en"), res2.dictionaries.single().sourceLang.langId)
+        val res2 = repository.findCards(DictionaryId("2")).toList()
+        assertEquals(65, res2.size)
+        assertEquals("2", res2.map { it.dictionaryId.asString() }.toSet().single())
     }
 
     @Order(2)
     @Test
     fun `test get all cards error unknown dictionary`() {
         val dictionaryId = "42"
-        val res = repository.getAllCards(userId, DictionaryId(dictionaryId))
-        assertEquals(0, res.cards.size)
-        assertEquals(1, res.errors.size)
-        val error = res.errors[0]
-        assertEquals("database::getAllCards", error.code)
-        assertEquals(dictionaryId, error.field)
-        assertEquals("database", error.group)
-        assertEquals(
-            """Error while getAllCards: dictionary with id="$dictionaryId" not found""",
-            error.message
-        )
-        assertNull(error.exception)
+        val res = repository.findCards(DictionaryId(dictionaryId)).toList()
+        assertEquals(0, res.size)
     }
 
     @Order(4)

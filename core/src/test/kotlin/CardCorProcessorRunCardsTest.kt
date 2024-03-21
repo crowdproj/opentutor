@@ -26,7 +26,9 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
+import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
 import com.gitlab.sszuev.flashcards.stubs.stubDictionary
@@ -45,6 +47,7 @@ internal class CardCorProcessorRunCardsTest {
             cardRepository: DbCardRepository,
             userRepository: DbUserRepository = MockDbUserRepository(),
             dictionaryRepository: DbDictionaryRepository = MockDbDictionaryRepository(),
+            ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(),
         ): CardContext {
             val context = CardContext(
                 operation = op,
@@ -52,6 +55,7 @@ internal class CardCorProcessorRunCardsTest {
                     testUserRepository = userRepository,
                     testCardRepository = cardRepository,
                     testDictionaryRepository = dictionaryRepository,
+                    testTTSClientRepository = ttsResourceRepository,
                 )
             )
             context.requestAppAuthId = testUser.authId
@@ -114,8 +118,8 @@ internal class CardCorProcessorRunCardsTest {
         Assertions.assertTrue(findCardIsCalled)
         Assertions.assertTrue(findDictionaryIsCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_CARD), context.requestId)
+        Assertions.assertTrue(context.errors.isEmpty()) { context.errors.toString() }
         Assertions.assertEquals(AppStatus.OK, context.status)
-        Assertions.assertTrue(context.errors.isEmpty())
 
         Assertions.assertEquals(testResponseCardEntity, context.responseCardEntity)
     }
@@ -155,50 +159,79 @@ internal class CardCorProcessorRunCardsTest {
     @Test
     fun `test get-all-cards success`() = runTest {
         val testDictionaryId = DictionaryId("42")
-        val testResponseEntities = stubCards
+        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
+        val testCards = stubCards.map { it.copy(dictionaryId = testDictionaryId) }
 
-        var wasCalled = false
-        val repository = MockDbCardRepository(
-            invokeGetAllCards = { _, id ->
-                wasCalled = true
-                CardsDbResponse(if (id == testDictionaryId) testResponseEntities else emptyList())
+        var isFindCardsCalled = false
+        var isFindDictionaryCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeFindCards = { id ->
+                isFindCardsCalled = true
+                if (id == testDictionaryId) testCards.asSequence() else emptySequence()
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionary = { id ->
+                isFindDictionaryCalled = true
+                if (id == testDictionaryId) testDictionary else null
             }
         )
 
-        val context = testContext(CardOperation.GET_ALL_CARDS, repository)
+        val context = testContext(
+            op = CardOperation.GET_ALL_CARDS,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
         context.requestDictionaryId = testDictionaryId
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(context.errors.isEmpty()) { context.errors.toString() }
+        Assertions.assertTrue(isFindCardsCalled)
+        Assertions.assertTrue(isFindDictionaryCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
-        Assertions.assertTrue(context.errors.isEmpty())
 
-        Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
+        Assertions.assertEquals(
+            testCards.size,
+            (context.repositories.ttsClientRepository(AppMode.TEST) as MockTTSResourceRepository).findResourceIdCounts.toInt()
+        )
+
+        Assertions.assertEquals(testCards, context.responseCardEntityList)
     }
 
     @Test
     fun `test get-all-cards unexpected fail`() = runTest {
         val testDictionaryId = DictionaryId("42")
+        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
         val testResponseEntities = stubCards
 
-        var wasCalled = false
+        var isFindCardsCalled = false
+        var isFindDictionaryCalled = false
         val repository = MockDbCardRepository(
-            invokeGetAllCards = { _, id ->
-                wasCalled = true
-                CardsDbResponse(
-                    if (id != testDictionaryId) testResponseEntities else throw TestException()
-                )
+            invokeFindCards = { id ->
+                isFindCardsCalled = true
+                if (id != testDictionaryId) testResponseEntities.asSequence() else throw TestException()
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionary = { id ->
+                isFindDictionaryCalled = true
+                if (id == testDictionaryId) testDictionary else null
             }
         )
 
-        val context = testContext(CardOperation.GET_ALL_CARDS, repository)
+        val context = testContext(
+            op = CardOperation.GET_ALL_CARDS,
+            cardRepository = repository,
+            dictionaryRepository = dictionaryRepository,
+        )
         context.requestDictionaryId = testDictionaryId
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isFindDictionaryCalled)
+        Assertions.assertTrue(isFindCardsCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
         Assertions.assertEquals(0, context.responseCardEntityList.size)
         assertUnknownError(context, CardOperation.GET_ALL_CARDS)

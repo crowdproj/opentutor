@@ -33,21 +33,8 @@ class MemDbCardRepository(
 
     override fun findCard(cardId: CardId): CardEntity? = database.findCardById(cardId.asLong())?.toCardEntity()
 
-    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse {
-        val id = dictionaryId.asLong()
-        val errors = mutableListOf<AppError>()
-        val dictionary = checkDictionaryUser("getAllCards", userId, dictionaryId, dictionaryId, errors)
-        if (errors.isNotEmpty() || dictionary == null) {
-            return CardsDbResponse(errors = errors)
-        }
-        val cards = database.findCardsByDictionaryId(id).map { it.toCardEntity() }.toList()
-        val dictionaries = listOf(dictionary.toDictionaryEntity())
-        return CardsDbResponse(
-            cards = cards,
-            dictionaries = dictionaries,
-            errors = emptyList()
-        )
-    }
+    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> =
+        database.findCardsByDictionaryId(dictionaryId.asLong()).map { it.toCardEntity() }
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
         require(filter.length != 0) { "zero length is specified" }

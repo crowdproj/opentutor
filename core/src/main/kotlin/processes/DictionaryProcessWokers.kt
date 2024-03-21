@@ -22,9 +22,9 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         // TODO: temporary solution
         if (res.errors.isEmpty()) {
             this.responseDictionaryEntityList = res.dictionaries.map { dictionary ->
-                val cards = this.repositories.cardRepository(this.workMode).getAllCards(userId, dictionary.dictionaryId)
-                val total = cards.cards.size
-                val known = cards.cards.mapNotNull { it.answered }.count { it >= config.numberOfRightAnswers }
+                val cards = this.repositories.cardRepository(this.workMode).findCards(dictionary.dictionaryId).toList()
+                val total = cards.size
+                val known = cards.mapNotNull { it.answered }.count { it >= config.numberOfRightAnswers }
                 dictionary.copy(totalCardsCount = total, learnedCardsCount = known)
             }
         }

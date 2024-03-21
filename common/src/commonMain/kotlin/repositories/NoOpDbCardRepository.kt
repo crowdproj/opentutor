@@ -10,7 +10,7 @@ object NoOpDbCardRepository : DbCardRepository {
 
     override fun findCard(cardId: CardId): CardEntity = noOp()
 
-    override fun getAllCards(userId: AppUserId, dictionaryId: DictionaryId): CardsDbResponse = noOp()
+    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = noOp()
 
     override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse = noOp()
 
