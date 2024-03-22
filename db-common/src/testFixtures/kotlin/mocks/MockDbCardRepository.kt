@@ -17,7 +17,7 @@ class MockDbCardRepository(
     private val invokeFindCard: (CardId) -> CardEntity? = { null },
     private val invokeFindCardsByDictionaryId: (DictionaryId) -> Sequence<CardEntity> = { emptySequence() },
     private val invokeFindCardsByDictionaryIds: (Iterable<DictionaryId>) -> Sequence<CardEntity> = { emptySequence() },
-    private val invokeCreateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
+    private val invokeCreateCard: (CardEntity) -> CardEntity = { CardEntity.EMPTY },
     private val invokeUpdateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeUpdateCards: (AppUserId, Iterable<CardId>, (CardEntity) -> CardEntity) -> CardsDbResponse = { _, _, _ -> CardsDbResponse.EMPTY },
     private val invokeResetCard: (AppUserId, CardId) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
@@ -32,8 +32,7 @@ class MockDbCardRepository(
     override fun findCards(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> =
         invokeFindCardsByDictionaryIds(dictionaryIds)
 
-    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse =
-        invokeCreateCard(userId, cardEntity)
+    override fun createCard(cardEntity: CardEntity): CardEntity = invokeCreateCard(cardEntity)
 
     override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse =
         invokeUpdateCard(userId, cardEntity)

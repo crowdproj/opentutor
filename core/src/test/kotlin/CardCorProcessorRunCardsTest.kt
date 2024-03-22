@@ -20,6 +20,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
@@ -240,23 +241,40 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test create-card success`() = runTest {
-        val testResponseEntity = stubCard.copy(words = listOf(CardWordEntity("HHH")))
-        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = CardId.NONE)
+        val testDictionary = stubDictionary
+        val testResponseEntity = stubCard.copy(words = listOf(CardWordEntity("HHH")), sound = TTSResourceId.NONE)
+        val testRequestEntity = stubCard.copy(
+            words = listOf(CardWordEntity(word = "XXX")),
+            cardId = CardId.NONE,
+            dictionaryId = DictionaryId("4200")
+        )
 
-        var wasCalled = false
-        val repository = MockDbCardRepository(
-            invokeCreateCard = { _, it ->
-                wasCalled = true
-                CardDbResponse(if (it.words == testRequestEntity.words) testResponseEntity else testRequestEntity)
+        var isCreateCardCalled = false
+        var isFindDictionaryCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeCreateCard = {
+                isCreateCardCalled = true
+                if (it.words == testRequestEntity.words) testResponseEntity else testRequestEntity
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionary = { id ->
+                isFindDictionaryCalled = true
+                if (id == testRequestEntity.dictionaryId) testDictionary else null
             }
         )
 
-        val context = testContext(CardOperation.CREATE_CARD, repository)
+        val context = testContext(
+            op = CardOperation.CREATE_CARD,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
         context.requestCardEntity = testRequestEntity
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isCreateCardCalled)
+        Assertions.assertTrue(isFindDictionaryCalled)
         Assertions.assertEquals(requestId(CardOperation.CREATE_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status) { "Errors: ${context.errors}" }
         Assertions.assertTrue(context.errors.isEmpty())
@@ -266,22 +284,35 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test create-card unexpected fail`() = runTest {
+        val testDictionary = stubDictionary
         val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = CardId.NONE)
 
-        var wasCalled = false
-        val repository = MockDbCardRepository(
-            invokeCreateCard = { _, it ->
-                wasCalled = true
-                CardDbResponse(if (it.words == testRequestEntity.words) throw TestException() else testRequestEntity)
+        var isCreateCardCalled = false
+        var isFindDictionaryCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeCreateCard = {
+                isCreateCardCalled = true
+                if (it.words == testRequestEntity.words) throw TestException() else testRequestEntity
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionary = { id ->
+                isFindDictionaryCalled = true
+                if (id == testRequestEntity.dictionaryId) testDictionary else null
             }
         )
 
-        val context = testContext(CardOperation.CREATE_CARD, repository)
+        val context = testContext(
+            op = CardOperation.CREATE_CARD,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
         context.requestCardEntity = testRequestEntity
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isCreateCardCalled)
+        Assertions.assertTrue(isFindDictionaryCalled)
         Assertions.assertEquals(requestId(CardOperation.CREATE_CARD), context.requestId)
         Assertions.assertEquals(CardEntity.EMPTY, context.responseCardEntity)
         assertUnknownError(context, CardOperation.CREATE_CARD)

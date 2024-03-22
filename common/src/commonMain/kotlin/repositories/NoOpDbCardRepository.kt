@@ -11,7 +11,7 @@ object NoOpDbCardRepository : DbCardRepository {
 
     override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = noOp()
 
-    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse = noOp()
+    override fun createCard(cardEntity: CardEntity): CardEntity = noOp()
 
     override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse = noOp()
 

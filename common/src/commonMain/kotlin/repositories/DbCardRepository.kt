@@ -23,9 +23,12 @@ interface DbCardRepository {
     fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity>
 
     /**
-     * Creates card.
+     * Creates a new card returning the corresponding new card record from the db.
+     * @throws IllegalArgumentException if the specified card has ids
+     * @throws DbDataException in case card cannot be created for some reason,
+     * i.e., if the corresponding dictionary does not exist
      */
-    fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse
+    fun createCard(cardEntity: CardEntity): CardEntity
 
     /**
      * Updates.

@@ -20,6 +20,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
+import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
@@ -33,27 +34,31 @@ class PgDbCardRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun findCard(cardId: CardId): CardEntity? = connection.execute {
-        PgDbCard.findById(cardId.asLong())?.toCardEntity()
-    }
-
-    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = connection.execute {
-        PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }.asSequence()
-    }
-
-    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
+    override fun findCard(cardId: CardId): CardEntity? {
+        require(cardId != CardId.NONE)
         return connection.execute {
-            validateCardEntityForCreate(cardEntity)
-            val errors = mutableListOf<AppError>()
-            checkDictionaryUser("createCard", userId, cardEntity.dictionaryId, cardEntity.dictionaryId, errors)
-            if (errors.isNotEmpty()) {
-                return@execute CardDbResponse(errors = errors)
-            }
+            PgDbCard.findById(cardId.asLong())?.toCardEntity()
+        }
+    }
+
+    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> {
+        require(dictionaryId != DictionaryId.NONE)
+        return connection.execute {
+            PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }.asSequence()
+        }
+    }
+
+    override fun createCard(cardEntity: CardEntity): CardEntity {
+        validateCardEntityForCreate(cardEntity)
+        return connection.execute {
             val timestamp = systemNow()
-            val res = PgDbCard.new {
-                writeCardEntityToPgDbCard(from = cardEntity, to = this, timestamp = timestamp)
+            try {
+                PgDbCard.new {
+                    writeCardEntityToPgDbCard(from = cardEntity, to = this, timestamp = timestamp)
+                }.toCardEntity()
+            } catch (ex: Exception) {
+                throw DbDataException("Can't create card $cardEntity", ex)
             }
-            CardDbResponse(card = res.toCardEntity())
         }
     }
 

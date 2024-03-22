@@ -12,9 +12,11 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
+import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
 import org.junit.jupiter.api.Assertions.assertNotNull
@@ -170,6 +172,7 @@ abstract class DbCardRepositoryTest {
             assertEquals(expected, a)
         }
 
+        @Suppress("SameParameterValue")
         private fun assertSingleError(res: CardDbResponse, field: String, op: String): AppError {
             assertEquals(1, res.errors.size) { "Errors: ${res.errors}" }
             val error = res.errors[0]
@@ -233,14 +236,9 @@ abstract class DbCardRepositoryTest {
             ),
             answered = 42,
         )
-        val res = repository.createCard(userId, request)
-        assertEquals(CardEntity.EMPTY, res.card)
-        val error = assertSingleError(res, dictionaryId, "createCard")
-        assertEquals(
-            """Error while createCard: dictionary with id="$dictionaryId" not found""",
-            error.message
-        )
-        assertNull(error.exception)
+        Assertions.assertThrows(DbDataException::class.java) {
+            repository.createCard(request)
+        }
     }
 
     @Order(6)
@@ -348,10 +346,9 @@ abstract class DbCardRepositoryTest {
     @Test
     fun `test create card success`() {
         val request = newMurkyCardEntity
-        val res = repository.createCard(userId, request)
-        assertNoErrors(res)
-        assertCard(expected = request, actual = res.card, ignoreChangeAt = true, ignoreId = true)
-        assertTrue(res.card.cardId.asString().matches("\\d+".toRegex()))
+        val res = repository.createCard(request)
+        assertCard(expected = request, actual = res, ignoreChangeAt = true, ignoreId = true)
+        assertTrue(res.cardId.asString().matches("\\d+".toRegex()))
     }
 
     @Order(42)

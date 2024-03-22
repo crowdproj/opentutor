@@ -18,6 +18,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
+import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 
 class MemDbCardRepository(
@@ -25,22 +26,24 @@ class MemDbCardRepository(
 ) : DbCardRepository {
     private val database = MemDatabase.get(dbConfig.dataLocation)
 
-    override fun findCard(cardId: CardId): CardEntity? = database.findCardById(cardId.asLong())?.toCardEntity()
+    override fun findCard(cardId: CardId): CardEntity? {
+        require(cardId != CardId.NONE)
+        return database.findCardById(cardId.asLong())?.toCardEntity()
+    }
 
-    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> =
-        database.findCardsByDictionaryId(dictionaryId.asLong()).map { it.toCardEntity() }
+    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> {
+        require(dictionaryId != DictionaryId.NONE)
+        return database.findCardsByDictionaryId(dictionaryId.asLong()).map { it.toCardEntity() }
+    }
 
-    override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
+    override fun createCard(cardEntity: CardEntity): CardEntity {
         validateCardEntityForCreate(cardEntity)
-        val errors = mutableListOf<AppError>()
-        checkDictionaryUser("createCard", userId, cardEntity.dictionaryId, cardEntity.dictionaryId, errors)
-        if (errors.isNotEmpty()) {
-            return CardDbResponse(errors = errors)
-        }
         val timestamp = systemNow()
-        return CardDbResponse(
-            card = database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
-        )
+        return try {
+            database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
+        } catch (ex: Exception) {
+            throw DbDataException("Can't create card $cardEntity", ex)
+        }
     }
 
     override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {

@@ -119,8 +119,17 @@ fun ChainDSL<CardContext>.processCreateCard() = worker {
     }
     process {
         val userId = this.contextUserEntity.id
-        val res = this.repositories.cardRepository(this.workMode).createCard(userId, this.normalizedRequestCardEntity)
-        this.postProcess(res)
+        val dictionaryId = this.normalizedRequestCardEntity.dictionaryId
+        val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionary(dictionaryId)
+        if (dictionary == null) {
+            this.errors.add(noDictionaryFoundDataError("createCard", dictionaryId))
+        } else if (dictionary.userId != userId) {
+            this.errors.add(forbiddenEntityDataError("createCard", dictionaryId, userId))
+        } else {
+            val res = this.repositories.cardRepository(this.workMode).createCard(this.normalizedRequestCardEntity)
+            this.responseCardEntity = postProcess(res) { dictionary }
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
         this.handleThrowable(CardOperation.CREATE_CARD, it)
