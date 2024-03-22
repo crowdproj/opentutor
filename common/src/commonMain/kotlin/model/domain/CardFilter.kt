@@ -4,7 +4,10 @@ data class CardFilter(
     val dictionaryIds: List<DictionaryId> = emptyList(),
     val random: Boolean = false,
     val length: Int = 0,
-    val withUnknown: Boolean = false,
+    /**
+     * `true` to return only unknown words
+     */
+    val onlyUnknown: Boolean = false,
 ) {
     companion object {
         val EMPTY = CardFilter()

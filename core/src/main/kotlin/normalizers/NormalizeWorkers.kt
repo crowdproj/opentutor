@@ -111,7 +111,7 @@ fun CardFilter.normalize(): CardFilter {
         dictionaryIds = this.dictionaryIds.map { it.normalize() },
         random = this.random,
         length = this.length,
-        withUnknown = this.withUnknown,
+        onlyUnknown = this.onlyUnknown,
     )
 }
 

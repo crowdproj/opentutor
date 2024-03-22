@@ -31,6 +31,7 @@ import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
+import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import com.gitlab.sszuev.flashcards.stubs.stubDictionary
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -165,7 +166,7 @@ internal class CardCorProcessorRunCardsTest {
         var isFindCardsCalled = false
         var isFindDictionaryCalled = false
         val cardRepository = MockDbCardRepository(
-            invokeFindCards = { id ->
+            invokeFindCardsByDictionaryId = { id ->
                 isFindCardsCalled = true
                 if (id == testDictionaryId) testCards.asSequence() else emptySequence()
             }
@@ -209,7 +210,7 @@ internal class CardCorProcessorRunCardsTest {
         var isFindCardsCalled = false
         var isFindDictionaryCalled = false
         val repository = MockDbCardRepository(
-            invokeFindCards = { id ->
+            invokeFindCardsByDictionaryId = { id ->
                 isFindCardsCalled = true
                 if (id != testDictionaryId) testResponseEntities.asSequence() else throw TestException()
             }
@@ -289,32 +290,45 @@ internal class CardCorProcessorRunCardsTest {
     @Test
     fun `test search-cards success`() = runTest {
         val testFilter = CardFilter(
-            dictionaryIds = listOf(DictionaryId("21"), DictionaryId("42")),
+            dictionaryIds = listOf(DictionaryId("42")),
             random = false,
-            withUnknown = true,
+            onlyUnknown = true,
             length = 42,
         )
-        val testResponseEntities = stubCards
+        val testCards = stubCards.filter { it.dictionaryId in testFilter.dictionaryIds }
+        val testDictionaries = stubDictionaries
 
-        var wasCalled = false
-        val repository = MockDbCardRepository(
-            invokeSearchCards = { _, it ->
-                wasCalled = true
-                CardsDbResponse(if (it == testFilter) testResponseEntities else emptyList())
+        var isFindCardsCalled = false
+        var isFindDictionariesCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeFindCardsByDictionaryIds = {
+                isFindCardsCalled = true
+                if (it == testFilter.dictionaryIds) testCards.asSequence() else emptySequence()
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaries = {
+                isFindDictionariesCalled = true
+                if (it == testFilter.dictionaryIds) testDictionaries.asSequence() else emptySequence()
             }
         )
 
-        val context = testContext(CardOperation.SEARCH_CARDS, repository)
+        val context = testContext(
+            op = CardOperation.SEARCH_CARDS,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
         context.requestCardFilter = testFilter
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isFindCardsCalled)
+        Assertions.assertTrue(isFindDictionariesCalled)
         Assertions.assertEquals(requestId(CardOperation.SEARCH_CARDS), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
 
-        Assertions.assertEquals(testResponseEntities, context.responseCardEntityList)
+        Assertions.assertEquals(testCards, context.responseCardEntityList)
     }
 
     @Test
@@ -322,27 +336,38 @@ internal class CardCorProcessorRunCardsTest {
         val testFilter = CardFilter(
             dictionaryIds = listOf(DictionaryId("42")),
             random = false,
-            withUnknown = false,
+            onlyUnknown = false,
             length = 1,
         )
-        val testResponseEntities = stubCards
+        val testDictionaries = stubDictionaries
+        val testCards = stubCards
 
-        var wasCalled = false
-        val repository = MockDbCardRepository(
-            invokeSearchCards = { _, it ->
-                wasCalled = true
-                CardsDbResponse(
-                    if (it != testFilter) testResponseEntities else throw TestException()
-                )
+        var isFindCardsCalled = false
+        var isFindDictionariesCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeFindCardsByDictionaryIds = {
+                isFindCardsCalled = true
+                if (it == testFilter.dictionaryIds) throw TestException() else testCards.asSequence()
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaries = {
+                isFindDictionariesCalled = true
+                if (it == testFilter.dictionaryIds) testDictionaries.asSequence() else emptySequence()
             }
         )
 
-        val context = testContext(CardOperation.SEARCH_CARDS, repository)
+        val context = testContext(
+            op = CardOperation.SEARCH_CARDS,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
         context.requestCardFilter = testFilter
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isFindDictionariesCalled)
+        Assertions.assertTrue(isFindCardsCalled)
         Assertions.assertEquals(0, context.responseCardEntityList.size)
         assertUnknownError(context, CardOperation.SEARCH_CARDS)
     }

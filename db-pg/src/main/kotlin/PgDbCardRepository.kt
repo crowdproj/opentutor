@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.dbError
 import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
@@ -10,33 +9,23 @@ import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
-import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbDictionary
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
-import org.jetbrains.exposed.sql.CustomFunction
-import org.jetbrains.exposed.sql.DoubleColumnType
-import org.jetbrains.exposed.sql.Op
-import org.jetbrains.exposed.sql.SortOrder
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
-import org.jetbrains.exposed.sql.and
 import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.or
 
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
-    private val sysConfig: SysConfig = SysConfig(),
 ) : DbCardRepository {
     private val connection by lazy {
         // lazy, to avoid initialization error when there is no real pg-database
@@ -50,37 +39,6 @@ class PgDbCardRepository(
 
     override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = connection.execute {
         PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }.asSequence()
-    }
-
-    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
-        require(filter.length != 0) { "zero length is specified" }
-        val dictionaryIds = filter.dictionaryIds.map { it.asLong() }
-        val learned = sysConfig.numberOfRightAnswers
-        val random = CustomFunction<Double>("random", DoubleColumnType())
-        return connection.execute {
-            val dictionariesFromDb = PgDbDictionary.find(Dictionaries.id inList dictionaryIds)
-            if (dictionariesFromDb.empty()) {
-                return@execute CardsDbResponse(cards = emptyList(), dictionaries = emptyList(), errors = emptyList())
-            }
-            val forbiddenIds =
-                dictionariesFromDb.filter { it.userId.value != userId.asLong() }.map { it.id.value }.toSet()
-            val errors = forbiddenIds.map { forbiddenEntityDbError("searchCards", it.asDictionaryId(), userId) }
-            if (errors.isNotEmpty()) {
-                return@execute CardsDbResponse(cards = emptyList(), errors = errors)
-            }
-            val dictionaries =
-                dictionariesFromDb.filterNot { it.id.value in forbiddenIds }.map { it.toDictionaryEntity() }
-            var cardsIterable = PgDbCard.find {
-                Cards.dictionaryId inList dictionaryIds and
-                    (if (filter.withUnknown) Op.TRUE else Cards.answered.isNull() or Cards.answered.lessEq(learned))
-            }.orderBy(random to SortOrder.ASC)
-                .orderBy(Cards.dictionaryId to SortOrder.ASC)
-            if (filter.length > 0) {
-                cardsIterable = cardsIterable.limit(filter.length)
-            }
-            val cards = cardsIterable.map { it.toCardEntity() }
-            CardsDbResponse(cards = cards, dictionaries = dictionaries)
-        }
     }
 
     override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {

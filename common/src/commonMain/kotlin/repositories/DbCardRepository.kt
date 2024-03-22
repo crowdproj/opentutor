@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.repositories
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -22,11 +21,6 @@ interface DbCardRepository {
      * Finds cards by dictionary id.
      */
     fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity>
-
-    /**
-     * Searches cards by filter.
-     */
-    fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse
 
     /**
      * Creates card.
@@ -52,6 +46,12 @@ interface DbCardRepository {
      * Deletes card by id.
      */
     fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse
+
+    /**
+     * Finds cards by dictionary ids.
+     */
+    fun findCards(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> =
+        dictionaryIds.asSequence().flatMap { findCards(it) }
 }
 
 data class CardsDbResponse(

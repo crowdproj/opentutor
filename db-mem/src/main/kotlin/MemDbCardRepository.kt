@@ -1,13 +1,10 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.SysConfig
 import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.dbError
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
-import com.gitlab.sszuev.flashcards.common.status
 import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
@@ -16,18 +13,15 @@ import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
-import kotlin.random.Random
 
 class MemDbCardRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
-    private val sysConfig: SysConfig = SysConfig(),
 ) : DbCardRepository {
     private val database = MemDatabase.get(dbConfig.dataLocation)
 
@@ -35,32 +29,6 @@ class MemDbCardRepository(
 
     override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> =
         database.findCardsByDictionaryId(dictionaryId.asLong()).map { it.toCardEntity() }
-
-    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse {
-        require(filter.length != 0) { "zero length is specified" }
-        val ids = filter.dictionaryIds.map { it.asLong() }
-        val dictionariesFromDb = database.findDictionariesByIds(ids).sortedBy { it.id }.toSet()
-        if (dictionariesFromDb.isEmpty()) {
-            return CardsDbResponse()
-        }
-        val forbiddenIds =
-            dictionariesFromDb.filter { it.userId != userId.asLong() }.map { checkNotNull(it.id) }.toSet()
-        val errors = forbiddenIds.map { forbiddenEntityDbError("searchCards", it.asDictionaryId(), userId) }
-        if (errors.isNotEmpty()) {
-            return CardsDbResponse(cards = emptyList(), dictionaries = emptyList(), errors = errors)
-        }
-        val dictionaries = dictionariesFromDb.filterNot { it.id in forbiddenIds }.map { it.toDictionaryEntity() }
-        var cardsFromDb = database.findCardsByDictionaryIds(ids)
-        if (!filter.withUnknown) {
-            cardsFromDb = cardsFromDb.filter { sysConfig.status(it.answered) != DocumentCardStatus.LEARNED }
-        }
-        if (filter.random) {
-            cardsFromDb = cardsFromDb.shuffled(Random.Default)
-        }
-        val cards =
-            (if (filter.length < 0) cardsFromDb else cardsFromDb.take(filter.length)).map { it.toCardEntity() }.toList()
-        return CardsDbResponse(cards = cards, dictionaries = dictionaries)
-    }
 
     override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
         validateCardEntityForCreate(cardEntity)

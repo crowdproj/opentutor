@@ -18,6 +18,9 @@ interface DbDictionaryRepository {
     fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse
 
     fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse
+
+    fun findDictionaries(dictionaryIds: Iterable<DictionaryId>): Sequence<DictionaryEntity> =
+        dictionaryIds.asSequence().mapNotNull { findDictionary(it) }
 }
 
 data class DictionariesDbResponse(

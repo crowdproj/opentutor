@@ -39,7 +39,7 @@ internal class CardCorProcessorValidationTest {
             dictionaryIds = listOf(4, 2, 42).map { DictionaryId(it.toString()) },
             length = 42,
             random = false,
-            withUnknown = true,
+            onlyUnknown = true,
         )
         private val testCardLearn = CardLearn(
             cardId = CardId("42"),

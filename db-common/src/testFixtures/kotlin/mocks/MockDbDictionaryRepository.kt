@@ -12,6 +12,7 @@ import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
 
 class MockDbDictionaryRepository(
     private val invokeFindDictionary: (DictionaryId) -> DictionaryEntity? = { null },
+    private val invokeFindDictionaries: (Iterable<DictionaryId>) -> Sequence<DictionaryEntity> = { emptySequence() },
     private val invokeGetAllDictionaries: (AppUserId) -> DictionariesDbResponse = { DictionariesDbResponse.EMPTY },
     private val invokeCreateDictionary: (AppUserId, DictionaryEntity) -> DictionaryDbResponse = { _, _ -> DictionaryDbResponse.EMPTY },
     private val invokeDeleteDictionary: (AppUserId, DictionaryId) -> RemoveDictionaryDbResponse = { _, _ -> RemoveDictionaryDbResponse.EMPTY },
@@ -34,4 +35,7 @@ class MockDbDictionaryRepository(
 
     override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse =
         invokeUploadDictionary(userId, resource)
+
+    override fun findDictionaries(dictionaryIds: Iterable<DictionaryId>): Sequence<DictionaryEntity> =
+        invokeFindDictionaries(dictionaryIds)
 }

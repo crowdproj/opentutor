@@ -5,7 +5,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
@@ -242,35 +241,6 @@ abstract class DbCardRepositoryTest {
             error.message
         )
         assertNull(error.exception)
-    }
-
-    @Order(5)
-    @Test
-    fun `test search cards random with unknown`() {
-        val filter = CardFilter(
-            dictionaryIds = listOf(DictionaryId("1"), DictionaryId("2"), DictionaryId("3")),
-            withUnknown = true,
-            random = true,
-            length = 300,
-        )
-        val res1 = repository.searchCard(userId, filter)
-        val res2 = repository.searchCard(userId, filter)
-
-        assertEquals(0, res1.errors.size)
-        assertEquals(0, res2.errors.size)
-        assertEquals(300, res1.cards.size)
-        assertEquals(300, res2.cards.size)
-        assertNotEquals(res1, res2)
-        assertEquals(setOf("1", "2"), res1.cards.map { it.dictionaryId }.map { it.asString() }.toSet())
-        assertEquals(setOf("1", "2"), res2.cards.map { it.dictionaryId }.map { it.asString() }.toSet())
-        assertEquals(
-            setOf("1", "2"),
-            res1.dictionaries.map { it.dictionaryId }.map { it.asString() }.toSet()
-        )
-        assertEquals(
-            setOf("1", "2"),
-            res2.dictionaries.map { it.dictionaryId }.map { it.asString() }.toSet()
-        )
     }
 
     @Order(6)

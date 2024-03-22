@@ -74,7 +74,7 @@ internal class DictionaryCorProcessorRunTest {
             }
         )
         val cardsRepository = MockDbCardRepository(
-            invokeFindCards = { _ ->
+            invokeFindCardsByDictionaryId = { _ ->
                 getAllCardsWasCalled = true
                 emptySequence()
             }

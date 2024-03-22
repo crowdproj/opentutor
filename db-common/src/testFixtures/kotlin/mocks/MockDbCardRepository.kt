@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.dbcommon.mocks
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
@@ -16,8 +15,8 @@ import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
  */
 class MockDbCardRepository(
     private val invokeFindCard: (CardId) -> CardEntity? = { null },
-    private val invokeFindCards: (DictionaryId) -> Sequence<CardEntity> = { emptySequence() },
-    private val invokeSearchCards: (AppUserId, CardFilter) -> CardsDbResponse = { _, _ -> CardsDbResponse.EMPTY },
+    private val invokeFindCardsByDictionaryId: (DictionaryId) -> Sequence<CardEntity> = { emptySequence() },
+    private val invokeFindCardsByDictionaryIds: (Iterable<DictionaryId>) -> Sequence<CardEntity> = { emptySequence() },
     private val invokeCreateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeUpdateCard: (AppUserId, CardEntity) -> CardDbResponse = { _, _ -> CardDbResponse.EMPTY },
     private val invokeUpdateCards: (AppUserId, Iterable<CardId>, (CardEntity) -> CardEntity) -> CardsDbResponse = { _, _, _ -> CardsDbResponse.EMPTY },
@@ -27,9 +26,11 @@ class MockDbCardRepository(
 
     override fun findCard(cardId: CardId): CardEntity? = invokeFindCard(cardId)
 
-    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = invokeFindCards(dictionaryId)
+    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> =
+        invokeFindCardsByDictionaryId(dictionaryId)
 
-    override fun searchCard(userId: AppUserId, filter: CardFilter): CardsDbResponse = invokeSearchCards(userId, filter)
+    override fun findCards(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> =
+        invokeFindCardsByDictionaryIds(dictionaryIds)
 
     override fun createCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse =
         invokeCreateCard(userId, cardEntity)

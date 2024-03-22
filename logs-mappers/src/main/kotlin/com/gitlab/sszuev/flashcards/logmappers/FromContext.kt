@@ -94,7 +94,7 @@ private fun CardWordExampleEntity.toLog() = CardWordExampleLogResource(
 private fun CardFilter.toLog() = CardFilterLogResource(
     dictionaryIds = this.dictionaryIds.map { it.asString() },
     random = this.random,
-    unknown = this.withUnknown,
+    unknown = this.onlyUnknown,
     length = this.length,
 )
 

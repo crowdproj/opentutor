@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.core.processes
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
-import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 
 private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, right ->
     val la = left.answered ?: 0
@@ -16,28 +15,28 @@ private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, 
 /**
  * Prepares a card deck for a tutor-session.
  */
-fun CardContext.findCardDeck(): CardsDbResponse {
-    return if (this.normalizedRequestCardFilter.random) {
-        // For random mode, do not use the database support since logic is quite complicated.
-        // We load everything into memory, since the dictionary can hardly contain more than a thousand words,
-        // i.e., this is relatively small data.
-        val filter = this.normalizedRequestCardFilter.copy(random = false, length = -1)
-        val res = this.repositories.cardRepository(this.workMode).searchCard(this.contextUserEntity.id, filter)
-        if (res.errors.isNotEmpty()) {
-            return res
-        }
-        var cards = res.cards.shuffled().sortedWith(comparator)
-        if (this.normalizedRequestCardFilter.length > 0) {
-            val set = mutableSetOf<CardEntity>()
-            collectCardDeck(cards, set, this.normalizedRequestCardFilter.length)
-            cards = set.toList()
-            cards = cards.shuffled()
-        }
-        return res.copy(cards = cards)
-    } else {
-        this.repositories.cardRepository(this.workMode)
-            .searchCard(this.contextUserEntity.id, this.normalizedRequestCardFilter)
+fun CardContext.findCardDeck(): List<CardEntity> {
+    val threshold = config.numberOfRightAnswers
+    var cards = this.repositories.cardRepository(this.workMode)
+        .findCards(this.normalizedRequestCardFilter.dictionaryIds)
+        .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) <= threshold }
+    if (this.normalizedRequestCardFilter.random) {
+        cards = cards.shuffled()
     }
+    cards = cards.sortedWith(comparator)
+    if (!this.normalizedRequestCardFilter.random && this.normalizedRequestCardFilter.length > 0) {
+        return cards.take(this.normalizedRequestCardFilter.length).toList()
+    }
+    var res = cards.toList()
+    if (this.normalizedRequestCardFilter.length > 0) {
+        val set = mutableSetOf<CardEntity>()
+        collectCardDeck(res, set, this.normalizedRequestCardFilter.length)
+        res = set.toList()
+        if (this.normalizedRequestCardFilter.random) {
+            res = res.shuffled()
+        }
+    }
+    return res
 }
 
 private fun collectCardDeck(all: List<CardEntity>, res: MutableSet<CardEntity>, num: Int) {
