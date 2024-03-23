@@ -7,7 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 
 object NoOpDbDictionaryRepository : DbDictionaryRepository {
 
-    override fun findDictionary(dictionaryId: DictionaryId): DictionaryEntity = noOp()
+    override fun findDictionaryById(dictionaryId: DictionaryId): DictionaryEntity = noOp()
 
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse = noOp()
 

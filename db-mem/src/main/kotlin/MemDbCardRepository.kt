@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.asLong
-import com.gitlab.sszuev.flashcards.common.dbError
 import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
@@ -16,7 +15,6 @@ import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
-import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
@@ -26,12 +24,12 @@ class MemDbCardRepository(
 ) : DbCardRepository {
     private val database = MemDatabase.get(dbConfig.dataLocation)
 
-    override fun findCard(cardId: CardId): CardEntity? {
+    override fun findCardById(cardId: CardId): CardEntity? {
         require(cardId != CardId.NONE)
         return database.findCardById(cardId.asLong())?.toCardEntity()
     }
 
-    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> {
+    override fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity> {
         require(dictionaryId != DictionaryId.NONE)
         return database.findCardsByDictionaryId(dictionaryId.asLong()).map { it.toCardEntity() }
     }
@@ -46,63 +44,15 @@ class MemDbCardRepository(
         }
     }
 
-    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
+    override fun updateCard(cardEntity: CardEntity): CardEntity {
         validateCardEntityForUpdate(cardEntity)
+        val found = database.findCardById(cardEntity.cardId.asLong())
+            ?: throw DbDataException("Can't find card, id = ${cardEntity.cardId.asLong()}")
+        if (found.dictionaryId != cardEntity.dictionaryId.asLong()) {
+            throw DbDataException("Changing dictionary-id is not allowed; card id = ${cardEntity.cardId.asLong()}")
+        }
         val timestamp = systemNow()
-        val found = database.findCardById(cardEntity.cardId.asLong()) ?: return CardDbResponse(
-            noCardFoundDbError("updateCard", cardEntity.cardId)
-        )
-        val errors = mutableListOf<AppError>()
-        val foundDictionary =
-            checkDictionaryUser("updateCard", userId, cardEntity.dictionaryId, cardEntity.cardId, errors)
-        if (foundDictionary != null && foundDictionary.id != cardEntity.dictionaryId.asLong()) {
-            errors.add(
-                dbError(
-                    operation = "updateCard",
-                    fieldName = cardEntity.cardId.asString(),
-                    details = "given and found dictionary ids do not match: ${cardEntity.dictionaryId.asString()} != ${found.dictionaryId}"
-                )
-            )
-        }
-        if (errors.isNotEmpty()) {
-            return CardDbResponse(errors = errors)
-        }
-        return CardDbResponse(
-            card = database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
-        )
-    }
-
-    override fun updateCards(
-        userId: AppUserId,
-        cardIds: Iterable<CardId>,
-        update: (CardEntity) -> CardEntity
-    ): CardsDbResponse {
-        val timestamp = systemNow()
-        val ids = cardIds.map { it.asLong() }
-        val dbCards = database.findCardsById(ids).associateBy { checkNotNull(it.id) }
-        val errors = mutableListOf<AppError>()
-        val dbDictionaries = mutableMapOf<Long, MemDbDictionary>()
-        dbCards.forEach {
-            val dictionary = dbDictionaries.computeIfAbsent(checkNotNull(it.value.dictionaryId)) { k ->
-                checkNotNull(database.findDictionaryById(k))
-            }
-            if (dictionary.userId != userId.asLong()) {
-                errors.add(forbiddenEntityDbError("updateCards", it.key.asCardId(), userId))
-            }
-        }
-        if (errors.isNotEmpty()) {
-            return CardsDbResponse(errors = errors)
-        }
-        val cards = dbCards.values.map {
-            val dbCard = update(it.toCardEntity()).toMemDbCard().copy(changedAt = timestamp)
-            database.saveCard(dbCard).toCardEntity()
-        }
-        val dictionaries = dbDictionaries.values.map { it.toDictionaryEntity() }
-        return CardsDbResponse(
-            cards = cards,
-            dictionaries = dictionaries,
-            errors = emptyList(),
-        )
+        return database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
     }
 
     override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {

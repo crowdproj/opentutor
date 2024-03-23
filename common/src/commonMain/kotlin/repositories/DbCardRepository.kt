@@ -4,7 +4,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 /**
@@ -15,30 +14,45 @@ interface DbCardRepository {
     /**
      * Finds card by id returning `null` if nothing found.
      */
-    fun findCard(cardId: CardId): CardEntity?
+    fun findCardById(cardId: CardId): CardEntity?
 
     /**
      * Finds cards by dictionary id.
      */
-    fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity>
+    fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity>
+
+    /**
+     * Finds cards by dictionary ids.
+     */
+    fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> =
+        dictionaryIds.asSequence().flatMap { findCardsByDictionaryId(it) }
+
+    /**
+     * Finds cards by card ids.
+     */
+    fun findCardsByIdIn(cardIds: Iterable<CardId>): Sequence<CardEntity> =
+        cardIds.asSequence().mapNotNull { findCardById(it) }
 
     /**
      * Creates a new card returning the corresponding new card record from the db.
-     * @throws IllegalArgumentException if the specified card has ids
+     * @throws IllegalArgumentException if the specified card has card id or illegal structure
      * @throws DbDataException in case card cannot be created for some reason,
      * i.e., if the corresponding dictionary does not exist
      */
     fun createCard(cardEntity: CardEntity): CardEntity
 
     /**
-     * Updates.
+     * Updates the card entity.
+     * @throws IllegalArgumentException if the specified card has no card id or has illegal structure
+     * @throws DbDataException in case card cannot be created for some reason,
+     * i.e., if the corresponding dictionary does not exist
      */
-    fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse
+    fun updateCard(cardEntity: CardEntity): CardEntity
 
     /**
      * Performs bulk update.
      */
-    fun updateCards(userId: AppUserId, cardIds: Iterable<CardId>, update: (CardEntity) -> CardEntity): CardsDbResponse
+    fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = cardEntities.map { updateCard(it) }
 
     /**
      * Resets status.
@@ -50,22 +64,6 @@ interface DbCardRepository {
      */
     fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse
 
-    /**
-     * Finds cards by dictionary ids.
-     */
-    fun findCards(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> =
-        dictionaryIds.asSequence().flatMap { findCards(it) }
-}
-
-data class CardsDbResponse(
-    val cards: List<CardEntity> = emptyList(),
-    val dictionaries: List<DictionaryEntity> = emptyList(),
-    val errors: List<AppError> = emptyList(),
-) {
-
-    companion object {
-        val EMPTY = CardsDbResponse(cards = emptyList(), dictionaries = emptyList(), errors = emptyList())
-    }
 }
 
 data class CardDbResponse(

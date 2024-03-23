@@ -15,10 +15,10 @@ private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, 
 /**
  * Prepares a card deck for a tutor-session.
  */
-fun CardContext.findCardDeck(): List<CardEntity> {
+internal fun CardContext.findCardDeck(): List<CardEntity> {
     val threshold = config.numberOfRightAnswers
     var cards = this.repositories.cardRepository(this.workMode)
-        .findCards(this.normalizedRequestCardFilter.dictionaryIds)
+        .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds)
         .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) <= threshold }
     if (this.normalizedRequestCardFilter.random) {
         cards = cards.shuffled()

@@ -55,11 +55,11 @@ abstract class DbDictionaryRepositoryTest {
     @Order(1)
     @Test
     fun `test get dictionary by id`() {
-        val res1 = repository.findDictionary(DictionaryId("2"))
+        val res1 = repository.findDictionaryById(DictionaryId("2"))
         Assertions.assertNotNull(res1)
         Assertions.assertEquals("Weather", res1!!.name)
         Assertions.assertEquals("42", res1.userId.asString())
-        val res2 = repository.findDictionary(DictionaryId("1"))
+        val res2 = repository.findDictionaryById(DictionaryId("1"))
         Assertions.assertNotNull(res2)
         Assertions.assertEquals("Irregular Verbs", res2!!.name)
         Assertions.assertEquals("42", res2.userId.asString())

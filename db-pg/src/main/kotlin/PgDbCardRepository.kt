@@ -1,11 +1,13 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
+import com.gitlab.sszuev.flashcards.common.asKotlin
 import com.gitlab.sszuev.flashcards.common.asLong
-import com.gitlab.sszuev.flashcards.common.dbError
+import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
 import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
 import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.systemNow
+import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
@@ -18,12 +20,13 @@ import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
-import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.statements.BatchUpdateStatement
+import org.jetbrains.exposed.sql.transactions.TransactionManager
 
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig(),
@@ -34,17 +37,34 @@ class PgDbCardRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun findCard(cardId: CardId): CardEntity? {
+    override fun findCardById(cardId: CardId): CardEntity? {
         require(cardId != CardId.NONE)
         return connection.execute {
             PgDbCard.findById(cardId.asLong())?.toCardEntity()
         }
     }
 
-    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> {
+    override fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity> {
         require(dictionaryId != DictionaryId.NONE)
         return connection.execute {
             PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }.asSequence()
+        }
+    }
+
+    override fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> {
+        return connection.execute {
+            PgDbCard.find {
+                Cards.dictionaryId inList
+                    dictionaryIds.onEach { require(it != DictionaryId.NONE) }.map { it.asRecordId() }.toSet()
+            }.map { it.toCardEntity() }.asSequence()
+        }
+    }
+
+    override fun findCardsByIdIn(cardIds: Iterable<CardId>): Sequence<CardEntity> {
+        return connection.execute {
+            PgDbCard.find {
+                Cards.id inList cardIds.onEach { require(it != CardId.NONE) }.map { it.asRecordId() }.toSet()
+            }.map { it.toCardEntity() }.asSequence()
         }
     }
 
@@ -62,71 +82,38 @@ class PgDbCardRepository(
         }
     }
 
-    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse {
+    override fun updateCard(cardEntity: CardEntity): CardEntity {
+        validateCardEntityForUpdate(cardEntity)
         return connection.execute {
-            validateCardEntityForUpdate(cardEntity)
+            val found = PgDbCard.findById(cardEntity.cardId.asRecordId())
+                ?: throw DbDataException("Can't find card id = ${cardEntity.cardId.asLong()}")
+            if (found.dictionaryId.value != cardEntity.dictionaryId.asLong()) {
+                throw DbDataException("Changing dictionary-id is not allowed; card id = ${cardEntity.cardId.asLong()}")
+            }
             val timestamp = systemNow()
-            val found = PgDbCard.findById(cardEntity.cardId.asRecordId()) ?: return@execute CardDbResponse(
-                noCardFoundDbError("updateCard", cardEntity.cardId)
-            )
-            val errors = mutableListOf<AppError>()
-            val foundDictionary =
-                checkDictionaryUser("updateCard", userId, cardEntity.dictionaryId, cardEntity.cardId, errors)
-            if (foundDictionary != null && foundDictionary.id.value != cardEntity.dictionaryId.asLong()) {
-                errors.add(
-                    dbError(
-                        operation = "updateCard",
-                        fieldName = cardEntity.cardId.asString(),
-                        details = "given and found dictionary ids do not match: ${cardEntity.dictionaryId.asString()} != ${found.dictionaryId.value}"
-                    )
-                )
-            }
-            if (errors.isNotEmpty()) {
-                return@execute CardDbResponse(errors = errors)
-            }
             writeCardEntityToPgDbCard(from = cardEntity, to = found, timestamp = timestamp)
-            return@execute CardDbResponse(card = found.toCardEntity())
+            found.toCardEntity()
         }
     }
 
-    override fun updateCards(
-        userId: AppUserId,
-        cardIds: Iterable<CardId>,
-        update: (CardEntity) -> CardEntity
-    ): CardsDbResponse {
-        return connection.execute {
-            val timestamp = systemNow()
-            val ids = cardIds.map { it.asLong() }
-            val dbCards = PgDbCard.find { Cards.id inList ids }.associateBy { it.id.value }
-            val errors = mutableListOf<AppError>()
-            ids.filterNot { it in dbCards.keys }.forEach {
-                errors.add(noCardFoundDbError(operation = "updateCards", id = it.asCardId()))
+    override fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = connection.execute {
+        val res = mutableListOf<CardEntity>()
+        val timestamp = systemNow()
+        BatchUpdateStatement(Cards).apply {
+            cardEntities.onEach {
+                validateCardEntityForUpdate(it)
+                addBatch(it.cardId.asRecordId())
+                this[Cards.dictionaryId] = it.dictionaryId.asRecordId()
+                this[Cards.words] = it.toPgDbCardWordsJson()
+                this[Cards.answered] = it.answered
+                this[Cards.details] = it.detailsAsCommonCardDetailsDto().toJsonString()
+                this[Cards.changedAt] = timestamp
+            }.forEach {
+                res.add(it.copy(changedAt = timestamp.asKotlin()))
             }
-            val dbDictionaries = mutableMapOf<Long, PgDbDictionary>()
-            dbCards.forEach {
-                val dictionary = dbDictionaries.computeIfAbsent(it.value.dictionaryId.value) { k ->
-                    checkNotNull(PgDbDictionary.findById(k))
-                }
-                if (dictionary.userId.value != userId.asLong()) {
-                    errors.add(forbiddenEntityDbError("updateCards", it.key.asCardId(), userId))
-                }
-            }
-            if (errors.isNotEmpty()) {
-                return@execute CardsDbResponse(errors = errors)
-            }
-            val cards = dbCards.values.onEach {
-                val new = update(it.toCardEntity())
-                writeCardEntityToPgDbCard(from = new, to = it, timestamp = timestamp)
-            }.map {
-                it.toCardEntity()
-            }
-            val dictionaries = dbDictionaries.values.map { it.toDictionaryEntity() }
-            CardsDbResponse(
-                cards = cards,
-                dictionaries = dictionaries,
-                errors = emptyList(),
-            )
+            execute(TransactionManager.current())
         }
+        res
     }
 
     override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {

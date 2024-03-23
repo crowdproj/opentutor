@@ -7,19 +7,13 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 
 object NoOpDbCardRepository : DbCardRepository {
 
-    override fun findCard(cardId: CardId): CardEntity = noOp()
+    override fun findCardById(cardId: CardId): CardEntity = noOp()
 
-    override fun findCards(dictionaryId: DictionaryId): Sequence<CardEntity> = noOp()
+    override fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity> = noOp()
 
     override fun createCard(cardEntity: CardEntity): CardEntity = noOp()
 
-    override fun updateCard(userId: AppUserId, cardEntity: CardEntity): CardDbResponse = noOp()
-
-    override fun updateCards(
-        userId: AppUserId,
-        cardIds: Iterable<CardId>,
-        update: (CardEntity) -> CardEntity
-    ): CardsDbResponse = noOp()
+    override fun updateCard(cardEntity: CardEntity): CardEntity = noOp()
 
     override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse = noOp()
 

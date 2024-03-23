@@ -44,7 +44,7 @@ class PgDbDictionaryRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun findDictionary(dictionaryId: DictionaryId): DictionaryEntity? = connection.execute {
+    override fun findDictionaryById(dictionaryId: DictionaryId): DictionaryEntity? = connection.execute {
         PgDbDictionary.findById(dictionaryId.asLong())?.toDictionaryEntity()
     }
 
