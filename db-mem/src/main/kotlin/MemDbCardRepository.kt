@@ -14,7 +14,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
@@ -55,18 +54,6 @@ class MemDbCardRepository(
         return database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
     }
 
-    override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse {
-        val timestamp = systemNow()
-        val card =
-            database.findCardById(cardId.asLong()) ?: return CardDbResponse(noCardFoundDbError("resetCard", cardId))
-        val errors = mutableListOf<AppError>()
-        checkDictionaryUser("resetCard", userId, card.dictionaryId.asDictionaryId(), cardId, errors)
-        if (errors.isNotEmpty()) {
-            return CardDbResponse(errors = errors)
-        }
-        return CardDbResponse(card = database.saveCard(card.copy(answered = 0, changedAt = timestamp)).toCardEntity())
-    }
-
     override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse {
         val timestamp = systemNow()
         val card = database.findCardById(cardId.asLong()) ?: return RemoveCardDbResponse(
@@ -85,7 +72,7 @@ class MemDbCardRepository(
 
     @Suppress("DuplicatedCode")
     private fun checkDictionaryUser(
-        operation: String,
+        @Suppress("SameParameterValue") operation: String,
         userId: AppUserId,
         dictionaryId: DictionaryId,
         entityId: Id,

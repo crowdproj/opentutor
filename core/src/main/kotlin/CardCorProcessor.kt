@@ -9,7 +9,7 @@ import com.gitlab.sszuev.flashcards.core.processes.processFindUser
 import com.gitlab.sszuev.flashcards.core.processes.processGetAllCards
 import com.gitlab.sszuev.flashcards.core.processes.processGetCard
 import com.gitlab.sszuev.flashcards.core.processes.processLearnCards
-import com.gitlab.sszuev.flashcards.core.processes.processResetCards
+import com.gitlab.sszuev.flashcards.core.processes.processResetCard
 import com.gitlab.sszuev.flashcards.core.processes.processResource
 import com.gitlab.sszuev.flashcards.core.processes.processUpdateCard
 import com.gitlab.sszuev.flashcards.core.stubs.cardStubSuccess
@@ -219,7 +219,7 @@ class CardCorProcessor {
                 }
                 runs(CardOperation.RESET_CARD) {
                     processFindUser(CardOperation.RESET_CARD)
-                    processResetCards()
+                    processResetCard()
                 }
             }
 

@@ -11,7 +11,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 
 fun ChainDSL<CardContext>.processGetCard() = worker {
@@ -183,8 +182,7 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
             }
         }
         if (errors.isEmpty()) {
-            this.responseCardEntityList =
-                this.postProcess(learnCards(foundCards, cardLearns).iterator()) { checkNotNull(foundDictionaries[it]) }
+            this.responseCardEntityList = learnCards(foundCards, cardLearns)
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
@@ -193,15 +191,30 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
     }
 }
 
-fun ChainDSL<CardContext>.processResetCards() = worker {
+fun ChainDSL<CardContext>.processResetCard() = worker {
     this.name = "process reset-cards request"
     test {
         this.status == AppStatus.RUN
     }
     process {
         val userId = this.contextUserEntity.id
-        val res = this.repositories.cardRepository(this.workMode).resetCard(userId, this.normalizedRequestCardEntityId)
-        this.postProcess(res)
+        val cardId = this.normalizedRequestCardEntityId
+        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId)
+        if (card == null) {
+            this.errors.add(noCardFoundDataError("resetCard", cardId))
+        } else {
+            val dictionaryId = card.dictionaryId
+            val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(dictionaryId)
+            if (dictionary == null) {
+                this.errors.add(noDictionaryFoundDataError("resetCard", dictionaryId))
+            } else if (dictionary.userId != userId) {
+                this.errors.add(forbiddenEntityDataError("resetCard", dictionaryId, userId))
+            } else {
+                val res = this.repositories.cardRepository(this.workMode).updateCard(card.copy(answered = 0))
+                this.responseCardEntity = res
+            }
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
         this.handleThrowable(CardOperation.RESET_CARD, it)
@@ -260,14 +273,6 @@ private suspend fun CardContext.postProcess(
         findResourceIdResponse.id
     }
     return card.copy(words = words, sound = cardAudioId)
-}
-
-private fun CardContext.postProcess(res: CardDbResponse) {
-    this.responseCardEntity = res.card
-    if (res.errors.isNotEmpty()) {
-        this.errors.addAll(res.errors)
-    }
-    this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
 }
 
 private fun CardContext.postProcess(res: RemoveCardDbResponse) {

@@ -55,26 +55,10 @@ interface DbCardRepository {
     fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = cardEntities.map { updateCard(it) }
 
     /**
-     * Resets status.
-     */
-    fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse
-
-    /**
      * Deletes card by id.
      */
     fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse
 
-}
-
-data class CardDbResponse(
-    val card: CardEntity = CardEntity.EMPTY,
-    val errors: List<AppError> = emptyList(),
-) {
-    constructor(error: AppError) : this(errors = listOf(error))
-
-    companion object {
-        val EMPTY = CardDbResponse(card = CardEntity.EMPTY)
-    }
 }
 
 data class RemoveCardDbResponse(

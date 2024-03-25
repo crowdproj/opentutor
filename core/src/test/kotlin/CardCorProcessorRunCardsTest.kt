@@ -21,7 +21,6 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
@@ -586,29 +585,42 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test reset-card success`() = runTest {
-        val testId = CardId("42")
-        val testResponseEntity = stubCard.copy(cardId = testId)
+        val testDictionaryId = DictionaryId("42")
+        val testCardId = CardId("42")
+        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
+        val testCard = stubCard.copy(cardId = testCardId, answered = 42, dictionaryId = testDictionaryId)
+        val expectedCard = testCard.copy(answered = 0)
 
-        var wasCalled = false
-        val repository = MockDbCardRepository(
-            invokeResetCard = { _, it ->
-                wasCalled = true
-                CardDbResponse(
-                    card = if (it == testId) testResponseEntity else CardEntity.EMPTY,
-                )
+        var isUpdateCardCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeUpdateCard = {
+                isUpdateCardCalled = true
+                if (it.cardId == testCardId) it else Assertions.fail()
+            },
+            invokeFindCardById = {
+                if (it == testCardId) testCard else null
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaryById = {
+                if (it == testDictionaryId) testDictionary else null
             }
         )
 
-        val context = testContext(CardOperation.RESET_CARD, repository)
-        context.requestCardEntityId = testId
+        val context = testContext(
+            op = CardOperation.RESET_CARD,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
+        context.requestCardEntityId = testCardId
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isUpdateCardCalled)
         Assertions.assertEquals(requestId(CardOperation.RESET_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
-        Assertions.assertEquals(testResponseEntity, context.responseCardEntity)
+        Assertions.assertEquals(expectedCard, context.responseCardEntity)
     }
 
     @Test

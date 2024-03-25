@@ -9,7 +9,6 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
-import com.gitlab.sszuev.flashcards.repositories.CardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
@@ -171,11 +170,6 @@ abstract class DbCardRepositoryTest {
             assertEquals(expected, a)
         }
 
-
-        private fun assertNoErrors(res: CardDbResponse) {
-            assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
-        }
-
         private fun assertNoErrors(res: RemoveCardDbResponse) {
             assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
         }
@@ -281,25 +275,6 @@ abstract class DbCardRepositoryTest {
         Assertions.assertThrows(DbDataException::class.java) {
             repository.updateCard(request)
         }
-    }
-
-    @Order(10)
-    @Test
-    fun `test get card & reset card success`() {
-        val request = snowCardEntity
-        val prev = repository.findCardById(request.cardId)
-        assertNotNull(prev)
-        assertCard(expected = request, actual = prev!!, ignoreChangeAt = true, ignoreId = false)
-
-        val expected = request.copy(answered = 0)
-        val res = repository.resetCard(userId, request.cardId)
-        assertNoErrors(res)
-        val updated = res.card
-        assertCard(expected = expected, actual = updated, ignoreChangeAt = true, ignoreId = false)
-
-        val now = repository.findCardById(request.cardId)
-        assertNotNull(now)
-        assertCard(expected = expected, actual = now!!, ignoreChangeAt = true, ignoreId = false)
     }
 
     @Order(11)

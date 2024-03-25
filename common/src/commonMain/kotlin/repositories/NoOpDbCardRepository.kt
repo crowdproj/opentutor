@@ -11,11 +11,15 @@ object NoOpDbCardRepository : DbCardRepository {
 
     override fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity> = noOp()
 
+    override fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> = noOp()
+
+    override fun findCardsByIdIn(cardIds: Iterable<CardId>): Sequence<CardEntity> = noOp()
+
     override fun createCard(cardEntity: CardEntity): CardEntity = noOp()
 
     override fun updateCard(cardEntity: CardEntity): CardEntity = noOp()
 
-    override fun resetCard(userId: AppUserId, cardId: CardId): CardDbResponse = noOp()
+    override fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = noOp()
 
     override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse = noOp()
 
