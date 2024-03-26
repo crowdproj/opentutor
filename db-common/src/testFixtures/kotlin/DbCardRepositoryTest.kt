@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.common.asLong
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
@@ -11,7 +10,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
-import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 import kotlinx.datetime.Clock
 import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
@@ -36,7 +34,6 @@ abstract class DbCardRepositoryTest {
     abstract val repository: DbCardRepository
 
     companion object {
-        private val userId = AppUserId("42")
 
         private val drawCardEntity = CardEntity(
             cardId = CardId("38"),
@@ -168,10 +165,6 @@ abstract class DbCardRepositoryTest {
             }
             assertNotEquals(Instant.NONE, actual.changedAt)
             assertEquals(expected, a)
-        }
-
-        private fun assertNoErrors(res: RemoveCardDbResponse) {
-            assertEquals(0, res.errors.size) { "Has errors: ${res.errors}" }
         }
     }
 
@@ -316,8 +309,8 @@ abstract class DbCardRepositoryTest {
     @Test
     fun `test get card & delete card success`() {
         val id = CardId("300")
-        val res = repository.removeCard(userId, id)
-        assertNoErrors(res)
+        val res = repository.deleteCard(id)
+        assertEquals(id, res.cardId)
 
         assertNull(repository.findCardById(id))
     }

@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -21,7 +20,7 @@ object NoOpDbCardRepository : DbCardRepository {
 
     override fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = noOp()
 
-    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse = noOp()
+    override fun deleteCard(cardId: CardId): CardEntity = noOp()
 
     private fun noOp(): Nothing {
         error("Must not be called.")

@@ -1,7 +1,5 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -55,19 +53,8 @@ interface DbCardRepository {
     fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = cardEntities.map { updateCard(it) }
 
     /**
-     * Deletes card by id.
+     * Deletes the card from the database, returning records that were deleted.
      */
-    fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse
+    fun deleteCard(cardId: CardId): CardEntity
 
-}
-
-data class RemoveCardDbResponse(
-    val card: CardEntity = CardEntity.EMPTY,
-    val errors: List<AppError> = emptyList(),
-) {
-    constructor(error: AppError) : this(errors = listOf(error))
-
-    companion object {
-        val EMPTY = RemoveCardDbResponse(errors = emptyList())
-    }
 }

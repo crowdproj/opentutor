@@ -1,11 +1,9 @@
 package com.gitlab.sszuev.flashcards.dbcommon.mocks
 
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
-import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 
 /**
  * Does not work with `io.mockk:mockk`
@@ -19,7 +17,7 @@ class MockDbCardRepository(
     private val invokeCreateCard: (CardEntity) -> CardEntity = { CardEntity.EMPTY },
     private val invokeUpdateCard: (CardEntity) -> CardEntity = { CardEntity.EMPTY },
     private val invokeUpdateCards: (Iterable<CardEntity>) -> List<CardEntity> = { _ -> emptyList() },
-    private val invokeDeleteCard: (AppUserId, CardId) -> RemoveCardDbResponse = { _, _ -> RemoveCardDbResponse.EMPTY },
+    private val invokeDeleteCard: (CardId) -> CardEntity = { _ -> CardEntity.EMPTY },
 ) : DbCardRepository {
 
     override fun findCardById(cardId: CardId): CardEntity? = invokeFindCardById(cardId)
@@ -38,5 +36,5 @@ class MockDbCardRepository(
 
     override fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = invokeUpdateCards(cardEntities)
 
-    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse = invokeDeleteCard(userId, cardId)
+    override fun deleteCard(cardId: CardId): CardEntity = invokeDeleteCard(cardId)
 }

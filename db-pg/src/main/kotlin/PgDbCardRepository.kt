@@ -3,25 +3,17 @@ package com.gitlab.sszuev.flashcards.dbpg
 import com.gitlab.sszuev.flashcards.common.asKotlin
 import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
-import com.gitlab.sszuev.flashcards.common.forbiddenEntityDbError
-import com.gitlab.sszuev.flashcards.common.noCardFoundDbError
-import com.gitlab.sszuev.flashcards.common.noDictionaryFoundDbError
 import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
-import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbDictionary
-import com.gitlab.sszuev.flashcards.model.Id
-import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
-import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchUpdateStatement
@@ -115,40 +107,15 @@ class PgDbCardRepository(
         res
     }
 
-    override fun removeCard(userId: AppUserId, cardId: CardId): RemoveCardDbResponse {
+    override fun deleteCard(cardId: CardId): CardEntity {
         return connection.execute {
-            val card = PgDbCard.findById(cardId.asLong())?.toCardEntity() ?: return@execute RemoveCardDbResponse(
-                noCardFoundDbError("removeCard", cardId)
-            )
-            val errors = mutableListOf<AppError>()
-            checkDictionaryUser("removeCard", userId, card.dictionaryId, cardId, errors)
-            if (errors.isNotEmpty()) {
-                return@execute RemoveCardDbResponse(errors = errors)
-            }
+            val timestamp = systemNow()
+            val card = PgDbCard.findById(cardId.asLong())?.toCardEntity()
+                ?: throw DbDataException("Can't find card, id = ${cardId.asLong()}")
             if (Cards.deleteWhere { this.id eq cardId.asLong() } == 0) {
-                return@execute RemoveCardDbResponse(noCardFoundDbError("removeCard", cardId))
+                throw DbDataException("Can't delete card, id = ${cardId.asLong()}")
             }
-            RemoveCardDbResponse(card = card)
+            card.copy(changedAt = timestamp.asKotlin())
         }
-    }
-
-    @Suppress("DuplicatedCode")
-    private fun checkDictionaryUser(
-        @Suppress("SameParameterValue") operation: String,
-        userId: AppUserId,
-        dictionaryId: DictionaryId,
-        entityId: Id,
-        errors: MutableList<AppError>
-    ): PgDbDictionary? {
-        val dictionary = PgDbDictionary.findById(dictionaryId.asLong())
-        if (dictionary == null) {
-            errors.add(noDictionaryFoundDbError(operation, dictionaryId))
-            return null
-        }
-        if (dictionary.userId.value == userId.asLong()) {
-            return dictionary
-        }
-        errors.add(forbiddenEntityDbError(operation, entityId, userId))
-        return null
     }
 }

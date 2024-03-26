@@ -11,7 +11,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 
 fun ChainDSL<CardContext>.processGetCard() = worker {
     this.name = "process get-card request"
@@ -228,8 +227,21 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
     }
     process {
         val userId = this.contextUserEntity.id
-        val res = this.repositories.cardRepository(this.workMode).removeCard(userId, this.normalizedRequestCardEntityId)
-        this.postProcess(res)
+
+        val cardId = this.normalizedRequestCardEntityId
+        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId)
+        if (card == null) {
+            this.errors.add(noCardFoundDataError("deleteCard", cardId))
+        } else {
+            val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(card.dictionaryId)
+            if (dictionary == null) {
+                this.errors.add(noDictionaryFoundDataError("deleteCard", card.dictionaryId))
+            } else if (dictionary.userId != userId) {
+                this.errors.add(forbiddenEntityDataError("deleteCard", card.cardId, userId))
+            } else {
+                this.repositories.cardRepository(this.workMode).deleteCard(this.normalizedRequestCardEntityId)
+            }
+        }
     }
     onException {
         this.handleThrowable(CardOperation.DELETE_CARD, it)
@@ -273,11 +285,4 @@ private suspend fun CardContext.postProcess(
         findResourceIdResponse.id
     }
     return card.copy(words = words, sound = cardAudioId)
-}
-
-private fun CardContext.postProcess(res: RemoveCardDbResponse) {
-    if (res.errors.isNotEmpty()) {
-        this.errors.addAll(res.errors)
-    }
-    this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
 }

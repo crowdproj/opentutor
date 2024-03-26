@@ -24,7 +24,6 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import com.gitlab.sszuev.flashcards.repositories.RemoveCardDbResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
@@ -625,23 +624,37 @@ internal class CardCorProcessorRunCardsTest {
 
     @Test
     fun `test delete-card success`() = runTest {
-        val testId = CardId("42")
-        val response = RemoveCardDbResponse()
+        val testDictionaryId = DictionaryId("42")
+        val testCardId = CardId("42")
+        val testCard = stubCard.copy(cardId = testCardId, dictionaryId = testDictionaryId)
+        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
 
-        var wasCalled = false
-        val repository = MockDbCardRepository(
-            invokeDeleteCard = { _, it ->
-                wasCalled = true
-                if (it == testId) response else throw TestException()
+        var isDeleteCardCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeDeleteCard = {
+                isDeleteCardCalled = true
+                if (it == testCardId) testCard else Assertions.fail()
+            },
+            invokeFindCardById = {
+                if (it == testCardId) testCard else Assertions.fail()
+            }
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaryById = {
+                if (it == testDictionaryId) testDictionary else Assertions.fail()
             }
         )
 
-        val context = testContext(CardOperation.DELETE_CARD, repository)
-        context.requestCardEntityId = testId
+        val context = testContext(
+            op = CardOperation.DELETE_CARD,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
+        context.requestCardEntityId = testCardId
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isDeleteCardCalled)
         Assertions.assertEquals(requestId(CardOperation.DELETE_CARD), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
