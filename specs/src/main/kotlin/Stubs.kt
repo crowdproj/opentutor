@@ -53,25 +53,27 @@ val stubCard = CardEntity(
                     it
                 )
             },
-            sound = TTSResourceId("en:stub"),
+            sound = TTSResourceId("sl:stub"),
         ),
     ),
     stats = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
-    sound = TTSResourceId("en:stub"),
+    sound = TTSResourceId("sl:stub"),
 )
 
 val stubCards = IntRange(1, 3)
     .flatMap { dictionaryId -> IntRange(1, 42).map { cardId -> dictionaryId to cardId } }
     .map {
+        val word = "XXX-${it.first}-${it.second}"
         stubCard.copy(
             cardId = CardId(it.second.toString()),
             dictionaryId = DictionaryId(it.first.toString()),
             words = listOf(
                 CardWordEntity(
-                    word = "XXX-${it.first}-${it.second}"
+                    word = word,
+                    sound = TTSResourceId("sl:$word"),
                 ),
             ),
-            sound = TTSResourceId.NONE,
+            sound = TTSResourceId("sl:$word"),
         )
     }
 

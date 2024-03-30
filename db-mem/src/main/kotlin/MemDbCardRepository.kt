@@ -1,12 +1,9 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 
@@ -15,17 +12,17 @@ class MemDbCardRepository(
 ) : DbCardRepository {
     private val database = MemDatabase.get(dbConfig.dataLocation)
 
-    override fun findCardById(cardId: CardId): CardEntity? {
-        require(cardId != CardId.NONE)
-        return database.findCardById(cardId.asLong())?.toCardEntity()
+    override fun findCardById(cardId: String): DbCard? {
+        require(cardId.isNotBlank())
+        return database.findCardById(cardId.toLong())?.toCardEntity()
     }
 
-    override fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity> {
-        require(dictionaryId != DictionaryId.NONE)
-        return database.findCardsByDictionaryId(dictionaryId.asLong()).map { it.toCardEntity() }
+    override fun findCardsByDictionaryId(dictionaryId: String): Sequence<DbCard> {
+        require(dictionaryId.isNotBlank())
+        return database.findCardsByDictionaryId(dictionaryId.toLong()).map { it.toCardEntity() }
     }
 
-    override fun createCard(cardEntity: CardEntity): CardEntity {
+    override fun createCard(cardEntity: DbCard): DbCard {
         validateCardEntityForCreate(cardEntity)
         val timestamp = systemNow()
         return try {
@@ -35,23 +32,23 @@ class MemDbCardRepository(
         }
     }
 
-    override fun updateCard(cardEntity: CardEntity): CardEntity {
+    override fun updateCard(cardEntity: DbCard): DbCard {
         validateCardEntityForUpdate(cardEntity)
-        val found = database.findCardById(cardEntity.cardId.asLong())
-            ?: throw DbDataException("Can't find card, id = ${cardEntity.cardId.asLong()}")
-        if (found.dictionaryId != cardEntity.dictionaryId.asLong()) {
-            throw DbDataException("Changing dictionary-id is not allowed; card id = ${cardEntity.cardId.asLong()}")
+        val found = database.findCardById(cardEntity.cardId.toLong())
+            ?: throw DbDataException("Can't find card, id = ${cardEntity.cardId.toLong()}")
+        if (found.dictionaryId != cardEntity.dictionaryId.toLong()) {
+            throw DbDataException("Changing dictionary-id is not allowed; card id = ${cardEntity.cardId.toLong()}")
         }
         val timestamp = systemNow()
         return database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
     }
 
-    override fun deleteCard(cardId: CardId): CardEntity {
+    override fun deleteCard(cardId: String): DbCard {
         val timestamp = systemNow()
-        val found = database.findCardById(cardId.asLong())
-            ?: throw DbDataException("Can't find card, id = ${cardId.asLong()}")
-        if (!database.deleteCardById(cardId.asLong())) {
-            throw DbDataException("Can't delete card, id = ${cardId.asLong()}")
+        val found = database.findCardById(cardId.toLong())
+            ?: throw DbDataException("Can't find card, id = ${cardId.toLong()}")
+        if (!database.deleteCardById(cardId.toLong())) {
+            throw DbDataException("Can't delete card, id = ${cardId.toLong()}")
         }
         return found.copy(changedAt = timestamp).toCardEntity()
     }

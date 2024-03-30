@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
+import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
@@ -20,7 +22,7 @@ fun ChainDSL<CardContext>.processGetCard() = worker {
     process {
         val userId = this.contextUserEntity.id
         val cardId = this.normalizedRequestCardEntityId
-        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId)
+        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId.asString())?.toCardEntity()
         if (card == null) {
             this.errors.add(noCardFoundDataError("getCard", cardId))
         } else {
@@ -62,7 +64,8 @@ fun ChainDSL<CardContext>.processGetAllCards() = worker {
             this.errors.add(forbiddenEntityDataError("getAllCards", dictionaryId, userId))
         } else {
             val cards = postProcess(
-                this.repositories.cardRepository(this.workMode).findCardsByDictionaryId(dictionaryId).iterator()
+                this.repositories.cardRepository(this.workMode)
+                    .findCardsByDictionaryId(dictionaryId.asString()).map { it.toCardEntity() }.iterator()
             ) { dictionary }
             this.responseCardEntityList = cards
         }
@@ -123,7 +126,8 @@ fun ChainDSL<CardContext>.processCreateCard() = worker {
         } else if (dictionary.userId != userId) {
             this.errors.add(forbiddenEntityDataError("createCard", dictionaryId, userId))
         } else {
-            val res = this.repositories.cardRepository(this.workMode).createCard(this.normalizedRequestCardEntity)
+            val res = this.repositories.cardRepository(this.workMode)
+                .createCard(this.normalizedRequestCardEntity.toDbCard()).toCardEntity()
             this.responseCardEntity = postProcess(res) { dictionary }
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
@@ -147,7 +151,8 @@ fun ChainDSL<CardContext>.processUpdateCard() = worker {
         } else if (dictionary.userId != userId) {
             this.errors.add(forbiddenEntityDataError("updateCard", dictionaryId, userId))
         } else {
-            val res = this.repositories.cardRepository(this.workMode).updateCard(this.normalizedRequestCardEntity)
+            val res = this.repositories.cardRepository(this.workMode)
+                .updateCard(this.normalizedRequestCardEntity.toDbCard()).toCardEntity()
             this.responseCardEntity = postProcess(res) { dictionary }
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
@@ -165,7 +170,8 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
     process {
         val userId = this.contextUserEntity.id
         val cardLearns = this.normalizedRequestCardLearnList.associateBy { it.cardId }
-        val foundCards = this.repositories.cardRepository(this.workMode).findCardsByIdIn(cardLearns.keys).toSet()
+        val foundCards = this.repositories.cardRepository(this.workMode)
+            .findCardsByIdIn(cardLearns.keys.map { it.asString() }).map { it.toCardEntity() }.toSet()
         val foundCardIds = foundCards.map { it.cardId }.toSet()
         val missedCardIds = cardLearns.keys - foundCardIds
         missedCardIds.forEach {
@@ -181,7 +187,9 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
             }
         }
         if (errors.isEmpty()) {
-            this.responseCardEntityList = learnCards(foundCards, cardLearns)
+            this.responseCardEntityList = postProcess(learnCards(foundCards, cardLearns).iterator()) {
+                checkNotNull(foundDictionaries[it])
+            }
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
@@ -198,7 +206,7 @@ fun ChainDSL<CardContext>.processResetCard() = worker {
     process {
         val userId = this.contextUserEntity.id
         val cardId = this.normalizedRequestCardEntityId
-        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId)
+        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId.asString())?.toCardEntity()
         if (card == null) {
             this.errors.add(noCardFoundDataError("resetCard", cardId))
         } else {
@@ -209,8 +217,8 @@ fun ChainDSL<CardContext>.processResetCard() = worker {
             } else if (dictionary.userId != userId) {
                 this.errors.add(forbiddenEntityDataError("resetCard", dictionaryId, userId))
             } else {
-                val res = this.repositories.cardRepository(this.workMode).updateCard(card.copy(answered = 0))
-                this.responseCardEntity = res
+                val res = this.repositories.cardRepository(this.workMode).updateCard(card.copy(answered = 0).toDbCard())
+                this.responseCardEntity = postProcess(res.toCardEntity()) { dictionary }
             }
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
@@ -229,7 +237,7 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
         val userId = this.contextUserEntity.id
 
         val cardId = this.normalizedRequestCardEntityId
-        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId)
+        val card = this.repositories.cardRepository(this.workMode).findCardById(cardId.asString())?.toCardEntity()
         if (card == null) {
             this.errors.add(noCardFoundDataError("deleteCard", cardId))
         } else {
@@ -239,7 +247,8 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
             } else if (dictionary.userId != userId) {
                 this.errors.add(forbiddenEntityDataError("deleteCard", card.cardId, userId))
             } else {
-                this.repositories.cardRepository(this.workMode).deleteCard(this.normalizedRequestCardEntityId)
+                this.repositories.cardRepository(this.workMode)
+                    .deleteCard(this.normalizedRequestCardEntityId.asString())
             }
         }
     }

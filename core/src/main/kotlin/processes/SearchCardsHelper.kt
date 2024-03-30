@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 
@@ -18,8 +19,9 @@ private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, 
 internal fun CardContext.findCardDeck(): List<CardEntity> {
     val threshold = config.numberOfRightAnswers
     var cards = this.repositories.cardRepository(this.workMode)
-        .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds)
+        .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
         .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) <= threshold }
+        .map { it.toCardEntity() }
     if (this.normalizedRequestCardFilter.random) {
         cards = cards.shuffled()
     }

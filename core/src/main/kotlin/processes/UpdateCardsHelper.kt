@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
+import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
@@ -21,7 +23,7 @@ internal fun CardContext.learnCards(
             }
             details.merge(it.key, it.value) { a, b -> a + b }
         }
-        card.copy(stats = details, answered = answered.toInt())
+        card.copy(stats = details, answered = answered.toInt()).toDbCard()
     }
-    return this.repositories.cardRepository(this.workMode).updateCards(cards)
+    return this.repositories.cardRepository(this.workMode).updateCards(cards).map { it.toCardEntity() }
 }

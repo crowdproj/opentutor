@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
@@ -24,6 +25,7 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
@@ -46,7 +48,9 @@ internal class CardCorProcessorRunCardsTest {
             cardRepository: DbCardRepository,
             userRepository: DbUserRepository = MockDbUserRepository(),
             dictionaryRepository: DbDictionaryRepository = MockDbDictionaryRepository(),
-            ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(),
+            ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(invokeFindResourceId = {
+                TTSResourceIdResponse.EMPTY.copy(TTSResourceId(it.lang.asString() + ":" + it.word))
+            }),
         ): CardContext {
             val context = CardContext(
                 operation = op,
@@ -94,7 +98,7 @@ internal class CardCorProcessorRunCardsTest {
         val cardRepository = MockDbCardRepository(
             invokeFindCardById = { cardId ->
                 findCardIsCalled = true
-                if (cardId == testId) testResponseCardEntity else null
+                if (cardId == testId.asString()) testResponseCardEntity.toDbCard() else null
             }
         )
 
@@ -166,7 +170,7 @@ internal class CardCorProcessorRunCardsTest {
         val cardRepository = MockDbCardRepository(
             invokeFindCardsByDictionaryId = { id ->
                 isFindCardsCalled = true
-                if (id == testDictionaryId) testCards.asSequence() else emptySequence()
+                if (id == testDictionaryId.asString()) testCards.map { it.toDbCard() }.asSequence() else emptySequence()
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -210,7 +214,9 @@ internal class CardCorProcessorRunCardsTest {
         val repository = MockDbCardRepository(
             invokeFindCardsByDictionaryId = { id ->
                 isFindCardsCalled = true
-                if (id != testDictionaryId) testResponseEntities.asSequence() else throw TestException()
+                if (id != testDictionaryId.asString()) {
+                    testResponseEntities.map { it.toDbCard() }.asSequence()
+                } else throw TestException()
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -239,7 +245,10 @@ internal class CardCorProcessorRunCardsTest {
     @Test
     fun `test create-card success`() = runTest {
         val testDictionary = stubDictionary
-        val testResponseEntity = stubCard.copy(words = listOf(CardWordEntity("HHH")), sound = TTSResourceId.NONE)
+        val testResponseEntity = stubCard.copy(
+            words = listOf(CardWordEntity(word = "HHH", sound = TTSResourceId("sl:HHH"))),
+            sound = TTSResourceId("sl:HHH")
+        )
         val testRequestEntity = stubCard.copy(
             words = listOf(CardWordEntity(word = "XXX")),
             cardId = CardId.NONE,
@@ -249,9 +258,13 @@ internal class CardCorProcessorRunCardsTest {
         var isCreateCardCalled = false
         var isFindDictionaryCalled = false
         val cardRepository = MockDbCardRepository(
-            invokeCreateCard = {
+            invokeCreateCard = { card ->
                 isCreateCardCalled = true
-                if (it.words == testRequestEntity.words) testResponseEntity else testRequestEntity
+                if (card.words.map { it.word } == testRequestEntity.words.map { it.word }) {
+                    testResponseEntity.toDbCard()
+                } else {
+                    testRequestEntity.toDbCard()
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -287,9 +300,13 @@ internal class CardCorProcessorRunCardsTest {
         var isCreateCardCalled = false
         var isFindDictionaryCalled = false
         val cardRepository = MockDbCardRepository(
-            invokeCreateCard = {
+            invokeCreateCard = { card ->
                 isCreateCardCalled = true
-                if (it.words == testRequestEntity.words) throw TestException() else testRequestEntity
+                if (card.words.map { it.word } == testRequestEntity.words.map { it.word }) {
+                    throw TestException()
+                } else {
+                    testRequestEntity.toDbCard()
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -329,9 +346,13 @@ internal class CardCorProcessorRunCardsTest {
         var isFindCardsCalled = false
         var isFindDictionariesCalled = false
         val cardRepository = MockDbCardRepository(
-            invokeFindCardsByDictionaryIdIn = {
+            invokeFindCardsByDictionaryIdIn = { ids ->
                 isFindCardsCalled = true
-                if (it == testFilter.dictionaryIds) testCards.asSequence() else emptySequence()
+                if (ids == testFilter.dictionaryIds.map { it.asString() }) {
+                    testCards.asSequence().map { it.toDbCard() }
+                } else {
+                    emptySequence()
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -373,9 +394,13 @@ internal class CardCorProcessorRunCardsTest {
         var isFindCardsCalled = false
         var isFindDictionariesCalled = false
         val cardRepository = MockDbCardRepository(
-            invokeFindCardsByDictionaryIdIn = {
+            invokeFindCardsByDictionaryIdIn = { ids ->
                 isFindCardsCalled = true
-                if (it == testFilter.dictionaryIds) throw TestException() else testCards.asSequence()
+                if (ids == testFilter.dictionaryIds.map { it.asString() }) {
+                    throw TestException()
+                } else {
+                    testCards.asSequence().map { it.toDbCard() }
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -412,7 +437,11 @@ internal class CardCorProcessorRunCardsTest {
         val cardRepository = MockDbCardRepository(
             invokeUpdateCard = {
                 isUpdateCardCalled = true
-                if (it.cardId == cardId) testResponseEntity else testRequestEntity
+                if (it.cardId == cardId.asString()) {
+                    testResponseEntity.toDbCard()
+                } else {
+                    testRequestEntity.toDbCard()
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -450,7 +479,11 @@ internal class CardCorProcessorRunCardsTest {
         val cardRepository = MockDbCardRepository(
             invokeUpdateCard = {
                 isUpdateCardCalled = true
-                if (it.words == testRequestEntity.words) throw TestException() else testRequestEntity
+                if (it.cardId == testRequestEntity.cardId.asString()) {
+                    throw TestException()
+                } else {
+                    testRequestEntity.toDbCard()
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -497,17 +530,28 @@ internal class CardCorProcessorRunCardsTest {
         val cardRepository = MockDbCardRepository(
             invokeUpdateCards = { givenCards ->
                 isUpdateCardsCalled = true
-                if (givenCards == expectedCards) expectedCards else emptyList()
+                if (givenCards.map { it.cardId } == expectedCards.map { it.cardId.asString() }) {
+                    expectedCards.map { it.toDbCard() }
+                } else {
+                    emptyList()
+                }
             },
             invokeFindCardsByIdIn = { ids ->
-                if (ids == setOf(stubCard.cardId)) testCards.asSequence() else emptySequence()
+                if (ids == listOf(stubCard.cardId.asString())) {
+                    testCards.asSequence().map { it.toDbCard() }
+                } else {
+                    emptySequence()
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeFindDictionariesByIdIn = { givenDictionaryIds ->
                 isFindDictionariesCalled = true
-                if (testDictionaries.map { it.dictionaryId }
-                        .toSet() == givenDictionaryIds) testDictionaries.asSequence() else Assertions.fail()
+                if (testDictionaries.map { it.dictionaryId }.toSet() == givenDictionaryIds) {
+                    testDictionaries.asSequence()
+                } else {
+                    Assertions.fail()
+                }
             }
         )
 
@@ -534,7 +578,7 @@ internal class CardCorProcessorRunCardsTest {
             CardLearn(cardId = CardId("1"), details = mapOf(Stage.SELF_TEST to 42)),
             CardLearn(cardId = CardId("2"), details = mapOf(Stage.OPTIONS to 2, Stage.MOSAIC to 3))
         )
-        val ids = testLearn.map { it.cardId }
+        val ids = testLearn.map { it.cardId }.map { it.asString() }
 
         val testCards = listOf(stubCard.copy(cardId = CardId("1")), stubCard.copy(cardId = CardId("2")))
         val testDictionaries = listOf(stubDictionary)
@@ -551,14 +595,21 @@ internal class CardCorProcessorRunCardsTest {
                 }
             },
             invokeFindCardsByIdIn = { givenIds ->
-                if (givenIds == ids.toSet()) testCards.asSequence() else emptySequence()
+                if (givenIds == ids) {
+                    testCards.asSequence().map { it.toDbCard() }
+                } else {
+                    emptySequence()
+                }
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeFindDictionariesByIdIn = { givenDictionaryIds ->
                 isFindDictionariesCalled = true
-                if (testDictionaries.map { it.dictionaryId }
-                        .toSet() == givenDictionaryIds) testDictionaries.asSequence() else Assertions.fail()
+                if (testDictionaries.map { it.dictionaryId }.toSet() == givenDictionaryIds) {
+                    testDictionaries.asSequence()
+                } else {
+                    Assertions.fail()
+                }
             }
         )
 
@@ -594,10 +645,10 @@ internal class CardCorProcessorRunCardsTest {
         val cardRepository = MockDbCardRepository(
             invokeUpdateCard = {
                 isUpdateCardCalled = true
-                if (it.cardId == testCardId) it else Assertions.fail()
+                if (it.cardId == testCardId.asString()) it else Assertions.fail()
             },
             invokeFindCardById = {
-                if (it == testCardId) testCard else null
+                if (it == testCardId.asString()) testCard.toDbCard() else null
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -633,10 +684,10 @@ internal class CardCorProcessorRunCardsTest {
         val cardRepository = MockDbCardRepository(
             invokeDeleteCard = {
                 isDeleteCardCalled = true
-                if (it == testCardId) testCard else Assertions.fail()
+                if (it == testCardId.asString()) testCard.toDbCard() else Assertions.fail()
             },
             invokeFindCardById = {
-                if (it == testCardId) testCard else Assertions.fail()
+                if (it == testCardId.asString()) testCard.toDbCard() else Assertions.fail()
             }
         )
         val dictionaryRepository = MockDbDictionaryRepository(

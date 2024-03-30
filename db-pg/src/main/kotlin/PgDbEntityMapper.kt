@@ -22,12 +22,11 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.repositories.DbCard
 import org.jetbrains.exposed.dao.id.EntityID
 import java.time.LocalDateTime
 import java.util.UUID
@@ -45,12 +44,12 @@ internal fun PgDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryE
     targetLang = createLangEntity(this.targetLang),
 )
 
-internal fun PgDbCard.toCardEntity(): CardEntity {
+internal fun PgDbCard.toCardEntity(): DbCard {
     val words = parseCardWordsJson(this.words)
     val details = parseCardDetailsJson(this.details)
-    return CardEntity(
-        cardId = this.id.asCardId(),
-        dictionaryId = this.dictionaryId.asDictionaryId(),
+    return DbCard(
+        cardId = this.id.value.toString(),
+        dictionaryId = this.dictionaryId.value.toString(),
         words = words.map { it.toCardWordEntity() },
         details = details.toCardEntityDetails(),
         stats = details.toCardEntityStats(),
@@ -59,15 +58,15 @@ internal fun PgDbCard.toCardEntity(): CardEntity {
     )
 }
 
-internal fun writeCardEntityToPgDbCard(from: CardEntity, to: PgDbCard, timestamp: LocalDateTime) {
-    to.dictionaryId = from.dictionaryId.asRecordId()
+internal fun writeCardEntityToPgDbCard(from: DbCard, to: PgDbCard, timestamp: LocalDateTime) {
+    to.dictionaryId = from.dictionaryId.toDictionariesId()
     to.words = from.toPgDbCardWordsJson()
     to.answered = from.answered
     to.details = from.detailsAsCommonCardDetailsDto().toJsonString()
     to.changedAt = timestamp
 }
 
-internal fun CardEntity.toPgDbCardWordsJson(): String = wordsAsCommonWordDtoList().toJsonString()
+internal fun DbCard.toPgDbCardWordsJson(): String = wordsAsCommonWordDtoList().toJsonString()
 
 internal fun DocumentCard.toPgDbCardWordsJson(): String = toCommonWordDtoList().toJsonString()
 
@@ -75,13 +74,11 @@ internal fun EntityID<Long>.asUserId(): AppUserId = AppUserId(value.toString())
 
 internal fun EntityID<Long>.asDictionaryId(): DictionaryId = value.asDictionaryId()
 
-internal fun EntityID<Long>.asCardId(): CardId = value.asCardId()
-
 internal fun AppUserId.asRecordId(): EntityID<Long> = EntityID(asLong(), Users)
 
-internal fun DictionaryId.asRecordId(): EntityID<Long> = EntityID(asLong(), Dictionaries)
+internal fun String.toDictionariesId(): EntityID<Long> = EntityID(toLong(), Dictionaries)
 
-internal fun CardId.asRecordId(): EntityID<Long> = EntityID(asLong(), Cards)
+internal fun String.toCardsId(): EntityID<Long> = EntityID(toLong(), Cards)
 
 internal fun createLangEntity(tag: String) = LangEntity(
     langId = LangId(tag),
@@ -91,5 +88,3 @@ internal fun createLangEntity(tag: String) = LangEntity(
 private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())
 
 internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
-
-internal fun Long.asCardId(): CardId = CardId(toString())

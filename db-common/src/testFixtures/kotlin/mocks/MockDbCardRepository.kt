@@ -1,8 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbcommon.mocks
 
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 
 /**
@@ -10,31 +8,31 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
  * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
  */
 class MockDbCardRepository(
-    private val invokeFindCardById: (CardId) -> CardEntity? = { null },
-    private val invokeFindCardsByDictionaryId: (DictionaryId) -> Sequence<CardEntity> = { emptySequence() },
-    private val invokeFindCardsByDictionaryIdIn: (Iterable<DictionaryId>) -> Sequence<CardEntity> = { emptySequence() },
-    private val invokeFindCardsByIdIn: (Iterable<CardId>) -> Sequence<CardEntity> = { emptySequence() },
-    private val invokeCreateCard: (CardEntity) -> CardEntity = { CardEntity.EMPTY },
-    private val invokeUpdateCard: (CardEntity) -> CardEntity = { CardEntity.EMPTY },
-    private val invokeUpdateCards: (Iterable<CardEntity>) -> List<CardEntity> = { _ -> emptyList() },
-    private val invokeDeleteCard: (CardId) -> CardEntity = { _ -> CardEntity.EMPTY },
+    private val invokeFindCardById: (String) -> DbCard? = { null },
+    private val invokeFindCardsByDictionaryId: (String) -> Sequence<DbCard> = { emptySequence() },
+    private val invokeFindCardsByDictionaryIdIn: (Iterable<String>) -> Sequence<DbCard> = { emptySequence() },
+    private val invokeFindCardsByIdIn: (Iterable<String>) -> Sequence<DbCard> = { emptySequence() },
+    private val invokeCreateCard: (DbCard) -> DbCard = { DbCard.NULL },
+    private val invokeUpdateCard: (DbCard) -> DbCard = { DbCard.NULL },
+    private val invokeUpdateCards: (Iterable<DbCard>) -> List<DbCard> = { _ -> emptyList() },
+    private val invokeDeleteCard: (String) -> DbCard = { _ -> DbCard.NULL },
 ) : DbCardRepository {
 
-    override fun findCardById(cardId: CardId): CardEntity? = invokeFindCardById(cardId)
+    override fun findCardById(cardId: String): DbCard? = invokeFindCardById(cardId)
 
-    override fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity> =
+    override fun findCardsByDictionaryId(dictionaryId: String): Sequence<DbCard> =
         invokeFindCardsByDictionaryId(dictionaryId)
 
-    override fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> =
+    override fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<String>): Sequence<DbCard> =
         invokeFindCardsByDictionaryIdIn(dictionaryIds)
 
-    override fun findCardsByIdIn(cardIds: Iterable<CardId>): Sequence<CardEntity> = invokeFindCardsByIdIn(cardIds)
+    override fun findCardsByIdIn(cardIds: Iterable<String>): Sequence<DbCard> = invokeFindCardsByIdIn(cardIds)
 
-    override fun createCard(cardEntity: CardEntity): CardEntity = invokeCreateCard(cardEntity)
+    override fun createCard(cardEntity: DbCard): DbCard = invokeCreateCard(cardEntity)
 
-    override fun updateCard(cardEntity: CardEntity): CardEntity = invokeUpdateCard(cardEntity)
+    override fun updateCard(cardEntity: DbCard): DbCard = invokeUpdateCard(cardEntity)
 
-    override fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = invokeUpdateCards(cardEntities)
+    override fun updateCards(cardEntities: Iterable<DbCard>): List<DbCard> = invokeUpdateCards(cardEntities)
 
-    override fun deleteCard(cardId: CardId): CardEntity = invokeDeleteCard(cardId)
+    override fun deleteCard(cardId: String): DbCard = invokeDeleteCard(cardId)
 }

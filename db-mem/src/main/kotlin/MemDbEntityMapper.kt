@@ -34,12 +34,11 @@ import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.repositories.DbCard
 import java.util.UUID
 
 internal fun MemDbUser.detailsAsJsonString(): String {
@@ -145,11 +144,11 @@ internal fun DictionaryEntity.toMemDbDictionary(): MemDbDictionary = MemDbDictio
     details = emptyMap(),
 )
 
-internal fun MemDbCard.toCardEntity(): CardEntity {
+internal fun MemDbCard.toCardEntity(): DbCard {
     val details: CommonCardDetailsDto = this.detailsAsCommonCardDetailsDto()
-    return CardEntity(
-        cardId = id?.asCardId() ?: CardId.NONE,
-        dictionaryId = dictionaryId?.asDictionaryId() ?: DictionaryId.NONE,
+    return DbCard(
+        cardId = id?.toString() ?: "",
+        dictionaryId = dictionaryId?.toString() ?: "",
         words = this.words.map { it.toCommonWordDto() }.map { it.toCardWordEntity() },
         details = details.toCardEntityDetails(),
         stats = details.toCardEntityStats(),
@@ -158,10 +157,10 @@ internal fun MemDbCard.toCardEntity(): CardEntity {
     )
 }
 
-internal fun CardEntity.toMemDbCard(): MemDbCard {
-    val dictionaryId = dictionaryId.asLong()
+internal fun DbCard.toMemDbCard(): MemDbCard {
+    val dictionaryId = dictionaryId.toLong()
     return MemDbCard(
-        id = if (this.cardId == CardId.NONE) null else this.cardId.asLong(),
+        id = if (this.cardId.isBlank()) null else this.cardId.toLong(),
         dictionaryId = dictionaryId,
         words = this.wordsAsCommonWordDtoList().map { it.toMemDbWord() },
         details = this.detailsAsCommonCardDetailsDto().toMemDbCardDetails(),
@@ -219,10 +218,6 @@ private fun Long.asUserId(): AppUserId = AppUserId(toString())
 
 private fun String.asLangId(): LangId = LangId(this)
 
-internal fun Long.asCardId(): CardId = CardId(toString())
-
 internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())
-
-internal fun Long?.asDictionaryId(): DictionaryId = DictionaryId(checkNotNull(this).toString())
 
 private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())

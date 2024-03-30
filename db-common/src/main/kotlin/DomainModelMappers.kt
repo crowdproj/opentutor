@@ -1,18 +1,13 @@
 package com.gitlab.sszuev.flashcards.common
 
 import com.gitlab.sszuev.flashcards.model.Id
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
-import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.repositories.DbCard
 
-fun validateCardEntityForCreate(entity: CardEntity) {
+fun validateCardEntityForCreate(entity: DbCard) {
     val errors = mutableListOf<String>()
-    if (entity.cardId != CardId.NONE) {
-        errors.add("no card-id specified")
+    if (entity.cardId.isNotBlank()) {
+        errors.add("card-id specified")
     }
     errors.addAll(validateCardEntity(entity))
     require(errors.isEmpty()) {
@@ -20,9 +15,9 @@ fun validateCardEntityForCreate(entity: CardEntity) {
     }
 }
 
-fun validateCardEntityForUpdate(entity: CardEntity) {
+fun validateCardEntityForUpdate(entity: DbCard) {
     val errors = mutableListOf<String>()
-    if (entity.cardId == CardId.NONE) {
+    if (entity.cardId.isBlank()) {
         errors.add("no card-id specified.")
     }
     errors.addAll(validateCardEntity(entity))
@@ -31,9 +26,9 @@ fun validateCardEntityForUpdate(entity: CardEntity) {
     }
 }
 
-private fun validateCardEntity(entity: CardEntity): List<String> {
+private fun validateCardEntity(entity: DbCard): List<String> {
     val errors = mutableListOf<String>()
-    if (entity.dictionaryId == DictionaryId.NONE) {
+    if (entity.dictionaryId.isBlank()) {
         errors.add("no dictionary-id specified")
     }
     if (entity.words.isEmpty()) {
@@ -43,7 +38,7 @@ private fun validateCardEntity(entity: CardEntity): List<String> {
     return errors
 }
 
-private fun validateCardWords(words: List<CardWordEntity>): List<String> {
+private fun validateCardWords(words: List<DbCard.Word>): List<String> {
     val errors = mutableListOf<String>()
     val translations = words.flatMap { it.translations.flatten() }.filter { it.isNotBlank() }
     if (translations.isEmpty()) {
@@ -52,14 +47,9 @@ private fun validateCardWords(words: List<CardWordEntity>): List<String> {
     return errors
 }
 
-fun validateCardLearns(learns: Collection<CardLearn>) {
-    val ids = learns.groupBy { it.cardId }.filter { it.value.size > 1 }.map { it.key }
-    require(ids.isEmpty()) { "Duplicate card ids: $ids" }
-}
+fun DbCard.wordsAsCommonWordDtoList(): List<CommonWordDto> = words.map { it.toCommonWordDto() }
 
-fun CardEntity.wordsAsCommonWordDtoList(): List<CommonWordDto> = words.map { it.toCommonWordDto() }
-
-fun CardWordEntity.toCommonWordDto(): CommonWordDto = CommonWordDto(
+fun DbCard.Word.toCommonWordDto(): CommonWordDto = CommonWordDto(
     word = this.word,
     transcription = this.transcription,
     partOfSpeech = this.partOfSpeech,
@@ -67,7 +57,7 @@ fun CardWordEntity.toCommonWordDto(): CommonWordDto = CommonWordDto(
     translations = this.translations,
 )
 
-fun CommonWordDto.toCardWordEntity(): CardWordEntity = CardWordEntity(
+fun CommonWordDto.toCardWordEntity(): DbCard.Word = DbCard.Word(
     word = word,
     transcription = transcription,
     translations = translations,
@@ -75,23 +65,22 @@ fun CommonWordDto.toCardWordEntity(): CardWordEntity = CardWordEntity(
     examples = examples.map { it.toCardWordExampleEntity() }
 )
 
-private fun CommonExampleDto.toCardWordExampleEntity(): CardWordExampleEntity = CardWordExampleEntity(
+private fun CommonExampleDto.toCardWordExampleEntity(): DbCard.Word.Example = DbCard.Word.Example(
     text = text,
     translation = translation,
 )
 
-fun CardEntity.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto {
-    return CommonCardDetailsDto(this.details + this.stats.mapKeys { it.key.name })
+fun DbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto {
+    return CommonCardDetailsDto(this.details + this.stats.mapKeys { it.key })
 }
 
-fun CardWordExampleEntity.toCommonExampleDto(): CommonExampleDto = CommonExampleDto(
+fun DbCard.Word.Example.toCommonExampleDto(): CommonExampleDto = CommonExampleDto(
     text = this.text,
     translation = this.translation,
 )
 
-fun CommonCardDetailsDto.toCardEntityStats(): Map<Stage, Long> =
+fun CommonCardDetailsDto.toCardEntityStats(): Map<String, Long> =
     this.filterKeys { Stage.entries.map { s -> s.name }.contains(it) }
-        .mapKeys { Stage.valueOf(it.key) }
         .mapValues { it.value.toString().toLong() }
 
 fun CommonCardDetailsDto.toCardEntityDetails(): Map<String, Any> =

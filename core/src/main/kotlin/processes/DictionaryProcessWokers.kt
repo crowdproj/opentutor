@@ -23,7 +23,8 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         if (res.errors.isEmpty()) {
             this.responseDictionaryEntityList = res.dictionaries.map { dictionary ->
                 val cards =
-                    this.repositories.cardRepository(this.workMode).findCardsByDictionaryId(dictionary.dictionaryId)
+                    this.repositories.cardRepository(this.workMode)
+                        .findCardsByDictionaryId(dictionary.dictionaryId.asString())
                         .toList()
                 val total = cards.size
                 val known = cards.mapNotNull { it.answered }.count { it >= config.numberOfRightAnswers }

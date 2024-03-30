@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.common.asKotlin
-import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.toJsonString
@@ -9,9 +8,7 @@ import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -28,38 +25,38 @@ class PgDbCardRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun findCardById(cardId: CardId): CardEntity? {
-        require(cardId != CardId.NONE)
+    override fun findCardById(cardId: String): DbCard? {
+        require(cardId.isNotBlank())
         return connection.execute {
-            PgDbCard.findById(cardId.asLong())?.toCardEntity()
+            PgDbCard.findById(cardId.toLong())?.toCardEntity()
         }
     }
 
-    override fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity> {
-        require(dictionaryId != DictionaryId.NONE)
+    override fun findCardsByDictionaryId(dictionaryId: String): Sequence<DbCard> {
+        require(dictionaryId.isNotBlank())
         return connection.execute {
-            PgDbCard.find { Cards.dictionaryId eq dictionaryId.asLong() }.map { it.toCardEntity() }.asSequence()
+            PgDbCard.find { Cards.dictionaryId eq dictionaryId.toLong() }.map { it.toCardEntity() }.asSequence()
         }
     }
 
-    override fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> {
+    override fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<String>): Sequence<DbCard> {
         return connection.execute {
             PgDbCard.find {
                 Cards.dictionaryId inList
-                    dictionaryIds.onEach { require(it != DictionaryId.NONE) }.map { it.asRecordId() }.toSet()
+                    dictionaryIds.onEach { require(it.isNotBlank()) }.map { it.toDictionariesId() }.toSet()
             }.map { it.toCardEntity() }.asSequence()
         }
     }
 
-    override fun findCardsByIdIn(cardIds: Iterable<CardId>): Sequence<CardEntity> {
+    override fun findCardsByIdIn(cardIds: Iterable<String>): Sequence<DbCard> {
         return connection.execute {
             PgDbCard.find {
-                Cards.id inList cardIds.onEach { require(it != CardId.NONE) }.map { it.asRecordId() }.toSet()
+                Cards.id inList cardIds.onEach { require(it.isNotBlank()) }.map { it.toCardsId() }.toSet()
             }.map { it.toCardEntity() }.asSequence()
         }
     }
 
-    override fun createCard(cardEntity: CardEntity): CardEntity {
+    override fun createCard(cardEntity: DbCard): DbCard {
         validateCardEntityForCreate(cardEntity)
         return connection.execute {
             val timestamp = systemNow()
@@ -73,13 +70,13 @@ class PgDbCardRepository(
         }
     }
 
-    override fun updateCard(cardEntity: CardEntity): CardEntity {
+    override fun updateCard(cardEntity: DbCard): DbCard {
         validateCardEntityForUpdate(cardEntity)
         return connection.execute {
-            val found = PgDbCard.findById(cardEntity.cardId.asRecordId())
-                ?: throw DbDataException("Can't find card id = ${cardEntity.cardId.asLong()}")
-            if (found.dictionaryId.value != cardEntity.dictionaryId.asLong()) {
-                throw DbDataException("Changing dictionary-id is not allowed; card id = ${cardEntity.cardId.asLong()}")
+            val found = PgDbCard.findById(cardEntity.cardId.toCardsId())
+                ?: throw DbDataException("Can't find card id = ${cardEntity.cardId}")
+            if (found.dictionaryId.value != cardEntity.dictionaryId.toLong()) {
+                throw DbDataException("Changing dictionary-id is not allowed; card id = ${cardEntity.cardId}")
             }
             val timestamp = systemNow()
             writeCardEntityToPgDbCard(from = cardEntity, to = found, timestamp = timestamp)
@@ -87,14 +84,14 @@ class PgDbCardRepository(
         }
     }
 
-    override fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = connection.execute {
-        val res = mutableListOf<CardEntity>()
+    override fun updateCards(cardEntities: Iterable<DbCard>): List<DbCard> = connection.execute {
+        val res = mutableListOf<DbCard>()
         val timestamp = systemNow()
         BatchUpdateStatement(Cards).apply {
             cardEntities.onEach {
                 validateCardEntityForUpdate(it)
-                addBatch(it.cardId.asRecordId())
-                this[Cards.dictionaryId] = it.dictionaryId.asRecordId()
+                addBatch(it.cardId.toCardsId())
+                this[Cards.dictionaryId] = it.dictionaryId.toDictionariesId()
                 this[Cards.words] = it.toPgDbCardWordsJson()
                 this[Cards.answered] = it.answered
                 this[Cards.details] = it.detailsAsCommonCardDetailsDto().toJsonString()
@@ -107,13 +104,13 @@ class PgDbCardRepository(
         res
     }
 
-    override fun deleteCard(cardId: CardId): CardEntity {
+    override fun deleteCard(cardId: String): DbCard {
         return connection.execute {
             val timestamp = systemNow()
-            val card = PgDbCard.findById(cardId.asLong())?.toCardEntity()
-                ?: throw DbDataException("Can't find card, id = ${cardId.asLong()}")
-            if (Cards.deleteWhere { this.id eq cardId.asLong() } == 0) {
-                throw DbDataException("Can't delete card, id = ${cardId.asLong()}")
+            val card = PgDbCard.findById(cardId.toCardsId())?.toCardEntity()
+                ?: throw DbDataException("Can't find card, id = $cardId")
+            if (Cards.deleteWhere { this.id eq cardId.toLong() } == 0) {
+                throw DbDataException("Can't delete card, id = $cardId")
             }
             card.copy(changedAt = timestamp.asKotlin())
         }

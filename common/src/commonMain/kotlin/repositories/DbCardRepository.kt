@@ -1,9 +1,5 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import com.gitlab.sszuev.flashcards.model.domain.CardEntity
-import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-
 /**
  * Database repository to work with cards.
  */
@@ -12,23 +8,23 @@ interface DbCardRepository {
     /**
      * Finds card by id returning `null` if nothing found.
      */
-    fun findCardById(cardId: CardId): CardEntity?
+    fun findCardById(cardId: String): DbCard?
 
     /**
      * Finds cards by dictionary id.
      */
-    fun findCardsByDictionaryId(dictionaryId: DictionaryId): Sequence<CardEntity>
+    fun findCardsByDictionaryId(dictionaryId: String): Sequence<DbCard>
 
     /**
      * Finds cards by dictionary ids.
      */
-    fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<CardEntity> =
+    fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<String>): Sequence<DbCard> =
         dictionaryIds.asSequence().flatMap { findCardsByDictionaryId(it) }
 
     /**
      * Finds cards by card ids.
      */
-    fun findCardsByIdIn(cardIds: Iterable<CardId>): Sequence<CardEntity> =
+    fun findCardsByIdIn(cardIds: Iterable<String>): Sequence<DbCard> =
         cardIds.asSequence().mapNotNull { findCardById(it) }
 
     /**
@@ -37,7 +33,7 @@ interface DbCardRepository {
      * @throws DbDataException in case card cannot be created for some reason,
      * i.e., if the corresponding dictionary does not exist
      */
-    fun createCard(cardEntity: CardEntity): CardEntity
+    fun createCard(cardEntity: DbCard): DbCard
 
     /**
      * Updates the card entity.
@@ -45,16 +41,16 @@ interface DbCardRepository {
      * @throws DbDataException in case card cannot be created for some reason,
      * i.e., if the corresponding dictionary does not exist
      */
-    fun updateCard(cardEntity: CardEntity): CardEntity
+    fun updateCard(cardEntity: DbCard): DbCard
 
     /**
      * Performs bulk update.
      */
-    fun updateCards(cardEntities: Iterable<CardEntity>): List<CardEntity> = cardEntities.map { updateCard(it) }
+    fun updateCards(cardEntities: Iterable<DbCard>): List<DbCard> = cardEntities.map { updateCard(it) }
 
     /**
      * Deletes the card from the database, returning records that were deleted.
      */
-    fun deleteCard(cardId: CardId): CardEntity
+    fun deleteCard(cardId: String): DbCard
 
 }
