@@ -23,6 +23,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
@@ -44,8 +45,8 @@ class PgDbDictionaryRepository(
         PgDbConnector.connection(dbConfig)
     }
 
-    override fun findDictionaryById(dictionaryId: DictionaryId): DictionaryEntity? = connection.execute {
-        PgDbDictionary.findById(dictionaryId.asLong())?.toDictionaryEntity()
+    override fun findDictionaryById(dictionaryId: String): DbDictionary? = connection.execute {
+        PgDbDictionary.findById(dictionaryId.toLong())?.toDbDictionary()
     }
 
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {

@@ -7,7 +7,10 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 
 interface DbDictionaryRepository {
-    fun findDictionaryById(dictionaryId: DictionaryId): DictionaryEntity?
+    fun findDictionaryById(dictionaryId: String): DbDictionary?
+
+    fun findDictionariesByIdIn(dictionaryIds: Iterable<String>): Sequence<DbDictionary> =
+        dictionaryIds.asSequence().mapNotNull { findDictionaryById(it) }
 
     fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse
 
@@ -19,8 +22,6 @@ interface DbDictionaryRepository {
 
     fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse
 
-    fun findDictionariesByIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<DictionaryEntity> =
-        dictionaryIds.asSequence().mapNotNull { findDictionaryById(it) }
 }
 
 data class DictionariesDbResponse(

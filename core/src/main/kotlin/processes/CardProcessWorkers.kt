@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.core.processes
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
 import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
+import com.gitlab.sszuev.flashcards.core.mappers.toDictionaryEntity
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
@@ -26,7 +27,8 @@ fun ChainDSL<CardContext>.processGetCard() = worker {
         if (card == null) {
             this.errors.add(noCardFoundDataError("getCard", cardId))
         } else {
-            val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(card.dictionaryId)
+            val dictionary = this.repositories.dictionaryRepository(this.workMode)
+                .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity()
             if (dictionary == null) {
                 this.errors.add(noDictionaryFoundDataError("getCard", card.dictionaryId))
             } else if (dictionary.userId != userId) {
@@ -57,7 +59,9 @@ fun ChainDSL<CardContext>.processGetAllCards() = worker {
     process {
         val userId = this.contextUserEntity.id
         val dictionaryId = this.normalizedRequestDictionaryId
-        val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(dictionaryId)
+        val dictionary =
+            this.repositories.dictionaryRepository(this.workMode).findDictionaryById(dictionaryId.asString())
+                ?.toDictionaryEntity()
         if (dictionary == null) {
             this.errors.add(noDictionaryFoundDataError("getAllCards", dictionaryId))
         } else if (dictionary.userId != userId) {
@@ -91,7 +95,8 @@ fun ChainDSL<CardContext>.processCardSearch() = worker {
     process {
         val userId = this.contextUserEntity.id
         val found = this.repositories.dictionaryRepository(this.workMode)
-            .findDictionariesByIdIn(this.normalizedRequestCardFilter.dictionaryIds)
+            .findDictionariesByIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
+            .map { it.toDictionaryEntity() }
             .associateBy { it.dictionaryId }
         this.normalizedRequestCardFilter.dictionaryIds.filterNot { found.containsKey(it) }.forEach {
             this.errors.add(noDictionaryFoundDataError("searchCards", it))
@@ -120,7 +125,8 @@ fun ChainDSL<CardContext>.processCreateCard() = worker {
     process {
         val userId = this.contextUserEntity.id
         val dictionaryId = this.normalizedRequestCardEntity.dictionaryId
-        val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(dictionaryId)
+        val dictionary = this.repositories.dictionaryRepository(this.workMode)
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
             this.errors.add(noDictionaryFoundDataError("createCard", dictionaryId))
         } else if (dictionary.userId != userId) {
@@ -145,7 +151,8 @@ fun ChainDSL<CardContext>.processUpdateCard() = worker {
     process {
         val userId = this.contextUserEntity.id
         val dictionaryId = this.normalizedRequestCardEntity.dictionaryId
-        val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(dictionaryId)
+        val dictionary = this.repositories.dictionaryRepository(this.workMode)
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
             this.errors.add(noDictionaryFoundDataError("updateCard", dictionaryId))
         } else if (dictionary.userId != userId) {
@@ -179,7 +186,9 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
         }
         val dictionaryIds = foundCards.map { it.dictionaryId }.toSet()
         val foundDictionaries =
-            this.repositories.dictionaryRepository(this.workMode).findDictionariesByIdIn(dictionaryIds)
+            this.repositories.dictionaryRepository(this.workMode)
+                .findDictionariesByIdIn(dictionaryIds.map { it.asString() })
+                .map { it.toDictionaryEntity() }
                 .associateBy { it.dictionaryId }
         foundDictionaries.onEach {
             if (it.value.userId != userId) {
@@ -211,7 +220,8 @@ fun ChainDSL<CardContext>.processResetCard() = worker {
             this.errors.add(noCardFoundDataError("resetCard", cardId))
         } else {
             val dictionaryId = card.dictionaryId
-            val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(dictionaryId)
+            val dictionary = this.repositories.dictionaryRepository(this.workMode)
+                .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
             if (dictionary == null) {
                 this.errors.add(noDictionaryFoundDataError("resetCard", dictionaryId))
             } else if (dictionary.userId != userId) {
@@ -241,7 +251,8 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
         if (card == null) {
             this.errors.add(noCardFoundDataError("deleteCard", cardId))
         } else {
-            val dictionary = this.repositories.dictionaryRepository(this.workMode).findDictionaryById(card.dictionaryId)
+            val dictionary = this.repositories.dictionaryRepository(this.workMode)
+                .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity()
             if (dictionary == null) {
                 this.errors.add(noDictionaryFoundDataError("deleteCard", card.dictionaryId))
             } else if (dictionary.userId != userId) {

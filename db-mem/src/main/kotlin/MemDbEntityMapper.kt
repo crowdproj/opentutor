@@ -39,6 +39,8 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.repositories.DbCard
+import com.gitlab.sszuev.flashcards.repositories.DbDictionary
+import com.gitlab.sszuev.flashcards.repositories.DbLang
 import java.util.UUID
 
 internal fun MemDbUser.detailsAsJsonString(): String {
@@ -136,6 +138,14 @@ internal fun MemDbDictionary.toDictionaryEntity(): DictionaryEntity = Dictionary
     targetLang = this.targetLanguage.toLangEntity(),
 )
 
+internal fun MemDbDictionary.toDbDictionary() = DbDictionary(
+    dictionaryId = this.id?.toString() ?: "",
+    userId = this.userId?.toString() ?: "",
+    name = this.name,
+    sourceLang = this.sourceLanguage.toDbLang(),
+    targetLang = this.targetLanguage.toDbLang(),
+)
+
 internal fun DictionaryEntity.toMemDbDictionary(): MemDbDictionary = MemDbDictionary(
     id = if (this.dictionaryId == DictionaryId.NONE) null else this.dictionaryId.asLong(),
     name = this.name,
@@ -181,6 +191,11 @@ internal fun createMemDbLanguage(tag: String): MemDbLanguage = MemDbLanguage(
 
 internal fun LangEntity.toMemDbLanguage(): MemDbLanguage = MemDbLanguage(
     id = this.langId.asString(),
+    partsOfSpeech = this.partsOfSpeech,
+)
+
+internal fun MemDbLanguage.toDbLang(): DbLang = DbLang(
+    langId = this.id,
     partsOfSpeech = this.partsOfSpeech,
 )
 

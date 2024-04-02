@@ -27,6 +27,8 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.repositories.DbCard
+import com.gitlab.sszuev.flashcards.repositories.DbDictionary
+import com.gitlab.sszuev.flashcards.repositories.DbLang
 import org.jetbrains.exposed.dao.id.EntityID
 import java.time.LocalDateTime
 import java.util.UUID
@@ -42,6 +44,14 @@ internal fun PgDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryE
     name = this.name,
     sourceLang = createLangEntity(this.sourceLang),
     targetLang = createLangEntity(this.targetLang),
+)
+
+internal fun PgDbDictionary.toDbDictionary(): DbDictionary = DbDictionary(
+    dictionaryId = this.id.value.toString(),
+    userId = this.userId.value.toString(),
+    name = this.name,
+    sourceLang = createDbLang(this.sourceLang),
+    targetLang = createDbLang(this.targetLang),
 )
 
 internal fun PgDbCard.toCardEntity(): DbCard {
@@ -82,6 +92,11 @@ internal fun String.toCardsId(): EntityID<Long> = EntityID(toLong(), Cards)
 
 internal fun createLangEntity(tag: String) = LangEntity(
     langId = LangId(tag),
+    partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
+)
+
+internal fun createDbLang(tag: String) = DbLang(
+    langId = tag,
     partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
 )
 

@@ -4,6 +4,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
@@ -11,8 +12,8 @@ import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
 
 class MockDbDictionaryRepository(
-    private val invokeFindDictionaryById: (DictionaryId) -> DictionaryEntity? = { null },
-    private val invokeFindDictionariesByIdIn: (Iterable<DictionaryId>) -> Sequence<DictionaryEntity> = { emptySequence() },
+    private val invokeFindDictionaryById: (String) -> DbDictionary? = { null },
+    private val invokeFindDictionariesByIdIn: (Iterable<String>) -> Sequence<DbDictionary> = { emptySequence() },
     private val invokeGetAllDictionaries: (AppUserId) -> DictionariesDbResponse = { DictionariesDbResponse.EMPTY },
     private val invokeCreateDictionary: (AppUserId, DictionaryEntity) -> DictionaryDbResponse = { _, _ -> DictionaryDbResponse.EMPTY },
     private val invokeDeleteDictionary: (AppUserId, DictionaryId) -> RemoveDictionaryDbResponse = { _, _ -> RemoveDictionaryDbResponse.EMPTY },
@@ -20,8 +21,7 @@ class MockDbDictionaryRepository(
     private val invokeUploadDictionary: (AppUserId, ResourceEntity) -> DictionaryDbResponse = { _, _ -> DictionaryDbResponse.EMPTY },
 ) : DbDictionaryRepository {
 
-    override fun findDictionaryById(dictionaryId: DictionaryId): DictionaryEntity? =
-        invokeFindDictionaryById(dictionaryId)
+    override fun findDictionaryById(dictionaryId: String): DbDictionary? = invokeFindDictionaryById(dictionaryId)
 
     override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse = invokeGetAllDictionaries(userId)
 
@@ -37,6 +37,6 @@ class MockDbDictionaryRepository(
     override fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse =
         invokeUploadDictionary(userId, resource)
 
-    override fun findDictionariesByIdIn(dictionaryIds: Iterable<DictionaryId>): Sequence<DictionaryEntity> =
+    override fun findDictionariesByIdIn(dictionaryIds: Iterable<String>): Sequence<DbDictionary> =
         invokeFindDictionariesByIdIn(dictionaryIds)
 }
