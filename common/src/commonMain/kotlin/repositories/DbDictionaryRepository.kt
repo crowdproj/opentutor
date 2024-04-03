@@ -12,7 +12,7 @@ interface DbDictionaryRepository {
     fun findDictionariesByIdIn(dictionaryIds: Iterable<String>): Sequence<DbDictionary> =
         dictionaryIds.asSequence().mapNotNull { findDictionaryById(it) }
 
-    fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse
+    fun findDictionariesByUserId(userId: String): Sequence<DbDictionary>
 
     fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse
 
@@ -22,15 +22,6 @@ interface DbDictionaryRepository {
 
     fun exportDictionary(userId: AppUserId, resource: ResourceEntity): DictionaryDbResponse
 
-}
-
-data class DictionariesDbResponse(
-    val dictionaries: List<DictionaryEntity>,
-    val errors: List<AppError> = emptyList()
-) {
-    companion object {
-        val EMPTY = DictionariesDbResponse(dictionaries = emptyList(), errors = emptyList())
-    }
 }
 
 data class RemoveDictionaryDbResponse(

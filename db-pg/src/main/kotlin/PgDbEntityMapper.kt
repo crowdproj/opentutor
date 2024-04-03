@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.common.LanguageRepository
 import com.gitlab.sszuev.flashcards.common.asKotlin
-import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
@@ -22,7 +21,6 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
@@ -36,14 +34,6 @@ import java.util.UUID
 internal fun PgDbUser.toAppUserEntity(): AppUserEntity = AppUserEntity(
     id = this.id.asUserId(),
     authId = this.uuid.asAppAuthId(),
-)
-
-internal fun PgDbDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryEntity(
-    dictionaryId = this.id.asDictionaryId(),
-    userId = this.userId.asUserId(),
-    name = this.name,
-    sourceLang = createLangEntity(this.sourceLang),
-    targetLang = createLangEntity(this.targetLang),
 )
 
 internal fun PgDbDictionary.toDbDictionary(): DbDictionary = DbDictionary(
@@ -84,11 +74,11 @@ internal fun EntityID<Long>.asUserId(): AppUserId = AppUserId(value.toString())
 
 internal fun EntityID<Long>.asDictionaryId(): DictionaryId = value.asDictionaryId()
 
-internal fun AppUserId.asRecordId(): EntityID<Long> = EntityID(asLong(), Users)
-
 internal fun String.toDictionariesId(): EntityID<Long> = EntityID(toLong(), Dictionaries)
 
 internal fun String.toCardsId(): EntityID<Long> = EntityID(toLong(), Cards)
+
+internal fun String.toUserId(): EntityID<Long> = EntityID(toLong(), Users)
 
 internal fun createLangEntity(tag: String) = LangEntity(
     langId = LangId(tag),

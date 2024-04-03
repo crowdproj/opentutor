@@ -8,7 +8,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 object NoOpDbDictionaryRepository : DbDictionaryRepository {
     override fun findDictionaryById(dictionaryId: String): DbDictionary = noOp()
 
-    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse = noOp()
+    override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> = noOp()
 
     override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse = noOp()
 

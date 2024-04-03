@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.core.mappers.toDictionaryEntity
 import com.gitlab.sszuev.flashcards.core.validators.fail
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
@@ -14,22 +15,17 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     }
     process {
         val userId = this.contextUserEntity.id
-        val res = this.repositories.dictionaryRepository(this.workMode).getAllDictionaries(userId)
-        if (res.errors.isNotEmpty()) {
-            this.errors.addAll(res.errors)
-        }
-
-        // TODO: temporary solution
-        if (res.errors.isEmpty()) {
-            this.responseDictionaryEntityList = res.dictionaries.map { dictionary ->
-                val cards =
-                    this.repositories.cardRepository(this.workMode)
-                        .findCardsByDictionaryId(dictionary.dictionaryId.asString())
-                        .toList()
-                val total = cards.size
-                val known = cards.mapNotNull { it.answered }.count { it >= config.numberOfRightAnswers }
-                dictionary.copy(totalCardsCount = total, learnedCardsCount = known)
-            }
+        val res = this.repositories.dictionaryRepository(this.workMode)
+            .findDictionariesByUserId(userId.asString())
+            .map { it.toDictionaryEntity() }.toList()
+        this.responseDictionaryEntityList = res.map { dictionary ->
+            val cards =
+                this.repositories.cardRepository(this.workMode)
+                    .findCardsByDictionaryId(dictionary.dictionaryId.asString())
+                    .toList()
+            val total = cards.size
+            val known = cards.mapNotNull { it.answered }.count { it >= config.numberOfRightAnswers }
+            dictionary.copy(totalCardsCount = total, learnedCardsCount = known)
         }
 
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
@@ -54,7 +50,8 @@ fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
     process {
         val userId = this.contextUserEntity.id
         val res =
-            this.repositories.dictionaryRepository(this.workMode).createDictionary(userId, this.normalizedRequestDictionaryEntity)
+            this.repositories.dictionaryRepository(this.workMode)
+                .createDictionary(userId, this.normalizedRequestDictionaryEntity)
         this.responseDictionaryEntity = res.dictionary
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
@@ -74,7 +71,8 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
     process {
         val userId = this.contextUserEntity.id
         val res =
-            this.repositories.dictionaryRepository(this.workMode).removeDictionary(userId, this.normalizedRequestDictionaryId)
+            this.repositories.dictionaryRepository(this.workMode)
+                .removeDictionary(userId, this.normalizedRequestDictionaryId)
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)
         }
@@ -93,7 +91,8 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
     process {
         val userId = this.contextUserEntity.id
         val res =
-            this.repositories.dictionaryRepository(this.workMode).importDictionary(userId, this.normalizedRequestDictionaryId)
+            this.repositories.dictionaryRepository(this.workMode)
+                .importDictionary(userId, this.normalizedRequestDictionaryId)
         this.responseDictionaryResourceEntity = res.resource
         if (res.errors.isNotEmpty()) {
             this.errors.addAll(res.errors)

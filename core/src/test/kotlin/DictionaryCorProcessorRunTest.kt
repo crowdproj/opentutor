@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
@@ -18,7 +19,6 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
@@ -68,9 +68,13 @@ internal class DictionaryCorProcessorRunTest {
         var getAllDictionariesWasCalled = false
         var getAllCardsWasCalled = false
         val dictionaryRepository = MockDbDictionaryRepository(
-            invokeGetAllDictionaries = {
+            invokeGetAllDictionaries = { userId ->
                 getAllDictionariesWasCalled = true
-                DictionariesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
+                if (userId == testUser.id.asString()) {
+                    testResponseEntities.asSequence().map { it.toDbDictionary() }
+                } else {
+                    emptySequence()
+                }
             }
         )
         val cardsRepository = MockDbCardRepository(

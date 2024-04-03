@@ -18,7 +18,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
@@ -33,9 +32,9 @@ class MemDbDictionaryRepository(
     override fun findDictionaryById(dictionaryId: String): DbDictionary? =
         database.findDictionaryById(dictionaryId.toLong())?.toDbDictionary()
 
-    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
-        val dictionaries = this.database.findDictionariesByUserId(userId.asLong())
-        return DictionariesDbResponse(dictionaries = dictionaries.map { it.toDictionaryEntity() }.toList())
+    override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> {
+        val dictionaries = this.database.findDictionariesByUserId(userId.toLong())
+        return dictionaries.map { it.toDbDictionary() }
     }
 
     override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {

@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
+import com.gitlab.sszuev.flashcards.repositories.DbLang
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
@@ -50,6 +51,38 @@ abstract class DbDictionaryRepositoryTest {
                 "междометие"
             )
         )
+
+        private val _EN = DbLang(
+            langId = "en",
+            partsOfSpeech = listOf(
+                "noun",
+                "verb",
+                "adjective",
+                "adverb",
+                "pronoun",
+                "preposition",
+                "conjunction",
+                "interjection",
+                "article"
+            )
+        )
+        private val _RU = DbLang(
+            langId = "ru",
+            partsOfSpeech = listOf(
+                "существительное",
+                "прилагательное",
+                "числительное",
+                "местоимение",
+                "глагол",
+                "наречие",
+                "причастие",
+                "предлог",
+                "союз",
+                "частица",
+                "междометие"
+            )
+        )
+
     }
 
     @Order(1)
@@ -68,28 +101,26 @@ abstract class DbDictionaryRepositoryTest {
     @Order(1)
     @Test
     fun `test get all dictionaries by user-id success`() {
-        val res = repository.getAllDictionaries(AppUserId("42"))
-        Assertions.assertTrue(res.errors.isEmpty())
-        Assertions.assertEquals(2, res.dictionaries.size)
+        val res = repository.findDictionariesByUserId("42").toList()
+        Assertions.assertEquals(2, res.size)
 
-        val businessDictionary = res.dictionaries[0]
-        Assertions.assertEquals(DictionaryId("1"), businessDictionary.dictionaryId)
+        val businessDictionary = res[0]
+        Assertions.assertEquals("1", businessDictionary.dictionaryId)
         Assertions.assertEquals("Irregular Verbs", businessDictionary.name)
-        Assertions.assertEquals(EN, businessDictionary.sourceLang)
-        Assertions.assertEquals(RU, businessDictionary.targetLang)
-        val weatherDictionary = res.dictionaries[1]
-        Assertions.assertEquals(DictionaryId("2"), weatherDictionary.dictionaryId)
+        Assertions.assertEquals(_EN, businessDictionary.sourceLang)
+        Assertions.assertEquals(_RU, businessDictionary.targetLang)
+        val weatherDictionary = res[1]
+        Assertions.assertEquals("2", weatherDictionary.dictionaryId)
         Assertions.assertEquals("Weather", weatherDictionary.name)
-        Assertions.assertEquals(EN, weatherDictionary.sourceLang)
-        Assertions.assertEquals(RU, weatherDictionary.targetLang)
+        Assertions.assertEquals(_EN, weatherDictionary.sourceLang)
+        Assertions.assertEquals(_RU, weatherDictionary.targetLang)
     }
 
     @Order(2)
     @Test
     fun `test get all dictionaries by user-id nothing found`() {
-        val res = repository.getAllDictionaries(AppUserId("42000"))
-        Assertions.assertEquals(0, res.dictionaries.size)
-        Assertions.assertTrue(res.errors.isEmpty())
+        val res = repository.findDictionariesByUserId("42000").toList()
+        Assertions.assertEquals(0, res.size)
     }
 
     @Order(3)

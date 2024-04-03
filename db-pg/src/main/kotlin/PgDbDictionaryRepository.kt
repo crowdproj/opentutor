@@ -25,7 +25,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
@@ -49,12 +48,8 @@ class PgDbDictionaryRepository(
         PgDbDictionary.findById(dictionaryId.toLong())?.toDbDictionary()
     }
 
-    override fun getAllDictionaries(userId: AppUserId): DictionariesDbResponse {
-        return connection.execute {
-            val dictionaries =
-                PgDbDictionary.find(Dictionaries.userId eq userId.asRecordId()).map { it.toDictionaryEntity() }
-            DictionariesDbResponse(dictionaries = dictionaries)
-        }
+    override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> = connection.execute {
+        PgDbDictionary.find(Dictionaries.userId eq userId.toUserId()).map { it.toDbDictionary() }.asSequence()
     }
 
     override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
