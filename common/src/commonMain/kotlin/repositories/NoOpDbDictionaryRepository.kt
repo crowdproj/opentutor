@@ -11,7 +11,7 @@ object NoOpDbDictionaryRepository : DbDictionaryRepository {
 
     override fun createDictionary(entity: DbDictionary): DbDictionary = noOp()
 
-    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse = noOp()
+    override fun deleteDictionary(dictionaryId: String): DbDictionary = noOp()
 
     override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse = noOp()
 

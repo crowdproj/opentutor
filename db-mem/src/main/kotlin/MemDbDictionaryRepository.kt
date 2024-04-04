@@ -15,11 +15,11 @@ import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
-import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
 
 class MemDbDictionaryRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
@@ -37,19 +37,15 @@ class MemDbDictionaryRepository(
     override fun createDictionary(entity: DbDictionary): DbDictionary =
         database.saveDictionary(entity.toMemDbDictionary().copy(changedAt = systemNow())).toDbDictionary()
 
-    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
-        val timestamp = systemNow()
-        val errors = mutableListOf<AppError>()
-        val found = checkDictionaryUser("removeDictionary", userId, dictionaryId, errors)
-        if (errors.isNotEmpty()) {
-            return RemoveDictionaryDbResponse(errors = errors)
+    override fun deleteDictionary(dictionaryId: String): DbDictionary {
+        require(dictionaryId.isNotBlank())
+        val id = dictionaryId.toLong()
+        val found = database.findDictionaryById(id)?.toDbDictionary()
+            ?: throw DbDataException("Can't find dictionary $id")
+        if (!database.deleteDictionaryById(id)) {
+            throw DbDataException("Can't delete dictionary $id")
         }
-        if (!database.deleteDictionaryById(dictionaryId.asLong())) {
-            return RemoveDictionaryDbResponse(noDictionaryFoundDbError("removeDictionary", dictionaryId))
-        }
-        return RemoveDictionaryDbResponse(
-            dictionary = checkNotNull(found).copy(changedAt = timestamp).toDictionaryEntity()
-        )
+        return found
     }
 
     override fun importDictionary(
@@ -88,7 +84,7 @@ class MemDbDictionaryRepository(
         return DictionaryDbResponse(dictionary = dictionary.toDictionaryEntity())
     }
 
-    @Suppress("DuplicatedCode")
+    @Suppress("DuplicatedCode", "SameParameterValue")
     private fun checkDictionaryUser(
         operation: String,
         userId: AppUserId,

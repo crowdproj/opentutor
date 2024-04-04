@@ -21,7 +21,6 @@ import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
-import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import com.gitlab.sszuev.flashcards.stubs.stubDictionary
@@ -137,13 +136,16 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test delete-dictionary success`() = runTest {
         val testId = DictionaryId("42")
-        val response = RemoveDictionaryDbResponse()
+        val response = stubDictionary
 
-        var wasCalled = false
+        var isDeleteDictionaryCalled = false
         val repository = MockDbDictionaryRepository(
-            invokeDeleteDictionary = { _, it ->
-                wasCalled = true
-                if (it == testId) response else throw AssertionError()
+            invokeDeleteDictionary = {
+                isDeleteDictionaryCalled = true
+                if (it == testId.asString()) response.toDbDictionary() else Assertions.fail()
+            },
+            invokeFindDictionaryById = {
+                if (it == testId.asString()) response.toDbDictionary() else Assertions.fail()
             }
         )
 
@@ -152,7 +154,7 @@ internal class DictionaryCorProcessorRunTest {
 
         DictionaryCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isDeleteDictionaryCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.DELETE_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())

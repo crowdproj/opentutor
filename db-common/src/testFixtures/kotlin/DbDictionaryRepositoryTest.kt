@@ -5,6 +5,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbLang
@@ -14,7 +15,6 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 
-@Suppress("FunctionName")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 abstract class DbDictionaryRepositoryTest {
     abstract val repository: DbDictionaryRepository
@@ -139,24 +139,19 @@ abstract class DbDictionaryRepositoryTest {
     @Test
     fun `test delete dictionary success`() {
         // Business vocabulary (Job)
-        val res = repository.removeDictionary(userId, DictionaryId("1"))
-        Assertions.assertTrue(res.errors.isEmpty())
+        val res = repository.deleteDictionary("1")
+        Assertions.assertEquals("1", res.dictionaryId)
+        Assertions.assertEquals("Irregular Verbs", res.name)
+        Assertions.assertNull(repository.findDictionaryById("1"))
     }
 
     @Order(4)
     @Test
     fun `test delete dictionary not found`() {
-        val id = DictionaryId("42")
-        val res = repository.removeDictionary(userId, id)
-        Assertions.assertEquals(1, res.errors.size)
-        val error = res.errors[0]
-        Assertions.assertEquals("database::removeDictionary", error.code)
-        Assertions.assertEquals(id.asString(), error.field)
-        Assertions.assertEquals("database", error.group)
-        Assertions.assertEquals(
-            """Error while removeDictionary: dictionary with id="${id.asString()}" not found""",
-            error.message
-        )
+        val id = "42"
+        Assertions.assertThrows(DbDataException::class.java) {
+            repository.deleteDictionary(id)
+        }
     }
 
     @Order(5)

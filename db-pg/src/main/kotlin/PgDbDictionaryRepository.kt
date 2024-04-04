@@ -23,11 +23,11 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
 import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
-import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.deleteWhere
@@ -52,45 +52,37 @@ class PgDbDictionaryRepository(
         PgDbDictionary.find(Dictionaries.userId eq userId.toUserId()).map { it.toDbDictionary() }.asSequence()
     }
 
-    override fun createDictionary(entity: DbDictionary): DbDictionary {
-        return connection.execute {
-            val timestamp = systemNow()
-            val dictionaryId = Dictionaries.insertAndGetId {
-                it[sourceLanguage] = entity.sourceLang.langId
-                it[targetLanguage] = entity.targetLang.langId
-                it[name] = entity.name
-                it[userId] = entity.userId.toLong()
-                it[changedAt] = timestamp
-            }
-            entity.copy(dictionaryId = dictionaryId.value.toString())
+    override fun createDictionary(entity: DbDictionary): DbDictionary = connection.execute {
+        val timestamp = systemNow()
+        val dictionaryId = Dictionaries.insertAndGetId {
+            it[sourceLanguage] = entity.sourceLang.langId
+            it[targetLanguage] = entity.targetLang.langId
+            it[name] = entity.name
+            it[userId] = entity.userId.toLong()
+            it[changedAt] = timestamp
         }
+        entity.copy(dictionaryId = dictionaryId.value.toString())
     }
 
-    override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
-        return connection.execute {
-            val errors = mutableListOf<AppError>()
-            val found = checkDictionaryUser("removeDictionary", userId, dictionaryId, errors)
-            if (errors.isNotEmpty()) {
-                return@execute RemoveDictionaryDbResponse(errors = errors)
-            }
-            checkNotNull(found)
-            val cardIds = Cards.selectAll().where {
-                Cards.dictionaryId eq found.id
-            }.map {
-                it[Cards.id]
-            }
-            Cards.deleteWhere {
-                this.id inList cardIds
-            }
-            val res = Dictionaries.deleteWhere {
-                Dictionaries.id eq found.id
-            }
-            RemoveDictionaryDbResponse(
-                errors = if (res == 0)
-                    listOf(noDictionaryFoundDbError(operation = "removeDictionary", id = dictionaryId))
-                else emptyList()
-            )
+    override fun deleteDictionary(dictionaryId: String): DbDictionary = connection.execute {
+        require(dictionaryId.isNotBlank())
+        val id = dictionaryId.toLong()
+        val found = PgDbDictionary.findById(id)?.toDbDictionary() ?: throw DbDataException("Can't find dictionary $id")
+        val cardIds = Cards.selectAll().where {
+            Cards.dictionaryId eq id
+        }.map {
+            it[Cards.id]
         }
+        Cards.deleteWhere {
+            this.id inList cardIds
+        }
+        val res = Dictionaries.deleteWhere {
+            Dictionaries.id eq id
+        }
+        if (res != 1) {
+            throw DbDataException("Can't delete dictionary $id")
+        }
+        found
     }
 
     override fun importDictionary(userId: AppUserId, dictionaryId: DictionaryId): ImportDictionaryDbResponse {
@@ -164,7 +156,7 @@ class PgDbDictionaryRepository(
         }
     }
 
-    @Suppress("DuplicatedCode")
+    @Suppress("DuplicatedCode", "SameParameterValue")
     private fun checkDictionaryUser(
         operation: String,
         userId: AppUserId,

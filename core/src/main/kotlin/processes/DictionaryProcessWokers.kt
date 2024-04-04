@@ -68,11 +68,16 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
     }
     process {
         val userId = this.contextUserEntity.id
-        val res =
+        val dictionaryId = this.normalizedRequestDictionaryId
+        val dictionary = this.repositories.dictionaryRepository(this.workMode)
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
+        if (dictionary == null) {
+            this.errors.add(noDictionaryFoundDataError("deleteDictionary", dictionaryId))
+        } else if (dictionary.userId != userId) {
+            this.errors.add(forbiddenEntityDataError("deleteDictionary", dictionaryId, userId))
+        } else {
             this.repositories.dictionaryRepository(this.workMode)
-                .removeDictionary(userId, this.normalizedRequestDictionaryId)
-        if (res.errors.isNotEmpty()) {
-            this.errors.addAll(res.errors)
+                .deleteDictionary(this.normalizedRequestDictionaryId.asString())
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
