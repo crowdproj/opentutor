@@ -79,10 +79,14 @@ class MemDatabase private constructor(
     }
 
     fun saveDictionary(dictionary: MemDbDictionary): MemDbDictionary {
+        val userId = requireNotNull(dictionary.userId) { "User id is required" }
         val resource =
-            requireNotNull(resources[dictionary.userId]) { "Unknown user ${dictionary.userId}" }
+            requireNotNull(resources[userId]) { "Unknown user ${dictionary.userId}" }
         val id = dictionary.id ?: idGenerator.nextDictionaryId()
-        val res = dictionary.copy(id = id, changedAt = dictionary.changedAt ?: OffsetDateTime.now(ZoneOffset.UTC).toLocalDateTime())
+        val res = dictionary.copy(
+            id = id,
+            changedAt = dictionary.changedAt ?: OffsetDateTime.now(ZoneOffset.UTC).toLocalDateTime()
+        )
         resource.dictionaries[id] = DictionaryResource(res)
         dictionariesChanged = true
         return res
@@ -167,21 +171,21 @@ class MemDatabase private constructor(
         }
         if (usersChanged) {
             val users = users().sortedBy { it.id }.toList()
-            Paths.get(databaseHomeDirectory).resolve(usersDbFile).outputStream().use {
+            Paths.get(databaseHomeDirectory).resolve(USERS_DB_FILE).outputStream().use {
                 writeUsers(users, it)
             }
             usersChanged = false
         }
         if (cardsChanged) {
             val cards = cards().sortedBy { it.id }.toList()
-            Paths.get(databaseHomeDirectory).resolve(cardsDbFile).outputStream().use {
+            Paths.get(databaseHomeDirectory).resolve(CARDS_DB_FILE).outputStream().use {
                 writeCards(cards, it)
             }
             cardsChanged = false
         }
         if (dictionariesChanged) {
             val dictionaries = dictionaryResources().map { it.dictionary }.sortedBy { it.id }.toList()
-            Paths.get(databaseHomeDirectory).resolve(dictionariesDbFile).outputStream().use {
+            Paths.get(databaseHomeDirectory).resolve(DICTIONARY_DB_FILE).outputStream().use {
                 writeDictionaries(dictionaries, it)
             }
             dictionariesChanged = false
@@ -199,11 +203,11 @@ class MemDatabase private constructor(
     )
 
     companion object {
-        private const val usersDbFile = "users.csv"
-        private const val dictionariesDbFile = "dictionaries.csv"
-        private const val cardsDbFile = "cards.csv"
+        private const val USERS_DB_FILE = "users.csv"
+        private const val DICTIONARY_DB_FILE = "dictionaries.csv"
+        private const val CARDS_DB_FILE = "cards.csv"
+        private const val CLASSPATH_PREFIX = "classpath:"
 
-        private const val classpathPrefix = "classpath:"
         private val logger = LoggerFactory.getLogger(MemDatabase::class.java)
 
         /**
@@ -240,7 +244,7 @@ class MemDatabase private constructor(
          * Loads dictionary store from classpath or directory.
          */
         internal fun load(databaseLocation: String): MemDatabase {
-            val fromClassPath = databaseLocation.startsWith(classpathPrefix)
+            val fromClassPath = databaseLocation.startsWith(CLASSPATH_PREFIX)
             val res = if (fromClassPath) {
                 loadDatabaseResourcesFromClassPath(databaseLocation)
             } else {
@@ -267,9 +271,9 @@ class MemDatabase private constructor(
         private fun loadDatabaseResourcesFromDirectory(
             directoryDbLocation: String,
         ): MutableMap<Long, UserResource> {
-            val usersFile = Paths.get(directoryDbLocation).resolve(usersDbFile).toRealPath()
-            val cardsFile = Paths.get(directoryDbLocation).resolve(cardsDbFile).toRealPath()
-            val dictionariesFile = Paths.get(directoryDbLocation).resolve(dictionariesDbFile).toRealPath()
+            val usersFile = Paths.get(directoryDbLocation).resolve(USERS_DB_FILE).toRealPath()
+            val cardsFile = Paths.get(directoryDbLocation).resolve(CARDS_DB_FILE).toRealPath()
+            val dictionariesFile = Paths.get(directoryDbLocation).resolve(DICTIONARY_DB_FILE).toRealPath()
             logger.info("Load users data from file: <$usersFile>.")
             val users = usersFile.inputStream().use {
                 readUsers(it)
@@ -288,9 +292,9 @@ class MemDatabase private constructor(
         private fun loadDatabaseResourcesFromClassPath(
             classpathDbLocation: String,
         ): MutableMap<Long, UserResource> {
-            val usersFile = resolveClasspathResource(classpathDbLocation, usersDbFile)
-            val cardsFile = resolveClasspathResource(classpathDbLocation, cardsDbFile)
-            val dictionariesFile = resolveClasspathResource(classpathDbLocation, dictionariesDbFile)
+            val usersFile = resolveClasspathResource(classpathDbLocation, USERS_DB_FILE)
+            val cardsFile = resolveClasspathResource(classpathDbLocation, CARDS_DB_FILE)
+            val dictionariesFile = resolveClasspathResource(classpathDbLocation, DICTIONARY_DB_FILE)
             logger.info("Load users data from classpath: <$usersFile>.")
             val users = checkNotNull(MemDatabase::class.java.getResourceAsStream(usersFile)).use {
                 readUsers(it)
@@ -489,7 +493,7 @@ class MemDatabase private constructor(
         }
 
         private fun resolveClasspathResource(classpathDir: String, classpathFilename: String): String {
-            return "${classpathDir.substringAfter(classpathPrefix)}/$classpathFilename".replace("//", "/")
+            return "${classpathDir.substringAfter(CLASSPATH_PREFIX)}/$classpathFilename".replace("//", "/")
         }
 
     }

@@ -8,7 +8,6 @@ import com.gitlab.sszuev.flashcards.common.CommonWordDto
 import com.gitlab.sszuev.flashcards.common.LanguageRepository
 import com.gitlab.sszuev.flashcards.common.asJava
 import com.gitlab.sszuev.flashcards.common.asKotlin
-import com.gitlab.sszuev.flashcards.common.asLong
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
@@ -146,15 +145,16 @@ internal fun MemDbDictionary.toDbDictionary() = DbDictionary(
     targetLang = this.targetLanguage.toDbLang(),
 )
 
-internal fun DictionaryEntity.toMemDbDictionary(): MemDbDictionary = MemDbDictionary(
-    id = if (this.dictionaryId == DictionaryId.NONE) null else this.dictionaryId.asLong(),
+internal fun DbDictionary.toMemDbDictionary(): MemDbDictionary = MemDbDictionary(
+    id = if (this.dictionaryId.isBlank()) null else this.dictionaryId.toLong(),
     name = this.name,
     sourceLanguage = this.sourceLang.toMemDbLanguage(),
     targetLanguage = this.targetLang.toMemDbLanguage(),
     details = emptyMap(),
+    userId = if (this.userId.isBlank()) null else this.userId.toLong()
 )
 
-internal fun MemDbCard.toCardEntity(): DbCard {
+internal fun MemDbCard.toDbCard(): DbCard {
     val details: CommonCardDetailsDto = this.detailsAsCommonCardDetailsDto()
     return DbCard(
         cardId = id?.toString() ?: "",
@@ -189,8 +189,8 @@ internal fun createMemDbLanguage(tag: String): MemDbLanguage = MemDbLanguage(
     partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
 )
 
-internal fun LangEntity.toMemDbLanguage(): MemDbLanguage = MemDbLanguage(
-    id = this.langId.asString(),
+internal fun DbLang.toMemDbLanguage(): MemDbLanguage = MemDbLanguage(
+    id = this.langId,
     partsOfSpeech = this.partsOfSpeech,
 )
 

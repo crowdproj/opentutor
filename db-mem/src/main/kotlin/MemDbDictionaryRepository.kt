@@ -13,7 +13,6 @@ import com.gitlab.sszuev.flashcards.common.wrongResourceDbError
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
@@ -32,17 +31,11 @@ class MemDbDictionaryRepository(
     override fun findDictionaryById(dictionaryId: String): DbDictionary? =
         database.findDictionaryById(dictionaryId.toLong())?.toDbDictionary()
 
-    override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> {
-        val dictionaries = this.database.findDictionariesByUserId(userId.toLong())
-        return dictionaries.map { it.toDbDictionary() }
-    }
+    override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> =
+        this.database.findDictionariesByUserId(userId.toLong()).map { it.toDbDictionary() }
 
-    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
-        val timestamp = systemNow()
-        val dictionary =
-            database.saveDictionary(entity.toMemDbDictionary().copy(userId = userId.asLong(), changedAt = timestamp))
-        return DictionaryDbResponse(dictionary = dictionary.toDictionaryEntity())
-    }
+    override fun createDictionary(entity: DbDictionary): DbDictionary =
+        database.saveDictionary(entity.toMemDbDictionary().copy(changedAt = systemNow())).toDbDictionary()
 
     override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse {
         val timestamp = systemNow()

@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 
@@ -10,7 +9,7 @@ object NoOpDbDictionaryRepository : DbDictionaryRepository {
 
     override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> = noOp()
 
-    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse = noOp()
+    override fun createDictionary(entity: DbDictionary): DbDictionary = noOp()
 
     override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse = noOp()
 

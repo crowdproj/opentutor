@@ -47,7 +47,11 @@ internal class CardCorProcessorRunCardsTest {
         private fun testContext(
             op: CardOperation,
             cardRepository: DbCardRepository,
-            userRepository: DbUserRepository = MockDbUserRepository(),
+            userRepository: DbUserRepository = MockDbUserRepository(
+                invokeGetUser = {
+                    if (it == testUser.authId) UserEntityDbResponse(user = testUser) else Assertions.fail()
+                }
+            ),
             dictionaryRepository: DbDictionaryRepository = MockDbDictionaryRepository(),
             ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(invokeFindResourceId = {
                 TTSResourceIdResponse.EMPTY.copy(TTSResourceId(it.lang.asString() + ":" + it.word))
@@ -60,7 +64,7 @@ internal class CardCorProcessorRunCardsTest {
                     testCardRepository = cardRepository,
                     testDictionaryRepository = dictionaryRepository,
                     testTTSClientRepository = ttsResourceRepository,
-                )
+                ),
             )
             context.requestAppAuthId = testUser.authId
             context.workMode = AppMode.TEST

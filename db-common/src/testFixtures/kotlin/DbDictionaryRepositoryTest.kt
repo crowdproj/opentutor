@@ -1,11 +1,11 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbLang
 import org.junit.jupiter.api.Assertions
@@ -200,13 +200,13 @@ abstract class DbDictionaryRepositoryTest {
     @Order(6)
     @Test
     fun `test create dictionary success`() {
-        val given = DictionaryEntity(name = "test-dictionary", sourceLang = RU, targetLang = EN)
-        val res = repository.createDictionary(AppUserId("42"), given)
-        Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
-        Assertions.assertEquals(given.name, res.dictionary.name)
-        Assertions.assertEquals(RU, res.dictionary.sourceLang)
-        Assertions.assertEquals(EN, res.dictionary.targetLang)
-        Assertions.assertNotEquals(DictionaryId.NONE, res.dictionary.dictionaryId)
-        Assertions.assertTrue(res.dictionary.dictionaryId.asString().matches("\\d+".toRegex()))
+        val given =
+            DbDictionary(name = "test-dictionary", sourceLang = _RU, targetLang = _EN, userId = "42", dictionaryId = "")
+        val res = repository.createDictionary(given)
+        Assertions.assertEquals(given.name, res.name)
+        Assertions.assertEquals(_RU, res.sourceLang)
+        Assertions.assertEquals(_EN, res.targetLang)
+        Assertions.assertFalse(res.dictionaryId.isBlank())
+        Assertions.assertTrue(res.dictionaryId.matches("\\d+".toRegex()))
     }
 }

@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.mappers.toDictionaryEntity
 import com.gitlab.sszuev.flashcards.core.validators.fail
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
@@ -49,13 +50,10 @@ fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
     }
     process {
         val userId = this.contextUserEntity.id
-        val res =
-            this.repositories.dictionaryRepository(this.workMode)
-                .createDictionary(userId, this.normalizedRequestDictionaryEntity)
-        this.responseDictionaryEntity = res.dictionary
-        if (res.errors.isNotEmpty()) {
-            this.errors.addAll(res.errors)
-        }
+        val res = this.repositories.dictionaryRepository(this.workMode)
+            .createDictionary(this.normalizedRequestDictionaryEntity.copy(userId = userId).toDbDictionary())
+            .toDictionaryEntity()
+        this.responseDictionaryEntity = res
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {

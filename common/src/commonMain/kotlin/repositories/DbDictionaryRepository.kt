@@ -14,7 +14,7 @@ interface DbDictionaryRepository {
 
     fun findDictionariesByUserId(userId: String): Sequence<DbDictionary>
 
-    fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse
+    fun createDictionary(entity: DbDictionary): DbDictionary
 
     fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse
 

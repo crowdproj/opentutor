@@ -12,21 +12,26 @@ class MemDbCardRepository(
 ) : DbCardRepository {
     private val database = MemDatabase.get(dbConfig.dataLocation)
 
-    override fun findCardById(cardId: String): DbCard? {
-        require(cardId.isNotBlank())
-        return database.findCardById(cardId.toLong())?.toCardEntity()
-    }
+    override fun findCardById(cardId: String): DbCard? =
+        database.findCardById(require(cardId.isNotBlank()).run { cardId.toLong() })?.toDbCard()
 
-    override fun findCardsByDictionaryId(dictionaryId: String): Sequence<DbCard> {
-        require(dictionaryId.isNotBlank())
-        return database.findCardsByDictionaryId(dictionaryId.toLong()).map { it.toCardEntity() }
-    }
+    override fun findCardsByDictionaryId(dictionaryId: String): Sequence<DbCard> =
+        database.findCardsByDictionaryId(require(dictionaryId.isNotBlank()).run { dictionaryId.toLong() })
+            .map { it.toDbCard() }
+
+    override fun findCardsByDictionaryIdIn(dictionaryIds: Iterable<String>): Sequence<DbCard> =
+        database.findCardsByDictionaryIds(dictionaryIds.onEach { require(it.isNotBlank()) }.map { it.toLong() })
+            .map { it.toDbCard() }
+
+    override fun findCardsByIdIn(cardIds: Iterable<String>): Sequence<DbCard> =
+        database.findCardsById(cardIds.onEach { require(it.isNotBlank()) }.map { it.toLong() })
+            .map { it.toDbCard() }
 
     override fun createCard(cardEntity: DbCard): DbCard {
         validateCardEntityForCreate(cardEntity)
         val timestamp = systemNow()
         return try {
-            database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
+            database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toDbCard()
         } catch (ex: Exception) {
             throw DbDataException("Can't create card $cardEntity", ex)
         }
@@ -40,7 +45,7 @@ class MemDbCardRepository(
             throw DbDataException("Changing dictionary-id is not allowed; card id = ${cardEntity.cardId.toLong()}")
         }
         val timestamp = systemNow()
-        return database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toCardEntity()
+        return database.saveCard(cardEntity.toMemDbCard().copy(changedAt = timestamp)).toDbCard()
     }
 
     override fun deleteCard(cardId: String): DbCard {
@@ -50,6 +55,6 @@ class MemDbCardRepository(
         if (!database.deleteCardById(cardId.toLong())) {
             throw DbDataException("Can't delete card, id = ${cardId.toLong()}")
         }
-        return found.copy(changedAt = timestamp).toCardEntity()
+        return found.copy(changedAt = timestamp).toDbCard()
     }
 }

@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.dbcommon.mocks
 
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
@@ -14,7 +13,7 @@ class MockDbDictionaryRepository(
     private val invokeFindDictionaryById: (String) -> DbDictionary? = { null },
     private val invokeFindDictionariesByIdIn: (Iterable<String>) -> Sequence<DbDictionary> = { emptySequence() },
     private val invokeGetAllDictionaries: (String) -> Sequence<DbDictionary> = { emptySequence() },
-    private val invokeCreateDictionary: (AppUserId, DictionaryEntity) -> DictionaryDbResponse = { _, _ -> DictionaryDbResponse.EMPTY },
+    private val invokeCreateDictionary: (DbDictionary) -> DbDictionary = { DbDictionary.NULL },
     private val invokeDeleteDictionary: (AppUserId, DictionaryId) -> RemoveDictionaryDbResponse = { _, _ -> RemoveDictionaryDbResponse.EMPTY },
     private val invokeDownloadDictionary: (AppUserId, DictionaryId) -> ImportDictionaryDbResponse = { _, _ -> ImportDictionaryDbResponse.EMPTY },
     private val invokeUploadDictionary: (AppUserId, ResourceEntity) -> DictionaryDbResponse = { _, _ -> DictionaryDbResponse.EMPTY },
@@ -27,8 +26,7 @@ class MockDbDictionaryRepository(
 
     override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> = invokeGetAllDictionaries(userId)
 
-    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse =
-        invokeCreateDictionary(userId, entity)
+    override fun createDictionary(entity: DbDictionary): DbDictionary = invokeCreateDictionary(entity)
 
     override fun removeDictionary(userId: AppUserId, dictionaryId: DictionaryId): RemoveDictionaryDbResponse =
         invokeDeleteDictionary(userId, dictionaryId)

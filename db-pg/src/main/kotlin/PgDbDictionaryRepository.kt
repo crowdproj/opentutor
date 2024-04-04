@@ -52,17 +52,17 @@ class PgDbDictionaryRepository(
         PgDbDictionary.find(Dictionaries.userId eq userId.toUserId()).map { it.toDbDictionary() }.asSequence()
     }
 
-    override fun createDictionary(userId: AppUserId, entity: DictionaryEntity): DictionaryDbResponse {
+    override fun createDictionary(entity: DbDictionary): DbDictionary {
         return connection.execute {
             val timestamp = systemNow()
             val dictionaryId = Dictionaries.insertAndGetId {
-                it[sourceLanguage] = entity.sourceLang.langId.asString()
-                it[targetLanguage] = entity.targetLang.langId.asString()
+                it[sourceLanguage] = entity.sourceLang.langId
+                it[targetLanguage] = entity.targetLang.langId
                 it[name] = entity.name
-                it[Dictionaries.userId] = userId.asLong()
+                it[userId] = entity.userId.toLong()
                 it[changedAt] = timestamp
             }
-            DictionaryDbResponse(dictionary = entity.copy(dictionaryId = dictionaryId.asDictionaryId()))
+            entity.copy(dictionaryId = dictionaryId.value.toString())
         }
     }
 

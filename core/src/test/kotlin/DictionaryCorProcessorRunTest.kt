@@ -115,9 +115,9 @@ internal class DictionaryCorProcessorRunTest {
 
         var wasCalled = false
         val repository = MockDbDictionaryRepository(
-            invokeCreateDictionary = { _, d ->
+            invokeCreateDictionary = { d ->
                 wasCalled = true
-                DictionaryDbResponse(dictionary = d.copy(testDictionaryId))
+                d.copy(dictionaryId = testDictionaryId.asString())
             }
         )
 
