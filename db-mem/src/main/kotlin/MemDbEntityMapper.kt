@@ -1,13 +1,12 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.asJava
+import com.gitlab.sszuev.flashcards.asKotlin
 import com.gitlab.sszuev.flashcards.common.CommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonDictionaryDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonExampleDto
 import com.gitlab.sszuev.flashcards.common.CommonUserDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonWordDto
-import com.gitlab.sszuev.flashcards.common.LanguageRepository
-import com.gitlab.sszuev.flashcards.common.asJava
-import com.gitlab.sszuev.flashcards.common.asKotlin
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
@@ -30,6 +29,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
+import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
 import java.util.UUID
 
 internal fun MemDbUser.detailsAsJsonString(): String {

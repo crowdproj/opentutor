@@ -1,10 +1,7 @@
 package com.gitlab.sszuev.flashcards.repositories
 
+import com.gitlab.sszuev.flashcards.NONE
 import kotlinx.datetime.Instant
-
-private val none = Instant.fromEpochMilliseconds(Long.MIN_VALUE)
-val Instant.Companion.NONE
-    get() = none
 
 data class DbCard(
     val cardId: String,

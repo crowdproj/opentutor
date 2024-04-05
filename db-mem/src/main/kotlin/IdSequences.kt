@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.IdGenerator
 import java.util.concurrent.atomic.AtomicLong
 
 internal class IdSequences(

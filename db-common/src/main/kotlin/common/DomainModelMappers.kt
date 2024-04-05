@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.common
 
-import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.repositories.DbCadStage
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 
 fun validateCardEntityForCreate(entity: DbCard) {
@@ -79,8 +79,8 @@ fun DbCard.Word.Example.toCommonExampleDto(): CommonExampleDto = CommonExampleDt
 )
 
 fun CommonCardDetailsDto.toCardEntityStats(): Map<String, Long> =
-    this.filterKeys { Stage.entries.map { s -> s.name }.contains(it) }
+    this.filterKeys { DbCadStage.entries.map { s -> s.name }.contains(it) }
         .mapValues { it.value.toString().toLong() }
 
 fun CommonCardDetailsDto.toCardEntityDetails(): Map<String, Any> =
-    this.filterKeys { !Stage.entries.map { s -> s.name }.contains(it) }
+    this.filterKeys { !DbCadStage.entries.map { s -> s.name }.contains(it) }

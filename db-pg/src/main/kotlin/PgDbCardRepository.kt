@@ -1,8 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import com.gitlab.sszuev.flashcards.common.asKotlin
+import com.gitlab.sszuev.flashcards.asKotlin
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
-import com.gitlab.sszuev.flashcards.common.systemNow
 import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForCreate
 import com.gitlab.sszuev.flashcards.common.validateCardEntityForUpdate
@@ -11,6 +10,7 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
+import com.gitlab.sszuev.flashcards.systemNow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchUpdateStatement

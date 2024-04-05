@@ -1,11 +1,11 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
-import com.gitlab.sszuev.flashcards.common.noUserFoundDbError
-import com.gitlab.sszuev.flashcards.common.wrongUserUuidDbError
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.noUserFoundDbError
+import com.gitlab.sszuev.flashcards.repositories.wrongUserUuidDbError
 import java.util.UUID
 
 class MemDbUserRepository(

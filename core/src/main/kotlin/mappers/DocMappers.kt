@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.core.mappers
 
 import com.gitlab.sszuev.flashcards.AppConfig
-import com.gitlab.sszuev.flashcards.common.LanguageRepository
 import com.gitlab.sszuev.flashcards.core.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.core.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.core.documents.DocumentDictionary
@@ -11,6 +10,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
 
 fun DocumentDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryEntity(
     name = this.name,

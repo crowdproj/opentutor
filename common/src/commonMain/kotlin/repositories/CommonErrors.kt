@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.common
+package com.gitlab.sszuev.flashcards.repositories
 
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError

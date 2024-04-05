@@ -1,11 +1,12 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
+import com.gitlab.sszuev.flashcards.asKotlin
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
-import kotlinx.datetime.Clock
+import com.gitlab.sszuev.flashcards.systemNow
 import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -22,7 +23,6 @@ import org.junit.jupiter.api.TestMethodOrder
 /**
  * Note: all implementations must have the same ids in tests for the same entities to have deterministic behavior.
  */
-@Suppress("FunctionName")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 abstract class DbCardRepositoryTest {
 
@@ -290,7 +290,7 @@ abstract class DbCardRepositoryTest {
     @Order(11)
     @Test
     fun `test bulk update & find by card ids - success`() {
-        val now = Clock.System.now()
+        val now = systemNow().asKotlin()
 
         val toUpdate =
             sequenceOf(forgiveCardEntity, snowCardEntity, drawCardEntity).map { it.copy(answered = 42) }.toSet()
@@ -303,7 +303,7 @@ abstract class DbCardRepositoryTest {
         assertCard(expected = forgiveCardEntity.copy(answered = 42), actual = res1[1], ignoreChangeAt = true)
         assertCard(expected = snowCardEntity.copy(answered = 42), actual = res1[2], ignoreChangeAt = true)
         res1.forEach {
-            assertTrue(it.changedAt >= now)
+            assertTrue(it.changedAt >= now) { "expected ${it.changedAt} >= $now" }
         }
 
         val res2 =

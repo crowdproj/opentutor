@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.common
+package com.gitlab.sszuev.flashcards.repositories
 
 import java.util.Locale
 import java.util.Objects

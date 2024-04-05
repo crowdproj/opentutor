@@ -2,14 +2,14 @@ package com.gitlab.sszuev.flashcards.dbpg
 
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
-import com.gitlab.sszuev.flashcards.common.noUserFoundDbError
-import com.gitlab.sszuev.flashcards.common.wrongUserUuidDbError
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
 import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
+import com.gitlab.sszuev.flashcards.repositories.noUserFoundDbError
+import com.gitlab.sszuev.flashcards.repositories.wrongUserUuidDbError
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.UUID
 
