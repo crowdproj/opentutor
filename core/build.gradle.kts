@@ -10,6 +10,7 @@ dependencies {
     val kotlinCoroutinesVersion: String by project
 
     implementation(project(":cor-lib"))
+    implementation(project(":db-common"))
     implementation(project(":common"))
     implementation(project(":specs"))
 

@@ -36,6 +36,11 @@ interface DbCardRepository {
     fun createCard(cardEntity: DbCard): DbCard
 
     /**
+     * Performs bulk create.
+     */
+    fun createCards(cardEntities: Iterable<DbCard>): List<DbCard> = cardEntities.map { createCard(it) }
+
+    /**
      * Updates the card entity.
      * @throws IllegalArgumentException if the specified card has no card id or has illegal structure
      * @throws DbDataException in case card cannot be created for some reason,

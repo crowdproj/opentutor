@@ -3,13 +3,11 @@ package com.gitlab.sszuev.flashcards.dbpg
 import com.gitlab.sszuev.flashcards.common.LanguageRepository
 import com.gitlab.sszuev.flashcards.common.asKotlin
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
 import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
 import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
 import com.gitlab.sszuev.flashcards.common.toCardEntityStats
 import com.gitlab.sszuev.flashcards.common.toCardWordEntity
-import com.gitlab.sszuev.flashcards.common.toCommonWordDtoList
 import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.common.wordsAsCommonWordDtoList
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
@@ -21,9 +19,6 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.LangEntity
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
@@ -68,11 +63,7 @@ internal fun writeCardEntityToPgDbCard(from: DbCard, to: PgDbCard, timestamp: Lo
 
 internal fun DbCard.toPgDbCardWordsJson(): String = wordsAsCommonWordDtoList().toJsonString()
 
-internal fun DocumentCard.toPgDbCardWordsJson(): String = toCommonWordDtoList().toJsonString()
-
 internal fun EntityID<Long>.asUserId(): AppUserId = AppUserId(value.toString())
-
-internal fun EntityID<Long>.asDictionaryId(): DictionaryId = value.asDictionaryId()
 
 internal fun String.toDictionariesId(): EntityID<Long> = EntityID(toLong(), Dictionaries)
 
@@ -80,16 +71,9 @@ internal fun String.toCardsId(): EntityID<Long> = EntityID(toLong(), Cards)
 
 internal fun String.toUserId(): EntityID<Long> = EntityID(toLong(), Users)
 
-internal fun createLangEntity(tag: String) = LangEntity(
-    langId = LangId(tag),
-    partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
-)
-
 internal fun createDbLang(tag: String) = DbLang(
     langId = tag,
     partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
 )
 
 private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())
-
-internal fun Long.asDictionaryId(): DictionaryId = DictionaryId(toString())

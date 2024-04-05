@@ -13,8 +13,9 @@ class MockDbCardRepository(
     private val invokeFindCardsByDictionaryIdIn: (Iterable<String>) -> Sequence<DbCard> = { emptySequence() },
     private val invokeFindCardsByIdIn: (Iterable<String>) -> Sequence<DbCard> = { emptySequence() },
     private val invokeCreateCard: (DbCard) -> DbCard = { DbCard.NULL },
+    private val invokeCreateCards: (Iterable<DbCard>) -> List<DbCard> = { emptyList() },
     private val invokeUpdateCard: (DbCard) -> DbCard = { DbCard.NULL },
-    private val invokeUpdateCards: (Iterable<DbCard>) -> List<DbCard> = { _ -> emptyList() },
+    private val invokeUpdateCards: (Iterable<DbCard>) -> List<DbCard> = { emptyList() },
     private val invokeDeleteCard: (String) -> DbCard = { _ -> DbCard.NULL },
 ) : DbCardRepository {
 
@@ -29,6 +30,8 @@ class MockDbCardRepository(
     override fun findCardsByIdIn(cardIds: Iterable<String>): Sequence<DbCard> = invokeFindCardsByIdIn(cardIds)
 
     override fun createCard(cardEntity: DbCard): DbCard = invokeCreateCard(cardEntity)
+
+    override fun createCards(cardEntities: Iterable<DbCard>): List<DbCard> = invokeCreateCards(cardEntities)
 
     override fun updateCard(cardEntity: DbCard): DbCard = invokeUpdateCard(cardEntity)
 

@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.common.documents
+package com.gitlab.sszuev.flashcards.common
 
 interface IdGenerator {
     fun nextDictionaryId(): Long
