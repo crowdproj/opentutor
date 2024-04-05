@@ -1,11 +1,15 @@
 package com.gitlab.sszuev.flashcards.common.documents
 
-import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentReader
-import com.gitlab.sszuev.flashcards.common.documents.xml.LingvoDocumentWriter
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCardStatus
+import com.gitlab.sszuev.flashcards.core.documents.DocumentDictionary
+import com.gitlab.sszuev.flashcards.core.documents.DocumentReader
+import com.gitlab.sszuev.flashcards.core.documents.DocumentWriter
+import com.gitlab.sszuev.flashcards.core.documents.xml.LingvoDocumentReader
+import com.gitlab.sszuev.flashcards.core.documents.xml.LingvoDocumentWriter
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
-import org.slf4j.LoggerFactory
 import java.io.ByteArrayOutputStream
 import java.nio.charset.StandardCharsets
 import java.nio.file.Files
@@ -13,7 +17,6 @@ import java.nio.file.Path
 
 internal class LingvoDocumentTest {
     companion object {
-        private val LOGGER = LoggerFactory.getLogger(LingvoDocumentTest::class.java)
 
         private fun normalize(s: String): String {
             return s.replace("[\n\r\t]".toRegex(), "")
@@ -97,7 +100,6 @@ internal class LingvoDocumentTest {
         val out = ByteArrayOutputStream()
         createWriter().write(dictionary, out)
         val txt = out.toString(StandardCharsets.UTF_16)
-        LOGGER.info("\n{}", txt)
         val actual = normalize(txt)
         Assertions.assertEquals(expected, actual)
     }

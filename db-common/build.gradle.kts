@@ -13,7 +13,6 @@ dependencies {
     val jacksonVersion: String by project
 
     implementation(project(":common"))
-    implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")

@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.common.documents
+package com.gitlab.sszuev.flashcards.core.documents
 
 data class DocumentCard(
     val text: String,

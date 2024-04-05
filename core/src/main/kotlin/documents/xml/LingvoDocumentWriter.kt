@@ -1,8 +1,8 @@
-package com.gitlab.sszuev.flashcards.common.documents.xml
+package com.gitlab.sszuev.flashcards.core.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
-import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
-import com.gitlab.sszuev.flashcards.common.documents.DocumentWriter
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.core.documents.DocumentDictionary
+import com.gitlab.sszuev.flashcards.core.documents.DocumentWriter
 import org.w3c.dom.Document
 import org.w3c.dom.Element
 import java.io.OutputStream

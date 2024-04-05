@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.common.documents
+package com.gitlab.sszuev.flashcards.core.documents
 
 import java.io.InputStream
 

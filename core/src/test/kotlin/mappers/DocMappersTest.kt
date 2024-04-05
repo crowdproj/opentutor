@@ -1,8 +1,8 @@
 package com.gitlab.sszuev.flashcards.core.mappers
 
 import com.gitlab.sszuev.flashcards.AppConfig
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCardStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity

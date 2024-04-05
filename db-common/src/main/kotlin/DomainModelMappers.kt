@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.common
 
-import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 
@@ -85,9 +84,3 @@ fun CommonCardDetailsDto.toCardEntityStats(): Map<String, Long> =
 
 fun CommonCardDetailsDto.toCardEntityDetails(): Map<String, Any> =
     this.filterKeys { !Stage.entries.map { s -> s.name }.contains(it) }
-
-fun Id.asLong(): Long = if (this.asString().matches("\\d+".toRegex())) {
-    this.asString().toLong()
-} else {
-    throw IllegalArgumentException("Wrong id specified: $this")
-}

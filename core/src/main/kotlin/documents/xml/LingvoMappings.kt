@@ -1,6 +1,6 @@
-package com.gitlab.sszuev.flashcards.common.documents.xml
+package com.gitlab.sszuev.flashcards.core.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCardStatus
 import java.nio.charset.Charset
 import java.nio.charset.StandardCharsets
 

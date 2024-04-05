@@ -1,6 +1,6 @@
 @file:Suppress("MemberVisibilityCanBePrivate")
 
-package com.gitlab.sszuev.flashcards.common.documents.xml
+package com.gitlab.sszuev.flashcards.core.documents.xml
 
 import org.w3c.dom.Element
 import org.w3c.dom.Node

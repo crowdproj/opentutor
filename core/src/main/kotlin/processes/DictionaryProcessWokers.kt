@@ -1,8 +1,8 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.common.documents.createReader
-import com.gitlab.sszuev.flashcards.common.documents.createWriter
+import com.gitlab.sszuev.flashcards.core.documents.createReader
+import com.gitlab.sszuev.flashcards.core.documents.createWriter
 import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
 import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary

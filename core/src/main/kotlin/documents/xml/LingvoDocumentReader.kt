@@ -1,11 +1,11 @@
-package com.gitlab.sszuev.flashcards.common.documents.xml
+package com.gitlab.sszuev.flashcards.core.documents.xml
 
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCard
-import com.gitlab.sszuev.flashcards.common.documents.DocumentCardStatus
-import com.gitlab.sszuev.flashcards.common.documents.DocumentDictionary
-import com.gitlab.sszuev.flashcards.common.documents.DocumentReader
-import com.gitlab.sszuev.flashcards.common.documents.xml.DOMUtils.element
-import com.gitlab.sszuev.flashcards.common.documents.xml.DOMUtils.elements
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCard
+import com.gitlab.sszuev.flashcards.core.documents.DocumentCardStatus
+import com.gitlab.sszuev.flashcards.core.documents.DocumentDictionary
+import com.gitlab.sszuev.flashcards.core.documents.DocumentReader
+import com.gitlab.sszuev.flashcards.core.documents.xml.DOMUtils.element
+import com.gitlab.sszuev.flashcards.core.documents.xml.DOMUtils.elements
 import org.w3c.dom.Element
 import org.xml.sax.InputSource
 import org.xml.sax.SAXException
