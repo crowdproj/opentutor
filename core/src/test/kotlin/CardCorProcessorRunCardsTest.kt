@@ -6,14 +6,11 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
-import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
@@ -25,10 +22,8 @@ import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
-import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubCards
@@ -72,7 +67,7 @@ internal class CardCorProcessorRunCardsTest {
 
         private fun assertUnknownError(context: CardContext, op: CardOperation) {
             val error = assertSingleError(context, op)
-            Assertions.assertEquals("run::$op", error.code)
+            Assertions.assertEquals(op.name, error.code)
             Assertions.assertEquals("run", error.group)
             Assertions.assertEquals("Error while $op: exception", error.message)
             Assertions.assertInstanceOf(TestException::class.java, error.exception)
@@ -639,7 +634,7 @@ internal class CardCorProcessorRunCardsTest {
         Assertions.assertEquals(emptyList<CardEntity>(), context.responseCardEntityList)
 
         Assertions.assertEquals(1, context.errors.size)
-        Assertions.assertEquals("run::LEARN_CARDS", context.errors[0].code)
+        Assertions.assertEquals("LEARN_CARDS", context.errors[0].code)
         Assertions.assertInstanceOf(TestException::class.java, context.errors[0].exception)
     }
 
@@ -743,7 +738,7 @@ internal class CardCorProcessorRunCardsTest {
         )
 
         val expectedError = AppError(
-            group = "core",
+            group = "data",
             code = op.name,
             field = testCardId.asString(),
             message = "Error while ${op.name}: dictionary with id=\"${testDictionaryId.asString()}\" " +

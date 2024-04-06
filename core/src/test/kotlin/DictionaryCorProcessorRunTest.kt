@@ -7,13 +7,9 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
-import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
-import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
@@ -21,8 +17,6 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
 import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import com.gitlab.sszuev.flashcards.stubs.stubDictionary
@@ -33,21 +27,16 @@ import org.junit.jupiter.api.Test
 internal class DictionaryCorProcessorRunTest {
     companion object {
         private val testUserId = stubDictionary.userId
-        private val testUser = AppUserEntity(AppUserId("42"), testUserId)
 
         @Suppress("SameParameterValue")
         private fun testContext(
             op: DictionaryOperation,
             dictionaryRepository: DbDictionaryRepository,
-            userRepository: DbUserRepository = MockDbUserRepository(
-                invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw AssertionError() }
-            ),
             cardsRepository: DbCardRepository = MockDbCardRepository(),
         ): DictionaryContext {
             val context = DictionaryContext(
                 operation = op,
                 repositories = AppRepositories().copy(
-                    testUserRepository = userRepository,
                     testDictionaryRepository = dictionaryRepository,
                     testCardRepository = cardsRepository,
                 )

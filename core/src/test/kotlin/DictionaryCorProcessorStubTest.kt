@@ -1,22 +1,23 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.model.common.*
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import com.gitlab.sszuev.flashcards.stubs.stubError
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
-import java.util.*
+import java.util.UUID
 
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class DictionaryCorProcessorStubTest {
     companion object {
         private val processor = DictionaryCorProcessor()
         private val requestId = UUID.randomUUID().toString()
-        private val testUser = AppUserEntity(AppUserId("42"), AppAuthId("xxx"))
 
         @Suppress("SameParameterValue")
         private fun testContext(op: DictionaryOperation, case: AppStub): DictionaryContext {
@@ -43,7 +44,6 @@ internal class DictionaryCorProcessorStubTest {
     @Test
     fun `test get-all-dictionary success`() = runTest {
         val context = testContext(DictionaryOperation.GET_ALL_DICTIONARIES, AppStub.SUCCESS)
-        context.contextUserEntity = testUser
         processor.execute(context)
         assertSuccess(context)
         Assertions.assertEquals(stubDictionaries, context.responseDictionaryEntityList)
@@ -52,7 +52,6 @@ internal class DictionaryCorProcessorStubTest {
     @Test
     fun `test get-all-dictionaries error`() = runTest {
         val context = testContext(DictionaryOperation.GET_ALL_DICTIONARIES, AppStub.UNKNOWN_ERROR)
-        context.contextUserEntity = testUser
         processor.execute(context)
         processor.execute(context)
         assertFail(context, stubError)

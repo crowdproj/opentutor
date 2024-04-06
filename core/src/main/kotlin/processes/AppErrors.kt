@@ -59,21 +59,8 @@ fun dataError(
 ) = AppError(
     code = operation.name,
     field = fieldName,
-    group = "core",
+    group = "data",
     message = if (details.isBlank()) "Error while ${operation.name}" else "Error while ${operation.name}: $details",
-    exception = exception
-)
-
-internal fun runError(
-    operation: AppOperation,
-    fieldName: String = "",
-    description: String = "",
-    exception: Throwable? = null,
-) = AppError(
-    code = "run::$operation",
-    field = fieldName,
-    group = "run",
-    message = if (description.isBlank()) "" else "Error while $operation: $description",
     exception = exception
 )
 
@@ -86,6 +73,19 @@ internal fun AppContext.handleThrowable(operation: AppOperation, ex: Throwable) 
         )
     )
 }
+
+internal fun runError(
+    operation: AppOperation,
+    fieldName: String = "",
+    description: String = "",
+    exception: Throwable? = null,
+) = AppError(
+    code = operation.name,
+    field = fieldName,
+    group = "run",
+    message = if (description.isBlank()) "" else "Error while ${operation.name}: $description",
+    exception = exception
+)
 
 internal fun AppContext.fail(error: AppError) {
     this.status = AppStatus.FAIL

@@ -19,7 +19,6 @@ interface AppContext {
     // get user:
     var requestAppAuthId: AppAuthId
     var normalizedRequestAppAuthId: AppAuthId
-    var contextUserEntity: AppUserEntity
 }
 
 private val none = Instant.fromEpochMilliseconds(Long.MIN_VALUE)

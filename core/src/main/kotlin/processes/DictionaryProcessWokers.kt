@@ -9,7 +9,6 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.mappers.toDictionaryEntity
 import com.gitlab.sszuev.flashcards.core.mappers.toDocumentCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDocumentDictionary
-import com.gitlab.sszuev.flashcards.core.validators.fail
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -39,14 +38,7 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
-        fail(
-            runError(
-                operation = DictionaryOperation.GET_ALL_DICTIONARIES,
-                fieldName = this.contextUserEntity.id.toFieldName(),
-                description = "exception",
-                exception = it
-            )
-        )
+        this.handleThrowable(DictionaryOperation.GET_ALL_DICTIONARIES, it)
     }
 }
 
