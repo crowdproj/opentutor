@@ -22,7 +22,7 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val res = this.repositories.dictionaryRepository(this.workMode)
             .findDictionariesByUserId(userId.asString())
             .map { it.toDictionaryEntity() }.toList()
@@ -56,7 +56,7 @@ fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val res = this.repositories.dictionaryRepository(this.workMode)
             .createDictionary(this.normalizedRequestDictionaryEntity.copy(userId = userId).toDbDictionary())
             .toDictionaryEntity()
@@ -74,14 +74,20 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary = this.repositories.dictionaryRepository(this.workMode)
             .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
-            this.errors.add(noDictionaryFoundDataError("deleteDictionary", dictionaryId))
+            this.errors.add(
+                noDictionaryFoundDataError(
+                    operation = DictionaryOperation.DELETE_DICTIONARY,
+                    id = dictionaryId,
+                    userId = normalizedRequestAppAuthId
+                )
+            )
         } else if (dictionary.userId != userId) {
-            this.errors.add(forbiddenEntityDataError("deleteDictionary", dictionaryId, userId))
+            this.errors.add(forbiddenEntityDataError(DictionaryOperation.DELETE_DICTIONARY, dictionaryId, userId))
         } else {
             this.repositories.dictionaryRepository(this.workMode)
                 .deleteDictionary(this.normalizedRequestDictionaryId.asString())
@@ -99,14 +105,20 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary = this.repositories.dictionaryRepository(this.workMode)
             .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
-            this.errors.add(noDictionaryFoundDataError("downloadDictionary", dictionaryId))
+            this.errors.add(
+                noDictionaryFoundDataError(
+                    operation = DictionaryOperation.DOWNLOAD_DICTIONARY,
+                    id = dictionaryId,
+                    userId = normalizedRequestAppAuthId
+                )
+            )
         } else if (dictionary.userId != userId) {
-            this.errors.add(forbiddenEntityDataError("downloadDictionary", dictionaryId, userId))
+            this.errors.add(forbiddenEntityDataError(DictionaryOperation.DOWNLOAD_DICTIONARY, dictionaryId, userId))
         } else {
             val cards = this.repositories.cardRepository(this.workMode)
                 .findCardsByDictionaryId(dictionaryId.asString())
@@ -135,10 +147,11 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
     }
     process {
         try {
+            val userId = this.normalizedRequestAppAuthId
             val document = createReader().parse(this.requestDictionaryResourceEntity.data)
             val dictionary = this.repositories.dictionaryRepository(this.workMode)
                 .createDictionary(
-                    document.toDictionaryEntity().copy(userId = this.contextUserEntity.id).toDbDictionary()
+                    document.toDictionaryEntity().copy(userId = userId).toDbDictionary()
                 )
                 .toDictionaryEntity()
             val cards = document.cards.asSequence()

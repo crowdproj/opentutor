@@ -32,7 +32,8 @@ import org.junit.jupiter.api.Test
 
 internal class DictionaryCorProcessorRunTest {
     companion object {
-        private val testUser = AppUserEntity(AppUserId("42"), AppAuthId("00000000-0000-0000-0000-000000000000"))
+        private val testUserId = stubDictionary.userId
+        private val testUser = AppUserEntity(AppUserId("42"), testUserId)
 
         @Suppress("SameParameterValue")
         private fun testContext(
@@ -51,7 +52,7 @@ internal class DictionaryCorProcessorRunTest {
                     testCardRepository = cardsRepository,
                 )
             )
-            context.requestAppAuthId = testUser.authId
+            context.requestAppAuthId = testUserId
             context.workMode = AppMode.TEST
             context.requestId = requestId(op)
             return context
@@ -71,7 +72,7 @@ internal class DictionaryCorProcessorRunTest {
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeGetAllDictionaries = { userId ->
                 getAllDictionariesWasCalled = true
-                if (userId == testUser.id.asString()) {
+                if (userId == testUserId.asString()) {
                     testResponseEntities.asSequence().map { it.toDbDictionary() }
                 } else {
                     emptySequence()

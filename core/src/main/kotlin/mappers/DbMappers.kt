@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.core.mappers
 
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
@@ -45,7 +45,7 @@ fun DictionaryEntity.toDbDictionary() = DbDictionary(
 fun DbDictionary.toDictionaryEntity() = DictionaryEntity(
     dictionaryId = DictionaryId(dictionaryId),
     name = name,
-    userId = AppUserId(userId),
+    userId = AppAuthId(userId),
     sourceLang = sourceLang.toLangEntity(),
     targetLang = targetLang.toLangEntity(),
 )

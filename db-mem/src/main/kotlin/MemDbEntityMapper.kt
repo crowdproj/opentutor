@@ -5,13 +5,11 @@ import com.gitlab.sszuev.flashcards.asKotlin
 import com.gitlab.sszuev.flashcards.common.CommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonDictionaryDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonExampleDto
-import com.gitlab.sszuev.flashcards.common.CommonUserDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonWordDto
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
 import com.gitlab.sszuev.flashcards.common.parseDictionaryDetailsJson
-import com.gitlab.sszuev.flashcards.common.parseUserDetailsJson
 import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
 import com.gitlab.sszuev.flashcards.common.toCardEntityStats
 import com.gitlab.sszuev.flashcards.common.toCardWordEntity
@@ -21,24 +19,11 @@ import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbExample
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbLanguage
-import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
-import com.gitlab.sszuev.flashcards.model.common.AppAuthId
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
 import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
-import java.util.UUID
-
-internal fun MemDbUser.detailsAsJsonString(): String {
-    return CommonUserDetailsDto(details).toJsonString()
-}
-
-internal fun fromJsonStringToMemDbUserDetails(json: String): Map<String, String> {
-    return parseUserDetailsJson(json).mapValues { it.toString() }
-}
 
 internal fun MemDbDictionary.detailsAsJsonString(): String {
     return CommonDictionaryDetailsDto(this.details).toJsonString()
@@ -64,14 +49,9 @@ internal fun fromJsonStringToMemDbWords(json: String): List<MemDbWord> {
     return parseCardWordsJson(json).map { it.toMemDbWord() }
 }
 
-internal fun MemDbUser.toAppUserEntity(): AppUserEntity = AppUserEntity(
-    id = id?.asUserId() ?: AppUserId.NONE,
-    authId = uuid.asAppAuthId(),
-)
-
 internal fun MemDbDictionary.toDbDictionary() = DbDictionary(
     dictionaryId = this.id?.toString() ?: "",
-    userId = this.userId?.toString() ?: "",
+    userId = this.userId ?: "",
     name = this.name,
     sourceLang = this.sourceLanguage.toDbLang(),
     targetLang = this.targetLanguage.toDbLang(),
@@ -83,7 +63,7 @@ internal fun DbDictionary.toMemDbDictionary(): MemDbDictionary = MemDbDictionary
     sourceLanguage = this.sourceLang.toMemDbLanguage(),
     targetLanguage = this.targetLang.toMemDbLanguage(),
     details = emptyMap(),
-    userId = if (this.userId.isBlank()) null else this.userId.toLong()
+    userId = this.userId.ifBlank { null }
 )
 
 internal fun MemDbCard.toDbCard(): DbCard {
@@ -155,7 +135,3 @@ private fun CommonExampleDto.toMemDbExample(): MemDbExample = MemDbExample(
 internal fun MemDbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto = CommonCardDetailsDto(this.details)
 
 private fun CommonCardDetailsDto.toMemDbCardDetails(): Map<String, String> = this.mapValues { it.value.toString() }
-
-private fun Long.asUserId(): AppUserId = AppUserId(toString())
-
-private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())

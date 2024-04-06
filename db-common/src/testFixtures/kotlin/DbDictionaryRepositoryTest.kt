@@ -16,6 +16,8 @@ abstract class DbDictionaryRepositoryTest {
 
     companion object {
 
+        private const val USER_ID = "c9a414f5-3f75-4494-b664-f4c8b33ff4e6"
+
         private val EN = DbLang(
             langId = "en",
             partsOfSpeech = listOf(
@@ -55,17 +57,17 @@ abstract class DbDictionaryRepositoryTest {
         val res1 = repository.findDictionaryById("2")
         Assertions.assertNotNull(res1)
         Assertions.assertEquals("Weather", res1!!.name)
-        Assertions.assertEquals("42", res1.userId)
+        Assertions.assertEquals(USER_ID, res1.userId)
         val res2 = repository.findDictionaryById("1")
         Assertions.assertNotNull(res2)
         Assertions.assertEquals("Irregular Verbs", res2!!.name)
-        Assertions.assertEquals("42", res2.userId)
+        Assertions.assertEquals(USER_ID, res2.userId)
     }
 
     @Order(1)
     @Test
     fun `test get all dictionaries by user-id success`() {
-        val res = repository.findDictionariesByUserId("42").toList()
+        val res = repository.findDictionariesByUserId(USER_ID).toList()
         Assertions.assertEquals(2, res.size)
 
         val businessDictionary = res[0]

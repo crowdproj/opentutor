@@ -8,6 +8,7 @@ import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.javatime.datetime
 import org.postgresql.util.PGobject
 import java.sql.ResultSet
+import java.time.LocalDateTime
 
 
 /**
@@ -18,12 +19,12 @@ object Dictionaries : LongIdTableWithSequence(
     idSeqName = "dictionaries_id_seq",
     pkeyName = "dictionaries_pkey"
 ) {
-    val name = varchar("name", 1024)
-    val userId = reference("user_id", Users.id)
-    val sourceLanguage = varchar("source_lang", 42)
-    val targetLanguage = varchar("target_lang", 42)
-    val details = json("details")
-    val changedAt = datetime("changed_at")
+    val name: Column<String> = varchar("name", 1024)
+    val userId: Column<String> = varchar("user_id", 36)
+    val sourceLanguage: Column<String> = varchar("source_lang", 42)
+    val targetLanguage: Column<String> = varchar("target_lang", 42)
+    val details: Column<String> = json("details")
+    val changedAt: Column<LocalDateTime> = datetime("changed_at")
 }
 
 /**
@@ -33,15 +34,6 @@ object Cards : LongIdTableWithSequence(tableName = "cards", idSeqName = "cards_i
     val dictionaryId = reference("dictionary_id", id).index()
     val words = jsonb("words")
     val answered = integer("answered").nullable()
-    val details = json("details")
-    val changedAt = datetime("changed_at")
-}
-
-/**
- * id;uuid,role
- */
-object Users : LongIdTableWithSequence(tableName = "users", idSeqName = "users_id_seq", pkeyName = "users_pkey") {
-    val uuid = uuid("uuid").uniqueIndex()
     val details = json("details")
     val changedAt = datetime("changed_at")
 }

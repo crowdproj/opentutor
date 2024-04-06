@@ -21,18 +21,24 @@ fun ChainDSL<CardContext>.processGetCard() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val cardId = this.normalizedRequestCardEntityId
         val card = this.repositories.cardRepository(this.workMode).findCardById(cardId.asString())?.toCardEntity()
         if (card == null) {
-            this.errors.add(noCardFoundDataError("getCard", cardId))
+            this.errors.add(noCardFoundDataError(CardOperation.GET_CARD, cardId))
         } else {
             val dictionary = this.repositories.dictionaryRepository(this.workMode)
                 .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity()
             if (dictionary == null) {
-                this.errors.add(noDictionaryFoundDataError("getCard", card.dictionaryId))
+                this.errors.add(
+                    noDictionaryFoundDataError(
+                        CardOperation.GET_CARD,
+                        card.dictionaryId,
+                        normalizedRequestAppAuthId
+                    )
+                )
             } else if (dictionary.userId != userId) {
-                this.errors.add(forbiddenEntityDataError("getCard", card.cardId, userId))
+                this.errors.add(forbiddenEntityDataError(CardOperation.GET_CARD, card.cardId, userId))
             } else {
                 this.responseCardEntity = postProcess(card) { dictionary }
             }
@@ -57,15 +63,21 @@ fun ChainDSL<CardContext>.processGetAllCards() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary =
             this.repositories.dictionaryRepository(this.workMode).findDictionaryById(dictionaryId.asString())
                 ?.toDictionaryEntity()
         if (dictionary == null) {
-            this.errors.add(noDictionaryFoundDataError("getAllCards", dictionaryId))
+            this.errors.add(
+                noDictionaryFoundDataError(
+                    CardOperation.GET_ALL_CARDS,
+                    dictionaryId,
+                    normalizedRequestAppAuthId
+                )
+            )
         } else if (dictionary.userId != userId) {
-            this.errors.add(forbiddenEntityDataError("getAllCards", dictionaryId, userId))
+            this.errors.add(forbiddenEntityDataError(CardOperation.GET_ALL_CARDS, dictionaryId, userId))
         } else {
             val cards = postProcess(
                 this.repositories.cardRepository(this.workMode)
@@ -93,17 +105,17 @@ fun ChainDSL<CardContext>.processCardSearch() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val found = this.repositories.dictionaryRepository(this.workMode)
             .findDictionariesByIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
             .map { it.toDictionaryEntity() }
             .associateBy { it.dictionaryId }
         this.normalizedRequestCardFilter.dictionaryIds.filterNot { found.containsKey(it) }.forEach {
-            this.errors.add(noDictionaryFoundDataError("searchCards", it))
+            this.errors.add(noDictionaryFoundDataError(CardOperation.SEARCH_CARDS, it, normalizedRequestAppAuthId))
         }
         found.values.forEach { dictionary ->
             if (dictionary.userId != userId) {
-                this.errors.add(forbiddenEntityDataError("searchCards", dictionary.dictionaryId, userId))
+                this.errors.add(forbiddenEntityDataError(CardOperation.SEARCH_CARDS, dictionary.dictionaryId, userId))
             }
         }
         if (errors.isEmpty()) {
@@ -123,14 +135,20 @@ fun ChainDSL<CardContext>.processCreateCard() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestCardEntity.dictionaryId
         val dictionary = this.repositories.dictionaryRepository(this.workMode)
             .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
-            this.errors.add(noDictionaryFoundDataError("createCard", dictionaryId))
+            this.errors.add(
+                noDictionaryFoundDataError(
+                    operation = CardOperation.CREATE_CARD,
+                    id = dictionaryId,
+                    userId = normalizedRequestAppAuthId
+                )
+            )
         } else if (dictionary.userId != userId) {
-            this.errors.add(forbiddenEntityDataError("createCard", dictionaryId, userId))
+            this.errors.add(forbiddenEntityDataError(CardOperation.CREATE_CARD, dictionaryId, userId))
         } else {
             val res = this.repositories.cardRepository(this.workMode)
                 .createCard(this.normalizedRequestCardEntity.toDbCard()).toCardEntity()
@@ -149,14 +167,20 @@ fun ChainDSL<CardContext>.processUpdateCard() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestCardEntity.dictionaryId
         val dictionary = this.repositories.dictionaryRepository(this.workMode)
             .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
-            this.errors.add(noDictionaryFoundDataError("updateCard", dictionaryId))
+            this.errors.add(
+                noDictionaryFoundDataError(
+                    operation = CardOperation.UPDATE_CARD,
+                    id = dictionaryId,
+                    userId = normalizedRequestAppAuthId
+                )
+            )
         } else if (dictionary.userId != userId) {
-            this.errors.add(forbiddenEntityDataError("updateCard", dictionaryId, userId))
+            this.errors.add(forbiddenEntityDataError(CardOperation.UPDATE_CARD, dictionaryId, userId))
         } else {
             val res = this.repositories.cardRepository(this.workMode)
                 .updateCard(this.normalizedRequestCardEntity.toDbCard()).toCardEntity()
@@ -175,14 +199,14 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val cardLearns = this.normalizedRequestCardLearnList.associateBy { it.cardId }
         val foundCards = this.repositories.cardRepository(this.workMode)
             .findCardsByIdIn(cardLearns.keys.map { it.asString() }).map { it.toCardEntity() }.toSet()
         val foundCardIds = foundCards.map { it.cardId }.toSet()
         val missedCardIds = cardLearns.keys - foundCardIds
         missedCardIds.forEach {
-            errors.add(noCardFoundDataError("learnCards", it))
+            errors.add(noCardFoundDataError(CardOperation.LEARN_CARDS, it))
         }
         val dictionaryIds = foundCards.map { it.dictionaryId }.toSet()
         val foundDictionaries =
@@ -190,9 +214,13 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
                 .findDictionariesByIdIn(dictionaryIds.map { it.asString() })
                 .map { it.toDictionaryEntity() }
                 .associateBy { it.dictionaryId }
+        val missedDictionaries = dictionaryIds - foundDictionaries.keys
+        missedDictionaries.forEach {
+            errors.add(noDictionaryFoundDataError(CardOperation.LEARN_CARDS, it, userId))
+        }
         foundDictionaries.onEach {
             if (it.value.userId != userId) {
-                errors.add(forbiddenEntityDataError("learnCards", it.key, userId))
+                errors.add(forbiddenEntityDataError(CardOperation.LEARN_CARDS, it.key, userId))
             }
         }
         if (errors.isEmpty()) {
@@ -213,19 +241,25 @@ fun ChainDSL<CardContext>.processResetCard() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
+        val userId = this.normalizedRequestAppAuthId
         val cardId = this.normalizedRequestCardEntityId
         val card = this.repositories.cardRepository(this.workMode).findCardById(cardId.asString())?.toCardEntity()
         if (card == null) {
-            this.errors.add(noCardFoundDataError("resetCard", cardId))
+            this.errors.add(noCardFoundDataError(CardOperation.RESET_CARD, cardId))
         } else {
             val dictionaryId = card.dictionaryId
             val dictionary = this.repositories.dictionaryRepository(this.workMode)
                 .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
             if (dictionary == null) {
-                this.errors.add(noDictionaryFoundDataError("resetCard", dictionaryId))
+                this.errors.add(
+                    noDictionaryFoundDataError(
+                        operation = CardOperation.RESET_CARD,
+                        id = dictionaryId,
+                        userId = normalizedRequestAppAuthId
+                    )
+                )
             } else if (dictionary.userId != userId) {
-                this.errors.add(forbiddenEntityDataError("resetCard", dictionaryId, userId))
+                this.errors.add(forbiddenEntityDataError(CardOperation.RESET_CARD, dictionaryId, userId))
             } else {
                 val res = this.repositories.cardRepository(this.workMode).updateCard(card.copy(answered = 0).toDbCard())
                 this.responseCardEntity = postProcess(res.toCardEntity()) { dictionary }
@@ -244,24 +278,30 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
         this.status == AppStatus.RUN
     }
     process {
-        val userId = this.contextUserEntity.id
-
+        val userId = this.normalizedRequestAppAuthId
         val cardId = this.normalizedRequestCardEntityId
         val card = this.repositories.cardRepository(this.workMode).findCardById(cardId.asString())?.toCardEntity()
         if (card == null) {
-            this.errors.add(noCardFoundDataError("deleteCard", cardId))
+            this.errors.add(noCardFoundDataError(CardOperation.DELETE_CARD, cardId))
         } else {
             val dictionary = this.repositories.dictionaryRepository(this.workMode)
                 .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity()
             if (dictionary == null) {
-                this.errors.add(noDictionaryFoundDataError("deleteCard", card.dictionaryId))
+                this.errors.add(
+                    noDictionaryFoundDataError(
+                        operation = CardOperation.DELETE_CARD,
+                        id = card.dictionaryId,
+                        userId = normalizedRequestAppAuthId
+                    )
+                )
             } else if (dictionary.userId != userId) {
-                this.errors.add(forbiddenEntityDataError("deleteCard", card.cardId, userId))
+                this.errors.add(forbiddenEntityDataError(CardOperation.DELETE_CARD, card.cardId, userId))
             } else {
                 this.repositories.cardRepository(this.workMode)
                     .deleteCard(this.normalizedRequestCardEntityId.asString())
             }
         }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
     onException {
         this.handleThrowable(CardOperation.DELETE_CARD, it)

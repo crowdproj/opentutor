@@ -10,7 +10,7 @@ data class MemDbDictionary(
     val sourceLanguage: MemDbLanguage,
     val targetLanguage: MemDbLanguage,
     val details: Map<String, String> = emptyMap(),
-    val userId: Long? = null,
+    val userId: String? = null,
     val id: Long? = null,
     val changedAt: LocalDateTime? = null,
 )

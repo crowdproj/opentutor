@@ -45,20 +45,6 @@ abstract class DbUserRepositoryTest {
     }
 
     @Test
-    fun `test get user error wrong uuid`() {
-        val uuid = "xxx"
-        val res = repository.getUser(AppAuthId(uuid))
-        Assertions.assertEquals(AppUserEntity.EMPTY, res.user)
-
-        val error = assertAppError(res, uuid, "getUser")
-        Assertions.assertEquals(
-            """Error while getUser: wrong uuid="$uuid"""",
-            error.message
-        )
-        Assertions.assertNull(error.exception)
-    }
-
-    @Test
     fun `test get user success`() {
         val res = repository.getUser(demo.authId)
         Assertions.assertNotSame(demo, res.user)

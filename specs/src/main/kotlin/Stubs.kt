@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.stubs
 
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.common.AppUserId
@@ -23,7 +24,7 @@ val stubDictionary = DictionaryEntity(
     name = "Stub-dictionary",
     sourceLang = LangEntity(LangId("SL"), listOf("A", "B", "C")),
     targetLang = LangEntity(LangId("TL"), listOf("X", "Y")),
-    userId = AppUserId("42"),
+    userId = AppAuthId("00000000-0000-0000-0000-000000000000"),
 )
 
 val stubDictionaries = listOf(stubDictionary)

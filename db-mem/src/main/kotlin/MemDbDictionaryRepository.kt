@@ -15,7 +15,7 @@ class MemDbDictionaryRepository(
         database.findDictionaryById(dictionaryId.toLong())?.toDbDictionary()
 
     override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> =
-        this.database.findDictionariesByUserId(userId.toLong()).map { it.toDbDictionary() }
+        this.database.findDictionariesByUserId(userId).map { it.toDbDictionary() }
 
     override fun createDictionary(entity: DbDictionary): DbDictionary =
         database.saveDictionary(entity.toMemDbDictionary().copy(changedAt = systemNow())).toDbDictionary()

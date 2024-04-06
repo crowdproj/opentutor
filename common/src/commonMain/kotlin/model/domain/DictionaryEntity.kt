@@ -1,10 +1,10 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 
 data class DictionaryEntity(
     val dictionaryId: DictionaryId = DictionaryId.NONE,
-    val userId: AppUserId = AppUserId.NONE,
+    val userId: AppAuthId = AppAuthId.NONE,
     val name: String = "",
     val sourceLang: LangEntity = LangEntity.EMPTY,
     val targetLang: LangEntity = LangEntity.EMPTY,

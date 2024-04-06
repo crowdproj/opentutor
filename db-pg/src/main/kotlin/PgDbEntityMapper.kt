@@ -13,27 +13,16 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbCard
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbDictionary
-import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
-import com.gitlab.sszuev.flashcards.dbpg.dao.Users
-import com.gitlab.sszuev.flashcards.model.common.AppAuthId
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
 import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
 import org.jetbrains.exposed.dao.id.EntityID
 import java.time.LocalDateTime
-import java.util.UUID
-
-internal fun PgDbUser.toAppUserEntity(): AppUserEntity = AppUserEntity(
-    id = this.id.asUserId(),
-    authId = this.uuid.asAppAuthId(),
-)
 
 internal fun PgDbDictionary.toDbDictionary(): DbDictionary = DbDictionary(
     dictionaryId = this.id.value.toString(),
-    userId = this.userId.value.toString(),
+    userId = this.userId,
     name = this.name,
     sourceLang = createDbLang(this.sourceLang),
     targetLang = createDbLang(this.targetLang),
@@ -63,17 +52,11 @@ internal fun writeCardEntityToPgDbCard(from: DbCard, to: PgDbCard, timestamp: Lo
 
 internal fun DbCard.toPgDbCardWordsJson(): String = wordsAsCommonWordDtoList().toJsonString()
 
-internal fun EntityID<Long>.asUserId(): AppUserId = AppUserId(value.toString())
-
 internal fun String.toDictionariesId(): EntityID<Long> = EntityID(toLong(), Dictionaries)
 
 internal fun String.toCardsId(): EntityID<Long> = EntityID(toLong(), Cards)
-
-internal fun String.toUserId(): EntityID<Long> = EntityID(toLong(), Users)
 
 internal fun createDbLang(tag: String) = DbLang(
     langId = tag,
     partsOfSpeech = LanguageRepository.partsOfSpeech(tag)
 )
-
-private fun UUID.asAppAuthId(): AppAuthId = AppAuthId(toString())

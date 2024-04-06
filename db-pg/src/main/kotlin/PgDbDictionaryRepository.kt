@@ -27,7 +27,7 @@ class PgDbDictionaryRepository(
     }
 
     override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> = connection.execute {
-        PgDbDictionary.find(Dictionaries.userId eq userId.toUserId()).map { it.toDbDictionary() }.asSequence()
+        PgDbDictionary.find(Dictionaries.userId eq userId).map { it.toDbDictionary() }.asSequence()
     }
 
     override fun createDictionary(entity: DbDictionary): DbDictionary = connection.execute {
@@ -36,7 +36,7 @@ class PgDbDictionaryRepository(
             it[sourceLanguage] = entity.sourceLang.langId
             it[targetLanguage] = entity.targetLang.langId
             it[name] = entity.name
-            it[userId] = entity.userId.toLong()
+            it[userId] = entity.userId
             it[changedAt] = timestamp
         }
         entity.copy(dictionaryId = dictionaryId.value.toString())

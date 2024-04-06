@@ -1,11 +1,11 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.model.Id
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
@@ -19,9 +19,9 @@ internal fun Id.toFieldName(): String {
 }
 
 fun forbiddenEntityDataError(
-    operation: String,
+    operation: AppOperation,
     entityId: Id,
-    userId: AppUserId,
+    userId: AppAuthId,
 ) = dataError(
     operation = operation,
     fieldName = entityId.asString(),
@@ -33,16 +33,17 @@ fun forbiddenEntityDataError(
 )
 
 fun noDictionaryFoundDataError(
-    operation: String,
+    operation: AppOperation,
     id: DictionaryId,
+    userId: AppAuthId,
 ) = dataError(
     operation = operation,
     fieldName = id.asString(),
-    details = """dictionary with id="${id.toFieldName()}" not found"""
+    details = """dictionary with id="${id.toFieldName()}" not found for user ${userId.toFieldName()}"""
 )
 
 fun noCardFoundDataError(
-    operation: String,
+    operation: AppOperation,
     id: CardId,
 ) = dataError(
     operation = operation,
@@ -51,15 +52,15 @@ fun noCardFoundDataError(
 )
 
 fun dataError(
-    operation: String,
+    operation: AppOperation,
     fieldName: String = "",
     details: String = "",
     exception: Throwable? = null,
 ) = AppError(
-    code = "database::$operation",
+    code = operation.name,
     field = fieldName,
-    group = "database",
-    message = if (details.isBlank()) "Error while $operation" else "Error while $operation: $details",
+    group = "core",
+    message = if (details.isBlank()) "Error while ${operation.name}" else "Error while ${operation.name}: $details",
     exception = exception
 )
 

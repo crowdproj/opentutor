@@ -5,7 +5,6 @@ import com.gitlab.sszuev.flashcards.core.normalizers.normalizers
 import com.gitlab.sszuev.flashcards.core.processes.processCreateDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processDeleteDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processDownloadDictionary
-import com.gitlab.sszuev.flashcards.core.processes.processFindUser
 import com.gitlab.sszuev.flashcards.core.processes.processGetAllDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processUploadDictionary
 import com.gitlab.sszuev.flashcards.core.stubs.dictionaryStubSuccess
@@ -38,7 +37,6 @@ class DictionaryCorProcessor {
                 validators(DictionaryOperation.GET_ALL_DICTIONARIES) {
                 }
                 runs(DictionaryOperation.GET_ALL_DICTIONARIES) {
-                    processFindUser(DictionaryOperation.GET_ALL_DICTIONARIES)
                     processGetAllDictionary()
                 }
             }
@@ -52,7 +50,6 @@ class DictionaryCorProcessor {
                     validateDictionaryLangId("target-lang") { it.normalizedRequestDictionaryEntity.targetLang.langId }
                 }
                 runs(DictionaryOperation.CREATE_DICTIONARY) {
-                    processFindUser(DictionaryOperation.CREATE_DICTIONARY)
                     processCreateDictionary()
                 }
             }
@@ -64,7 +61,6 @@ class DictionaryCorProcessor {
                     validateDictionaryId { (it as DictionaryContext).normalizedRequestDictionaryId }
                 }
                 runs(DictionaryOperation.DELETE_DICTIONARY) {
-                    processFindUser(DictionaryOperation.DELETE_DICTIONARY)
                     processDeleteDictionary()
                 }
             }
@@ -76,7 +72,6 @@ class DictionaryCorProcessor {
                     validateDictionaryId { (it as DictionaryContext).normalizedRequestDictionaryId }
                 }
                 runs(DictionaryOperation.DOWNLOAD_DICTIONARY) {
-                    processFindUser(DictionaryOperation.DOWNLOAD_DICTIONARY)
                     processDownloadDictionary()
                 }
             }
@@ -88,7 +83,6 @@ class DictionaryCorProcessor {
                     validateDictionaryResource()
                 }
                 runs(DictionaryOperation.UPLOAD_DICTIONARY) {
-                    processFindUser(DictionaryOperation.UPLOAD_DICTIONARY)
                     processUploadDictionary()
                 }
             }

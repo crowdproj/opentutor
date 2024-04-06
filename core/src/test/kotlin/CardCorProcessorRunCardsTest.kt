@@ -42,16 +42,11 @@ import org.junit.jupiter.params.provider.EnumSource
 
 internal class CardCorProcessorRunCardsTest {
     companion object {
-        private val testUser = AppUserEntity(AppUserId("42"), AppAuthId("00000000-0000-0000-0000-000000000000"))
+        private val testUserId = stubDictionary.userId
 
         private fun testContext(
             op: CardOperation,
             cardRepository: DbCardRepository,
-            userRepository: DbUserRepository = MockDbUserRepository(
-                invokeGetUser = {
-                    if (it == testUser.authId) UserEntityDbResponse(user = testUser) else Assertions.fail()
-                }
-            ),
             dictionaryRepository: DbDictionaryRepository = MockDbDictionaryRepository(),
             ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(invokeFindResourceId = {
                 TTSResourceIdResponse.EMPTY.copy(TTSResourceId(it.lang.asString() + ":" + it.word))
@@ -60,13 +55,12 @@ internal class CardCorProcessorRunCardsTest {
             val context = CardContext(
                 operation = op,
                 repositories = AppRepositories().copy(
-                    testUserRepository = userRepository,
                     testCardRepository = cardRepository,
                     testDictionaryRepository = dictionaryRepository,
                     testTTSClientRepository = ttsResourceRepository,
                 ),
             )
-            context.requestAppAuthId = testUser.authId
+            context.requestAppAuthId = testUserId
             context.workMode = AppMode.TEST
             context.requestId = requestId(op)
             return context
@@ -140,7 +134,6 @@ internal class CardCorProcessorRunCardsTest {
     fun `test get-card error - unexpected fail`() = runTest {
         val testCardId = CardId("42")
 
-        var getUserWasCalled = false
         var getIsWasCalled = false
         val cardRepository = MockDbCardRepository(
             invokeFindCardById = { _ ->
@@ -148,21 +141,13 @@ internal class CardCorProcessorRunCardsTest {
                 throw TestException()
             }
         )
-        val userRepository = MockDbUserRepository(
-            invokeGetUser = {
-                getUserWasCalled = true
-                if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw TestException()
-            }
-        )
 
         val context =
-            testContext(op = CardOperation.GET_CARD, cardRepository = cardRepository, userRepository = userRepository)
-        context.requestAppAuthId = testUser.authId
+            testContext(op = CardOperation.GET_CARD, cardRepository = cardRepository)
         context.requestCardEntityId = testCardId
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(getUserWasCalled)
         Assertions.assertTrue(getIsWasCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_CARD), context.requestId)
         assertUnknownError(context, CardOperation.GET_CARD)
@@ -738,10 +723,7 @@ internal class CardCorProcessorRunCardsTest {
 
     @ParameterizedTest
     @EnumSource(value = CardOperation::class, names = ["NONE", "GET_RESOURCE"], mode = EnumSource.Mode.EXCLUDE)
-    fun `test no user found`(op: CardOperation) = runTest {
-        val testUid = AppAuthId("21")
-        val testError = AppError(group = "test-error", code = "test-error")
-
+    fun `test no resource found`(op: CardOperation) = runTest {
         val testCardId = CardId("42")
         val testDictionaryId = DictionaryId("42")
         val testLearn = CardLearn(testCardId, mapOf(Stage.SELF_TEST to 42))
@@ -760,19 +742,28 @@ internal class CardCorProcessorRunCardsTest {
             length = 42,
         )
 
-        var getUserIsCalled = false
-        var getCardIsCalled = false
-        val cardRepository = MockDbCardRepository(invokeFindCardById = { _ ->
-            getCardIsCalled = true
-            throw TestException()
-        })
-        val userRepository = MockDbUserRepository(invokeGetUser = {
-            getUserIsCalled = true
-            UserEntityDbResponse(user = AppUserEntity.EMPTY, errors = listOf(testError))
-        })
+        val expectedError = AppError(
+            group = "core",
+            code = op.name,
+            field = testCardId.asString(),
+            message = "Error while ${op.name}: dictionary with id=\"${testDictionaryId.asString()}\" " +
+                "not found for user ${testUserId.asString()}"
+        )
 
-        val context = testContext(op, cardRepository = cardRepository, userRepository = userRepository)
-        context.requestAppAuthId = testUid
+        var findCardByIdIsCalled = false
+        var findCardsByIdInIsCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeFindCardById = { _ ->
+                findCardByIdIsCalled = true
+                stubCard.toDbCard()
+            },
+            invokeFindCardsByIdIn = {
+                findCardsByIdInIsCalled = true
+                sequenceOf(stubCard.toDbCard())
+            }
+        )
+
+        val context = testContext(op, cardRepository = cardRepository)
         context.requestCardEntityId = testCardId
         context.requestCardLearnList = listOf(testLearn)
         context.requestCardEntity = testCardEntity
@@ -781,10 +772,25 @@ internal class CardCorProcessorRunCardsTest {
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(getUserIsCalled)
-        Assertions.assertFalse(getCardIsCalled)
+        when (op) {
+            CardOperation.NONE, CardOperation.GET_RESOURCE -> Assertions.fail()
+            CardOperation.SEARCH_CARDS, CardOperation.GET_ALL_CARDS, CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD -> {
+                Assertions.assertFalse(findCardByIdIsCalled)
+                Assertions.assertFalse(findCardsByIdInIsCalled)
+            }
+
+            CardOperation.GET_CARD, CardOperation.DELETE_CARD, CardOperation.RESET_CARD -> {
+                Assertions.assertTrue(findCardByIdIsCalled)
+                Assertions.assertFalse(findCardsByIdInIsCalled)
+            }
+
+            CardOperation.LEARN_CARDS -> {
+                Assertions.assertFalse(findCardByIdIsCalled)
+                Assertions.assertTrue(findCardsByIdInIsCalled)
+            }
+        }
         Assertions.assertEquals(requestId(op), context.requestId)
         val actual = assertSingleError(context, op)
-        Assertions.assertSame(testError, actual)
+        Assertions.assertEquals(expectedError, actual)
     }
 }
