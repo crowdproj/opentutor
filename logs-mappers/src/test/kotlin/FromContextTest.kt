@@ -61,7 +61,7 @@ internal class FromContextTest {
             Assertions.assertEquals(expected.dictionaryIds.map { it.asString() }, actual.dictionaryIds)
             Assertions.assertEquals(expected.length, actual.length)
             Assertions.assertEquals(expected.random, actual.random)
-            Assertions.assertEquals(expected.withUnknown, actual.unknown)
+            Assertions.assertEquals(expected.onlyUnknown, actual.unknown)
         }
 
         fun assertCardLearn(expected: CardLearn, actual: CardLearnLogResource) {
@@ -114,7 +114,7 @@ internal class FromContextTest {
             dictionaryIds = listOf(DictionaryId("A"), DictionaryId("B")),
             length = 42,
             random = true,
-            withUnknown = false,
+            onlyUnknown = false,
         )
 
         val actual = context.toLogResource("test-log")

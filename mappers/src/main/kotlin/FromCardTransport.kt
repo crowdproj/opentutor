@@ -70,7 +70,7 @@ fun CardContext.fromSearchCardsRequest(request: SearchCardsRequest) {
         dictionaryIds = request.dictionaryIds?.map { toDictionaryId(it) } ?: listOf(),
         length = request.length ?: 0,
         random = request.random ?: false,
-        withUnknown = request.unknown ?: false,
+        onlyUnknown = request.unknown ?: false,
     )
 }
 

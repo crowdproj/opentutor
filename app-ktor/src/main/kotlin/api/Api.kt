@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.api
 
-import com.gitlab.sszuev.flashcards.CardRepositories
-import com.gitlab.sszuev.flashcards.DictionaryRepositories
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.api.controllers.cards
 import com.gitlab.sszuev.flashcards.api.controllers.dictionaries
 import com.gitlab.sszuev.flashcards.api.controllers.sounds
@@ -13,7 +12,7 @@ import io.ktor.server.routing.route
 
 internal fun Route.cardApiV1(
     service: CardService,
-    repositories: CardRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig,
 ) {
     route("v1/api") {
@@ -24,7 +23,7 @@ internal fun Route.cardApiV1(
 
 internal fun Route.dictionaryApiV1(
     service: DictionaryService,
-    repositories: DictionaryRepositories,
+    repositories: AppRepositories,
     contextConfig: ContextConfig,
 ) {
     route("v1/api") {

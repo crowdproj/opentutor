@@ -1,20 +1,26 @@
 package com.gitlab.sszuev.flashcards.dbcommon
 
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.repositories.DbDataException
+import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import org.junit.jupiter.api.*
+import com.gitlab.sszuev.flashcards.repositories.DbLang
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 
-@Suppress("FunctionName")
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 abstract class DbDictionaryRepositoryTest {
     abstract val repository: DbDictionaryRepository
 
     companion object {
-        private val userId = AppUserId("42")
 
-        private val EN = LangEntity(
-            LangId("en"), listOf(
+        private const val USER_ID = "c9a414f5-3f75-4494-b664-f4c8b33ff4e6"
+
+        private val EN = DbLang(
+            langId = "en",
+            partsOfSpeech = listOf(
                 "noun",
                 "verb",
                 "adjective",
@@ -26,9 +32,9 @@ abstract class DbDictionaryRepositoryTest {
                 "article"
             )
         )
-        private val RU = LangEntity(
-            LangId("ru"),
-            listOf(
+        private val RU = DbLang(
+            langId = "ru",
+            partsOfSpeech = listOf(
                 "существительное",
                 "прилагательное",
                 "числительное",
@@ -42,22 +48,35 @@ abstract class DbDictionaryRepositoryTest {
                 "междометие"
             )
         )
+
+    }
+
+    @Order(1)
+    @Test
+    fun `test get dictionary by id`() {
+        val res1 = repository.findDictionaryById("2")
+        Assertions.assertNotNull(res1)
+        Assertions.assertEquals("Weather", res1!!.name)
+        Assertions.assertEquals(USER_ID, res1.userId)
+        val res2 = repository.findDictionaryById("1")
+        Assertions.assertNotNull(res2)
+        Assertions.assertEquals("Irregular Verbs", res2!!.name)
+        Assertions.assertEquals(USER_ID, res2.userId)
     }
 
     @Order(1)
     @Test
     fun `test get all dictionaries by user-id success`() {
-        val res = repository.getAllDictionaries(AppUserId("42"))
-        Assertions.assertTrue(res.errors.isEmpty())
-        Assertions.assertEquals(2, res.dictionaries.size)
+        val res = repository.findDictionariesByUserId(USER_ID).toList()
+        Assertions.assertEquals(2, res.size)
 
-        val businessDictionary = res.dictionaries[0]
-        Assertions.assertEquals(DictionaryId("1"), businessDictionary.dictionaryId)
+        val businessDictionary = res[0]
+        Assertions.assertEquals("1", businessDictionary.dictionaryId)
         Assertions.assertEquals("Irregular Verbs", businessDictionary.name)
         Assertions.assertEquals(EN, businessDictionary.sourceLang)
         Assertions.assertEquals(RU, businessDictionary.targetLang)
-        val weatherDictionary = res.dictionaries[1]
-        Assertions.assertEquals(DictionaryId("2"), weatherDictionary.dictionaryId)
+        val weatherDictionary = res[1]
+        Assertions.assertEquals("2", weatherDictionary.dictionaryId)
         Assertions.assertEquals("Weather", weatherDictionary.name)
         Assertions.assertEquals(EN, weatherDictionary.sourceLang)
         Assertions.assertEquals(RU, weatherDictionary.targetLang)
@@ -66,95 +85,39 @@ abstract class DbDictionaryRepositoryTest {
     @Order(2)
     @Test
     fun `test get all dictionaries by user-id nothing found`() {
-        val res = repository.getAllDictionaries(AppUserId("42000"))
-        Assertions.assertEquals(0, res.dictionaries.size)
-        Assertions.assertTrue(res.errors.isEmpty())
-    }
-
-    @Order(3)
-    @Test
-    fun `test download dictionary`() {
-        // Weather
-        val res = repository.importDictionary(userId, DictionaryId("2"))
-        Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
-        val xml = res.resource.data.toString(Charsets.UTF_16)
-        Assertions.assertTrue(xml.startsWith("""<?xml version="1.0" encoding="UTF-16"?>"""))
-        Assertions.assertEquals(66, xml.split("<card>").size)
-        Assertions.assertTrue(xml.endsWith("</dictionary>" + System.lineSeparator()))
+        val res = repository.findDictionariesByUserId("42000").toList()
+        Assertions.assertEquals(0, res.size)
     }
 
     @Order(4)
     @Test
     fun `test delete dictionary success`() {
         // Business vocabulary (Job)
-        val res = repository.removeDictionary(userId, DictionaryId("1"))
-        Assertions.assertTrue(res.errors.isEmpty())
+        val res = repository.deleteDictionary("1")
+        Assertions.assertEquals("1", res.dictionaryId)
+        Assertions.assertEquals("Irregular Verbs", res.name)
+        Assertions.assertNull(repository.findDictionaryById("1"))
     }
 
     @Order(4)
     @Test
     fun `test delete dictionary not found`() {
-        val id = DictionaryId("42")
-        val res = repository.removeDictionary(userId, id)
-        Assertions.assertEquals(1, res.errors.size)
-        val error = res.errors[0]
-        Assertions.assertEquals("database::removeDictionary", error.code)
-        Assertions.assertEquals(id.asString(), error.field)
-        Assertions.assertEquals("database", error.group)
-        Assertions.assertEquals(
-            """Error while removeDictionary: dictionary with id="${id.asString()}" not found""",
-            error.message
-        )
-    }
-
-    @Order(5)
-    @Test
-    fun `test upload dictionary`() {
-        val txt = """
-            <?xml version="1.0" encoding="UTF-16"?>
-            <dictionary 
-                formatVersion="6"  
-                title="Test Dictionary"  
-                userId="777" 
-                sourceLanguageId="1033" 
-                destinationLanguageId="1049" 
-                targetNamespace="http://www.abbyy.com/TutorDictionary">
-                <card>
-                    <word>test</word>
-                    <meanings>
-                        <meaning partOfSpeech="3" transcription="test">
-                            <statistics status="2"/>
-                            <translations>
-                                <word>тестировать</word>
-                            </translations>
-                            <examples/>
-                        </meaning>
-                    </meanings>
-                </card>
-            </dictionary>
-        """.trimIndent()
-        val bytes = txt.toByteArray(Charsets.UTF_16)
-        val res = repository.exportDictionary(AppUserId("42"), ResourceEntity(DictionaryId.NONE, bytes))
-        Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
-
-        Assertions.assertEquals("Test Dictionary", res.dictionary.name)
-        Assertions.assertTrue(res.dictionary.dictionaryId.asString().isNotBlank())
-        Assertions.assertEquals(EN, res.dictionary.sourceLang)
-        Assertions.assertEquals(RU, res.dictionary.targetLang)
-        Assertions.assertEquals(0, res.dictionary.totalCardsCount)
-        Assertions.assertEquals(0, res.dictionary.learnedCardsCount)
+        val id = "42"
+        Assertions.assertThrows(DbDataException::class.java) {
+            repository.deleteDictionary(id)
+        }
     }
 
     @Order(6)
     @Test
     fun `test create dictionary success`() {
-        val given = DictionaryEntity(name = "test-dictionary", sourceLang = RU, targetLang = EN)
-        val res = repository.createDictionary(AppUserId("42"), given)
-        Assertions.assertEquals(0, res.errors.size) { "Errors: ${res.errors}" }
-        Assertions.assertEquals(given.name, res.dictionary.name)
-        Assertions.assertEquals(RU, res.dictionary.sourceLang)
-        Assertions.assertEquals(EN, res.dictionary.targetLang)
-        Assertions.assertNotEquals(DictionaryId.NONE, res.dictionary.dictionaryId)
-        Assertions.assertTrue(res.dictionary.dictionaryId.asString().matches("\\d+".toRegex()))
+        val given =
+            DbDictionary(name = "test-dictionary", sourceLang = RU, targetLang = EN, userId = "42", dictionaryId = "")
+        val res = repository.createDictionary(given)
+        Assertions.assertEquals(given.name, res.name)
+        Assertions.assertEquals(RU, res.sourceLang)
+        Assertions.assertEquals(EN, res.targetLang)
+        Assertions.assertFalse(res.dictionaryId.isBlank())
+        Assertions.assertTrue(res.dictionaryId.matches("\\d+".toRegex()))
     }
 }

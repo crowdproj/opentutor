@@ -1,12 +1,18 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
+import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
+import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 
-fun CardContext.learnCards(): CardsDbResponse {
-    val cards = this.normalizedRequestCardLearnList.associateBy { it.cardId }
-    return this.repositories.cardRepository(this.workMode).updateCards(this.contextUserEntity.id, cards.keys) { card ->
-        val learn = checkNotNull(cards[card.cardId])
+internal fun CardContext.learnCards(
+    foundCards: Iterable<CardEntity>,
+    cardLearns: Map<CardId, CardLearn>
+): List<CardEntity> {
+    val cards = foundCards.map { card ->
+        val learn = checkNotNull(cardLearns[card.cardId])
         var answered = card.answered?.toLong() ?: 0L
         val details = card.stats.toMutableMap()
         learn.details.forEach {
@@ -17,6 +23,7 @@ fun CardContext.learnCards(): CardsDbResponse {
             }
             details.merge(it.key, it.value) { a, b -> a + b }
         }
-        card.copy(stats = details, answered = answered.toInt())
+        card.copy(stats = details, answered = answered.toInt()).toDbCard()
     }
+    return this.repositories.cardRepository(this.workMode).updateCards(cards).map { it.toCardEntity() }
 }

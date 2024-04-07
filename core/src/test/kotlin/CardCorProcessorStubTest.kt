@@ -1,9 +1,25 @@
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.model.common.*
-import com.gitlab.sszuev.flashcards.model.domain.*
-import com.gitlab.sszuev.flashcards.stubs.*
+import com.gitlab.sszuev.flashcards.model.common.AppError
+import com.gitlab.sszuev.flashcards.model.common.AppMode
+import com.gitlab.sszuev.flashcards.model.common.AppRequestId
+import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.common.AppStub
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
+import com.gitlab.sszuev.flashcards.model.domain.CardFilter
+import com.gitlab.sszuev.flashcards.model.domain.CardId
+import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.stubs.stubAudioResource
+import com.gitlab.sszuev.flashcards.stubs.stubCard
+import com.gitlab.sszuev.flashcards.stubs.stubCards
+import com.gitlab.sszuev.flashcards.stubs.stubError
+import com.gitlab.sszuev.flashcards.stubs.stubErrorForCode
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -12,7 +28,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
-import java.util.*
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 internal class CardCorProcessorStubTest {
@@ -27,7 +43,7 @@ internal class CardCorProcessorStubTest {
             dictionaryIds = listOf(2, 4, 42).map { DictionaryId(it.toString()) },
             length = 42,
             random = true,
-            withUnknown = false,
+            onlyUnknown = false,
         )
         private val testCardLearn = CardLearn(
             cardId = CardId("42"),

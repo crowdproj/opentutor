@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.stubs
 
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
@@ -22,6 +23,7 @@ val stubDictionary = DictionaryEntity(
     name = "Stub-dictionary",
     sourceLang = LangEntity(LangId("SL"), listOf("A", "B", "C")),
     targetLang = LangEntity(LangId("TL"), listOf("X", "Y")),
+    userId = AppAuthId("00000000-0000-0000-0000-000000000000"),
 )
 
 val stubDictionaries = listOf(stubDictionary)
@@ -47,29 +49,33 @@ val stubCard = CardEntity(
             word = "stub",
             partOfSpeech = "noun",
             transcription = "stʌb",
-            translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитация")),
+            translations = listOf(listOf("заглушка"), listOf("корешок", "талон", "квитанция")),
             examples = listOf("That was the last candle stub I had.", "\$500 ticket stub.").map {
                 CardWordExampleEntity(
                     it
                 )
             },
-            sound = TTSResourceId("en:stub"),
+            sound = TTSResourceId("sl:stub"),
         ),
     ),
     stats = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
+    sound = TTSResourceId("sl:stub"),
 )
 
 val stubCards = IntRange(1, 3)
     .flatMap { dictionaryId -> IntRange(1, 42).map { cardId -> dictionaryId to cardId } }
     .map {
+        val word = "XXX-${it.first}-${it.second}"
         stubCard.copy(
             cardId = CardId(it.second.toString()),
             dictionaryId = DictionaryId(it.first.toString()),
             words = listOf(
                 CardWordEntity(
-                    word = "XXX-${it.first}-${it.second}"
+                    word = word,
+                    sound = TTSResourceId("sl:$word"),
                 ),
             ),
+            sound = TTSResourceId("sl:$word"),
         )
     }
 

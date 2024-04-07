@@ -13,9 +13,9 @@ import com.gitlab.sszuev.flashcards.logs.models.DictionaryLogResource
 import com.gitlab.sszuev.flashcards.logs.models.ErrorLogResource
 import com.gitlab.sszuev.flashcards.logs.models.LogResource
 import com.gitlab.sszuev.flashcards.logs.models.UserLogResource
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
@@ -37,7 +37,7 @@ fun AppContext.toLogResource(logId: String) = LogResource(
     messageTime = Instant.now().toString(),
     logId = logId,
     requestId = this.requestId.asString(),
-    user = this.contextUserEntity.toLog(),
+    user = this.requestAppAuthId.toLog(),
     cards = if (this is CardContext) this.toLog() else null,
     dictionaries = if (this is DictionaryContext) this.toLog() else null,
     errors = this.errors.takeIf { it.isNotEmpty() }?.map { it.toLog() }
@@ -94,7 +94,7 @@ private fun CardWordExampleEntity.toLog() = CardWordExampleLogResource(
 private fun CardFilter.toLog() = CardFilterLogResource(
     dictionaryIds = this.dictionaryIds.map { it.asString() },
     random = this.random,
-    unknown = this.withUnknown,
+    unknown = this.onlyUnknown,
     length = this.length,
 )
 
@@ -103,9 +103,8 @@ private fun CardLearn.toLog() = CardLearnLogResource(
     details = this.details.mapKeys { it.key.name }
 )
 
-private fun AppUserEntity.toLog() = UserLogResource(
-    userId = id.asString(),
-    userUid = authId.asString(),
+private fun AppAuthId.toLog() = UserLogResource(
+    userId = asString(),
 )
 
 private fun AppError.toLog() = ErrorLogResource(

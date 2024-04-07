@@ -7,7 +7,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.common.AppStub
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -16,9 +15,9 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import kotlinx.datetime.Instant
 
 data class DictionaryContext(
-    override val repositories: DictionaryRepositories = DictionaryRepositories.NO_OP_REPOSITORIES,
     override val operation: DictionaryOperation = DictionaryOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
+    override val repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
@@ -28,7 +27,6 @@ data class DictionaryContext(
     override var requestId: AppRequestId = AppRequestId.NONE,
     override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
     override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
-    override var contextUserEntity: AppUserEntity = AppUserEntity.EMPTY,
 
     // get all dictionaries' list response:
     var responseDictionaryEntityList: List<DictionaryEntity> = listOf(),

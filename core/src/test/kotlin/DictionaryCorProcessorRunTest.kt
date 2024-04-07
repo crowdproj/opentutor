@@ -1,29 +1,23 @@
 package com.gitlab.sszuev.flashcards.core
 
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.DictionaryRepositories
+import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
+import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
-import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
-import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
-import com.gitlab.sszuev.flashcards.model.common.AppUserId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
+import com.gitlab.sszuev.flashcards.model.domain.LangEntity
+import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.repositories.CardsDbResponse
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import com.gitlab.sszuev.flashcards.repositories.DictionariesDbResponse
-import com.gitlab.sszuev.flashcards.repositories.DictionaryDbResponse
-import com.gitlab.sszuev.flashcards.repositories.ImportDictionaryDbResponse
-import com.gitlab.sszuev.flashcards.repositories.RemoveDictionaryDbResponse
-import com.gitlab.sszuev.flashcards.repositories.UserEntityDbResponse
+import com.gitlab.sszuev.flashcards.stubs.stubCard
 import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
 import com.gitlab.sszuev.flashcards.stubs.stubDictionary
 import kotlinx.coroutines.test.runTest
@@ -32,26 +26,22 @@ import org.junit.jupiter.api.Test
 
 internal class DictionaryCorProcessorRunTest {
     companion object {
-        private val testUser = AppUserEntity(AppUserId("42"), AppAuthId("00000000-0000-0000-0000-000000000000"))
+        private val testUserId = stubDictionary.userId
 
         @Suppress("SameParameterValue")
         private fun testContext(
             op: DictionaryOperation,
             dictionaryRepository: DbDictionaryRepository,
-            userRepository: DbUserRepository = MockDbUserRepository(
-                invokeGetUser = { if (it == testUser.authId) UserEntityDbResponse(user = testUser) else throw AssertionError() }
-            ),
             cardsRepository: DbCardRepository = MockDbCardRepository(),
         ): DictionaryContext {
             val context = DictionaryContext(
                 operation = op,
-                repositories = DictionaryRepositories().copy(
-                    testUserRepository = userRepository,
+                repositories = AppRepositories().copy(
                     testDictionaryRepository = dictionaryRepository,
                     testCardRepository = cardsRepository,
                 )
             )
-            context.requestAppAuthId = testUser.authId
+            context.requestAppAuthId = testUserId
             context.workMode = AppMode.TEST
             context.requestId = requestId(op)
             return context
@@ -69,15 +59,19 @@ internal class DictionaryCorProcessorRunTest {
         var getAllDictionariesWasCalled = false
         var getAllCardsWasCalled = false
         val dictionaryRepository = MockDbDictionaryRepository(
-            invokeGetAllDictionaries = {
+            invokeGetAllDictionaries = { userId ->
                 getAllDictionariesWasCalled = true
-                DictionariesDbResponse(if (it == testUser.id) testResponseEntities else emptyList())
+                if (userId == testUserId.asString()) {
+                    testResponseEntities.asSequence().map { it.toDbDictionary() }
+                } else {
+                    emptySequence()
+                }
             }
         )
         val cardsRepository = MockDbCardRepository(
-            invokeGetAllCards = { _, _ ->
+            invokeFindCardsByDictionaryId = { _ ->
                 getAllCardsWasCalled = true
-                CardsDbResponse.EMPTY
+                emptySequence()
             }
         )
 
@@ -112,9 +106,9 @@ internal class DictionaryCorProcessorRunTest {
 
         var wasCalled = false
         val repository = MockDbDictionaryRepository(
-            invokeCreateDictionary = { _, d ->
+            invokeCreateDictionary = { d ->
                 wasCalled = true
-                DictionaryDbResponse(dictionary = d.copy(testDictionaryId))
+                d.copy(dictionaryId = testDictionaryId.asString())
             }
         )
 
@@ -134,13 +128,16 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test delete-dictionary success`() = runTest {
         val testId = DictionaryId("42")
-        val response = RemoveDictionaryDbResponse()
+        val response = stubDictionary
 
-        var wasCalled = false
+        var isDeleteDictionaryCalled = false
         val repository = MockDbDictionaryRepository(
-            invokeDeleteDictionary = { _, it ->
-                wasCalled = true
-                if (it == testId) response else throw AssertionError()
+            invokeFindDictionaryById = {
+                if (it == testId.asString()) response.toDbDictionary() else Assertions.fail()
+            },
+            invokeDeleteDictionary = {
+                isDeleteDictionaryCalled = true
+                if (it == testId.asString()) response.toDbDictionary() else Assertions.fail()
             }
         )
 
@@ -149,7 +146,7 @@ internal class DictionaryCorProcessorRunTest {
 
         DictionaryCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isDeleteDictionaryCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.DELETE_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
@@ -158,50 +155,117 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test download-dictionary success`() = runTest {
         val testId = DictionaryId("42")
-        val testData = ResourceEntity(testId, ByteArray(42) { 42 })
-        val response = ImportDictionaryDbResponse(resource = testData)
+        val testDictionary = stubDictionary.copy(
+            dictionaryId = testId,
+            sourceLang = LangEntity(LangId("en")),
+            targetLang = LangEntity(LangId("fr")),
+        )
+        val testCard = stubCard.copy(dictionaryId = testId)
 
-        var wasCalled = false
-        val repository = MockDbDictionaryRepository(
-            invokeDownloadDictionary = { _, it ->
-                wasCalled = true
-                if (it == testId) response else throw AssertionError()
+        var isFindDictionaryByIdCalled = false
+        var isFindCardsByDictionaryIdCalled = false
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaryById = {
+                isFindDictionaryByIdCalled = true
+                if (it == testId.asString()) testDictionary.toDbDictionary() else Assertions.fail()
+            }
+        )
+        val cardsRepository = MockDbCardRepository(
+            invokeFindCardsByDictionaryId = {
+                isFindCardsByDictionaryIdCalled = true
+                if (it == testId.asString()) sequenceOf(testCard.toDbCard()) else Assertions.fail()
             }
         )
 
-        val context = testContext(DictionaryOperation.DOWNLOAD_DICTIONARY, repository)
+        val context = testContext(
+            op = DictionaryOperation.DOWNLOAD_DICTIONARY,
+            dictionaryRepository = dictionaryRepository,
+            cardsRepository = cardsRepository,
+        )
         context.requestDictionaryId = testId
 
         DictionaryCorProcessor().execute(context)
 
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isFindDictionaryByIdCalled)
+        Assertions.assertTrue(isFindCardsByDictionaryIdCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.DOWNLOAD_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
+
+        val document = context.responseDictionaryResourceEntity.data.toString(Charsets.UTF_16)
+        Assertions.assertTrue(document.contains("<meaning partOfSpeech=\"1\" transcription=\"stʌb\">"))
+        Assertions.assertTrue(document.contains("title=\"Stub-dictionary\""))
     }
 
     @Test
     fun `test upload-dictionary success`() = runTest {
-        val testData = ResourceEntity(DictionaryId.NONE, ByteArray(4200) { 42 })
-        val response = DictionaryDbResponse(dictionary = stubDictionary)
+        val testDocument = ResourceEntity.DUMMY.copy(
+            data = """
+            <?xml version="1.0" encoding="UTF-16"?>
+            <dictionary formatVersion="6" 
+                title="test" 
+                sourceLanguageId="1033" 
+                destinationLanguageId="1049" 
+                nextWordId="2" 
+                targetNamespace="http://www.abbyy.com/TutorDictionary" 
+                soundfile="testEnRu">
+            	<statistics readyMeaningsQuantity="1" />
+            	<card>
+            		<word>test</word>
+            		<meanings>
+            			<meaning>
+            				<statistics status="2" />
+            				<translations>
+            					<word>тест</word>
+            				</translations>
+            			</meaning>
+            		</meanings>
+            	</card>
+            </dictionary>
+        """.trimIndent().toByteArray(Charsets.UTF_16)
+        )
+        val testDictionary = stubDictionary
+        val testCard = stubCard
 
-        var wasCalled = false
-        val repository = MockDbDictionaryRepository(
-            invokeUploadDictionary = { id, bytes ->
-                wasCalled = true
-                if (id != testUser.id) throw AssertionError()
-                if (bytes != testData) throw AssertionError()
-                response
+        var isCreateDictionaryCalled = false
+        var isCreateCardsCalled = false
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeCreateDictionary = {
+                isCreateDictionaryCalled = true
+                if (it.name == "test") {
+                    testDictionary.toDbDictionary()
+                } else {
+                    Assertions.fail()
+                }
+            }
+        )
+        val cardsRepository = MockDbCardRepository(
+            invokeCreateCards = {
+                isCreateCardsCalled = true
+                val cards = it.toList()
+                if (cards.size == 1 &&
+                    cards[0].words.single().word == "test" &&
+                    cards[0].dictionaryId == testDictionary.dictionaryId.asString()
+                ) {
+                    listOf(testCard.toDbCard())
+                } else {
+                    Assertions.fail()
+                }
             }
         )
 
-        val context = testContext(DictionaryOperation.UPLOAD_DICTIONARY, repository)
-        context.requestDictionaryResourceEntity = testData
+        val context = testContext(
+            op = DictionaryOperation.UPLOAD_DICTIONARY,
+            dictionaryRepository = dictionaryRepository,
+            cardsRepository = cardsRepository,
+        )
+        context.requestDictionaryResourceEntity = testDocument
 
         DictionaryCorProcessor().execute(context)
 
         Assertions.assertTrue(context.errors.isEmpty()) { "errors: ${context.errors}" }
-        Assertions.assertTrue(wasCalled)
+        Assertions.assertTrue(isCreateDictionaryCalled)
+        Assertions.assertTrue(isCreateCardsCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.UPLOAD_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
     }

@@ -117,7 +117,8 @@ internal class CardControllerRunTest {
                 "spell of cold weather"
             ), res.card!!.words!!.single().examples?.map { it.example }
         )
-        Assertions.assertNull(res.card!!.words!!.single().sound)
+        Assertions.assertEquals("en:weather", res.card!!.words!!.single().sound)
+        Assertions.assertEquals("en:weather", res.card!!.sound)
         Assertions.assertNull(res.card!!.answered)
         Assertions.assertEquals(emptyMap<String, Long>(), res.card!!.details)
     }

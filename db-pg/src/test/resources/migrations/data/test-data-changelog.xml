@@ -11,14 +11,6 @@
     </changeSet>
 
     <changeSet id="001-02-load-test-data" author="sszuev">
-        <loadData catalogName="users"
-                  commentLineStartsWith="//"
-                  file="001-02-test-users.csv"
-                  relativeToChangelogFile="true"
-                  schemaName="public"
-                  tableName="users"
-                  usePreparedStatements="true">
-        </loadData>
         <loadData file="001-02-test-dictionaries.csv"
                   relativeToChangelogFile="true"
                   schemaName="public"

@@ -1,13 +1,16 @@
 package com.gitlab.sszuev.flashcards.core
 
+import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.CardRepositories
-import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.*
+import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
@@ -24,8 +27,7 @@ internal class CardCorProcessorRunResourceTest {
         private fun testContext(repository: TTSResourceRepository): CardContext {
             val context = CardContext(
                 operation = CardOperation.GET_RESOURCE,
-                repositories = CardRepositories().copy(
-                    testUserRepository = MockDbUserRepository(),
+                repositories = AppRepositories().copy(
                     testTTSClientRepository = repository
                 )
             )
@@ -114,7 +116,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(ResourceEntity.DUMMY, context.responseTTSResourceEntity)
 
         val error = context.errors[0]
-        Assertions.assertEquals("run::${CardOperation.GET_RESOURCE}", error.code)
+        Assertions.assertEquals(CardOperation.GET_RESOURCE.name, error.code)
         Assertions.assertEquals("run", error.group)
         Assertions.assertEquals(testResourceGet.toString(), error.field)
         Assertions.assertEquals("Error while GET_RESOURCE: no resource found. filter=${testResourceGet}", error.message)
@@ -155,7 +157,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(ResourceEntity.DUMMY, context.responseTTSResourceEntity)
 
         val error = context.errors[0]
-        Assertions.assertEquals("run::${CardOperation.GET_RESOURCE}", error.code)
+        Assertions.assertEquals(CardOperation.GET_RESOURCE.name, error.code)
         Assertions.assertEquals("run", error.group)
         Assertions.assertEquals(testResourceGet.toString(), error.field)
         Assertions.assertEquals("Error while GET_RESOURCE: unexpected exception", error.message)

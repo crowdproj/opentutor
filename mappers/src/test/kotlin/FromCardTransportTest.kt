@@ -107,7 +107,7 @@ internal class FromCardTransportTest {
         )
         Assertions.assertEquals(42, context.requestCardFilter.length)
         Assertions.assertEquals(true, context.requestCardFilter.random)
-        Assertions.assertEquals(true, context.requestCardFilter.withUnknown)
+        Assertions.assertEquals(true, context.requestCardFilter.onlyUnknown)
         Assertions.assertEquals(
             listOf("a", "b", "c").map { DictionaryId(it) },
             context.requestCardFilter.dictionaryIds

@@ -7,7 +7,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.common.AppStub
-import com.gitlab.sszuev.flashcards.model.common.AppUserEntity
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
@@ -25,7 +24,7 @@ import kotlinx.datetime.Instant
 data class CardContext(
     override val operation: CardOperation = CardOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
-    override val repositories: CardRepositories = CardRepositories.NO_OP_REPOSITORIES,
+    override val repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
@@ -35,7 +34,6 @@ data class CardContext(
     override var requestId: AppRequestId = AppRequestId.NONE,
     override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
     override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
-    override var contextUserEntity: AppUserEntity = AppUserEntity.EMPTY,
 
     // get word resource by id (for TTS)
     var requestTTSResourceGet: TTSResourceGet = TTSResourceGet.NONE,

@@ -5,11 +5,10 @@ import com.gitlab.sszuev.flashcards.core.normalizers.normalizers
 import com.gitlab.sszuev.flashcards.core.processes.processCardSearch
 import com.gitlab.sszuev.flashcards.core.processes.processCreateCard
 import com.gitlab.sszuev.flashcards.core.processes.processDeleteCard
-import com.gitlab.sszuev.flashcards.core.processes.processFindUser
 import com.gitlab.sszuev.flashcards.core.processes.processGetAllCards
 import com.gitlab.sszuev.flashcards.core.processes.processGetCard
 import com.gitlab.sszuev.flashcards.core.processes.processLearnCards
-import com.gitlab.sszuev.flashcards.core.processes.processResetCards
+import com.gitlab.sszuev.flashcards.core.processes.processResetCard
 import com.gitlab.sszuev.flashcards.core.processes.processResource
 import com.gitlab.sszuev.flashcards.core.processes.processUpdateCard
 import com.gitlab.sszuev.flashcards.core.stubs.cardStubSuccess
@@ -65,7 +64,6 @@ class CardCorProcessor {
                     validateResourceGetWord()
                 }
                 runs(CardOperation.GET_RESOURCE) {
-                    processFindUser(CardOperation.GET_RESOURCE)
                     processResource()
                 }
             }
@@ -86,7 +84,6 @@ class CardCorProcessor {
                     validateCardFilterDictionaryIds { it.normalizedRequestCardFilter }
                 }
                 runs(CardOperation.SEARCH_CARDS) {
-                    processFindUser(CardOperation.SEARCH_CARDS)
                     processCardSearch()
                 }
             }
@@ -105,7 +102,6 @@ class CardCorProcessor {
                     validateDictionaryId { (it as CardContext).normalizedRequestDictionaryId }
                 }
                 runs(CardOperation.GET_ALL_CARDS) {
-                    processFindUser(CardOperation.GET_ALL_CARDS)
                     processGetAllCards()
                 }
             }
@@ -133,7 +129,6 @@ class CardCorProcessor {
                     validateCardEntityWords { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.CREATE_CARD) {
-                    processFindUser(CardOperation.CREATE_CARD)
                     processCreateCard()
                 }
             }
@@ -161,7 +156,6 @@ class CardCorProcessor {
                     validateCardEntityWords { it.normalizedRequestCardEntity }
                 }
                 runs(CardOperation.UPDATE_CARD) {
-                    processFindUser(CardOperation.UPDATE_CARD)
                     processUpdateCard()
                 }
             }
@@ -182,7 +176,6 @@ class CardCorProcessor {
                     validateCardLearnListDetails { it.normalizedRequestCardLearnList }
                 }
                 runs(CardOperation.LEARN_CARDS) {
-                    processFindUser(CardOperation.LEARN_CARDS)
                     processLearnCards()
                 }
             }
@@ -201,7 +194,6 @@ class CardCorProcessor {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.GET_CARD) {
-                    processFindUser(CardOperation.GET_CARD)
                     processGetCard()
                 }
             }
@@ -218,8 +210,7 @@ class CardCorProcessor {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.RESET_CARD) {
-                    processFindUser(CardOperation.RESET_CARD)
-                    processResetCards()
+                    processResetCard()
                 }
             }
 
@@ -235,7 +226,6 @@ class CardCorProcessor {
                     validateCardId { it.normalizedRequestCardEntityId }
                 }
                 runs(CardOperation.DELETE_CARD) {
-                    processFindUser(CardOperation.DELETE_CARD)
                     processDeleteCard()
                 }
             }

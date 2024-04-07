@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.model.common
 
 import com.gitlab.sszuev.flashcards.AppConfig
+import com.gitlab.sszuev.flashcards.AppRepositories
 import kotlinx.datetime.Instant
 
 interface AppContext {
@@ -18,7 +19,6 @@ interface AppContext {
     // get user:
     var requestAppAuthId: AppAuthId
     var normalizedRequestAppAuthId: AppAuthId
-    var contextUserEntity: AppUserEntity
 }
 
 private val none = Instant.fromEpochMilliseconds(Long.MIN_VALUE)

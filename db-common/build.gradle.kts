@@ -11,12 +11,12 @@ dependencies {
     val slf4jVersion: String by project
     val typesafeConfigVersion: String by project
     val jacksonVersion: String by project
+    val kotlinDatetimeVersion: String by project
 
-    implementation(project(":common"))
-    implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDatetimeVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")

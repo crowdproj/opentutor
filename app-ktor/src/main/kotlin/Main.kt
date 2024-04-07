@@ -10,7 +10,6 @@ import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
-import com.gitlab.sszuev.flashcards.config.RepositoriesConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.config.TutorConfig
 import com.gitlab.sszuev.flashcards.logslib.ExtLogger
@@ -81,12 +80,13 @@ fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.module(
-    repositoriesConfig: RepositoriesConfig = RepositoriesConfig(),
     keycloakConfig: KeycloakConfig = KeycloakConfig(environment.config),
     runConfig: RunConfig = RunConfig(environment.config),
     tutorConfig: TutorConfig = TutorConfig(environment.config),
 ) {
     logger.info(printGeneralSettings(runConfig, keycloakConfig, tutorConfig))
+
+    val repositories = appRepositories()
 
     val port = environment.config.property("ktor.deployment.port").getString()
 
@@ -174,12 +174,12 @@ fun Application.module(
             authenticate("auth-jwt") {
                 this@authenticate.cardApiV1(
                     service = cardService,
-                    repositories = repositoriesConfig.cardRepositories,
+                    repositories = repositories,
                     contextConfig = contextConfig,
                 )
                 this@authenticate.dictionaryApiV1(
                     service = dictionaryService,
-                    repositories = repositoriesConfig.dictionaryRepositories,
+                    repositories = repositories,
                     contextConfig = contextConfig,
                 )
             }
@@ -203,12 +203,12 @@ fun Application.module(
         } else {
             cardApiV1(
                 service = cardService,
-                repositories = repositoriesConfig.cardRepositories,
+                repositories = repositories,
                 contextConfig = contextConfig,
             )
             dictionaryApiV1(
                 service = dictionaryService,
-                repositories = repositoriesConfig.dictionaryRepositories,
+                repositories = repositories,
                 contextConfig = contextConfig,
             )
             get("/") {
