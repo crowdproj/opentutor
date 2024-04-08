@@ -5,13 +5,21 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
 import com.gitlab.sszuev.flashcards.speaker.TTSClientConfig
-import com.rabbitmq.client.*
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import com.rabbitmq.client.AMQP
+import com.rabbitmq.client.CancelCallback
+import com.rabbitmq.client.Channel
+import com.rabbitmq.client.Connection
+import com.rabbitmq.client.ConnectionFactory
+import com.rabbitmq.client.DeliverCallback
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
-import org.junit.jupiter.api.*
+import org.junit.jupiter.api.AfterAll
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.BeforeAll
+import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.Timeout
 import org.slf4j.LoggerFactory
 import org.testcontainers.containers.RabbitMQContainer
 import java.util.concurrent.CyclicBarrier
@@ -19,7 +27,6 @@ import java.util.concurrent.Executors
 import java.util.concurrent.TimeUnit
 
 @Timeout(value = 420, unit = TimeUnit.SECONDS)
-@OptIn(ExperimentalCoroutinesApi::class)
 internal class TTSResourceRepositoryITest {
 
     companion object {
@@ -28,7 +35,7 @@ internal class TTSResourceRepositoryITest {
         private val container by lazy {
             RabbitMQContainer("rabbitmq:latest").apply {
                 withExposedPorts(5672, 15672)
-                withUser("guest", "guest")
+                //withUser("guest", "guest")
                 start()
             }
         }

@@ -63,7 +63,7 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
 import java.nio.charset.StandardCharsets
 import java.util.Base64
 
-private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.MainKt")
+private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.AppMainKt")
 
 // use to jetty, not netty, due to exception https://youtrack.jetbrains.com/issue/KTOR-4433
 fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)

@@ -1,5 +1,12 @@
 package com.gitlab.sszuev.flashcards.speaker
 
+import com.gitlab.sszuev.flashcards.speaker.impl.EspeakNgTestToSpeechService
+import com.gitlab.sszuev.flashcards.speaker.impl.LocalTextToSpeechService
+import com.gitlab.sszuev.flashcards.speaker.impl.VoicerssTextToSpeechService
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.speaker.TextToSpeechService")
+
 /**
  * A common interface that provides access to audio resources.
  */
@@ -19,6 +26,24 @@ interface TextToSpeechService {
      */
     fun containsResource(id: String): Boolean {
         return true
+    }
+}
+
+/**
+ * Creates a [TextToSpeechService].
+ */
+fun createTTSService(): TextToSpeechService {
+    return if (TTSSettings.ttsServiceVoicerssKey.isNotBlank() && TTSSettings.ttsServiceVoicerssKey != "secret") {
+        logger.info("::[TTS-SERVICE] init voicerss service")
+        VoicerssTextToSpeechService()
+    } else if (EspeakNgTestToSpeechService.isEspeakNgAvailable()) {
+        logger.info("::[TTS-SERVICE] init espeak-ng service")
+        EspeakNgTestToSpeechService()
+    } else if (TTSSettings.localDataDirectory.isNotBlank()) {
+        logger.info("::[TTS-SERVICE] init local (test) service (data dir = ${TTSSettings.localDataDirectory})")
+        LocalTextToSpeechService.load(TTSSettings.localDataDirectory)
+    } else {
+        throw IllegalStateException("Unable to init TTS service")
     }
 }
 

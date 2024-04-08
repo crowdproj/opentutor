@@ -14,7 +14,15 @@ import com.gitlab.sszuev.flashcards.speaker.TTSClientSettings
 import com.rabbitmq.client.AMQP
 import com.rabbitmq.client.Channel
 import com.rabbitmq.client.Delivery
-import kotlinx.coroutines.*
+import kotlinx.coroutines.CoroutineName
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
 import java.util.concurrent.Executors
 
@@ -58,8 +66,13 @@ class RMQTTSResourceRepository(
     override suspend fun getResource(id: TTSResourceId): TTSResourceEntityResponse {
         val errors: MutableList<AppError> = mutableListOf()
         val entity = try {
-            val res: Deferred<ByteArray> = scope.async(context = Dispatchers.IO) {
-                return@async retrieveData(id)
+            val res: Deferred<Any> = scope.async(context = Dispatchers.IO) {
+                return@async try {
+                    retrieveData(id)
+                } catch (exception: Exception) {
+                    logger.error("Error while getting resource ID={}", id, exception)
+                    exception
+                }
             }
             val data = if (requestTimeoutInMillis < 0) {
                 res.await()
@@ -68,8 +81,22 @@ class RMQTTSResourceRepository(
                     withTimeout(requestTimeoutInMillis) { res.await() }
                 }
             }
-            ResourceEntity(resourceId = id, data = data)
+            when (data) {
+                is Exception -> {
+                    errors.add(data.asError())
+                    ResourceEntity.DUMMY
+                }
+
+                is ByteArray -> {
+                    ResourceEntity(resourceId = id, data = data)
+                }
+
+                else -> {
+                    throw IllegalStateException("Unexpected data")
+                }
+            }
         } catch (ex: Exception) {
+            logger.error("Error while getting resource ID={}", id, ex)
             errors.add(ex.asError())
             ResourceEntity.DUMMY
         }
