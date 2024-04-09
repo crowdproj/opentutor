@@ -9,7 +9,7 @@ class MemDbDictionaryRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
 ) : DbDictionaryRepository {
 
-    private val database = MemDatabase.get(databaseLocation = dbConfig.dataLocation)
+    private val database by lazy { MemDatabase.get(databaseLocation = dbConfig.dataLocation) }
 
     override fun findDictionaryById(dictionaryId: String): DbDictionary? =
         database.findDictionaryById(dictionaryId.toLong())?.toDbDictionary()

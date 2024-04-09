@@ -68,6 +68,9 @@ class RMQTTSResourceRepository(
         val entity = try {
             val res: Deferred<Any> = scope.async(context = Dispatchers.IO) {
                 return@async try {
+                    if (logger.isDebugEnabled) {
+                        logger.debug("Get resource id = {}", id)
+                    }
                     retrieveData(id)
                 } catch (exception: Exception) {
                     logger.error("Error while getting resource ID={}", id, exception)

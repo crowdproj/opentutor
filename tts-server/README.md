@@ -25,5 +25,11 @@ The server has the following settings (example):
 - the parameter `routing-key-response-prefix` describes a routing key prefix for queue to send to response data (i.e. byte array), 
 the whole key would be `routing-key-response-prefix` + `resourceId`.
 
+There are three launch options here:
+
+- espeak-ng (if it is available locally)
+- pre-build archive with sounds (see [weather.tar](src/main/resources/data/en/weather.tar))
+- voice-rss (need to obtain free API key)
+
 ______
 A first version of TTS-service is located here: https://gitlab.com/sszuev/flashcards/-/tree/master/speaker

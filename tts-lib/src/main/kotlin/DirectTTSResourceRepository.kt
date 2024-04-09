@@ -6,6 +6,9 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger(DirectTTSResourceRepository::class.java)
 
 class DirectTTSResourceRepository(private val service: TextToSpeechService) : TTSResourceRepository {
 
@@ -20,6 +23,9 @@ class DirectTTSResourceRepository(private val service: TextToSpeechService) : TT
     }
 
     override suspend fun getResource(id: TTSResourceId): TTSResourceEntityResponse {
+        if (logger.isDebugEnabled) {
+            logger.debug("Get resource id = {}", id)
+        }
         val data = service.getResource(id.asString())
         val res = if (data != null) {
             ResourceEntity(resourceId = id, data = data)
