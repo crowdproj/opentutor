@@ -29,7 +29,16 @@ There are three launch options here:
 
 - espeak-ng (if it is available locally)
 - pre-build archive with sounds (see [weather.tar](src/main/resources/data/en/weather.tar))
-- voice-rss (need to obtain free API key)
+- voice-rss (need to obtain a free API key)
+
+#### build and run application using docker & gradle:
+
+```shell
+$ docker rm -v open-tutor-tts-server
+$ docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
+$ gradle clean build dockerBuildImage
+$ docker run --network tutor-deploy_default --name open-tutor-tts-server sszuev/open-tutor-tts-server:2.0.0-snapshot  
+```
 
 ______
 A first version of TTS-service is located here: https://gitlab.com/sszuev/flashcards/-/tree/master/speaker

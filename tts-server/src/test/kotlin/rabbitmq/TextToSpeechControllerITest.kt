@@ -29,7 +29,6 @@ internal class TextToSpeechControllerITest {
         private val container by lazy {
             RabbitMQContainer("rabbitmq:latest").apply {
                 withExposedPorts(5672, 15672)
-                withUser("guest", "guest")
                 start()
             }
         }

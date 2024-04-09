@@ -23,6 +23,7 @@ $ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:lat
 #### build and run application using docker & gradle:
 ```shell
 $ docker rm -v open-tutor-app
+$ docker rmi sszuev/open-tutor-standalone:latest
 $ gradle clean build dockerBuildImage -Dstandalone=true
 $ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:latest  
 ```

@@ -46,6 +46,13 @@ services:
 
   flashcards-rabbitmq:
     image: rabbitmq:3.13.1-management-alpine
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "status" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    networks:
+      - flashcards-net
     ports:
       - "5672:5672"
       - "15672:15672"
@@ -56,3 +63,11 @@ services:
     volumes:
       - "${DATA_DIR}/rabbitmq/data/:/var/lib/rabbitmq:z"
       - "${DATA_DIR}/rabbitmq/log/:/var/log/rabbitmq:z"
+
+  flashcards-tts-server:
+    image: sszuev/open-tutor-tts-server:2.0.0-snapshot
+    networks:
+      - flashcards-net
+    depends_on:
+      flashcards-rabbitmq:
+        condition: service_healthy
