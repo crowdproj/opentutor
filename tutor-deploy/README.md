@@ -29,14 +29,11 @@ Build tts-server image:
 docker rm tutor-deploy-flashcards-tts-server-1
 docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
 cd ../tts-server
-gradle clean build dockerBuildImage
+gradle clean build buildTTSServerDockerImage
 ```
 
 Example commands to deploy environment:
 ```
-docker-compose -f docker-compose-app.yml flashcards-db up
-docker-compose -f docker-compose-app.yml flashcards-keycloak up
-docker-compose -f docker-compose-app.yml flashcards-rabbitmq up
-docker-compose -f docker-compose-app.yml flashcards-tts-server up
+docker-compose -f docker-compose-app.yml up flashcards-db flashcards-keycloak flashcards-rabbitmq flashcards-tts-server
 docker-compose -f docker-compose-elk-stack.yml -p flashcards-elk-stack up
 ```

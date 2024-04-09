@@ -39,12 +39,4 @@ object TTSSettings {
     private fun secret(): String {
         return if (ttsServiceVoicerssKey.isBlank() || ttsServiceVoicerssKey == "secret") "no-secret" else "***"
     }
-
-    private fun Config.get(key: String, default: String): String {
-        return if (hasPath(key)) getString(key) else default
-    }
-
-    private fun Config.get(key: String, default: Long): Long {
-        return if (hasPath(key)) getLong(key) else default
-    }
 }

@@ -40,22 +40,32 @@ tasks.test {
     useJUnitPlatform()
 }
 
-docker {
+tasks.register<com.bmuschko.gradle.docker.tasks.image.Dockerfile>("createTTSServerDockerfile") {
+    dependsOn("dockerCreateDockerfile")
+    from("sszuev/ubuntu-jammy-openjdk-17-espeak-ng")
+    label(mapOf("maintainer" to "https://github.com/sszuev (sss.zuev@gmail.com)"))
+
+    arg("TTS_SERVER_RABBITMQ_HOST")
+    arg("TTS_SERVICE_VOICERSS_KEY")
+    environmentVariable("TTS_SERVER_RABBITMQ_HOST", "\${TTS_SERVER_RABBITMQ_HOST}")
+    environmentVariable("TTS_SERVICE_VOICERSS_KEY", "\${TTS_SERVICE_VOICERSS_KEY}")
+
+    workingDir("/app")
+    copyFile("libs", "libs/")
+    copyFile("resources", "resources/")
+    copyFile("classes", "classes/")
+
+    entryPoint(
+        "java", "-Xms256m", "-Xmx512m",
+        "-DAPP_LOG_LEVEL=debug",
+        "-cp", "/app/resources:/app/classes:/app/libs/*",
+        application.mainClass.get(),
+    )
+}
+
+tasks.register<com.bmuschko.gradle.docker.tasks.image.DockerBuildImage>("buildTTSServerDockerImage") {
+    dependsOn("createTTSServerDockerfile", "build")
     val imageName = "sszuev/open-tutor-tts-server"
     val tag = project.version.toString().lowercase()
-    val javaArgs = mutableListOf("-Xms256m", "-Xmx512m")
-    val host = if (System.getProperty("tts-server.rabbitmq.host") == null) {
-        "flashcards-rabbitmq" // see tutor-deploy/docker-compose-app.yml
-    } else {
-        System.getProperty("tts-server.rabbitmq.host")
-    }
-    javaArgs.add("-Dtts-server.rabbitmq.host=$host")
-    javaArgs.add("-DAPP_LOG_LEVEL=debug")
-    javaApplication {
-        mainClassName.set(application.mainClass.get())
-        baseImage.set("sszuev/ubuntu-jammy-openjdk-17-espeak-ng")
-        maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
-        images.set(listOf("$imageName:$tag"))
-        jvmArgs.set(javaArgs)
-    }
+    images.set(listOf("$imageName:$tag"))
 }
