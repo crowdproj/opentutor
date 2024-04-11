@@ -1,10 +1,19 @@
 ### flashcard-kt ::: deploy
 
-The directory contains docker-compose files allowing to set up environment.
-- [rabbit-mq server](docker-compose-rabbitmq.yml). it is required by [:tts-server](../tts-server) and [:tts-client](../tts-client)
-- [postgres](docker-compose-postgres.yml). it is requires by [:db-pg](../db-pg)
-- [keycloak](docker-compose-keycloak.yml). Authorization.
-- [elk-stack](docker-compose-elk-stack.yml), which consists from [elasticsearch](elasticsearch.Dockerfile), [logstash](logstash.Dockerfile) and [kibana](kibana.Dockerfile), also it contains kafka and kafdrop
+The directory contains docker-composer files allowing to set up environment.
+
+[docker-compose-app.yml](docker-compose-app.yml):
+- flashcards-rabbitmq server. it is required by [:tts-server](../tts-server) and [:tts-client](../tts-client)
+- flashcards-db (postgres). it is requires by [:db-pg](../db-pg)
+- flashcards-keycloak. Authorization (demo:demo).
+- tts-server
+
+[docker-compose-elk-stack.yml](docker-compose-elk-stack.yml)
+
+- [elasticsearch](elasticsearch.Dockerfile),
+- [logstash](logstash.Dockerfile)
+- [kibana](kibana.Dockerfile)
+- `kafka` and `kafdrop`
 
 URLs:
 - kafdrop: http://localhost:9000/
@@ -14,19 +23,23 @@ URLs:
 - rabbitmq: http://localhost:15672/
 - application: http://localhost:8080/
 
+Build tts-server & app images:
+
+```shell
+docker rm tutor-deploy-flashcards-tts-server-1
+docker rm tutor-deploy-flashcards-app-1
+docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
+docker rmi sszuev/open-tutor:2.0.0-snapshot
+cd ../tts-server
+gradle clean build dockerBuildImage
+cd ../app-ktor
+gradle clean build dockerBuildImage
+```
 
 Example commands to deploy environment:
 ```
-docker-compose -f docker-compose-keycloak.yml -p flashcards-deploy up
-docker-compose -f docker-compose-rabbitmq.yml -p flashcards-deploy up
-docker-compose -f docker-compose-postgres.yml -p flashcards-deploy up
-docker-compose -f docker-compose-elk-stack.yml -p flashcards-deploy up
-docker cp ./pg-data-sample.sql flashcards-db:/tmp
-docker exec -it flashcards-db /bin/bash
-psql -U dev -d flashcards -a -f /tmp/pg-data-sample.sql
+docker-compose -f docker-compose-app.yml up flashcards-db flashcards-keycloak flashcards-rabbitmq 
+docker-compose -f docker-compose-app.yml up flashcards-tts-server
+docker-compose -f docker-compose-app.yml up flashcards-app
+docker-compose -f docker-compose-elk-stack.yml -p flashcards-elk-stack up
 ```
-Notes:
-- For postgres there could be a problem with permissions, see https://stackoverflow.com/questions/44878062/initdb-could-not-change-permissions-of-directory-on-postgresql-container,
-do not use ntfs-3g
-- For rabbitmq the command `chmod -R 777 ./data/rabbitmq/log/` may help to resolve permissions denied error when starting
-- In case of external vpn may need to restart docker `sudo systemctl restart docker`

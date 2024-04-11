@@ -29,7 +29,7 @@ class SimpleRabbitmqConnectionFactory(val config: ConnectionConfig) : RabbitmqCo
                 try {
                     res.close(599, "server shutdown", 2_000)
                 } catch (ignore: AlreadyClosedException) {
-                    logger.debug("Connection $config already closed.")
+                    logger.debug("Connection {} is already closed.", config)
                 }
             }
         })

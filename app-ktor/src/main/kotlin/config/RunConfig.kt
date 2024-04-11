@@ -13,12 +13,6 @@ data class RunConfig(
         mode = AppMode.valueOf(config.property("run-config.mode").getString().uppercase()),
     )
 
-    init {
-        if (mode == AppMode.PROD) {
-            require(auth.isBlank()) { "No auth expected for prod mode." }
-        }
-    }
-
     fun modeString(): String {
         return mode.name.lowercase()
     }

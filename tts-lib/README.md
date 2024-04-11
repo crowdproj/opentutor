@@ -6,10 +6,10 @@ it accepts resource identifier and returns byte array (audio data, wav).
 The resource identifier must be in the format `lang:word`, where `lang` depends on underlying mechanism,
 but usually it is well-known language tag (`en`, `fr`, etc).  
 
-Currently, there are following three implementations of TTS service :
+Currently, there are the following three implementations of TTS service :
 
-- [LocalTextToSpeechService](/src/main/kotlin/impl/LocalTextToSpeechService.kt) - for testing, 
-can work with local tar archives in the shtooka format. See also https://shtooka.net/ - a collection of audio-resources.
+- [LocalTextToSpeechService](/src/main/kotlin/impl/LocalTextToSpeechService.kt) - for testing;
+  can work with local tar archives in the shtooka format. See also https://shtooka.net/ - a collection of audio-resources.
 
 - [VoicerssTextToSpeechService](/src/main/kotlin/impl/VoicerssTextToSpeechService.kt) - a client for http://www.voicerss.org/ service.   
 to make it work please obtain voice-rss-api key and specify it using vm-option `tts.service.voicerss.key`

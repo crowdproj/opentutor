@@ -1,13 +1,14 @@
 plugins {
     kotlin("jvm")
     id("application")
+    id("com.bmuschko.docker-java-application")
 }
 
 group = rootProject.group
 version = rootProject.version
 
 application {
-    mainClass.set("com.gitlab.sszuev.flashcards.speaker.MainKt")
+    mainClass.set("com.gitlab.sszuev.flashcards.speaker.TTSServerMainKt")
 }
 
 dependencies {
@@ -37,4 +38,24 @@ dependencies {
 
 tasks.test {
     useJUnitPlatform()
+}
+
+tasks.dockerCreateDockerfile {
+    arg("TTS_SERVER_RABBITMQ_HOST")
+    arg("TTS_SERVICE_VOICERSS_KEY")
+    environmentVariable("TTS_SERVER_RABBITMQ_HOST", "\${TTS_SERVER_RABBITMQ_HOST}")
+    environmentVariable("TTS_SERVICE_VOICERSS_KEY", "\${TTS_SERVICE_VOICERSS_KEY}")
+}
+
+docker {
+    val imageName = "sszuev/open-tutor-tts-server"
+    val tag = project.version.toString().lowercase()
+    val javaArgs = listOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
+    javaApplication {
+        mainClassName.set(application.mainClass.get())
+        baseImage.set("sszuev/ubuntu-jammy-openjdk-17-espeak-ng")
+        maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
+        images.set(listOf("$imageName:$tag"))
+        jvmArgs.set(javaArgs)
+    }
 }

@@ -36,7 +36,7 @@ class TarArchiveResourceStore(source: () -> InputStream) : ResourceStore {
         try {
             source().use { tar ->
                 var entry: TarArchiveEntry
-                while (tar.nextTarEntry.also { entry = it } != null) {
+                while (tar.nextEntry.also { entry = it } != null) {
                     if (name != entry.name) {
                         continue
                     }

@@ -30,8 +30,10 @@ This is a second edition, the first one is a java-spring application, which home
 
 #### Build and run:
 
-- `$ docker pull sszuev/open-tutor-standalone:latest && docker run --name open-tutor-standalone-app -p 8080:8080 sszuev/open-tutor-standalone:latest`
-- [app-ktor/README](./app-ktor/README.md)
+- standalone
+  version `$ docker pull sszuev/open-tutor-standalone:latest && docker run --name open-tutor-standalone-app -p 8080:8080 sszuev/open-tutor-standalone:latest`
+- prod version [tutor-deploy/README](./tutor-deploy/README.md)
+- for more info see [app-ktor/README](./app-ktor/README.md)
 
 #### License:
 - Apache License Version 2.0

@@ -10,7 +10,7 @@ import com.gitlab.sszuev.flashcards.systemNow
 class MemDbCardRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
 ) : DbCardRepository {
-    private val database = MemDatabase.get(dbConfig.dataLocation)
+    private val database by lazy { MemDatabase.get(dbConfig.dataLocation) }
 
     override fun findCardById(cardId: String): DbCard? =
         database.findCardById(require(cardId.isNotBlank()).run { cardId.toLong() })?.toDbCard()
