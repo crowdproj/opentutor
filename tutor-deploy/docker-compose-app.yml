@@ -74,3 +74,21 @@ services:
     environment:
       TTS_SERVER_RABBITMQ_HOST: "flashcards-rabbitmq"
       TTS_SERVICE_VOICERSS_KEY: "${TTS_SERVICE_VOICERSS_KEY}"
+
+  flashcards-app:
+    image: sszuev/open-tutor:2.0.0-snapshot
+    networks:
+      - flashcards-net
+    ports:
+      - "8080:8080"
+    depends_on:
+      - flashcards-tts-server
+      - flashcards-keycloak
+    environment:
+      TTS_CLIENT_RABBITMQ_HOST: "flashcards-rabbitmq"
+      KEYCLOAK_AUTHORIZE_ADDRESS: "http://localhost:8081"
+      KEYCLOAK_ACCESS_TOKEN_ADDRESS: "http://flashcards-keycloak:8080"
+      DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/postgres"
+      DB_PG_USER: ${POSTGRES_DEFAULT_USER}
+      DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
+      PORT: 8080

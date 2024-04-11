@@ -22,7 +22,8 @@ import io.ktor.server.testing.testApplication
 import java.util.Base64
 
 val testKeycloakConfig = KeycloakConfig(
-    address = "http://test-keycloak-server.ex",
+    authorizeAddress = "http://test-keycloak-server.ex",
+    accessTokenAddress = "http://test-keycloak-server.ex",
     clientId = "test-client",
     secret = "test-secret",
     issuer = "test-issuer",

@@ -76,7 +76,7 @@ tasks.test {
 }
 
 application {
-    mainClass.set("com.gitlab.sszuev.flashcards.MainKt")
+    mainClass.set("com.gitlab.sszuev.flashcards.AppMainKt")
 }
 
 tasks.create("createTagFile") {
@@ -89,15 +89,32 @@ tasks.create("createTagFile") {
 }
 
 tasks.dockerCreateDockerfile {
-    copyFile("./resources/data/users.csv", "/app/userdata/users.csv")
-    copyFile("./resources/data/dictionaries.csv", "/app/userdata/dictionaries.csv")
-    copyFile("./resources/data/cards.csv", "/app/userdata/cards.csv")
+    if (System.getProperty("standalone") != null) {
+        copyFile("./resources/data/users.csv", "/app/userdata/users.csv")
+        copyFile("./resources/data/dictionaries.csv", "/app/userdata/dictionaries.csv")
+        copyFile("./resources/data/cards.csv", "/app/userdata/cards.csv")
+    } else {
+        arg("TTS_CLIENT_RABBITMQ_HOST")
+        arg("KEYCLOAK_AUTHORIZE_ADDRESS")
+        arg("KEYCLOAK_ACCESS_TOKEN_ADDRESS")
+        arg("DB_PG_URL")
+        arg("DB_PG_USER")
+        arg("DB_PG_PWD")
+        arg("PORT")
+        environmentVariable("TTS_CLIENT_RABBITMQ_HOST", "\${TTS_CLIENT_RABBITMQ_HOST}")
+        environmentVariable("KEYCLOAK_AUTHORIZE_ADDRESS", "\${KEYCLOAK_AUTHORIZE_ADDRESS}")
+        environmentVariable("KEYCLOAK_ACCESS_TOKEN_ADDRESS", "\${KEYCLOAK_ACCESS_TOKEN_ADDRESS}")
+        environmentVariable("DB_PG_URL", "\${DB_PG_URL}")
+        environmentVariable("DB_PG_USER", "\${DB_PG_USER}")
+        environmentVariable("DB_PG_PWD", "\${DB_PG_PWD}")
+        environmentVariable("PORT", "\${PORT}")
+    }
 }
 
 docker {
     val imageName: String
     val tag = project.version.toString().lowercase()
-    val javaArgs = mutableListOf("-Xms256m", "-Xmx512m")
+    val javaArgs = mutableListOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
     if (System.getProperty("standalone") == null) {
         imageName = "sszuev/open-tutor"
     } else {

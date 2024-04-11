@@ -36,7 +36,7 @@ There are three launch options here:
 ```shell
 $ docker rm -v open-tutor-tts-server
 $ docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
-$ gradle clean build buildTTSServerDockerImage
+$ gradle clean build dockerBuildImage
 $ docker run --network tutor-deploy_default --name open-tutor-tts-server sszuev/open-tutor-tts-server:2.0.0-snapshot  
 ```
 

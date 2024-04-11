@@ -20,12 +20,27 @@ $ docker rm -v open-tutor-app
 $ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:latest
 ```
 
-#### build and run application using docker & gradle:
+#### build and run standalone application using docker & gradle:
 ```shell
 $ docker rm -v open-tutor-app
 $ docker rmi sszuev/open-tutor-standalone:latest
 $ gradle clean build dockerBuildImage -Dstandalone=true
 $ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:latest  
+```
+
+#### build and run prod application using docker & gradle:
+
+```shell
+$ docker rm tutor-deploy-flashcards-tts-server-1
+$ docker rm tutor-deploy-flashcards-app-1
+$ docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
+$ docker rmi sszuev/open-tutor:2.0.0-snapshot
+$ cd ../tts-server
+$ gradle clean build dockerBuildImage
+$ cd ../app-ktor
+$ gradle clean build dockerBuildImage
+$ cd ../tutor-deploy
+$ docker-compose -f docker-compose-app.yml up  
 ```
 
 #### After build and run, the application will be available via http://localhost:8080

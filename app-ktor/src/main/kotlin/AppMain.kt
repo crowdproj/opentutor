@@ -92,8 +92,8 @@ fun Application.module(
 
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
         name = "keycloak",
-        authorizeUrl = "${keycloakConfig.address}/realms/${keycloakConfig.realm}/protocol/openid-connect/auth",
-        accessTokenUrl = "${keycloakConfig.address}/realms/${keycloakConfig.realm}/protocol/openid-connect/token",
+        authorizeUrl = "${keycloakConfig.authorizeAddress}/realms/${keycloakConfig.realm}/protocol/openid-connect/auth",
+        accessTokenUrl = "${keycloakConfig.accessTokenAddress}/realms/${keycloakConfig.realm}/protocol/openid-connect/token",
         clientId = keycloakConfig.clientId,
         clientSecret = keycloakConfig.secret,
         accessTokenRequiresBasicAuth = false,
@@ -233,7 +233,7 @@ private fun thymeleafContent(
     } else {
         mapOf(
             "user" to principal.name(),
-            "keycloakAuthURL" to keycloakConfig.address,
+            "keycloakAuthURL" to keycloakConfig.authorizeAddress,
             "keycloakAppRealm" to keycloakConfig.realm,
             "keycloakAppClient" to keycloakConfig.clientId,
         )
@@ -293,7 +293,8 @@ private fun Application.printGeneralSettings(
             |bootstrap-services             = $bootstrapServices
             |run-config-app-mode            = ${runConfig.mode}
             |run-config-debug-auth          = ${runConfig.auth}
-            |keycloak-address               = ${keycloakConfig.address}
+            |keycloak-authorize-address     = ${keycloakConfig.authorizeAddress}
+            |keycloak-access-token-address  = ${keycloakConfig.accessTokenAddress}
             |keycloak-realm                 = ${keycloakConfig.realm}
             |keycloak-client-id             = ${keycloakConfig.clientId}
             |application-port               = $port
