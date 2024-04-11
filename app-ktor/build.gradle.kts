@@ -90,7 +90,6 @@ tasks.create("createTagFile") {
 
 tasks.dockerCreateDockerfile {
     if (System.getProperty("standalone") != null) {
-        copyFile("./resources/data/users.csv", "/app/userdata/users.csv")
         copyFile("./resources/data/dictionaries.csv", "/app/userdata/dictionaries.csv")
         copyFile("./resources/data/cards.csv", "/app/userdata/cards.csv")
     } else {
