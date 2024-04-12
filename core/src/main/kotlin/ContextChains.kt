@@ -4,7 +4,6 @@ import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppContext
-import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 
@@ -32,17 +31,6 @@ internal fun <Context : AppContext> ChainDSL<Context>.operation(
     configure()
 }
 
-internal fun <Context : AppContext> ChainDSL<Context>.stubs(
-    operation: AppOperation,
-    configure: ChainDSL<Context>.() -> Unit
-) = chain {
-    this.name = "${operation.name} ::: stubs"
-    test {
-        this.operation == operation && this.workMode == AppMode.STUB && this.status == AppStatus.RUN
-    }
-    configure()
-}
-
 internal fun <Context : AppContext> ChainDSL<Context>.validators(
     operation: AppOperation,
     configure: ChainDSL<Context>.() -> Unit
@@ -60,7 +48,7 @@ internal fun <Context : AppContext> ChainDSL<Context>.runs(
 ) = chain {
     this.name = "${operation.name} ::: process"
     test {
-        this.operation == operation && this.workMode != AppMode.STUB && this.status == AppStatus.RUN
+        this.operation == operation && this.status == AppStatus.RUN
     }
     configure()
     finish(operation)
@@ -71,7 +59,7 @@ internal fun <Context : AppContext> ChainDSL<Context>.finish(
 ) = worker {
     this.name = "${operation.name} ::: finish"
     test {
-        this.operation == operation && this.workMode != AppMode.STUB && this.status == AppStatus.RUN
+        this.operation == operation && this.status == AppStatus.RUN
     }
     process {
         this.status = AppStatus.OK

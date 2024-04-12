@@ -1,22 +1,16 @@
-package com.gitlab.sszuev.flashcards.stubs
+package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
-import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
-import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
-import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-
-const val STUB_ERROR_GROUP = "StubErrors"
 
 val stubDictionary = DictionaryEntity(
     dictionaryId = DictionaryId(42.toString()),
@@ -27,19 +21,6 @@ val stubDictionary = DictionaryEntity(
 )
 
 val stubDictionaries = listOf(stubDictionary)
-
-val stubAudioResource = ResourceEntity(
-    resourceId = TTSResourceId(42.toString()),
-    data = ByteArray(42) { 42 },
-)
-
-val stubError = AppError(
-    field = "the-error-field",
-    exception = AssertionError("Test-error"),
-    message = "the-error-message",
-    code = "StubErrorCode",
-    group = STUB_ERROR_GROUP,
-)
 
 val stubCard = CardEntity(
     cardId = CardId(42.toString()),
@@ -78,17 +59,3 @@ val stubCards = IntRange(1, 3)
             sound = TTSResourceId("sl:$word"),
         )
     }
-
-val stubLearnCardDetails = CardLearn(
-    cardId = CardId(42.toString()),
-    details = mapOf(Stage.SELF_TEST to 42, Stage.WRITING to 5, Stage.OPTIONS to 4)
-)
-
-fun stubErrorForCode(case: AppStub): AppError {
-    return AppError(
-        field = "field::$case",
-        message = "the-error-message-for-$case",
-        code = case.name,
-        group = STUB_ERROR_GROUP,
-    )
-}

@@ -12,7 +12,6 @@ dependencies {
     implementation(project(":cor-lib"))
     implementation(project(":db-common"))
     implementation(project(":common"))
-    implementation(project(":specs"))
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")

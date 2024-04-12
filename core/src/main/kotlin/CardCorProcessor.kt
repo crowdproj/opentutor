@@ -11,8 +11,6 @@ import com.gitlab.sszuev.flashcards.core.processes.processLearnCards
 import com.gitlab.sszuev.flashcards.core.processes.processResetCard
 import com.gitlab.sszuev.flashcards.core.processes.processResource
 import com.gitlab.sszuev.flashcards.core.processes.processUpdateCard
-import com.gitlab.sszuev.flashcards.core.stubs.cardStubSuccess
-import com.gitlab.sszuev.flashcards.core.stubs.stubError
 import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityDictionaryId
 import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityHasNoCardId
 import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityHasValidCardId
@@ -28,11 +26,7 @@ import com.gitlab.sszuev.flashcards.core.validators.validateResourceGetLangId
 import com.gitlab.sszuev.flashcards.core.validators.validateResourceGetWord
 import com.gitlab.sszuev.flashcards.core.validators.validateUserId
 import com.gitlab.sszuev.flashcards.corlib.chain
-import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
-import com.gitlab.sszuev.flashcards.stubs.stubAudioResource
-import com.gitlab.sszuev.flashcards.stubs.stubCard
-import com.gitlab.sszuev.flashcards.stubs.stubCards
 
 /**
  * Main class fot business logic,
@@ -48,15 +42,6 @@ class CardCorProcessor {
             initContext()
 
             operation(CardOperation.GET_RESOURCE) {
-                stubs(CardOperation.GET_RESOURCE) {
-                    cardStubSuccess(CardOperation.GET_RESOURCE) {
-                        this.responseTTSResourceEntity = stubAudioResource
-                    }
-                    stubError(CardOperation.GET_RESOURCE)
-                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_WRONG_RESOURCE_ID)
-                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_NOT_FOUND)
-                    stubError(CardOperation.GET_RESOURCE, AppStub.ERROR_AUDIO_RESOURCE_SERVER_ERROR)
-                }
                 normalizers(CardOperation.GET_RESOURCE)
                 validators(CardOperation.GET_RESOURCE) {
                     validateUserId(CardOperation.GET_RESOURCE)
@@ -69,14 +54,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.SEARCH_CARDS) {
-                stubs(CardOperation.SEARCH_CARDS) {
-                    cardStubSuccess(CardOperation.SEARCH_CARDS) {
-                        this.responseCardEntityList = stubCards
-                    }
-                    stubError(CardOperation.SEARCH_CARDS)
-                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_CARDS_WRONG_FILTER_LENGTH)
-                    stubError(CardOperation.SEARCH_CARDS, AppStub.ERROR_WRONG_DICTIONARY_ID)
-                }
                 normalizers(CardOperation.SEARCH_CARDS)
                 validators(CardOperation.SEARCH_CARDS) {
                     validateUserId(CardOperation.SEARCH_CARDS)
@@ -89,13 +66,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.GET_ALL_CARDS) {
-                stubs(CardOperation.GET_ALL_CARDS) {
-                    cardStubSuccess(CardOperation.GET_ALL_CARDS) {
-                        this.responseCardEntityList = stubCards
-                    }
-                    stubError(CardOperation.GET_ALL_CARDS)
-                    stubError(CardOperation.GET_ALL_CARDS, AppStub.ERROR_WRONG_DICTIONARY_ID)
-                }
                 normalizers(CardOperation.GET_ALL_CARDS)
                 validators(CardOperation.GET_ALL_CARDS) {
                     validateUserId(CardOperation.GET_ALL_CARDS)
@@ -107,20 +77,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.CREATE_CARD) {
-                stubs(CardOperation.CREATE_CARD) {
-                    cardStubSuccess(CardOperation.CREATE_CARD) {
-                        this.responseCardEntity = stubCard
-                    }
-                    stubError(CardOperation.CREATE_CARD)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_UNEXPECTED_FIELD)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_WORD)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSLATION)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSCRIPTION)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_EXAMPLES)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_DETAILS)
-                    stubError(CardOperation.CREATE_CARD, AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
-                }
                 normalizers(CardOperation.CREATE_CARD)
                 validators(CardOperation.CREATE_CARD) {
                     validateUserId(CardOperation.CREATE_CARD)
@@ -134,20 +90,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.UPDATE_CARD) {
-                stubs(CardOperation.UPDATE_CARD) {
-                    cardStubSuccess(CardOperation.UPDATE_CARD) {
-                        this.responseCardEntity = stubCard
-                    }
-                    stubError(CardOperation.UPDATE_CARD)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_WRONG_CARD_ID)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_WORD)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSLATION)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_TRANSCRIPTION)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_EXAMPLES)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_PART_OF_SPEECH)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_DETAILS)
-                    stubError(CardOperation.UPDATE_CARD, AppStub.ERROR_CARD_WRONG_AUDIO_RESOURCE)
-                }
                 normalizers(CardOperation.UPDATE_CARD)
                 validators(CardOperation.UPDATE_CARD) {
                     validateUserId(CardOperation.UPDATE_CARD)
@@ -161,13 +103,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.LEARN_CARDS) {
-                stubs(CardOperation.LEARN_CARDS) {
-                    cardStubSuccess(CardOperation.LEARN_CARDS)
-                    stubError(CardOperation.LEARN_CARDS)
-                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_CARD_ID)
-                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_STAGES)
-                    stubError(CardOperation.LEARN_CARDS, AppStub.ERROR_LEARN_CARD_WRONG_DETAILS)
-                }
                 normalizers(CardOperation.LEARN_CARDS)
                 validators(CardOperation.LEARN_CARDS) {
                     validateUserId(CardOperation.LEARN_CARDS)
@@ -181,13 +116,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.GET_CARD) {
-                stubs(CardOperation.GET_CARD) {
-                    cardStubSuccess(CardOperation.GET_CARD) {
-                        this.responseCardEntity = stubCard
-                    }
-                    stubError(CardOperation.GET_CARD)
-                    stubError(CardOperation.GET_CARD, AppStub.ERROR_WRONG_CARD_ID)
-                }
                 normalizers(CardOperation.GET_CARD)
                 validators(CardOperation.GET_CARD) {
                     validateUserId(CardOperation.GET_CARD)
@@ -199,11 +127,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.RESET_CARD) {
-                stubs(CardOperation.RESET_CARD) {
-                    cardStubSuccess(CardOperation.RESET_CARD)
-                    stubError(CardOperation.RESET_CARD)
-                    stubError(CardOperation.RESET_CARD, AppStub.ERROR_WRONG_CARD_ID)
-                }
                 normalizers(CardOperation.RESET_CARD)
                 validators(CardOperation.RESET_CARD) {
                     validateUserId(CardOperation.RESET_CARD)
@@ -215,11 +138,6 @@ class CardCorProcessor {
             }
 
             operation(CardOperation.DELETE_CARD) {
-                stubs(CardOperation.DELETE_CARD) {
-                    cardStubSuccess(CardOperation.DELETE_CARD)
-                    stubError(CardOperation.DELETE_CARD)
-                    stubError(CardOperation.DELETE_CARD, AppStub.ERROR_WRONG_CARD_ID)
-                }
                 normalizers(CardOperation.DELETE_CARD)
                 validators(CardOperation.DELETE_CARD) {
                     validateUserId(CardOperation.DELETE_CARD)

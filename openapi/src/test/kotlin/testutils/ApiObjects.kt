@@ -20,21 +20,11 @@ internal val error = ErrorResource(
     message = "mmm"
 )
 
-internal val debug = DebugResource(
-    mode = RunMode.TEST,
-    stub = DebugStub.ERROR_UNKNOWN
-)
-
 internal fun assertError(json: String) {
     Assertions.assertTrue(json.contains("\"code\":\"XXX\""))
     Assertions.assertTrue(json.contains("\"group\":\"QQQ\""))
     Assertions.assertTrue(json.contains("\"field\":\"VVV\""))
     Assertions.assertTrue(json.contains("\"message\":\"mmm\""))
-}
-
-internal fun assertDebug(json: String) {
-    Assertions.assertTrue(json.contains("\"mode\":\"test\""))
-    Assertions.assertTrue(json.contains("\"stub\":\"error_unknown\""))
 }
 
 internal fun assertDictionary(json: String) {

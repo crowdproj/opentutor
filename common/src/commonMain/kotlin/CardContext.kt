@@ -3,10 +3,8 @@ package com.gitlab.sszuev.flashcards
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
@@ -29,8 +27,6 @@ data class CardContext(
     override val config: AppConfig = AppConfig.DEFAULT,
 
     override var status: AppStatus = AppStatus.INIT,
-    override var workMode: AppMode = AppMode.PROD,
-    override var debugCase: AppStub = AppStub.NONE,
     override var requestId: AppRequestId = AppRequestId.NONE,
     override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
     override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
@@ -61,5 +57,5 @@ data class CardContext(
     var responseCardEntity: CardEntity = CardEntity.EMPTY,
     // get cards list response:
     var responseCardEntityList: List<CardEntity> = listOf(),
-): AppContext
+) : AppContext
 

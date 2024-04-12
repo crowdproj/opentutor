@@ -5,20 +5,15 @@ import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CardWordExampleResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
-import com.gitlab.sszuev.flashcards.api.v1.models.DebugStub
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.RunMode
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
 import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCard
 import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertCardId
-import com.gitlab.sszuev.flashcards.model.common.AppMode
-import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import org.junit.jupiter.api.Assertions
@@ -28,13 +23,9 @@ internal class FromCardTransportTest {
 
     companion object {
         private fun assertContext(
-            expectedStub: AppStub,
-            expectedMode: AppMode,
             expectedRequestId: String,
             actual: CardContext
         ) {
-            Assertions.assertEquals(expectedStub, actual.debugCase)
-            Assertions.assertEquals(expectedMode, actual.workMode)
             Assertions.assertEquals(expectedRequestId, actual.requestId.asString())
         }
     }
@@ -44,17 +35,11 @@ internal class FromCardTransportTest {
         val req = GetCardRequest(
             requestId = "request=42",
             cardId = "card=42",
-            debug = DebugResource(
-                mode = RunMode.STUB,
-                stub = DebugStub.SUCCESS
-            ),
         )
         val context = CardContext()
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.SUCCESS,
-            expectedMode = AppMode.STUB,
             expectedRequestId = "request=42",
             actual = context
         )
@@ -66,17 +51,11 @@ internal class FromCardTransportTest {
         val req = GetAllCardsRequest(
             requestId = "request=42",
             dictionaryId = "dictionary=42",
-            debug = DebugResource(
-                mode = RunMode.TEST,
-                stub = DebugStub.SUCCESS
-            ),
         )
         val context = CardContext()
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.SUCCESS,
-            expectedMode = AppMode.TEST,
             expectedRequestId = "request=42",
             actual = context
         )
@@ -87,10 +66,6 @@ internal class FromCardTransportTest {
     fun `test fromSearchCardsRequest`() {
         val req = SearchCardsRequest(
             requestId = "req",
-            debug = DebugResource(
-                mode = RunMode.PROD,
-                stub = DebugStub.ERROR_UNKNOWN
-            ),
             length = 42,
             random = true,
             unknown = true,
@@ -100,8 +75,6 @@ internal class FromCardTransportTest {
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.UNKNOWN_ERROR,
-            expectedMode = AppMode.PROD,
             expectedRequestId = "req",
             actual = context
         )
@@ -144,18 +117,12 @@ internal class FromCardTransportTest {
         )
         val req = CreateCardRequest(
             requestId = "req3",
-            debug = DebugResource(
-                mode = RunMode.TEST,
-                stub = DebugStub.SUCCESS
-            ),
             card = card,
         )
         val context = CardContext()
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.SUCCESS,
-            expectedMode = AppMode.TEST,
             expectedRequestId = "req3",
             actual = context
         )
@@ -181,21 +148,16 @@ internal class FromCardTransportTest {
                 )
             ),
             answered = 42,
-            stats = mapOf("options" to 42, "self-test" to 21),        )
+            stats = mapOf("options" to 42, "self-test" to 21),
+        )
         val req = CreateCardRequest(
             requestId = "req4",
-            debug = DebugResource(
-                mode = RunMode.TEST,
-                stub = DebugStub.ERROR_UNKNOWN
-            ),
             card = card
         )
         val context = CardContext()
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.UNKNOWN_ERROR,
-            expectedMode = AppMode.TEST,
             expectedRequestId = "req4",
             actual = context
         )
@@ -207,17 +169,11 @@ internal class FromCardTransportTest {
         val req = DeleteCardRequest(
             requestId = "req5",
             cardId = "card5",
-            debug = DebugResource(
-                mode = RunMode.TEST,
-                stub = DebugStub.ERROR_UNKNOWN
-            ),
         )
         val context = CardContext()
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.UNKNOWN_ERROR,
-            expectedMode = AppMode.TEST,
             expectedRequestId = "req5",
             actual = context
         )
@@ -242,17 +198,11 @@ internal class FromCardTransportTest {
                     details = mapOf("options" to 42)
                 ),
             ),
-            debug = DebugResource(
-                mode = RunMode.TEST,
-                stub = DebugStub.ERROR_UNKNOWN
-            ),
         )
         val context = CardContext()
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.UNKNOWN_ERROR,
-            expectedMode = AppMode.TEST,
             expectedRequestId = "req6",
             actual = context
         )
@@ -273,17 +223,11 @@ internal class FromCardTransportTest {
         val req = ResetCardRequest(
             requestId = "req7",
             cardId = "card7",
-            debug = DebugResource(
-                mode = RunMode.STUB,
-                stub = DebugStub.ERROR_UNKNOWN
-            ),
         )
         val context = CardContext()
         context.fromCardTransport(req)
 
         assertContext(
-            expectedStub = AppStub.UNKNOWN_ERROR,
-            expectedMode = AppMode.STUB,
             expectedRequestId = "req7",
             actual = context
         )

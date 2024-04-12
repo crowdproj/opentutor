@@ -1,10 +1,11 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
 import com.gitlab.sszuev.flashcards.mappers.v1.testutils.assertDictionary
-import com.gitlab.sszuev.flashcards.model.common.AppMode
-import com.gitlab.sszuev.flashcards.model.common.AppStub
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import org.junit.jupiter.api.Assertions
@@ -16,13 +17,9 @@ internal class FromDictionaryTransportTest {
 
         @Suppress("SameParameterValue")
         private fun assertContext(
-            expectedStub: AppStub,
-            expectedMode: AppMode,
             expectedRequestId: String,
             actual: DictionaryContext
         ) {
-            Assertions.assertEquals(expectedStub, actual.debugCase)
-            Assertions.assertEquals(expectedMode, actual.workMode)
             Assertions.assertEquals(expectedRequestId, actual.requestId.asString())
         }
     }
@@ -31,17 +28,11 @@ internal class FromDictionaryTransportTest {
     fun `test fromGetAllDictionariesRequest`() {
         val req = GetAllDictionariesRequest(
             requestId = "request=42",
-            debug = DebugResource(
-                mode = RunMode.STUB,
-                stub = DebugStub.SUCCESS
-            ),
         )
         val context = DictionaryContext()
         context.fromDictionaryTransport(req)
 
         assertContext(
-            expectedStub = AppStub.SUCCESS,
-            expectedMode = AppMode.STUB,
             expectedRequestId = "request=42",
             actual = context
         )
@@ -51,19 +42,16 @@ internal class FromDictionaryTransportTest {
     fun `test fromUploadDictionariesRequest`() {
         val req = UploadDictionaryRequest(
             requestId = "request=42",
-            debug = DebugResource(
-                mode = RunMode.STUB,
-                stub = DebugStub.SUCCESS
-            ),
             resource = byteArrayOf(42),
         )
         val context = DictionaryContext()
         context.fromDictionaryTransport(req)
 
-        Assertions.assertEquals(context.requestDictionaryResourceEntity, ResourceEntity(DictionaryId.NONE, byteArrayOf(42)))
+        Assertions.assertEquals(
+            context.requestDictionaryResourceEntity,
+            ResourceEntity(DictionaryId.NONE, byteArrayOf(42))
+        )
         assertContext(
-            expectedStub = AppStub.SUCCESS,
-            expectedMode = AppMode.STUB,
             expectedRequestId = "request=42",
             actual = context
         )
@@ -73,10 +61,6 @@ internal class FromDictionaryTransportTest {
     fun `test fromCreateDictionaryRequest`() {
         val req = CreateDictionaryRequest(
             requestId = "request=42",
-            debug = DebugResource(
-                mode = RunMode.TEST,
-                stub = DebugStub.SUCCESS
-            ),
             dictionary = DictionaryResource(
                 name = "xxx",
                 sourceLang = "1",
@@ -90,8 +74,6 @@ internal class FromDictionaryTransportTest {
         context.fromDictionaryTransport(req)
 
         assertContext(
-            expectedStub = AppStub.SUCCESS,
-            expectedMode = AppMode.TEST,
             expectedRequestId = "request=42",
             actual = context
         )

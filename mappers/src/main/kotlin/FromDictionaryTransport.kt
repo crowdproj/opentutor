@@ -15,35 +15,25 @@ fun DictionaryContext.fromDictionaryTransport(request: BaseRequest) = when (requ
 
 fun DictionaryContext.fromGetAllDictionariesRequest(request: GetAllDictionariesRequest) {
     this.requestId = request.requestId()
-    this.workMode = request.debug.transportToWorkMode()
-    this.debugCase = request.debug.transportToStubCase()
 }
 
 fun DictionaryContext.fromCreateDictionaryRequest(request: CreateDictionaryRequest) {
     this.requestId = request.requestId()
-    this.workMode = request.debug.transportToWorkMode()
-    this.debugCase = request.debug.transportToStubCase()
     this.requestDictionaryEntity = request.dictionary?.toDictionaryEntity() ?: DictionaryEntity.EMPTY
 }
 
 fun DictionaryContext.fromDeleteDictionaryRequest(request: DeleteDictionaryRequest) {
     this.requestId = request.requestId()
-    this.workMode = request.debug.transportToWorkMode()
-    this.debugCase = request.debug.transportToStubCase()
     this.requestDictionaryId = toDictionaryId(request.dictionaryId)
 }
 
 fun DictionaryContext.fromDownloadDictionaryRequest(request: DownloadDictionaryRequest) {
     this.requestId = request.requestId()
-    this.workMode = request.debug.transportToWorkMode()
-    this.debugCase = request.debug.transportToStubCase()
     this.requestDictionaryId = toDictionaryId(request.dictionaryId)
 }
 
 fun DictionaryContext.fromUploadDictionaryRequest(request: UploadDictionaryRequest) {
     this.requestId = request.requestId()
-    this.workMode = request.debug.transportToWorkMode()
-    this.debugCase = request.debug.transportToStubCase()
     this.requestDictionaryResourceEntity = ResourceEntity(DictionaryId.NONE, request.resource ?: ByteArray(0))
 }
 

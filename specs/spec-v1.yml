@@ -319,7 +319,6 @@ components:
       description: Request to get audio resource (byte array)
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             lang:
@@ -341,7 +340,6 @@ components:
       description: Request to read dictionaries
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
 
     GetAllDictionariesResponse:
@@ -359,7 +357,6 @@ components:
       description: Create dictionary request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             dictionary:
@@ -378,7 +375,6 @@ components:
       description: Delete dictionary request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             dictionaryId:
@@ -394,7 +390,6 @@ components:
       description: Download dictionary request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             dictionaryId:
@@ -414,7 +409,6 @@ components:
       description: Upload dictionary request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             resource:
@@ -434,7 +428,6 @@ components:
       description: Search cards request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             random:
@@ -468,7 +461,6 @@ components:
       description: Request to get all cards by dictionaryId
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             dictionaryId:
@@ -490,7 +482,6 @@ components:
       description: Get card by id request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             cardId:
@@ -509,7 +500,6 @@ components:
       description: Create card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             card:
@@ -528,7 +518,6 @@ components:
       description: Update card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             card:
@@ -547,7 +536,6 @@ components:
       description: Learn card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             cards:
@@ -570,7 +558,6 @@ components:
       description: Delete card request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             cardId:
@@ -587,7 +574,6 @@ components:
       description: Reset card status request
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
-        - $ref: '#/components/schemas/DebugRequest'
         - type: object
           properties:
             cardId:
@@ -630,12 +616,6 @@ components:
           learnCard: '#/components/schemas/LearnCardsRequest'
           deleteCard: '#/components/schemas/DeleteCardRequest'
           resetCard: '#/components/schemas/ResetCardRequest'
-
-    DebugRequest:
-      type: object
-      properties:
-        debug:
-          $ref: '#/components/schemas/DebugResource'
 
     BaseResponse:
       type: object
@@ -782,48 +762,9 @@ components:
         message:
           type: string
 
-    DebugResource:
-      type: object
-      properties:
-        mode:
-          $ref: '#/components/schemas/RunMode'
-        stub:
-          $ref: '#/components/schemas/DebugStub'
-
     Result:
       description: Type of result
       type: string
       enum:
         - success
         - error
-
-    DebugStub:
-      type: string
-      description: Stubs
-      enum:
-        - success
-        - error_unexpected_field
-        - error_wrong_dictionary_id
-        - error_wrong_card_id
-        - error_card_wrong_word
-        - error_card_wrong_transcription
-        - error_card_wrong_translation
-        - error_card_wrong_examples
-        - error_card_wrong_part_of_speech
-        - error_card_wrong_details
-        - error_card_wrong_audio_resource
-        - error_audio_resource_wrong_resource_id
-        - error_audio_resource_server_error
-        - error_audio_resource_not_found
-        - error_cards_wrong_filter_length
-        - error_learn_card_wrong_card_id
-        - error_learn_card_wrong_stages
-        - error_learn_card_wrong_details
-        - error_unknown
-
-    RunMode:
-      type: string
-      enum:
-        - prod
-        - test
-        - stub
