@@ -50,9 +50,9 @@ internal class CardCorProcessorRunCardsTest {
             val context = CardContext(
                 operation = op,
                 repositories = AppRepositories().copy(
-                    testCardRepository = cardRepository,
-                    testDictionaryRepository = dictionaryRepository,
-                    testTTSClientRepository = ttsResourceRepository,
+                    cardRepository = cardRepository,
+                    dictionaryRepository = dictionaryRepository,
+                    ttsClientRepository = ttsResourceRepository,
                 ),
             )
             context.requestAppAuthId = testUserId
@@ -186,7 +186,7 @@ internal class CardCorProcessorRunCardsTest {
 
         Assertions.assertEquals(
             testCards.size,
-            (context.repositories.ttsClientRepository(AppMode.TEST) as MockTTSResourceRepository).findResourceIdCounts.toInt()
+            (context.repositories.ttsClientRepository as MockTTSResourceRepository).findResourceIdCounts.toInt()
         )
 
         Assertions.assertEquals(testCards, context.responseCardEntityList)

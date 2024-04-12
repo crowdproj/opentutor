@@ -37,8 +37,8 @@ internal class DictionaryCorProcessorRunTest {
             val context = DictionaryContext(
                 operation = op,
                 repositories = AppRepositories().copy(
-                    testDictionaryRepository = dictionaryRepository,
-                    testCardRepository = cardsRepository,
+                    dictionaryRepository = dictionaryRepository,
+                    cardRepository = cardsRepository,
                 )
             )
             context.requestAppAuthId = testUserId

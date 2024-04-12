@@ -28,7 +28,7 @@ internal class CardCorProcessorRunResourceTest {
             val context = CardContext(
                 operation = CardOperation.GET_RESOURCE,
                 repositories = AppRepositories().copy(
-                    testTTSClientRepository = repository
+                    ttsClientRepository = repository
                 )
             )
             context.requestAppAuthId = AppAuthId("42")

@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
+import com.gitlab.sszuev.flashcards.config.RunConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
@@ -21,7 +22,7 @@ import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import java.util.Base64
 
-val testKeycloakConfig = KeycloakConfig(
+private val testKeycloakConfig = KeycloakConfig(
     authorizeAddress = "http://test-keycloak-server.ex",
     accessTokenAddress = "http://test-keycloak-server.ex",
     clientId = "test-client",
@@ -31,12 +32,14 @@ val testKeycloakConfig = KeycloakConfig(
     realm = "test-realm",
 )
 
+private val testRunConfig = RunConfig(auth = "", mode = RunConfig.Mode.TEST)
+
 @OptIn(KtorExperimentalLocationsAPI::class)
 fun testSecuredApp(
     block: suspend ApplicationTestBuilder.() -> Unit
 ) {
     testApplication {
-        application { module(keycloakConfig = testKeycloakConfig) }
+        application { module(keycloakConfig = testKeycloakConfig, runConfig = testRunConfig) }
         block()
     }
 }

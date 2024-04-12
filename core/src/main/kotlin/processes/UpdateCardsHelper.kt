@@ -25,5 +25,5 @@ internal fun CardContext.learnCards(
         }
         card.copy(stats = details, answered = answered.toInt()).toDbCard()
     }
-    return this.repositories.cardRepository(this.workMode).updateCards(cards).map { it.toCardEntity() }
+    return this.repositories.cardRepository.updateCards(cards).map { it.toCardEntity() }
 }

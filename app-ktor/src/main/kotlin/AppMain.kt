@@ -75,7 +75,7 @@ fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)
  * - To disable authentication for debugging use `-DKEYCLOAK_DEBUG_AUTH=auth-uuid`
  * - For run mode (prod, test, stub) use `-DRUN_MODE=mode`
  *
- * Example: `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED -DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6 -DRUN_MODE=test`
+ * Example: `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED -DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6 -DRUN_MODE=test -DDATA_DIRECTORY=/local/data`
  */
 @KtorExperimentalLocationsAPI
 @Suppress("unused")
@@ -86,7 +86,7 @@ fun Application.module(
 ) {
     logger.info(printGeneralSettings(runConfig, keycloakConfig, tutorConfig))
 
-    val repositories = appRepositories()
+    val repositories = appRepositories(runConfig)
 
     val port = environment.config.property("ktor.deployment.port").getString()
 
