@@ -117,12 +117,18 @@
         <div class="row">
             <div class="d-flex align-items-center justify-content-between">
                 <div><h1 class="word">word</h1></div>
-                <button th:insert="speaker.html :: svg" id="show-card-sound" type="button"
-                        class="sound btn btn-secondary" disabled></button>
+                <div>
+                    <h6 class="status"></h6>
+                    <button th:insert="speaker.html :: svg" id="show-card-sound" type="button"
+                            class="sound btn btn-secondary" disabled></button>
+                </div>
             </div>
         </div>
         <div class="row">
             <h6 class="translations">translations</h6>
+        </div>
+        <div class="row">
+            <h6 class="examples"></h6>
         </div>
         <div class="row">
             <button id='show-next' class="d-flex align-items-end flex-column"><h4>next</h4></button>

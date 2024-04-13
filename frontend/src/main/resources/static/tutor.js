@@ -135,10 +135,15 @@ function drawShowCardPage(data, index, nextStage) {
     const current = data[index];
     const next = index + 1;
 
+    const status = '(' + percentage(current) + '%) '
+
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, 'show: ' + current.dictionaryName);
     $('.word', page).html(getAllWordsAsString(current));
-    $('.translations', page).html(getTranslationsAsString(current));
+    $('.translations', page).html(getTranslationsAsHtml(current));
+    $('.examples', page).html(getExamplesAsHtml(current));
+    $('.status', page).html(status)
+
     $('#show-next').unbind('click').on('click', function () {
         drawShowCardPage(data, next, nextStage);
     });

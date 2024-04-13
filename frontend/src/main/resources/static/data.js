@@ -320,6 +320,18 @@ function getTranslationsAsString(card) {
     return getCardFirstWordTranslationsAsArray(card).join(', ')
 }
 
+function getTranslationsAsHtml(card) {
+    return card.words
+        .map(word => {
+            return getWordTranslationsAsArray(word)
+        })
+        .filter(item => {
+            return 0 < item.length
+        })
+        .map(item => item.join(", "))
+        .join("<br>")
+}
+
 /**
  * Represents an item translations as a flat array.
  * **[TODO] For first word only.**
@@ -339,6 +351,25 @@ function getCardFirstWordTranslationsAsArray(card) {
 function getWordTranslationsAsArray(word) {
     return $.map(word.translations, function (n) {
         return n
+    })
+}
+
+function getExamplesAsHtml(card) {
+    return card.words
+        .map(word => {
+            return getWordExamplesAsArray(word)
+        })
+        .filter(item => {
+            return 0 < item.length
+        })
+        .map(item => item.join(", "))
+        .join("<br>")
+}
+
+function getWordExamplesAsArray(word) {
+    return word.examples.map(ex => {
+        const suffix = ex.translation != null ? ` (${ex.translation})` : "";
+        return ex.example + suffix
     })
 }
 

@@ -339,7 +339,7 @@ private suspend fun CardContext.postProcess(
     val cardAudioId = if (words.size == 1) {
         words.single().sound
     } else {
-        val cardAudioString = card.words.joinToString(",") { it.word }
+        val cardAudioString = card.words.joinToString(",") { it.word.split("|")[0].trim() }
         val findResourceIdResponse = tts.findResourceId(TTSResourceGet(cardAudioString, sourceLang).normalize())
         this.errors.addAll(findResourceIdResponse.errors)
         findResourceIdResponse.id
