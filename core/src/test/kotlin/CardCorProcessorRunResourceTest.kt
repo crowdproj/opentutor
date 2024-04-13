@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
-import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
@@ -28,11 +27,10 @@ internal class CardCorProcessorRunResourceTest {
             val context = CardContext(
                 operation = CardOperation.GET_RESOURCE,
                 repositories = AppRepositories().copy(
-                    testTTSClientRepository = repository
+                    ttsClientRepository = repository
                 )
             )
             context.requestAppAuthId = AppAuthId("42")
-            context.workMode = AppMode.TEST
             context.requestId = requestId()
             return context
         }

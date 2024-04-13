@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryResponse
-import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
@@ -11,7 +10,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
-import com.gitlab.sszuev.flashcards.api.v1.models.RunMode
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryResponse
 import com.gitlab.sszuev.flashcards.dbmem.MemDatabase
@@ -33,7 +31,6 @@ internal class DictionaryControllerRunTest {
     fun `test get-all-dictionaries success`() = testSecuredApp {
         val requestBody = GetAllDictionariesRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
         )
         val response = testPost("/v1/api/dictionaries/get-all", requestBody)
         val res = response.body<GetAllDictionariesResponse>()
@@ -53,7 +50,6 @@ internal class DictionaryControllerRunTest {
     fun `test create-dictionary success`() = testSecuredApp {
         val requestBody = CreateDictionaryRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             dictionary = DictionaryResource(
                 name = "xxx ",
                 sourceLang = "sS",
@@ -77,7 +73,6 @@ internal class DictionaryControllerRunTest {
     fun `test delete-dictionary success`() = testSecuredApp {
         val requestBody = DeleteDictionaryRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             dictionaryId = "1",
         )
         val response = testPost("/v1/api/dictionaries/delete", requestBody)
@@ -92,7 +87,6 @@ internal class DictionaryControllerRunTest {
     fun `test download-dictionary success`() = testSecuredApp {
         val requestBody = DownloadDictionaryRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             dictionaryId = "2",
         )
         val response = testPost("/v1/api/dictionaries/download", requestBody)
@@ -120,7 +114,6 @@ internal class DictionaryControllerRunTest {
         """.trimIndent()
         val requestBody = UploadDictionaryRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             resource = txt.toByteArray(Charsets.UTF_16),
         )
         val response = testPost("/v1/api/dictionaries/upload", requestBody)

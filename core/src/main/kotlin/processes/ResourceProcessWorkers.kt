@@ -12,7 +12,7 @@ fun ChainDSL<CardContext>.processResource() = worker {
     this.name = "process audio resource request"
     process {
         val request = this.normalizedRequestTTSResourceGet
-        val foundId = this.repositories.ttsClientRepository(this.workMode).findResourceId(request)
+        val foundId = this.repositories.ttsClientRepository.findResourceId(request)
         if (foundId.errors.isNotEmpty()) {
             this.errors.addAll(foundId.errors)
             this.status = AppStatus.FAIL
@@ -28,7 +28,7 @@ fun ChainDSL<CardContext>.processResource() = worker {
             this.status = AppStatus.FAIL
             return@process
         }
-        val foundResource = this.repositories.ttsClientRepository(this.workMode).getResource(foundId.id)
+        val foundResource = this.repositories.ttsClientRepository.getResource(foundId.id)
         if (foundResource.errors.isNotEmpty()) {
             this.errors.addAll(foundId.errors)
             this.status = AppStatus.FAIL

@@ -18,7 +18,7 @@ private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, 
  */
 internal fun CardContext.findCardDeck(): List<CardEntity> {
     val threshold = config.numberOfRightAnswers
-    var cards = this.repositories.cardRepository(this.workMode)
+    var cards = this.repositories.cardRepository
         .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
         .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) <= threshold }
         .map { it.toCardEntity() }

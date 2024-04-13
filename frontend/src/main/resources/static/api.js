@@ -53,8 +53,7 @@ async function initKeycloak() {
 function getDictionaries(onDone) {
     const data = {
         'requestId': uuid(),
-        'requestType': getAllDictionariesRequestType,
-        'debug': {'mode': runMode}
+        'requestType': getAllDictionariesRequestType
     }
     post(getAllDictionariesURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -71,8 +70,7 @@ function getCards(dictionaryId, onDone) {
     const data = {
         'dictionaryId': dictionaryId,
         'requestId': uuid(),
-        'requestType': getAllCardsRequestType,
-        'debug': {'mode': runMode}
+        'requestType': getAllCardsRequestType
     }
     post(getAllCardsURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -94,8 +92,7 @@ function getNextCardDeck(dictionaryIds, length, onDone) {
         'requestId': uuid(),
         'requestType': searchCardsRequestType,
         'random': true,
-        'length': length,
-        'debug': {'mode': runMode}
+        'length': length
     }
     post(searchCardsURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -113,8 +110,7 @@ function uploadDictionary(arrayBuffer, onDone, onFail) {
     const data = {
         'requestId': uuid(),
         'requestType': uploadDictionaryRequestType,
-        'resource': base64,
-        'debug': {'mode': runMode},
+        'resource': base64
     }
     post(uploadDictionaryURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -132,8 +128,7 @@ function downloadDictionary(dictionaryId, downloadFilename, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': downloadDictionaryRequestType,
-        'dictionaryId': dictionaryId,
-        'debug': {'mode': runMode},
+        'dictionaryId': dictionaryId
     }
     post(downloadDictionaryURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -159,8 +154,7 @@ function createDictionary(dictionaryEntity, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': createDictionaryRequestType,
-        'dictionary': dictionaryEntity,
-        'debug': {'mode': runMode},
+        'dictionary': dictionaryEntity
     }
     post(createDictionaryURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -177,8 +171,7 @@ function deleteDictionary(dictionaryId, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': deleteDictionaryRequestType,
-        'dictionaryId': dictionaryId,
-        'debug': {'mode': runMode},
+        'dictionaryId': dictionaryId
     }
     post(deleteDictionaryURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -193,8 +186,7 @@ function createCard(card, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': createCardRequestType,
-        'card': card,
-        'debug': {'mode': runMode},
+        'card': card
     }
     post(createCardURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -211,8 +203,7 @@ function updateCard(card, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': updateCardRequestType,
-        'card': card,
-        'debug': {'mode': runMode},
+        'card': card
     }
     post(updateCardURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -227,8 +218,7 @@ function deleteCard(cardId, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': deleteCardRequestType,
-        'cardId': cardId,
-        'debug': {'mode': runMode},
+        'cardId': cardId
     }
     post(deleteCardURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -245,8 +235,7 @@ function resetCard(cardId, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': resetCardRequestType,
-        'cardId': cardId,
-        'debug': {'mode': runMode},
+        'cardId': cardId
     }
     post(resetCardURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -263,7 +252,6 @@ function learnCard(learns, onDone) {
     const data = {
         'requestId': uuid(),
         'requestType': learnCardRequestType,
-        'debug': {'mode': runMode},
         'cards': learns
     }
     post(learnCardURI, data, function (res) {
@@ -287,8 +275,7 @@ function playAudio(resourcePath, callback) {
         'requestId': uuid(),
         'requestType': getAudioRequestType,
         'lang': path[0],
-        'word': path[1],
-        'debug': {'mode': runMode},
+        'word': path[1]
     }
     post(getAudioURI, data, function (res) {
         if (hasResponseErrors(res)) {

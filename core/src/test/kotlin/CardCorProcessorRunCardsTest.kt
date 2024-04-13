@@ -8,7 +8,6 @@ import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
@@ -25,10 +24,6 @@ import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
-import com.gitlab.sszuev.flashcards.stubs.stubCard
-import com.gitlab.sszuev.flashcards.stubs.stubCards
-import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
-import com.gitlab.sszuev.flashcards.stubs.stubDictionary
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -50,13 +45,12 @@ internal class CardCorProcessorRunCardsTest {
             val context = CardContext(
                 operation = op,
                 repositories = AppRepositories().copy(
-                    testCardRepository = cardRepository,
-                    testDictionaryRepository = dictionaryRepository,
-                    testTTSClientRepository = ttsResourceRepository,
+                    cardRepository = cardRepository,
+                    dictionaryRepository = dictionaryRepository,
+                    ttsClientRepository = ttsResourceRepository,
                 ),
             )
             context.requestAppAuthId = testUserId
-            context.workMode = AppMode.TEST
             context.requestId = requestId(op)
             return context
         }
@@ -186,7 +180,7 @@ internal class CardCorProcessorRunCardsTest {
 
         Assertions.assertEquals(
             testCards.size,
-            (context.repositories.ttsClientRepository(AppMode.TEST) as MockTTSResourceRepository).findResourceIdCounts.toInt()
+            (context.repositories.ttsClientRepository as MockTTSResourceRepository).findResourceIdCounts.toInt()
         )
 
         Assertions.assertEquals(testCards, context.responseCardEntityList)

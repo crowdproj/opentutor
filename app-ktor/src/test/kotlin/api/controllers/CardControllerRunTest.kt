@@ -5,7 +5,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.CardWordExampleResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
-import com.gitlab.sszuev.flashcards.api.v1.models.DebugResource
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
@@ -20,7 +19,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
-import com.gitlab.sszuev.flashcards.api.v1.models.RunMode
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
@@ -56,7 +54,6 @@ internal class CardControllerRunTest {
     fun `test get-audio-resource`() = testSecuredApp {
         val requestBody = GetAudioRequest(
             requestId = "resource-request",
-            debug = DebugResource(mode = RunMode.TEST),
             word = "xxx",
             lang = "xx",
         )
@@ -77,7 +74,6 @@ internal class CardControllerRunTest {
     fun `test get-all-cards success`() = testSecuredApp {
         val requestBody = GetAllCardsRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             dictionaryId = "2",
         )
         val response = testPost("/v1/api/cards/get-all", requestBody)
@@ -95,7 +91,6 @@ internal class CardControllerRunTest {
         // deterministic dictionary,we know exactly what entity is coming back:
         val requestBody = GetCardRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             cardId = "246",
         )
         val response = testPost("/v1/api/cards/get", requestBody)
@@ -137,7 +132,6 @@ internal class CardControllerRunTest {
         )
         val requestBody = CreateCardRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             card = CardResource(
                 dictionaryId = expectedCard.dictionaryId.asString(),
                 words = expectedCard.words.map {
@@ -170,7 +164,6 @@ internal class CardControllerRunTest {
         val start = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1)
         val requestBody = UpdateCardRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             card = CardResource(
                 cardId = "1",
                 dictionaryId = "1",
@@ -211,7 +204,6 @@ internal class CardControllerRunTest {
     fun `test search-cards success`() = testSecuredApp {
         val requestBody = SearchCardsRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             dictionaryIds = listOf("1", "2"),
             random = false,
             length = 2,
@@ -230,7 +222,6 @@ internal class CardControllerRunTest {
     fun `test learn-card success`() = testSecuredApp {
         val requestBody = LearnCardsRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             cards = listOf(LearnResource(cardId = "246", details = mapOf("mosaic" to 42L)))
         )
         val response = testPost("/v1/api/cards/learn", requestBody)
@@ -247,7 +238,6 @@ internal class CardControllerRunTest {
     fun `test reset-card success`() = testSecuredApp {
         val requestBody = ResetCardRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             cardId = "246",
         )
         val response = testPost("/v1/api/cards/reset", requestBody)
@@ -264,7 +254,6 @@ internal class CardControllerRunTest {
     fun `test delete-card success`() = testSecuredApp {
         val requestBody = DeleteCardRequest(
             requestId = "success-request",
-            debug = DebugResource(mode = RunMode.TEST),
             cardId = "2",
         )
         val response = testPost("/v1/api/cards/delete", requestBody)

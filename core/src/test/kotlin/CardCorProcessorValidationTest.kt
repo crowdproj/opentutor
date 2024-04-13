@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardFilter
@@ -15,7 +14,6 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
-import com.gitlab.sszuev.flashcards.stubs.stubCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -24,6 +22,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
+import org.junit.jupiter.params.provider.ValueSource
 import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -46,10 +45,9 @@ internal class CardCorProcessorValidationTest {
             details = mapOf(Stage.MOSAIC to 42)
         )
 
-        private fun testContext(op: CardOperation, mode: AppMode = AppMode.TEST): CardContext {
+        private fun testContext(op: CardOperation): CardContext {
             val context = CardContext(operation = op)
             context.requestAppAuthId = AppAuthId("42")
-            context.workMode = mode
             context.requestId = AppRequestId(requestId)
             return context
         }
@@ -84,18 +82,10 @@ internal class CardCorProcessorValidationTest {
         }
 
         @JvmStatic
-        private fun wrongIdsWithMode(): List<Arguments> {
-            val modes = listOf(AppMode.TEST, AppMode.STUB)
-            val ids = wrongIds()
-            return modes.flatMap { op -> ids.map { Arguments.of(it, op) } }
-        }
-
-        @JvmStatic
         private fun wrongIdsToOperationsWithCardIdInRequest(): List<Arguments> {
             val ops = listOf(CardOperation.GET_CARD, CardOperation.RESET_CARD, CardOperation.DELETE_CARD)
-            val modes = listOf(AppMode.TEST, AppMode.STUB)
             val ids = wrongIds()
-            return ops.flatMap { op -> modes.flatMap { m -> ids.map { Arguments.of(it, m, op) } } }
+            return ops.flatMap { op -> ids.map { Arguments.of(it, op) } }
         }
 
         @JvmStatic
@@ -108,23 +98,13 @@ internal class CardCorProcessorValidationTest {
         @JvmStatic
         private fun wrongWordsCreateUpdateCardRequest(): List<Arguments> {
             val ops = listOf(CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD)
-            val modes = listOf(AppMode.TEST, AppMode.STUB)
             val words = wrongWords()
-            return ops.flatMap { op -> modes.flatMap { m -> words.map { Arguments.of(it, m, op) } } }
+            return ops.flatMap { op -> words.map { Arguments.of(it, op) } }
         }
 
         @JvmStatic
-        private fun wrongWordsGetResource(): List<Arguments> {
-            val modes = listOf(AppMode.TEST, AppMode.STUB)
-            val words = wrongWords()
-            return modes.flatMap { m -> words.map { Arguments.of(it, m) } }
-        }
-
-        @JvmStatic
-        private fun wrongLangIds(): List<Arguments> {
-            val modes = listOf(AppMode.TEST, AppMode.STUB)
-            val ids = sequenceOf("", "xxxxxx", "xxx:", "en~", "42")
-            return modes.flatMap { m -> ids.map { Arguments.of(it, m) } }
+        private fun wrongLangIds(): List<String> {
+            return listOf("", "xxxxxx", "xxx:", "en~", "42")
         }
     }
 
@@ -161,9 +141,9 @@ internal class CardCorProcessorValidationTest {
 
     @ParameterizedTest(name = parameterizedTestName)
     @MethodSource(value = ["wrongWordsCreateUpdateCardRequest"])
-    fun `test create-card & update-card - validate word`(word: String, mode: AppMode, operation: CardOperation) =
+    fun `test create-card & update-card - validate word`(word: String, operation: CardOperation) =
         runTest {
-            val context = testContext(operation, mode)
+            val context = testContext(operation)
             val cardId = if (operation == CardOperation.CREATE_CARD) CardId.NONE else CardId("42")
             context.requestCardEntity = testCard.copy(words = listOf(CardWordEntity(word = word)), cardId = cardId)
             processor.execute(context)
@@ -171,16 +151,9 @@ internal class CardCorProcessorValidationTest {
             assertValidationError("card-word", error)
         }
 
-    @ParameterizedTest(name = parameterizedTestName)
-    @EnumSource(
-        value = AppMode::class,
-        names = [
-            "TEST",
-            "STUB",
-        ]
-    )
-    fun `test update-card - validate wrong several fields`(mode: AppMode) = runTest {
-        val context = testContext(CardOperation.UPDATE_CARD, mode)
+    @Test
+    fun `test update-card - validate wrong several fields`() = runTest {
+        val context = testContext(CardOperation.UPDATE_CARD)
         context.requestCardEntity = testCard.copy(
             dictionaryId = DictionaryId(""),
             words = listOf(CardWordEntity(word = "")),
@@ -194,16 +167,9 @@ internal class CardCorProcessorValidationTest {
         assertValidationError("card-word", errors[2])
     }
 
-    @ParameterizedTest(name = parameterizedTestName)
-    @EnumSource(
-        value = AppMode::class,
-        names = [
-            "TEST",
-            "STUB",
-        ]
-    )
-    fun `test create-card - validate wrong several fields`(mode: AppMode) = runTest {
-        val context = testContext(CardOperation.CREATE_CARD, mode)
+    @Test
+    fun `test create-card - validate wrong several fields`() = runTest {
+        val context = testContext(CardOperation.CREATE_CARD)
         context.requestCardEntity = testCard.copy(
             dictionaryId = DictionaryId("sss"),
             words = listOf(CardWordEntity(word = "")),
@@ -258,16 +224,9 @@ internal class CardCorProcessorValidationTest {
         assertValidationError("card-filter-dictionary-ids", errors[1])
     }
 
-    @ParameterizedTest(name = parameterizedTestName)
-    @EnumSource(
-        value = AppMode::class,
-        names = [
-            "TEST",
-            "STUB",
-        ]
-    )
-    fun `test search-cards - validate wrong several fields`(mode: AppMode) = runTest {
-        val context = testContext(CardOperation.SEARCH_CARDS, mode)
+    @Test
+    fun `test search-cards - validate wrong several fields`() = runTest {
+        val context = testContext(CardOperation.SEARCH_CARDS)
         context.requestCardFilter = testCardFilter.copy(
             length = -42,
             dictionaryIds = wrongIds().map { DictionaryId(it) }
@@ -334,8 +293,8 @@ internal class CardCorProcessorValidationTest {
 
     @ParameterizedTest(name = parameterizedTestName)
     @MethodSource(value = ["wrongIdsToOperationsWithCardIdInRequest"])
-    fun `test request-with-cardId - validate CardId`(id: String, m: AppMode, op: CardOperation) = runTest {
-        val context = testContext(op, m)
+    fun `test request-with-cardId - validate CardId`(id: String, op: CardOperation) = runTest {
+        val context = testContext(op)
         context.requestCardEntityId = CardId(id)
         processor.execute(context)
         val error = error(context)
@@ -344,8 +303,8 @@ internal class CardCorProcessorValidationTest {
 
     @ParameterizedTest(name = parameterizedTestName)
     @MethodSource(value = ["wrongLangIds"])
-    fun `test get resource - validate request LangId`(id: String, m: AppMode) = runTest {
-        val context = testContext(CardOperation.GET_RESOURCE, m)
+    fun `test get resource - validate request LangId`(id: String) = runTest {
+        val context = testContext(CardOperation.GET_RESOURCE)
         context.requestTTSResourceGet = TTSResourceGet(lang = LangId(id), word = "xxx")
         processor.execute(context)
         val error = error(context)
@@ -353,9 +312,9 @@ internal class CardCorProcessorValidationTest {
     }
 
     @ParameterizedTest(name = parameterizedTestName)
-    @MethodSource(value = ["wrongWordsGetResource"])
-    fun `test get resource - validate request word`(word: String, m: AppMode) = runTest {
-        val context = testContext(CardOperation.GET_RESOURCE, m)
+    @MethodSource(value = ["wrongWords"])
+    fun `test get resource - validate request word`(word: String) = runTest {
+        val context = testContext(CardOperation.GET_RESOURCE)
         context.requestTTSResourceGet = TTSResourceGet(lang = LangId("EN"), word = word)
         processor.execute(context)
         val error = error(context)
@@ -363,9 +322,9 @@ internal class CardCorProcessorValidationTest {
     }
 
     @ParameterizedTest(name = parameterizedTestName)
-    @MethodSource(value = ["wrongIdsWithMode"])
-    fun `test get-all-cards - validate DictionaryId`(id: String, m: AppMode) = runTest {
-        val context = testContext(CardOperation.GET_ALL_CARDS, m)
+    @MethodSource(value = ["wrongIds"])
+    fun `test get-all-cards - validate DictionaryId`(id: String) = runTest {
+        val context = testContext(CardOperation.GET_ALL_CARDS)
         context.requestDictionaryId = DictionaryId(id)
         processor.execute(context)
         val error = error(context)
@@ -375,29 +334,27 @@ internal class CardCorProcessorValidationTest {
     @ParameterizedTest(name = parameterizedTestName)
     @EnumSource(value = CardOperation::class, names = ["NONE"], mode = EnumSource.Mode.EXCLUDE)
     fun `test get-user - validate uid`(operation: CardOperation) = runTest {
-        sequenceOf(AppMode.TEST, AppMode.STUB).forEach { m ->
-            val context = testContext(operation, m)
-                .copy(
-                    requestAppAuthId = AppAuthId(""),
-                    requestTTSResourceGet = TTSResourceGet("xxx", LangId("EN")),
-                    requestCardLearnList = listOf(CardLearn(CardId("42"), details = mapOf(Stage.MOSAIC to 42))),
-                    requestCardFilter = CardFilter(dictionaryIds = listOf(DictionaryId("42")), length = 42),
-                    requestCardEntityId = CardId("42"),
-                    requestDictionaryId = DictionaryId("42"),
-                    requestCardEntity = CardEntity(
-                        cardId = if (operation == CardOperation.UPDATE_CARD) CardId("42") else CardId.NONE,
-                        dictionaryId = DictionaryId("42"),
-                        words = listOf(
-                            CardWordEntity(
-                                word = "xxx",
-                                translations = listOf(listOf("kkk"))
-                            )
+        val context = testContext(operation)
+            .copy(
+                requestAppAuthId = AppAuthId(""),
+                requestTTSResourceGet = TTSResourceGet("xxx", LangId("EN")),
+                requestCardLearnList = listOf(CardLearn(CardId("42"), details = mapOf(Stage.MOSAIC to 42))),
+                requestCardFilter = CardFilter(dictionaryIds = listOf(DictionaryId("42")), length = 42),
+                requestCardEntityId = CardId("42"),
+                requestDictionaryId = DictionaryId("42"),
+                requestCardEntity = CardEntity(
+                    cardId = if (operation == CardOperation.UPDATE_CARD) CardId("42") else CardId.NONE,
+                    dictionaryId = DictionaryId("42"),
+                    words = listOf(
+                        CardWordEntity(
+                            word = "xxx",
+                            translations = listOf(listOf("kkk"))
                         )
                     )
                 )
-            processor.execute(context)
-            val error = error(context)
-            assertValidationError("user-uid", error)
-        }
+            )
+        processor.execute(context)
+        val error = error(context)
+        assertValidationError("user-uid", error)
     }
 }

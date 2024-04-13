@@ -1,9 +1,7 @@
 package com.gitlab.sszuev.flashcards.api
 
-import com.gitlab.sszuev.flashcards.api.testutils.assertDebug
 import com.gitlab.sszuev.flashcards.api.testutils.assertDictionary
 import com.gitlab.sszuev.flashcards.api.testutils.assertError
-import com.gitlab.sszuev.flashcards.api.testutils.debug
 import com.gitlab.sszuev.flashcards.api.testutils.deserializeRequest
 import com.gitlab.sszuev.flashcards.api.testutils.deserializeResponse
 import com.gitlab.sszuev.flashcards.api.testutils.dictionary
@@ -60,14 +58,12 @@ internal class DictionarySerializationTest {
         val req1 = DeleteDictionaryRequest(
             requestId = "request=42",
             dictionaryId = "dictionary=42",
-            debug = debug,
         )
 
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"deleteDictionary\""))
         Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
         Assertions.assertTrue(json.contains("\"dictionaryId\":\"dictionary=42\""))
-        assertDebug(json)
 
         val req2 = deserializeRequest<DeleteDictionaryRequest>(json)
         Assertions.assertNotSame(req1, req2)

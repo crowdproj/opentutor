@@ -1,9 +1,7 @@
 package com.gitlab.sszuev.flashcards.api
 
-import com.gitlab.sszuev.flashcards.api.testutils.assertDebug
 import com.gitlab.sszuev.flashcards.api.testutils.assertDictionary
 import com.gitlab.sszuev.flashcards.api.testutils.assertError
-import com.gitlab.sszuev.flashcards.api.testutils.debug
 import com.gitlab.sszuev.flashcards.api.testutils.deserializeRequest
 import com.gitlab.sszuev.flashcards.api.testutils.deserializeResponse
 import com.gitlab.sszuev.flashcards.api.testutils.dictionary
@@ -111,7 +109,6 @@ internal class CardSerializationTest {
 
         private fun assertCard(json: String) {
             Assertions.assertTrue(json.contains(cardJson))
-            assertDebug(json)
         }
 
         private fun assertUpdate(json: String) {
@@ -126,7 +123,6 @@ internal class CardSerializationTest {
         val req1 = CreateCardRequest(
             card = card,
             requestId = "request=42",
-            debug = debug
         )
         val json = serialize(req1)
         Assertions.assertEquals(
@@ -134,10 +130,6 @@ internal class CardSerializationTest {
             {
               "requestType": "createCard",
               "requestId": "request=42",
-              "debug": {
-                "mode": "test",
-                "stub": "error_unknown"
-              },
               "card": {
                 "cardId": "42",
                 "dictionaryId": "100500",
@@ -178,7 +170,8 @@ internal class CardSerializationTest {
                 "changedAt": -60830251080.000000000
               }
             }
-        """.normalize(), json)
+        """.normalize(), json
+        )
         val req2 = deserializeRequest<CreateCardRequest>(json)
         Assertions.assertNotSame(req1, req2)
         Assertions.assertEquals(req1.copy(requestType = "createCard"), req2)
@@ -189,7 +182,6 @@ internal class CardSerializationTest {
         val req1 = UpdateCardRequest(
             card = card,
             requestId = "request=42",
-            debug = debug
         )
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"updateCard\""))
@@ -208,7 +200,6 @@ internal class CardSerializationTest {
             length = 42,
             dictionaryIds = listOf("100500", "4200"),
             requestId = "request=42",
-            debug = debug
         )
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"searchCards\""))
@@ -237,7 +228,6 @@ internal class CardSerializationTest {
         val req1 = GetAllCardsRequest(
             dictionaryId = "42",
             requestId = "request=42",
-            debug = debug
         )
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"getAllCards\""))
@@ -266,7 +256,6 @@ internal class CardSerializationTest {
         val req1 = GetCardRequest(
             cardId = "card-42",
             requestId = "request=42",
-            debug = debug
         )
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"getCard\""))
@@ -281,7 +270,6 @@ internal class CardSerializationTest {
         val req1 = ResetCardRequest(
             cardId = "card-42",
             requestId = "request=42",
-            debug = debug
         )
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"resetCard\""))
@@ -296,7 +284,6 @@ internal class CardSerializationTest {
         val req1 = DeleteCardRequest(
             cardId = "card-42",
             requestId = "request=42",
-            debug = debug
         )
         val json = serialize(req1)
         Assertions.assertTrue(json.contains("\"requestType\":\"deleteCard\""))

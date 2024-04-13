@@ -22,12 +22,12 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     }
     process {
         val userId = this.normalizedRequestAppAuthId
-        val res = this.repositories.dictionaryRepository(this.workMode)
+        val res = this.repositories.dictionaryRepository
             .findDictionariesByUserId(userId.asString())
             .map { it.toDictionaryEntity() }.toList()
         this.responseDictionaryEntityList = res.map { dictionary ->
             val cards =
-                this.repositories.cardRepository(this.workMode)
+                this.repositories.cardRepository
                     .findCardsByDictionaryId(dictionary.dictionaryId.asString())
                     .toList()
             val total = cards.size
@@ -49,7 +49,7 @@ fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
     }
     process {
         val userId = this.normalizedRequestAppAuthId
-        val res = this.repositories.dictionaryRepository(this.workMode)
+        val res = this.repositories.dictionaryRepository
             .createDictionary(this.normalizedRequestDictionaryEntity.copy(userId = userId).toDbDictionary())
             .toDictionaryEntity()
         this.responseDictionaryEntity = res
@@ -68,7 +68,7 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
     process {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
-        val dictionary = this.repositories.dictionaryRepository(this.workMode)
+        val dictionary = this.repositories.dictionaryRepository
             .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
             this.errors.add(
@@ -81,7 +81,7 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
         } else if (dictionary.userId != userId) {
             this.errors.add(forbiddenEntityDataError(DictionaryOperation.DELETE_DICTIONARY, dictionaryId, userId))
         } else {
-            this.repositories.dictionaryRepository(this.workMode)
+            this.repositories.dictionaryRepository
                 .deleteDictionary(this.normalizedRequestDictionaryId.asString())
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
@@ -99,7 +99,7 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
     process {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
-        val dictionary = this.repositories.dictionaryRepository(this.workMode)
+        val dictionary = this.repositories.dictionaryRepository
             .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
         if (dictionary == null) {
             this.errors.add(
@@ -112,7 +112,7 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         } else if (dictionary.userId != userId) {
             this.errors.add(forbiddenEntityDataError(DictionaryOperation.DOWNLOAD_DICTIONARY, dictionaryId, userId))
         } else {
-            val cards = this.repositories.cardRepository(this.workMode)
+            val cards = this.repositories.cardRepository
                 .findCardsByDictionaryId(dictionaryId.asString())
                 .map { it.toCardEntity() }
                 .map { it.toDocumentCard(this.config) }
@@ -141,7 +141,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
         try {
             val userId = this.normalizedRequestAppAuthId
             val document = createReader().parse(this.requestDictionaryResourceEntity.data)
-            val dictionary = this.repositories.dictionaryRepository(this.workMode)
+            val dictionary = this.repositories.dictionaryRepository
                 .createDictionary(
                     document.toDictionaryEntity().copy(userId = userId).toDbDictionary()
                 )
@@ -152,7 +152,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
                 .map { it.toDbCard() }
                 .toList()
             if (cards.isNotEmpty()) {
-                this.repositories.cardRepository(this.workMode).createCards(cards)
+                this.repositories.cardRepository.createCards(cards)
             }
             this.responseDictionaryEntity = dictionary
         } catch (ex: Exception) {

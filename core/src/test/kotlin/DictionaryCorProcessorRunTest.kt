@@ -7,7 +7,6 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
-import com.gitlab.sszuev.flashcards.model.common.AppMode
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -17,9 +16,6 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.stubs.stubCard
-import com.gitlab.sszuev.flashcards.stubs.stubDictionaries
-import com.gitlab.sszuev.flashcards.stubs.stubDictionary
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -37,12 +33,11 @@ internal class DictionaryCorProcessorRunTest {
             val context = DictionaryContext(
                 operation = op,
                 repositories = AppRepositories().copy(
-                    testDictionaryRepository = dictionaryRepository,
-                    testCardRepository = cardsRepository,
+                    dictionaryRepository = dictionaryRepository,
+                    cardRepository = cardsRepository,
                 )
             )
             context.requestAppAuthId = testUserId
-            context.workMode = AppMode.TEST
             context.requestId = requestId(op)
             return context
         }

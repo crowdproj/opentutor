@@ -12,8 +12,6 @@ interface AppContext {
     val config: AppConfig
 
     var status: AppStatus
-    var workMode: AppMode
-    var debugCase: AppStub
     var requestId: AppRequestId
 
     // get user:
