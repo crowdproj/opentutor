@@ -63,6 +63,11 @@ function drawDictionariesPage() {
                 resetRowSelection(tbody);
             }
             if (event.shiftKey && lastSelectedRow) {
+                if (isRowSelected($(this))) {
+                    // to exclude rows from the result set
+                    markRowUnselected($(this))
+                    return
+                }
                 // multiple rows selected
                 const start = lastSelectedRow.index();
                 const end = $(this).index();
