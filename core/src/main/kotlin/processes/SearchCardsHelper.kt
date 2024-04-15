@@ -4,7 +4,9 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import org.slf4j.LoggerFactory
 
+private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SearchCardsHelperKt")
 
 /**
  * recent cards go first
@@ -21,10 +23,13 @@ private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, 
  * Prepares a card deck for a tutor-session.
  */
 internal fun CardContext.findCardDeck(): List<CardEntity> {
+    if (logger.isDebugEnabled) {
+        logger.debug("Cards request: {}", this.normalizedRequestCardFilter)
+    }
     val threshold = config.numberOfRightAnswers
     val foundCards = this.repositories.cardRepository
         .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
-        .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) <= threshold }
+        .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) < threshold }
         .map { it.toCardEntity() }
 
     // prepares the collection so that the resulting list contains cards from different dictionaries
@@ -49,7 +54,11 @@ internal fun CardContext.findCardDeck(): List<CardEntity> {
     }
 
     if (!this.normalizedRequestCardFilter.random && this.normalizedRequestCardFilter.length > 0) {
-        return selectedCards.take(this.normalizedRequestCardFilter.length).toList()
+        val res = selectedCards.take(this.normalizedRequestCardFilter.length).toList()
+        if (logger.isDebugEnabled) {
+            logger.debug("Cards response: {}", res)
+        }
+        return res
     }
 
     // prepare card's deck so that it contains non-similar words
@@ -61,6 +70,9 @@ internal fun CardContext.findCardDeck(): List<CardEntity> {
         if (this.normalizedRequestCardFilter.random) {
             res = res.shuffled()
         }
+    }
+    if (logger.isDebugEnabled) {
+        logger.debug("Cards response: {}", res)
     }
     return res
 }

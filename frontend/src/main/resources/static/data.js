@@ -379,6 +379,9 @@ function getWordExamplesAsArray(word) {
  * @returns {number} - int percentage
  */
 function percentage(cardItem) {
+    if (!cardItem.answered) {
+        return 0
+    }
     if (cardItem.answered > numberOfRightAnswers) {
         return 100
     }

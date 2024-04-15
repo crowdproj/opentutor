@@ -83,7 +83,7 @@ function getCards(dictionaryId, onDone) {
     })
 }
 
-function getNextCardDeck(dictionaryIds, length, onDone) {
+function getNextCardDeck(dictionaryIds, length, unknown, onDone) {
     if (length == null) {
         length = numberOfWordsToShow
     }
@@ -92,7 +92,8 @@ function getNextCardDeck(dictionaryIds, length, onDone) {
         'requestId': uuid(),
         'requestType': searchCardsRequestType,
         'random': true,
-        'length': length
+        'length': length,
+        'unknown': unknown
     }
     post(searchCardsURI, data, function (res) {
         if (hasResponseErrors(res)) {

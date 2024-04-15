@@ -210,7 +210,7 @@ function drawRunPage(allDictionaries) {
         return [dictionary.dictionaryId, dictionary.name];
     }));
     resetRowSelection($('#dictionaries tbody'));
-    getNextCardDeck(Array.from(dictionaryMap.keys()), null, function (cards) {
+    getNextCardDeck(Array.from(dictionaryMap.keys()), numberOfWordsToShow, true, function (cards) {
         flashcards = cards;
         $.each(cards, function (index, card) {
             card.dictionaryName = dictionaryMap.get(card.dictionaryId);
