@@ -15,7 +15,7 @@ interface TextToSpeechService {
     /**
      * Returns bytes with audio stream by the specified resource identifier.
      * @param [id][String] the resource path identifier
-     * @return [ByteArray]
+     * @return [ByteArray] or `null` if resource is not found
      */
     fun getResource(id: String, vararg args: String?): ByteArray?
 

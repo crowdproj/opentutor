@@ -134,7 +134,6 @@ function drawShowCardPage(data, index, nextStage) {
     }
     const page = $('#show');
     const current = data[index];
-    const next = index + 1;
 
     const status = '(' + percentage(current) + '%) '
 
@@ -146,7 +145,15 @@ function drawShowCardPage(data, index, nextStage) {
     $('.status', page).html(status)
 
     $('#show-next').unbind('click').on('click', function () {
-        drawShowCardPage(data, next, nextStage);
+        drawShowCardPage(data, index + 1, nextStage);
+    });
+
+    $('#know').unbind('click').on('click', function () {
+        current.answered = numberOfRightAnswers
+        updateCard(current, function () {
+            data.splice(index, 1);
+            drawShowCardPage(data, index, nextStage);
+        })
     });
 }
 
@@ -354,9 +361,12 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const current = selfTestData[index];
     const next = index + 1;
 
+    const status = '(' + percentage(current) + '%) '
+
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
     $('.word', page).html(getAllWordsAsString(current));
+    $('.status', page).html(status)
     translation.html(getTranslationsAsString(current));
     correct.prop('disabled', true);
     wrong.prop('disabled', true);

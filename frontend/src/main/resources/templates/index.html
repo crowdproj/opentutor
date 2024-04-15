@@ -131,7 +131,10 @@
             <h6 class="examples"></h6>
         </div>
         <div class="row">
-            <button id='show-next' class="d-flex align-items-end flex-column"><h4>next</h4></button>
+            <div class="d-flex justify-content-between">
+                <button id="know" class="d-flex w-100 justify-content-start"><h4>know</h4></button>
+                <button id="show-next" class="d-flex w-100 justify-content-end"><h4>next</h4></button>
+            </div>
         </div>
     </div>
 </div>
@@ -141,8 +144,11 @@
         <div class="row">
             <div class="d-flex align-items-center justify-content-between">
                 <div><h1 class="word">word</h1></div>
-                <button th:insert="speaker.html :: svg" id="self-test-card-sound" type="button"
-                        class="sound btn btn-secondary" disabled></button>
+                <div>
+                    <h6 class="status"></h6>
+                    <button th:insert="speaker.html :: svg" id="self-test-card-sound" type="button"
+                            class="sound btn btn-secondary" disabled></button>
+                </div>
             </div>
         </div>
         <div class="row">

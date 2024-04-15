@@ -6,7 +6,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import org.slf4j.LoggerFactory
 
-private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SearchCardsHelperKt")
+private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SearchCardsHelper")
 
 /**
  * recent cards go first
@@ -24,7 +24,7 @@ private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, 
  */
 internal fun CardContext.findCardDeck(): List<CardEntity> {
     if (logger.isDebugEnabled) {
-        logger.debug("Cards request: {}", this.normalizedRequestCardFilter)
+        logger.debug("Search cards request: {}", this.normalizedRequestCardFilter)
     }
     val threshold = config.numberOfRightAnswers
     val foundCards = this.repositories.cardRepository
@@ -56,7 +56,7 @@ internal fun CardContext.findCardDeck(): List<CardEntity> {
     if (!this.normalizedRequestCardFilter.random && this.normalizedRequestCardFilter.length > 0) {
         val res = selectedCards.take(this.normalizedRequestCardFilter.length).toList()
         if (logger.isDebugEnabled) {
-            logger.debug("Cards response: {}", res)
+            logger.debug("Search cards response: {}", res)
         }
         return res
     }
@@ -72,7 +72,7 @@ internal fun CardContext.findCardDeck(): List<CardEntity> {
         }
     }
     if (logger.isDebugEnabled) {
-        logger.debug("Cards response: {}", res)
+        logger.debug("Search cards response: {}", res)
     }
     return res
 }

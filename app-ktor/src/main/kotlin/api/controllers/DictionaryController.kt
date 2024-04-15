@@ -18,7 +18,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import io.ktor.server.application.ApplicationCall
 import kotlinx.datetime.Clock
 
-private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.DictionaryControllerKt")
+private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.DictionaryController")
 
 suspend fun ApplicationCall.getAllDictionaries(
     service: DictionaryService,
