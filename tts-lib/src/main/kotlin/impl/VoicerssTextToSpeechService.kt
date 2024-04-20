@@ -3,14 +3,20 @@ package com.gitlab.sszuev.flashcards.speaker.impl
 import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.toResourcePath
-import io.ktor.client.*
-import io.ktor.client.plugins.*
-import io.ktor.client.request.*
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.plugins.HttpTimeout
+import io.ktor.client.plugins.timeout
+import io.ktor.client.request.get
+import io.ktor.client.request.headers
+import io.ktor.client.request.parameter
+import io.ktor.client.statement.readBytes
+import io.ktor.http.HttpHeaders
+import io.ktor.http.URLProtocol
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger(VoicerssTextToSpeechService::class.java)
 
 class VoicerssTextToSpeechService(
     internal val clientProducer: () -> HttpClient = {
@@ -24,7 +30,6 @@ class VoicerssTextToSpeechService(
 ) : TextToSpeechService {
 
     companion object {
-        private val logger = LoggerFactory.getLogger(VoicerssTextToSpeechService::class.java)
         private val defaultLanguages = voicerssLanguages.keys.sorted().associateBy { it.substringBefore("-") }
 
         private fun languageByTag(tag: String): String? {
@@ -42,7 +47,17 @@ class VoicerssTextToSpeechService(
         val lang = languageByTag(langToWord.first) ?: return null
         return runBlocking {
             withTimeout(config.getResourceTimeoutMs) {
-                readBytes(lang, langToWord.second)
+                val res = readBytes(lang, langToWord.second)
+                if (logger.isDebugEnabled) {
+                    logger.debug("Received data size: {}", res.size)
+                }
+                if (res.size < 200) {
+                    // Possible error: "ERROR: The subscription is expired or requests count limitation is exceeded!"
+                    logger.error("The data array is too small (size=${res.size}): '${res.toString(Charsets.UTF_8)}'")
+                    null
+                } else {
+                    res
+                }
             }
         }
     }

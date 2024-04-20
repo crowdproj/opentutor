@@ -33,10 +33,11 @@
  */
 let flashcards;
 
-const borderDefault = 'border-white';
-const borderSelected = 'border-primary';
+const borderWhite = 'border-white';
+const borderPrimary = 'border-primary';
 const borderSuccess = 'border-success';
-const borderError = 'border-danger';
+const borderLight = 'border-light';
+const borderDanger = 'border-danger';
 
 /**
  * First stage: show.
@@ -77,7 +78,7 @@ function stageOptions() {
     const length = dataLeft.length * numberOfOptionsPerWord;
 
     const dictionaryIds = dataLeft.map(it => it.dictionaryId);
-    getNextCardDeck(dictionaryIds, length, function (words) {
+    getNextCardDeck(dictionaryIds, length, false, function (words) {
         const options = prepareOptionsDataArray(dataLeft, words);
         displayPage('options');
         drawOptionsCardPage(options, 0, () => stageWriting());
@@ -123,7 +124,7 @@ function stageResults() {
  * @returns {*[]} array of card resources
  */
 function selectNextCardsDeck() {
-    return selectNonAnswered(flashcards);
+    return selectNonAnswered(flashcards, null);
 }
 
 function drawShowCardPage(data, index, nextStage) {
@@ -133,14 +134,26 @@ function drawShowCardPage(data, index, nextStage) {
     }
     const page = $('#show');
     const current = data[index];
-    const next = index + 1;
+
+    const status = '(' + percentage(current) + '%) '
 
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, 'show: ' + current.dictionaryName);
     $('.word', page).html(getAllWordsAsString(current));
-    $('.translations', page).html(getTranslationsAsString(current));
+    $('.translations', page).html(getTranslationsAsHtml(current));
+    $('.examples', page).html(getExamplesAsHtml(current));
+    $('.status', page).html(status)
+
     $('#show-next').unbind('click').on('click', function () {
-        drawShowCardPage(data, next, nextStage);
+        drawShowCardPage(data, index + 1, nextStage);
+    });
+
+    $('#know').unbind('click').on('click', function () {
+        current.answered = numberOfRightAnswers
+        updateCard(current, function () {
+            data.splice(index, 1);
+            drawShowCardPage(data, index, nextStage);
+        })
     });
 }
 
@@ -157,10 +170,13 @@ function drawMosaicCardPage(data, nextStage) {
 
     leftPane.html('');
     dataLeft.forEach(function (card) {
-        let left = $(`<div class="card ${borderDefault}" id="${card.cardId}-left"><h4>${getAllWordsAsString(card)}</h4></div>`);
+        let left = $(`<div class="card ${borderWhite}" id="${card.cardId}-left"><h4>${getAllWordsAsString(card)}</h4></div>`);
         left.unbind('click').on('click', function () {
-            setDefaultBorder($('#mosaic .card'));
-            setBorderClass(left, borderSelected);
+            const rightCards = $('#mosaic-right .card');
+            const leftCards = $('#mosaic-left .card');
+            setBorders(rightCards, borderLight);
+            setBorders(leftCards, borderWhite);
+            setBorderClass(left, borderPrimary);
             const sound = card.sound;
             if (sound != null) {
                 playAudio(sound);
@@ -171,22 +187,22 @@ function drawMosaicCardPage(data, nextStage) {
 
     rightPane.html('');
     dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderDefault}" id="${value.cardId}-right"><h4>${getTranslationsAsString(value)}</h4></div>`);
+        let right = $(`<div class="card ${borderLight}" id="${value.cardId}-right"><h4>${getTranslationsAsString(value)}</h4></div>`);
         right.unbind('click').on('click', function () {
-            const selected = $(`#mosaic-left .${borderSelected}`);
+            const selected = $(`#mosaic-left .${borderPrimary}`);
             if (!selected.length || !$('h4', selected).text().trim()) {
                 // nothing selected or selected already processed item (with empty text)
                 return;
             }
             const rightCards = $('#mosaic-right .card');
             const leftCards = $('#mosaic-left .card');
-            setDefaultBorder(rightCards);
+            setBorders(rightCards, borderLight);
             const left = $(document.getElementById(right.attr('id').replace('-right', '-left')));
             if (left.length && !left.text().trim()) { // exists but empty
                 return;
             }
             const success = left.is(selected);
-            setBorderClass(right, success ? borderSuccess : borderError);
+            setBorderClass(right, success ? borderSuccess : borderDanger);
             if (success) {
                 left.html('<h4>&nbsp;</h4>').unbind('click');
                 right.html('<h4>&nbsp;</h4>').unbind('click');
@@ -203,8 +219,8 @@ function drawMosaicCardPage(data, nextStage) {
             }
             if (!leftCards.filter((i, e) => $(e).text().trim()).length) {
                 // no more options
-                setDefaultBorder(rightCards);
-                setDefaultBorder(leftCards);
+                setBorders(rightCards, borderLight);
+                setBorders(leftCards, borderWhite);
                 setTimeout(() => updateCardAndCallNext(dataLeft, nextStage), 500);
             }
         });
@@ -230,10 +246,10 @@ function drawOptionsCardPage(options, index, nextStage) {
 
     displayTitle($('#options'), stage + ": " + dataLeft.dictionaryName);
 
-    let left = $(`<div class="card ${borderDefault}" id="${dataLeft.cardId}-left"><h4>${getAllWordsAsString(dataLeft)}</h4></div>`);
+    let left = $(`<div class="card ${borderWhite}" id="${dataLeft.cardId}-left"><h4>${getAllWordsAsString(dataLeft)}</h4></div>`);
     left.unbind('click').on('click', function () {
-        setBorderClass(left, borderSelected);
-        setDefaultBorder($('#options-right .card'));
+        setBorderClass(left, borderPrimary);
+        setBorders($('#options-right .card'), borderWhite);
         const sound = dataLeft.sound;
         if (sound != null) {
             playAudio(sound);
@@ -244,21 +260,21 @@ function drawOptionsCardPage(options, index, nextStage) {
 
     rightPane.html('');
     dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderDefault}" id="${value.cardId}-right"><p class="h4">${getTranslationsAsString(value)}</p></div>`);
+        let right = $(`<div class="card ${borderLight}" id="${value.cardId}-right"><p class="h4">${getTranslationsAsString(value)}</p></div>`);
         right.unbind('click').on('click', function () {
             right.unbind('click');
-            setBorderClass(left, borderDefault);
-            setDefaultBorder($('#options-right .card'));
+            setBorderClass(left, borderWhite);
+            setBorders($('#options-right .card'), borderLight);
 
             const id = Number.parseInt(right.attr('id').replace('-right', '')).toString();
             const success = dataLeft.cardId === id;
-            if (success) { // strike all other
+            if (success) { // strike all others
                 const selector = '#' + id + '-right'
                 $(`#options-right .card:not('${selector}')`).each((k, v) => strikeText($(v).find('p')));
             } else {
                 strikeText(right.find('p'));
             }
-            setBorderClass(right, success ? borderSuccess : borderError);
+            setBorderClass(right, success ? borderSuccess : borderDanger);
             if (success) {
                 if (!hasStage(dataLeft, stage)) {
                     // remember only the first answer, the next, even right, will be ignored
@@ -345,9 +361,12 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const current = selfTestData[index];
     const next = index + 1;
 
+    const status = '(' + percentage(current) + '%) '
+
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
     $('.word', page).html(getAllWordsAsString(current));
+    $('.status', page).html(status)
     translation.html(getTranslationsAsString(current));
     correct.prop('disabled', true);
     wrong.prop('disabled', true);
@@ -375,16 +394,42 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
 
 function drawResultCardPage() {
     const page = $('#result');
-    const right = getCardsWordsAsString(flashcards.filter(card => isAnsweredRight(card)));
-    const wrong = getCardsWordsAsString(flashcards.filter(function (card) {
+    const tbody = $('#result tbody');
+    const wrong = flashcards.filter(function (card) {
         const res = isAnsweredRight(card);
         return res !== undefined && !res;
-    }));
-    const learned = getCardsWordsAsString(flashcards.filter(card => card.answered >= numberOfRightAnswers));
+    });
+    const learned = flashcards.filter(card => card.answered >= numberOfRightAnswers);
+    const right = flashcards.filter(card => isAnsweredRight(card)).filter(item => !learned.includes(item));
+
     displayTitle(page, 'result');
-    $('#result-correct').html(right);
-    $('#result-wrong').html(wrong);
-    $('#result-learned').html(learned);
+    learned.forEach(function (card) {
+        const row = $(`<tr id="${'w' + card.cardId}">
+                            <td class="text-success"><b>${getAllWordsAsString(card)}</b></td>
+                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${card.dictionaryName}</td>
+                            <td class="text-success"><b>${percentage(card)}</b></td>
+                          </tr>`);
+        tbody.append(row);
+    });
+    right.forEach(function (card) {
+        const row = $(`<tr id="${'w' + card.cardId}">
+                            <td class="text-primary"><b>${getAllWordsAsString(card)}</b></td>
+                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${card.dictionaryName}</td>
+                            <td class="text-primary"><b>${percentage(card)}</b></td>
+                          </tr>`);
+        tbody.append(row);
+    });
+    wrong.forEach(function (card) {
+        const row = $(`<tr id="${'w' + card.cardId}">
+                            <td class="text-danger"><b>${getAllWordsAsString(card)}</b></td>
+                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${card.dictionaryName}</td>
+                            <td class="text-danger"><b>${percentage(card)}</b></td>
+                          </tr>`);
+        tbody.append(row);
+    });
     // remove state details
     flashcards.forEach(function (item) {
         delete item.stageStats
@@ -413,8 +458,8 @@ function displayTitle(page, title) {
     $('.card-title', page).html(title);
 }
 
-function setDefaultBorder(array) {
-    $.each(array, (k, v) => setBorderClass(v, borderDefault));
+function setBorders(array, clazz) {
+    $.each(array, (k, v) => setBorderClass(v, clazz));
 }
 
 function setBorderClass(item, borderClass) {

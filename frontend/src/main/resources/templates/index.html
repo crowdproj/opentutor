@@ -117,15 +117,24 @@
         <div class="row">
             <div class="d-flex align-items-center justify-content-between">
                 <div><h1 class="word">word</h1></div>
-                <button th:insert="speaker.html :: svg" id="show-card-sound" type="button"
-                        class="sound btn btn-secondary" disabled></button>
+                <div>
+                    <h6 class="status"></h6>
+                    <button th:insert="speaker.html :: svg" id="show-card-sound" type="button"
+                            class="sound btn btn-secondary" disabled></button>
+                </div>
             </div>
         </div>
         <div class="row">
             <h6 class="translations">translations</h6>
         </div>
         <div class="row">
-            <button id='show-next' class="d-flex align-items-end flex-column"><h4>next</h4></button>
+            <h6 class="examples"></h6>
+        </div>
+        <div class="row">
+            <div class="d-flex justify-content-between">
+                <button id="know" class="d-flex w-100 justify-content-start"><h4>know</h4></button>
+                <button id="show-next" class="d-flex w-100 justify-content-end"><h4>next</h4></button>
+            </div>
         </div>
     </div>
 </div>
@@ -135,8 +144,11 @@
         <div class="row">
             <div class="d-flex align-items-center justify-content-between">
                 <div><h1 class="word">word</h1></div>
-                <button th:insert="speaker.html :: svg" id="self-test-card-sound" type="button"
-                        class="sound btn btn-secondary" disabled></button>
+                <div>
+                    <h6 class="status"></h6>
+                    <button th:insert="speaker.html :: svg" id="self-test-card-sound" type="button"
+                            class="sound btn btn-secondary" disabled></button>
+                </div>
             </div>
         </div>
         <div class="row">
@@ -193,17 +205,18 @@
 <div id="result" class="page card container container-table" style="display: none;">
     <div class="card-body">
         <h6 class="card-title">flashcards:</h6>
-        <div class="row card">
-            <h4>correct:</h4>
-            <h6 id="result-correct" class="p-5 w-100"></h6>
-        </div>
-        <div class="row card">
-            <h4>wrong:</h4>
-            <h6 id="result-wrong" class="p-5 w-100"></h6>
-        </div>
-        <div class="row card">
-            <h4>learned:</h4>
-            <h6 id="result-learned" class="p-5 w-100"></h6>
+        <div id="result-table-row" class="row" style="overflow: auto">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Word</th>
+                    <th scope="col">Translation</th>
+                    <th scope="col">Dictionary</th>
+                    <th scope="col">Status, %</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 </div>

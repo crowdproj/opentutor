@@ -50,6 +50,10 @@ function markRowSelected(row) {
     row.addClass('table-success');
 }
 
+function markRowUnselected(row) {
+    row.removeClass('table-success');
+}
+
 function isRowSelected(row) {
     return row.hasClass('table-success');
 }

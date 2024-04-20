@@ -288,17 +288,6 @@ function getAllTranslationsAsString(card) {
 }
 
 /**
- * Represents an array of card-resources as a string, containing only words.
- * **[TODO] For first word only.**
- * For report stage.
- * @param cards
- * @returns {string}
- */
-function getCardsWordsAsString(cards) {
-    return cards.map(it => it.words[0]).map(it => it.word).sort().join(', ')
-}
-
-/**
  * Finds translation string from the item that starts with the specified substring ignoring case.
  * **[TODO] For first word only.**
  * @param card - card resource
@@ -318,6 +307,18 @@ function findTranslationStartsWith(card, test) {
  */
 function getTranslationsAsString(card) {
     return getCardFirstWordTranslationsAsArray(card).join(', ')
+}
+
+function getTranslationsAsHtml(card) {
+    return card.words
+        .map(word => {
+            return getWordTranslationsAsArray(word)
+        })
+        .filter(item => {
+            return 0 < item.length
+        })
+        .map(item => item.join(", "))
+        .join("<br>")
 }
 
 /**
@@ -342,12 +343,34 @@ function getWordTranslationsAsArray(word) {
     })
 }
 
+function getExamplesAsHtml(card) {
+    return card.words
+        .map(word => {
+            return getWordExamplesAsArray(word)
+        })
+        .filter(item => {
+            return 0 < item.length
+        })
+        .map(item => item.join(", "))
+        .join("<br>")
+}
+
+function getWordExamplesAsArray(word) {
+    return word.examples.map(ex => {
+        const suffix = ex.translation != null ? ` (${ex.translation})` : "";
+        return ex.example + suffix
+    })
+}
+
 /**
  * Returns learning percentage for card.
  * @param cardItem - card resource
  * @returns {number} - int percentage
  */
 function percentage(cardItem) {
+    if (!cardItem.answered) {
+        return 0
+    }
     if (cardItem.answered > numberOfRightAnswers) {
         return 100
     }

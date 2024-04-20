@@ -4,32 +4,65 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import org.slf4j.LoggerFactory
 
+private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SearchCardsHelper")
+
+/**
+ * recent cards go first
+ */
 private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, right ->
+    left.changedAt.compareTo(right.changedAt)
+}.reversed().thenComparing { left, right ->
     val la = left.answered ?: 0
     val ra = right.answered ?: 0
     la.compareTo(ra)
-}.thenComparing { lc, rc ->
-    lc.changedAt.compareTo(rc.changedAt)
 }
 
 /**
  * Prepares a card deck for a tutor-session.
  */
 internal fun CardContext.findCardDeck(): List<CardEntity> {
+    if (logger.isDebugEnabled) {
+        logger.debug("Search cards request: {}", this.normalizedRequestCardFilter)
+    }
     val threshold = config.numberOfRightAnswers
-    var cards = this.repositories.cardRepository
+    val foundCards = this.repositories.cardRepository
         .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
-        .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) <= threshold }
+        .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) < threshold }
         .map { it.toCardEntity() }
-    if (this.normalizedRequestCardFilter.random) {
-        cards = cards.shuffled()
+
+    // prepares the collection so that the resulting list contains cards from different dictionaries
+    val cardsByDictionary = foundCards.groupBy { it.dictionaryId }.mapValues {
+        var value = it.value
+        if (this.normalizedRequestCardFilter.random) {
+            value = value.shuffled()
+        }
+        value = value.sortedWith(comparator)
+        value.toMutableList()
+    }.toMutableMap()
+    val selectedCards = mutableListOf<CardEntity>()
+    while (cardsByDictionary.isNotEmpty()) {
+        cardsByDictionary.keys.toSet().forEach { k ->
+            val v = checkNotNull(cardsByDictionary[k])
+            if (v.isEmpty()) {
+                cardsByDictionary.remove(k)
+            } else {
+                selectedCards.add(v.removeFirst())
+            }
+        }
     }
-    cards = cards.sortedWith(comparator)
+
     if (!this.normalizedRequestCardFilter.random && this.normalizedRequestCardFilter.length > 0) {
-        return cards.take(this.normalizedRequestCardFilter.length).toList()
+        val res = selectedCards.take(this.normalizedRequestCardFilter.length).toList()
+        if (logger.isDebugEnabled) {
+            logger.debug("Search cards response: {}", res)
+        }
+        return res
     }
-    var res = cards.toList()
+
+    // prepare card's deck so that it contains non-similar words
+    var res = selectedCards.toList()
     if (this.normalizedRequestCardFilter.length > 0) {
         val set = mutableSetOf<CardEntity>()
         collectCardDeck(res, set, this.normalizedRequestCardFilter.length)
@@ -37,6 +70,9 @@ internal fun CardContext.findCardDeck(): List<CardEntity> {
         if (this.normalizedRequestCardFilter.random) {
             res = res.shuffled()
         }
+    }
+    if (logger.isDebugEnabled) {
+        logger.debug("Search cards response: {}", res)
     }
     return res
 }

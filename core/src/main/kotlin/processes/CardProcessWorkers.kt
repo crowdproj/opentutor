@@ -14,6 +14,9 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.CardProcessWorkers")
 
 fun ChainDSL<CardContext>.processGetCard() = worker {
     this.name = "process get-card request"
@@ -182,6 +185,9 @@ fun ChainDSL<CardContext>.processUpdateCard() = worker {
         } else if (dictionary.userId != userId) {
             this.errors.add(forbiddenEntityDataError(CardOperation.UPDATE_CARD, dictionaryId, userId))
         } else {
+            if (logger.isDebugEnabled) {
+                logger.debug("Update card request: {}", this.normalizedRequestCardEntity)
+            }
             val res = this.repositories.cardRepository
                 .updateCard(this.normalizedRequestCardEntity.toDbCard()).toCardEntity()
             this.responseCardEntity = postProcess(res) { dictionary }
@@ -339,7 +345,7 @@ private suspend fun CardContext.postProcess(
     val cardAudioId = if (words.size == 1) {
         words.single().sound
     } else {
-        val cardAudioString = card.words.joinToString(",") { it.word }
+        val cardAudioString = card.words.joinToString(",") { it.word.split("|")[0].trim() }
         val findResourceIdResponse = tts.findResourceId(TTSResourceGet(cardAudioString, sourceLang).normalize())
         this.errors.addAll(findResourceIdResponse.errors)
         findResourceIdResponse.id

@@ -264,7 +264,7 @@ function createResourceCardItem(dialogId, cards) {
     setCardFirstWordPartOfSpeech(resCard, $('#' + dialogId + '-card-dialog-part-of-speech option:selected').text());
     setCardFirstWordExamplesArray(resCard, toArray($('#' + dialogId + '-card-dialog-examples').val(), '\n'));
     setCardFirstWordTranslationsArrayArray(resCard,
-        toArray($('#' + dialogId + '-card-dialog-translation').val(), '\n').map(x => toArray(x, ',')));
+        toArray($('#' + dialogId + '-card-dialog-translation').val(), '\n').map(x => toArray(x, '[,;]')));
     return resCard;
 }
 

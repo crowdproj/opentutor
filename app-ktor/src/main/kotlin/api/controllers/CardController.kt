@@ -22,7 +22,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import io.ktor.server.application.ApplicationCall
 import kotlinx.datetime.Clock
 
-private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.CardControllerKt")
+private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.CardController")
 
 suspend fun ApplicationCall.getResource(
     service: CardService,

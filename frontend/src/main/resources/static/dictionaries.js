@@ -63,6 +63,11 @@ function drawDictionariesPage() {
                 resetRowSelection(tbody);
             }
             if (event.shiftKey && lastSelectedRow) {
+                if (isRowSelected($(this))) {
+                    // to exclude rows from the result set
+                    markRowUnselected($(this))
+                    return
+                }
                 // multiple rows selected
                 const start = lastSelectedRow.index();
                 const end = $(this).index();
@@ -205,7 +210,7 @@ function drawRunPage(allDictionaries) {
         return [dictionary.dictionaryId, dictionary.name];
     }));
     resetRowSelection($('#dictionaries tbody'));
-    getNextCardDeck(Array.from(dictionaryMap.keys()), null, function (cards) {
+    getNextCardDeck(Array.from(dictionaryMap.keys()), numberOfWordsToShow, true, function (cards) {
         flashcards = cards;
         $.each(cards, function (index, card) {
             card.dictionaryName = dictionaryMap.get(card.dictionaryId);
