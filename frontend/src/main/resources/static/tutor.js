@@ -394,16 +394,42 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
 
 function drawResultCardPage() {
     const page = $('#result');
-    const right = getCardsWordsAsString(flashcards.filter(card => isAnsweredRight(card)));
-    const wrong = getCardsWordsAsString(flashcards.filter(function (card) {
+    const tbody = $('#result tbody');
+    const wrong = flashcards.filter(function (card) {
         const res = isAnsweredRight(card);
         return res !== undefined && !res;
-    }));
-    const learned = getCardsWordsAsString(flashcards.filter(card => card.answered >= numberOfRightAnswers));
+    });
+    const learned = flashcards.filter(card => card.answered >= numberOfRightAnswers);
+    const right = flashcards.filter(card => isAnsweredRight(card)).filter(item => !learned.includes(item));
+
     displayTitle(page, 'result');
-    $('#result-correct').html(right);
-    $('#result-wrong').html(wrong);
-    $('#result-learned').html(learned);
+    learned.forEach(function (card) {
+        const row = $(`<tr id="${'w' + card.cardId}">
+                            <td class="text-success"><b>${getAllWordsAsString(card)}</b></td>
+                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${card.dictionaryName}</td>
+                            <td class="text-success"><b>${percentage(card)}</b></td>
+                          </tr>`);
+        tbody.append(row);
+    });
+    right.forEach(function (card) {
+        const row = $(`<tr id="${'w' + card.cardId}">
+                            <td class="text-primary"><b>${getAllWordsAsString(card)}</b></td>
+                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${card.dictionaryName}</td>
+                            <td class="text-primary"><b>${percentage(card)}</b></td>
+                          </tr>`);
+        tbody.append(row);
+    });
+    wrong.forEach(function (card) {
+        const row = $(`<tr id="${'w' + card.cardId}">
+                            <td class="text-danger"><b>${getAllWordsAsString(card)}</b></td>
+                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${card.dictionaryName}</td>
+                            <td class="text-danger"><b>${percentage(card)}</b></td>
+                          </tr>`);
+        tbody.append(row);
+    });
     // remove state details
     flashcards.forEach(function (item) {
         delete item.stageStats

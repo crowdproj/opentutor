@@ -288,17 +288,6 @@ function getAllTranslationsAsString(card) {
 }
 
 /**
- * Represents an array of card-resources as a string, containing only words.
- * **[TODO] For first word only.**
- * For report stage.
- * @param cards
- * @returns {string}
- */
-function getCardsWordsAsString(cards) {
-    return cards.map(it => it.words[0]).map(it => it.word).sort().join(', ')
-}
-
-/**
  * Finds translation string from the item that starts with the specified substring ignoring case.
  * **[TODO] For first word only.**
  * @param card - card resource

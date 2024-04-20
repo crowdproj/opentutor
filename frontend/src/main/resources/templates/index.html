@@ -205,17 +205,18 @@
 <div id="result" class="page card container container-table" style="display: none;">
     <div class="card-body">
         <h6 class="card-title">flashcards:</h6>
-        <div class="row card">
-            <h4>correct:</h4>
-            <h6 id="result-correct" class="p-5 w-100"></h6>
-        </div>
-        <div class="row card">
-            <h4>wrong:</h4>
-            <h6 id="result-wrong" class="p-5 w-100"></h6>
-        </div>
-        <div class="row card">
-            <h4>learned:</h4>
-            <h6 id="result-learned" class="p-5 w-100"></h6>
+        <div id="result-table-row" class="row" style="overflow: auto">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th scope="col">Word</th>
+                    <th scope="col">Translation</th>
+                    <th scope="col">Dictionary</th>
+                    <th scope="col">Status, %</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
         </div>
     </div>
 </div>

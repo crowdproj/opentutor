@@ -60,7 +60,7 @@ function removeDuplicates(array) {
 /**
  * Splits string using separator.
  * @param value {string}
- * @param separator {string}
+ * @param separator {string}, regexp
  * @returns {*[]|*|string[]}
  */
 function toArray(value, separator) {
@@ -68,7 +68,11 @@ function toArray(value, separator) {
     if (value === '') {
         return [];
     }
-    return value.split(separator).map(x => x.trim())
+    return distinctArray(value.split(new RegExp(separator)).map(x => x.trim()));
+}
+
+function distinctArray(values) {
+    return [...new Set(values)];
 }
 
 /**
