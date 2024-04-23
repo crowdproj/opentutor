@@ -62,7 +62,7 @@ internal class VoicerssTextToSpeechServiceTest {
 
     @Test
     fun testGetResource() {
-        val testData = ByteArray(42) { 42 }
+        val testData = ByteArray(424) { 42 }
         val testWord1 = "test-1"
         val testLang1 = "XX"
         val service1 = VoicerssTextToSpeechService(
