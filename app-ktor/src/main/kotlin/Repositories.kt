@@ -5,8 +5,8 @@ import com.gitlab.sszuev.flashcards.dbmem.MemDbCardRepository
 import com.gitlab.sszuev.flashcards.dbmem.MemDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbDictionaryRepository
+import com.gitlab.sszuev.flashcards.speaker.NatsTTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.createDirectTTSResourceRepository
-import com.gitlab.sszuev.flashcards.speaker.rabbitmq.RMQTTSResourceRepository
 
 fun appRepositories(config: RunConfig) = if (config.mode == RunConfig.Mode.TEST) {
     AppRepositories(
@@ -19,6 +19,6 @@ fun appRepositories(config: RunConfig) = if (config.mode == RunConfig.Mode.TEST)
         PgDbCardRepository(),
         dictionaryRepository =
         PgDbDictionaryRepository(),
-        ttsClientRepository = RMQTTSResourceRepository(),
+        ttsClientRepository = NatsTTSResourceRepository(),
     )
 }

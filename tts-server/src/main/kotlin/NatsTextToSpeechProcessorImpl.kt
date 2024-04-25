@@ -44,14 +44,15 @@ class NatsTextToSpeechProcessorImpl(
                     }
                     null
                 } else {
-                    service.getResource(requestId)
+                    val body = service.getResource(requestId)
+                    if (logger.isDebugEnabled) {
+                        logger.debug("resource '{}'; body-size={}", requestId, body?.size)
+                    }
+                    body
                 }
             } catch (ex: Exception) {
                 logger.error("TTS-lib: exception, request-id='{}'", requestId, ex)
                 EXCEPTION_PREFIX + ex.stackTraceToString().toByteArray(Charsets.UTF_8)
-            }
-            if (logger.isTraceEnabled) {
-                logger.trace("publish to {}; body-size={}", requestId, body?.size)
             }
             connection.publish(msg.replyTo, body)
         }
