@@ -1,29 +1,18 @@
 #### Text To Speech Server
 
-The service uses [RabbitMQ](https://www.rabbitmq.com/) as transport to deliver audio-resources.
+The service uses [NATS](https://nats.io/) as transport to deliver audio-resources.
 It uses [tts-lib](../tts-lib).  
 TTS client is located [here](../tts-client). 
 
 The server has the following settings (example):
 ```
-	rabbitmq-host                  = localhost
-	rabbitmq-port                  = 5672
-	rabbitmq-user                  = guest
-	rabbitmq-password              = guest            
-	routing-key-request            = resource-identifiers
-	routing-key-response-prefix    = resource-body=
-	queue-name-request             = tts-queue
-	consumer-tag                   = tts-server-consumer
-	exchangeName                   = tts-exchange
-	message-success-prefix         = response-success=  
-	message-error-prefix           = response-error=
-	message-status-header          = status
+	tts-server.nats.host           = localhost
+	tts-server.nats.port           = 4222
+	tts-server.nats.user           = guest
+	tts-server.nats.password       = guest            
+    tts-server.nats.topic          = TTS
+    tts-server.nats.group          = TTS
 ```
-
-- the exchange-type is always 'direct'.
-- the parameter `routing-key-request` describes a routing key for MQ queue to receive request from client (see [TTS-client](../tts-client)),
-- the parameter `routing-key-response-prefix` describes a routing key prefix for queue to send to response data (i.e. byte array), 
-the whole key would be `routing-key-response-prefix` + `resourceId`.
 
 There are three launch options here:
 

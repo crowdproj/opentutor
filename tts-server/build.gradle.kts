@@ -13,7 +13,7 @@ application {
 
 dependencies {
     val kotlinCoroutinesVersion: String by project
-    val rabbitVersion: String by project
+    val natsVersion: String by project
     val logbackVersion: String by project
     val junitVersion: String by project
     val slf4jVersion: String by project
@@ -23,7 +23,7 @@ dependencies {
 
     implementation(project(":tts-lib"))
 
-    implementation("com.rabbitmq:amqp-client:$rabbitVersion")
+    implementation("io.nats:jnats:$natsVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
 
@@ -32,8 +32,9 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("org.testcontainers:rabbitmq:$testContainersVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("org.testcontainers:testcontainers:$testContainersVersion")
+    testImplementation("org.testcontainers:junit-jupiter:$testContainersVersion")
 }
 
 tasks.test {
