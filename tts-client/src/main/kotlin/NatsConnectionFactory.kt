@@ -23,6 +23,6 @@ object NatsConnectionFactory {
 
     private fun createConnection(): Connection {
         val url = "nats://${TTSClientSettings.host}:${TTSClientSettings.port}"
-        return Nats.connect(url)
+        return Nats.connectReconnectOnConnect(url)
     }
 }

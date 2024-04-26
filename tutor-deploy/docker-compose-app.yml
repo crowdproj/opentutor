@@ -44,35 +44,29 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD}"
     user: root
 
-  flashcards-rabbitmq:
-    image: rabbitmq:3.13.1-management-alpine
+  flashcards-nats:
+    image: nats:2.10.14-alpine
+    ports:
+      - "4222:4222"
+      - "8222:8222"
     healthcheck:
-      test: [ "CMD", "rabbitmqctl", "status" ]
-      interval: 30s
-      timeout: 10s
+      test: [ "CMD-SHELL", "netstat -an | grep 4222 | grep LISTEN" ]
+      interval: 10s
+      timeout: 5s
       retries: 5
+      start_period: 10s
     networks:
       - flashcards-net
-    ports:
-      - "5672:5672"
-      - "15672:15672"
-    environment:
-      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}
-      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}
-      RABBITMQ_DEFAULT_VHOST: /
-    volumes:
-      - "${DATA_DIR}/rabbitmq/data/:/var/lib/rabbitmq:z"
-      - "${DATA_DIR}/rabbitmq/log/:/var/log/rabbitmq:z"
 
   flashcards-tts-server:
     image: sszuev/open-tutor-tts-server:2.0.0-snapshot
     networks:
       - flashcards-net
     depends_on:
-      flashcards-rabbitmq:
+      flashcards-nats:
         condition: service_healthy
     environment:
-      TTS_SERVER_RABBITMQ_HOST: "flashcards-rabbitmq"
+      TTS_SERVER_NATS_HOST: "flashcards-nats"
       TTS_SERVICE_VOICERSS_KEY: "${TTS_SERVICE_VOICERSS_KEY}"
 
   flashcards-app:
@@ -85,7 +79,7 @@ services:
       - flashcards-tts-server
       - flashcards-keycloak
     environment:
-      TTS_CLIENT_RABBITMQ_HOST: "flashcards-rabbitmq"
+      TTS_CLIENT_NATS_HOST: "flashcards-nats"
       KEYCLOAK_AUTHORIZE_ADDRESS: "http://localhost:8081"
       KEYCLOAK_ACCESS_TOKEN_ADDRESS: "http://flashcards-keycloak:8080"
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/postgres"

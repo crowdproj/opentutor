@@ -42,9 +42,9 @@ tasks.test {
 }
 
 tasks.dockerCreateDockerfile {
-    arg("TTS_SERVER_RABBITMQ_HOST")
+    arg("TTS_SERVER_NATS_HOST")
     arg("TTS_SERVICE_VOICERSS_KEY")
-    environmentVariable("TTS_SERVER_RABBITMQ_HOST", "\${TTS_SERVER_RABBITMQ_HOST}")
+    environmentVariable("TTS_SERVER_NATS_HOST", "\${TTS_SERVER_NATS_HOST}")
     environmentVariable("TTS_SERVICE_VOICERSS_KEY", "\${TTS_SERVICE_VOICERSS_KEY}")
 }
 

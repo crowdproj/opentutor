@@ -23,7 +23,7 @@ class NatsTextToSpeechProcessorImpl(
         topic: String = "TTS",
         group: String = "TTS",
         connectionUrl: String = "nats://localhost:4222",
-    ) : this(service, topic, group, { Nats.connect(connectionUrl) })
+    ) : this(service, topic, group, { Nats.connectReconnectOnConnect(connectionUrl) })
 
     private val run = AtomicBoolean(false)
     private val connection by lazy {
