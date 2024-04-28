@@ -13,14 +13,6 @@ private val mapper = ObjectMapper()
 private val cardWordsTypeReference: TypeReference<List<CommonWordDto>> =
     object : TypeReference<List<CommonWordDto>>() {}
 
-fun parseUserDetailsJson(json: String): CommonUserDetailsDto {
-    return mapper.readValue(json, CommonUserDetailsDto::class.java)
-}
-
-fun CommonUserDetailsDto.toJsonString(): String {
-    return mapper.writeValueAsString(this)
-}
-
 fun parseDictionaryDetailsJson(json: String): CommonDictionaryDetailsDto {
     return mapper.readValue(json, CommonDictionaryDetailsDto::class.java)
 }
@@ -44,8 +36,6 @@ fun parseCardWordsJson(json: String): List<CommonWordDto> {
 fun List<CommonWordDto>.toJsonString(): String {
     return mapper.writeValueAsString(this)
 }
-
-data class CommonUserDetailsDto(private val content: Map<String, Any>) : Map<String, Any> by content
 
 data class CommonDictionaryDetailsDto(private val content: Map<String, Any>) : Map<String, Any> by content
 

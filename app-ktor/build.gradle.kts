@@ -25,7 +25,7 @@ dependencies {
     implementation(project(":tts-lib"))
     implementation(project(":tts-client"))
     implementation(project(":core"))
-    implementation(project(":db-common"))
+    implementation(project(":db-api"))
     implementation(project(":db-pg"))
     implementation(project(":db-mem"))
     implementation(project(":frontend"))

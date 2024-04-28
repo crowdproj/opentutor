@@ -18,7 +18,7 @@ dependencies {
     val caffeineVersion: String by project
 
     implementation(project(":common"))
-    implementation(project(":db-common"))
+    implementation(project(":db-api"))
 
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
@@ -36,7 +36,7 @@ dependencies {
     testImplementation("org.testcontainers:postgresql:$testContainersVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation(testFixtures(project(":db-common")))
+    testImplementation(testFixtures(project(":db-api")))
 }
 
 tasks.test {

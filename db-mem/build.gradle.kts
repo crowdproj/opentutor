@@ -12,7 +12,7 @@ dependencies {
     val commonsCSVVersion: String by project
 
     implementation(project(":common"))
-    implementation(project(":db-common"))
+    implementation(project(":db-api"))
 
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
@@ -20,7 +20,7 @@ dependencies {
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation(testFixtures(project(":db-common")))
+    testImplementation(testFixtures(project(":db-api")))
 }
 
 tasks.test {

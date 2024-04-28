@@ -9,7 +9,6 @@ version = rootProject.version
 dependencies {
     val junitVersion: String by project
     val slf4jVersion: String by project
-    val typesafeConfigVersion: String by project
     val jacksonVersion: String by project
     val kotlinDatetimeVersion: String by project
 
