@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.model.domain
 import com.gitlab.sszuev.flashcards.model.Id
 
 /**
- * To hold byte array.
+ * To hold byte-array (e.g., dictionary upload/download data, audio resources).
  */
 data class ResourceEntity(
     val resourceId: Id,

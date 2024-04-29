@@ -21,7 +21,6 @@ import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.test.runTest
@@ -38,9 +37,9 @@ internal class CardCorProcessorRunCardsTest {
             op: CardOperation,
             cardRepository: DbCardRepository,
             dictionaryRepository: DbDictionaryRepository = MockDbDictionaryRepository(),
-            ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(invokeFindResourceId = {
-                TTSResourceIdResponse.EMPTY.copy(TTSResourceId(it.lang.asString() + ":" + it.word))
-            }),
+            ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(
+                invokeFindResource = { _, _ -> ByteArray(0) }
+            ),
         ): CardContext {
             val context = CardContext(
                 operation = op,
@@ -179,8 +178,8 @@ internal class CardCorProcessorRunCardsTest {
         Assertions.assertEquals(AppStatus.OK, context.status)
 
         Assertions.assertEquals(
-            testCards.size,
-            (context.repositories.ttsClientRepository as MockTTSResourceRepository).findResourceIdCounts.toInt()
+            0,
+            (context.repositories.ttsClientRepository as MockTTSResourceRepository).findResourceCounts.toInt()
         )
 
         Assertions.assertEquals(testCards, context.responseCardEntityList)

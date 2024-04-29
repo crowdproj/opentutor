@@ -9,6 +9,7 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.mappers.toDictionaryEntity
 import com.gitlab.sszuev.flashcards.core.mappers.toDocumentCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDocumentDictionary
+import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -24,7 +25,7 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val res = this.repositories.dictionaryRepository
             .findDictionariesByUserId(userId.asString())
-            .map { it.toDictionaryEntity() }.toList()
+            .map { it.toDictionaryEntity().normalize() }.toList()
         this.responseDictionaryEntityList = res.map { dictionary ->
             val cards =
                 this.repositories.cardRepository
@@ -51,7 +52,7 @@ fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val res = this.repositories.dictionaryRepository
             .createDictionary(this.normalizedRequestDictionaryEntity.copy(userId = userId).toDbDictionary())
-            .toDictionaryEntity()
+            .toDictionaryEntity().normalize()
         this.responseDictionaryEntity = res
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
@@ -69,7 +70,7 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary = this.repositories.dictionaryRepository
-            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()?.normalize()
         if (dictionary == null) {
             this.errors.add(
                 noDictionaryFoundDataError(
@@ -100,7 +101,7 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary = this.repositories.dictionaryRepository
-            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()?.normalize()
         if (dictionary == null) {
             this.errors.add(
                 noDictionaryFoundDataError(
@@ -143,9 +144,9 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
             val document = createReader().parse(this.requestDictionaryResourceEntity.data)
             val dictionary = this.repositories.dictionaryRepository
                 .createDictionary(
-                    document.toDictionaryEntity().copy(userId = userId).toDbDictionary()
+                    document.toDictionaryEntity().normalize().copy(userId = userId).toDbDictionary()
                 )
-                .toDictionaryEntity()
+                .toDictionaryEntity().normalize()
             val cards = document.cards.asSequence()
                 .map { it.toCardEntity(this.config) }
                 .map { it.copy(dictionaryId = dictionary.dictionaryId) }

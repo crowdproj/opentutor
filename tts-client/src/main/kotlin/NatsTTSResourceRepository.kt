@@ -1,11 +1,5 @@
 package com.gitlab.sszuev.flashcards.speaker
 
-import com.gitlab.sszuev.flashcards.model.common.AppError
-import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import io.nats.client.Connection
 import org.slf4j.LoggerFactory
@@ -34,30 +28,22 @@ class NatsTTSResourceRepository(
         }
     }
 
-    override suspend fun findResourceId(filter: TTSResourceGet): TTSResourceIdResponse {
-        return TTSResourceIdResponse(TTSResourceId("${filter.lang.asString()}:${filter.word}"))
-    }
+    override suspend fun findResource(lang: String, word: String): ByteArray = getResource(id(lang, word))
 
-    override suspend fun getResource(id: TTSResourceId): TTSResourceEntityResponse = try {
-        TTSResourceEntityResponse(getResourceEntity(id))
-    } catch (ex: Exception) {
-        TTSResourceEntityResponse(ResourceEntity.DUMMY, listOf(ex.asError()))
-    }
-
-    fun getResourceEntity(id: TTSResourceId): ResourceEntity {
+    fun getResource(id: String): ByteArray {
         if (logger.isDebugEnabled) {
-            logger.debug("Request: '{}'", id.asString())
+            logger.debug("Request: '{}'", id)
         }
         val answer = connection.request(
             /* subject = */ topic,
-            /* body = */ id.asString().toByteArray(Charsets.UTF_8),
+            /* body = */ id.toByteArray(Charsets.UTF_8),
             /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
         )
         val data = answer.data ?: throw throw NotFoundResourceException(id, "empty result for request.")
         if (data.startsWith(EXCEPTION_PREFIX)) {
             throw ServerResourceException(id, data.toString(Charsets.UTF_8))
         }
-        return ResourceEntity(id, data)
+        return data
     }
 
     companion object {
@@ -75,12 +61,8 @@ class NatsTTSResourceRepository(
             return true
         }
 
-        private fun Throwable.asError() = AppError(
-            code = "resource",
-            group = "exceptions",
-            field = "",
-            message = this.message ?: "",
-            exception = this,
-        )
+        private fun id(lang: String, word: String): String {
+            return "${lang}:${word}"
+        }
     }
 }

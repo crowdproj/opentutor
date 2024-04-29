@@ -192,7 +192,11 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(responseBody.card)
         Assertions.assertNotNull(responseBody.card!!.cardId)
         Assertions.assertEquals(
-            requestBody.card!!.copy(details = emptyMap()),
+            requestBody.card!!.copy(
+                details = emptyMap(),
+                sound = "en:climate",
+                words = listOf(requestBody.card!!.words!!.single().copy(sound = "en:climate")),
+            ),
             responseBody.card!!.copy(changedAt = null)
         )
         Assertions.assertEquals(0, responseBody.card!!.details!!.size)

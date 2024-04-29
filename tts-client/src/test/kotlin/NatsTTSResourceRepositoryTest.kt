@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.speaker.rabbitmq
 
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.speaker.NatsTTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.ServerResourceException
 import io.nats.client.Connection
@@ -65,13 +64,11 @@ internal class NatsTTSResourceRepositoryTest {
             requestTimeoutInMillis = 2000,
         ) { Nats.connect(connectionUrl) }
 
-        val res1 = repo.getResourceEntity(TTSResourceId("xxx"))
-        Assertions.assertArrayEquals("xxx".toByteArray(Charsets.UTF_8) + data, res1.data)
-        Assertions.assertEquals("xxx", res1.resourceId.asString())
+        val res1 = repo.getResource("xxx")
+        Assertions.assertArrayEquals("xxx".toByteArray(Charsets.UTF_8) + data, res1)
 
-        val res2 = repo.getResourceEntity(TTSResourceId("qqq"))
-        Assertions.assertArrayEquals("qqq".toByteArray(Charsets.UTF_8) + data, res2.data)
-        Assertions.assertEquals("qqq", res2.resourceId.asString())
+        val res2 = repo.getResource("qqq")
+        Assertions.assertArrayEquals("qqq".toByteArray(Charsets.UTF_8) + data, res2)
     }
 
     @Test
@@ -90,7 +87,7 @@ internal class NatsTTSResourceRepositoryTest {
         ) { Nats.connect(connectionUrl) }
 
         Assertions.assertThrows(ServerResourceException::class.java) {
-            repo.getResourceEntity(TTSResourceId("xxx"))
+            repo.getResource("xxx")
         }
     }
 }

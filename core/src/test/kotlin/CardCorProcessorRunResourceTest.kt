@@ -10,8 +10,6 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceEntityResponse
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceIdResponse
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -43,22 +41,16 @@ internal class CardCorProcessorRunResourceTest {
     @Test
     fun `test get resource success`() = runTest {
         val testResourceGet = TTSResourceGet(word = "xxx", lang = LangId("EN"))
-        val testResourceId = TTSResourceId("test-id")
         val testResourceEntity = ResourceEntity(
-            resourceId = testResourceId,
+            resourceId = TTSResourceId("en:xxx"),
             data = ByteArray(42) { 42 }
         )
 
-        var findResourceIdWasCalled = false
-        var getResourceWasCalled = false
+        var findResourceWasCalled = false
         val repository = MockTTSResourceRepository(
-            invokeFindResourceId = {
-                findResourceIdWasCalled = true
-                TTSResourceIdResponse(testResourceId)
-            },
-            invokeGetResource = {
-                getResourceWasCalled = true
-                TTSResourceEntityResponse(testResourceEntity)
+            invokeFindResource = { _, _ ->
+                findResourceWasCalled = true
+                testResourceEntity.data
             },
         )
 
@@ -67,37 +59,25 @@ internal class CardCorProcessorRunResourceTest {
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(findResourceIdWasCalled)
-        Assertions.assertTrue(getResourceWasCalled)
+        Assertions.assertTrue(findResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
         Assertions.assertTrue(context.errors.isEmpty())
 
         Assertions.assertEquals(testResourceEntity, context.responseTTSResourceEntity)
 
-        Assertions.assertEquals(1, repository.findResourceIdCounts.get())
-        Assertions.assertEquals(1, repository.getResourceCounts.get())
+        Assertions.assertEquals(1, repository.findResourceCounts.get())
     }
 
     @Test
     fun `test get resource fail no resource found`() = runTest {
         val testResourceGet = TTSResourceGet(word = "xxx", lang = LangId("en"))
-        val testResourceId = TTSResourceId("test-id")
-        val testResourceEntity = TTSResourceEntityResponse(ResourceEntity(
-            resourceId = testResourceId,
-            data = ByteArray(42) { 42 }
-        ))
 
-        var findResourceIdWasCalled = false
-        var getResourceWasCalled = false
+        var findResourceWasCalled = false
         val repository = MockTTSResourceRepository(
-            invokeFindResourceId = {
-                findResourceIdWasCalled = true
-                TTSResourceIdResponse.EMPTY
-            },
-            invokeGetResource = {
-                getResourceWasCalled = true
-                testResourceEntity
+            invokeFindResource = { _, _ ->
+                findResourceWasCalled = true
+                null
             },
         )
 
@@ -106,38 +86,33 @@ internal class CardCorProcessorRunResourceTest {
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(findResourceIdWasCalled)
-        Assertions.assertFalse(getResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
+        Assertions.assertTrue(findResourceWasCalled)
         Assertions.assertEquals(ResourceEntity.DUMMY, context.responseTTSResourceEntity)
 
         val error = context.errors[0]
         Assertions.assertEquals(CardOperation.GET_RESOURCE.name, error.code)
         Assertions.assertEquals("run", error.group)
-        Assertions.assertEquals(testResourceGet.toString(), error.field)
-        Assertions.assertEquals("Error while GET_RESOURCE: no resource found. filter=${testResourceGet}", error.message)
+        Assertions.assertEquals("en:xxx", error.field)
+        Assertions.assertEquals(
+            "Error while GET_RESOURCE: no resource found. filter=${testResourceGet}",
+            error.message
+        )
         Assertions.assertNull(error.exception)
 
-        Assertions.assertEquals(1, repository.findResourceIdCounts.get())
-        Assertions.assertEquals(0, repository.getResourceCounts.get())
+        Assertions.assertEquals(1, repository.findResourceCounts.get())
     }
 
     @Test
     fun `test get resource fail exception`() = runTest {
         val testResourceGet = TTSResourceGet(word = "xxx", lang = LangId("EN"))
-        val testResourceIdFound = TTSResourceIdResponse(TTSResourceId("test-id"))
 
-        var findResourceIdWasCalled = false
-        var getResourceWasCalled = false
+        var findResourceWasCalled = false
         val repository = MockTTSResourceRepository(
-            invokeFindResourceId = {
-                findResourceIdWasCalled = true
-                testResourceIdFound
-            },
-            invokeGetResource = {
-                getResourceWasCalled = true
+            invokeFindResource = { _, _ ->
+                findResourceWasCalled = true
                 throw TestException()
             },
         )
@@ -147,8 +122,7 @@ internal class CardCorProcessorRunResourceTest {
 
         CardCorProcessor().execute(context)
 
-        Assertions.assertTrue(findResourceIdWasCalled)
-        Assertions.assertTrue(getResourceWasCalled)
+        Assertions.assertTrue(findResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
         Assertions.assertEquals(1, context.errors.size)
@@ -161,7 +135,6 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals("Error while GET_RESOURCE: unexpected exception", error.message)
         Assertions.assertInstanceOf(TestException::class.java, error.exception)
 
-        Assertions.assertEquals(1, repository.findResourceIdCounts.get())
-        Assertions.assertEquals(1, repository.getResourceCounts.get())
+        Assertions.assertEquals(1, repository.findResourceCounts.get())
     }
 }

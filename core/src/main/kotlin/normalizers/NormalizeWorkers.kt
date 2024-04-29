@@ -77,6 +77,7 @@ fun CardEntity.normalize() = CardEntity(
     details = this.details,
     stats = this.stats,
     answered = this.answered,
+    changedAt = this.changedAt,
 )
 
 fun CardWordEntity.normalize() = CardWordEntity(
@@ -99,6 +100,8 @@ fun DictionaryEntity.normalize() = DictionaryEntity(
     targetLang = this.targetLang.normalize(),
     totalCardsCount = this.totalCardsCount,
     learnedCardsCount = this.learnedCardsCount,
+    userId = this.userId.normalize(),
+
 )
 
 fun LangEntity.normalize() = LangEntity(

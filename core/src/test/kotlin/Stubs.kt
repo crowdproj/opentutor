@@ -15,8 +15,8 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 val stubDictionary = DictionaryEntity(
     dictionaryId = DictionaryId(42.toString()),
     name = "Stub-dictionary",
-    sourceLang = LangEntity(LangId("SL"), listOf("A", "B", "C")),
-    targetLang = LangEntity(LangId("TL"), listOf("X", "Y")),
+    sourceLang = LangEntity(LangId("sl"), listOf("A", "B", "C")),
+    targetLang = LangEntity(LangId("tl"), listOf("X", "Y")),
     userId = AppAuthId("00000000-0000-0000-0000-000000000000"),
 )
 
