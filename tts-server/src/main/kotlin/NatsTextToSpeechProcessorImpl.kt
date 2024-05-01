@@ -3,7 +3,9 @@ package com.gitlab.sszuev.flashcards.speaker
 import io.nats.client.Connection
 import io.nats.client.Message
 import io.nats.client.Nats
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.slf4j.LoggerFactory
 import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
@@ -36,25 +38,27 @@ class NatsTextToSpeechProcessorImpl(
 
     override suspend fun process(coroutineContext: CoroutineContext) {
         val dispatcher = connection.createDispatcher { msg: Message ->
-            val requestId = msg.data.toString(Charsets.UTF_8)
-            val body = try {
-                if (!service.containsResource(requestId)) {
-                    if (logger.isDebugEnabled) {
-                        logger.debug("'{}' cannot be found.", requestId)
+            CoroutineScope(coroutineContext).launch {
+                val requestId = msg.data.toString(Charsets.UTF_8)
+                val body = try {
+                    if (!service.containsResource(requestId)) {
+                        if (logger.isDebugEnabled) {
+                            logger.debug("'{}' cannot be found.", requestId)
+                        }
+                        null
+                    } else {
+                        val body = service.getResource(requestId)
+                        if (logger.isDebugEnabled) {
+                            logger.debug("resource '{}'; body-size={}", requestId, body?.size)
+                        }
+                        body
                     }
-                    null
-                } else {
-                    val body = service.getResource(requestId)
-                    if (logger.isDebugEnabled) {
-                        logger.debug("resource '{}'; body-size={}", requestId, body?.size)
-                    }
-                    body
+                } catch (ex: Exception) {
+                    logger.error("TTS-lib: exception, request-id='{}'", requestId, ex)
+                    EXCEPTION_PREFIX + ex.stackTraceToString().toByteArray(Charsets.UTF_8)
                 }
-            } catch (ex: Exception) {
-                logger.error("TTS-lib: exception, request-id='{}'", requestId, ex)
-                EXCEPTION_PREFIX + ex.stackTraceToString().toByteArray(Charsets.UTF_8)
+                connection.publish(msg.replyTo, body)
             }
-            connection.publish(msg.replyTo, body)
         }
         dispatcher.subscribe(topic, group)
         run.set(true)

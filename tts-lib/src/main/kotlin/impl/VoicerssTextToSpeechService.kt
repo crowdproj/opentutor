@@ -12,7 +12,6 @@ import io.ktor.client.request.parameter
 import io.ktor.client.statement.readBytes
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
 
@@ -42,27 +41,25 @@ class VoicerssTextToSpeechService(
         }
     }
 
-    override fun getResource(id: String, vararg args: String?): ByteArray? {
+    override suspend fun getResource(id: String, vararg args: String?): ByteArray? {
         val langToWord = resourceIdMapper(id) ?: return null
         val lang = languageByTag(langToWord.first) ?: return null
-        return runBlocking {
-            withTimeout(config.getResourceTimeoutMs) {
-                val res = readBytes(lang, langToWord.second)
-                if (logger.isDebugEnabled) {
-                    logger.debug("Received data size: {}", res.size)
-                }
-                if (res.size < 200) {
-                    // Possible error: "ERROR: The subscription is expired or requests count limitation is exceeded!"
-                    logger.error("The data array is too small (size=${res.size}): '${res.toString(Charsets.UTF_8)}'")
-                    null
-                } else {
-                    res
-                }
+        return withTimeout(config.getResourceTimeoutMs) {
+            val res = readBytes(lang, langToWord.second)
+            if (logger.isDebugEnabled) {
+                logger.debug("Received data size: {}", res.size)
+            }
+            if (res.size < 200) {
+                // Possible error: "ERROR: The subscription is expired or requests count limitation is exceeded!"
+                logger.error("The data array is too small (size=${res.size}): '${res.toString(Charsets.UTF_8)}'")
+                null
+            } else {
+                res
             }
         }
     }
 
-    override fun containsResource(id: String): Boolean {
+    override suspend fun containsResource(id: String): Boolean {
         val langToWord = resourceIdMapper(id) ?: return false
         return languageByTag(langToWord.first) != null
     }

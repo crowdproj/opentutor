@@ -3,8 +3,10 @@ package com.gitlab.sszuev.flashcards.speaker.impl
 import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.toResourcePath
+import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 /**
  * A wrapper to work with [espeak-ng](https://github.com/espeak-ng/espeak-ng).
@@ -58,23 +60,31 @@ class EspeakNgTestToSpeechService(
         }
     }
 
-    override fun getResource(id: String, vararg args: String?): ByteArray? {
+    override suspend fun getResource(id: String, vararg args: String?): ByteArray? {
         val langToWord = resourceIdMapper(id) ?: return null
         val lang = languageByTag(langToWord.first) ?: return null
         val processBuilder =
             ProcessBuilder("/bin/bash", "-c", """espeak-ng -v $lang '${langToWord.second}' --stdout""")
         return try {
-            val process = processBuilder.start()
-            val res = process.inputStream.use { it.readAllBytes() }
-            process.waitFor(config.getResourceTimeoutMs, TimeUnit.MILLISECONDS)
-            res
+            withTimeout(config.getResourceTimeoutMs) {
+                val s = System.currentTimeMillis()
+                val process = processBuilder.start()
+                val e = System.currentTimeMillis()
+                val res = process.inputStream.use { it.readAllBytes() }
+                val restTimeout = config.getResourceTimeoutMs - (e - s) - 100
+                if (!process.waitFor(restTimeout, TimeUnit.MILLISECONDS)) {
+                    process.destroy()
+                    throw TimeoutException("Process timed out ($restTimeout ms)")
+                }
+                res
+            }
         } catch (ex: Exception) {
-            logger.error("::[ESPEAK-NG] Can't get resource for [${lang}:${langToWord.second}]", ex)
-            return null
+            logger.error("::[ESPEAK-NG] Can't get resource for [${lang}:${langToWord.second}]")
+            throw ex
         }
     }
 
-    override fun containsResource(id: String): Boolean {
+    override suspend fun containsResource(id: String): Boolean {
         if (!isEspeakNgAvailable()) {
             return false
         }

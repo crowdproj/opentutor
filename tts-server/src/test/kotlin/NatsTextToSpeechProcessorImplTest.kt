@@ -1,10 +1,11 @@
 package com.gitlab.sszuev.flashcards.speaker
 
-import io.mockk.every
+import io.mockk.coEvery
+import io.mockk.coVerify
 import io.mockk.mockk
-import io.mockk.verify
 import io.nats.client.Connection
 import io.nats.client.Nats
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
@@ -51,14 +52,14 @@ internal class NatsTextToSpeechProcessorImplTest {
     }
 
     @Test
-    fun `test send message success`() {
+    fun `test send message success`() = runBlocking {
         val requestId = "qqq"
         val responseBody = ByteArray(42) { 42 }
         val service = mockk<TextToSpeechService>()
-        every {
+        coEvery {
             service.containsResource(requestId)
         } returns true
-        every {
+        coEvery {
             service.getResource(requestId)
         } returns responseBody
         val processor = NatsTextToSpeechProcessorImpl(
@@ -79,23 +80,23 @@ internal class NatsTextToSpeechProcessorImplTest {
             answer.data
         ) { "wrong data: ${answer.data.toString(Charsets.UTF_8)}" }
 
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             service.containsResource(requestId)
         }
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             service.getResource(requestId)
         }
         processor.close()
     }
 
     @Test
-    fun `test send message error`() {
+    fun `test send message error`() = runBlocking {
         val requestId = "xxx"
         val service = mockk<TextToSpeechService>()
-        every {
+        coEvery {
             service.containsResource(requestId)
         } returns true
-        every {
+        coEvery {
             service.getResource(requestId)
         } throws RuntimeException("Expected error")
         val processor = NatsTextToSpeechProcessorImpl(
@@ -114,10 +115,10 @@ internal class NatsTextToSpeechProcessorImplTest {
         val res = answer.data.toString(Charsets.UTF_8)
         Assertions.assertTrue(res.startsWith("e:java.lang.RuntimeException: Expected error"))
 
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             service.containsResource(requestId)
         }
-        verify(exactly = 1) {
+        coVerify(exactly = 1) {
             service.getResource(requestId)
         }
         processor.close()

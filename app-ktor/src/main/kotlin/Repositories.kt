@@ -16,9 +16,8 @@ fun appRepositories(config: RunConfig) = if (config.mode == RunConfig.Mode.TEST)
     )
 } else {
     AppRepositories(
-        PgDbCardRepository(),
-        dictionaryRepository =
-        PgDbDictionaryRepository(),
+        cardRepository = PgDbCardRepository(),
+        dictionaryRepository = PgDbDictionaryRepository(),
         ttsClientRepository = NatsTTSResourceRepository(),
     )
 }

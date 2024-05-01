@@ -11,6 +11,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.headersOf
 import io.ktor.utils.io.ByteReadChannel
+import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
@@ -61,7 +62,7 @@ internal class VoicerssTextToSpeechServiceTest {
     }
 
     @Test
-    fun testGetResource() {
+    fun testGetResource() = runBlocking {
         val testData = ByteArray(424) { 42 }
         val testWord1 = "test-1"
         val testLang1 = "XX"
