@@ -1,9 +1,9 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.AppRepositories
-import com.gitlab.sszuev.flashcards.api.services.CardService
-import com.gitlab.sszuev.flashcards.api.services.DictionaryService
 import com.gitlab.sszuev.flashcards.config.ContextConfig
+import com.gitlab.sszuev.flashcards.services.CardService
+import com.gitlab.sszuev.flashcards.services.DictionaryService
 import io.ktor.server.application.call
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post

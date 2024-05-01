@@ -4,9 +4,9 @@ import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.api.controllers.cards
 import com.gitlab.sszuev.flashcards.api.controllers.dictionaries
 import com.gitlab.sszuev.flashcards.api.controllers.sounds
-import com.gitlab.sszuev.flashcards.api.services.CardService
-import com.gitlab.sszuev.flashcards.api.services.DictionaryService
 import com.gitlab.sszuev.flashcards.config.ContextConfig
+import com.gitlab.sszuev.flashcards.services.CardService
+import com.gitlab.sszuev.flashcards.services.DictionaryService
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.route
 

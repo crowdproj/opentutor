@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.api.services
+package com.gitlab.sszuev.flashcards.services
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.CardCorProcessor

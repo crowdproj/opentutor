@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.api.services.CardService
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
@@ -19,6 +18,7 @@ import com.gitlab.sszuev.flashcards.logslib.ExtLogger
 import com.gitlab.sszuev.flashcards.logslib.logger
 import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransport
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.services.CardService
 import io.ktor.server.application.ApplicationCall
 import kotlinx.datetime.Clock
 

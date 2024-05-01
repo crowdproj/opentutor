@@ -2,7 +2,6 @@ package com.gitlab.sszuev.flashcards.api.controllers
 
 import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
-import com.gitlab.sszuev.flashcards.api.services.CardService
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
@@ -17,6 +16,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.config.TutorConfig
+import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
 import io.ktor.client.call.body

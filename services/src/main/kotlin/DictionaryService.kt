@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.api.services
+package com.gitlab.sszuev.flashcards.services
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.core.DictionaryCorProcessor
