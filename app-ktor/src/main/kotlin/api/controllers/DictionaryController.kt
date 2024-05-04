@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
-import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryRequest
@@ -22,12 +21,10 @@ private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.control
 
 suspend fun ApplicationCall.getAllDictionaries(
     service: DictionaryService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<GetAllDictionariesRequest>(
         operation = DictionaryOperation.GET_ALL_DICTIONARIES,
-        repositories = repositories,
         logger = logger,
         contextConfig = contextConfig,
     ) {
@@ -37,12 +34,10 @@ suspend fun ApplicationCall.getAllDictionaries(
 
 suspend fun ApplicationCall.createDictionary(
     service: DictionaryService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<CreateDictionaryRequest>(
         DictionaryOperation.CREATE_DICTIONARY,
-        repositories,
         logger,
         contextConfig
     ) {
@@ -52,12 +47,10 @@ suspend fun ApplicationCall.createDictionary(
 
 suspend fun ApplicationCall.deleteDictionary(
     service: DictionaryService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<DeleteDictionaryRequest>(
         DictionaryOperation.DELETE_DICTIONARY,
-        repositories,
         logger,
         contextConfig
     ) {
@@ -67,12 +60,10 @@ suspend fun ApplicationCall.deleteDictionary(
 
 suspend fun ApplicationCall.downloadDictionary(
     service: DictionaryService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<DownloadDictionaryRequest>(
         DictionaryOperation.DOWNLOAD_DICTIONARY,
-        repositories,
         logger,
         contextConfig
     ) {
@@ -82,12 +73,10 @@ suspend fun ApplicationCall.downloadDictionary(
 
 suspend fun ApplicationCall.uploadDictionary(
     service: DictionaryService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
     execute<UploadDictionaryRequest>(
         DictionaryOperation.UPLOAD_DICTIONARY,
-        repositories,
         logger,
         contextConfig
     ) {
@@ -97,7 +86,6 @@ suspend fun ApplicationCall.uploadDictionary(
 
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     operation: DictionaryOperation,
-    repositories: AppRepositories,
     logger: ExtLogger,
     contextConfig: ContextConfig,
     noinline exec: suspend DictionaryContext.() -> Unit,
@@ -105,7 +93,6 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     val context = DictionaryContext(
         operation = operation,
         timestamp = Clock.System.now(),
-        repositories = repositories,
         config = contextConfig.toAppConfig(),
     )
     context.fromUserTransport(contextConfig.runConfig.auth)

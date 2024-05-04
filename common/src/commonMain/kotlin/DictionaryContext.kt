@@ -15,10 +15,10 @@ import kotlinx.datetime.Instant
 data class DictionaryContext(
     override val operation: DictionaryOperation = DictionaryOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
-    override val repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
+    override var repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override var status: AppStatus = AppStatus.INIT,
     override var requestId: AppRequestId = AppRequestId.NONE,
     override var requestAppAuthId: AppAuthId = AppAuthId.NONE,

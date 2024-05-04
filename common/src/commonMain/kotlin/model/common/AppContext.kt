@@ -6,11 +6,11 @@ import kotlinx.datetime.Instant
 
 interface AppContext {
     val operation: AppOperation
-    val repositories: AppRepositories
     val timestamp: Instant
     val errors: MutableList<AppError>
     val config: AppConfig
 
+    var repositories: AppRepositories
     var status: AppStatus
     var requestId: AppRequestId
 

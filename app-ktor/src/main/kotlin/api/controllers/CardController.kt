@@ -1,6 +1,5 @@
 package com.gitlab.sszuev.flashcards.api.controllers
 
-import com.gitlab.sszuev.flashcards.AppRepositories
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
@@ -26,97 +25,87 @@ private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.control
 
 suspend fun ApplicationCall.getResource(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<GetAudioRequest>(CardOperation.GET_RESOURCE, repositories, logger, contextConfig) {
+    execute<GetAudioRequest>(CardOperation.GET_RESOURCE, logger, contextConfig) {
         service.getResource(this)
     }
 }
 
 suspend fun ApplicationCall.createCard(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<CreateCardRequest>(CardOperation.CREATE_CARD, repositories, logger, contextConfig) {
+    execute<CreateCardRequest>(CardOperation.CREATE_CARD, logger, contextConfig) {
         service.createCard(this)
     }
 }
 
 suspend fun ApplicationCall.updateCard(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<UpdateCardRequest>(CardOperation.UPDATE_CARD, repositories, logger, contextConfig) {
+    execute<UpdateCardRequest>(CardOperation.UPDATE_CARD, logger, contextConfig) {
         service.updateCard(this)
     }
 }
 
 suspend fun ApplicationCall.searchCards(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS, repositories, logger, contextConfig) {
+    execute<SearchCardsRequest>(CardOperation.SEARCH_CARDS, logger, contextConfig) {
         service.searchCards(this)
     }
 }
 
 suspend fun ApplicationCall.getAllCards(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS, repositories, logger, contextConfig) {
+    execute<GetAllCardsRequest>(CardOperation.GET_ALL_CARDS, logger, contextConfig) {
         service.getAllCards(this)
     }
 }
 
 suspend fun ApplicationCall.getCard(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<GetCardRequest>(CardOperation.GET_CARD, repositories, logger, contextConfig) {
+    execute<GetCardRequest>(CardOperation.GET_CARD, logger, contextConfig) {
         service.getCard(this)
     }
 }
 
 suspend fun ApplicationCall.learnCard(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<LearnCardsRequest>(CardOperation.LEARN_CARDS, repositories, logger, contextConfig) {
+    execute<LearnCardsRequest>(CardOperation.LEARN_CARDS, logger, contextConfig) {
         service.learnCard(this)
     }
 }
 
 suspend fun ApplicationCall.resetCard(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<ResetCardRequest>(CardOperation.RESET_CARD, repositories, logger, contextConfig) {
+    execute<ResetCardRequest>(CardOperation.RESET_CARD, logger, contextConfig) {
         service.resetCard(this)
     }
 }
 
 suspend fun ApplicationCall.deleteCard(
     service: CardService,
-    repositories: AppRepositories,
     contextConfig: ContextConfig
 ) {
-    execute<DeleteCardRequest>(CardOperation.DELETE_CARD, repositories, logger, contextConfig) {
+    execute<DeleteCardRequest>(CardOperation.DELETE_CARD, logger, contextConfig) {
         service.deleteCard(this)
     }
 }
 
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     operation: CardOperation,
-    repositories: AppRepositories,
     logger: ExtLogger,
     contextConfig: ContextConfig,
     noinline exec: suspend CardContext.() -> Unit,
@@ -124,7 +113,6 @@ private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     val context = CardContext(
         operation = operation,
         timestamp = Clock.System.now(),
-        repositories = repositories,
         config = contextConfig.toAppConfig(),
     )
     context.fromUserTransport(contextConfig.runConfig.auth)

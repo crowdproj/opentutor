@@ -12,21 +12,20 @@ import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryResponse
-import com.gitlab.sszuev.flashcards.dbmem.MemDatabase
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
 import io.ktor.client.call.body
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 internal class DictionaryControllerRunTest {
 
-    @AfterEach
-    fun resetDb() {
-        MemDatabase.clear()
-    }
 
+    @Order(1)
     @Test
     fun `test get-all-dictionaries success`() = testSecuredApp {
         val requestBody = GetAllDictionariesRequest(
@@ -46,6 +45,7 @@ internal class DictionaryControllerRunTest {
         Assertions.assertEquals("ru", weather.targetLang)
     }
 
+    @Order(2)
     @Test
     fun `test create-dictionary success`() = testSecuredApp {
         val requestBody = CreateDictionaryRequest(
@@ -69,6 +69,7 @@ internal class DictionaryControllerRunTest {
         Assertions.assertEquals("tt", res.dictionary!!.targetLang)
     }
 
+    @Order(3)
     @Test
     fun `test delete-dictionary success`() = testSecuredApp {
         val requestBody = DeleteDictionaryRequest(
@@ -83,6 +84,7 @@ internal class DictionaryControllerRunTest {
         Assertions.assertEquals(Result.SUCCESS, res.result)
     }
 
+    @Order(4)
     @Test
     fun `test download-dictionary success`() = testSecuredApp {
         val requestBody = DownloadDictionaryRequest(
@@ -99,6 +101,7 @@ internal class DictionaryControllerRunTest {
         Assertions.assertTrue(res.resource!!.size in 58001..59999)
     }
 
+    @Order(5)
     @Test
     fun `test upload-dictionary success`() = testSecuredApp {
         val txt = """
