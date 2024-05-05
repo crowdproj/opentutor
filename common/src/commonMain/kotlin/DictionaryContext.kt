@@ -11,14 +11,17 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
+@Serializable
 data class DictionaryContext(
     override val operation: DictionaryOperation = DictionaryOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
-    override var repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
+    @Transient override var repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override var status: AppStatus = AppStatus.INIT,
     override var requestId: AppRequestId = AppRequestId.NONE,
     override var requestAppAuthId: AppAuthId = AppAuthId.NONE,

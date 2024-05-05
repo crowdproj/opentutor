@@ -15,16 +15,20 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Represents request context for card operations.
  */
+@Serializable
 data class CardContext(
     override val operation: CardOperation = CardOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
+    @Transient
     override var repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override var status: AppStatus = AppStatus.INIT,
     override var requestId: AppRequestId = AppRequestId.NONE,

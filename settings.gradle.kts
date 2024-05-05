@@ -9,6 +9,7 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion apply false
         id("org.openapi.generator") version openapiVersion apply false
         id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
+        id("org.jetbrains.kotlin.plugin.serialization") version kotlinVersion apply false
     }
 }
 

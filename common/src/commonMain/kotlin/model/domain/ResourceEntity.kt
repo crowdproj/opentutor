@@ -1,10 +1,12 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
 import com.gitlab.sszuev.flashcards.model.Id
+import kotlinx.serialization.Serializable
 
 /**
  * To hold byte-array (e.g., dictionary upload/download data, audio resources).
  */
+@Serializable
 data class ResourceEntity(
     val resourceId: Id,
     val data: ByteArray,
@@ -26,11 +28,7 @@ data class ResourceEntity(
     }
 
     companion object {
-        private val NONE: Id = object : Id {
-            override fun asString(): String {
-                return ""
-            }
-        }
-        val DUMMY = ResourceEntity(resourceId = NONE, data = ByteArray(0))
+        val DUMMY = ResourceEntity(resourceId = Id.NONE, data = ByteArray(0))
+
     }
 }
