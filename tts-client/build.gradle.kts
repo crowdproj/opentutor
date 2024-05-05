@@ -16,6 +16,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":tts-lib"))
+    implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")

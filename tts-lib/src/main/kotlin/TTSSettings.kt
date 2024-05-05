@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker
 
+import com.gitlab.sszuev.flashcards.utilities.get
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory

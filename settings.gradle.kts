@@ -12,6 +12,9 @@ pluginManagement {
         id("org.jetbrains.kotlin.plugin.serialization") version kotlinVersion apply false
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
+}
 
 include("openapi")
 include("common")
@@ -30,3 +33,4 @@ include("logs-mappers")
 include("logs-lib")
 include("tts-lib")
 include("frontend")
+include("utilities")

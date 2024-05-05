@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.speaker
+package com.gitlab.sszuev.flashcards.utilities
 
 import com.typesafe.config.Config
 import java.util.Locale

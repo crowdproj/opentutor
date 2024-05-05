@@ -14,6 +14,7 @@ dependencies {
     val slf4jVersion: String by project
 
     implementation(project(":common"))
+    implementation(project(":utilities"))
     implementation("org.apache.commons:commons-compress:$commonsCompressVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
