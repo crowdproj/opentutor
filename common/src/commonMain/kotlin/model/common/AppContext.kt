@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.model.common
 
 import com.gitlab.sszuev.flashcards.AppConfig
-import com.gitlab.sszuev.flashcards.AppRepositories
 import kotlinx.datetime.Instant
 
 interface AppContext {
@@ -10,7 +9,6 @@ interface AppContext {
     val errors: MutableList<AppError>
     val config: AppConfig
 
-    var repositories: AppRepositories
     var status: AppStatus
     var requestId: AppRequestId
 

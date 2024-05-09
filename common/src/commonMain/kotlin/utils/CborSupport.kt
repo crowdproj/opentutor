@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.utils
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
@@ -39,3 +40,9 @@ fun DictionaryContext.toByteArray(): ByteArray = cbor.encodeToByteArray(Dictiona
 @OptIn(ExperimentalSerializationApi::class)
 fun dictionaryContextFromByteArray(bytes: ByteArray): DictionaryContext =
     cbor.decodeFromByteArray(DictionaryContext.serializer(), bytes)
+
+@OptIn(ExperimentalSerializationApi::class)
+fun TTSContext.toByteArray(): ByteArray = cbor.encodeToByteArray(TTSContext.serializer(), this)
+
+@OptIn(ExperimentalSerializationApi::class)
+fun ttsContextFromByteArray(bytes: ByteArray): TTSContext = cbor.decodeFromByteArray(TTSContext.serializer(), bytes)

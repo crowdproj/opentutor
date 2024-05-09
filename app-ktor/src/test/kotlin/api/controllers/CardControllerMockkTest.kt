@@ -6,7 +6,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
@@ -93,14 +92,6 @@ internal class CardControllerMockkTest {
         ) { this.deleteCard(it) }
     }
 
-    @Test
-    fun `test get-audio-resource service error`() {
-        testServiceError(
-            endpoint = "sounds/get",
-            requestBody = GetAudioRequest(requestId = "request=sounds/get")
-        ) { this.getResource(it) }
-    }
-
     private inline fun <reified X : BaseRequest> testServiceError(
         endpoint: String,
         requestBody: X,
@@ -120,7 +111,6 @@ internal class CardControllerMockkTest {
             authenticate("auth-jwt") {
                 route("test/api") {
                     cards(service, contextContext)
-                    sounds(service, contextContext)
                 }
             }
         }
@@ -139,4 +129,4 @@ internal class CardControllerMockkTest {
     }
 }
 
-internal class TestException(msg: String) : RuntimeException(msg)
+private class TestException(msg: String) : RuntimeException(msg)

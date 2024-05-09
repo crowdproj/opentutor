@@ -9,7 +9,6 @@ import com.gitlab.sszuev.flashcards.core.processes.processGetAllCards
 import com.gitlab.sszuev.flashcards.core.processes.processGetCard
 import com.gitlab.sszuev.flashcards.core.processes.processLearnCards
 import com.gitlab.sszuev.flashcards.core.processes.processResetCard
-import com.gitlab.sszuev.flashcards.core.processes.processResource
 import com.gitlab.sszuev.flashcards.core.processes.processUpdateCard
 import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityDictionaryId
 import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityHasNoCardId
@@ -22,15 +21,13 @@ import com.gitlab.sszuev.flashcards.core.validators.validateCardLearnListCardIds
 import com.gitlab.sszuev.flashcards.core.validators.validateCardLearnListDetails
 import com.gitlab.sszuev.flashcards.core.validators.validateCardLearnListStages
 import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryId
-import com.gitlab.sszuev.flashcards.core.validators.validateResourceGetLangId
-import com.gitlab.sszuev.flashcards.core.validators.validateResourceGetWord
 import com.gitlab.sszuev.flashcards.core.validators.validateUserId
 import com.gitlab.sszuev.flashcards.corlib.chain
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 
 /**
  * Main class fot business logic,
- * it is based on Chain-Of-Responsibility (COR) pattern.
+ * it is based on the Chain-Of-Responsibility (COR) pattern.
  */
 class CardCorProcessor {
 
@@ -40,18 +37,6 @@ class CardCorProcessor {
         private val businessChain = chain {
             name = "CardContext Root Chain"
             initContext()
-
-            operation(CardOperation.GET_RESOURCE) {
-                normalizers(CardOperation.GET_RESOURCE)
-                validators(CardOperation.GET_RESOURCE) {
-                    validateUserId(CardOperation.GET_RESOURCE)
-                    validateResourceGetLangId()
-                    validateResourceGetWord()
-                }
-                runs(CardOperation.GET_RESOURCE) {
-                    processResource()
-                }
-            }
 
             operation(CardOperation.SEARCH_CARDS) {
                 normalizers(CardOperation.SEARCH_CARDS)

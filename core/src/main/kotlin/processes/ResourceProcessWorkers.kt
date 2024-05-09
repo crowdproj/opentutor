@@ -1,23 +1,23 @@
 package com.gitlab.sszuev.flashcards.core.processes
 
-import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 
-fun ChainDSL<CardContext>.processResource() = worker {
+fun ChainDSL<TTSContext>.processResource() = worker {
     this.name = "process audio resource request"
     process {
         val request = this.normalizedRequestTTSResourceGet
 
         val id = request.asResourceId()
-        val found = this.repositories.ttsClientRepository.findResource(request.lang.asString(), request.word)
+        val found = this.repository.findResource(request.lang.asString(), request.word)
         if (found == null) {
             this.errors.add(
                 runError(
-                    operation = CardOperation.GET_RESOURCE,
+                    operation = TTSOperation.GET_RESOURCE,
                     fieldName = id.toFieldName(),
                     description = "no resource found. filter=$request"
                 )
@@ -31,7 +31,7 @@ fun ChainDSL<CardContext>.processResource() = worker {
     onException {
         fail(
             runError(
-                operation = CardOperation.GET_RESOURCE,
+                operation = TTSOperation.GET_RESOURCE,
                 fieldName = this.requestTTSResourceGet.toFieldName(),
                 description = "unexpected exception",
                 exception = it

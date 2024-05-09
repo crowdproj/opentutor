@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.services.local
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.core.DictionaryCorProcessor
 import com.gitlab.sszuev.flashcards.services.DictionaryService
-import com.gitlab.sszuev.flashcards.services.localAppRepositories
+import com.gitlab.sszuev.flashcards.services.localDbRepositories
 
 class LocalDictionaryService : DictionaryService {
     private val processor = DictionaryCorProcessor()
@@ -15,7 +15,7 @@ class LocalDictionaryService : DictionaryService {
     override suspend fun uploadDictionary(context: DictionaryContext): DictionaryContext = context.exec()
 
     private suspend fun DictionaryContext.exec(): DictionaryContext {
-        this.repositories = localAppRepositories
+        this.repositories = localDbRepositories
         processor.execute(this)
         return this
     }

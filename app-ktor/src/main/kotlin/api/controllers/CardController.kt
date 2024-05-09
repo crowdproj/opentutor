@@ -5,7 +5,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
@@ -22,15 +21,6 @@ import io.ktor.server.application.ApplicationCall
 import kotlinx.datetime.Clock
 
 private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.CardController")
-
-suspend fun ApplicationCall.getResource(
-    service: CardService,
-    contextConfig: ContextConfig
-) {
-    execute<GetAudioRequest>(CardOperation.GET_RESOURCE, logger, contextConfig) {
-        service.getResource(this)
-    }
-}
 
 suspend fun ApplicationCall.createCard(
     service: CardService,

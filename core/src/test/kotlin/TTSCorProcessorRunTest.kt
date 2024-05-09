@@ -1,13 +1,13 @@
 package com.gitlab.sszuev.flashcards.core
 
-import com.gitlab.sszuev.flashcards.AppRepositories
-import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
@@ -18,15 +18,13 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 
 @ExperimentalCoroutinesApi
-internal class CardCorProcessorRunResourceTest {
+internal class TTSCorProcessorRunTest {
     companion object {
 
-        private fun testContext(repository: TTSResourceRepository): CardContext {
-            val context = CardContext(
-                operation = CardOperation.GET_RESOURCE,
-                repositories = AppRepositories().copy(
-                    ttsClientRepository = repository
-                )
+        private fun testContext(repository: TTSResourceRepository): TTSContext {
+            val context = TTSContext(
+                operation = TTSOperation.GET_RESOURCE,
+                repository = repository
             )
             context.requestAppAuthId = AppAuthId("42")
             context.requestId = requestId()
@@ -34,7 +32,7 @@ internal class CardCorProcessorRunResourceTest {
         }
 
         private fun requestId(): AppRequestId {
-            return AppRequestId("[for-${CardOperation.GET_RESOURCE}]")
+            return AppRequestId("[for-${TTSOperation.GET_RESOURCE}]")
         }
     }
 
@@ -57,7 +55,7 @@ internal class CardCorProcessorRunResourceTest {
         val context = testContext(repository)
         context.requestTTSResourceGet = testResourceGet
 
-        CardCorProcessor().execute(context)
+        TTSCorProcessor().execute(context)
 
         Assertions.assertTrue(findResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
@@ -84,7 +82,7 @@ internal class CardCorProcessorRunResourceTest {
         val context = testContext(repository)
         context.requestTTSResourceGet = testResourceGet
 
-        CardCorProcessor().execute(context)
+        TTSCorProcessor().execute(context)
 
         Assertions.assertEquals(requestId(), context.requestId)
         Assertions.assertEquals(AppStatus.FAIL, context.status)
@@ -93,7 +91,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(ResourceEntity.DUMMY, context.responseTTSResourceEntity)
 
         val error = context.errors[0]
-        Assertions.assertEquals(CardOperation.GET_RESOURCE.name, error.code)
+        Assertions.assertEquals(TTSOperation.GET_RESOURCE.name, error.code)
         Assertions.assertEquals("run", error.group)
         Assertions.assertEquals("en:xxx", error.field)
         Assertions.assertEquals(
@@ -120,7 +118,7 @@ internal class CardCorProcessorRunResourceTest {
         val context = testContext(repository)
         context.requestTTSResourceGet = testResourceGet
 
-        CardCorProcessor().execute(context)
+        TTSCorProcessor().execute(context)
 
         Assertions.assertTrue(findResourceWasCalled)
         Assertions.assertEquals(requestId(), context.requestId)
@@ -129,7 +127,7 @@ internal class CardCorProcessorRunResourceTest {
         Assertions.assertEquals(ResourceEntity.DUMMY, context.responseTTSResourceEntity)
 
         val error = context.errors[0]
-        Assertions.assertEquals(CardOperation.GET_RESOURCE.name, error.code)
+        Assertions.assertEquals(TTSOperation.GET_RESOURCE.name, error.code)
         Assertions.assertEquals("run", error.group)
         Assertions.assertEquals(testResourceGet.toString(), error.field)
         Assertions.assertEquals("Error while GET_RESOURCE: unexpected exception", error.message)

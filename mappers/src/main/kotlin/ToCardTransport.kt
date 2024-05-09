@@ -8,7 +8,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsResponse
-import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardResponse
@@ -24,7 +23,6 @@ import kotlinx.datetime.toJavaInstant
 import java.time.ZoneOffset
 
 fun CardContext.toCardResponse(): BaseResponse = when (val op = this.operation) {
-    CardOperation.GET_RESOURCE -> this.toGetAudioResponse()
     CardOperation.GET_ALL_CARDS -> this.toGetAllCardsResponse()
     CardOperation.SEARCH_CARDS -> this.toSearchCardsResponse()
     CardOperation.GET_CARD -> this.toGetCardResponse()
@@ -35,13 +33,6 @@ fun CardContext.toCardResponse(): BaseResponse = when (val op = this.operation) 
     CardOperation.RESET_CARD -> this.toResetCardResponse()
     else -> throw IllegalArgumentException("Not supported operation $op.")
 }
-
-fun CardContext.toGetAudioResponse() = GetAudioResponse(
-    requestId = this.requestId.toResponseId(),
-    result = this.status.toResponseResult(),
-    errors = this.errors.toErrorResourceList(),
-    resource = this.responseTTSResourceEntity.data,
-)
 
 fun CardContext.toGetCardResponse() = GetCardResponse(
     requestId = this.requestId.toResponseId(),

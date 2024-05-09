@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
+import com.gitlab.sszuev.flashcards.api.ttsApiV1
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
@@ -164,6 +165,7 @@ fun Application.module(
     val contextConfig = ContextConfig(runConfig, tutorConfig)
     val cardService = cardService(runConfig)
     val dictionaryService = dictionaryService(runConfig)
+    val ttsService = ttsService(runConfig)
 
     routing {
         staticResources(remotePath = "/static", basePackage = "static") {}
@@ -176,6 +178,10 @@ fun Application.module(
                 )
                 this@authenticate.dictionaryApiV1(
                     service = dictionaryService,
+                    contextConfig = contextConfig,
+                )
+                this@authenticate.ttsApiV1(
+                    service = ttsService,
                     contextConfig = contextConfig,
                 )
             }
@@ -203,6 +209,10 @@ fun Application.module(
             )
             dictionaryApiV1(
                 service = dictionaryService,
+                contextConfig = contextConfig,
+            )
+            ttsApiV1(
+                service = ttsService,
                 contextConfig = contextConfig,
             )
             get("/") {

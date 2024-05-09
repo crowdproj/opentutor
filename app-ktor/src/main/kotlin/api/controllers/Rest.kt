@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.api.controllers
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.DictionaryService
+import com.gitlab.sszuev.flashcards.services.TTSService
 import io.ktor.server.application.call
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
@@ -41,7 +42,7 @@ fun Route.cards(
 }
 
 fun Route.sounds(
-    service: CardService,
+    service: TTSService,
     contextConfig: ContextConfig,
 ) {
     route("sounds") {

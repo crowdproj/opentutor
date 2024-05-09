@@ -1,10 +1,10 @@
 package com.gitlab.sszuev.flashcards.core.validators
 
-import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 
-fun ChainDSL<CardContext>.validateResourceGetLangId() = worker {
+fun ChainDSL<TTSContext>.validateResourceGetLangId() = worker {
     this.name = "validate get resource lang id"
     test {
         !isCorrectLangId(this.normalizedRequestTTSResourceGet.lang.asString())
@@ -14,7 +14,7 @@ fun ChainDSL<CardContext>.validateResourceGetLangId() = worker {
     }
 }
 
-fun ChainDSL<CardContext>.validateResourceGetWord() = worker {
+fun ChainDSL<TTSContext>.validateResourceGetWord() = worker {
     this.name = "validate get resource word"
     test {
         !isCorrectWrong(this.normalizedRequestTTSResourceGet.word)

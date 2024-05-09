@@ -4,11 +4,6 @@ import com.gitlab.sszuev.flashcards.CardContext
 
 interface CardService {
     /**
-     * Gets a card-resource (byte array from TTS service).
-     */
-    suspend fun getResource(context: CardContext): CardContext
-
-    /**
      * Creates a card-entity.
      */
     suspend fun createCard(context: CardContext): CardContext

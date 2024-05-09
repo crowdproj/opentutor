@@ -2,11 +2,14 @@ package com.gitlab.sszuev.flashcards.utils
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.Stage
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -27,10 +30,6 @@ internal class CborSupportTest {
         val context1 = CardContext(
             requestCardEntity = entity1,
             responseCardEntityList = listOf(entity1, entity2),
-            responseTTSResourceEntity = ResourceEntity(
-                resourceId = TTSResourceId(""),
-                data = ByteArray(42) { 42 },
-            ),
             errors = mutableListOf(
                 AppError(group = "X", message = "x"),
             ),
@@ -68,6 +67,26 @@ internal class CborSupportTest {
         )
         val res = context1.toByteArray()
         val context2 = dictionaryContextFromByteArray(res)
+        assertEquals(context1, context2)
+    }
+
+    @Test
+    fun `test TTSCContext serialization & deserialization`() {
+        val context1 = TTSContext(
+            normalizedRequestTTSResourceGet = TTSResourceGet(
+                lang = LangId("xx"),
+                word = "xxx",
+            ),
+            responseTTSResourceEntity = ResourceEntity(
+                resourceId = TTSResourceId(""),
+                data = ByteArray(42) { 42 },
+            ),
+            errors = mutableListOf(
+                AppError(group = "X", message = "x"),
+            ),
+        )
+        val res = context1.toByteArray()
+        val context2 = ttsContextFromByteArray(res)
         assertEquals(context1, context2)
     }
 }

@@ -3,10 +3,13 @@ package com.gitlab.sszuev.flashcards
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.DictionaryService
+import com.gitlab.sszuev.flashcards.services.TTSService
 import com.gitlab.sszuev.flashcards.services.local.LocalCardService
 import com.gitlab.sszuev.flashcards.services.local.LocalDictionaryService
+import com.gitlab.sszuev.flashcards.services.local.LocalTTSService
 import com.gitlab.sszuev.flashcards.services.remote.RemoteCardService
 import com.gitlab.sszuev.flashcards.services.remote.RemoteDictionaryService
+import com.gitlab.sszuev.flashcards.services.remote.RemoteTTSService
 
 internal fun cardService(config: RunConfig): CardService = if (config.mode == RunConfig.Mode.TEST)
     LocalCardService()
@@ -17,3 +20,8 @@ internal fun dictionaryService(config: RunConfig): DictionaryService = if (confi
     LocalDictionaryService()
 else
     RemoteDictionaryService()
+
+internal fun ttsService(config: RunConfig): TTSService = if (config.mode == RunConfig.Mode.TEST)
+    LocalTTSService()
+else
+    RemoteTTSService()

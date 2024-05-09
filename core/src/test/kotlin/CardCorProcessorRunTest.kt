@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.core
 
-import com.gitlab.sszuev.flashcards.AppRepositories
+import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
@@ -29,7 +29,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
 
-internal class CardCorProcessorRunCardsTest {
+internal class CardCorProcessorRunTest {
     companion object {
         private val testUserId = stubDictionary.userId
 
@@ -37,16 +37,12 @@ internal class CardCorProcessorRunCardsTest {
             op: CardOperation,
             cardRepository: DbCardRepository,
             dictionaryRepository: DbDictionaryRepository = MockDbDictionaryRepository(),
-            ttsResourceRepository: TTSResourceRepository = MockTTSResourceRepository(
-                invokeFindResource = { _, _ -> ByteArray(0) }
-            ),
         ): CardContext {
             val context = CardContext(
                 operation = op,
-                repositories = AppRepositories().copy(
+                repositories = DbRepositories().copy(
                     cardRepository = cardRepository,
                     dictionaryRepository = dictionaryRepository,
-                    ttsClientRepository = ttsResourceRepository,
                 ),
             )
             context.requestAppAuthId = testUserId
@@ -176,11 +172,6 @@ internal class CardCorProcessorRunCardsTest {
         Assertions.assertTrue(isFindDictionaryCalled)
         Assertions.assertEquals(requestId(CardOperation.GET_ALL_CARDS), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
-
-        Assertions.assertEquals(
-            0,
-            (context.repositories.ttsClientRepository as MockTTSResourceRepository).findResourceCounts.toInt()
-        )
 
         Assertions.assertEquals(testCards, context.responseCardEntityList)
     }
@@ -710,7 +701,7 @@ internal class CardCorProcessorRunCardsTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = CardOperation::class, names = ["NONE", "GET_RESOURCE"], mode = EnumSource.Mode.EXCLUDE)
+    @EnumSource(value = CardOperation::class, names = ["NONE"], mode = EnumSource.Mode.EXCLUDE)
     fun `test no resource found`(op: CardOperation) = runTest {
         val testCardId = CardId("42")
         val testDictionaryId = DictionaryId("42")
@@ -761,7 +752,7 @@ internal class CardCorProcessorRunCardsTest {
         CardCorProcessor().execute(context)
 
         when (op) {
-            CardOperation.NONE, CardOperation.GET_RESOURCE -> Assertions.fail()
+            CardOperation.NONE -> Assertions.fail()
             CardOperation.SEARCH_CARDS, CardOperation.GET_ALL_CARDS, CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD -> {
                 Assertions.assertFalse(findCardByIdIsCalled)
                 Assertions.assertFalse(findCardsByIdInIsCalled)

@@ -21,12 +21,13 @@ data class DictionaryContext(
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
-    @Transient override var repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override var status: AppStatus = AppStatus.INIT,
     override var requestId: AppRequestId = AppRequestId.NONE,
     override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
     override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
 
+    @Transient
+    var repositories: DbRepositories = DbRepositories.NO_OP_REPOSITORIES,
     // get all dictionaries' list response:
     var responseDictionaryEntityList: List<DictionaryEntity> = listOf(),
     // update/create request:

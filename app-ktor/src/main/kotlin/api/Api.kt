@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.api.controllers.sounds
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.DictionaryService
+import com.gitlab.sszuev.flashcards.services.TTSService
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.route
 
@@ -15,7 +16,6 @@ internal fun Route.cardApiV1(
 ) {
     route("v1/api") {
         cards(service, contextConfig)
-        sounds(service, contextConfig)
     }
 }
 
@@ -25,5 +25,14 @@ internal fun Route.dictionaryApiV1(
 ) {
     route("v1/api") {
         dictionaries(service, contextConfig)
+    }
+}
+
+internal fun Route.ttsApiV1(
+    service: TTSService,
+    contextConfig: ContextConfig,
+) {
+    route("v1/api") {
+        sounds(service, contextConfig)
     }
 }

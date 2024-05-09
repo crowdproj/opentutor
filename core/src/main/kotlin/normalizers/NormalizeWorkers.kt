@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.core.normalizers
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
@@ -18,6 +19,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 
 fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = worker(
@@ -37,15 +39,24 @@ fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = wo
     }
 }
 
+fun ChainDSL<TTSContext>.normalizers(operation: TTSOperation) = worker(
+    name = "Make a normalized copy of ${operation.name.lowercase()} params"
+) {
+    this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
+    when (operation) {
+        TTSOperation.GET_RESOURCE -> {
+            this.normalizedRequestTTSResourceGet = this.requestTTSResourceGet.normalize()
+        }
+
+        else -> {}
+    }
+}
+
 fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(
     name = "Make a normalized copy of ${operation.name.lowercase()} params"
 ) {
     this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
     when (operation) {
-        CardOperation.GET_RESOURCE -> {
-            this.normalizedRequestTTSResourceGet = this.requestTTSResourceGet.normalize()
-        }
-
         CardOperation.SEARCH_CARDS -> {
             this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
         }
@@ -102,7 +113,7 @@ fun DictionaryEntity.normalize() = DictionaryEntity(
     learnedCardsCount = this.learnedCardsCount,
     userId = this.userId.normalize(),
 
-)
+    )
 
 fun LangEntity.normalize() = LangEntity(
     langId = this.langId.normalize(),

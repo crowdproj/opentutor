@@ -3,12 +3,11 @@ package com.gitlab.sszuev.flashcards.services.local
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.CardCorProcessor
 import com.gitlab.sszuev.flashcards.services.CardService
-import com.gitlab.sszuev.flashcards.services.localAppRepositories
+import com.gitlab.sszuev.flashcards.services.localDbRepositories
 
 class LocalCardService : CardService {
     private val processor = CardCorProcessor()
 
-    override suspend fun getResource(context: CardContext): CardContext = context.exec()
     override suspend fun createCard(context: CardContext): CardContext = context.exec()
     override suspend fun updateCard(context: CardContext): CardContext = context.exec()
     override suspend fun searchCards(context: CardContext): CardContext = context.exec()
@@ -19,7 +18,7 @@ class LocalCardService : CardService {
     override suspend fun deleteCard(context: CardContext): CardContext = context.exec()
 
     private suspend fun CardContext.exec(): CardContext {
-        this.repositories = localAppRepositories
+        this.repositories = localDbRepositories
         processor.execute(this)
         return this
     }
