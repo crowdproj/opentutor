@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.speaker
+package com.gitlab.sszuev.flashcards.services
 
 import io.nats.client.Connection
 import io.nats.client.Nats
@@ -22,7 +22,7 @@ object NatsConnectionFactory {
     }
 
     private fun createConnection(): Connection {
-        val url = "nats://${TTSClientSettings.host}:${TTSClientSettings.port}"
+        val url = "nats://${ServiceSettings.host}:${ServiceSettings.port}"
         return Nats.connectReconnectOnConnect(url)
     }
 }

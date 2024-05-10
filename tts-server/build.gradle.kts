@@ -22,6 +22,8 @@ dependencies {
     val typesafeConfigVersion: String by project
 
     implementation(project(":tts-lib"))
+    implementation(project(":common"))
+    implementation(project(":core"))
     implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")

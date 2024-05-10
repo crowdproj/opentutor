@@ -1,5 +1,9 @@
 package com.gitlab.sszuev.flashcards.speaker
 
+import com.gitlab.sszuev.flashcards.core.TTSCorProcessor
+import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.utils.toByteArray
+import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
 import io.nats.client.Message
 import io.nats.client.Nats
@@ -14,9 +18,9 @@ import kotlin.coroutines.cancellation.CancellationException
 private val logger = LoggerFactory.getLogger(NatsTextToSpeechProcessorImpl::class.java)
 
 class NatsTextToSpeechProcessorImpl(
-    private val service: TextToSpeechService,
     private val topic: String,
     private val group: String,
+    private val repository: TTSResourceRepository,
     connectionFactory: () -> Connection,
 ) : TextToSpeechProcessor, AutoCloseable {
 
@@ -25,7 +29,12 @@ class NatsTextToSpeechProcessorImpl(
         topic: String = "TTS",
         group: String = "TTS",
         connectionUrl: String = "nats://localhost:4222",
-    ) : this(service, topic, group, { Nats.connectReconnectOnConnect(connectionUrl) })
+    ) : this(
+        topic = topic,
+        group = group,
+        repository = DirectTTSResourceRepository(service),
+        connectionFactory = { Nats.connectReconnectOnConnect(connectionUrl) },
+    )
 
     private val run = AtomicBoolean(false)
     private val connection by lazy {
@@ -35,29 +44,15 @@ class NatsTextToSpeechProcessorImpl(
             }
         }
     }
+    private val processor = TTSCorProcessor()
 
     override suspend fun process(coroutineContext: CoroutineContext) {
         val dispatcher = connection.createDispatcher { msg: Message ->
             CoroutineScope(coroutineContext).launch {
-                val requestId = msg.data.toString(Charsets.UTF_8)
-                val body = try {
-                    if (!service.containsResource(requestId)) {
-                        if (logger.isDebugEnabled) {
-                            logger.debug("'{}' cannot be found.", requestId)
-                        }
-                        null
-                    } else {
-                        val body = service.getResource(requestId)
-                        if (logger.isDebugEnabled) {
-                            logger.debug("resource '{}'; body-size={}", requestId, body?.size)
-                        }
-                        body
-                    }
-                } catch (ex: Exception) {
-                    logger.error("TTS-lib: exception, request-id='{}'", requestId, ex)
-                    EXCEPTION_PREFIX + ex.stackTraceToString().toByteArray(Charsets.UTF_8)
-                }
-                connection.publish(msg.replyTo, body)
+                val context = ttsContextFromByteArray(msg.data)
+                context.repository = repository
+                processor.execute(context)
+                connection.publish(msg.replyTo, context.toByteArray())
             }
         }
         dispatcher.subscribe(topic, group)
@@ -81,9 +76,5 @@ class NatsTextToSpeechProcessorImpl(
         logger.info("Close.")
         run.set(false)
         connection.close()
-    }
-
-    companion object {
-        private val EXCEPTION_PREFIX = "e:".toByteArray(Charsets.UTF_8)
     }
 }

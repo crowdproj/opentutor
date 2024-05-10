@@ -6,7 +6,6 @@ import com.gitlab.sszuev.flashcards.dbmem.MemDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
-import com.gitlab.sszuev.flashcards.speaker.NatsTTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.createDirectTTSResourceRepository
 
 val localDbRepositories: DbRepositories by lazy {
@@ -25,8 +24,4 @@ val remoteDbRepositories: DbRepositories by lazy {
 
 val localTTSRepository: TTSResourceRepository by lazy {
     createDirectTTSResourceRepository()
-}
-
-val remoteTTSRepository: TTSResourceRepository by lazy {
-    NatsTTSResourceRepository()
 }
