@@ -2,7 +2,7 @@
 
 The service uses [NATS](https://nats.io/) as transport to deliver audio-resources.
 It uses [tts-lib](../tts-lib).  
-TTS client is located [here](../tts-client). 
+TTS client is located [here](../services).
 
 The server has the following settings (example):
 ```
