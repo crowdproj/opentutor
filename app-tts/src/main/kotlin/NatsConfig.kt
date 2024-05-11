@@ -1,9 +1,9 @@
 package com.gitlab.sszuev.flashcards.speaker
 
 data class NatsConfig(
-    val url: String = "nats://${ServerSettings.host}:${ServerSettings.port}",
-    val user: String = ServerSettings.user,
-    val password: String = ServerSettings.password,
-    val topic: String = ServerSettings.topic,
-    val group: String = ServerSettings.group,
+    val url: String = "nats://${TTSServerSettings.host}:${TTSServerSettings.port}",
+    val user: String = TTSServerSettings.user,
+    val password: String = TTSServerSettings.password,
+    val topic: String = TTSServerSettings.topic,
+    val group: String = TTSServerSettings.group,
 )

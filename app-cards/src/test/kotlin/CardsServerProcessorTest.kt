@@ -133,6 +133,8 @@ class CardsServerProcessorTest {
         Assertions.assertEquals(testCardId, res.responseCardEntity.cardId.asString())
         Assertions.assertEquals(testDictionaryId, res.responseCardEntity.dictionaryId.asString())
         Assertions.assertEquals("weather", res.responseCardEntity.words.single().word)
+
+        processor.close()
     }
 
 }

@@ -39,6 +39,9 @@ class CardsServerProcessor(
         val dispatcher = connection.createDispatcher { msg: Message ->
             CoroutineScope(coroutineContext).launch {
                 val context = cardContextFromByteArray(msg.data)
+                if (logger.isDebugEnabled) {
+                    logger.debug("Processing ${context.requestId}")
+                }
                 context.repositories = repositories
                 processor.execute(context)
                 connection.publish(msg.replyTo, context.toByteArray())

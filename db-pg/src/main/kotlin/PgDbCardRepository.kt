@@ -25,6 +25,11 @@ class PgDbCardRepository(
         PgDbConnector.connection(dbConfig)
     }
 
+    // enforce connection
+    fun connect() {
+        connection
+    }
+
     override fun findCardById(cardId: String): DbCard? {
         require(cardId.isNotBlank())
         return connection.execute {

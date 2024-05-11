@@ -10,13 +10,13 @@ object ServiceSettings {
 
     private val conf: Config = ConfigFactory.load()
 
-    val requestTimeoutInMilliseconds = conf.get(key = "tts-client.request-timeout-in-milliseconds", default = 1000L)
-
-    val host = conf.get(key = "tts-client.nats.host", default = "localhost")
-    val port = conf.get(key = "tts-client.nats.port", default = 5672)
-    val user = conf.get(key = "tts-client.nats.user", default = "dev")
-    val password = conf.get(key = "tts-client.nats.password", default = "dev")
-    val ttsTopic = conf.get(key = "tts-client.nats.topics.tts", default = "TTS")
+    val requestTimeoutInMilliseconds = conf.get(key = "client.nats.request-timeout-in-ms", default = 5000L)
+    val natsHost = conf.get(key = "client.nats.host", default = "localhost")
+    val natsPort = conf.get(key = "client.nats.port", default = 4222)
+    val natsUser = conf.get(key = "client.nats.user", default = "dev")
+    val natsPassword = conf.get(key = "client.nats.password", default = "dev")
+    val ttsNatsTopic = conf.get(key = "client.nats.topic.tts", default = "TTS")
+    val cardsNatsTopic = conf.get(key = "client.nats.topic.cards", default = "CARDS")
 
     init {
         logger.info(printDetails())
@@ -25,11 +25,13 @@ object ServiceSettings {
     private fun printDetails(): String {
         return """
             |
-            |nats-host                  = $host
-            |nats-port                  = $port
+            |nats-host                  = $natsHost
+            |nats-port                  = $natsPort
             |nats-user                  = ***
             |nats-password              = ***            
-            |nats-tts-topic             = $ttsTopic
+            |nats-topic-tts             = $ttsNatsTopic
+            |nats-topic-cards           = $cardsNatsTopic
+            |nats-request-timeout-ms    = $requestTimeoutInMilliseconds
             """.replaceIndentByMargin("\t")
     }
 }

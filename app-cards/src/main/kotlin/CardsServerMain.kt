@@ -10,15 +10,19 @@ import kotlin.concurrent.thread
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.cards.CardsServerMain")
 
 fun main() {
-    val natsConnectionUrl = "nats://${ServerSettings.host}:${ServerSettings.port}"
+    val connectionUrl = "nats://${CardsServerSettings.host}:${CardsServerSettings.port}"
     val processor = CardsServerProcessor(
         repositories = DbRepositories(
-            cardRepository = PgDbCardRepository(),
-            dictionaryRepository = PgDbDictionaryRepository()
+            cardRepository = PgDbCardRepository().also { it.connect() },
+            dictionaryRepository = PgDbDictionaryRepository().also { it.connect() }
         ),
-        topic = ServerSettings.topic,
-        group = ServerSettings.group,
-        connectionFactory = { Nats.connectReconnectOnConnect(natsConnectionUrl) }
+        topic = CardsServerSettings.topic,
+        group = CardsServerSettings.group,
+        connectionFactory = {
+            Nats.connectReconnectOnConnect(connectionUrl).also {
+                logger.info("Nats connection established: $connectionUrl")
+            }
+        }
     )
     Runtime.getRuntime().addShutdownHook(thread(start = false) {
         logger.info("Close connection on shutdown.")

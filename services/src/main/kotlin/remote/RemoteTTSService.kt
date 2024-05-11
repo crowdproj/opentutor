@@ -11,12 +11,12 @@ import java.time.Duration
 import java.time.temporal.ChronoUnit
 
 class RemoteTTSService(
-    private val ttsTopic: String,
+    private val topic: String,
     private val requestTimeoutInMillis: Long,
     connectionFactory: () -> Connection,
 ) : TTSService {
     constructor() : this(
-        ttsTopic = ServiceSettings.ttsTopic,
+        topic = ServiceSettings.ttsNatsTopic,
         requestTimeoutInMillis = ServiceSettings.requestTimeoutInMilliseconds,
         connectionFactory = { NatsConnectionFactory.connection }
     )
@@ -31,15 +31,19 @@ class RemoteTTSService(
 
     override suspend fun getResource(context: TTSContext): TTSContext {
         val answer = connection.request(
-            /* subject = */ ttsTopic,
+            /* subject = */ topic,
             /* body = */ context.toByteArray(),
             /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
         )
         val res = ttsContextFromByteArray(answer.data)
-        context.responseTTSResourceEntity = res.responseTTSResourceEntity
-        context.normalizedRequestTTSResourceGet = res.normalizedRequestTTSResourceGet
-        context.errors.addAll(res.errors)
+        res.copyTo(context)
         return context
     }
 
+    private fun TTSContext.copyTo(target: TTSContext) {
+        target.responseTTSResourceEntity = this.responseTTSResourceEntity
+        target.normalizedRequestTTSResourceGet = this.normalizedRequestTTSResourceGet
+        target.errors.addAll(this.errors)
+        target.status = this.status
+    }
 }
