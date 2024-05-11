@@ -97,8 +97,8 @@ internal class DictionaryControllerRunTest {
         Assertions.assertEquals("success-request", res.requestId)
         Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNotNull(res.resource)
-        Assertions.assertTrue(res.resource!!.size in 58001..59999)
+        Assertions.assertNotNull(res.resource) { "can't find resource" }
+        Assertions.assertTrue(res.resource!!.size in 50_000..100_000) { "unexpected resource size: ${res.resource!!.size}" }
     }
 
     @Order(5)

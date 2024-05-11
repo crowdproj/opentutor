@@ -48,18 +48,18 @@ fun Table.jsonb(name: String): Column<String> = registerColumn(name, JsonColumnT
 
 fun Table.json(name: String): Column<String> = registerColumn(name, JsonColumnType("json"))
 
-class JsonColumnType(private val sqlType: String) : ColumnType() {
+class JsonColumnType(private val sqlType: String) : ColumnType<String>(false) {
     override fun sqlType(): String = sqlType
 
-    override fun notNullValueToDB(value: Any): Any {
-        val res = PGobject()
-        res.type = sqlType
-        res.value = value.toString()
-        return res
+    override fun valueFromDB(value: Any): String {
+        return value.toString()
     }
 
-    override fun nonNullValueToString(value: Any): String {
-        return value.toString().substringAfter("'").substringBefore("'::$sqlType")
+    override fun valueToDB(value: String?): Any {
+        val res = PGobject()
+        res.type = sqlType
+        res.value = value
+        return res
     }
 
     override fun readObject(rs: ResultSet, index: Int): Any? = rs.getString(index)
