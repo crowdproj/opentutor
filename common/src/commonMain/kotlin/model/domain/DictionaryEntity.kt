@@ -1,7 +1,9 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class DictionaryEntity(
     val dictionaryId: DictionaryId = DictionaryId.NONE,
     val userId: AppAuthId = AppAuthId.NONE,

@@ -17,7 +17,7 @@ class LocalTextToSpeechService(
     internal val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
 ) : TextToSpeechService {
 
-    override fun getResource(id: String, vararg args: String?): ByteArray? {
+    override suspend fun getResource(id: String, vararg args: String?): ByteArray? {
         val langAndWord = resourceIdMapper(id)?: return null
         val lang = langAndWord.first
         val word = langAndWord.second
@@ -27,7 +27,7 @@ class LocalTextToSpeechService(
         }.firstOrNull()
     }
 
-    override fun containsResource(id: String): Boolean {
+    override suspend fun containsResource(id: String): Boolean {
         val langAndWord = resourceIdMapper(id) ?: return false
         val lang = langAndWord.first
         val word = langAndWord.second
@@ -36,14 +36,14 @@ class LocalTextToSpeechService(
     }
 
     companion object {
-        private const val classpathPrefix = "classpath:"
+        private const val CLASSPATH_PREFIX = "classpath:"
 
         fun load(
             location: String = TTSSettings.localDataDirectory,
             resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
         ): TextToSpeechService {
-            val libraries = if (location.startsWith(classpathPrefix)) {
-                collectClasspathTarLibraries(location.removePrefix(classpathPrefix))
+            val libraries = if (location.startsWith(CLASSPATH_PREFIX)) {
+                collectClasspathTarLibraries(location.removePrefix(CLASSPATH_PREFIX))
             } else {
                 collectDirectoryTarLibraries(location)
             }

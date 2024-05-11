@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
+import com.gitlab.sszuev.flashcards.api.ttsApiV1
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
@@ -86,8 +87,6 @@ fun Application.module(
 ) {
     logger.info(printGeneralSettings(runConfig, keycloakConfig, tutorConfig))
 
-    val repositories = appRepositories(runConfig)
-
     val port = environment.config.property("ktor.deployment.port").getString()
 
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
@@ -164,8 +163,9 @@ fun Application.module(
     install(Locations)
 
     val contextConfig = ContextConfig(runConfig, tutorConfig)
-    val cardService = cardService()
-    val dictionaryService = dictionaryService()
+    val cardService = cardService(runConfig)
+    val dictionaryService = dictionaryService(runConfig)
+    val ttsService = ttsService(runConfig)
 
     routing {
         staticResources(remotePath = "/static", basePackage = "static") {}
@@ -174,12 +174,14 @@ fun Application.module(
             authenticate("auth-jwt") {
                 this@authenticate.cardApiV1(
                     service = cardService,
-                    repositories = repositories,
                     contextConfig = contextConfig,
                 )
                 this@authenticate.dictionaryApiV1(
                     service = dictionaryService,
-                    repositories = repositories,
+                    contextConfig = contextConfig,
+                )
+                this@authenticate.ttsApiV1(
+                    service = ttsService,
                     contextConfig = contextConfig,
                 )
             }
@@ -203,12 +205,14 @@ fun Application.module(
         } else {
             cardApiV1(
                 service = cardService,
-                repositories = repositories,
                 contextConfig = contextConfig,
             )
             dictionaryApiV1(
                 service = dictionaryService,
-                repositories = repositories,
+                contextConfig = contextConfig,
+            )
+            ttsApiV1(
+                service = ttsService,
                 contextConfig = contextConfig,
             )
             get("/") {

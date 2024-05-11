@@ -1,12 +1,10 @@
 package com.gitlab.sszuev.flashcards.model.common
 
 import com.gitlab.sszuev.flashcards.AppConfig
-import com.gitlab.sszuev.flashcards.AppRepositories
 import kotlinx.datetime.Instant
 
 interface AppContext {
     val operation: AppOperation
-    val repositories: AppRepositories
     val timestamp: Instant
     val errors: MutableList<AppError>
     val config: AppConfig

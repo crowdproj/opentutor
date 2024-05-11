@@ -1,5 +1,8 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class CardFilter(
     val dictionaryIds: List<DictionaryId> = emptyList(),
     val random: Boolean = false,

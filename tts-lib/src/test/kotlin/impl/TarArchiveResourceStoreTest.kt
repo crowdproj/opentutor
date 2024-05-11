@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import java.security.MessageDigest
 
 internal class TarArchiveResourceStoreTest {
+    @Suppress("ConstPropertyName")
     companion object {
         private const val archiveName = "weather-light.tar"
         private const val lang = "tts-test-data/en"

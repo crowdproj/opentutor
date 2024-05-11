@@ -8,7 +8,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.CardWordResource
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
@@ -21,15 +20,12 @@ import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import kotlinx.datetime.Instant
 import kotlinx.datetime.toKotlinInstant
 
 fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
-    is GetAudioRequest -> fromGetAudioRequest(request)
     is GetCardRequest -> fromGetCardRequest(request)
     is GetAllCardsRequest -> fromGetAllCardsRequest(request)
     is SearchCardsRequest -> fromSearchCardsRequest(request)
@@ -39,11 +35,6 @@ fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
     is LearnCardsRequest -> fromLearnCardRequest(request)
     is ResetCardRequest -> fromResetCardRequest(request)
     else -> throw IllegalArgumentException("Unknown request ${request.javaClass}")
-}
-
-fun CardContext.fromGetAudioRequest(request: GetAudioRequest) {
-    this.requestId = request.requestId()
-    this.requestTTSResourceGet = TTSResourceGet(word = request.word ?: "", lang = LangId(request.lang ?: ""))
 }
 
 fun CardContext.fromGetCardRequest(request: GetCardRequest) {

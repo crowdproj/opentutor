@@ -12,17 +12,17 @@ import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import kotlinx.datetime.Instant
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 
 /**
  * Represents request context for card operations.
  */
+@Serializable
 data class CardContext(
     override val operation: CardOperation = CardOperation.NONE,
     override val timestamp: Instant = Instant.NONE,
-    override val repositories: AppRepositories = AppRepositories.NO_OP_REPOSITORIES,
     override val errors: MutableList<AppError> = mutableListOf(),
     override val config: AppConfig = AppConfig.DEFAULT,
 
@@ -31,11 +31,8 @@ data class CardContext(
     override var requestAppAuthId: AppAuthId = AppAuthId.NONE,
     override var normalizedRequestAppAuthId: AppAuthId = AppAuthId.NONE,
 
-    // get word resource by id (for TTS)
-    var requestTTSResourceGet: TTSResourceGet = TTSResourceGet.NONE,
-    var normalizedRequestTTSResourceGet: TTSResourceGet = TTSResourceGet.NONE,
-    // get word response (for TTS)
-    var responseTTSResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
+    @Transient
+    var repositories: DbRepositories = DbRepositories.NO_OP_REPOSITORIES,
 
     // get-all cards request:
     var requestDictionaryId: DictionaryId = DictionaryId.NONE,

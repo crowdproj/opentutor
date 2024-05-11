@@ -22,12 +22,8 @@ dependencies {
     implementation(project(":openapi"))
     implementation(project(":mappers"))
     implementation(project(":common"))
-    implementation(project(":tts-lib"))
-    implementation(project(":tts-client"))
+    implementation(project(":services"))
     implementation(project(":core"))
-    implementation(project(":db-common"))
-    implementation(project(":db-pg"))
-    implementation(project(":db-mem"))
     implementation(project(":frontend"))
 
     implementation(project(":logs-openapi"))
@@ -63,6 +59,7 @@ dependencies {
     implementation("org.codehaus.janino:janino:$janinoVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
+    testImplementation(project(":db-mem"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")

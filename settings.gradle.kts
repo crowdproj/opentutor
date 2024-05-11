@@ -9,22 +9,27 @@ pluginManagement {
         kotlin("jvm") version kotlinVersion apply false
         id("org.openapi.generator") version openapiVersion apply false
         id("com.bmuschko.docker-java-application") version bmuschkoVersion apply false
+        id("org.jetbrains.kotlin.plugin.serialization") version kotlinVersion apply false
     }
+}
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "0.5.0"
 }
 
 include("openapi")
 include("common")
 include("mappers")
 include("app-ktor")
+include("app-tts")
+include("services")
 include("cor-lib")
 include("core")
-include("tts-server")
-include("tts-client")
 include("db-mem")
-include("db-common")
+include("db-api")
 include("db-pg")
 include("logs-openapi")
 include("logs-mappers")
 include("logs-lib")
 include("tts-lib")
 include("frontend")
+include("utilities")

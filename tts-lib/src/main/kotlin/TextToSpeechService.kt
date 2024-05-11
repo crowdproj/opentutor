@@ -16,15 +16,16 @@ interface TextToSpeechService {
      * Returns bytes with audio stream by the specified resource identifier.
      * @param [id][String] the resource path identifier
      * @return [ByteArray] or `null` if resource is not found
+     * @throws Exception something is wrong
      */
-    fun getResource(id: String, vararg args: String?): ByteArray?
+    suspend fun getResource(id: String, vararg args: String?): ByteArray?
 
     /**
      * Answers `true` if resource can be provided.
      * @param [id][String] the resource path identifier
      * @return [Boolean]
      */
-    fun containsResource(id: String): Boolean {
+    suspend fun containsResource(id: String): Boolean {
         return true
     }
 }

@@ -23,7 +23,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardResponse
-import com.gitlab.sszuev.flashcards.dbmem.MemDatabase
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -31,12 +30,15 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.testPost
 import com.gitlab.sszuev.flashcards.testSecuredApp
 import io.ktor.client.call.body
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.MethodOrderer
+import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestMethodOrder
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
+@TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 internal class CardControllerRunTest {
 
     companion object {
@@ -45,11 +47,7 @@ internal class CardControllerRunTest {
         private fun CardResource.transcription() = this.words!!.single().transcription
     }
 
-    @AfterEach
-    fun resetDb() {
-        MemDatabase.clear()
-    }
-
+    @Order(1)
     @Test
     fun `test get-audio-resource`() = testSecuredApp {
         val requestBody = GetAudioRequest(
@@ -70,6 +68,7 @@ internal class CardControllerRunTest {
         Assertions.assertArrayEquals(ResourceEntity.DUMMY.data, res.resource)
     }
 
+    @Order(2)
     @Test
     fun `test get-all-cards success`() = testSecuredApp {
         val requestBody = GetAllCardsRequest(
@@ -86,9 +85,10 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(65, res.cards!!.size)
     }
 
+    @Order(3)
     @Test
     fun `test get-card success`() = testSecuredApp {
-        // deterministic dictionary,we know exactly what entity is coming back:
+        // deterministic dictionary, we know exactly what entity is coming back:
         val requestBody = GetCardRequest(
             requestId = "success-request",
             cardId = "246",
@@ -118,10 +118,11 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(emptyMap<String, Long>(), res.card!!.details)
     }
 
+    @Order(4)
     @Test
     fun `test create-card success`() = testSecuredApp {
         val expectedCard = CardEntity(
-            dictionaryId = DictionaryId("1"),
+            dictionaryId = DictionaryId("2"),
             words = listOf(
                 CardWordEntity(
                     word = "rainy",
@@ -159,14 +160,68 @@ internal class CardControllerRunTest {
         Assertions.assertTrue(res.card!!.words!!.single().examples!!.isEmpty())
     }
 
+    @Order(5)
+    @Test
+    fun `test search-cards success`() = testSecuredApp {
+        val requestBody = SearchCardsRequest(
+            requestId = "success-request",
+            dictionaryIds = listOf("2"),
+            random = false,
+            length = 2,
+        )
+        val response = testPost("/v1/api/cards/search", requestBody)
+        val res = response.body<SearchCardsResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNotNull(res.cards)
+        Assertions.assertEquals(2, res.cards!!.size)
+    }
+
+    @Order(6)
+    @Test
+    fun `test learn-card success`() = testSecuredApp {
+        val requestBody = LearnCardsRequest(
+            requestId = "success-request",
+            cards = listOf(LearnResource(cardId = "246", details = mapOf("mosaic" to 42L)))
+        )
+        val response = testPost("/v1/api/cards/learn", requestBody)
+        val res = response.body<LearnCardsResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertEquals(1, res.cards!!.size)
+        Assertions.assertEquals("weather", res.cards!![0].word())
+    }
+
+    @Order(7)
+    @Test
+    fun `test reset-card success`() = testSecuredApp {
+        val requestBody = ResetCardRequest(
+            requestId = "success-request",
+            cardId = "246",
+        )
+        val response = testPost("/v1/api/cards/reset", requestBody)
+        val res = response.body<ResetCardResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertEquals("weather", res.card!!.word())
+        Assertions.assertEquals(0, res.card!!.answered)
+    }
+
+    @Order(8)
     @Test
     fun `test update-card success`() = testSecuredApp {
         val start = OffsetDateTime.now(ZoneOffset.UTC).minusMinutes(1)
         val requestBody = UpdateCardRequest(
             requestId = "success-request",
             card = CardResource(
-                cardId = "1",
-                dictionaryId = "1",
+                cardId = "246",
+                dictionaryId = "2",
                 words = listOf(
                     CardWordResource(
                         word = "climate",
@@ -192,7 +247,11 @@ internal class CardControllerRunTest {
         Assertions.assertNotNull(responseBody.card)
         Assertions.assertNotNull(responseBody.card!!.cardId)
         Assertions.assertEquals(
-            requestBody.card!!.copy(details = emptyMap()),
+            requestBody.card!!.copy(
+                details = emptyMap(),
+                sound = "en:climate",
+                words = listOf(requestBody.card!!.words!!.single().copy(sound = "en:climate")),
+            ),
             responseBody.card!!.copy(changedAt = null)
         )
         Assertions.assertEquals(0, responseBody.card!!.details!!.size)
@@ -200,61 +259,12 @@ internal class CardControllerRunTest {
         Assertions.assertTrue(start <= actualChangedAt && actualChangedAt <= end)
     }
 
-    @Test
-    fun `test search-cards success`() = testSecuredApp {
-        val requestBody = SearchCardsRequest(
-            requestId = "success-request",
-            dictionaryIds = listOf("1", "2"),
-            random = false,
-            length = 2,
-        )
-        val response = testPost("/v1/api/cards/search", requestBody)
-        val res = response.body<SearchCardsResponse>()
-        Assertions.assertEquals(200, response.status.value)
-        Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
-        Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertNotNull(res.cards)
-        Assertions.assertEquals(2, res.cards!!.size)
-    }
-
-    @Test
-    fun `test learn-card success`() = testSecuredApp {
-        val requestBody = LearnCardsRequest(
-            requestId = "success-request",
-            cards = listOf(LearnResource(cardId = "246", details = mapOf("mosaic" to 42L)))
-        )
-        val response = testPost("/v1/api/cards/learn", requestBody)
-        val res = response.body<LearnCardsResponse>()
-        Assertions.assertEquals(200, response.status.value)
-        Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
-        Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertEquals(1, res.cards!!.size)
-        Assertions.assertEquals("weather", res.cards!![0].word())
-    }
-
-    @Test
-    fun `test reset-card success`() = testSecuredApp {
-        val requestBody = ResetCardRequest(
-            requestId = "success-request",
-            cardId = "246",
-        )
-        val response = testPost("/v1/api/cards/reset", requestBody)
-        val res = response.body<ResetCardResponse>()
-        Assertions.assertEquals(200, response.status.value)
-        Assertions.assertEquals("success-request", res.requestId)
-        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
-        Assertions.assertEquals(Result.SUCCESS, res.result)
-        Assertions.assertEquals("weather", res.card!!.word())
-        Assertions.assertEquals(0, res.card!!.answered)
-    }
-
+    @Order(9)
     @Test
     fun `test delete-card success`() = testSecuredApp {
         val requestBody = DeleteCardRequest(
             requestId = "success-request",
-            cardId = "2",
+            cardId = "246",
         )
         val response = testPost("/v1/api/cards/delete", requestBody)
         val res = response.body<DeleteCardResponse>()

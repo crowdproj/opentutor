@@ -4,7 +4,6 @@ import com.gitlab.sszuev.flashcards.model.common.AppOperation
 
 enum class CardOperation: AppOperation {
     NONE,
-    GET_RESOURCE,
     SEARCH_CARDS,
     GET_ALL_CARDS,
     GET_CARD,
