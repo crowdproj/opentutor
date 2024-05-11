@@ -15,14 +15,14 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
 
-private val logger = LoggerFactory.getLogger(NatsTextToSpeechProcessorImpl::class.java)
+private val logger = LoggerFactory.getLogger(NatsTTSServerProcessorImpl::class.java)
 
-class NatsTextToSpeechProcessorImpl(
+class NatsTTSServerProcessorImpl(
     private val topic: String,
     private val group: String,
     private val repository: TTSResourceRepository,
     connectionFactory: () -> Connection,
-) : TextToSpeechProcessor, AutoCloseable {
+) : TTSServerProcessor, AutoCloseable {
 
     constructor(
         service: TextToSpeechService,

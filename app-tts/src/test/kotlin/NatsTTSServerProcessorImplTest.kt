@@ -32,7 +32,7 @@ import java.util.concurrent.TimeUnit
 
 @Timeout(value = 60, unit = TimeUnit.SECONDS)
 @Testcontainers
-internal class NatsTextToSpeechProcessorImplTest {
+internal class NatsTTSServerProcessorImplTest {
     companion object {
         @Container
         private val natsContainer: GenericContainer<*> = GenericContainer(DockerImageName.parse("nats:latest"))
@@ -88,14 +88,14 @@ internal class NatsTextToSpeechProcessorImplTest {
             service.getResource(testRequestId2)
         } returns testResponseBody2
 
-        val processor = NatsTextToSpeechProcessorImpl(
+        val processor = NatsTTSServerProcessorImpl(
             service = service,
             topic = "XXX",
             group = "QQQ",
             connectionUrl = connectionUrl,
         )
 
-        TextToSpeechController(processor).start()
+        TTSServerController(processor).start()
         while (!processor.ready()) {
             Thread.sleep(100)
         }
@@ -150,14 +150,14 @@ internal class NatsTextToSpeechProcessorImplTest {
         coEvery {
             service.getResource(testRequestId)
         } throws IllegalStateException("expected error")
-        val processor = NatsTextToSpeechProcessorImpl(
+        val processor = NatsTTSServerProcessorImpl(
             service = service,
             topic = "XXX",
             group = "QQQ",
             connectionUrl = connectionUrl,
         )
 
-        TextToSpeechController(processor).start()
+        TTSServerController(processor).start()
         while (!processor.ready()) {
             Thread.sleep(100)
         }

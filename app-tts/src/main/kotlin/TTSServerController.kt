@@ -8,13 +8,13 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
-class TextToSpeechController(
-    private val processor: TextToSpeechProcessor
+class TTSServerController(
+    private val processor: TTSServerProcessor
 ) {
 
     private val scope = CoroutineScope(
         context = Executors.newSingleThreadExecutor()
-            .asCoroutineDispatcher() + CoroutineName("thread-rabbitmq-controller")
+            .asCoroutineDispatcher() + CoroutineName("thread-tts-controller")
     )
 
     /**
