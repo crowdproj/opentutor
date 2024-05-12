@@ -10,8 +10,8 @@ The server has the following settings (example):
 	cards-server.nats.port           = 4222
 	cards-server.nats.user           = guest
 	cards-server.nats.password       = guest            
-    cards-server.nats.topic          = TTS
-    cards-server.nats.group          = TTS
+    cards-server.nats.topic          = CARDS
+    cards-server.nats.group          = CARDS
 ```
 
 #### build and run application using docker & gradle:
