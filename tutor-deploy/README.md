@@ -7,6 +7,7 @@ The directory contains docker-composer files allowing to set up environment.
 - flashcards-db (postgres). it is requires by [:db-pg](../db-pg)
 - flashcards-keycloak. Authorization (demo:demo).
 - tts-server
+- cards-server
 
 [docker-compose-elk-stack.yml](docker-compose-elk-stack.yml)
 
@@ -23,17 +24,26 @@ URLs:
 - rabbitmq: http://localhost:15672/
 - application: http://localhost:8080/
 
-Build tts-server & app images:
+Build tts-server & cards-server & app images:
 
 ```shell
 docker rm tutor-deploy-flashcards-tts-server-1
+docker rm tutor-deploy-flashcards-cards-server-1
 docker rm tutor-deploy-flashcards-app-1
+
 docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
+docker rmi sszuev/open-tutor-cards-server:2.0.0-snapshot
 docker rmi sszuev/open-tutor:2.0.0-snapshot
-cd ../tts-server
-gradle clean build dockerBuildImage
+
+cd ..
+gradle clean build -x test
+cd ./app-tts
+gradle dockerBuildImage
+cd ../app-cards
+gradle dockerBuildImage
 cd ../app-ktor
-gradle clean build dockerBuildImage
+gradle dockerBuildImage
+cd ../tutor-deploy
 ```
 
 Example commands to deploy environment:

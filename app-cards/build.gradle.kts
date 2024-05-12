@@ -8,7 +8,7 @@ group = rootProject.group
 version = rootProject.version
 
 application {
-    mainClass.set("com.gitlab.sszuev.flashcards.speaker.TTSServerMainKt")
+    mainClass.set("com.gitlab.sszuev.flashcards.cards.CardsServerMainKt")
 }
 
 dependencies {
@@ -47,9 +47,13 @@ tasks.test {
 
 tasks.dockerCreateDockerfile {
     arg("CARDS_SERVER_NATS_HOST")
-    arg("CARDS_SERVICE_VOICERSS_KEY")
+    arg("DB_PG_URL")
+    arg("DB_PG_USER")
+    arg("DB_PG_PWD")
     environmentVariable("CARDS_SERVER_NATS_HOST", "\${CARDS_SERVER_NATS_HOST}")
-    environmentVariable("CARDS_SERVICE_VOICERSS_KEY", "\${CARDS_SERVICE_VOICERSS_KEY}")
+    environmentVariable("DB_PG_URL", "\${DB_PG_URL}")
+    environmentVariable("DB_PG_USER", "\${DB_PG_USER}")
+    environmentVariable("DB_PG_PWD", "\${DB_PG_PWD}")
 }
 
 docker {
@@ -58,7 +62,7 @@ docker {
     val javaArgs = listOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
     javaApplication {
         mainClassName.set(application.mainClass.get())
-        baseImage.set("sszuev/ubuntu-jammy-openjdk-17-espeak-ng")
+        baseImage.set("openjdk:23-jdk-slim")
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         images.set(listOf("$imageName:$tag"))
         jvmArgs.set(javaArgs)

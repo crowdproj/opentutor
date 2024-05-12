@@ -19,6 +19,7 @@ dependencies {
 
     implementation(project(":common"))
     implementation(project(":db-api"))
+    implementation(project(":utilities"))
 
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
