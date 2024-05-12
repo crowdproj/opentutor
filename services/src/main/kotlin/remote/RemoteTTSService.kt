@@ -7,6 +7,8 @@ import com.gitlab.sszuev.flashcards.services.TTSService
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
@@ -29,15 +31,19 @@ class RemoteTTSService(
         }
     }
 
-    override suspend fun getResource(context: TTSContext): TTSContext {
-        val answer = connection.request(
-            /* subject = */ topic,
-            /* body = */ context.toByteArray(),
-            /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
-        )
+    override suspend fun getResource(context: TTSContext) = context.exec()
+
+    private suspend fun TTSContext.exec(): TTSContext {
+        val answer = withContext(Dispatchers.IO) {
+            connection.request(
+                /* subject = */ topic,
+                /* body = */ this@exec.toByteArray(),
+                /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
+            )
+        }
         val res = ttsContextFromByteArray(answer.data)
-        res.copyTo(context)
-        return context
+        res.copyTo(this)
+        return this
     }
 
     private fun TTSContext.copyTo(target: TTSContext) {

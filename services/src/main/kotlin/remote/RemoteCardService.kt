@@ -7,6 +7,8 @@ import com.gitlab.sszuev.flashcards.services.ServiceSettings
 import com.gitlab.sszuev.flashcards.utils.cardContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import io.nats.client.Connection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
@@ -39,12 +41,14 @@ class RemoteCardService(
     override suspend fun resetCard(context: CardContext): CardContext = context.exec()
     override suspend fun deleteCard(context: CardContext): CardContext = context.exec()
 
-    private fun CardContext.exec(): CardContext {
-        val answer = connection.request(
-            /* subject = */ topic,
-            /* body = */ this.toByteArray(),
-            /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
-        )
+    private suspend fun CardContext.exec(): CardContext {
+        val answer = withContext(Dispatchers.IO) {
+            connection.request(
+                /* subject = */ topic,
+                /* body = */ this@exec.toByteArray(),
+                /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
+            )
+        }
         val res = cardContextFromByteArray(answer.data)
         res.copyTo(this)
         return this

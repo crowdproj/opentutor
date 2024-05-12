@@ -24,6 +24,7 @@ dependencies {
     implementation("io.nats:jnats:$natsVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
