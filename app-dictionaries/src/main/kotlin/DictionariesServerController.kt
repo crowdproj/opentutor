@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards
+package com.gitlab.sszuev.flashcards.dictionaries
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope

@@ -8,7 +8,7 @@ group = rootProject.group
 version = rootProject.version
 
 application {
-    mainClass.set("com.gitlab.sszuev.flashcards.cards.DictionariesServerMainKt")
+    mainClass.set("com.gitlab.sszuev.flashcards.dictionaries.DictionariesServerMainKt")
 }
 
 dependencies {

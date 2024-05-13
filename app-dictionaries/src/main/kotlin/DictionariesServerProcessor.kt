@@ -1,5 +1,6 @@
-package com.gitlab.sszuev.flashcards
+package com.gitlab.sszuev.flashcards.dictionaries
 
+import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.core.DictionaryCorProcessor
 import com.gitlab.sszuev.flashcards.utils.dictionaryContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray

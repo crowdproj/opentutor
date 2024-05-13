@@ -1,5 +1,6 @@
-package com.gitlab.sszuev.flashcards
+package com.gitlab.sszuev.flashcards.dictionaries
 
+import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbDictionaryRepository
 import io.nats.client.Nats

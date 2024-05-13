@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards
+package com.gitlab.sszuev.flashcards.dictionaries
 
 import com.gitlab.sszuev.flashcards.utilities.get
 import com.typesafe.config.Config
@@ -14,8 +14,8 @@ object DictionariesServerSettings {
     val port = conf.get(key = "dictionaries-server.nats.port", default = 4222)
     val user = conf.get(key = "dictionaries-server.nats.user", default = "dev")
     val password = conf.get(key = "dictionaries-server.nats.password", default = "dev")
-    val topic = conf.get(key = "dictionaries-server.nats.topic", default = "TTS")
-    val group = conf.get(key = "dictionaries-server.nats.group", default = "TTS")
+    val topic = conf.get(key = "dictionaries-server.nats.topic", default = "DICTIONARIES")
+    val group = conf.get(key = "dictionaries-server.nats.group", default = "DICTIONARIES")
 
     init {
         logger.info(printDetails())

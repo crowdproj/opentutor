@@ -1,3 +1,4 @@
 ### flashcard-kt ::: services
 
-The module represent services which delegate processing to `:core`
+The module represents services which delegate processing to `:core` either directly
+(local services) or through NATS client (remote services).

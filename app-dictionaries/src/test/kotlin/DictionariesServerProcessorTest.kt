@@ -1,5 +1,7 @@
-package com.gitlab.sszuev.flashcards
+package com.gitlab.sszuev.flashcards.dictionaries
 
+import com.gitlab.sszuev.flashcards.DbRepositories
+import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
