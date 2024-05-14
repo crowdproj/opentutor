@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.speaker
+package com.gitlab.sszuev.flashcards.cards
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -8,13 +8,12 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
-class TextToSpeechController(
-    private val processor: TextToSpeechProcessor
+class CardsServerController(
+    private val processor: CardsServerProcessor,
 ) {
-
     private val scope = CoroutineScope(
         context = Executors.newSingleThreadExecutor()
-            .asCoroutineDispatcher() + CoroutineName("thread-rabbitmq-controller")
+            .asCoroutineDispatcher() + CoroutineName("thread-cards-controller")
     )
 
     /**

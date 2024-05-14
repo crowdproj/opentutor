@@ -89,14 +89,14 @@ tasks.dockerCreateDockerfile {
         copyFile("./resources/data/dictionaries.csv", "/app/userdata/dictionaries.csv")
         copyFile("./resources/data/cards.csv", "/app/userdata/cards.csv")
     } else {
-        arg("TTS_CLIENT_RABBITMQ_HOST")
+        arg("CLIENT_NATS_HOST")
         arg("KEYCLOAK_AUTHORIZE_ADDRESS")
         arg("KEYCLOAK_ACCESS_TOKEN_ADDRESS")
         arg("DB_PG_URL")
         arg("DB_PG_USER")
         arg("DB_PG_PWD")
         arg("PORT")
-        environmentVariable("TTS_CLIENT_RABBITMQ_HOST", "\${TTS_CLIENT_RABBITMQ_HOST}")
+        environmentVariable("CLIENT_NATS_HOST", "\${CLIENT_NATS_HOST}")
         environmentVariable("KEYCLOAK_AUTHORIZE_ADDRESS", "\${KEYCLOAK_AUTHORIZE_ADDRESS}")
         environmentVariable("KEYCLOAK_ACCESS_TOKEN_ADDRESS", "\${KEYCLOAK_ACCESS_TOKEN_ADDRESS}")
         environmentVariable("DB_PG_URL", "\${DB_PG_URL}")
@@ -108,13 +108,16 @@ tasks.dockerCreateDockerfile {
 
 docker {
     val imageName: String
+    val baseImageName: String
     val tag = project.version.toString().lowercase()
     val javaArgs = mutableListOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
     if (System.getProperty("standalone") == null) {
         imageName = "sszuev/open-tutor"
+        baseImageName = "sszuev/ubuntu-jammy-openjdk-17-espeak-ng"
     } else {
         println("Build standalone image")
         imageName = "sszuev/open-tutor-standalone"
+        baseImageName = "openjdk:23-jdk-slim"
         // for standalone app, use special (builtin) user uuid & builtin user data (located in /app/userdata)
         javaArgs.add("-DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6")
         javaArgs.add("-DRUN_MODE=test")
@@ -122,7 +125,7 @@ docker {
     }
     javaApplication {
         mainClassName.set(application.mainClass.get())
-        baseImage.set("sszuev/ubuntu-jammy-openjdk-17-espeak-ng")
+        baseImage.set(baseImageName)
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         ports.set(listOf(8080))
         images.set(listOf("$imageName:$tag", "$imageName:latest"))

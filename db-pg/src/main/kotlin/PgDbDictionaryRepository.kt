@@ -22,6 +22,11 @@ class PgDbDictionaryRepository(
         PgDbConnector.connection(dbConfig)
     }
 
+    // enforce connection
+    fun connect() {
+        connection
+    }
+
     override fun findDictionaryById(dictionaryId: String): DbDictionary? = connection.execute {
         PgDbDictionary.findById(dictionaryId.toLong())?.toDbDictionary()
     }

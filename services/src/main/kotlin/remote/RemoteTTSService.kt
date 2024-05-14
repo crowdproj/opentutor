@@ -7,16 +7,18 @@ import com.gitlab.sszuev.flashcards.services.TTSService
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
 class RemoteTTSService(
-    private val ttsTopic: String,
+    private val topic: String,
     private val requestTimeoutInMillis: Long,
     connectionFactory: () -> Connection,
 ) : TTSService {
     constructor() : this(
-        ttsTopic = ServiceSettings.ttsTopic,
+        topic = ServiceSettings.ttsNatsTopic,
         requestTimeoutInMillis = ServiceSettings.requestTimeoutInMilliseconds,
         connectionFactory = { NatsConnectionFactory.connection }
     )
@@ -29,17 +31,25 @@ class RemoteTTSService(
         }
     }
 
-    override suspend fun getResource(context: TTSContext): TTSContext {
-        val answer = connection.request(
-            /* subject = */ ttsTopic,
-            /* body = */ context.toByteArray(),
-            /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
-        )
+    override suspend fun getResource(context: TTSContext) = context.exec()
+
+    private suspend fun TTSContext.exec(): TTSContext {
+        val answer = withContext(Dispatchers.IO) {
+            connection.request(
+                /* subject = */ topic,
+                /* body = */ this@exec.toByteArray(),
+                /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
+            )
+        }
         val res = ttsContextFromByteArray(answer.data)
-        context.responseTTSResourceEntity = res.responseTTSResourceEntity
-        context.normalizedRequestTTSResourceGet = res.normalizedRequestTTSResourceGet
-        context.errors.addAll(res.errors)
-        return context
+        res.copyTo(this)
+        return this
     }
 
+    private fun TTSContext.copyTo(target: TTSContext) {
+        target.responseTTSResourceEntity = this.responseTTSResourceEntity
+        target.normalizedRequestTTSResourceGet = this.normalizedRequestTTSResourceGet
+        target.errors.addAll(this.errors)
+        target.status = this.status
+    }
 }

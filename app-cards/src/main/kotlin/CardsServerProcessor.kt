@@ -1,12 +1,11 @@
-package com.gitlab.sszuev.flashcards.speaker
+package com.gitlab.sszuev.flashcards.cards
 
-import com.gitlab.sszuev.flashcards.core.TTSCorProcessor
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
+import com.gitlab.sszuev.flashcards.DbRepositories
+import com.gitlab.sszuev.flashcards.core.CardCorProcessor
+import com.gitlab.sszuev.flashcards.utils.cardContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray
-import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
 import io.nats.client.Message
-import io.nats.client.Nats
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -15,26 +14,14 @@ import java.util.concurrent.atomic.AtomicBoolean
 import kotlin.coroutines.CoroutineContext
 import kotlin.coroutines.cancellation.CancellationException
 
-private val logger = LoggerFactory.getLogger(NatsTextToSpeechProcessorImpl::class.java)
+private val logger = LoggerFactory.getLogger(CardsServerProcessor::class.java)
 
-class NatsTextToSpeechProcessorImpl(
+class CardsServerProcessor(
     private val topic: String,
     private val group: String,
-    private val repository: TTSResourceRepository,
+    private val repositories: DbRepositories,
     connectionFactory: () -> Connection,
-) : TextToSpeechProcessor, AutoCloseable {
-
-    constructor(
-        service: TextToSpeechService,
-        topic: String = "TTS",
-        group: String = "TTS",
-        connectionUrl: String = "nats://localhost:4222",
-    ) : this(
-        topic = topic,
-        group = group,
-        repository = DirectTTSResourceRepository(service),
-        connectionFactory = { Nats.connectReconnectOnConnect(connectionUrl) },
-    )
+) : AutoCloseable {
 
     private val run = AtomicBoolean(false)
     private val connection by lazy {
@@ -44,13 +31,18 @@ class NatsTextToSpeechProcessorImpl(
             }
         }
     }
-    private val processor = TTSCorProcessor()
+    private val processor = CardCorProcessor()
 
-    override suspend fun process(coroutineContext: CoroutineContext) {
+    fun ready() = run.get()
+
+    suspend fun process(coroutineContext: CoroutineContext) {
         val dispatcher = connection.createDispatcher { msg: Message ->
             CoroutineScope(coroutineContext).launch {
-                val context = ttsContextFromByteArray(msg.data)
-                context.repository = repository
+                val context = cardContextFromByteArray(msg.data)
+                if (logger.isDebugEnabled) {
+                    logger.debug("Processing ${context.requestId}")
+                }
+                context.repositories = repositories
                 processor.execute(context)
                 connection.publish(msg.replyTo, context.toByteArray())
             }
@@ -68,9 +60,8 @@ class NatsTextToSpeechProcessorImpl(
                 }
             }
         }
-    }
 
-    fun ready() = run.get()
+    }
 
     override fun close() {
         logger.info("Close.")

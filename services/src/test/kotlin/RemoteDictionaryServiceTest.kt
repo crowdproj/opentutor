@@ -1,12 +1,11 @@
 package com.gitlab.sszuev.flashcards.services.remote
 
-import com.gitlab.sszuev.flashcards.TTSContext
-import com.gitlab.sszuev.flashcards.model.domain.LangId
-import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
+import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.utils.dictionaryContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray
-import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
 import io.nats.client.Nats
 import kotlinx.coroutines.runBlocking
@@ -25,8 +24,7 @@ import java.util.concurrent.TimeUnit
 
 @Timeout(value = 60, unit = TimeUnit.SECONDS)
 @Testcontainers
-internal class RemoteTTSServiceTest {
-
+internal class RemoteDictionaryServiceTest {
     companion object {
 
         @Container
@@ -56,32 +54,30 @@ internal class RemoteTTSServiceTest {
     }
 
     @Test
-    fun `test receive message success`() = runBlocking {
+    fun `test get dictionaries success`() = runBlocking {
         val topic = "XXX"
         val group = "XXX"
-        val testData1 = ByteArray(42) { 42 }
-        val testData2 = ByteArray(42) { 21 }
-        val testRequest1 = TTSResourceGet(word = "qqq", lang = LangId("QQ"))
-        val testRequest2 = TTSResourceGet(word = "www", lang = LangId("WW"))
-        val testDataEntity1 = ResourceEntity(
-            TTSResourceId("qqq:qq"),
-            data = testData1
+        val testDictionary1 = DictionaryEntity.EMPTY.copy(
+            name = "kkk",
+            dictionaryId = DictionaryId("KKK")
         )
-        val testDataEntity2 = ResourceEntity(
-            TTSResourceId("fff:ff"),
-            data = testData2
+        val testDictionary2 = DictionaryEntity.EMPTY.copy(
+            name = "jjj",
+            dictionaryId = DictionaryId("JJJ")
         )
+        val testUser1 = AppAuthId("h")
+        val testUser2 = AppAuthId("f")
 
         // server:
         connection.createDispatcher {
-            val context = ttsContextFromByteArray(it.data)
-            when (context.requestTTSResourceGet) {
-                testRequest1 -> {
-                    context.responseTTSResourceEntity = testDataEntity1
+            val context = dictionaryContextFromByteArray(it.data)
+            when (context.requestAppAuthId) {
+                testUser1 -> {
+                    context.responseDictionaryEntityList = listOf(testDictionary1)
                 }
 
-                testRequest2 -> {
-                    context.responseTTSResourceEntity = testDataEntity2
+                testUser2 -> {
+                    context.responseDictionaryEntityList = listOf(testDictionary2)
                 }
 
                 else -> Assertions.fail()
@@ -90,15 +86,15 @@ internal class RemoteTTSServiceTest {
             connection.publish(it.replyTo, body)
         }.subscribe(topic, group).unsubscribe(topic, 2)
 
-        val service = RemoteTTSService(
+        val service = RemoteDictionaryService(
             topic = topic,
             requestTimeoutInMillis = 2000L,
         ) { Nats.connect(connectionUrl) }
 
-        val res1 = service.getResource(TTSContext().also { it.requestTTSResourceGet = testRequest1 })
-        Assertions.assertEquals(testDataEntity1, res1.responseTTSResourceEntity)
+        val res1 = service.getAllDictionaries(DictionaryContext().also { it.requestAppAuthId = testUser1 })
+        Assertions.assertEquals(listOf(testDictionary1), res1.responseDictionaryEntityList)
 
-        val res2 = service.getResource(TTSContext().also { it.requestTTSResourceGet = testRequest2 })
-        Assertions.assertEquals(testDataEntity2, res2.responseTTSResourceEntity)
+        val res2 = service.getAllDictionaries(DictionaryContext().also { it.requestAppAuthId = testUser2 })
+        Assertions.assertEquals(listOf(testDictionary2), res2.responseDictionaryEntityList)
     }
 }

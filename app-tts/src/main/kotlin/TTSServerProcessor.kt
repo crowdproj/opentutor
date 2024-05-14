@@ -4,7 +4,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlin.coroutines.CoroutineContext
 
-interface TextToSpeechProcessor {
+interface TTSServerProcessor {
     /**
      * Runs the endless lifecycle, which processes TTS messages.
      * @param [coroutineContext][CoroutineScope]

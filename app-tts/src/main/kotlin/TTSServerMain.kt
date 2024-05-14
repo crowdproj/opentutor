@@ -7,7 +7,7 @@ private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.speak
 
 fun main() {
     val config = NatsConfig()
-    val processor = NatsTextToSpeechProcessorImpl(
+    val processor = NatsTTSServerProcessorImpl(
         service = createTTSService(),
         topic = config.topic,
         group = config.group,
@@ -18,5 +18,5 @@ fun main() {
         processor.close()
     })
     logger.info("Start processing.")
-    TextToSpeechController(processor).start()
+    TTSServerController(processor).start()
 }
