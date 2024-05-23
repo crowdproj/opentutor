@@ -172,6 +172,16 @@ function toggleManageCardsButton(suffix, disable) {
 }
 
 function initCardDialog(dialogId, cards) {
+    $('#' + dialogId + '-card-dialog-fullscreen-btn').click(function () {
+        const dialog = $('#' + dialogId + '-card-dialog .modal-dialog')
+        dialog.toggleClass('modal-fullscreen');
+        const icon = $(this).find('i');
+        if (dialog.hasClass('modal-fullscreen')) {
+            icon.removeClass('bi-arrows-fullscreen').addClass('bi-arrows-angle-contract');
+        } else {
+            icon.removeClass('bi-arrows-angle-contract').addClass('bi-arrows-fullscreen');
+        }
+    });
     $('#' + dialogId + '-card-dialog-lg-collapse').off('show.bs.collapse').on('show.bs.collapse', function () {
         onCollapseLgFrame(dialogId);
     });
