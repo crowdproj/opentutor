@@ -9,14 +9,10 @@ import org.slf4j.LoggerFactory
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SearchCardsHelper")
 
 /**
- * recent cards go first
+ * oldest cards go first
  */
-private val comparator: Comparator<CardEntity> = Comparator<CardEntity> { left, right ->
+private val oldestFirstComparator: Comparator<CardEntity> = Comparator<CardEntity> { left, right ->
     left.changedAt.compareTo(right.changedAt)
-}.reversed().thenComparing { left, right ->
-    val la = left.answered ?: 0
-    val ra = right.answered ?: 0
-    la.compareTo(ra)
 }
 
 /**
@@ -38,7 +34,9 @@ internal fun CardContext.findCardDeck(): List<CardEntity> {
         if (this.normalizedRequestCardFilter.random) {
             value = value.shuffled()
         }
-        value = value.sortedWith(comparator)
+        val latestFirst = value.sortedWith(oldestFirstComparator.reversed())
+        val oldestFirst = value.sortedWith(oldestFirstComparator)
+        value = latestFirst.zip(oldestFirst).flatMap { p -> listOf(p.first, p.second) }
         value.toMutableList()
     }.toMutableMap()
     val selectedCards = mutableListOf<CardEntity>()
@@ -93,7 +91,7 @@ private fun collectCardDeck(all: List<CardEntity>, res: MutableSet<CardEntity>, 
             }
         }
     }
-    res.addAll(rest.sortedWith(comparator).take(num - res.size))
+    res.addAll(rest.sortedWith(oldestFirstComparator).take(num - res.size))
 }
 
 internal fun isSimilar(candidate: CardEntity, res: Set<CardEntity>): Boolean = res.any { it.isSimilar(candidate) }
