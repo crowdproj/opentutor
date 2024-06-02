@@ -101,53 +101,72 @@ function cardRowOnClick(row, card) {
 }
 
 function selectCardItemForEdit(row, card) {
-    cleanCardDialogLinks('edit');
-    const input = $('#edit-card-dialog-word');
-    input.val(getCardFirstWordWord(card));
-    input.attr('item-id', card.cardId);
+    const index = 1
+    cleanCardDialogLinks('edit', index);
+    removeExtraAccordionItems('edit');
 
-    insertCardDialogLinks('edit');
+    $.each(card.words, function (i, cardWord) {
+        const index = i + 1;
+
+        if (i !== 0) {
+            initNextCardDialogAccordionItem('edit', i);
+        }
+        if (i === card.words.length - 1) {
+            $('#edit-card-dialog-collapse-i' + index + ' .add-word').show();
+            if (i !== 0) {
+                $('#edit-card-dialog-collapse-i' + index + ' .remove-word').show();
+            }
+        }
+
+        const wordInput = $('#edit-card-dialog-collapse-i' + index + ' .word');
+        wordInput.val(cardWord.word);
+        wordInput.attr('item-id', card.cardId);
+
+        insertCardDialogLinks('edit', index);
+
+        const soundBtn = $('#edit-card-dialog-collapse-i' + index + ' .sound');
+        soundBtn.attr('word-txt', cardWord.word);
+        if (cardWord.sound) {
+            soundBtn.prop('disabled', false);
+            soundBtn.attr('word-sound', cardWord.sound);
+            initEditCardDialogSound(index);
+        } else {
+            soundBtn.prop('disabled', true);
+            soundBtn.removeAttr('word-sound', cardWord.sound);
+        }
+
+        const selectIndex = selectedDictionary.partsOfSpeech.indexOf(cardWord.partOfSpeech)
+        if (selectIndex > -1) {
+            $('#edit-card-dialog-collapse-i' + index + ' .part-of-speech option').eq(index).prop('selected', true);
+        }
+        $('#edit-card-dialog-collapse-i' + index + ' .transcription').val(cardWord.transcription);
+
+        const translations = cardWord.translations.map(x => x.join(", "));
+        const examples = cardWord.examples.map(it => it.example);
+        const translationsArea = $('#edit-card-dialog-collapse-i' + index + ' .translation');
+        const examplesArea = $('#edit-card-dialog-collapse-i' + index + ' .examples');
+        translationsArea.attr('rows', translations.length);
+        examplesArea.attr('rows', examples.length);
+        translationsArea.val(translations.join("\n"));
+        examplesArea.val(examples.join("\n"));
+
+    });
+    closeAccordionItemsWithExcept('edit', 1);
+
     toggleManageCardsButton('edit', false);
-
-    const btn = $('#edit-card-dialog-sound');
-    btn.attr('word-txt', getCardFirstWordWord(card));
-    if (getCardFirstWordSound(card)) {
-        btn.prop('disabled', false);
-        btn.attr('word-sound', getCardFirstWordSound(card));
-    } else {
-        btn.prop('disabled', true);
-        btn.removeAttr('word-sound', getCardFirstWordSound(card));
-    }
-
-    const index = selectedDictionary.partsOfSpeech.indexOf(getCardFirstWordPartOfSpeech(card))
-    if (index > -1) {
-        $('#edit-card-dialog-part-of-speech option').eq(index + 1).prop('selected', true);
-    }
-    $('#edit-card-dialog-transcription').val(getCardFirstWordTranscriptionAsArrayArray(card));
-    const translations = getCardFirstWordTranslationsAsArrayArray(card).map(x => x.join(", "));
-    const examples = getCardFirstWordExamplesAsArray(card);
-    const translationsArea = $('#edit-card-dialog-translation');
-    const examplesArea = $('#edit-card-dialog-examples');
-    translationsArea.attr('rows', translations.length);
-    examplesArea.attr('rows', examples.length);
-    translationsArea.val(translations.join("\n"));
-    examplesArea.val(examples.join("\n"));
 }
 
 function selectCardItemForAdd(row, word) {
-    cleanCardDialogLinks('add');
+    const index = 1
+    cleanCardItemMains('add', index);
     if (row != null) {
         markRowSelected(row);
     }
-    $('#add-card-dialog-word').val(word);
-    insertCardDialogLinks('add');
+    $('#add-card-dialog-collapse-i' + index + ' .word').val(word);
+    insertCardDialogLinks('add', index);
     toggleManageCardsButton('add', false);
-
-    $('#add-card-dialog-part-of-speech option:selected').prop('selected', false);
-
-    $('#add-card-dialog-transcription').val('');
-    $('#add-card-dialog-translation').val('');
-    $('#add-card-dialog-examples').val('');
+    removeExtraAccordionItems('add');
+    $('#add-card-dialog-collapse-i' + index + ' .add-word').show();
 }
 
 function selectCardItemForDeleteOrReset(card, actionId) {
@@ -162,9 +181,12 @@ function resetCardSelection() {
     toggleManageCardsButton('edit', true);
     toggleManageCardsButton('delete', true);
     toggleManageCardsButton('reset', true);
-    cleanCardDialogLinks('add');
-    cleanCardDialogLinks('edit');
+    cleanCardDialogLinks('add', 1);
+    cleanCardDialogLinks('edit', 1);
     resetRowSelection($('#words tbody'));
+
+    removeExtraAccordionItems('add');
+    removeExtraAccordionItems('edit');
 }
 
 function toggleManageCardsButton(suffix, disable) {
@@ -172,7 +194,9 @@ function toggleManageCardsButton(suffix, disable) {
 }
 
 function initCardDialog(dialogId, cards) {
-    $('#' + dialogId + '-card-dialog-fullscreen-btn').click(function () {
+    const index = 1
+    // full screen handler
+    $('#' + dialogId + '-card-dialog-fullscreen-btn').off('click').on('click', function () {
         const dialog = $('#' + dialogId + '-card-dialog .modal-dialog')
         dialog.toggleClass('modal-fullscreen');
         const icon = $(this).find('i');
@@ -182,24 +206,15 @@ function initCardDialog(dialogId, cards) {
             icon.removeClass('bi-arrows-angle-contract').addClass('bi-arrows-fullscreen');
         }
     });
-    $('#' + dialogId + '-card-dialog-lg-collapse').off('show.bs.collapse').on('show.bs.collapse', function () {
-        onCollapseLgFrame(dialogId);
-    });
-    $('#' + dialogId + '-card-dialog-word').off('input').on('input', function () {
-        onChangeCardDialogMains(dialogId);
-        insertCardDialogLinks(dialogId);
-    });
-    $('#' + dialogId + '-card-dialog-translation').off('input').on('input', function () {
-        onChangeCardDialogMains(dialogId);
-    });
-    const select = $('#' + dialogId + '-card-dialog-part-of-speech').html('').append($(`<option value="-1"></option>`));
-    $.each(selectedDictionary.partsOfSpeech, function (index, value) {
-        select.append($(`<option value="${index}">${value}</option>`));
-    });
+
+    initCardDialogAccordionItemInputs(dialogId, index)
 
     $('#words-btn-' + dialogId).off('click').on('click', function () { // push open dialog
-        onChangeCardDialogMains('edit');
-        onChangeCardDialogMains('add');
+        removeExtraAccordionItems('add');
+        closeAccordionItemsWithExcept('edit', 1);
+        closeAccordionItemsWithExcept('add', 1);
+        onChangeCardDialogMains('edit', index);
+        onChangeCardDialogMains('add', index);
     });
     $('#' + dialogId + '-card-dialog-save').off('click').on('click', function () { // push save dialog button
         const res = createResourceCardItem(dialogId, cards);
@@ -216,13 +231,107 @@ function initCardDialog(dialogId, cards) {
             updateCard(res, onDone);
         }
     });
-    if ('edit' === dialogId) {
-        initCardEditDialog();
-    }
+
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .add-word').off('click').on('click', function () {
+        initNextCardDialogAccordionItem(dialogId, index);
+        closeAccordionItemsWithExcept(dialogId, index + 1);
+    });
 }
 
-function initCardEditDialog() {
-    const soundBtn = $('#edit-card-dialog-sound');
+function initNextCardDialogAccordionItem(dialogId, prevIndex) {
+    const index = prevIndex + 1
+
+    // create new item
+    cloneCardDialogAccordionItem(dialogId, prevIndex, index);
+
+    // inputs
+    initCardDialogAccordionItemInputs(dialogId, index);
+
+    // init remove-word button
+    initCardDialogAccordionItemRemoveButton(dialogId, prevIndex, index);
+
+    // init add-word button
+    initCardDialogAccordionItemAddButton(dialogId, index);
+}
+
+function cloneCardDialogAccordionItem(dialogId, sourceIndex, targetIndex) {
+    const nextItem = $('#' + dialogId + '-card-dialog-accordion-item-i' + sourceIndex).clone();
+    updateCardDialogAccordionItemIds(nextItem, sourceIndex, targetIndex);
+    $('#' + dialogId + '-card-dialog-accordion').append(nextItem);
+    nextItem.find('.accordion-button').text('Word #' + targetIndex);
+    cleanCardItemMains(dialogId, targetIndex);
+}
+
+function initCardDialogAccordionItemRemoveButton(dialogId, prevIndex, index) {
+    $('.remove-word').each(function () {
+        $(this).hide();
+    })
+    const removeWordButton = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .remove-word')
+    const prevRemoveWordButton = $('#' + dialogId + '-card-dialog-collapse-i' + prevIndex + ' .remove-word')
+    const prevAddWordButton = $('#' + dialogId + '-card-dialog-collapse-i' + prevIndex + ' .add-word')
+    removeWordButton.on('click', function () {
+        $(this).closest('.accordion-item').remove();
+        if (prevIndex !== 1) {
+            prevRemoveWordButton.show();
+        }
+        prevAddWordButton.show();
+        closeAccordionItemsWithExcept(dialogId, prevIndex);
+    });
+    removeWordButton.show();
+}
+
+function initCardDialogAccordionItemAddButton(dialogId, index) {
+    $('.add-word').each(function () {
+        $(this).hide();
+    })
+    const addWordButton = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .add-word')
+    addWordButton.off('click').on('click', function () {
+        initNextCardDialogAccordionItem(dialogId, index);
+        closeAccordionItemsWithExcept(dialogId, index + 1);
+    });
+    onChangeCardDialogMains(dialogId, index);
+}
+
+function initCardDialogAccordionItemInputs(dialogId, index) {
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .lg-link-collapse')
+        .off('show.bs.collapse')
+        .on('show.bs.collapse', function () {
+            onCollapseLgFrame(dialogId, index);
+        });
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .word')
+        .off('input')
+        .on('input', function () {
+            onChangeCardDialogMains(dialogId, index);
+            insertCardDialogLinks(dialogId, index);
+        });
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .translation')
+        .off('input')
+        .on('input', function () {
+            onChangeCardDialogMains(dialogId, index);
+        });
+    const select = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .part-of-speech')
+        .html('').append($(`<option value="-1"></option>`));
+    $.each(selectedDictionary.partsOfSpeech, function (i, value) {
+        select.append($(`<option value="${i}">${value}</option>`));
+    });
+}
+
+function closeAccordionItemsWithExcept(dialogId, index) {
+    $('#' + dialogId + '-card-dialog .accordion-button').each(function () {
+        if ($(this).attr('data-bs-target').includes('-i' + index)) {
+            if ($(this).hasClass('collapsed')) {
+                $(this).click();
+            }
+        } else {
+            if (!$(this).hasClass('collapsed')) {
+                $(this).click();
+            }
+        }
+    });
+}
+
+function initEditCardDialogSound(index) {
+    const soundBtn = $('#edit-card-dialog-collapse-i' + index + ' .sound');
     soundBtn.prop('disabled', false);
     soundBtn.off('click').on('click', function () {
         const audio = soundBtn.attr('word-sound');
@@ -258,57 +367,135 @@ function initCardPrompt(actionId) {
     });
 }
 
-function onChangeCardDialogMains(dialogId) {
-    const word = $('#' + dialogId + '-card-dialog-word');
-    const translation = $('#' + dialogId + '-card-dialog-translation');
-    $('#' + dialogId + '-card-dialog-save').prop('disabled', !(word.val() && translation.val()));
+function onChangeCardDialogMains(dialogId, index) {
+    const word = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .word');
+    const translation = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .translation');
+    const save = $('#' + dialogId + '-card-dialog-save');
+
+    if (index === 1) {
+        save.prop('disabled', !(word.val() && translation.val()));
+    } else {
+        save.prop('disabled', !word.val());
+    }
+
+    const addWordButton = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .add-word');
+    if (!isLastAccordionItem(dialogId, index)) {
+        // not last
+        addWordButton.hide();
+        return;
+    }
+    if (index === 1) {
+        if (word.val() && translation.val()) {
+            addWordButton.show();
+        } else {
+            addWordButton.hide();
+        }
+    } else {
+        if (word.val()) {
+            addWordButton.show();
+        } else {
+            addWordButton.hide();
+        }
+    }
+}
+
+function isLastAccordionItem(dialogId, index) {
+    return $('.accordion-item').find('#' + dialogId + '-card-dialog-collapse-i' + (index + 1)).length === 0;
 }
 
 function createResourceCardItem(dialogId, cards) {
-    const input = $('#' + dialogId + '-card-dialog-word');
-    const itemId = input.attr('item-id');
+    const itemId = $('#' + dialogId + '-card-dialog-collapse-i1 .word').attr('item-id');
+
     const resCard = itemId ? jQuery.extend({}, findById(cards, itemId)) : {};
     resCard.dictionaryId = selectedDictionary.dictionaryId;
-    setCardFirstWordWord(resCard, input.val().trim());
-    setCardFirstWordTranscription(resCard, $('#' + dialogId + '-card-dialog-transcription').val().trim());
-    setCardFirstWordPartOfSpeech(resCard, $('#' + dialogId + '-card-dialog-part-of-speech option:selected').text());
-    setCardFirstWordExamplesArray(resCard, toArray($('#' + dialogId + '-card-dialog-examples').val(), '\n'));
-    setCardFirstWordTranslationsArrayArray(resCard,
-        toArray($('#' + dialogId + '-card-dialog-translation').val(), '\n').map(x => toArray(x, '[,;]')));
+    resCard.words = [];
+
+    let i = 0
+    $('#' + dialogId + '-card-dialog .accordion-item').each(function () {
+        const wordInput = $(this).find('.word');
+        const transcriptionInput = $(this).find('.transcription');
+        const partOfSpeechInput = $(this).find('.part-of-speech option:selected');
+        const examplesInput = $(this).find('.examples');
+        const translationInput = $(this).find('.translation');
+        if (!wordInput.val()) {
+            return;
+        }
+        if (i === 0 && !translationInput.val()) {
+            return;
+        }
+
+        const w = {};
+        w.word = wordInput.val().trim();
+        w.transcription = transcriptionInput.val().trim();
+        w.partOfSpeech = partOfSpeechInput.text();
+        w.examples = []
+        const examples = toArray(examplesInput.val(), '\n');
+        examples.forEach(function (example) {
+            let ex = {example: example}
+            w.examples.push(ex)
+        })
+        w.translations = toArray(translationInput.val(), '\n').map(x => toArray(x, '[,;]'));
+
+        resCard.words[i] = w;
+        i++;
+    });
+
     return resCard;
 }
 
-function cleanCardDialogLinks(dialogId) {
-    $('#' + dialogId + '-card-dialog-gl-link').html('');
-    $('#' + dialogId + '-card-dialog-yq-link').html('');
-    $('#' + dialogId + '-card-dialog-lg-link').html('');
-    $('#' + dialogId + '-card-dialog-lg-collapse').removeClass('show');
+function cleanCardItemMains(dialogId, index) {
+    cleanCardDialogLinks(dialogId, index);
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .word').val('');
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .part-of-speech option:selected').prop('selected', false);
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .transcription').val('');
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .translation').val('');
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .examples').val('');
 }
 
-function insertCardDialogLinks(dialogId) {
-    const input = $('#' + dialogId + '-card-dialog-word');
+function cleanCardDialogLinks(dialogId, index) {
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .gl-link').html('');
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .ya-link').html('');
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .lg-link').html('');
+    $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .lg-link-collapse').removeClass('show');
+}
+
+function removeExtraAccordionItems(dialogId) {
+    $('#' + dialogId + '-card-dialog .accordion-item').each(function () {
+        if ($(this).attr('id').includes('-i1')) {
+            const accordionButton = $(this).find('.accordion-button');
+            if (accordionButton.hasClass('collapsed')) {
+                accordionButton.click();
+            }
+        } else {
+            $(this).remove();
+        }
+    });
+}
+
+function insertCardDialogLinks(dialogId, index) {
+    const input = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .word');
     const sl = selectedDictionary.sourceLang;
     const tl = selectedDictionary.targetLang;
     const text = input.val();
     if (!text) {
         return;
     }
-    createLink($('#' + dialogId + '-card-dialog-gl-link'), toGlURI(text, sl, tl));
-    createLink($('#' + dialogId + '-card-dialog-ya-link'), toYaURI(text, sl, tl));
-    createLink($('#' + dialogId + '-card-dialog-lg-link'), toLgURI(text, sl, tl));
+    createLink($('#' + dialogId + '-card-dialog-collapse-i' + index + ' .gl-link'), toGlURI(text, sl, tl));
+    createLink($('#' + dialogId + '-card-dialog-collapse-i' + index + ' .ya-link'), toYaURI(text, sl, tl));
+    createLink($('#' + dialogId + '-card-dialog-collapse-i' + index + ' .lg-link'), toLgURI(text, sl, tl));
 }
 
 function createLink(parent, uri) {
     parent.html(`<a class='btn btn-link' href='${uri}' target='_blank'>${uri}</a>`);
 }
 
-function onCollapseLgFrame(dialogId) {
+function onCollapseLgFrame(dialogId, index) {
     const sl = selectedDictionary.sourceLang;
     const tl = selectedDictionary.targetLang;
 
-    const lgDiv = $('#' + dialogId + '-card-dialog-lg-collapse div');
-    const dialogLinksDiv = $('#' + dialogId + '-card-dialog-links');
-    const wordInput = $('#' + dialogId + '-card-dialog-word');
+    const lgDiv = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .lg-link-collapse div');
+    const dialogLinksDiv = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .links');
+    const wordInput = $('#' + dialogId + '-card-dialog-collapse-i' + index + ' .word');
     const text = wordInput.val();
     const prev = dialogLinksDiv.attr('word-txt');
     if (text === prev) {
@@ -316,6 +503,7 @@ function onCollapseLgFrame(dialogId) {
     }
     const extUri = toLgURI(text, sl, tl);
     const height = calcInitLgFrameHeight();
+    // noinspection HtmlUnknownAttribute
     const frame = $(`<iframe noborder="0" width="1140" height="800">LgFrame</iframe>`);
     frame.attr('src', extUri);
     frame.attr('height', height);
@@ -332,4 +520,24 @@ function findCardByWordPrefix(cards, prefix) {
         return null;
     }
     return cards.find((card) => getCardFirstWordWord(card).toLowerCase().startsWith(search));
+}
+
+function updateCardDialogAccordionItemIds(element, indexWas, indexNew) {
+    $(element).attr('id', $(element).attr('id').replace('i' + indexWas, 'i' + indexNew));
+    $(element).find('[id]').each(function () {
+        const id = $(this).attr('id');
+        $(this).attr('id', id.replace('i' + indexWas, 'i' + indexNew));
+    });
+    $(element).find('[data-bs-target]').each(function () {
+        const target = $(this).attr('data-bs-target');
+        $(this).attr('data-bs-target', target.replace('i' + indexWas, 'i' + indexNew));
+    });
+    $(element).find('[aria-controls]').each(function () {
+        const controls = $(this).attr('aria-controls');
+        $(this).attr('aria-controls', controls.replace('i' + indexWas, 'i' + indexNew));
+    });
+    $(element).find('[aria-labelledby]').each(function () {
+        const labelledby = $(this).attr('aria-labelledby');
+        $(this).attr('aria-labelledby', labelledby.replace('i' + indexWas, 'i' + indexNew));
+    });
 }

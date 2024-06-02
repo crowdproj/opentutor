@@ -3,7 +3,8 @@
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" th:id="${id}+ '-card-dialog-label'" th:text="${#strings.toUpperCase(id)}">edit word</h5>
+                <h5 class="modal-title" th:id="${id} + '-card-dialog-label'" th:text="${#strings.toUpperCase(id)}">edit
+                    word</h5>
                 <div class="btn-group ms-auto">
                     <button th:id="${id} + '-card-dialog-fullscreen-btn'" type="button" aria-label="Fullscreen">
                         <i class="bi bi-arrows-fullscreen"></i>
@@ -14,83 +15,117 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="row">
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" th:id="${id} + '-card-dialog-word-sizing-sm'">word</span>
-                        </div>
-                        <input th:id="${id} + '-card-dialog-word'" type="text" class="form-control" aria-label="word"
-                               th:aria-describedby="${id} + 'edit-card-dialog-word-sizing-sm'"/>
-                        <div class="input-group-append">
-                            <button th:insert="speaker.html :: svg" th:id="${id} + '-card-dialog-sound'" type="button"
-                                    class="sound btn btn-secondary" disabled></button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend">
-                            <span style="width: 120px" class="input-group-text"
-                                  th:id="${id} + '-card-dialog-transcription-sizing-sm'">transcription</span>
-                        </div>
-                        <input th:id="${id} + '-card-dialog-transcription'" type="text" class="form-control"
-                               aria-label="transcription"
-                               th:aria-describedby="${id} + 'edit-card-dialog-transcription-sizing-sm'"/>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend d-flex align-items-stretch">
-                            <span style="width: 120px" class="input-group-text"
-                                  th:id="${id} + '-card-dialog-part-of-speech-sizing-sm'">part of speech</span>
-                        </div>
-                        <select th:id="${id} + '-card-dialog-part-of-speech'" class="form-select"
-                                aria-label="Select part of speech"><option value="-1"></option></select>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend d-flex align-items-stretch">
-                            <span style="width: 120px" class="input-group-text"
-                                  th:id="${id} + '-card-dialog-translation-sizing-sm'">translation</span>
-                        </div>
-                        <textarea th:id="${id} + '-card-dialog-translation'" rows="1" class="form-control"
-                                  aria-label="translation"
-                                  th:aria-describedby="${id} + 'edit-card-dialog-translation-sizing-sm'"></textarea>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="input-group input-group-sm mb-3">
-                        <div class="input-group-prepend d-flex align-items-stretch">
-                            <span style="width: 120px" class="input-group-text"
-                                  th:id="${id} + '-card-dialog-examples-sizing-sm'">examples</span>
-                        </div>
-                        <textarea th:id="${id} + '-card-dialog-examples'" rows="1" class="form-control"
-                                  aria-label="examples"
-                                  th:aria-describedby="${id} + 'edit-card-dialog-examples-sizing-sm'"></textarea>
-                    </div>
-                </div>
-                <div class="row" th:id="${id} + '-card-dialog-links'">
-                    <div class="card-header">
-                        <h6 class="mb-0" th:id="${id} + '-card-dialog-gl-link'"></h6>
-                    </div>
-                    <div class="card-header">
-                        <h6 class="mb-0" th:id="${id} + '-card-dialog-ya-link'"></h6>
-                    </div>
-                    <div class="card-header d-flex justify-content-between" th:id="${id} + '-card-dialog-lg-header'">
-                        <h6 class="mb-0" th:id="${id}  + '-card-dialog-lg-link'"></h6>
-                        <h6 class="mb-0">
-                            <button class="btn btn-link"
-                                    data-bs-toggle="collapse"
-                                    th:data-bs-target="'#' + ${id} + '-card-dialog-lg-collapse'"
-                                    aria-expanded="false"
-                                    th:aria-controls="'#' + ${id} + '-card-dialog-lg-collapse'">v
+                <div class="accordion" th:id="${id} + '-card-dialog-accordion'">
+                    <div class="accordion-item" th:id="${id} + '-card-dialog-accordion-item-i1'">
+                        <h2 class="accordion-header" th:id="${id} + '-card-dialog-heading-i1'">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
+                                    th:data-bs-target="'#' + ${id} + '-card-dialog-collapse-i1'"
+                                    aria-expanded="true" th:aria-controls="${id} + '-card-dialog-collapse-i1'">
+                                Word #1
                             </button>
-                        </h6>
-                    </div>
-                    <div th:id="${id} + '-card-dialog-lg-collapse'" class="collapse"
-                         th:aria-labelledby="${id} + '-card-dialog-lg-header'">
-                        <div class="card-body" style="overflow: auto">
+                        </h2>
+                        <div th:id="${id} + '-card-dialog-collapse-i1'" class="accordion-collapse collapse show"
+                             th:aria-labelledby="${id} + '-card-dialog-heading-i1'"
+                             th:data-bs-parent="${id} + '-card-dialog-accordion'">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"
+                                                  th:id="${id} + '-card-dialog-word-sizing-sm-i1'">word</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control word"
+                                               aria-label="word"
+                                               th:aria-describedby="${id} + '-card-dialog-word-sizing-sm-i1'"/>
+                                        <div class="input-group-append">
+                                            <button th:insert="speaker.html :: svg"
+                                                    type="button"
+                                                    class="sound btn btn-secondary sound" disabled></button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend d-flex align-items-stretch">
+                                    <span style="width: 120px" class="input-group-text"
+                                          th:id="${id} + '-card-dialog-translation-sizing-sm-i1'">translation</span>
+                                        </div>
+                                        <textarea rows="1"
+                                                  class="form-control translation"
+                                                  aria-label="translation"
+                                                  th:aria-describedby="${id} + '-card-dialog-translation-sizing-sm-i1'"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend">
+                                    <span style="width: 120px" class="input-group-text"
+                                          th:id="${id} + '-card-dialog-transcription-sizing-sm-i1'">transcription</span>
+                                        </div>
+                                        <input type="text"
+                                               class="form-control transcription"
+                                               aria-label="transcription"
+                                               th:aria-describedby="${id} + '-card-dialog-transcription-sizing-sm-i1'"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend d-flex align-items-stretch">
+                                            <span style="width: 120px" class="input-group-text">part of speech</span>
+                                        </div>
+                                        <select class="form-select part-of-speech" aria-label="Select part of speech">
+                                            <option value="-1"></option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-group input-group-sm mb-3">
+                                        <div class="input-group-prepend d-flex align-items-stretch">
+                                            <span style="width: 120px" class="input-group-text"
+                                                  th:id="${id} + '-card-dialog-examples-sizing-sm-i1'">examples</span>
+                                        </div>
+                                        <textarea rows="1" class="form-control examples"
+                                                  aria-label="examples"
+                                                  th:aria-describedby="${id} + '-card-dialog-examples-sizing-sm-i1'"></textarea>
+                                    </div>
+                                </div>
+                                <div class="row links">
+                                    <div class="card-header">
+                                        <h6 class="mb-0 gl-link"></h6>
+                                    </div>
+                                    <div class="card-header">
+                                        <h6 class="mb-0 ya-link"></h6>
+                                    </div>
+                                    <div class="card-header d-flex justify-content-between"
+                                         th:id="${id} + '-card-dialog-lg-header-i1'">
+                                        <h6 class="mb-0 lg-link"></h6>
+                                        <h6 class="mb-0">
+                                            <button class="btn btn-link lg-link-collapse"
+                                                    data-bs-toggle="collapse"
+                                                    th:data-bs-target="'#' + ${id} + '-card-dialog-lg-collapse-i1'"
+                                                    aria-expanded="false"
+                                                    th:aria-controls="'#' + ${id} + '-card-dialog-lg-collapse-i1'">
+                                                <i class="bi bi-caret-down-fill"></i>
+                                            </button>
+                                        </h6>
+                                    </div>
+                                    <div th:id="${id} + '-card-dialog-lg-collapse-i1'" class="collapse lg-link-collapse"
+                                         th:aria-labelledby="${id} + '-card-dialog-lg-header-i1'">
+                                        <div class="card-body" style="overflow: auto">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group ms-auto">
+                                <button type="button" aria-label="Add word" class="add-word">
+                                    <i class="bi bi-plus"></i>
+                                </button>
+                                <button type="button" aria-label="Remove word" style="display: none;"
+                                        class="remove-word">
+                                    <i class="bi bi-dash"></i>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
