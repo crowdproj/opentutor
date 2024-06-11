@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.model.domain
 
 import com.gitlab.sszuev.flashcards.model.common.NONE
+import com.gitlab.sszuev.flashcards.utils.MapStringAnySerializer
 import kotlinx.datetime.Instant
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
@@ -11,7 +12,7 @@ data class CardEntity(
     val dictionaryId: DictionaryId = DictionaryId.NONE,
     val words: List<CardWordEntity> = emptyList(),
     val stats: Map<Stage, Long> = emptyMap(),
-    @Serializable
+    @Serializable(with = MapStringAnySerializer::class)
     val details: Map<String, @Polymorphic Any> = emptyMap(),
     val answered: Int? = null,
     val changedAt: Instant = Instant.NONE,
