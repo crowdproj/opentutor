@@ -34,6 +34,7 @@ private val cbor = Cbor {
 private val json = Json {
     encodeDefaults = false
     ignoreUnknownKeys = true
+    prettyPrint = true
 }
 
 @OptIn(ExperimentalSerializationApi::class)

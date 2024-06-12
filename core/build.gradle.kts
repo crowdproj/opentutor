@@ -9,11 +9,13 @@ dependencies {
     val junitVersion: String by project
     val slf4jVersion: String by project
     val kotlinCoroutinesVersion: String by project
+    val caffeineVersion: String by project
 
     implementation(project(":cor-lib"))
     implementation(project(":db-api"))
     implementation(project(":common"))
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
+    implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")

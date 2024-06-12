@@ -1,0 +1,1375 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "ru",
+    "partsOfSpeech": [
+      "существительное",
+      "прилагательное",
+      "числительное",
+      "местоимение",
+      "глагол",
+      "наречие",
+      "причастие",
+      "предлог",
+      "союз",
+      "частица",
+      "междометие"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "transcription": "ˌætməs'ferik",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "atmospheric front",
+              "translation": "атмосферный фронт"
+            },
+            {
+              "text": "atmospheric layer",
+              "translation": "слой атмосферы"
+            },
+            {
+              "text": "atmospheric instability",
+              "translation": "атмосферная нестабильность"
+            }
+          ],
+          "translations": [
+            [
+              "атмосферный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "transcription": "'weðə",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "weather forecast",
+              "translation": "прогноз погоды"
+            },
+            {
+              "text": "weather bureau",
+              "translation": "бюро погоды"
+            },
+            {
+              "text": "nasty weather",
+              "translation": "ненастная погода"
+            },
+            {
+              "text": "spell of cold weather",
+              "translation": "похолодание"
+            }
+          ],
+          "translations": [
+            [
+              "погода"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "transcription": "snəu",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "It snows.",
+              "translation": "Идет снег."
+            },
+            {
+              "text": "a flake of snow",
+              "translation": "снежинка"
+            },
+            {
+              "text": "snow depth",
+              "translation": "высота снежного покрова"
+            }
+          ],
+          "translations": [
+            [
+              "снег"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "transcription": "rein",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "It rains.",
+              "translation": "Идет дождь."
+            },
+            {
+              "text": "heavy rain",
+              "translation": "проливной дождь, ливень"
+            },
+            {
+              "text": "drizzling rain",
+              "translation": "изморось"
+            },
+            {
+              "text": "torrential rain",
+              "translation": "проливной дождь"
+            }
+          ],
+          "translations": [
+            [
+              "дождь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "wind",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "a sudden gust of wind — внезапный порыв ветра"
+            }
+          ],
+          "translations": [
+            [
+              "ветер"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "transcription": "heil",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "It hails.",
+              "translation": "Идет град."
+            }
+          ],
+          "translations": [
+            [
+              "град"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "transcription": "'θʌndəstɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "гроза"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "transcription": "priˌsipi'teiʃ(ə)n",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "осадки"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "transcription": "'θʌndə",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "It was thundering all night long.",
+              "translation": "Всю ночь гремел гром."
+            }
+          ],
+          "translations": [
+            [
+              "гром"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "transcription": "'laitniŋ",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "a flash of lightning",
+              "translation": "вспышка молнии"
+            }
+          ],
+          "translations": [
+            [
+              "молния"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "transcription": "'ænti'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "антициклон"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "transcription": "'ætməsfiə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "атмосфера"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "transcription": "bə'rɔmitə",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The barometer is falling.",
+              "translation": "Барометр падает."
+            }
+          ],
+          "translations": [
+            [
+              "барометр"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "transcription": "'windi",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "windy weather",
+              "translation": "ветреная погода"
+            },
+            {
+              "text": "It is windy.",
+              "translation": "Ветрено."
+            }
+          ],
+          "translations": [
+            [
+              "ветреный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "transcription": "hjuː'midəti",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "relative humidity",
+              "translation": "относительная влажность"
+            }
+          ],
+          "translations": [
+            [
+              "влажность"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "transcription": "'hjuːmid",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "влажный"
+            ],
+            [
+              "мокрый"
+            ],
+            [
+              "сырой"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "transcription": "mɔist",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "сырой"
+            ],
+            [
+              "влажный"
+            ],
+            [
+              "мокрый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "transcription": "dæmp",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "damp air",
+              "translation": "влажный воздух"
+            }
+          ],
+          "translations": [
+            [
+              "сырой"
+            ],
+            [
+              "влажный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "transcription": "'sʌnraiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "восход солнца"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "transcription": "di'griː",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "5 degrees above (below) zero",
+              "translation": "5 градусов выше (ниже) нуля"
+            }
+          ],
+          "translations": [
+            [
+              "градус"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "transcription": "'preʃə",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "atmospheric pressure",
+              "translation": "атмосферное давление"
+            },
+            {
+              "text": "low pressure area",
+              "translation": "область пониженного давления"
+            }
+          ],
+          "translations": [
+            [
+              "давление"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "transcription": "'stʌfi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "душный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "transcription": "hiːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "жара"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "transcription": "hɔt",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "hot weather",
+              "translation": "жаркая погода"
+            },
+            {
+              "text": "It is hot.",
+              "translation": "Жарко."
+            }
+          ],
+          "translations": [
+            [
+              "жаркий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "transcription": "'sʌnset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "закат"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "transcription": "frɔst",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "hoar-frost",
+              "translation": "иней, изморозь"
+            }
+          ],
+          "translations": [
+            [
+              "мороз"
+            ],
+            [
+              "заморозки"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "transcription": "'drizl",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "It drizzles.",
+              "translation": "Идёт мелкий дождь."
+            }
+          ],
+          "translations": [
+            [
+              "изморось"
+            ],
+            [
+              "мелкий дождь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "transcription": "heiz",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "heat haze",
+              "translation": "марево"
+            }
+          ],
+          "translations": [
+            [
+              "лёгкий туман"
+            ],
+            [
+              "дымка"
+            ],
+            [
+              "мгла"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "transcription": "ais",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "thin ice",
+              "translation": "тонкий лед"
+            }
+          ],
+          "translations": [
+            [
+              "лед"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "transcription": "'ʃəuə",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "scattered showers — местами проливные дожди"
+            }
+          ],
+          "translations": [
+            [
+              "ливень"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "transcription": "'pʌdl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "лужа"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "transcription": "ˌmiːti(ə)'rɔləʤi",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "метеорология"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "transcription": "'klaudi",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "It is cloudy.",
+              "translation": "Облачно."
+            }
+          ],
+          "translations": [
+            [
+              "облачный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "transcription": "θɔː",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The snow started to thaw.",
+              "translation": "Снег начал таять."
+            }
+          ],
+          "translations": [
+            [
+              "оттепель"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "transcription": "kuːl",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "cool breeze",
+              "translation": "прохладный ветерок"
+            }
+          ],
+          "translations": [
+            [
+              "прохладный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "transcription": "'dʌsti",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "dusty road",
+              "translation": "пыльная дорога"
+            }
+          ],
+          "translations": [
+            [
+              "пыльный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "transcription": "'reinbəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "радуга"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "transcription": "freʃ",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "fresh air",
+              "translation": "свежий воздух"
+            }
+          ],
+          "translations": [
+            [
+              "свежий"
+            ],
+            [
+              "чистый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "transcription": "'slipəri",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "slippery road",
+              "translation": "скользкая дорога"
+            }
+          ],
+          "translations": [
+            [
+              "скользкий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "transcription": "slʌʃ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "слякоть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "transcription": "smɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "смог"
+            ],
+            [
+              "густой туман с копотью"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "transcription": "",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "снегопад"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "transcription": "'sʌni",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "sunny day",
+              "translation": "солнечный день"
+            }
+          ],
+          "translations": [
+            [
+              "солнечный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "transcription": "drai",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "dry air",
+              "translation": "сухой воздух"
+            }
+          ],
+          "translations": [
+            [
+              "сухой"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "wet",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "влажный"
+            ],
+            [
+              "сырой"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "transcription": "'tempriʧə",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "What’s the temperature today?",
+              "translation": "Какая сегодня температура?"
+            }
+          ],
+          "translations": [
+            [
+              "температура"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "transcription": "wɔːm",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "теплый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "transcription": "θə'mɔmitə",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Celsius / Centigrade thermometer",
+              "translation": "термометр Цельсия / со шкалой Цельсия"
+            },
+            {
+              "text": "Fahrenheit thermometer",
+              "translation": "термометр Фаренгейта / со шкалой Фаренгейта"
+            }
+          ],
+          "translations": [
+            [
+              "градусник"
+            ],
+            [
+              "термометр"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "transcription": "fɔg",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "thick fog",
+              "translation": "густой туман"
+            }
+          ],
+          "translations": [
+            [
+              "туман"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "transcription": "mist",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "morning mist",
+              "translation": "утренний туман, утренняя дымка"
+            }
+          ],
+          "translations": [
+            [
+              "туман"
+            ],
+            [
+              "дымка"
+            ],
+            [
+              "пасмурность"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "transcription": "'fɔgi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "туманный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "transcription": "'wɔːtə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "вода"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "transcription": "kəuld",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "cold weather",
+              "translation": "холодная погода"
+            }
+          ],
+          "translations": [
+            [
+              "холодный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "transcription": "'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "циклон"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "transcription": "stɔːm",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "dust storm",
+              "translation": "пыльная буря"
+            }
+          ],
+          "translations": [
+            [
+              "буря"
+            ],
+            [
+              "гроза"
+            ],
+            [
+              "ураган"
+            ],
+            [
+              "шторм"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "transcription": "kliə",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "The sky was clear.",
+              "translation": "Небо было безоблачным."
+            }
+          ],
+          "translations": [
+            [
+              "ясный"
+            ],
+            [
+              "безоблачный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "transcription": "sliːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "дождь со снегом"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "transcription": "klaud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "облако"
+            ],
+            [
+              "туча"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "transcription": "'ʧili",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "промозглый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "transcription": "'daunpɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ливень"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "transcription": "geil",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "gale warning",
+              "translation": "штормовое предупреждение"
+            }
+          ],
+          "translations": [
+            [
+              "сильный ветер"
+            ],
+            [
+              "шторм"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "transcription": "'skɔːʧiŋ",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "scorching sun",
+              "translation": "палящее солнце"
+            },
+            {
+              "text": "scorching day",
+              "translation": "знойный день"
+            }
+          ],
+          "translations": [
+            [
+              "палящий"
+            ],
+            [
+              "знойный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "transcription": "dʌst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "пыль"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "transcription": "'blʌstəri",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "blustery weather",
+              "translation": "ветреная погода"
+            },
+            {
+              "text": "blustery wind",
+              "translation": "порывистый ветер"
+            }
+          ],
+          "translations": [
+            [
+              "ветреный"
+            ],
+            [
+              "порывистый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "transcription": "'əuvəkɑːst",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "The sky is overcast.",
+              "translation": "Небо затянуто облаками."
+            }
+          ],
+          "translations": [
+            [
+              "покрытый облаками"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

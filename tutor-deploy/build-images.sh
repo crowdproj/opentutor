@@ -1,5 +1,10 @@
 #! /bin/sh
 
+docker stop tutor-deploy-flashcards-tts-server-1
+docker stop tutor-deploy-flashcards-cards-server-1
+docker stop tutor-deploy-flashcards-dictionaries-server-1
+docker stop tutor-deploy-flashcards-app-1
+
 docker rm tutor-deploy-flashcards-tts-server-1
 docker rm tutor-deploy-flashcards-cards-server-1
 docker rm tutor-deploy-flashcards-dictionaries-server-1

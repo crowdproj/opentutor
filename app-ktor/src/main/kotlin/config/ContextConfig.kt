@@ -4,4 +4,7 @@ import com.gitlab.sszuev.flashcards.AppConfig
 
 data class ContextConfig(val runConfig: RunConfig, val tutorConfig: TutorConfig)
 
-internal fun ContextConfig.toAppConfig() = AppConfig(numberOfRightAnswers = tutorConfig.numberOfRightAnswers)
+internal fun ContextConfig.toAppConfig() = AppConfig(
+    numberOfRightAnswers = tutorConfig.numberOfRightAnswers,
+    createBuiltinDictionariesOnFirstLogin = tutorConfig.useBuiltinDictionaries,
+)
