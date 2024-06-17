@@ -1,7 +1,10 @@
 package com.gitlab.sszuev.flashcards
 
+import com.auth0.jwk.JwkProviderBuilder
 import com.auth0.jwt.JWT
+import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
+import com.auth0.jwt.interfaces.RSAKeyProvider
 import com.fasterxml.jackson.annotation.JsonInclude
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -61,8 +64,11 @@ import kotlinx.html.p
 import kotlinx.html.title
 import org.slf4j.event.Level
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
+import java.net.URL
 import java.nio.charset.StandardCharsets
-import java.util.Base64
+import java.security.interfaces.RSAPrivateKey
+import java.security.interfaces.RSAPublicKey
+import java.util.concurrent.TimeUnit
 
 private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.AppMainKt")
 
@@ -84,6 +90,11 @@ fun Application.module(
     keycloakConfig: KeycloakConfig = KeycloakConfig(environment.config),
     runConfig: RunConfig = RunConfig(environment.config),
     tutorConfig: TutorConfig = TutorConfig(environment.config),
+    oauthJwtVerifier: JWTVerifier = makeJwtVerifier(
+        jwkUrl = "${keycloakConfig.accessTokenAddress}/realms/flashcards-realm/protocol/openid-connect/certs",
+        issuer = "${keycloakConfig.authorizeAddress}/realms/flashcards-realm"
+    ),
+    keycloakSecret: String? = null,
 ) {
     logger.info(printGeneralSettings(runConfig, keycloakConfig, tutorConfig))
 
@@ -94,7 +105,7 @@ fun Application.module(
         authorizeUrl = "${keycloakConfig.authorizeAddress}/realms/${keycloakConfig.realm}/protocol/openid-connect/auth",
         accessTokenUrl = "${keycloakConfig.accessTokenAddress}/realms/${keycloakConfig.realm}/protocol/openid-connect/token",
         clientId = keycloakConfig.clientId,
-        clientSecret = keycloakConfig.secret,
+        clientSecret = keycloakSecret ?: "",
         accessTokenRequiresBasicAuth = false,
         requestMethod = HttpMethod.Post,
         defaultScopes = listOf("roles")
@@ -133,12 +144,7 @@ fun Application.module(
 
             jwt("auth-jwt") {
                 realm = keycloakConfig.realm
-                verifier(
-                    JWT
-                        .require(Algorithm.HMAC256(Base64.getUrlDecoder().decode(keycloakConfig.secret)))
-                        .withClaimPresence("sub")
-                        .build()
-                )
+                verifier(oauthJwtVerifier)
                 validate { jwtCredential: JWTCredential ->
                     JWTPrincipal(jwtCredential.payload)
                 }
@@ -220,6 +226,35 @@ fun Application.module(
             }
         }
     }
+}
+
+internal fun makeJwtVerifier(jwkUrl: String, issuer: String): JWTVerifier = JWT.require(makeJwtAlgorithm(jwkUrl))
+    .withIssuer(issuer)
+    .build()
+
+internal fun makeJwtAlgorithm(jwkUrl: String): Algorithm {
+    val jwkProvider = JwkProviderBuilder(URL(jwkUrl))
+        .cached(
+            /* cacheSize = */ 10,
+            /* expiresIn = */ 24,
+            /* unit = */ TimeUnit.HOURS
+        )
+        .rateLimited(
+            /* bucketSize = */ 100,
+            /* refillRate = */ 1,
+            /* unit = */ TimeUnit.MINUTES
+        )
+        .build()
+
+    val keyProvider = object : RSAKeyProvider {
+        override fun getPublicKeyById(keyId: String?): RSAPublicKey = jwkProvider.get(keyId).publicKey as RSAPublicKey
+
+        override fun getPrivateKey(): RSAPrivateKey? = null
+
+        override fun getPrivateKeyId(): String? = null
+    }
+
+    return Algorithm.RSA256(keyProvider)
 }
 
 private fun thymeleafContent(

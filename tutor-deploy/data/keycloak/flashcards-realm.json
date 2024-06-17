@@ -546,7 +546,7 @@
       "saml.multivalued.roles" : "false",
       "saml.encrypt" : "false",
       "oauth2.device.authorization.grant.enabled" : "false",
-      "access.token.signed.response.alg" : "HS256",
+      "access.token.signed.response.alg": "RS256",
       "backchannel.logout.revoke.offline.tokens" : "false",
       "saml.server.signature" : "false",
       "saml.server.signature.keyinfo.ext" : "false",

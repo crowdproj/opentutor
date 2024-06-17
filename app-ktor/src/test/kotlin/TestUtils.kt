@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards
 
 import com.auth0.jwt.JWT
+import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
@@ -26,20 +27,33 @@ private val testKeycloakConfig = KeycloakConfig(
     authorizeAddress = "http://test-keycloak-server.ex",
     accessTokenAddress = "http://test-keycloak-server.ex",
     clientId = "test-client",
-    secret = "test-secret",
-    issuer = "test-issuer",
-    audience = "test-audience",
     realm = "test-realm",
 )
+private const val testSecret = "testSecret"
+private const val testIssuer = "testIssuer"
+private const val testAudience = "testAudience"
 
 private val testRunConfig = RunConfig(auth = "", mode = RunConfig.Mode.TEST)
+
+private val testJwtVerifier: JWTVerifier = JWT.require(
+    Algorithm.HMAC256(Base64.getUrlDecoder().decode(testSecret))
+).withIssuer(testIssuer)
+    .withClaimPresence("sub")
+    .build()
 
 @OptIn(KtorExperimentalLocationsAPI::class)
 fun testSecuredApp(
     block: suspend ApplicationTestBuilder.() -> Unit
 ) {
     testApplication {
-        application { module(keycloakConfig = testKeycloakConfig, runConfig = testRunConfig) }
+        application {
+            module(
+                keycloakConfig = testKeycloakConfig,
+                runConfig = testRunConfig,
+                oauthJwtVerifier = testJwtVerifier,
+                keycloakSecret = testSecret,
+            )
+        }
         block()
     }
 }
@@ -54,13 +68,12 @@ suspend inline fun <reified X> ApplicationTestBuilder.testPost(endpoint: String,
 
 fun HttpRequestBuilder.auth(
     id: String = "c9a414f5-3f75-4494-b664-f4c8b33ff4e6",
-    conf: KeycloakConfig = testKeycloakConfig,
 ) {
     val token = JWT.create()
         .withSubject(id)
-        .withAudience(conf.audience)
-        .withIssuer(conf.issuer)
-        .sign(Algorithm.HMAC256(Base64.getUrlDecoder().decode(conf.secret)))
+        .withAudience(testAudience)
+        .withIssuer(testIssuer)
+        .sign(Algorithm.HMAC256(Base64.getUrlDecoder().decode(testSecret)))
     header(HttpHeaders.Authorization, "Bearer $token")
 }
 
