@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.DocumentEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
@@ -81,3 +82,10 @@ private fun LangEntity.toDbLang() = DbLang(
     langId = langId.asString(),
     partsOfSpeech = partsOfSpeech,
 )
+
+val DocumentEntity.dictionary: DictionaryEntity
+    get() = DictionaryEntity(
+        name = name,
+        sourceLang = sourceLang,
+        targetLang = targetLang,
+    )

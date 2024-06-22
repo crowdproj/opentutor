@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
 import com.gitlab.sszuev.flashcards.systemNow
 import org.apache.commons.csv.CSVFormat
 import org.apache.commons.csv.CSVParser
@@ -25,7 +26,8 @@ import kotlin.io.path.outputStream
  */
 class MemDatabase private constructor(
     private val idGenerator: IdSequences,
-    private val resources: MutableMap<String, MutableMap<Long, DictionaryResource>>,
+    private val dictionaries: MutableMap<String, MutableMap<Long, DictionaryResource>>,
+    private val users: MutableMap<String, MemDbUser>,
     private val databaseHomeDirectory: String?,
 ) {
 
@@ -35,24 +37,34 @@ class MemDatabase private constructor(
     @Volatile
     private var cardsChanged = false
 
+    @Volatile
+    private var usersChanged = false
+
     fun countUsers(): Long {
-        return resources.size.toLong()
+        return users.size.toLong()
     }
 
     fun findUserIds(): Sequence<String> {
-        return resources.keys.asSequence()
+        return users.keys.asSequence()
     }
 
-    fun containsUser(id: String): Boolean {
-        return resources.contains(id)
+    fun findUserById(id: String): MemDbUser? {
+        return users[id]
+    }
+
+    fun saveUser(user: MemDbUser): MemDbUser {
+        val userId = requireNotNull(user.id) { "No id in the user-record $user" }
+        users[userId] = user
+        usersChanged = true
+        return user
     }
 
     fun countDictionaries(): Long {
-        return resources.asSequence().sumOf { it.value.size.toLong() }
+        return dictionaries.asSequence().sumOf { it.value.size.toLong() }
     }
 
     fun findDictionariesByUserId(userId: String): Sequence<MemDbDictionary> {
-        return resources[userId]?.values?.asSequence()?.map { it.dictionary } ?: emptySequence()
+        return dictionaries[userId]?.values?.asSequence()?.map { it.dictionary } ?: emptySequence()
     }
 
     fun findDictionariesByIds(dictionaryIds: Collection<Long>): Sequence<MemDbDictionary> {
@@ -66,7 +78,7 @@ class MemDatabase private constructor(
 
     fun saveDictionary(dictionary: MemDbDictionary): MemDbDictionary {
         val userId = requireNotNull(dictionary.userId) { "User id is required" }
-        val resource = resources.computeIfAbsent(userId) { ConcurrentHashMap() }
+        val resource = dictionaries.computeIfAbsent(userId) { ConcurrentHashMap() }
         val id = dictionary.id ?: idGenerator.nextDictionaryId()
         val res = dictionary.copy(
             id = id,
@@ -78,7 +90,7 @@ class MemDatabase private constructor(
     }
 
     fun deleteDictionaryById(dictionaryId: Long): Boolean {
-        val resource = resources.map { it.value }.singleOrNull { it[dictionaryId] != null }
+        val resource = dictionaries.map { it.value }.singleOrNull { it[dictionaryId] != null }
         return if (resource?.remove(dictionaryId) != null) {
             dictionariesChanged = true
             true
@@ -134,15 +146,15 @@ class MemDatabase private constructor(
     }
 
     private fun dictionaryResourceById(dictionaryId: Long): DictionaryResource? {
-        return resources.values.mapNotNull { it[dictionaryId] }.singleOrNull()
+        return dictionaries.values.mapNotNull { it[dictionaryId] }.singleOrNull()
     }
 
     private fun dictionaryResources(): Sequence<DictionaryResource> {
-        return resources.values.asSequence().flatMap { it.values.asSequence() }
+        return dictionaries.values.asSequence().flatMap { it.values.asSequence() }
     }
 
     private fun cards(): Sequence<MemDbCard> {
-        return resources.values.asSequence().flatMap { it.values.asSequence() }
+        return dictionaries.values.asSequence().flatMap { it.values.asSequence() }
             .flatMap { it.cards.values.asSequence() }
     }
 
@@ -164,6 +176,12 @@ class MemDatabase private constructor(
             }
             dictionariesChanged = false
         }
+        if (usersChanged) {
+            Paths.get(databaseHomeDirectory).resolve(USERS_DB_FILE).outputStream().use {
+                writeUsers(users.values, it)
+            }
+            usersChanged = false
+        }
     }
 
     private data class DictionaryResource(
@@ -172,6 +190,7 @@ class MemDatabase private constructor(
     )
 
     companion object {
+        private const val USERS_DB_FILE = "users.csv"
         private const val DICTIONARY_DB_FILE = "dictionaries.csv"
         private const val CARDS_DB_FILE = "cards.csv"
         private const val CLASSPATH_PREFIX = "classpath:"
@@ -188,6 +207,7 @@ class MemDatabase private constructor(
          */
         @Synchronized
         fun clear() {
+            save()
             databaseRegistry.clear()
         }
 
@@ -213,13 +233,18 @@ class MemDatabase private constructor(
          */
         internal fun load(databaseLocation: String): MemDatabase {
             val fromClassPath = databaseLocation.startsWith(CLASSPATH_PREFIX)
-            val res = if (fromClassPath) {
-                loadDatabaseResourcesFromClassPath(databaseLocation)
+            val dictionaryResources = if (fromClassPath) {
+                loadDictionaryResourcesFromClassPath(databaseLocation)
             } else {
-                loadDatabaseResourcesFromDirectory(databaseLocation)
+                loadDictionaryResourcesFromDirectory(databaseLocation)
             }
-            val maxDictionaryId = res.values.asSequence().flatMap { it.keys }.max()
-            val maxCardId = res.values.asSequence()
+            val userResources = if (fromClassPath) {
+                loadUserResourcesFromClassPath(databaseLocation)
+            } else {
+                loadUserResourcesFromDirectory(databaseLocation)
+            }
+            val maxDictionaryId = dictionaryResources.values.asSequence().flatMap { it.keys }.max()
+            val maxCardId = dictionaryResources.values.asSequence()
                 .flatMap { it.values.asSequence() }
                 .flatMap { it.cards.map { card -> card.key } }
                 .max()
@@ -228,13 +253,14 @@ class MemDatabase private constructor(
                 initCardId = maxCardId,
             )
             return MemDatabase(
-                resources = res,
+                dictionaries = dictionaryResources,
+                users = userResources,
                 idGenerator = ids,
                 databaseHomeDirectory = if (fromClassPath) null else databaseLocation,
             )
         }
 
-        private fun loadDatabaseResourcesFromDirectory(
+        private fun loadDictionaryResourcesFromDirectory(
             directoryDbLocation: String,
         ): MutableMap<String, MutableMap<Long, DictionaryResource>> {
             val cardFile = Paths.get(directoryDbLocation).resolve(CARDS_DB_FILE).toRealPath()
@@ -247,10 +273,10 @@ class MemDatabase private constructor(
             val dictionaries = dictionaryFile.inputStream().use {
                 readDictionaries(it)
             }
-            return composeDatabaseData(directoryDbLocation, dictionaries, cards)
+            return composeDictionaryData(directoryDbLocation, dictionaries, cards)
         }
 
-        private fun loadDatabaseResourcesFromClassPath(
+        private fun loadDictionaryResourcesFromClassPath(
             classpathDbLocation: String,
         ): MutableMap<String, MutableMap<Long, DictionaryResource>> {
             val cardsFile = resolveClasspathResource(classpathDbLocation, CARDS_DB_FILE)
@@ -263,10 +289,32 @@ class MemDatabase private constructor(
             val dictionaries = checkNotNull(MemDatabase::class.java.getResourceAsStream(dictionariesFile)).use {
                 readDictionaries(it)
             }
-            return composeDatabaseData(classpathDbLocation, dictionaries, cards)
+            return composeDictionaryData(classpathDbLocation, dictionaries, cards)
         }
 
-        private fun composeDatabaseData(
+        private fun loadUserResourcesFromDirectory(
+            userDbLocation: String,
+        ): MutableMap<String, MemDbUser> {
+            val userFile = Paths.get(userDbLocation).resolve(USERS_DB_FILE).toRealPath()
+            logger.info("Load users data from file: <$userFile>.")
+            val users = userFile.inputStream().use {
+                readUsers(it)
+            }
+            return users.associateByTo(ConcurrentHashMap()) { checkNotNull(it.id) }
+        }
+
+        private fun loadUserResourcesFromClassPath(
+            classpathDbLocation: String,
+        ): MutableMap<String, MemDbUser> {
+            val usersFile = resolveClasspathResource(classpathDbLocation, USERS_DB_FILE)
+            logger.info("Load cards data from classpath: <$usersFile>.")
+            val users = checkNotNull(MemDatabase::class.java.getResourceAsStream(usersFile)).use {
+                readUsers(it)
+            }
+            return users.associateByTo(ConcurrentHashMap()) { checkNotNull(it.id) }
+        }
+
+        private fun composeDictionaryData(
             dbLocation: String,
             dictionaries: List<MemDbDictionary>,
             cards: List<MemDbCard>
@@ -330,6 +378,15 @@ class MemDatabase private constructor(
             }
         }
 
+        private fun readUsers(inputStream: InputStream): List<MemDbUser> = userCsvFormat(false).read(inputStream).use {
+            it.records.map { record ->
+                MemDbUser(
+                    id = record.value("id"),
+                    createdAt = LocalDateTime.parse(record.value("created_at")),
+                )
+            }
+        }
+
         private fun writeDictionaries(dictionaries: Collection<MemDbDictionary>, outputStream: OutputStream) =
             dictionaryCsvFormat(true).write(outputStream).use {
                 dictionaries.forEach { dictionary ->
@@ -354,7 +411,17 @@ class MemDatabase private constructor(
                         card.wordsAsJsonString(),
                         card.detailsAsJsonString(),
                         card.answered,
-                        card.changedAt
+                        card.changedAt,
+                    )
+                }
+            }
+
+        private fun writeUsers(users: Collection<MemDbUser>, outputStream: OutputStream) =
+            userCsvFormat(true).write(outputStream).use {
+                users.forEach { user ->
+                    it.printRecord(
+                        user.id,
+                        user.createdAt,
                     )
                 }
             }
@@ -380,6 +447,14 @@ class MemDatabase private constructor(
                 "details",
                 "answered",
                 "changed_at",
+            )
+            .setSkipHeaderRecord(!withHeader)
+            .build()
+
+        private fun userCsvFormat(withHeader: Boolean): CSVFormat = CSVFormat.DEFAULT.builder()
+            .setHeader(
+                "id",
+                "created_at",
             )
             .setSkipHeaderRecord(!withHeader)
             .build()

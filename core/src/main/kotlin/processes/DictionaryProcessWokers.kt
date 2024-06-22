@@ -23,6 +23,13 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     }
     process {
         val userId = this.normalizedRequestAppAuthId
+
+        if (this.config.createBuiltinDictionariesOnFirstLogin) {
+            this.repositories.userRepository.createUserIfAbsent(userId) {
+                this.populateBuiltinDictionaries()
+            }
+        }
+
         val res = this.repositories.dictionaryRepository
             .findDictionariesByUserId(userId.asString())
             .map { it.toDictionaryEntity().normalize() }.toList()

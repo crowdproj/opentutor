@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
 import com.gitlab.sszuev.flashcards.dbmem.testutils.classPathResourceDir
 import com.gitlab.sszuev.flashcards.dbmem.testutils.copyClassPathDataToDir
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.io.TempDir
 import java.nio.file.Path
+import java.time.LocalDateTime
 import java.util.UUID
 
 @Order(1)
@@ -24,10 +26,28 @@ internal class MemDatabaseTest {
     }
 
     @Test
+    fun `test find user`() {
+        val database = MemDatabase.load("classpath:$classPathResourceDir")
+        Assertions.assertEquals(existingUUID.toString(), database.findUserById(existingUUID.toString())?.id)
+    }
+
+    @Test
     fun `test find users`() {
         val database = MemDatabase.load("classpath:$classPathResourceDir")
         val users = database.findUserIds().toList()
         Assertions.assertEquals(listOf(existingUUID.toString()), users)
+    }
+
+    @Test
+    fun `test save user & count`(@TempDir dir: Path) {
+        copyClassPathDataToDir(classPathResourceDir, dir)
+        val database1 = MemDatabase.get(dir.toString())
+        Assertions.assertEquals(1L, database1.countUsers())
+        Assertions.assertEquals("42", database1.saveUser(MemDbUser("42", LocalDateTime.now())).id)
+        Assertions.assertEquals(2L, database1.countUsers())
+        MemDatabase.clear()
+        val database2 = MemDatabase.get(dir.toString())
+        Assertions.assertEquals(2L, database2.countUsers())
     }
 
     @Test

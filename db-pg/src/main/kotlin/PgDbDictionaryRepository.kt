@@ -14,7 +14,7 @@ import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
 
 class PgDbDictionaryRepository(
-    dbConfig: PgDbConfig = PgDbConfig(),
+    dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
 ) : DbDictionaryRepository {
     private val connection by lazy {
         // lazy, to avoid initialization error when there is no real pg-database

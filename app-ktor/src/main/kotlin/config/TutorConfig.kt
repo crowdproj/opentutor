@@ -7,13 +7,15 @@ data class TutorConfig(
     val numberOfRightAnswers: Int,
     val numberOfWordsPerStage: Int,
     val numberOfOptionsPerWord: Int,
+    val useBuiltinDictionaries: Boolean,
 ) {
 
     constructor(config: ApplicationConfig) : this(
         numberOfWordsToShow = config.getPositiveInt("app.tutor.run.words-for-show", 10),
         numberOfRightAnswers = config.getPositiveInt("app.tutor.run.answers", 10),
         numberOfWordsPerStage = config.getPositiveInt("app.tutor.run.words-for-test", 5),
-        numberOfOptionsPerWord = config.getPositiveInt("app.tutor.run.stage.option-variants", 6)
+        numberOfOptionsPerWord = config.getPositiveInt("app.tutor.run.stage.option-variants", 6),
+        useBuiltinDictionaries = config.property("app.tutor.create-builtin-dictionaries").getString().toBoolean(),
     )
 }
 

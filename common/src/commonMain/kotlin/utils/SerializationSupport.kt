@@ -5,10 +5,13 @@ import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.DocumentEntity
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.builtins.serializer
 import kotlinx.serialization.cbor.Cbor
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.Json.Default.decodeFromString
 import kotlinx.serialization.modules.SerializersModule
 
 private val module = SerializersModule {
@@ -26,6 +29,12 @@ private val cbor = Cbor {
     encodeDefaults = false
     ignoreUnknownKeys = true
     serializersModule = module
+}
+
+private val json = Json {
+    encodeDefaults = false
+    ignoreUnknownKeys = true
+    prettyPrint = true
 }
 
 @OptIn(ExperimentalSerializationApi::class)
@@ -46,3 +55,7 @@ fun TTSContext.toByteArray(): ByteArray = cbor.encodeToByteArray(TTSContext.seri
 
 @OptIn(ExperimentalSerializationApi::class)
 fun ttsContextFromByteArray(bytes: ByteArray): TTSContext = cbor.decodeFromByteArray(TTSContext.serializer(), bytes)
+
+fun DocumentEntity.toJsonString(): String = json.encodeToString(DocumentEntity.serializer(), this)
+
+fun documentEntityFromJson(json: String): DocumentEntity = decodeFromString<DocumentEntity>(json)

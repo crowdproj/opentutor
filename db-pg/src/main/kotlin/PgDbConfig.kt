@@ -6,4 +6,8 @@ data class PgDbConfig(
     val jdbcPasswd: String = PgDbSettings.jdbcPasswd,
     val hikariPoolSize: Int = PgDbSettings.hikariPoolSize,
     val hikariPoolKeepAliveTimeMs: Long = PgDbSettings.hikariPoolKeepAliveTimeMs,
-)
+) {
+    companion object {
+        val DEFAULT = PgDbConfig()
+    }
+}

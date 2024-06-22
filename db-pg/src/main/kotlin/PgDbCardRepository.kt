@@ -17,7 +17,7 @@ import org.jetbrains.exposed.sql.statements.BatchUpdateStatement
 import org.jetbrains.exposed.sql.transactions.TransactionManager
 
 class PgDbCardRepository(
-    dbConfig: PgDbConfig = PgDbConfig(),
+    dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
 ) : DbCardRepository {
     private val connection by lazy {
         // lazy, to avoid initialization error when there is no real pg-database

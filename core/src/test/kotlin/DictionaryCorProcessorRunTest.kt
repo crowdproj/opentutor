@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
+import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -29,12 +30,14 @@ internal class DictionaryCorProcessorRunTest {
             op: DictionaryOperation,
             dictionaryRepository: DbDictionaryRepository,
             cardsRepository: DbCardRepository = MockDbCardRepository(),
+            userRepository: MockDbUserRepository = MockDbUserRepository(),
         ): DictionaryContext {
             val context = DictionaryContext(
                 operation = op,
                 repositories = DbRepositories().copy(
                     dictionaryRepository = dictionaryRepository,
                     cardRepository = cardsRepository,
+                    userRepository = userRepository,
                 )
             )
             context.requestAppAuthId = testUserId
@@ -53,6 +56,8 @@ internal class DictionaryCorProcessorRunTest {
 
         var getAllDictionariesWasCalled = false
         var getAllCardsWasCalled = false
+        var getUserByIdWasCalled = false
+        var createUserWasCalled = false
         val dictionaryRepository = MockDbDictionaryRepository(
             invokeGetAllDictionaries = { userId ->
                 getAllDictionariesWasCalled = true
@@ -69,20 +74,33 @@ internal class DictionaryCorProcessorRunTest {
                 emptySequence()
             }
         )
+        val userRepository = MockDbUserRepository(
+            invokeFindUserById = {
+                getUserByIdWasCalled = true
+                null
+            },
+            invokeCreateUser = {
+                createUserWasCalled = true
+                it
+            },
+        )
 
         val context = testContext(
             op = DictionaryOperation.GET_ALL_DICTIONARIES,
             dictionaryRepository = dictionaryRepository,
-            cardsRepository = cardsRepository
+            cardsRepository = cardsRepository,
+            userRepository = userRepository,
         )
 
         DictionaryCorProcessor().execute(context)
 
+        Assertions.assertTrue(context.errors.isEmpty()) { "has errors: ${context.errors}" }
         Assertions.assertTrue(getAllDictionariesWasCalled)
         Assertions.assertTrue(getAllCardsWasCalled)
+        Assertions.assertTrue(getUserByIdWasCalled)
+        Assertions.assertTrue(createUserWasCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.GET_ALL_DICTIONARIES), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
-        Assertions.assertTrue(context.errors.isEmpty())
 
         Assertions.assertEquals(testResponseEntities, context.responseDictionaryEntityList)
     }

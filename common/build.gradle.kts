@@ -19,6 +19,7 @@ kotlin {
                 api("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDatetimeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-cbor:$kotlinxSerializationVersion")
+                implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
             }
         }
         val commonTest by getting {

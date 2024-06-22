@@ -10,6 +10,11 @@ import org.postgresql.util.PGobject
 import java.sql.ResultSet
 import java.time.LocalDateTime
 
+object Users : IdTable<String>(name = "users") {
+    override val id: Column<EntityID<String>> = varchar("id", 36).entityId()
+    override val primaryKey = PrimaryKey(id, name = "users_pkey")
+    val createdAt: Column<LocalDateTime> = datetime("created_at")
+}
 
 /**
  * id;name;user_id;source_lang;target_lang

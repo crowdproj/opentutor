@@ -19,10 +19,12 @@ import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbExample
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbLanguage
+import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbWord
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
+import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
 
 internal fun MemDbDictionary.detailsAsJsonString(): String {
@@ -105,6 +107,10 @@ internal fun MemDbLanguage.toDbLang(): DbLang = DbLang(
     langId = this.id,
     partsOfSpeech = this.partsOfSpeech,
 )
+
+internal fun DbUser.toMemDbUser(): MemDbUser = MemDbUser(id = this.id, createdAt = this.createdAt.asJava())
+
+internal fun MemDbUser.toDbUser(): DbUser = DbUser(id = this.id, createdAt = this.createdAt.asKotlin())
 
 private fun MemDbWord.toCommonWordDto(): CommonWordDto = CommonWordDto(
     word = word,
