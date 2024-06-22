@@ -54,8 +54,7 @@ cd ../tutor-deploy
 
 Example commands to deploy environment:
 ```
-docker-compose -f docker-compose-app.yml up flashcards-db flashcards-keycloak flashcards-rabbitmq 
-docker-compose -f docker-compose-app.yml up flashcards-tts-server
-docker-compose -f docker-compose-app.yml up flashcards-app
+docker-compose -f docker-compose-app.yml up flashcards-db flashcards-keycloak flashcards-nats 
+docker-compose -f docker-compose-app.yml up flashcards-tts-server flashcards-dictionaries-serve flashcards-cards-server flashcards-app
 docker-compose -f docker-compose-elk-stack.yml -p flashcards-elk-stack up
 ```

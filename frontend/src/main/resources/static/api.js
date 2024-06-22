@@ -44,6 +44,13 @@ async function initKeycloak() {
     })
     await res.init({
         onLoad: 'check-sso',
+        promiseType: 'native', // Ensure the promise type is set correctly
+        checkLoginIframe: false // This prevents iframe polling which might cause reload
+    }).then(authenticated => {
+        if (!authenticated) {
+            console.warn('Not authenticated');
+            keycloak.login();
+        }
     }).catch(function (error) {
         throw new Error('keycloak-init-error::' + error)
     })
@@ -324,7 +331,6 @@ function authPost(url, requestData, onDone, onFail, runAgain) {
     if (runAgain === undefined) {
         runAgain = true
     }
-    // noinspection JSUnusedLocalSymbols
     $.ajax({
         type: 'POST',
         url: url,
