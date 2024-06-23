@@ -125,6 +125,7 @@ services:
     environment:
       CLIENT_NATS_HOST: "flashcards-nats"
       KEYCLOAK_AUTHORIZE_ADDRESS: "http://localhost:8081"
+      KEYCLOAK_REDIRECT_ADDRESS: "http://localhost:8080"
       KEYCLOAK_ACCESS_TOKEN_ADDRESS: "http://flashcards-keycloak:8080"
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
