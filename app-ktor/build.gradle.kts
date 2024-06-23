@@ -43,6 +43,7 @@ dependencies {
     implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-auto-head-response:$ktorVersion")
+    implementation("io.ktor:ktor-server-forwarded-header:$ktorVersion")
 
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")

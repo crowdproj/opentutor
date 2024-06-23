@@ -49,6 +49,7 @@ import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
@@ -110,6 +111,8 @@ fun Application.module(
         requestMethod = HttpMethod.Post,
         defaultScopes = listOf("roles")
     )
+
+    install(XForwardedHeaders)
 
     install(Webjars)
 

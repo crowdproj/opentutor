@@ -103,6 +103,8 @@ services:
         condition: service_healthy
       flashcards-db:
         condition: service_healthy
+      flashcards-cards-server:
+        condition: service_started
     environment:
       DICTIONARIES_SERVER_NATS_HOST: "flashcards-nats"
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
