@@ -26,6 +26,7 @@ import java.util.Base64
 private val testKeycloakConfig = KeycloakConfig(
     authorizeAddress = "http://test-keycloak-server.ex",
     accessTokenAddress = "http://test-keycloak-server.ex",
+    redirectAddress = "http://test-keycloak-server.ex",
     clientId = "test-client",
     realm = "test-realm",
 )

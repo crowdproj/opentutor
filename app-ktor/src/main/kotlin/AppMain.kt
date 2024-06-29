@@ -49,6 +49,7 @@ import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
@@ -98,8 +99,6 @@ fun Application.module(
 ) {
     logger.info(printGeneralSettings(runConfig, keycloakConfig, tutorConfig))
 
-    val port = environment.config.property("ktor.deployment.port").getString()
-
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
         name = "keycloak",
         authorizeUrl = "${keycloakConfig.authorizeAddress}/realms/${keycloakConfig.realm}/protocol/openid-connect/auth",
@@ -110,6 +109,8 @@ fun Application.module(
         requestMethod = HttpMethod.Post,
         defaultScopes = listOf("roles")
     )
+
+    install(XForwardedHeaders)
 
     install(Webjars)
 
@@ -139,7 +140,7 @@ fun Application.module(
             oauth("keycloakOAuth") {
                 client = HttpClient(Apache)
                 providerLookup = { keycloakProvider }
-                urlProvider = { "http://localhost:$port/" }
+                urlProvider = { keycloakConfig.redirectAddress }
             }
 
             jwt("auth-jwt") {
@@ -332,6 +333,7 @@ private fun Application.printGeneralSettings(
             |run-config-debug-auth          = ${runConfig.auth}
             |keycloak-authorize-address     = ${keycloakConfig.authorizeAddress}
             |keycloak-access-token-address  = ${keycloakConfig.accessTokenAddress}
+            |keycloak-redirect-address      = ${keycloakConfig.redirectAddress}
             |keycloak-realm                 = ${keycloakConfig.realm}
             |keycloak-client-id             = ${keycloakConfig.clientId}
             |application-port               = $port

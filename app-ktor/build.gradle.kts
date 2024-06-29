@@ -43,6 +43,7 @@ dependencies {
     implementation("io.ktor:ktor-server-default-headers:$ktorVersion")
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
     implementation("io.ktor:ktor-server-auto-head-response:$ktorVersion")
+    implementation("io.ktor:ktor-server-forwarded-header:$ktorVersion")
 
     implementation("io.ktor:ktor-server-auth:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
@@ -92,6 +93,7 @@ tasks.dockerCreateDockerfile {
         arg("CLIENT_NATS_HOST")
         arg("KEYCLOAK_AUTHORIZE_ADDRESS")
         arg("KEYCLOAK_ACCESS_TOKEN_ADDRESS")
+        arg("KEYCLOAK_REDIRECT_ADDRESS")
         arg("DB_PG_URL")
         arg("DB_PG_USER")
         arg("DB_PG_PWD")
@@ -99,6 +101,7 @@ tasks.dockerCreateDockerfile {
         environmentVariable("CLIENT_NATS_HOST", "\${CLIENT_NATS_HOST}")
         environmentVariable("KEYCLOAK_AUTHORIZE_ADDRESS", "\${KEYCLOAK_AUTHORIZE_ADDRESS}")
         environmentVariable("KEYCLOAK_ACCESS_TOKEN_ADDRESS", "\${KEYCLOAK_ACCESS_TOKEN_ADDRESS}")
+        environmentVariable("KEYCLOAK_REDIRECT_ADDRESS", "\${KEYCLOAK_REDIRECT_ADDRESS}")
         environmentVariable("DB_PG_URL", "\${DB_PG_URL}")
         environmentVariable("DB_PG_USER", "\${DB_PG_USER}")
         environmentVariable("DB_PG_PWD", "\${DB_PG_PWD}")
