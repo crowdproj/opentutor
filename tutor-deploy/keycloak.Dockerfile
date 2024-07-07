@@ -19,4 +19,4 @@ RUN /opt/keycloak/bin/kc.sh build
 FROM quay.io/keycloak/keycloak:24.0.4
 COPY --from=builder /opt/keycloak/ /opt/keycloak/
 
-ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--import-realm", "--db", "postgres", "--log-level", "INFO"]
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--import-realm", "--db", "postgres", "--log-level", "INFO", "--hostname-strict=false", "--proxy=edge", "--proxy-headers=forwarded", "--hostname-port=8080"]

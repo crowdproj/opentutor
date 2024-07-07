@@ -33,9 +33,6 @@ services:
       - flashcards-net
     depends_on:
       - flashcards-db
-    ports:
-      - "8081:8080"
-      - "8082:9990"
     volumes:
       - "${DATA_DIR}/keycloak:/tmp"
     environment:
@@ -47,12 +44,32 @@ services:
       KC_HOSTNAME: "localhost"
       KEYCLOAK_ADMIN: "${KEYCLOAK_ADMIN}"
       KEYCLOAK_ADMIN_PASSWORD: "${KEYCLOAK_ADMIN_PASSWORD}"
+      KC_HEALTH_ENABLED: "true"
+      KC_PROXY: "edge"
+      KC_PROXY_ADDRESS_FORWARDING: "true"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HTTP_ENABLED: "true"
     healthcheck:
       test: [ "CMD-SHELL", "exec 3<>/dev/tcp/127.0.0.1/8080;echo -e \"GET /health/ready HTTP/1.1\r\nhost: http://localhost\r\nConnection: close\r\n\r\n\" >&3;grep \"HTTP/1.1 200 OK\" <&3" ]
       interval: 10s
       timeout: 5s
       retries: 5
     user: root
+
+  flashcards-envoy:
+    image: envoyproxy/envoy:v1.29.0
+    volumes:
+      - "${DATA_DIR}/envoy/envoy.yaml:/etc/envoy/envoy.yaml"
+    #      - ./envoy/certs:/etc/envoy/certs  # Mount your TLS certificates
+    ports:
+      - "8080:8080"
+      - "15001:15001"
+    command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l info
+    networks:
+      - flashcards-net
+    depends_on:
+      flashcards-keycloak:
+        condition: service_healthy
 
   flashcards-nats:
     image: nats:2.10.14-alpine
@@ -115,16 +132,14 @@ services:
     image: sszuev/open-tutor:2.0.0-snapshot
     networks:
       - flashcards-net
-    ports:
-      - "8080:8080"
     depends_on:
       - flashcards-tts-server
       - flashcards-cards-server
       - flashcards-dictionaries-server
-      - flashcards-keycloak
+      - flashcards-envoy
     environment:
       CLIENT_NATS_HOST: "flashcards-nats"
-      KEYCLOAK_AUTHORIZE_ADDRESS: "http://localhost:8081"
+      KEYCLOAK_AUTHORIZE_ADDRESS: "http://localhost:8080"
       KEYCLOAK_REDIRECT_ADDRESS: "http://localhost:8080"
       KEYCLOAK_ACCESS_TOKEN_ADDRESS: "http://flashcards-keycloak:8080"
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
