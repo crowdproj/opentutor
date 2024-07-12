@@ -18,6 +18,16 @@ static_resources:
               typed_config:
                 "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
                 stat_prefix: ingress_http
+                use_remote_address: true
+                xff_num_trusted_hops: 1
+                normalize_path: true
+                strip_any_host_port: true
+                forward_client_cert_details: SANITIZE_SET
+                set_current_client_cert_details:
+                  subject: true
+                  cert: true
+                  dns: true
+                  uri: true
                 route_config:
                   name: local_route
                   virtual_hosts:
