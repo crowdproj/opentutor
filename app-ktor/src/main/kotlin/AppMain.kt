@@ -92,8 +92,8 @@ fun Application.module(
     runConfig: RunConfig = RunConfig(environment.config),
     tutorConfig: TutorConfig = TutorConfig(environment.config),
     oauthJwtVerifier: JWTVerifier = makeJwtVerifier(
-        jwkUrl = "${keycloakConfig.accessTokenAddress}/realms/flashcards-realm/protocol/openid-connect/certs",
-        issuer = "${keycloakConfig.authorizeAddress}/realms/flashcards-realm"
+        jwkUrl = "${keycloakConfig.accessTokenAddress}/realms/${keycloakConfig.realm}/protocol/openid-connect/certs",
+        issuer = "${keycloakConfig.authorizeAddress}/realms/${keycloakConfig.realm}"
     ),
     keycloakSecret: String? = null,
 ) {
@@ -130,8 +130,11 @@ fun Application.module(
     install(AutoHeadResponse)
 
     install(CORS) {
+        anyHost()
         allowMethod(HttpMethod.Post)
         allowHeader(HttpHeaders.Authorization)
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Origin)
         this.allowCredentials = true
     }
 
