@@ -58,3 +58,48 @@ docker-compose -f docker-compose-app.yml up flashcards-db flashcards-keycloak fl
 docker-compose -f docker-compose-app.yml up flashcards-tts-server flashcards-dictionaries-serve flashcards-cards-server flashcards-app
 docker-compose -f docker-compose-elk-stack.yml -p flashcards-elk-stack up
 ```
+
+#### HTTPS, localhost
+
+1) generate self-signed certificates:
+
+```shell
+mkdir tutor-deploy/data/envoy/certs
+cd tutor-deploy/data/envoy/certs
+openssl genrsa -out localhost.key 2048
+openssl req -new -x509 -key localhost.key -out localhost.crt -days 365 -subj "/CN=localhost"
+```
+
+2) configure [envoy.yml](data/envoy/envoy.yaml):
+
+- set `port_value: 443`
+- `issuer: "https://localhost/realms/flashcards-realm"`
+- under `filters` add following section:
+
+```yaml
+        - filters
+          ...
+          transport_socket:
+            name: envoy.transport_sockets.tls
+            typed_config:
+              "@type": type.googleapis.com/envoy.extensions.transport_sockets.tls.v3.DownstreamTlsContext
+              common_tls_context:
+                tls_certificates:
+                  - certificate_chain:
+                      filename: "/etc/envoy/certs/server.crt"
+                    private_key:
+                      filename: "/etc/envoy/certs/server.key"
+```
+
+3) change [docker-compose-app.yml](docker-compose-app.yml):
+
+- for
+  flashcards-keycloak: `KC_HOSTNAME_URL: "https://localhost/"` &  `KC_HOSTNAME_ADMIN_URL: "https://localhost/"` &  `KC_HOSTNAME_PORT: "443"`
+- for flashcards-envoy: `ports: - "443:443"` & uncomment `- "${DATA_DIR}/envoy/certs:/etc/envoy/certs"`
+- for
+  flashcards-app `KEYCLOAK_AUTHORIZE_ADDRESS: "https://localhost"` & `KEYCLOAK_REDIRECT_ADDRESS: "https://localhost"`
+
+4) `docker-compose -f docker-compose-app.yml up`
+5) go to `https://localhost/admin/master/console` -> `flashcards-realm` -> `flashcards-client`
+6) set `redirect url` to `https://localhost/*`
+7) the application should be available via `https://localhost/`
