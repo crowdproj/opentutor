@@ -313,7 +313,7 @@ abstract class DbCardRepositoryTest {
         assertEquals(res1, res2)
     }
 
-    @Order(21)
+    @Order(12)
     @Test
     fun `test create card success`() {
         val request = newMurkyCardEntity
@@ -322,7 +322,7 @@ abstract class DbCardRepositoryTest {
         assertTrue(res.cardId.matches("\\d+".toRegex()))
     }
 
-    @Order(42)
+    @Order(13)
     @Test
     fun `test get card & delete card success`() {
         val id = "300"
@@ -330,5 +330,19 @@ abstract class DbCardRepositoryTest {
         assertEquals(id, res.cardId)
 
         assertNull(repository.findCardById(id))
+    }
+
+    @Order(14)
+    @Test
+    fun `test count cards by dictionary id`() {
+        val actual = repository.countCardsByDictionaryId(listOf("1", "2"))
+        assertEquals(mapOf("1" to 244L, "2" to 65L), actual)
+    }
+
+    @Order(14)
+    @Test
+    fun `test count cards by dictionary id and answered`() {
+        val actual = repository.countCardsByDictionaryIdAndAnswered(listOf("1", "2"), 42)
+        assertEquals(mapOf("1" to 2L, "2" to 2L), actual)
     }
 }

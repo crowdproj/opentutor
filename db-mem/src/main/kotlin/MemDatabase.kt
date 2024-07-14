@@ -124,6 +124,13 @@ class MemDatabase private constructor(
             .map { it.value }
     }
 
+    fun counts(filter: (MemDbCard) -> Boolean = { true }): Map<Long, Long> {
+        return dictionaryResources().mapNotNull {
+            val dictionaryId = it.dictionary.id ?: return@mapNotNull null
+            dictionaryId to it.cards.values.asSequence().filter(filter).count().toLong()
+        }.toMap()
+    }
+
     fun saveCard(card: MemDbCard): MemDbCard {
         val dictionaryId = requireNotNull(card.dictionaryId) { "No dictionaryId in the card $card" }
         val resource =

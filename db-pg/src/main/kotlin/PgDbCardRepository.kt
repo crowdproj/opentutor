@@ -12,6 +12,8 @@ import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.systemNow
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.and
+import org.jetbrains.exposed.sql.count
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchUpdateStatement
 import org.jetbrains.exposed.sql.transactions.TransactionManager
@@ -118,6 +120,38 @@ class PgDbCardRepository(
                 throw DbDataException("Can't delete card, id = $cardId")
             }
             card.copy(changedAt = timestamp.asKotlin())
+        }
+    }
+
+    override fun countCardsByDictionaryId(dictionaryIds: Iterable<String>): Map<String, Long> {
+        return connection.execute {
+            Cards.select(Cards.dictionaryId, Cards.dictionaryId.count())
+                .where {
+                    Cards.dictionaryId inList
+                        dictionaryIds.onEach { require(it.isNotBlank()) }.map { it.toDictionariesId() }.toSet()
+                }
+                .groupBy(Cards.dictionaryId)
+                .associate {
+                    it[Cards.dictionaryId].value.toString() to it[Cards.dictionaryId.count()]
+                }
+        }
+    }
+
+    override fun countCardsByDictionaryIdAndAnswered(
+        dictionaryIds: Iterable<String>,
+        greaterOrEqual: Int
+    ): Map<String, Long> {
+        return connection.execute {
+            Cards.select(Cards.dictionaryId, Cards.dictionaryId.count())
+                .where {
+                    (Cards.dictionaryId inList
+                        dictionaryIds.onEach { require(it.isNotBlank()) }.map { it.toDictionariesId() }.toSet()) and
+                        (Cards.answered greaterEq greaterOrEqual)
+                }
+                .groupBy(Cards.dictionaryId)
+                .associate {
+                    it[Cards.dictionaryId].value.toString() to it[Cards.dictionaryId.count()]
+                }
         }
     }
 }

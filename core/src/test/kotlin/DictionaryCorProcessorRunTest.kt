@@ -55,7 +55,8 @@ internal class DictionaryCorProcessorRunTest {
         val testResponseEntities = stubDictionaries
 
         var getAllDictionariesWasCalled = false
-        var getAllCardsWasCalled = false
+        var countCardsByDictionaryIdWasCalled = false
+        var countCardsByDictionaryIdAndAnsweredWasCalled = false
         var getUserByIdWasCalled = false
         var createUserWasCalled = false
         val dictionaryRepository = MockDbDictionaryRepository(
@@ -69,9 +70,13 @@ internal class DictionaryCorProcessorRunTest {
             }
         )
         val cardsRepository = MockDbCardRepository(
-            invokeFindCardsByDictionaryId = { _ ->
-                getAllCardsWasCalled = true
-                emptySequence()
+            invokeCountCardsByDictionaryIdIn = {
+                countCardsByDictionaryIdWasCalled = true
+                emptyMap()
+            },
+            invokeCountAnsweredCardsByDictionaryIdIn = { _, _ ->
+                countCardsByDictionaryIdAndAnsweredWasCalled = true
+                emptyMap()
             }
         )
         val userRepository = MockDbUserRepository(
@@ -96,7 +101,8 @@ internal class DictionaryCorProcessorRunTest {
 
         Assertions.assertTrue(context.errors.isEmpty()) { "has errors: ${context.errors}" }
         Assertions.assertTrue(getAllDictionariesWasCalled)
-        Assertions.assertTrue(getAllCardsWasCalled)
+        Assertions.assertTrue(countCardsByDictionaryIdWasCalled)
+        Assertions.assertTrue(countCardsByDictionaryIdAndAnsweredWasCalled)
         Assertions.assertTrue(getUserByIdWasCalled)
         Assertions.assertTrue(createUserWasCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.GET_ALL_DICTIONARIES), context.requestId)

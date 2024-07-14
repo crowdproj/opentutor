@@ -3,10 +3,6 @@ package com.gitlab.sszuev.flashcards.dbcommon.mocks
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 
-/**
- * Does not work with `io.mockk:mockk`
- * @see <a href='https://github.com/mockk/mockk/issues/288'>mockk#issue-288</a>
- */
 class MockDbCardRepository(
     private val invokeFindCardById: (String) -> DbCard? = { null },
     private val invokeFindCardsByDictionaryId: (String) -> Sequence<DbCard> = { emptySequence() },
@@ -17,6 +13,8 @@ class MockDbCardRepository(
     private val invokeUpdateCard: (DbCard) -> DbCard = { DbCard.NULL },
     private val invokeUpdateCards: (Iterable<DbCard>) -> List<DbCard> = { emptyList() },
     private val invokeDeleteCard: (String) -> DbCard = { _ -> DbCard.NULL },
+    private val invokeCountCardsByDictionaryIdIn: (Iterable<String>) -> Map<String, Long> = { emptyMap() },
+    private val invokeCountAnsweredCardsByDictionaryIdIn: (Int, Iterable<String>) -> Map<String, Long> = { _, _ -> emptyMap() },
 ) : DbCardRepository {
 
     override fun findCardById(cardId: String): DbCard? = invokeFindCardById(cardId)
@@ -38,4 +36,12 @@ class MockDbCardRepository(
     override fun updateCards(cardEntities: Iterable<DbCard>): List<DbCard> = invokeUpdateCards(cardEntities)
 
     override fun deleteCard(cardId: String): DbCard = invokeDeleteCard(cardId)
+
+    override fun countCardsByDictionaryId(dictionaryIds: Iterable<String>): Map<String, Long> =
+        invokeCountCardsByDictionaryIdIn(dictionaryIds)
+
+    override fun countCardsByDictionaryIdAndAnswered(
+        dictionaryIds: Iterable<String>,
+        greaterOrEqual: Int
+    ): Map<String, Long> = invokeCountAnsweredCardsByDictionaryIdIn(greaterOrEqual, dictionaryIds)
 }
