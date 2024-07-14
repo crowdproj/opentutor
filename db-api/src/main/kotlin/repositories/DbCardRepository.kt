@@ -58,4 +58,13 @@ interface DbCardRepository {
      */
     fun deleteCard(cardId: String): DbCard
 
+    /**
+     * Returns the number of cards for the specified dictionary.
+     */
+    fun countCardsByDictionaryId(dictionaryIds: Iterable<String>): Map<String, Long>
+
+    /**
+     * Returns the number of answered cards (`card.answered` >= [greaterOrEqual]) for the specified dictionary.
+     */
+    fun countCardsByDictionaryIdAndAnswered(dictionaryIds: Iterable<String>, greaterOrEqual: Int): Map<String, Long>
 }

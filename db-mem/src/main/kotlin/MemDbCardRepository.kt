@@ -57,4 +57,20 @@ class MemDbCardRepository(
         }
         return found.copy(changedAt = timestamp).toDbCard()
     }
+
+    override fun countCardsByDictionaryId(dictionaryIds: Iterable<String>): Map<String, Long> {
+        val ids = dictionaryIds.toSet()
+        return database.counts().mapKeys { it.key.toString() }.filterKeys { it in ids }
+    }
+
+    override fun countCardsByDictionaryIdAndAnswered(
+        dictionaryIds: Iterable<String>,
+        greaterOrEqual: Int
+    ): Map<String, Long> {
+        val ids = dictionaryIds.toSet()
+        return database
+            .counts { (it.answered ?: 0) >= greaterOrEqual }
+            .mapKeys { it.key.toString() }
+            .filterKeys { it in ids }
+    }
 }

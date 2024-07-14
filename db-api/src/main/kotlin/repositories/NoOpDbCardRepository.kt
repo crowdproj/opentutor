@@ -18,6 +18,13 @@ object NoOpDbCardRepository : DbCardRepository {
 
     override fun deleteCard(cardId: String): DbCard = noOp()
 
+    override fun countCardsByDictionaryId(dictionaryIds: Iterable<String>): Map<String, Long> = noOp()
+
+    override fun countCardsByDictionaryIdAndAnswered(
+        dictionaryIds: Iterable<String>,
+        greaterOrEqual: Int
+    ): Map<String, Long> = noOp()
+
     private fun noOp(): Nothing {
         error("Must not be called.")
     }
