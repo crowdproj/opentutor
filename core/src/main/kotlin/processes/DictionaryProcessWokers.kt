@@ -30,17 +30,21 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
             }
         }
 
-        val res = this.repositories.dictionaryRepository
+        val dictionaries = this.repositories.dictionaryRepository
             .findDictionariesByUserId(userId.asString())
             .map { it.toDictionaryEntity().normalize() }.toList()
-        this.responseDictionaryEntityList = res.map { dictionary ->
-            val cards =
-                this.repositories.cardRepository
-                    .findCardsByDictionaryId(dictionary.dictionaryId.asString())
-                    .toList()
-            val total = cards.size
-            val known = cards.mapNotNull { it.answered }.count { it >= config.numberOfRightAnswers }
-            dictionary.copy(totalCardsCount = total, learnedCardsCount = known)
+        val cardCounts = this.repositories.cardRepository.countCardsByDictionaryId(
+            dictionaries.map { it.dictionaryId.asString() }
+        )
+        val answeredCounts = this.repositories.cardRepository.countCardsByDictionaryIdAndAnswered(
+            dictionaries.map { it.dictionaryId.asString() },
+            config.numberOfRightAnswers
+        )
+
+        this.responseDictionaryEntityList = dictionaries.map { dictionary ->
+            val total = cardCounts[dictionary.dictionaryId.asString()] ?: 0
+            val known = answeredCounts[dictionary.dictionaryId.asString()] ?: 0
+            dictionary.copy(totalCardsCount = total.toInt(), learnedCardsCount = known.toInt())
         }
 
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
