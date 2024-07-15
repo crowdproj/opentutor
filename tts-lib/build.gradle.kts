@@ -12,9 +12,11 @@ dependencies {
     val typesafeConfigVersion: String by project
     val ktorVersion: String by project
     val slf4jVersion: String by project
+    val caffeineVersion: String by project
 
     implementation(project(":common"))
     implementation(project(":utilities"))
+    implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
     implementation("org.apache.commons:commons-compress:$commonsCompressVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")

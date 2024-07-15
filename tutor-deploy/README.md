@@ -66,8 +66,9 @@ docker-compose -f docker-compose-elk-stack.yml -p flashcards-elk-stack up
 ```shell
 mkdir tutor-deploy/data/envoy/certs
 cd tutor-deploy/data/envoy/certs
-openssl genrsa -out localhost.key 2048
-openssl req -new -x509 -key localhost.key -out localhost.crt -days 365 -subj "/CN=localhost"
+openssl genrsa -out server.key 2048
+openssl req -new -x509 -key server.key -out server.crt -days 365 -subj "/CN=localhost"
+chmod 644 server.crt server.key
 ```
 
 2) configure [envoy.yml](data/envoy/envoy.yaml):

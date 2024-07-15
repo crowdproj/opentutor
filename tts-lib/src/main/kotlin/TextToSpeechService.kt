@@ -1,8 +1,8 @@
 package com.gitlab.sszuev.flashcards.speaker
 
+import com.gitlab.sszuev.flashcards.speaker.impl.CombinedTextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.impl.EspeakNgTestToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.impl.LocalTextToSpeechService
-import com.gitlab.sszuev.flashcards.speaker.impl.VoicerssTextToSpeechService
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.speaker.TextToSpeechService")
@@ -18,7 +18,7 @@ interface TextToSpeechService {
      * @return [ByteArray] or `null` if resource is not found
      * @throws Exception something is wrong
      */
-    suspend fun getResource(id: String, vararg args: String?): ByteArray?
+    suspend fun getResource(id: String, vararg args: String): ByteArray?
 
     /**
      * Answers `true` if resource can be provided.
@@ -36,7 +36,7 @@ interface TextToSpeechService {
 fun createTTSService(): TextToSpeechService {
     return if (TTSSettings.ttsServiceVoicerssKey.isNotBlank() && TTSSettings.ttsServiceVoicerssKey != "secret") {
         logger.info("::[TTS-SERVICE] init voicerss service")
-        VoicerssTextToSpeechService()
+        CombinedTextToSpeechService()
     } else if (EspeakNgTestToSpeechService.isEspeakNgAvailable()) {
         logger.info("::[TTS-SERVICE] init espeak-ng service")
         EspeakNgTestToSpeechService()
