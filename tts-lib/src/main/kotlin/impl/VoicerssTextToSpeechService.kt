@@ -18,14 +18,14 @@ import org.slf4j.LoggerFactory
 private val logger = LoggerFactory.getLogger(VoicerssTextToSpeechService::class.java)
 
 class VoicerssTextToSpeechService(
-    internal val clientProducer: () -> HttpClient = {
+    private val clientProducer: () -> HttpClient = {
         HttpClient {
             install(HttpTimeout)
             expectSuccess = true
         }
     },
-    internal val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
-    internal val config: TTSConfig = TTSConfig(),
+    private val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
+    private val config: TTSConfig = TTSConfig(),
 ) : TextToSpeechService {
 
     companion object {
@@ -41,7 +41,7 @@ class VoicerssTextToSpeechService(
         }
     }
 
-    override suspend fun getResource(id: String, vararg args: String?): ByteArray? {
+    override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         val langToWord = resourceIdMapper(id) ?: return null
         val lang = languageByTag(langToWord.first) ?: return null
         return withTimeout(config.getResourceTimeoutMs) {

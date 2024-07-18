@@ -13,8 +13,8 @@ import java.util.concurrent.TimeoutException
  * To use espeak-ng via docker the image `sszuev/ubuntu:openjdk11-jre-espeak-ng` can be used.
  */
 class EspeakNgTestToSpeechService(
-    internal val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
-    internal val config: TTSConfig = TTSConfig(),
+    private val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
+    private val config: TTSConfig = TTSConfig(),
 ) : TextToSpeechService {
 
     companion object {
@@ -60,7 +60,7 @@ class EspeakNgTestToSpeechService(
         }
     }
 
-    override suspend fun getResource(id: String, vararg args: String?): ByteArray? {
+    override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         val langToWord = resourceIdMapper(id) ?: return null
         val lang = languageByTag(langToWord.first) ?: return null
         val processBuilder =

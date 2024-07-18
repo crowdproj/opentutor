@@ -17,7 +17,7 @@ class LocalTextToSpeechService(
     internal val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
 ) : TextToSpeechService {
 
-    override suspend fun getResource(id: String, vararg args: String?): ByteArray? {
+    override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         val langAndWord = resourceIdMapper(id)?: return null
         val lang = langAndWord.first
         val word = langAndWord.second

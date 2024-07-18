@@ -12,11 +12,7 @@ import java.nio.charset.StandardCharsets
  * @see <a href="http://shtooka.net/swac">shtooka swac</a>
  */
 class TarArchiveResourceStore(source: () -> InputStream) : ResourceStore {
-    private val source: () -> TarArchiveInputStream
-
-    init {
-        this.source = fromSource(source)
-    }
+    private val source: () -> TarArchiveInputStream = fromSource(source)
 
     private val indexes: Map<String, List<Info>> by lazy {
         readIndexMap()
