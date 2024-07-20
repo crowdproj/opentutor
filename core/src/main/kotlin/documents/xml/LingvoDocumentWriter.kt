@@ -55,8 +55,12 @@ internal class LingvoDocumentWriter : DocumentWriter {
         parent.appendChild(meanings)
         val meaning = doc.createElement("meaning")
         meanings.appendChild(meaning)
-        card.partOfSpeech?.also { meaning.setAttribute("partOfSpeech", LingvoMappings.fromPartOfSpeechTag(it)) }
-        card.transcription?.also { meaning.setAttribute("transcription", it) }
+        card.partOfSpeech
+            ?.takeIf { it.isNotBlank() }
+            ?.also { meaning.setAttribute("partOfSpeech", LingvoMappings.fromPartOfSpeechTag(it)) }
+        card.transcription
+            ?.takeIf { it.isNotBlank() }
+            ?.also { meaning.setAttribute("transcription", it) }
         writeMeaningStatistics(meaning, card)
         val translations = doc.createElement("translations")
         meaning.appendChild(translations)
