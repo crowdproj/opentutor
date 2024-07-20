@@ -172,7 +172,7 @@ internal class DictionaryCorProcessorRunTest {
     }
 
     @Test
-    fun `test download-dictionary success`() = runTest {
+    fun `test download-dictionary xml success`() = runTest {
         val testId = DictionaryId("42")
         val testDictionary = stubDictionary.copy(
             dictionaryId = testId,
@@ -202,6 +202,7 @@ internal class DictionaryCorProcessorRunTest {
             cardsRepository = cardsRepository,
         )
         context.requestDictionaryId = testId
+        context.requestDownloadDocumentType = "xml"
 
         DictionaryCorProcessor().execute(context)
 
@@ -214,6 +215,53 @@ internal class DictionaryCorProcessorRunTest {
         val document = context.responseDictionaryResourceEntity.data.toString(Charsets.UTF_16)
         Assertions.assertTrue(document.contains("<meaning partOfSpeech=\"1\" transcription=\"stʌb\">"))
         Assertions.assertTrue(document.contains("title=\"Stub-dictionary\""))
+    }
+
+    @Test
+    fun `test download-dictionary json success`() = runTest {
+        val testId = DictionaryId("42")
+        val testDictionary = stubDictionary.copy(
+            dictionaryId = testId,
+            sourceLang = LangEntity(LangId("en")),
+            targetLang = LangEntity(LangId("fr")),
+        )
+        val testCard = stubCard.copy(dictionaryId = testId)
+
+        var isFindDictionaryByIdCalled = false
+        var isFindCardsByDictionaryIdCalled = false
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaryById = {
+                isFindDictionaryByIdCalled = true
+                if (it == testId.asString()) testDictionary.toDbDictionary() else Assertions.fail()
+            }
+        )
+        val cardsRepository = MockDbCardRepository(
+            invokeFindCardsByDictionaryId = {
+                isFindCardsByDictionaryIdCalled = true
+                if (it == testId.asString()) sequenceOf(testCard.toDbCard()) else Assertions.fail()
+            }
+        )
+
+        val context = testContext(
+            op = DictionaryOperation.DOWNLOAD_DICTIONARY,
+            dictionaryRepository = dictionaryRepository,
+            cardsRepository = cardsRepository,
+        )
+        context.requestDictionaryId = testId
+        context.requestDownloadDocumentType = "json"
+
+        DictionaryCorProcessor().execute(context)
+
+        Assertions.assertTrue(isFindDictionaryByIdCalled)
+        Assertions.assertTrue(isFindCardsByDictionaryIdCalled)
+        Assertions.assertEquals(requestId(DictionaryOperation.DOWNLOAD_DICTIONARY), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+
+        val document = context.responseDictionaryResourceEntity.data.toString(Charsets.UTF_8)
+        println(document)
+        Assertions.assertTrue(document.contains("\"name\": \"Stub-dictionary\""))
+        Assertions.assertTrue(document.contains("\"cards\": ["))
     }
 
     @Test

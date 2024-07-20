@@ -18,7 +18,7 @@ fun DocumentDictionary.toDictionaryEntity(): DictionaryEntity = DictionaryEntity
     targetLang = createLangEntity(this.targetLang),
 )
 
-fun DictionaryEntity.toDocumentDictionary(): DocumentDictionary = DocumentDictionary(
+fun DictionaryEntity.toXmlDocumentDictionary(): DocumentDictionary = DocumentDictionary(
     name = this.name,
     sourceLang = this.sourceLang.langId.asString(),
     targetLang = this.targetLang.langId.asString(),
@@ -31,7 +31,7 @@ fun DocumentCard.toCardEntity(config: AppConfig): CardEntity = CardEntity(
     answered = config.answered(this.status),
 )
 
-fun CardEntity.toDocumentCard(config: AppConfig): DocumentCard {
+fun CardEntity.toXmlDocumentCard(config: AppConfig): DocumentCard {
     val word = this.words.first()
     return DocumentCard(
         text = word.word,

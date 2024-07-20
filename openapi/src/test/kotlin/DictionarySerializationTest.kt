@@ -92,7 +92,8 @@ internal class DictionarySerializationTest {
     fun `test serialization for DownloadDictionaryRequest`() {
         val res1 = DownloadDictionaryRequest(
             requestId = "request=42",
-            dictionaryId = "dictionary=42"
+            dictionaryId = "dictionary=42",
+            type = "json",
         )
         val json = serialize(res1)
         Assertions.assertTrue(json.contains("\"requestType\":\"downloadDictionary\""))

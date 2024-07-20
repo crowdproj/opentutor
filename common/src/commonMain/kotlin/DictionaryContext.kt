@@ -33,9 +33,12 @@ data class DictionaryContext(
     // update/create request:
     var requestDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,
     var normalizedRequestDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,
-    // get-dictionary & delete-dictionary request:
+    // get-dictionary & delete-dictionary & download request:
     var requestDictionaryId: DictionaryId = DictionaryId.NONE,
     var normalizedRequestDictionaryId: DictionaryId = DictionaryId.NONE,
+    // download request
+    var requestDownloadDocumentType: String = "",
+    var normalizedRequestDownloadDocumentType: String = "",
     // download-dictionary
     var responseDictionaryResourceEntity: ResourceEntity = ResourceEntity.DUMMY,
     // upload-dictionary

@@ -90,6 +90,7 @@ internal class DictionaryControllerRunTest {
         val requestBody = DownloadDictionaryRequest(
             requestId = "success-request",
             dictionaryId = "2",
+            type = "xml",
         )
         val response = testPost("/v1/api/dictionaries/download", requestBody)
         val res = response.body<DownloadDictionaryResponse>()

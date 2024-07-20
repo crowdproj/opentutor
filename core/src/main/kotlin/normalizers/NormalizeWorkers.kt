@@ -27,8 +27,13 @@ fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = wo
 ) {
     this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
     when (operation) {
-        DictionaryOperation.DELETE_DICTIONARY, DictionaryOperation.DOWNLOAD_DICTIONARY -> {
+        DictionaryOperation.DELETE_DICTIONARY -> {
             this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
+        }
+
+        DictionaryOperation.DOWNLOAD_DICTIONARY -> {
+            this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
+            this.normalizedRequestDownloadDocumentType = this.requestDownloadDocumentType.trim().lowercase()
         }
 
         DictionaryOperation.CREATE_DICTIONARY -> {

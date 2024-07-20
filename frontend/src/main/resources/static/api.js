@@ -133,13 +133,14 @@ function uploadDictionary(arrayBuffer, onDone, onFail) {
 }
 
 function downloadDictionary(dictionaryId, downloadFilename, type, onDone) {
-    if (type !== 'xml') {
-        console.error('Not supported type')
+    if (type !== 'xml' && type !== 'json') {
+        console.error('Not supported type: "' + type + '"')
         return;
     }
     const data = {
         'requestId': uuid(),
         'requestType': downloadDictionaryRequestType,
+        'type': type,
         'dictionaryId': dictionaryId
     }
     post(downloadDictionaryURI, data, function (res) {

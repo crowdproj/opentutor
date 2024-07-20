@@ -392,6 +392,9 @@ components:
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
+            type:
+              description: 'xml/json'
+              type: string
             dictionaryId:
               type: string
 

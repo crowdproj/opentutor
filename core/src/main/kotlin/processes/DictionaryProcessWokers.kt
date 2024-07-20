@@ -3,18 +3,20 @@ package com.gitlab.sszuev.flashcards.core.processes
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.core.documents.createReader
 import com.gitlab.sszuev.flashcards.core.documents.createWriter
+import com.gitlab.sszuev.flashcards.core.mappers.document
 import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
 import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.mappers.toDictionaryEntity
-import com.gitlab.sszuev.flashcards.core.mappers.toDocumentCard
-import com.gitlab.sszuev.flashcards.core.mappers.toDocumentDictionary
+import com.gitlab.sszuev.flashcards.core.mappers.toXmlDocumentCard
+import com.gitlab.sszuev.flashcards.core.mappers.toXmlDocumentDictionary
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
+import com.gitlab.sszuev.flashcards.utils.toJsonString
 
 fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     this.name = "process get-all-dictionary request"
@@ -124,17 +126,46 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         } else if (dictionary.userId != userId) {
             this.errors.add(forbiddenEntityDataError(DictionaryOperation.DOWNLOAD_DICTIONARY, dictionaryId, userId))
         } else {
-            val cards = this.repositories.cardRepository
-                .findCardsByDictionaryId(dictionaryId.asString())
-                .map { it.toCardEntity() }
-                .map { it.toDocumentCard(this.config) }
-                .toList()
-            val document = dictionary.toDocumentDictionary().copy(cards = cards)
-            try {
-                val res = createWriter().write(document)
-                this.responseDictionaryResourceEntity = ResourceEntity(resourceId = dictionaryId, data = res)
-            } catch (ex: Exception) {
-                handleThrowable(DictionaryOperation.DOWNLOAD_DICTIONARY, ex)
+            when (this.normalizedRequestDownloadDocumentType) {
+                "xml" -> {
+
+                    val cards = this.repositories.cardRepository
+                        .findCardsByDictionaryId(dictionaryId.asString())
+                        .map { it.toCardEntity() }
+                        .map { it.toXmlDocumentCard(this.config) }
+                        .toList()
+                    val document = dictionary.toXmlDocumentDictionary().copy(cards = cards)
+                    try {
+                        val res = createWriter().write(document)
+                        this.responseDictionaryResourceEntity = ResourceEntity(resourceId = dictionaryId, data = res)
+                    } catch (ex: Exception) {
+                        handleThrowable(DictionaryOperation.DOWNLOAD_DICTIONARY, ex)
+                    }
+                }
+
+                "json" -> {
+                    val document = dictionary.document
+                    val cards = this.repositories.cardRepository
+                        .findCardsByDictionaryId(dictionaryId.asString())
+                        .map { it.toCardEntity() }
+                        .toList()
+                    try {
+                        val res = document.copy(cards = cards).toJsonString().toByteArray(Charsets.UTF_8)
+                        this.responseDictionaryResourceEntity = ResourceEntity(resourceId = dictionaryId, data = res)
+                    } catch (ex: Exception) {
+                        handleThrowable(DictionaryOperation.DOWNLOAD_DICTIONARY, ex)
+                    }
+                }
+
+                else -> {
+                    errors.add(
+                        dataError(
+                            operation = DictionaryOperation.DOWNLOAD_DICTIONARY,
+                            fieldName = dictionaryId.asString(),
+                            details = "Unsupported type: '${this.normalizedRequestDownloadDocumentType}'",
+                        )
+                    )
+                }
             }
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
