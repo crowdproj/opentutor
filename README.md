@@ -1,6 +1,9 @@
 ## OpenTutor - a service for compiling user dictionaries and learning foreign words
 
-A simple open-source kotlin-ktor web-application for compiling custom dictionaries and learning foreign words through flashcards.         
+A simple open-source kotlin-ktor web-application for compiling custom dictionaries and learning foreign words through
+flashcards.
+
+It is now available via https://storage.yandexcloud.net/opentutor/index.html & https://opentutor.zapto.org
 
 #### Edit dictionaries:
 
@@ -20,8 +23,6 @@ The userdata with built-in dictionaries is stored in the `/userdata` directory (
 By default, [espeak-ng](https://github.com/espeak-ng/espeak-ng) is used as Text-To-Speech service (it is pre-installed inside `sszuev/ubuntu-jammy-openjdk-17-espeak-ng` image).        
 To use [voicerss](https://www.voicerss.org/api/) TTS service (better quality)
 obtain API-key and specify it as an environment variable `VOICERSS-KEY`, e.g. `docker run ... -e VOICERSS-KEY=${your-key} ...`
-
-This is a second edition, the first one is a java-spring application, which home is [here](https://gitlab.com/sszuev/flashcards)
 
 #### Requirements (for dev): 
 - java-17+
