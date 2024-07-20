@@ -132,7 +132,11 @@ function uploadDictionary(arrayBuffer, onDone, onFail) {
     })
 }
 
-function downloadDictionary(dictionaryId, downloadFilename, onDone) {
+function downloadDictionary(dictionaryId, downloadFilename, type, onDone) {
+    if (type !== 'xml') {
+        console.error('Not supported type')
+        return;
+    }
     const data = {
         'requestId': uuid(),
         'requestType': downloadDictionaryRequestType,

@@ -59,8 +59,16 @@
                 <button id="dictionaries-btn-delete" type="button" class="btn btn-secondary" data-bs-toggle="modal"
                         data-bs-target="#delete-dictionary-prompt" disabled>Delete
                 </button>
-                <button id="dictionaries-btn-download" type="button" class="btn btn-secondary" disabled>Download
-                </button>
+                <div class="dropdown" style="flex: 1 1 0;">
+                    <button id="dictionaries-btn-download" type="button" class="btn btn-secondary"
+                            style="width: 100%; border-radius: 0; flex-grow: 1;" disabled>Download
+                    </button>
+                    <ul class="dropdown-menu" id="dictionaries-btn-download-options" style="width: 100%; flex-grow: 1;">
+                        <li><a class="dropdown-item" href="#" id="dictionaries-btn-download-option-json">JSON</a></li>
+                        <li><a class="dropdown-item" href="#" id="dictionaries-btn-download-option-xml">Lingvo-XML</a>
+                        </li>
+                    </ul>
+                </div>
                 <label id="dictionaries-btn-upload-label" for="dictionaries-btn-upload"
                        class="btn btn-secondary btn-file-upload">Upload</label>
                 <input id="dictionaries-btn-upload" type="file" style="display: none;"/>
