@@ -414,6 +414,9 @@ components:
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
+            type:
+              description: 'xml/json'
+              type: string
             resource:
               type: string
               format: byte

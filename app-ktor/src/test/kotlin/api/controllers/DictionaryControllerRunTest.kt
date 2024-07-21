@@ -119,6 +119,7 @@ internal class DictionaryControllerRunTest {
         val requestBody = UploadDictionaryRequest(
             requestId = "success-request",
             resource = txt.toByteArray(Charsets.UTF_16),
+            type = "xml",
         )
         val response = testPost("/v1/api/dictionaries/upload", requestBody)
         val res = response.body<UploadDictionaryResponse>()

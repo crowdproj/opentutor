@@ -116,9 +116,10 @@ function drawDictionariesPage() {
 function uploadDictionaryFile(file) {
     const btnUpload = $('#dictionaries-btn-upload-label');
     const reader = new FileReader()
+    const type = getFileExtensionType(file.name)
     reader.onload = function (e) {
         const txt = e.target.result;
-        uploadDictionary(txt, drawDictionariesPage, function () {
+        uploadDictionary(txt, drawDictionariesPage, type, function () {
             btnUpload.addClass('btn-outline-danger');
         });
     }

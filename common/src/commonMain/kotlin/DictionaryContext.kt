@@ -36,7 +36,7 @@ data class DictionaryContext(
     // get-dictionary & delete-dictionary & download request:
     var requestDictionaryId: DictionaryId = DictionaryId.NONE,
     var normalizedRequestDictionaryId: DictionaryId = DictionaryId.NONE,
-    // download request
+    // download & upload requests
     var requestDownloadDocumentType: String = "",
     var normalizedRequestDownloadDocumentType: String = "",
     // download-dictionary

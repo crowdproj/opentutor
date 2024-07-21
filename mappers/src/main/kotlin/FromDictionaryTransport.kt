@@ -46,6 +46,7 @@ fun DictionaryContext.fromDownloadDictionaryRequest(request: DownloadDictionaryR
 fun DictionaryContext.fromUploadDictionaryRequest(request: UploadDictionaryRequest) {
     this.requestId = request.requestId()
     this.requestDictionaryResourceEntity = ResourceEntity(DictionaryId.NONE, request.resource ?: ByteArray(0))
+    this.requestDownloadDocumentType = request.type ?: ""
 }
 
 fun DictionaryResource.toDictionaryEntity() = DictionaryEntity(

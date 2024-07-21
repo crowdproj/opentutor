@@ -103,3 +103,13 @@ function arrayBufferToBase64(buffer) {
     }
     return window.btoa(binary)
 }
+
+function getFileExtensionType(filename) {
+    if (filename.endsWith('.json')) {
+        return 'json';
+    } else if (filename.endsWith('.xml')) {
+        return 'xml';
+    } else {
+        throw new Error('Unknown file type, filename = "' + filename + '"');
+    }
+}
