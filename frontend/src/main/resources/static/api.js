@@ -113,11 +113,15 @@ function getNextCardDeck(dictionaryIds, length, unknown, onDone) {
     })
 }
 
-function uploadDictionary(arrayBuffer, onDone, onFail) {
+function uploadDictionary(arrayBuffer, onDone, type, onFail) {
+    if (type !== 'xml' && type !== 'json') {
+        throw new Error('Not supported type: "' + type + '"')
+    }
     const base64 = arrayBufferToBase64(arrayBuffer)
     const data = {
         'requestId': uuid(),
         'requestType': uploadDictionaryRequestType,
+        'type': type,
         'resource': base64
     }
     post(uploadDictionaryURI, data, function (res) {
@@ -132,10 +136,14 @@ function uploadDictionary(arrayBuffer, onDone, onFail) {
     })
 }
 
-function downloadDictionary(dictionaryId, downloadFilename, onDone) {
+function downloadDictionary(dictionaryId, downloadFilename, type, onDone) {
+    if (type !== 'xml' && type !== 'json') {
+        throw new Error('Not supported type: "' + type + '"')
+    }
     const data = {
         'requestId': uuid(),
         'requestType': downloadDictionaryRequestType,
+        'type': type,
         'dictionaryId': dictionaryId
     }
     post(downloadDictionaryURI, data, function (res) {

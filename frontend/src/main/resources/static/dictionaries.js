@@ -31,8 +31,30 @@ function drawDictionariesPage() {
                 uploadDictionaryFile(file);
             }
         });
-        $('#dictionaries-btn-download').off().on('click', function () {
-            downloadDictionaryFile(dictionaries);
+        $('#dictionaries-btn-download').off().on('click', function (e) {
+            e.preventDefault();
+            const options = $('#dictionaries-btn-download-options')
+            options.toggleClass('show');
+            options.css({
+                display: 'block',
+                position: 'absolute',
+                transform: 'translate3d(0, 38px, 0)',
+                top: 0,
+                left: 0
+            });
+        });
+        $(document).click(function (event) {
+            if (!$(event.target).closest('#dictionaries-btn-download, #dictionaries-btn-download-options').length) {
+                $('#dictionaries-btn-download-options').removeClass('show').hide();
+            }
+        });
+        $('#dictionaries-btn-download-option-xml').off().on('click', function () {
+            downloadDictionaryFile(dictionaries, 'xml');
+            $('#dictionaries-btn-download-options').removeClass('show').hide();
+        });
+        $('#dictionaries-btn-download-option-json').off().on('click', function () {
+            downloadDictionaryFile(dictionaries, 'json');
+            $('#dictionaries-btn-download-options').removeClass('show').hide();
         });
 
         bootstrap.Modal.getOrCreateInstance(document.getElementById('delete-dictionary-prompt')).hide();
@@ -94,9 +116,10 @@ function drawDictionariesPage() {
 function uploadDictionaryFile(file) {
     const btnUpload = $('#dictionaries-btn-upload-label');
     const reader = new FileReader()
+    const type = getFileExtensionType(file.name)
     reader.onload = function (e) {
         const txt = e.target.result;
-        uploadDictionary(txt, drawDictionariesPage, function () {
+        uploadDictionary(txt, drawDictionariesPage, type, function () {
             btnUpload.addClass('btn-outline-danger');
         });
     }
@@ -104,14 +127,14 @@ function uploadDictionaryFile(file) {
     $('#dictionaries-btn-upload').val('');
 }
 
-function downloadDictionaryFile(dictionaries) {
+function downloadDictionaryFile(dictionaries, type) {
     const selectedDictionaries = findSelectedDictionaries(dictionaries);
     if (selectedDictionaries.length !== 1) {
         return;
     }
     const selectedDictionary = selectedDictionaries[0]
-    const filename = toFilename(selectedDictionary.name) + '-' + new Date().toISOString().substring(0, 19) + '.xml';
-    downloadDictionary(selectedDictionary.dictionaryId, filename);
+    const filename = toFilename(selectedDictionary.name) + '-' + new Date().toISOString().substring(0, 19) + '.' + type;
+    downloadDictionary(selectedDictionary.dictionaryId, filename, type);
 }
 
 function initDictionaryDeletePrompt() {

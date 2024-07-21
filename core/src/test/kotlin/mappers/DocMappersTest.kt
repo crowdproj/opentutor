@@ -94,7 +94,7 @@ internal class DocMappersTest {
             answered = 42,
             details = mapOf("a" to "b"),
         )
-        val actualCard = givenCard.toDocumentCard(AppConfig.DEFAULT)
+        val actualCard = givenCard.toXmlDocumentCard(AppConfig.DEFAULT)
         Assertions.assertEquals(testDocumentCard, actualCard)
     }
 }
