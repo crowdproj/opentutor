@@ -290,3 +290,8 @@ function toYaURI(itemWord, sourceLang, targetLang) {
         "&text=" + encodeURIComponent(itemWord)
     return "https://translate.yandex.ru/" + fragment
 }
+
+function getLanguageNameByCode(code) {
+    const language = languages.find(lang => lang.code === code);
+    return language ? language.name : code;
+}

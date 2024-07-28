@@ -18,6 +18,7 @@ import com.gitlab.sszuev.flashcards.config.RunConfig
 import com.gitlab.sszuev.flashcards.config.TutorConfig
 import com.gitlab.sszuev.flashcards.logslib.ExtLogger
 import com.gitlab.sszuev.flashcards.logslib.logger
+import com.gitlab.sszuev.flashcards.services.LANGUAGES
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
 import io.ktor.http.HttpHeaders
@@ -266,7 +267,7 @@ private fun thymeleafContent(
     keycloakConfig: KeycloakConfig,
     principal: OAuthAccessTokenResponse.OAuth2?
 ): ThymeleafContent {
-    val res = mutableMapOf<String, String>()
+    val res = mutableMapOf<String, Any>()
     val userConfig = if (principal == null) {
         mapOf(
             "user" to "dev",
@@ -285,6 +286,7 @@ private fun thymeleafContent(
         "numberOfWordsPerStage" to tutorConfig.numberOfWordsPerStage.toString(),
         "numberOfRightAnswers" to tutorConfig.numberOfRightAnswers.toString(),
         "numberOfOptionsPerWord" to tutorConfig.numberOfOptionsPerWord.toString(),
+        "languages" to LANGUAGES,
     )
     res.putAll(userConfig)
     res.putAll(commonConfig)
