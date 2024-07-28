@@ -25,6 +25,7 @@
     const numberOfWordsPerStage = [[${numberOfWordsPerStage}]];
     const numberOfRightAnswers = [[${numberOfRightAnswers}]];
     const numberOfOptionsPerWord = [[${numberOfOptionsPerWord}]];
+    const languages = [[${languages}]];
 </script>
 <body onload="renderPage()">
 <div id="dictionaries" class="page card container container-table"
@@ -35,9 +36,9 @@
             <table class="table" style="height: 20px;">
                 <thead>
                 <tr>
+                    <th scope="col">Dictionary name</th>
                     <th scope="col">Source language</th>
                     <th scope="col">Target language</th>
-                    <th scope="col">Dictionary name</th>
                     <th scope="col">Total number of words</th>
                     <th scope="col">Number of learned words</th>
                 </tr>

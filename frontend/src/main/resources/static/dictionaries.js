@@ -64,9 +64,9 @@ function drawDictionariesPage() {
 
         $.each(dictionaries, function (index, dictionary) {
             let row = $(`<tr id="${'d' + dictionary.dictionaryId}">
-                            <td>${dictionary.sourceLang}</td>
-                            <td>${dictionary.targetLang}</td>
                             <td>${dictionary.name}</td>
+                            <td>${getLanguageNameByCode(dictionary.sourceLang)}</td>
+                            <td>${getLanguageNameByCode(dictionary.targetLang)}</td>                            
                             <td>${dictionary.total}</td>
                             <td>${dictionary.learned}</td>
                           </tr>`);
