@@ -18,7 +18,16 @@ object LanguageRepository {
         }
     }
 
-    fun partsOfSpeech(lang: String): List<String> {
-        return languages[lang.lowercase()]?: emptyList()
-    }
+    /**
+     * Parts of speech by language tag.
+     */
+    fun partsOfSpeech(lang: String): List<String> = languages[lang.lowercase()] ?: emptyList()
+
+    /**
+     * Language tag to language name.
+     */
+    fun languages(): Map<String, String> =
+        Locale.getAvailableLocales()
+            .filterNot { it.language.isBlank() }
+            .associate { it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})" }
 }

@@ -149,8 +149,6 @@ function initDictionaryDeletePrompt() {
 }
 
 function initDictionaryDialog(dialogId) {
-    initLanguageSelector('#' + dialogId + '-dictionary-dialog-source-lang', ['en', 'ru']);
-    initLanguageSelector('#' + dialogId + '-dictionary-dialog-target-lang', ['en', 'ru']);
     $('#dictionary-btn-' + dialogId).off('click').on('click', function () { // push open dialog
         onChangeDictionaryDialogMains(dialogId);
     });
@@ -178,19 +176,12 @@ function initDictionaryDialog(dialogId) {
     });
 }
 
-function initLanguageSelector(id, tags) {
-    const select = $(id).html('').append($(`<option value="-1"></option>`));
-    $.each(tags, function (index, value) {
-        select.append($(`<option value="${index}">${value}</option>`));
-    });
-}
-
 function onChangeDictionaryDialogMains(dialogId) {
     const nameInput = $('#' + dialogId + '-dictionary-dialog-name');
     const sourceLangSelect = $('#' + dialogId + '-dictionary-dialog-source-lang option:selected');
     const targetLangSelect = $('#' + dialogId + '-dictionary-dialog-target-lang option:selected');
     $('#' + dialogId + '-dictionary-dialog-save')
-        .prop('disabled', !(nameInput.val() && sourceLangSelect.text() && targetLangSelect.text()));
+        .prop('disabled', !(nameInput.val() && sourceLangSelect.val() && targetLangSelect.val()));
 }
 
 function createResourceDictionaryEntity(dialogId) {
@@ -200,8 +191,8 @@ function createResourceDictionaryEntity(dialogId) {
 
     const dictionaryEntity = {};
     dictionaryEntity.name = nameInput.val().trim();
-    dictionaryEntity.sourceLang = sourceLangSelect.text();
-    dictionaryEntity.targetLang = targetLangSelect.text();
+    dictionaryEntity.sourceLang = sourceLangSelect.val();
+    dictionaryEntity.targetLang = targetLangSelect.val();
     return dictionaryEntity;
 }
 
