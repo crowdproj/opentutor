@@ -148,7 +148,7 @@ internal class DictionaryCorProcessorRunTest {
     fun `test update-dictionary success`() = runTest {
         val testDictionaryId = DictionaryId("42")
         val givenDictionary =
-            stubDictionary.copy(dictionaryId = DictionaryId.NONE, name = " ${stubDictionary.name} ")
+            stubDictionary.copy(dictionaryId = testDictionaryId, name = " ${stubDictionary.name} ")
         val expectedDictionary =
             stubDictionary.copy(
                 dictionaryId = testDictionaryId,

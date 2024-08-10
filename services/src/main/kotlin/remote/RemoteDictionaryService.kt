@@ -33,6 +33,7 @@ class RemoteDictionaryService(
 
     override suspend fun getAllDictionaries(context: DictionaryContext): DictionaryContext = context.exec()
     override suspend fun createDictionary(context: DictionaryContext): DictionaryContext = context.exec()
+    override suspend fun updateDictionary(context: DictionaryContext): DictionaryContext = context.exec()
     override suspend fun deleteDictionary(context: DictionaryContext): DictionaryContext = context.exec()
     override suspend fun downloadDictionary(context: DictionaryContext): DictionaryContext = context.exec()
     override suspend fun uploadDictionary(context: DictionaryContext): DictionaryContext = context.exec()

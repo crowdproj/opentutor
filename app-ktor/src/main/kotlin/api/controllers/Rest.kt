@@ -63,6 +63,9 @@ fun Route.dictionaries(
         post("create") {
             call.createDictionary(service, contextConfig)
         }
+        post("update") {
+            call.updateDictionary(service, contextConfig)
+        }
         post("delete") {
             call.deleteDictionary(service, contextConfig)
         }

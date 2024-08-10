@@ -8,7 +8,8 @@ import com.gitlab.sszuev.flashcards.core.processes.processDownloadDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processGetAllDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processUpdateDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processUploadDictionary
-import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryEntityHasNoCardId
+import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryEntityHasId
+import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryEntityHasNoId
 import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryId
 import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryLangId
 import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryResource
@@ -37,7 +38,7 @@ class DictionaryCorProcessor {
                 normalizers(DictionaryOperation.CREATE_DICTIONARY)
                 validators(DictionaryOperation.CREATE_DICTIONARY) {
                     validateUserId(DictionaryOperation.CREATE_DICTIONARY)
-                    validateDictionaryEntityHasNoCardId { it.normalizedRequestDictionaryEntity }
+                    validateDictionaryEntityHasNoId { it.normalizedRequestDictionaryEntity }
                     validateDictionaryLangId("source-lang") { it.normalizedRequestDictionaryEntity.sourceLang.langId }
                     validateDictionaryLangId("target-lang") { it.normalizedRequestDictionaryEntity.targetLang.langId }
                 }
@@ -50,7 +51,7 @@ class DictionaryCorProcessor {
                 normalizers(DictionaryOperation.UPDATE_DICTIONARY)
                 validators(DictionaryOperation.UPDATE_DICTIONARY) {
                     validateUserId(DictionaryOperation.UPDATE_DICTIONARY)
-                    validateDictionaryEntityHasNoCardId { it.normalizedRequestDictionaryEntity }
+                    validateDictionaryEntityHasId { it.normalizedRequestDictionaryEntity }
                     validateDictionaryLangId("source-lang") { it.normalizedRequestDictionaryEntity.sourceLang.langId }
                     validateDictionaryLangId("target-lang") { it.normalizedRequestDictionaryEntity.targetLang.langId }
                 }

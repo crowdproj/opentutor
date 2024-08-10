@@ -8,6 +8,8 @@ interface DictionaryService {
 
     suspend fun createDictionary(context: DictionaryContext): DictionaryContext
 
+    suspend fun updateDictionary(context: DictionaryContext): DictionaryContext
+
     suspend fun deleteDictionary(context: DictionaryContext): DictionaryContext
 
     suspend fun downloadDictionary(context: DictionaryContext): DictionaryContext
