@@ -78,6 +78,24 @@ fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
     }
 }
 
+fun ChainDSL<DictionaryContext>.processUpdateDictionary() = worker {
+    this.name = "process update-dictionary request"
+    test {
+        this.status == AppStatus.RUN
+    }
+    process {
+        val userId = this.normalizedRequestAppAuthId
+        val res = this.repositories.dictionaryRepository
+            .updateDictionary(this.normalizedRequestDictionaryEntity.copy(userId = userId).toDbDictionary())
+            .toDictionaryEntity().normalize()
+        this.responseDictionaryEntity = res
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+    }
+    onException {
+        this.handleThrowable(DictionaryOperation.UPDATE_DICTIONARY, it)
+    }
+}
+
 fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
     this.name = "process delete-dictionary request"
     test {

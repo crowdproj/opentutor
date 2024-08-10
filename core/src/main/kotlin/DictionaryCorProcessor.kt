@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.core.processes.processCreateDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processDeleteDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processDownloadDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processGetAllDictionary
+import com.gitlab.sszuev.flashcards.core.processes.processUpdateDictionary
 import com.gitlab.sszuev.flashcards.core.processes.processUploadDictionary
 import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryEntityHasNoCardId
 import com.gitlab.sszuev.flashcards.core.validators.validateDictionaryId
@@ -42,6 +43,19 @@ class DictionaryCorProcessor {
                 }
                 runs(DictionaryOperation.CREATE_DICTIONARY) {
                     processCreateDictionary()
+                }
+            }
+
+            operation(DictionaryOperation.UPDATE_DICTIONARY) {
+                normalizers(DictionaryOperation.UPDATE_DICTIONARY)
+                validators(DictionaryOperation.UPDATE_DICTIONARY) {
+                    validateUserId(DictionaryOperation.UPDATE_DICTIONARY)
+                    validateDictionaryEntityHasNoCardId { it.normalizedRequestDictionaryEntity }
+                    validateDictionaryLangId("source-lang") { it.normalizedRequestDictionaryEntity.sourceLang.langId }
+                    validateDictionaryLangId("target-lang") { it.normalizedRequestDictionaryEntity.targetLang.langId }
+                }
+                runs(DictionaryOperation.UPDATE_DICTIONARY) {
+                    processUpdateDictionary()
                 }
             }
 

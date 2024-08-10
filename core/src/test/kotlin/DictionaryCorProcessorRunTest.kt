@@ -145,6 +145,39 @@ internal class DictionaryCorProcessorRunTest {
     }
 
     @Test
+    fun `test update-dictionary success`() = runTest {
+        val testDictionaryId = DictionaryId("42")
+        val givenDictionary =
+            stubDictionary.copy(dictionaryId = DictionaryId.NONE, name = " ${stubDictionary.name} ")
+        val expectedDictionary =
+            stubDictionary.copy(
+                dictionaryId = testDictionaryId,
+                sourceLang = stubDictionary.sourceLang.normalize(),
+                targetLang = stubDictionary.targetLang.normalize(),
+            )
+
+        var wasCalled = false
+        val repository = MockDbDictionaryRepository(
+            invokeUpdateDictionary = { d ->
+                wasCalled = true
+                d.copy(dictionaryId = testDictionaryId.asString())
+            }
+        )
+
+        val context = testContext(DictionaryOperation.UPDATE_DICTIONARY, repository)
+        context.requestDictionaryEntity = givenDictionary
+
+        DictionaryCorProcessor().execute(context)
+
+        Assertions.assertTrue(context.errors.isEmpty()) { "Has errors: ${context.errors}" }
+        Assertions.assertTrue(wasCalled)
+        Assertions.assertEquals(requestId(DictionaryOperation.UPDATE_DICTIONARY), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertTrue(context.errors.isEmpty())
+        Assertions.assertEquals(expectedDictionary, context.responseDictionaryEntity)
+    }
+
+    @Test
     fun `test delete-dictionary success`() = runTest {
         val testId = DictionaryId("42")
         val response = stubDictionary
