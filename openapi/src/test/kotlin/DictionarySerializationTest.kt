@@ -16,6 +16,8 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateDictionaryResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryResponse
 import org.junit.jupiter.api.Assertions
@@ -187,5 +189,35 @@ internal class DictionarySerializationTest {
         val res2 = deserializeResponse<CreateDictionaryResponse>(json)
         Assertions.assertNotSame(res1, res2)
         Assertions.assertEquals(res1.copy(responseType = "createDictionary"), res2)
+    }
+
+    @Test
+    fun `test serialization for UpdateDictionaryRequest`() {
+        val res1 = UpdateDictionaryRequest(
+            dictionary = dictionary,
+            requestId = "request=42",
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"requestType\":\"updateDictionary\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        assertDictionary(json)
+        val res2 = deserializeRequest<UpdateDictionaryRequest>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1.copy(requestType = "updateDictionary"), res2)
+    }
+
+    @Test
+    fun `test serialization for UpdateDictionaryResponse`() {
+        val res1 = UpdateDictionaryResponse(
+            dictionary = dictionary,
+            requestId = "request=42",
+        )
+        val json = serialize(res1)
+        Assertions.assertTrue(json.contains("\"responseType\":\"updateDictionary\""))
+        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
+        assertDictionary(json)
+        val res2 = deserializeResponse<UpdateDictionaryResponse>(json)
+        Assertions.assertNotSame(res1, res2)
+        Assertions.assertEquals(res1.copy(responseType = "updateDictionary"), res2)
     }
 }
