@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
 import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
@@ -17,6 +18,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 fun DictionaryContext.fromDictionaryTransport(request: BaseRequest) = when (request) {
     is GetAllDictionariesRequest -> fromGetAllDictionariesRequest(request)
     is CreateDictionaryRequest -> fromCreateDictionaryRequest(request)
+    is UpdateDictionaryRequest -> fromUpdateDictionaryRequest(request)
     is DeleteDictionaryRequest -> fromDeleteDictionaryRequest(request)
     is DownloadDictionaryRequest -> fromDownloadDictionaryRequest(request)
     is UploadDictionaryRequest -> fromUploadDictionaryRequest(request)
@@ -28,6 +30,11 @@ fun DictionaryContext.fromGetAllDictionariesRequest(request: GetAllDictionariesR
 }
 
 fun DictionaryContext.fromCreateDictionaryRequest(request: CreateDictionaryRequest) {
+    this.requestId = request.requestId()
+    this.requestDictionaryEntity = request.dictionary?.toDictionaryEntity() ?: DictionaryEntity.EMPTY
+}
+
+fun DictionaryContext.fromUpdateDictionaryRequest(request: UpdateDictionaryRequest) {
     this.requestId = request.requestId()
     this.requestDictionaryEntity = request.dictionary?.toDictionaryEntity() ?: DictionaryEntity.EMPTY
 }

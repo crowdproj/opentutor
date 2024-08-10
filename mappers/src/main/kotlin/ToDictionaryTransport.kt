@@ -1,13 +1,21 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
-import com.gitlab.sszuev.flashcards.api.v1.models.*
+import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.DictionaryResource
+import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateDictionaryResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryResponse
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 
 fun DictionaryContext.toDictionaryResponse(): BaseResponse = when (val op = this.operation) {
     DictionaryOperation.GET_ALL_DICTIONARIES -> this.toGetAllDictionaryResponse()
     DictionaryOperation.CREATE_DICTIONARY -> this.toCreateDictionaryResponse()
+    DictionaryOperation.UPDATE_DICTIONARY -> this.toUpdateDictionaryResponse()
     DictionaryOperation.DELETE_DICTIONARY -> this.toDeleteDictionaryResponse()
     DictionaryOperation.DOWNLOAD_DICTIONARY -> this.toDownloadDictionaryResponse()
     DictionaryOperation.UPLOAD_DICTIONARY -> this.toUploadDictionaryResponse()
@@ -22,6 +30,13 @@ fun DictionaryContext.toGetAllDictionaryResponse() = GetAllDictionariesResponse(
 )
 
 fun DictionaryContext.toCreateDictionaryResponse() = CreateDictionaryResponse(
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+    dictionary = this.responseDictionaryEntity.toDictionaryResource(),
+)
+
+fun DictionaryContext.toUpdateDictionaryResponse() = UpdateDictionaryResponse(
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),
