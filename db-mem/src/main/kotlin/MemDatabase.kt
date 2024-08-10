@@ -79,12 +79,20 @@ class MemDatabase private constructor(
     fun saveDictionary(dictionary: MemDbDictionary): MemDbDictionary {
         val userId = requireNotNull(dictionary.userId) { "User id is required" }
         val resource = dictionaries.computeIfAbsent(userId) { ConcurrentHashMap() }
+        val cards = if (dictionary.id != null) {
+            dictionaryResourceById(dictionary.id)?.cards ?: ConcurrentHashMap()
+        } else {
+            ConcurrentHashMap()
+        }
+        if (dictionary.id != null) {
+            deleteDictionaryById(dictionary.id)
+        }
         val id = dictionary.id ?: idGenerator.nextDictionaryId()
         val res = dictionary.copy(
             id = id,
             changedAt = dictionary.changedAt ?: OffsetDateTime.now(ZoneOffset.UTC).toLocalDateTime()
         )
-        resource[id] = DictionaryResource(res)
+        resource[id] = DictionaryResource(res, cards)
         dictionariesChanged = true
         return res
     }

@@ -8,6 +8,7 @@ class MockDbDictionaryRepository(
     private val invokeFindDictionariesByIdIn: (Iterable<String>) -> Sequence<DbDictionary> = { emptySequence() },
     private val invokeGetAllDictionaries: (String) -> Sequence<DbDictionary> = { emptySequence() },
     private val invokeCreateDictionary: (DbDictionary) -> DbDictionary = { DbDictionary.NULL },
+    private val invokeUpdateDictionary: (DbDictionary) -> DbDictionary = { DbDictionary.NULL },
     private val invokeDeleteDictionary: (String) -> DbDictionary = { DbDictionary.NULL },
 ) : DbDictionaryRepository {
 
@@ -19,6 +20,8 @@ class MockDbDictionaryRepository(
     override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> = invokeGetAllDictionaries(userId)
 
     override fun createDictionary(entity: DbDictionary): DbDictionary = invokeCreateDictionary(entity)
+
+    override fun updateDictionary(entity: DbDictionary): DbDictionary = invokeUpdateDictionary(entity)
 
     override fun deleteDictionary(dictionaryId: String): DbDictionary = invokeDeleteDictionary(dictionaryId)
 
