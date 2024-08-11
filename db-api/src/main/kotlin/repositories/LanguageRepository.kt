@@ -26,8 +26,13 @@ object LanguageRepository {
     /**
      * Language tag to language name.
      */
-    fun languages(): Map<String, String> =
-        Locale.getAvailableLocales()
-            .filterNot { it.language.isBlank() }
-            .associate { it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})" }
+    fun languages(): Map<String, String> = Locale.getAvailableLocales()
+        .filterNot { it.language.isBlank() }
+        .associate {
+            if (it.language == "en") {
+                it.language to it.getDisplayLanguage(Locale.US)
+            } else {
+                it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})"
+            }
+        }
 }

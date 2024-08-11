@@ -16,6 +16,7 @@
     <script src="/static/cards.js"></script>
     <script src="/static/tutor.js"></script>
     <script src="/static/main.js"></script>
+    <title>opentutor</title>
 </head>
 <header th:insert="header.html :: header"></header>
 <script th:inline="javascript">
@@ -33,7 +34,7 @@
 <div id="dictionaries" class="page card container container-table"
      style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; ">
     <div class="card-body">
-        <h1 class="card-title">flashcards</h1>
+        <h1 class="card-title">opentutor</h1>
         <div id="dictionaries-table-row" class="row" style="overflow: auto">
             <table class="table" style="height: 20px;">
                 <thead>
@@ -58,6 +59,9 @@
                 <button id="dictionaries-btn-cards" type="button" class="btn btn-secondary" disabled>Cards</button>
                 <button id="dictionaries-btn-add" type="button" class="btn btn-secondary" data-bs-toggle="modal"
                         data-bs-target="#add-dictionary-dialog">Create
+                </button>
+                <button id="dictionaries-btn-edit" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#edit-dictionary-dialog">Edit
                 </button>
                 <button id="dictionaries-btn-delete" type="button" class="btn btn-secondary" data-bs-toggle="modal"
                         data-bs-target="#delete-dictionary-prompt" disabled>Delete
@@ -117,11 +121,12 @@
     </div>
 </div>
 <div th:replace="dictionary-dialog.html :: dictionaryDialog(id='add')"></div>
+<div th:replace="dictionary-dialog.html :: dictionaryDialog(id='edit')"></div>
+<div th:replace="prompt.html :: prompt(id='delete-dictionary')"></div>
 <div th:replace="card-dialog.html :: cardDialog(id='edit')"></div>
 <div th:replace="card-dialog.html :: cardDialog(id='add')"></div>
 <div th:replace="prompt.html :: prompt(id='delete-card')"></div>
 <div th:replace="prompt.html :: prompt(id='reset-card')"></div>
-<div th:replace="prompt.html :: prompt(id='delete-dictionary')"></div>
 
 <div id="show" class="page card container container-table" style="display: none;">
     <div class="card-body">
