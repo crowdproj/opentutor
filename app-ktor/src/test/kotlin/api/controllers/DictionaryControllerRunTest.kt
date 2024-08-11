@@ -10,6 +10,8 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateDictionaryRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateDictionaryResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryResponse
 import com.gitlab.sszuev.flashcards.testPost
@@ -23,7 +25,6 @@ import org.junit.jupiter.api.TestMethodOrder
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 internal class DictionaryControllerRunTest {
-
 
     @Order(1)
     @Test
@@ -51,7 +52,7 @@ internal class DictionaryControllerRunTest {
         val requestBody = CreateDictionaryRequest(
             requestId = "success-request",
             dictionary = DictionaryResource(
-                name = "xxx ",
+                name = "xxx",
                 sourceLang = "sS",
                 targetLang = "TT",
             ),
@@ -71,6 +72,31 @@ internal class DictionaryControllerRunTest {
 
     @Order(3)
     @Test
+    fun `test update-dictionary success`() = testSecuredApp {
+        val requestBody = UpdateDictionaryRequest(
+            requestId = "success-request",
+            dictionary = DictionaryResource(
+                dictionaryId = "2",
+                name = "Weather-42",
+                sourceLang = "EN",
+                targetLang = "RU",
+            ),
+        )
+        val response = testPost("/v1/api/dictionaries/update", requestBody)
+        val res = response.body<UpdateDictionaryResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+        Assertions.assertNotNull(res.dictionary)
+        Assertions.assertEquals(true, res.dictionary!!.dictionaryId?.matches("\\d+".toRegex()))
+        Assertions.assertEquals("Weather-42", res.dictionary!!.name)
+        Assertions.assertEquals("en", res.dictionary!!.sourceLang)
+        Assertions.assertEquals("ru", res.dictionary!!.targetLang)
+    }
+
+    @Order(4)
+    @Test
     fun `test delete-dictionary success`() = testSecuredApp {
         val requestBody = DeleteDictionaryRequest(
             requestId = "success-request",
@@ -84,7 +110,7 @@ internal class DictionaryControllerRunTest {
         Assertions.assertEquals(Result.SUCCESS, res.result)
     }
 
-    @Order(4)
+    @Order(5)
     @Test
     fun `test download-dictionary success`() = testSecuredApp {
         val requestBody = DownloadDictionaryRequest(
@@ -102,7 +128,7 @@ internal class DictionaryControllerRunTest {
         Assertions.assertTrue(res.resource!!.size in 50_000..100_000) { "unexpected resource size: ${res.resource!!.size}" }
     }
 
-    @Order(5)
+    @Order(6)
     @Test
     fun `test upload-dictionary success`() = testSecuredApp {
         val txt = """

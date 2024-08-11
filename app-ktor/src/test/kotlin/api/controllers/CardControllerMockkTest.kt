@@ -121,7 +121,7 @@ internal class CardControllerMockkTest {
         Assertions.assertEquals("unknown", error.code)
         Assertions.assertEquals("exceptions", error.group)
         Assertions.assertNull(error.field)
-        Assertions.assertEquals("Problem with request=${requestBody.requestId} :: $msg", error.message)
+        Assertions.assertEquals("Problem with request='${requestBody.requestId}' :: $msg", error.message)
 
         coVerify(exactly = 1) {
             service.serviceMethod(any())

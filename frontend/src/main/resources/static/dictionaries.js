@@ -59,8 +59,10 @@ function drawDictionariesPage() {
 
         bootstrap.Modal.getOrCreateInstance(document.getElementById('delete-dictionary-prompt')).hide();
         bootstrap.Modal.getOrCreateInstance(document.getElementById('add-dictionary-dialog')).hide();
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('edit-dictionary-dialog')).hide();
         initDictionaryDeletePrompt();
-        initDictionaryDialog('add');
+        initAddDictionaryDialog();
+        initEditDictionaryDialog(dictionaries);
 
         $.each(dictionaries, function (index, dictionary) {
             let row = $(`<tr id="${'d' + dictionary.dictionaryId}">
@@ -148,22 +150,23 @@ function initDictionaryDeletePrompt() {
     });
 }
 
-function initDictionaryDialog(dialogId) {
-    $('#dictionary-btn-' + dialogId).off('click').on('click', function () { // push open dialog
+function initAddDictionaryDialog() {
+    const dialogId = 'add'
+    $('#dictionary-btn-add').off('click').on('click', function () { // push open dialog
         onChangeDictionaryDialogMains(dialogId);
     });
 
-    $('#' + dialogId + '-dictionary-dialog-name').off('input').on('input', function () {
+    $('#add-dictionary-dialog-name').off('input').on('input', function () {
         onChangeDictionaryDialogMains(dialogId);
     });
-    $('#' + dialogId + '-dictionary-dialog-source-lang').off('change').on('change', function () {
+    $('#add-dictionary-dialog-source-lang').off('change').on('change', function () {
         onChangeDictionaryDialogMains(dialogId);
     });
-    $('#' + dialogId + '-dictionary-dialog-target-lang').off('change').on('change', function () {
+    $('#add-dictionary-dialog-target-lang').off('change').on('change', function () {
         onChangeDictionaryDialogMains(dialogId);
     });
 
-    $('#' + dialogId + '-dictionary-dialog-save').off('click').on('click', function () {
+    $('#add-dictionary-dialog-save').off('click').on('click', function () {
         const res = createResourceDictionaryEntity(dialogId)
         const onDone = function (id) {
             if (id === '') {
@@ -173,6 +176,35 @@ function initDictionaryDialog(dialogId) {
             scrollToRow('#d' + id, '#dictionaries-table-row', markRowSelected);
         };
         createDictionary(res, onDone);
+    });
+}
+
+function initEditDictionaryDialog(dictionaries) {
+    const dialogId = 'edit'
+    $('#dictionary-btn-edit').off('click').on('click', function () { // push open dialog
+        onChangeDictionaryDialogMains(dialogId);
+    });
+    $('#edit-dictionary-dialog-name').off('input').on('input', function () {
+        onChangeDictionaryDialogMains(dialogId);
+    });
+    $('#edit-dictionary-dialog-source-lang').prop('disabled', true);
+    $('#edit-dictionary-dialog-target-lang').prop('disabled', true);
+    $('#edit-dictionary-dialog-save').off('click').on('click', function () {
+        const id = $('#edit-dictionary-dialog').attr('item-id');
+        if (id === undefined) {
+            return;
+        }
+        const selectedDictionaries = findSelectedDictionaries(dictionaries);
+        if (selectedDictionaries.length !== 1) {
+            return;
+        }
+        const res = selectedDictionaries[0];
+        res.name = $('#edit-dictionary-dialog-name').val();
+        const onDone = function () {
+            drawDictionariesPage();
+            scrollToRow('#d' + id, '#dictionaries-table-row', markRowSelected);
+        };
+        updateDictionary(res, onDone);
     });
 }
 
@@ -202,9 +234,14 @@ function onSelectDictionary(dictionaries) {
         return;
     }
     const selectedDictionary = selectedDictionaries[0];
-    const body = $('#delete-dictionary-prompt-body');
-    body.attr('item-id', selectedDictionary.dictionaryId);
-    body.html(selectedDictionary.name);
+    const deleteDictionaryPromptBody = $('#delete-dictionary-prompt-body');
+    deleteDictionaryPromptBody.attr('item-id', selectedDictionary.dictionaryId);
+    deleteDictionaryPromptBody.html(selectedDictionary.name);
+
+    $('#edit-dictionary-dialog').attr('item-id', selectedDictionary.dictionaryId);
+    $('#edit-dictionary-dialog-name').val(selectedDictionary.name)
+    $('#edit-dictionary-dialog-source-lang').val(selectedDictionary.sourceLang);
+    $('#edit-dictionary-dialog-target-lang').val(selectedDictionary.targetLang);
 }
 
 function resetDictionarySelection() {
@@ -250,9 +287,11 @@ function findSelectedDictionaries(dictionaries) {
 }
 
 function toggleManageDictionariesPageButtons(disabled) {
-    const btnEdit = $('#dictionaries-btn-cards');
+    const btnCards = $('#dictionaries-btn-cards');
     const btnDelete = $('#dictionaries-btn-delete');
+    const btnEdit = $('#dictionaries-btn-edit');
     const btnDownload = $('#dictionaries-btn-download');
+    btnCards.prop('disabled', disabled);
     btnEdit.prop('disabled', disabled);
     btnDelete.prop('disabled', disabled);
     btnDownload.prop('disabled', disabled);

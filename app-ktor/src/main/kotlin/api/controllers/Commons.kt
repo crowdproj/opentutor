@@ -43,7 +43,7 @@ internal suspend inline fun <reified Request : BaseRequest, reified Context : Ap
             respond(response)
         }
     } catch (ex: Exception) {
-        val msg = "Problem with request=${context.requestId.asString()} :: ${ex.message}"
+        val msg = "Problem with request='${context.requestId.asString()}' :: ${ex.message}"
         context.status = AppStatus.FAIL
         context.errors.add(ex.asError(message = msg))
         logger.error(

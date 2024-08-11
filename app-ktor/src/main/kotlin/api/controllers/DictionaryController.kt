@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DownloadDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.UpdateDictionaryRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UploadDictionaryRequest
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.toAppConfig
@@ -42,6 +43,19 @@ suspend fun ApplicationCall.createDictionary(
         contextConfig
     ) {
         service.createDictionary(this)
+    }
+}
+
+suspend fun ApplicationCall.updateDictionary(
+    service: DictionaryService,
+    contextConfig: ContextConfig
+) {
+    execute<UpdateDictionaryRequest>(
+        DictionaryOperation.UPDATE_DICTIONARY,
+        logger,
+        contextConfig
+    ) {
+        service.updateDictionary(this)
     }
 }
 

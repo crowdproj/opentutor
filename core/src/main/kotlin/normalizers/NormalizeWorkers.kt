@@ -40,7 +40,7 @@ fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = wo
             this.normalizedRequestDownloadDocumentType = this.requestDownloadDocumentType.trim().lowercase()
         }
 
-        DictionaryOperation.CREATE_DICTIONARY -> {
+        DictionaryOperation.CREATE_DICTIONARY, DictionaryOperation.UPDATE_DICTIONARY -> {
             this.normalizedRequestDictionaryEntity = this.requestDictionaryEntity.normalize()
         }
 

@@ -17,8 +17,22 @@ class MemDbDictionaryRepository(
     override fun findDictionariesByUserId(userId: String): Sequence<DbDictionary> =
         this.database.findDictionariesByUserId(userId).map { it.toDbDictionary() }
 
-    override fun createDictionary(entity: DbDictionary): DbDictionary =
-        database.saveDictionary(entity.toMemDbDictionary().copy(changedAt = systemNow())).toDbDictionary()
+    override fun createDictionary(entity: DbDictionary): DbDictionary {
+        if (entity.dictionaryId.isNotBlank()) {
+            throw IllegalArgumentException("The specified dictionary has id id = ${entity.dictionaryId}")
+        }
+        return database.saveDictionary(entity.toMemDbDictionary().copy(changedAt = systemNow())).toDbDictionary()
+    }
+
+    override fun updateDictionary(entity: DbDictionary): DbDictionary {
+        if (entity.dictionaryId.isBlank()) {
+            throw IllegalArgumentException("No dictionary-id is specified")
+        }
+        if (database.findDictionaryById(entity.dictionaryId.toLong()) == null) {
+            throw DbDataException("Unable to update dictionary ${entity.dictionaryId}")
+        }
+        return database.saveDictionary(entity.toMemDbDictionary().copy(changedAt = systemNow())).toDbDictionary()
+    }
 
     override fun deleteDictionary(dictionaryId: String): DbDictionary {
         require(dictionaryId.isNotBlank())

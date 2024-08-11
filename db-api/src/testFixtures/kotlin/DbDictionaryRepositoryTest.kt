@@ -120,4 +120,20 @@ abstract class DbDictionaryRepositoryTest {
         Assertions.assertFalse(res.dictionaryId.isBlank())
         Assertions.assertTrue(res.dictionaryId.matches("\\d+".toRegex()))
     }
+
+    @Order(6)
+    @Test
+    fun `test update dictionary and get success`() {
+        val new =
+            DbDictionary(name = "Weather-2", sourceLang = RU, targetLang = EN, userId = "42", dictionaryId = "2")
+        val res = repository.updateDictionary(new)
+        Assertions.assertEquals(new.name, res.name)
+        Assertions.assertEquals(RU, res.sourceLang)
+        Assertions.assertEquals(EN, res.targetLang)
+        Assertions.assertEquals("2", res.dictionaryId)
+
+        val res1 = repository.findDictionaryById("2")
+        Assertions.assertNotNull(res1)
+        Assertions.assertEquals("Weather-2", res1!!.name)
+    }
 }

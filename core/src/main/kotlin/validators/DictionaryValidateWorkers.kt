@@ -21,7 +21,7 @@ fun ChainDSL<DictionaryContext>.validateDictionaryResource() = worker {
     }
 }
 
-fun ChainDSL<DictionaryContext>.validateDictionaryEntityHasNoCardId(getEntity: (DictionaryContext) -> DictionaryEntity) =
+fun ChainDSL<DictionaryContext>.validateDictionaryEntityHasNoId(getEntity: (DictionaryContext) -> DictionaryEntity) =
     worker {
         this.name = "Test dictionary-id length"
         test {
@@ -29,6 +29,17 @@ fun ChainDSL<DictionaryContext>.validateDictionaryEntityHasNoCardId(getEntity: (
         }
         process {
             fail(validationError(fieldName = "dictionary-id", description = "dictionary-id is not expected"))
+        }
+    }
+
+fun ChainDSL<DictionaryContext>.validateDictionaryEntityHasId(getEntity: (DictionaryContext) -> DictionaryEntity) =
+    worker {
+        this.name = "Test dictionary-id length"
+        test {
+            isIdBlank(getEntity(this).dictionaryId)
+        }
+        process {
+            fail(validationError(fieldName = "dictionary-id", description = "dictionary-id not found"))
         }
     }
 

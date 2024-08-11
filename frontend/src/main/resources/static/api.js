@@ -6,6 +6,7 @@ let keycloak
 
 const getAllDictionariesURI = '/v1/api/dictionaries/get-all'
 const createDictionaryURI = '/v1/api/dictionaries/create'
+const updateDictionaryURI = '/v1/api/dictionaries/update'
 const deleteDictionaryURI = '/v1/api/dictionaries/delete'
 const downloadDictionaryURI = '/v1/api/dictionaries/download'
 const uploadDictionaryURI = '/v1/api/dictionaries/upload'
@@ -20,6 +21,7 @@ const getAudioURI = '/v1/api/sounds/get'
 
 const getAllDictionariesRequestType = 'getAllDictionaries'
 const createDictionaryRequestType = 'createDictionary'
+const updateDictionaryRequestType = 'updateDictionary'
 const deleteDictionaryRequestType = 'deleteDictionary'
 const downloadDictionaryRequestType = 'downloadDictionary'
 const uploadDictionaryRequestType = 'uploadDictionary'
@@ -67,7 +69,7 @@ function getDictionaries(onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone(res.dictionaries)
+                onDone(res.dictionaries);
             }
         }
     })
@@ -84,7 +86,7 @@ function getCards(dictionaryId, onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone(res.cards)
+                onDone(res.cards);
             }
         }
     })
@@ -107,7 +109,7 @@ function getNextCardDeck(dictionaryIds, length, unknown, onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone(res.cards)
+                onDone(res.cards);
             }
         }
     })
@@ -130,7 +132,7 @@ function uploadDictionary(arrayBuffer, onDone, type, onFail) {
             onFail()
         } else {
             if (onDone !== undefined) {
-                onDone()
+                onDone();
             }
         }
     })
@@ -160,7 +162,7 @@ function downloadDictionary(dictionaryId, downloadFilename, type, onDone) {
                 window.URL.revokeObjectURL(link)
             }, 0)
             if (onDone !== undefined) {
-                onDone()
+                onDone();
             }
         }
     })
@@ -177,7 +179,24 @@ function createDictionary(dictionaryEntity, onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone(res.dictionary.dictionaryId)
+                onDone(res.dictionary.dictionaryId);
+            }
+        }
+    })
+}
+
+function updateDictionary(dictionaryEntity, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': updateDictionaryRequestType,
+        'dictionary': dictionaryEntity
+    }
+    post(updateDictionaryURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            if (onDone !== undefined) {
+                onDone();
             }
         }
     })
@@ -193,7 +212,9 @@ function deleteDictionary(dictionaryId, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone()
+            if (onDone !== undefined) {
+                onDone();
+            }
         }
     })
 }
@@ -209,7 +230,7 @@ function createCard(card, onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone(res.card.cardId)
+                onDone(res.card.cardId);
             }
         }
     })
@@ -225,7 +246,9 @@ function updateCard(card, onDone) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
         } else {
-            onDone(res.card.cardId)
+            if (onDone !== undefined) {
+                onDone(res.card.cardId);
+            }
         }
     })
 }
@@ -241,7 +264,7 @@ function deleteCard(cardId, onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone()
+                onDone();
             }
         }
     })
@@ -258,7 +281,7 @@ function resetCard(cardId, onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone()
+                onDone();
             }
         }
     })
@@ -275,7 +298,7 @@ function learnCard(learns, onDone) {
             handleResponseErrors(res)
         } else {
             if (onDone !== undefined) {
-                onDone()
+                onDone();
             }
         }
     })

@@ -12,6 +12,7 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.inList
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insertAndGetId
 import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 
 class PgDbDictionaryRepository(
     dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
@@ -36,6 +37,9 @@ class PgDbDictionaryRepository(
     }
 
     override fun createDictionary(entity: DbDictionary): DbDictionary = connection.execute {
+        if (entity.dictionaryId.isNotBlank()) {
+            throw IllegalArgumentException("The specified dictionary has id id = ${entity.dictionaryId}")
+        }
         val timestamp = systemNow()
         val dictionaryId = Dictionaries.insertAndGetId {
             it[sourceLanguage] = entity.sourceLang.langId
@@ -43,6 +47,25 @@ class PgDbDictionaryRepository(
             it[name] = entity.name
             it[userId] = entity.userId
             it[changedAt] = timestamp
+        }
+        entity.copy(dictionaryId = dictionaryId.value.toString())
+    }
+
+    override fun updateDictionary(entity: DbDictionary): DbDictionary = connection.execute {
+        if (entity.dictionaryId.isBlank()) {
+            throw IllegalArgumentException("No dictionary-id is specified")
+        }
+        val dictionaryId = entity.dictionaryId.toDictionariesId()
+        val timestamp = systemNow()
+        val res = Dictionaries.update({ Dictionaries.id eq dictionaryId }) {
+            it[sourceLanguage] = entity.sourceLang.langId
+            it[targetLanguage] = entity.targetLang.langId
+            it[name] = entity.name
+            it[userId] = entity.userId
+            it[changedAt] = timestamp
+        }
+        if (res != 1) {
+            throw DbDataException("Unable to update dictionary ${entity.dictionaryId}")
         }
         entity.copy(dictionaryId = dictionaryId.value.toString())
     }

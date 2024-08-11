@@ -82,6 +82,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/CreateDictionaryResponse'
 
+  /api/dictionaries/update:
+    post:
+      tags:
+        - dictionary
+      summary: Updates dictionary
+      operationId: updateDictionary
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateDictionaryRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateDictionaryResponse'
+
   /api/dictionaries/delete:
     post:
       tags:
@@ -371,6 +392,24 @@ components:
             dictionary:
               $ref: '#/components/schemas/DictionaryResource'
 
+    UpdateDictionaryRequest:
+      description: Update dictionary request
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            dictionary:
+              $ref: '#/components/schemas/DictionaryResource'
+
+    UpdateDictionaryResponse:
+      description: Update dictionary response
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            dictionary:
+              $ref: '#/components/schemas/DictionaryResource'
+
     DeleteDictionaryRequest:
       description: Delete dictionary request
       allOf:
@@ -611,6 +650,7 @@ components:
           getAudio: '#/components/schemas/GetAudioRequest'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesRequest'
           createDictionary: '#/components/schemas/CreateDictionaryRequest'
+          updateDictionary: '#/components/schemas/UpdateDictionaryRequest'
           deleteDictionary: '#/components/schemas/DeleteDictionaryRequest'
           downloadDictionary: '#/components/schemas/DownloadDictionaryRequest'
           uploadDictionary: '#/components/schemas/UploadDictionaryRequest'
@@ -646,6 +686,7 @@ components:
           getAudio: '#/components/schemas/GetAudioResponse'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesResponse'
           createDictionary: '#/components/schemas/CreateDictionaryResponse'
+          updateDictionary: '#/components/schemas/UpdateDictionaryResponse'
           deleteDictionary: '#/components/schemas/DeleteDictionaryResponse'
           downloadDictionary: '#/components/schemas/DownloadDictionaryResponse'
           uploadDictionary: '#/components/schemas/UploadDictionaryResponse'
