@@ -71,3 +71,13 @@ function calcInitTableHeight() {
 function calcInitLgFrameHeight() {
     return Math.round($(document).height() * lgFrameHeightRation);
 }
+
+function sortDirection(th) {
+    if (th.attr('sort') === 'asc') {
+        th.attr('sort', 'desc');
+        return false;
+    } else {
+        th.attr('sort', 'asc');
+        return true;
+    }
+}

@@ -6,9 +6,6 @@ function drawDictionariesPage() {
     getDictionaries(function (dictionaries) {
         displayPage('dictionaries');
 
-        const tbody = $('#dictionaries tbody');
-
-        tbody.html('');
         initTableListeners('dictionaries', resetDictionarySelection);
 
         $('#dictionaries-table-row').css('height', calcInitTableHeight());
@@ -64,54 +61,113 @@ function drawDictionariesPage() {
         initAddDictionaryDialog();
         initEditDictionaryDialog(dictionaries);
 
-        $.each(dictionaries, function (index, dictionary) {
-            let row = $(`<tr id="${'d' + dictionary.dictionaryId}">
+        const headers = $('#dictionaries-table-row th');
+        const thName = $(headers[0]);
+        const thSourceLang = $(headers[1]);
+        const thTargetLang = $(headers[2]);
+        const thTotal = $(headers[3]);
+        const thLearned = $(headers[4]);
+        thName.off('click').on('click', function () {
+            const direction = sortDirection(thName);
+            dictionaries.sort((a, b) => {
+                const left = a.name;
+                const right = b.name;
+                return direction ? left.localeCompare(right) : right.localeCompare(left);
+            });
+            drawDictionariesTable(dictionaries);
+        });
+        thSourceLang.off('click').on('click', function () {
+            const direction = sortDirection(thSourceLang);
+            dictionaries.sort((a, b) => {
+                const left = getLanguageNameByCode(a.sourceLang);
+                const right = getLanguageNameByCode(b.sourceLang);
+                return direction ? left.localeCompare(right) : right.localeCompare(left);
+            });
+            drawDictionariesTable(dictionaries);
+        });
+        thTargetLang.off('click').on('click', function () {
+            const direction = sortDirection(thTargetLang);
+            dictionaries.sort((a, b) => {
+                const left = getLanguageNameByCode(a.targetLang);
+                const right = getLanguageNameByCode(b.targetLang);
+                return direction ? left.localeCompare(right) : right.localeCompare(left);
+            });
+            drawDictionariesTable(dictionaries);
+        });
+        thTotal.off('click').on('click', function () {
+            const direction = sortDirection(thTotal);
+            dictionaries.sort((a, b) => {
+                const left = a.total;
+                const right = b.total;
+                return direction ? left - right : right - left;
+            });
+            drawDictionariesTable(dictionaries);
+        });
+        thLearned.off('click').on('click', function () {
+            const direction = sortDirection(thLearned);
+            dictionaries.sort((a, b) => {
+                const left = a.learned;
+                const right = b.learned;
+                return direction ? left - right : right - left;
+            });
+            drawDictionariesTable(dictionaries);
+        });
+
+        drawDictionariesTable(dictionaries);
+    });
+}
+
+function drawDictionariesTable(dictionaries) {
+    const tbody = $('#dictionaries tbody');
+    tbody.html('');
+
+    $.each(dictionaries, function (index, dictionary) {
+        let row = $(`<tr id="${'d' + dictionary.dictionaryId}">
                             <td>${dictionary.name}</td>
                             <td>${getLanguageNameByCode(dictionary.sourceLang)}</td>
                             <td>${getLanguageNameByCode(dictionary.targetLang)}</td>                            
                             <td>${dictionary.total}</td>
                             <td>${dictionary.learned}</td>
                           </tr>`);
-            row.dblclick(function () {
-                resetRowSelection(tbody);
-                markRowSelected(row)
-                drawRunPage(dictionaries)
-            });
-            tbody.append(row);
+        row.dblclick(function () {
+            resetRowSelection(tbody);
+            markRowSelected(row)
+            drawRunPage(dictionaries)
         });
+        tbody.append(row);
+    });
 
-        const rows = tbody.find('tr');
-        let lastSelectedRow = null;
-        rows.on('click', function (event) {
-            if (!event.shiftKey) {
-                resetRowSelection(tbody);
+    const rows = tbody.find('tr');
+    let lastSelectedRow = null;
+    rows.on('click', function (event) {
+        if (!event.shiftKey) {
+            resetRowSelection(tbody);
+        }
+        if (event.shiftKey && lastSelectedRow) {
+            if (isRowSelected($(this))) {
+                // to exclude rows from the result set
+                markRowUnselected($(this))
+                return
             }
-            if (event.shiftKey && lastSelectedRow) {
-                if (isRowSelected($(this))) {
-                    // to exclude rows from the result set
-                    markRowUnselected($(this))
-                    return
-                }
-                // multiple rows selected
-                const start = lastSelectedRow.index();
-                const end = $(this).index();
-                const selectedRows = rows.slice(Math.min(start, end), Math.max(start, end) + 1)
-                if (selectedRows.length > 1) {
-                    $('#dictionaries-btn-run').prop('disabled', false);
-                    toggleManageDictionariesPageButtons(true);
-                }
-                $.each(selectedRows, function (index, item) {
-                    markRowSelected($(item));
-                })
-            } else {
-                // single row selected
+            // multiple rows selected
+            const start = lastSelectedRow.index();
+            const end = $(this).index();
+            const selectedRows = rows.slice(Math.min(start, end), Math.max(start, end) + 1)
+            if (selectedRows.length > 1) {
                 $('#dictionaries-btn-run').prop('disabled', false);
-                toggleManageDictionariesPageButtons(false);
-                markRowSelected($(this));
-                onSelectDictionary(dictionaries);
-                lastSelectedRow = $(this);
+                toggleManageDictionariesPageButtons(true);
             }
-        });
+            $.each(selectedRows, function (index, item) {
+                markRowSelected($(item));
+            })
+        } else {
+            // single row selected
+            $('#dictionaries-btn-run').prop('disabled', false);
+            toggleManageDictionariesPageButtons(false);
+            markRowSelected($(this));
+            onSelectDictionary(dictionaries);
+            lastSelectedRow = $(this);
+        }
     });
 }
 

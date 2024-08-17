@@ -85,7 +85,7 @@ function initCardsTable(cards) {
             const right = getAllWordsAsString(b);
             return direction ? left.localeCompare(right) : right.localeCompare(left);
         });
-        fillTable(cards, editPopup);
+        drawCardsTable(cards, editPopup);
     });
     thTranslation.off('click').on('click', function () {
         const direction = sortDirection(thTranslation);
@@ -94,7 +94,7 @@ function initCardsTable(cards) {
             const right = getAllTranslationsAsString(b);
             return direction ? left.localeCompare(right) : right.localeCompare(left);
         });
-        fillTable(cards, editPopup);
+        drawCardsTable(cards, editPopup);
     });
     thStatus.off('click').on('click', function () {
         const direction = sortDirection(thStatus);
@@ -103,23 +103,13 @@ function initCardsTable(cards) {
             const right = percentage(b);
             return direction ? left - right : right - left;
         });
-        fillTable(cards, editPopup);
+        drawCardsTable(cards, editPopup);
     });
 
-    fillTable(cards, editPopup);
+    drawCardsTable(cards, editPopup);
 }
 
-function sortDirection(th) {
-    if (th.attr('sort') === 'asc') {
-        th.attr('sort', 'desc');
-        return false;
-    } else {
-        th.attr('sort', 'asc');
-        return true;
-    }
-}
-
-function fillTable(cards, editPopup) {
+function drawCardsTable(cards, editPopup) {
     const tbody = $('#words tbody');
     tbody.html('');
     $.each(cards, function (key, card) {
