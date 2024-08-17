@@ -59,6 +59,9 @@ function rememberAnswer(card, stage, booleanAnswer) {
     if (card.stageStats == null) {
         card.stageStats = {}
     }
+    if (!booleanAnswer) {
+        card.wrong = true
+    }
     card.stageStats[stage] = booleanAnswer ? 1 : -1
 }
 
@@ -133,7 +136,6 @@ function selectNonAnswered(cards, limit) {
 }
 
 /**
- * **[TODO] For first word only.**
  * @param card
  * @returns {*}
  */
@@ -146,7 +148,11 @@ function getCardFirstWordWord(card) {
  * @returns {*}
  */
 function getAllWordsAsString(card) {
-    return card.words.map(it => it.word).join(', ')
+    if (card.allWordsAsString) {
+        return card.allWordsAsString;
+    }
+    card.allWordsAsString = card.words.map(it => it.word).join(', ');
+    return card.allWordsAsString;
 }
 
 /**
@@ -155,12 +161,16 @@ function getAllWordsAsString(card) {
  * @returns {string}
  */
 function getAllTranslationsAsString(card) {
+    if (card.allTranslationsAsString) {
+        return card.allTranslationsAsString;
+    }
     let arrayOfArrays = $.map(card.words.map(it => it.translations), function (n) {
         return n
     })
-    return $.each(arrayOfArrays, function (n) {
+    card.allTranslationsAsString = $.each(arrayOfArrays, function (n) {
         return n
-    }).join(', ')
+    }).join(', ');
+    return card.allTranslationsAsString;
 }
 
 /**

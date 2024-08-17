@@ -74,6 +74,44 @@ function initCardsTable(cards) {
         selectCardItemForAdd(row, search.val());
     });
 
+    const headers = $('#words-table-row th');
+    const thWord = $(headers[0]);
+    const thTranslation = $(headers[1]);
+    const thStatus = $(headers[2]);
+    thWord.off('click').on('click', function () {
+        const direction = sortDirection(thWord);
+        cards.sort((a, b) => {
+            const left = getAllWordsAsString(a);
+            const right = getAllWordsAsString(b);
+            return direction ? left.localeCompare(right) : right.localeCompare(left);
+        });
+        drawCardsTable(cards, editPopup);
+    });
+    thTranslation.off('click').on('click', function () {
+        const direction = sortDirection(thTranslation);
+        cards.sort((a, b) => {
+            const left = getAllTranslationsAsString(a);
+            const right = getAllTranslationsAsString(b);
+            return direction ? left.localeCompare(right) : right.localeCompare(left);
+        });
+        drawCardsTable(cards, editPopup);
+    });
+    thStatus.off('click').on('click', function () {
+        const direction = sortDirection(thStatus);
+        cards.sort((a, b) => {
+            const left = percentage(a);
+            const right = percentage(b);
+            return direction ? left - right : right - left;
+        });
+        drawCardsTable(cards, editPopup);
+    });
+
+    drawCardsTable(cards, editPopup);
+}
+
+function drawCardsTable(cards, editPopup) {
+    const tbody = $('#words tbody');
+    tbody.html('');
     $.each(cards, function (key, card) {
         let row = $(`<tr id="${'w' + card.cardId}">
                             <td>${getAllWordsAsString(card)}</td>
@@ -173,7 +211,7 @@ function selectCardItemForDeleteOrReset(card, actionId) {
     toggleManageCardsButton(actionId, false);
     const body = $('#' + actionId + '-card-prompt-body');
     body.attr('item-id', card.cardId);
-    body.html(getCardFirstWordWord(card));
+    body.html(getAllWordsAsString(card));
 }
 
 function resetCardSelection() {
@@ -519,7 +557,7 @@ function findCardByWordPrefix(cards, prefix) {
     if (search.length === 0) {
         return null;
     }
-    return cards.find((card) => getCardFirstWordWord(card).toLowerCase().startsWith(search));
+    return cards.find((card) => getAllWordsAsString(card).toLowerCase().startsWith(search));
 }
 
 function updateCardDialogAccordionItemIds(element, indexWas, indexNew) {

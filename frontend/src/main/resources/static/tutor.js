@@ -27,7 +27,10 @@
  *    }
  *  ],
  *  "stats": {},
- *  "details": {}
+ *  "details": {},
+ *  "answered": int,
+ *  "wrong": boolean,
+ *  "sound": bytes
  * }
  * ```
  */
@@ -127,37 +130,37 @@ function selectNextCardsDeck() {
     return selectNonAnswered(flashcards, null);
 }
 
-function drawShowCardPage(data, index, nextStage) {
-    if (index >= data.length) { // no more data => display next stage
+function drawShowCardPage(cards, index, nextStage) {
+    if (index >= cards.length) { // no more data => display next stage
         nextStage();
         return;
     }
     const page = $('#show');
-    const current = data[index];
+    const current = cards[index];
 
-    const status = '(' + percentage(current) + '%) '
+    const status = '(' + percentage(current) + '%) ';
 
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, 'show: ' + current.dictionaryName);
     $('.word', page).html(getAllWordsAsString(current));
     $('.translations', page).html(getTranslationsAsHtml(current));
     $('.examples', page).html(getExamplesAsHtml(current));
-    $('.status', page).html(status)
+    $('.status', page).html(status);
 
     $('#show-next').unbind('click').on('click', function () {
-        drawShowCardPage(data, index + 1, nextStage);
+        drawShowCardPage(cards, index + 1, nextStage);
     });
 
     $('#know').unbind('click').on('click', function () {
         current.answered = numberOfRightAnswers
         updateCard(current, function () {
-            data.splice(index, 1);
-            drawShowCardPage(data, index, nextStage);
+            cards.splice(index, 1);
+            drawShowCardPage(cards, index, nextStage);
         })
     });
 }
 
-function drawMosaicCardPage(data, nextStage) {
+function drawMosaicCardPage(cards, nextStage) {
     const stage = 'mosaic';
 
     displayTitle($('#mosaic'), stage);
@@ -165,8 +168,8 @@ function drawMosaicCardPage(data, nextStage) {
     const leftPane = $('#mosaic-left');
     const rightPane = $('#mosaic-right');
 
-    const dataLeft = randomArray(data, numberOfWordsPerStage);
-    const dataRight = randomArray(data, data.length);
+    const dataLeft = randomArray(cards, numberOfWordsPerStage);
+    const dataRight = randomArray(cards, cards.length);
 
     leftPane.html('');
     dataLeft.forEach(function (card) {
@@ -301,6 +304,8 @@ function drawWritingCardPage(writingData, index, nextStage) {
     const page = $('#writing');
     const current = writingData[index];
 
+    const status = '(' + percentage(current) + '%) ';
+
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
     $('.word', page).html(getAllWordsAsString(current));
@@ -308,6 +313,7 @@ function drawWritingCardPage(writingData, index, nextStage) {
     const clazz = "d-flex justify-content-start p-5 w-100";
     const testDiv = $('#writing-test').show();
     const nextDiv = $('#writing-next').hide();
+    $('.status', page).html(status);
     const textareaInput = $(`<input type="text" class="${clazz}"/>`);
     const textareaRow = $('#writing-textarea').html('').append(textareaInput);
 
@@ -361,12 +367,12 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const current = selfTestData[index];
     const next = index + 1;
 
-    const status = '(' + percentage(current) + '%) '
+    const status = '(' + percentage(current) + '%) ';
 
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
     $('.word', page).html(getAllWordsAsString(current));
-    $('.status', page).html(status)
+    $('.status', page).html(status);
     translation.html(getTranslationsAsString(current));
     correct.prop('disabled', true);
     wrong.prop('disabled', true);
@@ -398,9 +404,12 @@ function drawResultCardPage() {
     const wrong = flashcards.filter(function (card) {
         const res = isAnsweredRight(card);
         return res !== undefined && !res;
-    });
-    const learned = flashcards.filter(card => card.answered >= numberOfRightAnswers);
-    const right = flashcards.filter(card => isAnsweredRight(card)).filter(item => !learned.includes(item));
+    }).sort((a, b) => b.answered - a.answered);
+    const learned = flashcards
+        .filter(card => card.answered >= numberOfRightAnswers);
+    const correct = flashcards.filter(card => isAnsweredRight(card))
+        .filter(item => !learned.includes(item))
+        .sort((a, b) => b.answered - a.answered);
 
     displayTitle(page, 'result');
     learned.forEach(function (card) {
@@ -412,7 +421,7 @@ function drawResultCardPage() {
                           </tr>`);
         tbody.append(row);
     });
-    right.forEach(function (card) {
+    correct.forEach(function (card) {
         const row = $(`<tr id="${'w' + card.cardId}">
                             <td class="text-primary"><b>${getAllWordsAsString(card)}</b></td>
                             <td>${getAllTranslationsAsString(card)}</td>
@@ -472,9 +481,9 @@ function strikeText(textHolder) {
 
 function drawAndPlayAudio(parent, audio) {
     const btn = $('.sound', parent);
-    btn.unbind('click')
+    btn.unbind('click');
     if (!audio) {
-        btn.prop('disabled', true)
+        btn.prop('disabled', true);
         return;
     }
     btn.prop('disabled', false);
@@ -488,24 +497,27 @@ function drawAndPlayAudio(parent, audio) {
 }
 
 function updateCardAndCallNext(cards, nextStageCallback) {
-    const res = []
+    const res = [];
     cards.forEach(function (card) {
         if (card.answered === undefined) {
-            card.answered = 0
+            card.answered = 0;
         }
         if (card.sessionStats === undefined) {
-            card.sessionStats = {}
+            card.sessionStats = {};
         }
         card.answered += sumAnswers(card)
         if (card.answered < 0) {
-            card.answered = 0
+            card.answered = 0;
         }
-        const learn = {}
-        learn['cardId'] = card.cardId
-        learn['details'] = card.stageStats
-        res.push(learn)
-        card.sessionStats = {...card.sessionStats, ...card.stageStats}
-        card.stageStats = {}
+        if (card.wrong && card.answered >= numberOfRightAnswers) {
+            card.answered = numberOfRightAnswers - 1;
+        }
+        const learn = {};
+        learn['cardId'] = card.cardId;
+        learn['details'] = card.stageStats;
+        res.push(learn);
+        card.sessionStats = {...card.sessionStats, ...card.stageStats};
+        card.stageStats = {};
     })
-    learnCard(res, () => nextStageCallback())
+    learnCard(res, () => nextStageCallback());
 }
