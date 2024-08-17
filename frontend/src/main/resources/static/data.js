@@ -59,6 +59,9 @@ function rememberAnswer(card, stage, booleanAnswer) {
     if (card.stageStats == null) {
         card.stageStats = {}
     }
+    if (!booleanAnswer) {
+        card.wrong = true
+    }
     card.stageStats[stage] = booleanAnswer ? 1 : -1
 }
 
