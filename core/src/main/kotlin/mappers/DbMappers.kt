@@ -40,6 +40,7 @@ fun DictionaryEntity.toDbDictionary() = DbDictionary(
     userId = userId.asString(),
     sourceLang = sourceLang.toDbLang(),
     targetLang = targetLang.toDbLang(),
+    details = emptyMap(),
 )
 
 fun DbDictionary.toDictionaryEntity() = DictionaryEntity(

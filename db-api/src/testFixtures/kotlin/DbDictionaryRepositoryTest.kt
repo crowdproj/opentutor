@@ -111,8 +111,14 @@ abstract class DbDictionaryRepositoryTest {
     @Order(6)
     @Test
     fun `test create dictionary success`() {
-        val given =
-            DbDictionary(name = "test-dictionary", sourceLang = RU, targetLang = EN, userId = "42", dictionaryId = "")
+        val given = DbDictionary(
+            name = "test-dictionary",
+            sourceLang = RU,
+            targetLang = EN,
+            userId = "42",
+            dictionaryId = "",
+            details = mapOf("A" to 42, "B" to false),
+        )
         val res = repository.createDictionary(given)
         Assertions.assertEquals(given.name, res.name)
         Assertions.assertEquals(RU, res.sourceLang)
@@ -124,8 +130,14 @@ abstract class DbDictionaryRepositoryTest {
     @Order(6)
     @Test
     fun `test update dictionary and get success`() {
-        val new =
-            DbDictionary(name = "Weather-2", sourceLang = RU, targetLang = EN, userId = "42", dictionaryId = "2")
+        val new = DbDictionary(
+            name = "Weather-2",
+            sourceLang = RU,
+            targetLang = EN,
+            userId = "42",
+            dictionaryId = "2",
+            details = mapOf("A" to 42, "B" to false),
+        )
         val res = repository.updateDictionary(new)
         Assertions.assertEquals(new.name, res.name)
         Assertions.assertEquals(RU, res.sourceLang)
@@ -135,5 +147,6 @@ abstract class DbDictionaryRepositoryTest {
         val res1 = repository.findDictionaryById("2")
         Assertions.assertNotNull(res1)
         Assertions.assertEquals("Weather-2", res1!!.name)
+        Assertions.assertEquals(mapOf("A" to 42, "B" to false), res1.details)
     }
 }

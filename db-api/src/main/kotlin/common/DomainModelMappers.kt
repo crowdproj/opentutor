@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.common
 
 import com.gitlab.sszuev.flashcards.repositories.DbCadStage
 import com.gitlab.sszuev.flashcards.repositories.DbCard
+import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 
 fun validateCardEntityForCreate(entity: DbCard) {
     val errors = mutableListOf<String>()
@@ -68,6 +69,10 @@ private fun CommonExampleDto.toCardWordExampleEntity(): DbCard.Word.Example = Db
     text = text,
     translation = translation,
 )
+
+fun DbDictionary.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto {
+    return CommonCardDetailsDto(this.details)
+}
 
 fun DbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto {
     return CommonCardDetailsDto(this.details + this.stats.mapKeys { it.key })

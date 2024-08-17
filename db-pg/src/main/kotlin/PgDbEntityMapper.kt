@@ -4,6 +4,7 @@ import com.gitlab.sszuev.flashcards.asKotlin
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
+import com.gitlab.sszuev.flashcards.common.parseDictionaryDetailsJson
 import com.gitlab.sszuev.flashcards.common.toCardEntityDetails
 import com.gitlab.sszuev.flashcards.common.toCardEntityStats
 import com.gitlab.sszuev.flashcards.common.toCardWordEntity
@@ -26,6 +27,7 @@ internal fun PgDbDictionary.toDbDictionary(): DbDictionary = DbDictionary(
     name = this.name,
     sourceLang = createDbLang(this.sourceLang),
     targetLang = createDbLang(this.targetLang),
+    details = parseDictionaryDetailsJson(this.details)
 )
 
 internal fun PgDbCard.toCardEntity(): DbCard {
