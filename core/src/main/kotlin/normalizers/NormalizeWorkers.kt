@@ -121,8 +121,8 @@ fun DictionaryEntity.normalize() = DictionaryEntity(
     totalCardsCount = this.totalCardsCount,
     learnedCardsCount = this.learnedCardsCount,
     userId = this.userId.normalize(),
-
-    )
+    numberOfRightAnswers = this.numberOfRightAnswers,
+)
 
 fun LangEntity.normalize() = LangEntity(
     langId = this.langId.normalize(),
