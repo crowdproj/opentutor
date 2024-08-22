@@ -721,6 +721,9 @@ components:
         learned:
           type: integer
           format: int32
+        numberOfRightAnswers:
+          type: integer
+          format: int32
 
     CardResource:
       description: 'A card resource'

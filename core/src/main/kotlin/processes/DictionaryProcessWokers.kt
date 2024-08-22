@@ -42,10 +42,15 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
         val cardCounts = this.repositories.cardRepository.countCardsByDictionaryId(
             dictionaries.map { it.dictionaryId.asString() }
         )
-        val answeredCounts = this.repositories.cardRepository.countCardsByDictionaryIdAndAnswered(
-            dictionaries.map { it.dictionaryId.asString() },
-            config.numberOfRightAnswers
-        )
+        val answeredCounts = mutableMapOf<String, Long>()
+        dictionaries.groupBy { it.numberOfRightAnswers }.forEach { (threshold, dictionaries) ->
+            answeredCounts.putAll(
+                this.repositories.cardRepository.countCardsByDictionaryIdAndAnswered(
+                    dictionaries.map { it.dictionaryId.asString() },
+                    threshold,
+                )
+            )
+        }
 
         this.responseDictionaryEntityList = dictionaries.map { dictionary ->
             val total = cardCounts[dictionary.dictionaryId.asString()] ?: 0
