@@ -18,7 +18,7 @@
                                th:aria-describedby="${id} + 'edit-dictionary-dialog-name-sizing-sm'"/>
                         <div class="input-group-prepend d-flex align-items-stretch">
                             <div class="input-group-prepend d-flex align-items-stretch">
-                                <span style="width: 140px" class="input-group-text"
+                                <span style="width: 9em" class="input-group-text"
                                       th:id="${id} + '-dictionary-dialog-source-lang-sizing-sm'">source language:</span>
                             </div>
                             <select th:id="${id} + '-dictionary-dialog-source-lang'"
@@ -30,7 +30,7 @@
                                         th:selected="${lang.code == 'en'}"></option>
                             </select>
                             <div class="input-group-prepend d-flex align-items-stretch">
-                                <span style="width: 140px" class="input-group-text"
+                                <span style="width: 9em" class="input-group-text"
                                       th:id="${id} + '-dictionary-dialog-target-lang-sizing-sm'">target language:</span>
                             </div>
                             <select th:id="${id} + '-dictionary-dialog-target-lang'"
@@ -41,6 +41,18 @@
                                         th:text="${lang.name}"
                                         th:selected="${lang.code == 'ru'}"></option>
                             </select>
+                        </div>
+                        <div class="input-group-prepend d-flex align-items-stretch">
+                            <div class="input-group-prepend d-flex align-items-stretch">
+                                <span style="width: 13em" class="input-group-text"
+                                      th:id="${id} + '-dictionary-dialog-number-of-right-answers-sm'">number of right answers:</span>
+                            </div>
+                            <input type="text"
+                                   style="width: 6em"
+                                   class="form-control transcription"
+                                   aria-label="number of right answers"
+                                   th:id="${id} + '-dictionary-dialog-number-of-right-answers'"
+                                   th:aria-describedby="${id} + '-dictionary-dialog-number-of-right-answers-sm'"/>
                         </div>
                     </div>
                 </div>

@@ -39,11 +39,12 @@ function drawDictionaryCardsPage() {
     $('#words tbody').html('');
     initTableListeners('words', resetCardSelection);
     $('#words-table-row').css('height', calcInitTableHeight());
-    getCards(selectedDictionary.dictionaryId, initCardsTable);
+    getCards(selectedDictionary.dictionaryId, function (cards) {
+        initCardsTable(cards, selectedDictionary.numberOfRightAnswers);
+    });
 }
 
-function initCardsTable(cards) {
-    const tbody = $('#words tbody');
+function initCardsTable(cards, numberOfRightAnswers) {
     const search = $('#words-search');
 
     bootstrap.Modal.getOrCreateInstance(document.getElementById('add-card-dialog')).hide();
@@ -85,7 +86,7 @@ function initCardsTable(cards) {
             const right = getAllWordsAsString(b);
             return direction ? left.localeCompare(right) : right.localeCompare(left);
         });
-        drawCardsTable(cards, editPopup);
+        drawCardsTable(cards, editPopup, numberOfRightAnswers);
     });
     thTranslation.off('click').on('click', function () {
         const direction = sortDirection(thTranslation);
@@ -94,29 +95,29 @@ function initCardsTable(cards) {
             const right = getAllTranslationsAsString(b);
             return direction ? left.localeCompare(right) : right.localeCompare(left);
         });
-        drawCardsTable(cards, editPopup);
+        drawCardsTable(cards, editPopup, numberOfRightAnswers);
     });
     thStatus.off('click').on('click', function () {
         const direction = sortDirection(thStatus);
         cards.sort((a, b) => {
-            const left = percentage(a);
-            const right = percentage(b);
+            const left = percentage(a, numberOfRightAnswers);
+            const right = percentage(b, numberOfRightAnswers);
             return direction ? left - right : right - left;
         });
-        drawCardsTable(cards, editPopup);
+        drawCardsTable(cards, editPopup, numberOfRightAnswers);
     });
 
-    drawCardsTable(cards, editPopup);
+    drawCardsTable(cards, editPopup, numberOfRightAnswers);
 }
 
-function drawCardsTable(cards, editPopup) {
+function drawCardsTable(cards, editPopup, numberOfRightAnswers) {
     const tbody = $('#words tbody');
     tbody.html('');
     $.each(cards, function (key, card) {
         let row = $(`<tr id="${'w' + card.cardId}">
                             <td>${getAllWordsAsString(card)}</td>
                             <td>${getAllTranslationsAsString(card)}</td>
-                            <td>${percentage(card)}</td>
+                            <td>${percentage(card, numberOfRightAnswers)}</td>
                           </tr>`);
         row.off('click').on('click', function () {
             cardRowOnClick(row, card);

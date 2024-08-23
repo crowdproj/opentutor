@@ -52,21 +52,21 @@
  */
 
 function findById(cards, cardId) {
-    return cards.find(card => card.cardId.toString() === cardId.toString())
+    return cards.find(card => card.cardId.toString() === cardId.toString());
 }
 
 function rememberAnswer(card, stage, booleanAnswer) {
     if (card.stageStats == null) {
-        card.stageStats = {}
+        card.stageStats = {};
     }
     if (!booleanAnswer) {
-        card.wrong = true
+        card.wrong = true;
     }
-    card.stageStats[stage] = booleanAnswer ? 1 : -1
+    card.stageStats[stage] = booleanAnswer ? 1 : -1;
 }
 
 function hasStage(card, stage) {
-    return card.stageStats != null && card.stageStats[stage] != null
+    return card.stageStats != null && card.stageStats[stage] != null;
 }
 
 /**
@@ -76,19 +76,19 @@ function hasStage(card, stage) {
  * @returns {boolean|undefined}
  */
 function isAnsweredRight(card) {
-    const details = card.sessionStats
+    const details = card.sessionStats;
     if (details == null || !Object.keys(details).length) {
-        return undefined
+        return undefined;
     }
     for (let key in details) {
         if (!details.hasOwnProperty(key)) {
-            continue
+            continue;
         }
         if (details[key] !== 1) {
-            return false
+            return false;
         }
     }
-    return true
+    return true;
 }
 
 /**
@@ -97,22 +97,22 @@ function isAnsweredRight(card) {
  * @returns {number}
  */
 function sumAnswers(card) {
-    const details = card.stageStats
+    const details = card.stageStats;
     if (details == null || !Object.keys(details).length) {
-        return 0
+        return 0;
     }
-    let res = 0
+    let res = 0;
     for (let key in details) {
         if (!details.hasOwnProperty(key)) {
             continue
         }
         if (details[key]) {
-            res += 1
+            res += 1;
         } else {
-            res -= 1
+            res -= 1;
         }
     }
-    return res
+    return res;
 }
 
 /**
@@ -122,17 +122,17 @@ function sumAnswers(card) {
  * @returns {*[]} array of items to process
  */
 function selectNonAnswered(cards, limit) {
-    const res = []
+    const res = [];
     for (let i = 0; i < cards.length; i++) {
-        let card = cards[i]
-        if (card.answered == null || card.answered < numberOfRightAnswers) {
-            res.push(card)
+        let card = cards[i];
+        if (card.answered == null || card.answered < card.numberOfRightAnswers) {
+            res.push(card);
         }
         if (limit && res.length === limit) {
-            return res
+            return res;
         }
     }
-    return res
+    return res;
 }
 
 /**
@@ -140,7 +140,7 @@ function selectNonAnswered(cards, limit) {
  * @returns {*}
  */
 function getCardFirstWordWord(card) {
-    return card.words[0].word
+    return card.words[0].word;
 }
 
 /**
@@ -165,10 +165,10 @@ function getAllTranslationsAsString(card) {
         return card.allTranslationsAsString;
     }
     let arrayOfArrays = $.map(card.words.map(it => it.translations), function (n) {
-        return n
+        return n;
     })
     card.allTranslationsAsString = $.each(arrayOfArrays, function (n) {
-        return n
+        return n;
     }).join(', ');
     return card.allTranslationsAsString;
 }
@@ -181,8 +181,8 @@ function getAllTranslationsAsString(card) {
  * @returns {string} or undefined
  */
 function findTranslationStartsWith(card, test) {
-    test = test.toLowerCase()
-    return getCardFirstWordTranslationsAsArray(card).find((s) => s.toLowerCase().startsWith(test))
+    test = test.toLowerCase();
+    return getCardFirstWordTranslationsAsArray(card).find((s) => s.toLowerCase().startsWith(test));
 }
 
 /**
@@ -192,7 +192,7 @@ function findTranslationStartsWith(card, test) {
  * @returns {string}
  */
 function getTranslationsAsString(card) {
-    return getCardFirstWordTranslationsAsArray(card).join(', ')
+    return getCardFirstWordTranslationsAsArray(card).join(', ');
 }
 
 function getTranslationsAsHtml(card) {
@@ -201,10 +201,10 @@ function getTranslationsAsHtml(card) {
             return getWordTranslationsAsArray(word)
         })
         .filter(item => {
-            return 0 < item.length
+            return 0 < item.length;
         })
         .map(item => item.join(", "))
-        .join("<br>")
+        .join("<br>");
 }
 
 /**
@@ -215,7 +215,7 @@ function getTranslationsAsHtml(card) {
  */
 function getCardFirstWordTranslationsAsArray(card) {
     // first word
-    return getWordTranslationsAsArray(card.words[0])
+    return getWordTranslationsAsArray(card.words[0]);
 }
 
 /**
@@ -225,7 +225,7 @@ function getCardFirstWordTranslationsAsArray(card) {
  */
 function getWordTranslationsAsArray(word) {
     return $.map(word.translations, function (n) {
-        return n
+        return n;
     })
 }
 
@@ -235,32 +235,40 @@ function getExamplesAsHtml(card) {
             return getWordExamplesAsArray(word)
         })
         .filter(item => {
-            return 0 < item.length
+            return 0 < item.length;
         })
         .map(item => item.join(", "))
-        .join("<br>")
+        .join("<br>");
 }
 
 function getWordExamplesAsArray(word) {
     return word.examples.map(ex => {
         const suffix = ex.translation != null ? ` (${ex.translation})` : "";
-        return ex.example + suffix
+        return ex.example + suffix;
     })
 }
 
 /**
  * Returns learning percentage for card.
  * @param cardItem - card resource
+ * @param numberOfRightAnswers or null
  * @returns {number} - int percentage
  */
-function percentage(cardItem) {
+function percentage(cardItem, numberOfRightAnswers) {
     if (!cardItem.answered) {
-        return 0
+        return 0;
     }
-    if (cardItem.answered > numberOfRightAnswers) {
-        return 100
+    let nora = cardItem.numberOfRightAnswers;
+    if (!nora && numberOfRightAnswers !== null) {
+        nora = numberOfRightAnswers;
     }
-    return Math.round(100.0 * cardItem.answered / numberOfRightAnswers)
+    if (!nora) {
+        throw Error("No numberOfRightAnswers");
+    }
+    if (cardItem.answered > nora) {
+        return 100;
+    }
+    return Math.round(100.0 * cardItem.answered / nora);
 }
 
 /**
@@ -271,8 +279,8 @@ function percentage(cardItem) {
  * @returns {string} an uri
  */
 function toLgURI(itemWord, sourceLang, targetLang) {
-    let fragment = sourceLang.toLowerCase() + '-' + targetLang.toLowerCase() + "/" + encodeURIComponent(itemWord)
-    return "https://www.lingvolive.com/en-us/translate/" + fragment
+    const fragment = sourceLang.toLowerCase() + '-' + targetLang.toLowerCase() + "/" + encodeURIComponent(itemWord);
+    return "https://www.lingvolive.com/en-us/translate/" + fragment;
 }
 
 /**
@@ -284,8 +292,8 @@ function toLgURI(itemWord, sourceLang, targetLang) {
  */
 function toGlURI(itemWord, sourceLang, targetLang) {
     let fragment = '?sl=' + sourceLang.toLowerCase() + '&tl=' + targetLang.toLowerCase() +
-        "&text=" + encodeURIComponent(itemWord)
-    return "https://translate.google.com/" + fragment
+        "&text=" + encodeURIComponent(itemWord);
+    return "https://translate.google.com/" + fragment;
 }
 
 /**
@@ -297,8 +305,8 @@ function toGlURI(itemWord, sourceLang, targetLang) {
  */
 function toYaURI(itemWord, sourceLang, targetLang) {
     let fragment = '?lang=' + sourceLang.toLowerCase() + '-' + targetLang.toLowerCase() +
-        "&text=" + encodeURIComponent(itemWord)
-    return "https://translate.yandex.ru/" + fragment
+        "&text=" + encodeURIComponent(itemWord);
+    return "https://translate.yandex.ru/" + fragment;
 }
 
 function getLanguageNameByCode(code) {
