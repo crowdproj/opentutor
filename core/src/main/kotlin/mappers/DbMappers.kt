@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.core.mappers
 
+import com.gitlab.sszuev.flashcards.AppConfig
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
@@ -35,19 +36,21 @@ fun DbCard.toCardEntity() = CardEntity(
 )
 
 fun DictionaryEntity.toDbDictionary() = DbDictionary(
-    dictionaryId = dictionaryId.asString(),
-    name = name,
-    userId = userId.asString(),
-    sourceLang = sourceLang.toDbLang(),
-    targetLang = targetLang.toDbLang(),
+    dictionaryId = this.dictionaryId.asString(),
+    name = this.name,
+    userId = this.userId.asString(),
+    sourceLang = this.sourceLang.toDbLang(),
+    targetLang = this.targetLang.toDbLang(),
+    details = mapOf("numberOfRightAnswers" to this.numberOfRightAnswers),
 )
 
-fun DbDictionary.toDictionaryEntity() = DictionaryEntity(
-    dictionaryId = DictionaryId(dictionaryId),
-    name = name,
-    userId = AppAuthId(userId),
-    sourceLang = sourceLang.toLangEntity(),
-    targetLang = targetLang.toLangEntity(),
+fun DbDictionary.toDictionaryEntity(config: AppConfig = AppConfig.DEFAULT) = DictionaryEntity(
+    dictionaryId = DictionaryId(this.dictionaryId),
+    name = this.name,
+    userId = AppAuthId(this.userId),
+    sourceLang = this.sourceLang.toLangEntity(),
+    targetLang = this.targetLang.toLangEntity(),
+    numberOfRightAnswers = details["numberOfRightAnswers"]?.toString()?.toInt() ?: config.numberOfRightAnswers,
 )
 
 private fun CardWordEntity.toDbCardWord() = DbCard.Word(

@@ -5,14 +5,16 @@ import com.gitlab.sszuev.flashcards.model.domain.DocumentEntity
 
 val DocumentEntity.dictionary: DictionaryEntity
     get() = DictionaryEntity(
-        name = name,
-        sourceLang = sourceLang,
-        targetLang = targetLang,
+        name = this.name,
+        sourceLang = this.sourceLang,
+        targetLang = this.targetLang,
+        numberOfRightAnswers = this.numberOfRightAnswers,
     )
 
 val DictionaryEntity.document: DocumentEntity
     get() = DocumentEntity(
-        name = name,
-        sourceLang = sourceLang,
-        targetLang = targetLang,
+        name = this.name,
+        sourceLang = this.sourceLang,
+        targetLang = this.targetLang,
+        numberOfRightAnswers = this.numberOfRightAnswers,
     )

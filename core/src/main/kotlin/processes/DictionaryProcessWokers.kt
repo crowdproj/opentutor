@@ -38,14 +38,19 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
 
         val dictionaries = this.repositories.dictionaryRepository
             .findDictionariesByUserId(userId.asString())
-            .map { it.toDictionaryEntity().normalize() }.toList()
+            .map { it.toDictionaryEntity(config).normalize() }.toList()
         val cardCounts = this.repositories.cardRepository.countCardsByDictionaryId(
             dictionaries.map { it.dictionaryId.asString() }
         )
-        val answeredCounts = this.repositories.cardRepository.countCardsByDictionaryIdAndAnswered(
-            dictionaries.map { it.dictionaryId.asString() },
-            config.numberOfRightAnswers
-        )
+        val answeredCounts = mutableMapOf<String, Long>()
+        dictionaries.groupBy { it.numberOfRightAnswers }.forEach { (threshold, dictionaries) ->
+            answeredCounts.putAll(
+                this.repositories.cardRepository.countCardsByDictionaryIdAndAnswered(
+                    dictionaries.map { it.dictionaryId.asString() },
+                    threshold,
+                )
+            )
+        }
 
         this.responseDictionaryEntityList = dictionaries.map { dictionary ->
             val total = cardCounts[dictionary.dictionaryId.asString()] ?: 0
@@ -69,7 +74,7 @@ fun ChainDSL<DictionaryContext>.processCreateDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val res = this.repositories.dictionaryRepository
             .createDictionary(this.normalizedRequestDictionaryEntity.copy(userId = userId).toDbDictionary())
-            .toDictionaryEntity().normalize()
+            .toDictionaryEntity(config).normalize()
         this.responseDictionaryEntity = res
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
@@ -87,7 +92,7 @@ fun ChainDSL<DictionaryContext>.processUpdateDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val res = this.repositories.dictionaryRepository
             .updateDictionary(this.normalizedRequestDictionaryEntity.copy(userId = userId).toDbDictionary())
-            .toDictionaryEntity().normalize()
+            .toDictionaryEntity(config).normalize()
         this.responseDictionaryEntity = res
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
     }
@@ -136,7 +141,7 @@ fun ChainDSL<DictionaryContext>.processDownloadDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary = this.repositories.dictionaryRepository
-            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()?.normalize()
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity(config)?.normalize()
         if (dictionary == null) {
             this.errors.add(
                 noDictionaryFoundDataError(
@@ -213,7 +218,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
                         .createDictionary(
                             document.toDictionaryEntity().normalize().copy(userId = userId).toDbDictionary()
                         )
-                        .toDictionaryEntity().normalize()
+                        .toDictionaryEntity(config).normalize()
                     val cards = document.cards.asSequence()
                         .map { it.toCardEntity(this.config) }
                         .map { it.copy(dictionaryId = dictionary.dictionaryId) }
@@ -236,7 +241,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
                         .createDictionary(
                             document.dictionary.normalize().copy(userId = userId).toDbDictionary()
                         )
-                        .toDictionaryEntity().normalize()
+                        .toDictionaryEntity(config).normalize()
                     val cards =
                         document.cards.map { it.copy(dictionaryId = dictionary.dictionaryId) }.map { it.toDbCard() }
                     if (cards.isNotEmpty()) {

@@ -6,6 +6,7 @@ data class DbDictionary(
     val name: String,
     val sourceLang: DbLang,
     val targetLang: DbLang,
+    val details: Map<String, Any>,
 ) {
     companion object {
         val NULL = DbDictionary(
@@ -14,6 +15,7 @@ data class DbDictionary(
             name = "",
             sourceLang = DbLang.NULL,
             targetLang = DbLang.NULL,
+            details = emptyMap(),
         )
     }
 }

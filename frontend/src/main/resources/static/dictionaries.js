@@ -221,6 +221,12 @@ function initAddDictionaryDialog() {
     $('#add-dictionary-dialog-target-lang').off('change').on('change', function () {
         onChangeDictionaryDialogMains(dialogId);
     });
+    const numberOfRightAnswersInput = $('#add-dictionary-dialog-number-of-right-answers')
+    numberOfRightAnswersInput.off('input').on('input', function () {
+        onChangeDictionaryDialogMains(dialogId);
+    });
+
+    numberOfRightAnswersInput.val(numberOfRightAnswers);
 
     $('#add-dictionary-dialog-save').off('click').on('click', function () {
         const res = createResourceDictionaryEntity(dialogId)
@@ -243,6 +249,10 @@ function initEditDictionaryDialog(dictionaries) {
     $('#edit-dictionary-dialog-name').off('input').on('input', function () {
         onChangeDictionaryDialogMains(dialogId);
     });
+    $('#edit-dictionary-dialog-number-of-right-answers').off('input').on('input', function () {
+        onChangeDictionaryDialogMains(dialogId);
+    });
+
     $('#edit-dictionary-dialog-source-lang').prop('disabled', true);
     $('#edit-dictionary-dialog-target-lang').prop('disabled', true);
     $('#edit-dictionary-dialog-save').off('click').on('click', function () {
@@ -256,6 +266,7 @@ function initEditDictionaryDialog(dictionaries) {
         }
         const res = selectedDictionaries[0];
         res.name = $('#edit-dictionary-dialog-name').val();
+        res.numberOfRightAnswers = $('#edit-dictionary-dialog-number-of-right-answers').val().trim();
         const onDone = function () {
             drawDictionariesPage();
             scrollToRow('#d' + id, '#dictionaries-table-row', markRowSelected);
@@ -268,19 +279,27 @@ function onChangeDictionaryDialogMains(dialogId) {
     const nameInput = $('#' + dialogId + '-dictionary-dialog-name');
     const sourceLangSelect = $('#' + dialogId + '-dictionary-dialog-source-lang option:selected');
     const targetLangSelect = $('#' + dialogId + '-dictionary-dialog-target-lang option:selected');
-    $('#' + dialogId + '-dictionary-dialog-save')
-        .prop('disabled', !(nameInput.val() && sourceLangSelect.val() && targetLangSelect.val()));
+    const numberOfRightAnswersInput = $('#' + dialogId + '-dictionary-dialog-number-of-right-answers');
+    $('#' + dialogId + '-dictionary-dialog-save').prop('disabled', !(
+            nameInput.val() &&
+            sourceLangSelect.val() &&
+            targetLangSelect.val() &&
+            /^[0-9]+$/.test(numberOfRightAnswersInput.val().trim())
+        )
+    );
 }
 
 function createResourceDictionaryEntity(dialogId) {
     const nameInput = $('#' + dialogId + '-dictionary-dialog-name');
     const sourceLangSelect = $('#' + dialogId + '-dictionary-dialog-source-lang option:selected');
     const targetLangSelect = $('#' + dialogId + '-dictionary-dialog-target-lang option:selected');
+    const numberOfRightAnswersInput = $('#' + dialogId + '-dictionary-dialog-number-of-right-answers');
 
     const dictionaryEntity = {};
     dictionaryEntity.name = nameInput.val().trim();
     dictionaryEntity.sourceLang = sourceLangSelect.val();
     dictionaryEntity.targetLang = targetLangSelect.val();
+    dictionaryEntity.numberOfRightAnswers = numberOfRightAnswersInput.val();
     return dictionaryEntity;
 }
 
@@ -298,6 +317,7 @@ function onSelectDictionary(dictionaries) {
     $('#edit-dictionary-dialog-name').val(selectedDictionary.name)
     $('#edit-dictionary-dialog-source-lang').val(selectedDictionary.sourceLang);
     $('#edit-dictionary-dialog-target-lang').val(selectedDictionary.targetLang);
+    $('#edit-dictionary-dialog-number-of-right-answers').val(selectedDictionary.numberOfRightAnswers);
 }
 
 function resetDictionarySelection() {
@@ -314,13 +334,15 @@ function drawRunPage(allDictionaries) {
     $('#dictionaries-btn-run').prop('disabled', true);
     toggleManageDictionariesPageButtons(true);
     const dictionaryMap = new Map(selectedDictionaries.map(function (dictionary) {
-        return [dictionary.dictionaryId, dictionary.name];
+        return [dictionary.dictionaryId, dictionary];
     }));
     resetRowSelection($('#dictionaries tbody'));
     getNextCardDeck(Array.from(dictionaryMap.keys()), numberOfWordsToShow, true, function (cards) {
         flashcards = cards;
         $.each(cards, function (index, card) {
-            card.dictionaryName = dictionaryMap.get(card.dictionaryId);
+            const dictionary = dictionaryMap.get(card.dictionaryId);
+            card.dictionaryName = dictionary.name;
+            card.numberOfRightAnswers = dictionary.numberOfRightAnswers;
         });
         stageShow();
     });

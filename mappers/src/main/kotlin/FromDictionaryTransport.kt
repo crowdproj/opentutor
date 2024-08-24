@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.mappers.v1
 
+import com.gitlab.sszuev.flashcards.AppConfig
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.CreateDictionaryRequest
@@ -65,4 +66,5 @@ fun DictionaryResource.toDictionaryEntity() = DictionaryEntity(
     targetLang = this.targetLang?.let { LangEntity(langId = LangId(it)) } ?: LangEntity.EMPTY,
     totalCardsCount = this.total ?: 0,
     learnedCardsCount = this.learned ?: 0,
+    numberOfRightAnswers = this.numberOfRightAnswers ?: AppConfig.DEFAULT_NUMBER_OF_RIGHT_ANSWERS,
 )

@@ -1,5 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
+import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
+import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.dbpg.dao.Cards
 import com.gitlab.sszuev.flashcards.dbpg.dao.Dictionaries
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbDictionary
@@ -47,6 +49,7 @@ class PgDbDictionaryRepository(
             it[name] = entity.name
             it[userId] = entity.userId
             it[changedAt] = timestamp
+            it[details] = entity.detailsAsCommonCardDetailsDto().toJsonString()
         }
         entity.copy(dictionaryId = dictionaryId.value.toString())
     }
@@ -63,6 +66,7 @@ class PgDbDictionaryRepository(
             it[name] = entity.name
             it[userId] = entity.userId
             it[changedAt] = timestamp
+            it[details] = entity.detailsAsCommonCardDetailsDto().toJsonString()
         }
         if (res != 1) {
             throw DbDataException("Unable to update dictionary ${entity.dictionaryId}")

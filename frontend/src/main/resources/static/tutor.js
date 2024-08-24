@@ -81,8 +81,8 @@ function stageOptions() {
     const length = dataLeft.length * numberOfOptionsPerWord;
 
     const dictionaryIds = dataLeft.map(it => it.dictionaryId);
-    getNextCardDeck(dictionaryIds, length, false, function (words) {
-        const options = prepareOptionsDataArray(dataLeft, words);
+    getNextCardDeck(dictionaryIds, length, false, function (cards) {
+        const options = prepareOptionsDataArray(dataLeft, cards);
         displayPage('options');
         drawOptionsCardPage(options, 0, () => stageWriting());
     });
@@ -138,7 +138,7 @@ function drawShowCardPage(cards, index, nextStage) {
     const page = $('#show');
     const current = cards[index];
 
-    const status = '(' + percentage(current) + '%) ';
+    const status = '(' + percentage(current, null) + '%) ';
 
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, 'show: ' + current.dictionaryName);
@@ -152,7 +152,7 @@ function drawShowCardPage(cards, index, nextStage) {
     });
 
     $('#know').unbind('click').on('click', function () {
-        current.answered = numberOfRightAnswers
+        current.answered = current.numberOfRightAnswers
         updateCard(current, function () {
             cards.splice(index, 1);
             drawShowCardPage(cards, index, nextStage);
@@ -304,7 +304,7 @@ function drawWritingCardPage(writingData, index, nextStage) {
     const page = $('#writing');
     const current = writingData[index];
 
-    const status = '(' + percentage(current) + '%) ';
+    const status = '(' + percentage(current, null) + '%) ';
 
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
@@ -367,7 +367,7 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const current = selfTestData[index];
     const next = index + 1;
 
-    const status = '(' + percentage(current) + '%) ';
+    const status = '(' + percentage(current, null) + '%) ';
 
     drawAndPlayAudio(page, current.sound);
     displayTitle(page, stage + ': ' + current.dictionaryName);
@@ -406,7 +406,7 @@ function drawResultCardPage() {
         return res !== undefined && !res;
     }).sort((a, b) => b.answered - a.answered);
     const learned = flashcards
-        .filter(card => card.answered >= numberOfRightAnswers);
+        .filter(card => card.answered >= card.numberOfRightAnswers);
     const correct = flashcards.filter(card => isAnsweredRight(card))
         .filter(item => !learned.includes(item))
         .sort((a, b) => b.answered - a.answered);
@@ -417,7 +417,7 @@ function drawResultCardPage() {
                             <td class="text-success"><b>${getAllWordsAsString(card)}</b></td>
                             <td>${getAllTranslationsAsString(card)}</td>
                             <td>${card.dictionaryName}</td>
-                            <td class="text-success"><b>${percentage(card)}</b></td>
+                            <td class="text-success"><b>${percentage(card, null)}</b></td>
                           </tr>`);
         tbody.append(row);
     });
@@ -426,7 +426,7 @@ function drawResultCardPage() {
                             <td class="text-primary"><b>${getAllWordsAsString(card)}</b></td>
                             <td>${getAllTranslationsAsString(card)}</td>
                             <td>${card.dictionaryName}</td>
-                            <td class="text-primary"><b>${percentage(card)}</b></td>
+                            <td class="text-primary"><b>${percentage(card, null)}</b></td>
                           </tr>`);
         tbody.append(row);
     });
@@ -435,7 +435,7 @@ function drawResultCardPage() {
                             <td class="text-danger"><b>${getAllWordsAsString(card)}</b></td>
                             <td>${getAllTranslationsAsString(card)}</td>
                             <td>${card.dictionaryName}</td>
-                            <td class="text-danger"><b>${percentage(card)}</b></td>
+                            <td class="text-danger"><b>${percentage(card, null)}</b></td>
                           </tr>`);
         tbody.append(row);
     });
@@ -509,8 +509,8 @@ function updateCardAndCallNext(cards, nextStageCallback) {
         if (card.answered < 0) {
             card.answered = 0;
         }
-        if (card.wrong && card.answered >= numberOfRightAnswers) {
-            card.answered = numberOfRightAnswers - 1;
+        if (card.wrong && card.answered >= card.numberOfRightAnswers) {
+            card.answered = card.numberOfRightAnswers - 1;
         }
         const learn = {};
         learn['cardId'] = card.cardId;

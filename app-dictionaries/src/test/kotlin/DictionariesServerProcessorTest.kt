@@ -73,6 +73,7 @@ class DictionariesServerProcessorTest {
             name = "GGG",
             sourceLang = DbLang("x"),
             targetLang = DbLang("y"),
+            details = mapOf("A" to 42, "B" to true),
         )
 
         val dictionaryRepository = mockk<DbDictionaryRepository>()

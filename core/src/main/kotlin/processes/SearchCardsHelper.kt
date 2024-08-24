@@ -4,6 +4,8 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.mappers.toCardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
+import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SearchCardsHelper")
@@ -18,14 +20,17 @@ private val oldestFirstComparator: Comparator<CardEntity> = Comparator<CardEntit
 /**
  * Prepares a card deck for a tutor-session.
  */
-internal fun CardContext.findCardDeck(): List<CardEntity> {
+internal fun CardContext.findCardDeck(dictionaries: Map<DictionaryId, DictionaryEntity>): List<CardEntity> {
     if (logger.isDebugEnabled) {
         logger.debug("Search cards request: {}", this.normalizedRequestCardFilter)
     }
-    val threshold = config.numberOfRightAnswers
+    val thresholds = dictionaries.mapKeys { it.key.asString() }.mapValues { it.value.numberOfRightAnswers }
     val foundCards = this.repositories.cardRepository
         .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
-        .filter { !this.normalizedRequestCardFilter.onlyUnknown || (it.answered ?: -1) < threshold }
+        .filter {
+            !this.normalizedRequestCardFilter.onlyUnknown
+                || (it.answered ?: -1) < (thresholds[it.dictionaryId] ?: config.numberOfRightAnswers)
+        }
         .map { it.toCardEntity() }
 
     // prepares the collection so that the resulting list contains cards from different dictionaries

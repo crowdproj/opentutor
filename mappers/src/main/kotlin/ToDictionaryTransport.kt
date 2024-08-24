@@ -75,5 +75,6 @@ private fun DictionaryEntity.toDictionaryResource(): DictionaryResource? {
         partsOfSpeech = this.sourceLang.partsOfSpeech,
         total = this.totalCardsCount,
         learned = this.learnedCardsCount,
+        numberOfRightAnswers = this.numberOfRightAnswers,
     )
 }

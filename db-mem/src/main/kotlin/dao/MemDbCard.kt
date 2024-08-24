@@ -9,7 +9,7 @@ data class MemDbCard(
     val id: Long? = null,
     val dictionaryId: Long? = null,
     val words: List<MemDbWord>,
-    val details: Map<String, String> = emptyMap(),
+    val details: Map<String, Any> = emptyMap(),
     val answered: Int? = null,
     val changedAt: LocalDateTime? = null,
 )

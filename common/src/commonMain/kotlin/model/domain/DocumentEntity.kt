@@ -8,4 +8,5 @@ data class DocumentEntity(
     val sourceLang: LangEntity = LangEntity.EMPTY,
     val targetLang: LangEntity = LangEntity.EMPTY,
     val cards: List<CardEntity> = emptyList(),
+    val numberOfRightAnswers: Int = 10,
 )

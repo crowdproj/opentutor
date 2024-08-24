@@ -1,5 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbmem
 
+import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
+import com.gitlab.sszuev.flashcards.common.parseDictionaryDetailsJson
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
@@ -374,7 +376,7 @@ class MemDatabase private constructor(
                         userId = record.value("user_id"),
                         sourceLanguage = createMemDbLanguage(record.get("source_lang")),
                         targetLanguage = createMemDbLanguage(record.get("target_lang")),
-                        details = fromJsonStringToMemDbDictionaryDetails(record.value("details")),
+                        details = parseDictionaryDetailsJson(record.value("details")),
                         changedAt = LocalDateTime.parse(record.value("changed_at")),
                     )
                 }
@@ -386,7 +388,7 @@ class MemDatabase private constructor(
                     id = record.value("id").toLong(),
                     dictionaryId = record.value("dictionary_id").toLong(),
                     words = fromJsonStringToMemDbWords(record.value("words")),
-                    details = fromJsonStringToMemDbCardDetails(record.value("details")),
+                    details = parseCardDetailsJson(record.value("details")),
                     answered = record.valueOrNull("answered")?.toInt(),
                     changedAt = LocalDateTime.parse(record.value("changed_at")),
                 )

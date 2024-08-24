@@ -108,20 +108,20 @@ fun ChainDSL<CardContext>.processCardSearch() = worker {
     }
     process {
         val userId = this.normalizedRequestAppAuthId
-        val found = this.repositories.dictionaryRepository
+        val foundDictionaries = this.repositories.dictionaryRepository
             .findDictionariesByIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
             .map { it.toDictionaryEntity().normalize() }
             .associateBy { it.dictionaryId }
-        this.normalizedRequestCardFilter.dictionaryIds.filterNot { found.containsKey(it) }.forEach {
+        this.normalizedRequestCardFilter.dictionaryIds.filterNot { foundDictionaries.containsKey(it) }.forEach {
             this.errors.add(noDictionaryFoundDataError(CardOperation.SEARCH_CARDS, it, normalizedRequestAppAuthId))
         }
-        found.values.forEach { dictionary ->
+        foundDictionaries.values.forEach { dictionary ->
             if (dictionary.userId != userId) {
                 this.errors.add(forbiddenEntityDataError(CardOperation.SEARCH_CARDS, dictionary.dictionaryId, userId))
             }
         }
         if (errors.isEmpty()) {
-            val cards = postProcess(findCardDeck().iterator()) { checkNotNull(found[it]) }
+            val cards = postProcess(findCardDeck(foundDictionaries).iterator()) { checkNotNull(foundDictionaries[it]) }
             this.responseCardEntityList = cards
         }
         this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN

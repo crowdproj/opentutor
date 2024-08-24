@@ -8,8 +8,9 @@ data class AppConfig(
     val createBuiltinDictionariesOnFirstLogin: Boolean,
 ) {
     companion object {
+        const val DEFAULT_NUMBER_OF_RIGHT_ANSWERS = 10
         val DEFAULT = AppConfig(
-            numberOfRightAnswers = 10,
+            numberOfRightAnswers = DEFAULT_NUMBER_OF_RIGHT_ANSWERS,
             createBuiltinDictionariesOnFirstLogin = true,
         )
     }
