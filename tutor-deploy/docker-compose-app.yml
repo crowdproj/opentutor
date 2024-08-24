@@ -1,5 +1,3 @@
-version: "3.9"
-
 networks:
   flashcards-net:
 
@@ -73,15 +71,30 @@ services:
 
   flashcards-nats:
     image: nats:2.10.14-alpine
-    ports:
-      - "4222:4222"
-      - "8222:8222"
+    volumes:
+      - "${DATA_DIR}/nats/nats-config.conf:/etc/nats/nats-config.conf"
     healthcheck:
       test: [ "CMD-SHELL", "netstat -an | grep 4222 | grep LISTEN" ]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 10s
+    networks:
+      - flashcards-net
+    command: [ "-c", "/etc/nats/nats-config.conf" ]
+
+  flashcards-redis:
+    image: "redis:7.4.0"
+    volumes:
+      - "${DATA_DIR}/redis:/data"
+      - "${DATA_DIR}/redis/redis.conf:/usr/local/etc/redis/redis.conf"
+    command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
     networks:
       - flashcards-net
 
@@ -92,8 +105,11 @@ services:
     depends_on:
       flashcards-nats:
         condition: service_healthy
+      flashcards-redis:
+        condition: service_healthy
     environment:
       TTS_SERVER_NATS_HOST: "flashcards-nats"
+      TTS_SERVER_REDIS_HOST: "flashcards-redis"
       TTS_SERVICE_VOICERSS_KEY: "${TTS_SERVICE_VOICERSS_KEY}"
 
   flashcards-cards-server:
