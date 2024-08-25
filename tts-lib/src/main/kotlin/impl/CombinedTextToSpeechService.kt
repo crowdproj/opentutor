@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker.impl
 
+import com.gitlab.sszuev.flashcards.speaker.ResourceCache
 import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.toResourcePath
@@ -7,14 +8,14 @@ import com.gitlab.sszuev.flashcards.speaker.toResourcePath
 class CombinedTextToSpeechService(
     resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
     config: TTSConfig = TTSConfig(),
+    private val cache: ResourceCache = CaffeineResourceCache(),
+    private val onGetResource: () -> Unit = {},
 ) : TextToSpeechService {
 
     private val voicerssTextToSpeechService =
         VoicerssTextToSpeechService(resourceIdMapper = resourceIdMapper, config = config)
     private val espeakNgTestToSpeechService =
         EspeakNgTestToSpeechService(resourceIdMapper = resourceIdMapper, config = config)
-    private val cache = CaffeineResourceCache()
-
 
     override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         var res = cache.get(id)
@@ -23,6 +24,7 @@ class CombinedTextToSpeechService(
         }
         res = voicerssTextToSpeechService.getResource(id, *args)
         if (res != null) {
+            onGetResource()
             cache.put(id, res)
             return res
         }

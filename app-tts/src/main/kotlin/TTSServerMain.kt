@@ -6,16 +6,24 @@ import kotlin.concurrent.thread
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.speaker.TTSServerMain")
 
 fun main() {
-    val config = NatsConfig()
+    val natsConfig = NatsConfig()
+    val redisConfig = RedisConfig()
+    val redis = RedisConnectionFactory(
+        connectionUrl = redisConfig.url,
+    )
     val processor = NatsTTSServerProcessorImpl(
-        service = createTTSService(),
-        topic = config.topic,
-        group = config.group,
-        connectionUrl = config.url,
+        service = createTTSService(
+            cache = RedisResourceCache(redis.stringToByteArrayCommands),
+            onGetResource = { onGetResource(redis.stringToStringCommands) },
+        ),
+        topic = natsConfig.topic,
+        group = natsConfig.group,
+        connectionUrl = natsConfig.url,
     )
     Runtime.getRuntime().addShutdownHook(thread(start = false) {
-        logger.info("Close connection on shutdown.")
+        logger.info("Close connections on shutdown.")
         processor.close()
+        redis.close()
     })
     logger.info("Start processing.")
     TTSServerController(processor).start()

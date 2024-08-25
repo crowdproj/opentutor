@@ -6,6 +6,7 @@ The directory contains docker-composer files allowing to set up environment.
 - flashcards-db (postgres). it is requires by [:db-pg](../db-pg)
 - flashcards-keycloak. Authorization (demo:demo).
 - flashcards-nats (transport)
+- flashcards-redis (cache)
 - flashcards-tts-server
 - flashcards-cards-server
 - flashcards-dictionaries-server

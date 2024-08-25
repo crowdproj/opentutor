@@ -20,6 +20,7 @@ dependencies {
     val testContainersVersion: String by project
     val mockkVersion: String by project
     val typesafeConfigVersion: String by project
+    val lettuceVersion: String by project
 
     implementation(project(":tts-lib"))
     implementation(project(":common"))
@@ -27,6 +28,7 @@ dependencies {
     implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")
+    implementation("io.lettuce:lettuce-core:$lettuceVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
 
@@ -46,8 +48,10 @@ tasks.test {
 
 tasks.dockerCreateDockerfile {
     arg("TTS_SERVER_NATS_HOST")
+    arg("TTS_SERVER_REDIS_HOST")
     arg("TTS_SERVICE_VOICERSS_KEY")
     environmentVariable("TTS_SERVER_NATS_HOST", "\${TTS_SERVER_NATS_HOST}")
+    environmentVariable("TTS_SERVER_REDIS_HOST", "\${TTS_SERVER_REDIS_HOST}")
     environmentVariable("TTS_SERVICE_VOICERSS_KEY", "\${TTS_SERVICE_VOICERSS_KEY}")
 }
 

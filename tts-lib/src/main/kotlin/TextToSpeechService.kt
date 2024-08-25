@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker
 
+import com.gitlab.sszuev.flashcards.speaker.impl.CaffeineResourceCache
 import com.gitlab.sszuev.flashcards.speaker.impl.CombinedTextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.impl.EspeakNgTestToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.impl.LocalTextToSpeechService
@@ -33,10 +34,13 @@ interface TextToSpeechService {
 /**
  * Creates a [TextToSpeechService].
  */
-fun createTTSService(): TextToSpeechService {
+fun createTTSService(
+    cache: ResourceCache = CaffeineResourceCache(),
+    onGetResource: () -> Unit = {}
+): TextToSpeechService {
     return if (TTSSettings.ttsServiceVoicerssKey.isNotBlank() && TTSSettings.ttsServiceVoicerssKey != "secret") {
         logger.info("::[TTS-SERVICE] init voicerss service")
-        CombinedTextToSpeechService()
+        CombinedTextToSpeechService(cache = cache, onGetResource = onGetResource)
     } else if (EspeakNgTestToSpeechService.isEspeakNgAvailable()) {
         logger.info("::[TTS-SERVICE] init espeak-ng service")
         EspeakNgTestToSpeechService()
