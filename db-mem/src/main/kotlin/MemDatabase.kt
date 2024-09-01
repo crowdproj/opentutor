@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.common.parseCardDetailsJson
 import com.gitlab.sszuev.flashcards.common.parseDictionaryDetailsJson
+import com.gitlab.sszuev.flashcards.common.parseUserDetailsJson
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbCard
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbDictionary
 import com.gitlab.sszuev.flashcards.dbmem.dao.MemDbUser
@@ -400,6 +401,7 @@ class MemDatabase private constructor(
                 MemDbUser(
                     id = record.value("id"),
                     createdAt = LocalDateTime.parse(record.value("created_at")),
+                    details = record.valueOrNull("details")?.let { parseUserDetailsJson(it) } ?: emptyMap(),
                 )
             }
         }
@@ -439,6 +441,7 @@ class MemDatabase private constructor(
                     it.printRecord(
                         user.id,
                         user.createdAt,
+                        user.detailsAsJsonString(),
                     )
                 }
             }
@@ -472,6 +475,7 @@ class MemDatabase private constructor(
             .setHeader(
                 "id",
                 "created_at",
+                "details",
             )
             .setSkipHeaderRecord(!withHeader)
             .build()
@@ -479,7 +483,12 @@ class MemDatabase private constructor(
         private fun CSVRecord.value(key: String): String =
             requireNotNull(get(key)) { "null value for '$key'. record = $this" }
 
-        private fun CSVRecord.valueOrNull(key: String): String? = get(key)?.takeIf { it.isNotBlank() }
+        private fun CSVRecord.valueOrNull(key: String): String? = try {
+            get(key)?.takeIf { it.isNotBlank() }
+        } catch (ex: IllegalArgumentException) {
+            logger.warn(ex.message)
+            null
+        }
 
         private fun CSVFormat.write(outputStream: OutputStream): CSVPrinter =
             print(outputStream.bufferedWriter(charset = Charsets.UTF_8))

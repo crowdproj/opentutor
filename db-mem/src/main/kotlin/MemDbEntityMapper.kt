@@ -5,6 +5,7 @@ import com.gitlab.sszuev.flashcards.asKotlin
 import com.gitlab.sszuev.flashcards.common.CommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonDictionaryDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonExampleDto
+import com.gitlab.sszuev.flashcards.common.CommonUserDetailsDto
 import com.gitlab.sszuev.flashcards.common.CommonWordDto
 import com.gitlab.sszuev.flashcards.common.detailsAsCommonCardDetailsDto
 import com.gitlab.sszuev.flashcards.common.parseCardWordsJson
@@ -31,6 +32,10 @@ internal fun MemDbDictionary.detailsAsJsonString(): String {
 
 internal fun MemDbCard.detailsAsJsonString(): String {
     return detailsAsCommonCardDetailsDto().toJsonString()
+}
+
+internal fun MemDbUser.detailsAsJsonString(): String {
+    return detailsAsCommonUserDetailsDto().toJsonString()
 }
 
 internal fun MemDbCard.wordsAsJsonString(): String {
@@ -99,9 +104,17 @@ internal fun MemDbLanguage.toDbLang(): DbLang = DbLang(
     partsOfSpeech = this.partsOfSpeech,
 )
 
-internal fun DbUser.toMemDbUser(): MemDbUser = MemDbUser(id = this.id, createdAt = this.createdAt.asJava())
+internal fun DbUser.toMemDbUser(): MemDbUser = MemDbUser(
+    id = this.id,
+    createdAt = this.createdAt.asJava(),
+    details = this.details,
+)
 
-internal fun MemDbUser.toDbUser(): DbUser = DbUser(id = this.id, createdAt = this.createdAt.asKotlin())
+internal fun MemDbUser.toDbUser(): DbUser = DbUser(
+    id = this.id,
+    createdAt = this.createdAt.asKotlin(),
+    details = this.details,
+)
 
 private fun MemDbWord.toCommonWordDto(): CommonWordDto = CommonWordDto(
     word = word,
@@ -130,5 +143,7 @@ private fun CommonExampleDto.toMemDbExample(): MemDbExample = MemDbExample(
 )
 
 internal fun MemDbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto = CommonCardDetailsDto(this.details)
+
+internal fun MemDbUser.detailsAsCommonUserDetailsDto(): CommonUserDetailsDto = CommonUserDetailsDto(this.details)
 
 private fun CommonCardDetailsDto.toMemDbCardDetails(): Map<String, String> = this.mapValues { it.value.toString() }

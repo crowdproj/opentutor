@@ -9,4 +9,5 @@ class PgDbUser(id: EntityID<String>) : Entity<String>(id) {
     companion object : EntityClass<String, PgDbUser>(Users)
 
     var createdAt: LocalDateTime by Users.createdAt
+    var details: String by Users.details
 }

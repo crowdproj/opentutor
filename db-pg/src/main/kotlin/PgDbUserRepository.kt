@@ -2,12 +2,16 @@ package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.asJava
 import com.gitlab.sszuev.flashcards.asKotlin
+import com.gitlab.sszuev.flashcards.common.detailsAsCommonUserDetailsDto
+import com.gitlab.sszuev.flashcards.common.parseUserDetailsJson
+import com.gitlab.sszuev.flashcards.common.toJsonString
 import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
 import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import kotlinx.datetime.Clock
 import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.update
 
 class PgDbUserRepository(
     dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
@@ -29,6 +33,7 @@ class PgDbUserRepository(
         DbUser(
             id = user.id.value,
             createdAt = user.createdAt.asKotlin(),
+            details = parseUserDetailsJson(user.details),
         )
     }
 
@@ -37,10 +42,22 @@ class PgDbUserRepository(
         Users.insert {
             it[id] = user.id
             it[createdAt] = now.asJava()
+            it[details] = user.detailsAsCommonUserDetailsDto().toJsonString()
         }
         DbUser(
             id = user.id,
             createdAt = now,
         )
+    }
+
+    override fun updateUser(user: DbUser): DbUser = connection.execute {
+        require(user.id.isNotBlank())
+        val res = Users.update({ Users.id eq user.id }) {
+            it[details] = user.detailsAsCommonUserDetailsDto().toJsonString()
+        } == 1
+        check(res) {
+            "Unable to update user ${user.id}"
+        }
+        user
     }
 }

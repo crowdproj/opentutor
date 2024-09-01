@@ -19,4 +19,13 @@ class MemDbUserRepository(
         database.saveUser(new.toMemDbUser())
         return new
     }
+
+    override fun updateUser(user: DbUser): DbUser {
+        require(user.id.isNotBlank())
+        val record = checkNotNull(database.findUserById(user.id)) {
+            "Unable to update user ${user.id}"
+        }
+        database.saveUser(record.copy(details = user.details))
+        return user
+    }
 }

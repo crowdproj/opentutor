@@ -9,5 +9,9 @@
         <sqlFile relativeToChangelogFile="true" path="001-init-schema.sql"/>
         <comment>Create Initial Schema</comment>
     </changeSet>
+    <changeSet id="002" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="002-add-users-details.sql"/>
+        <comment>Add users#details column</comment>
+    </changeSet>
 
 </databaseChangeLog>
