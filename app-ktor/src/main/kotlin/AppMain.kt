@@ -27,6 +27,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
+import io.ktor.server.application.ApplicationCallPipeline
 import io.ktor.server.application.call
 import io.ktor.server.application.install
 import io.ktor.server.auth.Authentication
@@ -51,6 +52,8 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
+import io.ktor.server.request.uri
+import io.ktor.server.response.header
 import io.ktor.server.response.respond
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
@@ -99,6 +102,11 @@ fun Application.module(
     keycloakSecret: String? = null,
 ) {
     logger.info(printGeneralSettings(runConfig, keycloakConfig, tutorConfig))
+
+    val contextConfig = ContextConfig(runConfig, tutorConfig)
+    val cardService = cardService(runConfig)
+    val dictionaryService = dictionaryService(runConfig)
+    val ttsService = ttsService(runConfig)
 
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
         name = "keycloak",
@@ -173,10 +181,12 @@ fun Application.module(
 
     install(Locations)
 
-    val contextConfig = ContextConfig(runConfig, tutorConfig)
-    val cardService = cardService(runConfig)
-    val dictionaryService = dictionaryService(runConfig)
-    val ttsService = ttsService(runConfig)
+    intercept(phase = ApplicationCallPipeline.Setup) {
+        val uri = call.request.uri
+        if (uri.startsWith("/webjars") || uri.startsWith("/static")) {
+            call.response.header(name = HttpHeaders.CacheControl, value = "public, max-age=31536642, immutable")
+        }
+    }
 
     routing {
         staticResources(remotePath = "/static", basePackage = "static") {}
