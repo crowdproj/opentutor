@@ -110,7 +110,7 @@ fun ChainDSL<DictionaryContext>.processDeleteDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary = this.repositories.dictionaryRepository
-            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()?.normalize()
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity(config)?.normalize()
         if (dictionary == null) {
             this.errors.add(
                 noDictionaryFoundDataError(

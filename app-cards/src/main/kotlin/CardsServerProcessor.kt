@@ -31,7 +31,7 @@ class CardsServerProcessor(
             }
         }
     }
-    private val processor = CardCorProcessor()
+    private val corProcessor = CardCorProcessor()
 
     fun ready() = run.get()
 
@@ -43,7 +43,7 @@ class CardsServerProcessor(
                     logger.debug("Processing ${context.requestId}")
                 }
                 context.repositories = repositories
-                processor.execute(context)
+                corProcessor.execute(context)
                 connection.publish(msg.replyTo, context.toByteArray())
             }
         }

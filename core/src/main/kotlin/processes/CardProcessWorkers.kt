@@ -30,7 +30,7 @@ fun ChainDSL<CardContext>.processGetCard() = worker {
             this.errors.add(noCardFoundDataError(CardOperation.GET_CARD, cardId))
         } else {
             val dictionary = this.repositories.dictionaryRepository
-                .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity()?.normalize()
+                .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity(config)?.normalize()
             if (dictionary == null) {
                 this.errors.add(
                     noDictionaryFoundDataError(
@@ -69,7 +69,7 @@ fun ChainDSL<CardContext>.processGetAllCards() = worker {
         val dictionaryId = this.normalizedRequestDictionaryId
         val dictionary =
             this.repositories.dictionaryRepository.findDictionaryById(dictionaryId.asString())
-                ?.toDictionaryEntity()?.normalize()
+                ?.toDictionaryEntity(config)?.normalize()
         if (dictionary == null) {
             this.errors.add(
                 noDictionaryFoundDataError(
@@ -110,7 +110,7 @@ fun ChainDSL<CardContext>.processCardSearch() = worker {
         val userId = this.normalizedRequestAppAuthId
         val foundDictionaries = this.repositories.dictionaryRepository
             .findDictionariesByIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
-            .map { it.toDictionaryEntity().normalize() }
+            .map { it.toDictionaryEntity(config).normalize() }
             .associateBy { it.dictionaryId }
         this.normalizedRequestCardFilter.dictionaryIds.filterNot { foundDictionaries.containsKey(it) }.forEach {
             this.errors.add(noDictionaryFoundDataError(CardOperation.SEARCH_CARDS, it, normalizedRequestAppAuthId))
@@ -140,7 +140,7 @@ fun ChainDSL<CardContext>.processCreateCard() = worker {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestCardEntity.dictionaryId
         val dictionary = this.repositories.dictionaryRepository
-            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()?.normalize()
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity(config)?.normalize()
         if (dictionary == null) {
             this.errors.add(
                 noDictionaryFoundDataError(
@@ -172,7 +172,7 @@ fun ChainDSL<CardContext>.processUpdateCard() = worker {
         val userId = this.normalizedRequestAppAuthId
         val dictionaryId = this.normalizedRequestCardEntity.dictionaryId
         val dictionary = this.repositories.dictionaryRepository
-            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()?.normalize()
+            .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity(config)?.normalize()
         if (dictionary == null) {
             this.errors.add(
                 noDictionaryFoundDataError(
@@ -217,7 +217,7 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
         val foundDictionaries =
             this.repositories.dictionaryRepository
                 .findDictionariesByIdIn(dictionaryIds.map { it.asString() })
-                .map { it.toDictionaryEntity().normalize() }
+                .map { it.toDictionaryEntity(config).normalize() }
                 .associateBy { it.dictionaryId }
         val missedDictionaries = dictionaryIds - foundDictionaries.keys
         missedDictionaries.forEach {
@@ -254,7 +254,7 @@ fun ChainDSL<CardContext>.processResetCard() = worker {
         } else {
             val dictionaryId = card.dictionaryId
             val dictionary = this.repositories.dictionaryRepository
-                .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity()?.normalize()
+                .findDictionaryById(dictionaryId.asString())?.toDictionaryEntity(config)?.normalize()
             if (dictionary == null) {
                 this.errors.add(
                     noDictionaryFoundDataError(
@@ -291,7 +291,7 @@ fun ChainDSL<CardContext>.processDeleteCard() = worker {
             this.errors.add(noCardFoundDataError(CardOperation.DELETE_CARD, cardId))
         } else {
             val dictionary = this.repositories.dictionaryRepository
-                .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity()?.normalize()
+                .findDictionaryById(card.dictionaryId.asString())?.toDictionaryEntity(config)?.normalize()
             if (dictionary == null) {
                 this.errors.add(
                     noDictionaryFoundDataError(
