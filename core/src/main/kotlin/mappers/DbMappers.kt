@@ -44,7 +44,7 @@ fun DictionaryEntity.toDbDictionary() = DbDictionary(
     details = mapOf("numberOfRightAnswers" to this.numberOfRightAnswers),
 )
 
-fun DbDictionary.toDictionaryEntity(config: AppConfig = AppConfig.DEFAULT) = DictionaryEntity(
+fun DbDictionary.toDictionaryEntity(config: AppConfig) = DictionaryEntity(
     dictionaryId = DictionaryId(this.dictionaryId),
     name = this.name,
     userId = AppAuthId(this.userId),

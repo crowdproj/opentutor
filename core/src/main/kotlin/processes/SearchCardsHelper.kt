@@ -35,23 +35,23 @@ internal fun CardContext.findCardDeck(dictionaries: Map<DictionaryId, Dictionary
 
     // prepares the collection so that the resulting list contains cards from different dictionaries
     val cardsByDictionary = foundCards.groupBy { it.dictionaryId }.mapValues {
-        var value = it.value
+        var cards = it.value
         if (this.normalizedRequestCardFilter.random) {
-            value = value.shuffled()
+            cards = cards.shuffled()
         }
-        val latestFirst = value.sortedWith(oldestFirstComparator.reversed())
-        val oldestFirst = value.sortedWith(oldestFirstComparator)
-        value = latestFirst.zip(oldestFirst).flatMap { p -> listOf(p.first, p.second) }
-        value.toMutableList()
+        val latestFirst = cards.sortedWith(oldestFirstComparator.reversed())
+        val oldestFirst = cards.sortedWith(oldestFirstComparator)
+        cards = latestFirst.zip(oldestFirst).flatMap { p -> listOf(p.first, p.second) }
+        cards.toMutableList()
     }.toMutableMap()
     val selectedCards = mutableListOf<CardEntity>()
     while (cardsByDictionary.isNotEmpty()) {
         cardsByDictionary.keys.toSet().forEach { k ->
-            val v = checkNotNull(cardsByDictionary[k])
-            if (v.isEmpty()) {
+            val cards = checkNotNull(cardsByDictionary[k])
+            if (cards.isEmpty()) {
                 cardsByDictionary.remove(k)
             } else {
-                selectedCards.add(v.removeFirst())
+                selectedCards.add(cards.removeFirst())
             }
         }
     }

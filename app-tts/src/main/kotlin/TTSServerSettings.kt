@@ -32,8 +32,8 @@ object TTSServerSettings {
             |nats-password                  = ***           
             |nats-topic                     = $topic
             |nats-group                     = $group
-            |redis-hos                      = $redisHost
-            |redis-por                      = $redisPort
+            |redis-host                     = $redisHost
+            |redis-port                     = $redisPort
             """.replaceIndentByMargin("\t")
     }
 }

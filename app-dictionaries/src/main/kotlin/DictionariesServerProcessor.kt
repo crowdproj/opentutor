@@ -31,7 +31,7 @@ class DictionariesServerProcessor(
             }
         }
     }
-    private val processor = DictionaryCorProcessor()
+    private val corProcessor = DictionaryCorProcessor()
 
     fun ready() = run.get()
 
@@ -43,7 +43,7 @@ class DictionariesServerProcessor(
                     logger.debug("Processing ${context.requestId}")
                 }
                 context.repositories = repositories
-                processor.execute(context)
+                corProcessor.execute(context)
                 connection.publish(msg.replyTo, context.toByteArray())
             }
         }
