@@ -313,3 +313,21 @@ function getLanguageNameByCode(code) {
     const language = languages.find(lang => lang.code === code);
     return language ? language.name : code;
 }
+
+/**
+ * Removes duplicated cards.
+ * @param cards
+ * @returns {*[]} - a new array
+ */
+function removeDuplicates(cards) {
+    const res = [];
+    const ids = new Set();
+
+    $.each(cards, function (i, e) {
+        if (!ids.has(e.cardId)) {
+            ids.add(e.cardId);
+            res.push(e);
+        }
+    });
+    return res;
+}
