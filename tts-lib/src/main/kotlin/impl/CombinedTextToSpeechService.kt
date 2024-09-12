@@ -4,9 +4,6 @@ import com.gitlab.sszuev.flashcards.speaker.ResourceCache
 import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.toResourcePath
-import org.slf4j.LoggerFactory
-
-private val logger = LoggerFactory.getLogger(CombinedTextToSpeechService::class.java)
 
 class CombinedTextToSpeechService(
     resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
@@ -20,23 +17,32 @@ class CombinedTextToSpeechService(
     private val espeakNgTestToSpeechService =
         EspeakNgTestToSpeechService(resourceIdMapper = resourceIdMapper, config = config)
 
-    override suspend fun getResource(id: String, vararg args: String): ByteArray? = try {
+    override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         var res = cache.get(id)
         if (res != null) {
-            res
-        } else {
-            res = voicerssTextToSpeechService.getResource(id, *args)
-            if (res != null) {
-                onGetResource()
-                cache.put(id, res)
-                res
-            } else {
-                espeakNgTestToSpeechService.getResource(id, *args)
-            }
+            return res
         }
-    } catch (ex: Exception) {
-        logger.error(ex.message, ex)
-        null
+        var error: Exception? = null
+        res = try {
+            voicerssTextToSpeechService.getResource(id, *args)
+        } catch (voicerssError: Exception) {
+            error = voicerssError
+            null
+        }
+        if (res != null) {
+            onGetResource()
+            cache.put(id, res)
+            return res
+        }
+        return try {
+            espeakNgTestToSpeechService.getResource(id, *args)
+        } catch (espeakNgError: Exception) {
+            error?.let {
+                error.addSuppressed(espeakNgError)
+                throw error
+            }
+            throw espeakNgError
+        }
     }
 
     override suspend fun containsResource(id: String): Boolean {
@@ -45,6 +51,5 @@ class CombinedTextToSpeechService(
         }
         return voicerssTextToSpeechService.containsResource(id) || espeakNgTestToSpeechService.containsResource(id)
     }
-
 
 }

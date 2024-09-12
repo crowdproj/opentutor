@@ -44,18 +44,25 @@ class VoicerssTextToSpeechService(
     override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         val langToWord = resourceIdMapper(id) ?: return null
         val lang = languageByTag(langToWord.first) ?: return null
-        return withTimeout(config.getResourceTimeoutMs) {
-            val res = readBytes(lang, langToWord.second)
-            if (logger.isDebugEnabled) {
-                logger.debug("Received data size: {}", res.size)
+        val word = langToWord.second
+        logger.info("::[VOICERSS]$lang:::'$word'")
+        return try {
+            withTimeout(config.getResourceTimeoutMs) {
+                val res = readBytes(lang, word)
+                if (logger.isDebugEnabled) {
+                    logger.debug("Received data size: {}", res.size)
+                }
+                if (res.size < 200) {
+                    // Possible error: "ERROR: The subscription is expired or requests count limitation is exceeded!"
+                    logger.error("The data array is too small (size=${res.size}): '${res.toString(Charsets.UTF_8)}'")
+                    null
+                } else {
+                    res
+                }
             }
-            if (res.size < 200) {
-                // Possible error: "ERROR: The subscription is expired or requests count limitation is exceeded!"
-                logger.error("The data array is too small (size=${res.size}): '${res.toString(Charsets.UTF_8)}'")
-                null
-            } else {
-                res
-            }
+        } catch (ex: Exception) {
+            logger.error("::[VOICERSS] Can't get resource for [${lang}:$word]")
+            throw ex
         }
     }
 
@@ -65,7 +72,6 @@ class VoicerssTextToSpeechService(
     }
 
     private suspend fun readBytes(lang: String, word: String): ByteArray {
-        logger.info("::[VOICERSS]$lang:::'$word'")
         return clientProducer().use {
             it.get {
                 headers {
