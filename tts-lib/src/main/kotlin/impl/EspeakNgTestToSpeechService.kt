@@ -63,8 +63,10 @@ class EspeakNgTestToSpeechService(
     override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         val langToWord = resourceIdMapper(id) ?: return null
         val lang = languageByTag(langToWord.first) ?: return null
+        val word = langToWord.second
+        logger.info("::[ESPEAK-NG]$lang:::'$word'")
         val processBuilder =
-            ProcessBuilder("/bin/bash", "-c", """espeak-ng -v $lang '${langToWord.second}' --stdout""")
+            ProcessBuilder("/bin/bash", "-c", """espeak-ng -v $lang '$word' --stdout""")
         return try {
             withTimeout(config.getResourceTimeoutMs) {
                 val s = System.currentTimeMillis()
@@ -79,7 +81,7 @@ class EspeakNgTestToSpeechService(
                 res
             }
         } catch (ex: Exception) {
-            logger.error("::[ESPEAK-NG] Can't get resource for [${lang}:${langToWord.second}]")
+            logger.error("::[ESPEAK-NG] Can't get resource for [${lang}:$word]")
             throw ex
         }
     }

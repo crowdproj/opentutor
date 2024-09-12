@@ -12,7 +12,7 @@ fun onGetResource(commands: RedisCommands<String, String>) = try {
     var res2 = commands.incr("words.count.daily")
     val date = commands.get("words.date")?.let { Instant.parse(it) }
     val now = Instant.now()
-    if (date != null && Duration.between(date, now).seconds > 24 * 60 * 60) {
+    if (date == null || Duration.between(date, now).seconds > 24 * 60 * 60) {
         // new day
         res2 = commands.del("words.count.daily")
         commands.set("words.date", now.toString())
