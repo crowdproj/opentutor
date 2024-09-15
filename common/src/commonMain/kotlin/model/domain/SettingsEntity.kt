@@ -7,14 +7,14 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class SettingsEntity(
-    val stageShowNumberOfWords: Int,
     val numberOfWordsPerStage: Int,
+    val stageShowNumberOfWords: Int,
     val stageOptionsNumberOfVariants: Int,
 ) {
     companion object {
         val DEFAULT = SettingsEntity(
-            stageShowNumberOfWords = 10,
             numberOfWordsPerStage = 5,
+            stageShowNumberOfWords = 10,
             stageOptionsNumberOfVariants = 6
         )
     }

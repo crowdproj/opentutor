@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.mappers.v1
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
@@ -16,12 +17,14 @@ import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
+import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 
 fun AppContext.fromTransport(request: BaseRequest) = when (this) {
     is CardContext -> fromCardTransport(request)
     is DictionaryContext -> fromDictionaryTransport(request)
     is TTSContext -> fromTTSTransport(request)
+    is SettingsContext -> fromSettingsTransport(request)
     else -> throw IllegalArgumentException("Unsupported request = $request")
 }
 
@@ -29,6 +32,7 @@ fun AppContext.toResponse(): BaseResponse = when (this.operation) {
     is CardOperation -> (this as CardContext).toCardResponse()
     is DictionaryOperation -> (this as DictionaryContext).toDictionaryResponse()
     is TTSOperation -> (this as TTSContext).toTTSResponse()
+    is SettingsOperation -> (this as SettingsContext).toSettingsResponse()
     else -> throw IllegalArgumentException("Unknown context = $this")
 }
 
