@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.services.remote
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.NatsConnectionFactory
-import com.gitlab.sszuev.flashcards.services.ServiceSettings
+import com.gitlab.sszuev.flashcards.services.ServicesConfig
 import com.gitlab.sszuev.flashcards.utils.cardContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import io.nats.client.Connection
@@ -19,8 +19,8 @@ class RemoteCardService(
 ) : CardService {
 
     constructor() : this(
-        topic = ServiceSettings.cardsNatsTopic,
-        requestTimeoutInMillis = ServiceSettings.requestTimeoutInMilliseconds,
+        topic = ServicesConfig.cardsNatsTopic,
+        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
         connectionFactory = { NatsConnectionFactory.connection }
     )
 

@@ -1,24 +1,24 @@
 package com.gitlab.sszuev.flashcards.services.remote
 
-import com.gitlab.sszuev.flashcards.TTSContext
+import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.services.NatsConnectionFactory
 import com.gitlab.sszuev.flashcards.services.ServicesConfig
-import com.gitlab.sszuev.flashcards.services.TTSService
+import com.gitlab.sszuev.flashcards.services.SettingsService
+import com.gitlab.sszuev.flashcards.utils.settingsContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray
-import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 
-class RemoteTTSService(
+class RemoteSettingsService(
     private val topic: String,
     private val requestTimeoutInMillis: Long,
     connectionFactory: () -> Connection,
-) : TTSService {
+) : SettingsService {
     constructor() : this(
-        topic = ServicesConfig.ttsNatsTopic,
+        topic = ServicesConfig.settingsNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
         connectionFactory = { NatsConnectionFactory.connection }
     )
@@ -31,9 +31,10 @@ class RemoteTTSService(
         }
     }
 
-    override suspend fun getResource(context: TTSContext) = context.exec()
+    override suspend fun getSettings(context: SettingsContext): SettingsContext = context.exec()
+    override suspend fun updateSettings(context: SettingsContext): SettingsContext = context.exec()
 
-    private suspend fun TTSContext.exec(): TTSContext {
+    private suspend fun SettingsContext.exec(): SettingsContext {
         val answer = withContext(Dispatchers.IO) {
             connection.request(
                 /* subject = */ topic,
@@ -41,14 +42,13 @@ class RemoteTTSService(
                 /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
             )
         }
-        val res = ttsContextFromByteArray(answer.data)
+        val res = settingsContextFromByteArray(answer.data)
         res.copyTo(this)
         return this
     }
 
-    private fun TTSContext.copyTo(target: TTSContext) {
-        target.responseTTSResourceEntity = this.responseTTSResourceEntity
-        target.normalizedRequestTTSResourceGet = this.normalizedRequestTTSResourceGet
+    private fun SettingsContext.copyTo(target: SettingsContext) {
+        target.responseSettingsEntity = this.responseSettingsEntity
         target.errors.addAll(this.errors)
         target.status = this.status
     }

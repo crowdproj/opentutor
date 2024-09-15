@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
+import com.gitlab.sszuev.flashcards.api.settingsApiV1
 import com.gitlab.sszuev.flashcards.api.ttsApiV1
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
@@ -107,6 +108,7 @@ fun Application.module(
     val cardService = cardService(runConfig)
     val dictionaryService = dictionaryService(runConfig)
     val ttsService = ttsService(runConfig)
+    val settingsService = settingsService(runConfig)
 
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
         name = "keycloak",
@@ -205,6 +207,10 @@ fun Application.module(
                     service = ttsService,
                     contextConfig = contextConfig,
                 )
+                this@authenticate.settingsApiV1(
+                    service = settingsService,
+                    contextConfig = contextConfig,
+                )
             }
             authenticate("keycloakOAuth") {
                 location<Index> {
@@ -234,6 +240,10 @@ fun Application.module(
             )
             ttsApiV1(
                 service = ttsService,
+                contextConfig = contextConfig,
+            )
+            settingsApiV1(
+                service = settingsService,
                 contextConfig = contextConfig,
             )
             get("/") {
