@@ -2,6 +2,7 @@ package com.gitlab.sszuev.flashcards.core.normalizers
 
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
+import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
@@ -19,6 +20,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 
@@ -59,6 +61,12 @@ fun ChainDSL<TTSContext>.normalizers(operation: TTSOperation) = worker(
 
         else -> {}
     }
+}
+
+fun ChainDSL<SettingsContext>.normalizers(operation: SettingsOperation) = worker(
+    name = "Make a normalized copy of ${operation.name.lowercase()} params"
+) {
+    this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
 }
 
 fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(
