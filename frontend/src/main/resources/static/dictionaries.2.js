@@ -226,7 +226,7 @@ function initAddDictionaryDialog() {
         onChangeDictionaryDialogMains(dialogId);
     });
 
-    numberOfRightAnswersInput.val(numberOfRightAnswers);
+    numberOfRightAnswersInput.val(defaultNumberOfRightAnswers);
 
     $('#add-dictionary-dialog-save').off('click').on('click', function () {
         const res = createResourceDictionaryEntity(dialogId)
@@ -337,7 +337,18 @@ function drawRunPage(allDictionaries) {
         return [dictionary.dictionaryId, dictionary];
     }));
     resetRowSelection($('#dictionaries tbody'));
-    getNextCardDeck(Array.from(dictionaryMap.keys()), numberOfWordsToShow, true, function (cards) {
+    if (settings === undefined) {
+        getSettings(function (res) {
+            settings = res;
+            getNextCardDeckAndDrawStageShow(dictionaryMap);
+        });
+    } else {
+        getNextCardDeckAndDrawStageShow(dictionaryMap);
+    }
+}
+
+function getNextCardDeckAndDrawStageShow(dictionaryMap) {
+    getNextCardDeck(Array.from(dictionaryMap.keys()), settings.stageShowNumberOfWords, true, function (cards) {
         flashcards = cards;
         $.each(cards, function (index, card) {
             const dictionary = dictionaryMap.get(card.dictionaryId);

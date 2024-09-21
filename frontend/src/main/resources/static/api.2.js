@@ -18,6 +18,7 @@ const learnCardURI = '/v1/api/cards/learn'
 const resetCardURI = '/v1/api/cards/reset'
 const deleteCardURI = '/v1/api/cards/delete'
 const getAudioURI = '/v1/api/sounds/get'
+const getSettingsURI = '/v1/api/settings/get'
 
 const getAllDictionariesRequestType = 'getAllDictionaries'
 const createDictionaryRequestType = 'createDictionary'
@@ -33,6 +34,7 @@ const learnCardRequestType = 'learnCard'
 const resetCardRequestType = 'resetCard'
 const deleteCardRequestType = 'deleteCard'
 const getAudioRequestType = 'getAudio'
+const getSettingsRequestType = 'getSettings'
 
 async function initKeycloak() {
     if (devMode) {
@@ -93,9 +95,6 @@ function getCards(dictionaryId, onDone) {
 }
 
 function getNextCardDeck(dictionaryIds, length, unknown, onDone) {
-    if (length == null) {
-        length = numberOfWordsToShow
-    }
     const data = {
         'dictionaryIds': dictionaryIds,
         'requestId': uuid(),
@@ -324,6 +323,22 @@ function playAudio(resourcePath, callback) {
             const blob = new Blob([bytes], {type: 'audio/wav'})
             const url = window.URL.createObjectURL(blob)
             new Audio(url).play().then(callback)
+        }
+    })
+}
+
+function getSettings(onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': getSettingsRequestType
+    }
+    post(getSettingsURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            if (onDone !== undefined) {
+                onDone(res.settings);
+            }
         }
     })
 }

@@ -183,10 +183,12 @@ fun Application.module(
 
     install(Locations)
 
-    intercept(phase = ApplicationCallPipeline.Setup) {
-        val uri = call.request.uri
-        if (uri.startsWith("/webjars") || uri.startsWith("/static")) {
-            call.response.header(name = HttpHeaders.CacheControl, value = "public, max-age=31536642, immutable")
+    if (runConfig.mode == RunConfig.Mode.PROD) {
+        intercept(phase = ApplicationCallPipeline.Setup) {
+            val uri = call.request.uri
+            if (uri.startsWith("/webjars") || uri.startsWith("/static")) {
+                call.response.header(name = HttpHeaders.CacheControl, value = "public, max-age=31536642, immutable")
+            }
         }
     }
 
@@ -302,10 +304,7 @@ private fun thymeleafContent(
         )
     }
     val commonConfig = mapOf(
-        "numberOfWordsToShow" to tutorConfig.numberOfWordsToShow.toString(),
-        "numberOfWordsPerStage" to tutorConfig.numberOfWordsPerStage.toString(),
         "numberOfRightAnswers" to tutorConfig.numberOfRightAnswers.toString(),
-        "numberOfOptionsPerWord" to tutorConfig.numberOfOptionsPerWord.toString(),
         "languages" to LANGUAGES,
     )
     res.putAll(userConfig)
