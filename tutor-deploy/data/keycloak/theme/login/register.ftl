@@ -50,6 +50,11 @@
             <h1>Register to opentutor</h1>
             <p class="subtitle"><span class="required">*</span> Required fields</p>
         </div>
+        <#if message?has_content>
+            <div class="alert alert-danger" role="alert">
+                ${message.summary!?no_esc}
+            </div>
+        </#if>
         <form id="kc-register-form" class="form-horizontal" action="${url.registrationAction}" method="post">
             <div class="mb-3">
                 <label for="email" class="form-label">Email</label>

@@ -56,6 +56,11 @@
             <img src="${url.resourcesPath}/img/logo.png" alt="Logo">
             <h1>Sign in to opentutor</h1>
         </div>
+        <#if message?has_content>
+            <div class="alert alert-danger" role="alert">
+                ${message.summary!?no_esc}
+            </div>
+        </#if>
         <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}"
               method="post">
             <div class="mb-3">
