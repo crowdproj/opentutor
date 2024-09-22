@@ -1,0 +1,36 @@
+<div th:fragment="settings-modal">
+    <div class="modal fade" id="settings-modal" tabindex="-1" aria-labelledby="settings-modal-label" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="settings-modal-label">Edit Settings</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="settings-form">
+                    <div class="mb-3">
+                        <label for="input-stage-show-number-of-words" class="form-label">
+                            Number of words in stage Show</label>
+                        <input type="text" class="form-control" id="input-stage-show-number-of-words"
+                               name="StageShowNumberOfWords" placeholder="Enter number" th:value="10">
+                    </div>
+                    <div class="mb-3">
+                        <label for="input-stage-options-number-of-variants" class="form-label">
+                            Number of variants in stage Options</label>
+                        <input type="text" class="form-control" id="input-stage-options-number-of-variants"
+                               name="StageOptionsNumberOfVariants" placeholder="Enter number" th:value="4">
+                    </div>
+                    <div class="mb-3">
+                        <label for="input-number-of-words-per-stage" class="form-label">
+                            Number of words per stage</label>
+                        <input type="text" class="form-control" id="input-number-of-words-per-stage"
+                               name="NumberOfWordsPerStage" placeholder="Enter number" th:value="5">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button id="settings-modal-save-btn" type="button" class="btn btn-primary" disabled>Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

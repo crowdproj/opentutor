@@ -53,6 +53,16 @@ function drawDictionariesPage() {
             downloadDictionaryFile(dictionaries, 'json');
             $('#dictionaries-btn-download-options').removeClass('show').hide();
         });
+        $('#dictionaries-btn-settings').off().on('click', function () {
+            if (settings === undefined) {
+                getSettings(function (res) {
+                    settings = res;
+                    fillSettingsDialog();
+                });
+            } else {
+                fillSettingsDialog();
+            }
+        });
 
         bootstrap.Modal.getOrCreateInstance(document.getElementById('delete-dictionary-prompt')).hide();
         bootstrap.Modal.getOrCreateInstance(document.getElementById('add-dictionary-dialog')).hide();
@@ -60,6 +70,7 @@ function drawDictionariesPage() {
         initDictionaryDeletePrompt();
         initAddDictionaryDialog();
         initEditDictionaryDialog(dictionaries);
+        initSettingsDialog();
 
         const headers = $('#dictionaries-table-row th');
         const thName = $(headers[0]);
@@ -275,6 +286,51 @@ function initEditDictionaryDialog(dictionaries) {
     });
 }
 
+function initSettingsDialog() {
+    const inputStageShowNumberOfWord = $('#input-stage-show-number-of-words');
+    const inputStageOptionsNumberOfVariants = $('#input-stage-options-number-of-variants');
+    const inputNumberOfWordsPerStage = $('#input-number-of-words-per-stage');
+    const btnSave = $('#settings-modal-save-btn');
+
+    function isValidUserSettings() {
+        return isIntNumber(inputNumberOfWordsPerStage.val(), 2, 20) &&
+            isIntNumber(inputStageShowNumberOfWord.val(), 2, 20) &&
+            isIntNumber(inputStageOptionsNumberOfVariants.val(), 2, 15);
+    }
+
+    btnSave.prop('disabled', true);
+    inputStageShowNumberOfWord.off('input').on('input', function () {
+        btnSave.prop('disabled', !isValidUserSettings());
+    });
+    inputNumberOfWordsPerStage.off('input').on('input', function () {
+        btnSave.prop('disabled', !isValidUserSettings());
+    });
+    inputStageOptionsNumberOfVariants.off('input').on('input', function () {
+        btnSave.prop('disabled', !isValidUserSettings());
+    });
+    btnSave.off().on('click', function () {
+        btnSave.prop('disabled', true);
+        const _settings = {
+            "stageShowNumberOfWords": inputStageShowNumberOfWord.val(),
+            "stageOptionsNumberOfVariants": inputStageOptionsNumberOfVariants.val(),
+            "numberOfWordsPerStage": inputNumberOfWordsPerStage.val()
+        };
+        updateSettings(_settings, function () {
+            settings = _settings;
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('settings-modal')).hide();
+        });
+    });
+}
+
+function fillSettingsDialog() {
+    const inputStageShowNumberOfWord = $('#input-stage-show-number-of-words');
+    const inputStageOptionsNumberOfVariants = $('#input-stage-options-number-of-variants');
+    const inputNumberOfWordsPerStage = $('#input-number-of-words-per-stage');
+    inputStageOptionsNumberOfVariants.val(settings.stageOptionsNumberOfVariants);
+    inputNumberOfWordsPerStage.val(settings.numberOfWordsPerStage);
+    inputStageShowNumberOfWord.val(settings.stageShowNumberOfWords);
+}
+
 function onChangeDictionaryDialogMains(dialogId) {
     const nameInput = $('#' + dialogId + '-dictionary-dialog-name');
     const sourceLangSelect = $('#' + dialogId + '-dictionary-dialog-source-lang option:selected');
@@ -322,12 +378,13 @@ function onSelectDictionary(dictionaries) {
 
 function resetDictionarySelection() {
     disableDictionariesPageButtons();
-    $('#dictionaries-btn-add').prop('disabled', false)
+    $('#dictionaries-btn-add').prop('disabled', false);
+    $('#dictionaries-btn-settings').prop('disabled', false);
     $('#dictionaries-btn-upload-label').removeClass('btn-outline-danger');
 }
 
 function drawRunPage(allDictionaries) {
-    const selectedDictionaries = findSelectedDictionaries(allDictionaries)
+    const selectedDictionaries = findSelectedDictionaries(allDictionaries);
     if (selectedDictionaries.length === 0) {
         return;
     }

@@ -8,6 +8,9 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
 import com.gitlab.sszuev.flashcards.repositories.DbUser
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SettingsProcessWorkers")
 
 fun ChainDSL<SettingsContext>.processGetSettings() = worker {
     this.name = "process get-settings request"
@@ -43,6 +46,9 @@ fun ChainDSL<SettingsContext>.processUpdateSettings() = worker {
         val userId = this.normalizedRequestAppAuthId
         this.repositories.userRepository.createUserIfAbsent(userId)
         val settings = this.requestSettingsEntity
+        if (logger.isDebugEnabled) {
+            logger.debug("Updated settings: $settings")
+        }
         val dbUser = DbUser(userId.asString(), details = settings.toDbUserDetails())
         this.repositories.userRepository.updateUser(dbUser)
         this.status = AppStatus.RUN
