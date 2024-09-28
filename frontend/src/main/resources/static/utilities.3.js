@@ -97,3 +97,11 @@ function getFileExtensionType(filename) {
         throw new Error('Unknown file type, filename = "' + filename + '"');
     }
 }
+
+function isIntNumber(value, min, max) {
+    if (!/^\d+$/.test(value)) {
+        return false;
+    }
+    const number = parseInt(value, 10);
+    return number >= min && number <= max;
+}

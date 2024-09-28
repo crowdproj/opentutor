@@ -2,7 +2,7 @@ package com.gitlab.sszuev.flashcards.services.remote
 
 import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.services.NatsConnectionFactory
-import com.gitlab.sszuev.flashcards.services.ServiceSettings
+import com.gitlab.sszuev.flashcards.services.ServicesConfig
 import com.gitlab.sszuev.flashcards.services.TTSService
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
@@ -18,8 +18,8 @@ class RemoteTTSService(
     connectionFactory: () -> Connection,
 ) : TTSService {
     constructor() : this(
-        topic = ServiceSettings.ttsNatsTopic,
-        requestTimeoutInMillis = ServiceSettings.requestTimeoutInMilliseconds,
+        topic = ServicesConfig.ttsNatsTopic,
+        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
         connectionFactory = { NatsConnectionFactory.connection }
     )
 

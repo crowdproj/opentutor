@@ -10,12 +10,13 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.SettingsEntity
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
 
-fun CardEntity.toDbCard() = DbCard(
+internal fun CardEntity.toDbCard() = DbCard(
     cardId = this.cardId.asString(),
     dictionaryId = this.dictionaryId.asString(),
     answered = this.answered,
@@ -25,7 +26,7 @@ fun CardEntity.toDbCard() = DbCard(
     details = this.details,
 )
 
-fun DbCard.toCardEntity() = CardEntity(
+internal fun DbCard.toCardEntity() = CardEntity(
     cardId = CardId(this.cardId),
     dictionaryId = DictionaryId(this.dictionaryId),
     answered = this.answered,
@@ -35,7 +36,7 @@ fun DbCard.toCardEntity() = CardEntity(
     details = this.details,
 )
 
-fun DictionaryEntity.toDbDictionary() = DbDictionary(
+internal fun DictionaryEntity.toDbDictionary() = DbDictionary(
     dictionaryId = this.dictionaryId.asString(),
     name = this.name,
     userId = this.userId.asString(),
@@ -44,13 +45,28 @@ fun DictionaryEntity.toDbDictionary() = DbDictionary(
     details = mapOf("numberOfRightAnswers" to this.numberOfRightAnswers),
 )
 
-fun DbDictionary.toDictionaryEntity(config: AppConfig) = DictionaryEntity(
+internal fun DbDictionary.toDictionaryEntity(config: AppConfig) = DictionaryEntity(
     dictionaryId = DictionaryId(this.dictionaryId),
     name = this.name,
     userId = AppAuthId(this.userId),
     sourceLang = this.sourceLang.toLangEntity(),
     targetLang = this.targetLang.toLangEntity(),
-    numberOfRightAnswers = details["numberOfRightAnswers"]?.toString()?.toInt() ?: config.numberOfRightAnswers,
+    numberOfRightAnswers = details["numberOfRightAnswers"]?.toString()?.toInt() ?: config.defaultNumberOfRightAnswers,
+)
+
+internal fun SettingsEntity.toDbUserDetails(): Map<String, Any> = mapOf(
+    "numberOfWordsPerStage" to this.numberOfWordsPerStage,
+    "stageShowNumberOfWords" to this.stageShowNumberOfWords,
+    "stageOptionsNumberOfVariants" to this.stageOptionsNumberOfVariants,
+)
+
+internal fun fromDbUserDetails(details: Map<String, Any>, config: AppConfig) = SettingsEntity(
+    numberOfWordsPerStage = details["numberOfWordsPerStage"]?.toString()?.toInt()
+        ?: config.defaultNumberOfWordsPerStage,
+    stageShowNumberOfWords = details["stageShowNumberOfWords"]?.toString()?.toInt()
+        ?: config.defaultStageShowNumberOfWords,
+    stageOptionsNumberOfVariants = details["stageOptionsNumberOfVariants"]?.toString()?.toInt()
+        ?: config.defaultStageOptionsNumberOfVariants,
 )
 
 private fun CardWordEntity.toDbCardWord() = DbCard.Word(

@@ -334,6 +334,48 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResetCardResponse'
 
+  /api/settings/get:
+    post:
+      tags:
+        - settings
+      summary: Gets user's settings
+      operationId: getSettings
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetSettingsRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetSettingsResponse'
+
+  /api/settings/update:
+    post:
+      tags:
+        - settings
+      summary: Updates user's settings
+      operationId: updateSettings
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateSettingsRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UpdateSettingsResponse'
+
 components:
   schemas:
     GetAudioRequest:
@@ -633,6 +675,36 @@ components:
             card:
               $ref: '#/components/schemas/CardResource'
 
+    GetSettingsRequest:
+      description: Get user's settings
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+
+    GetSettingsResponse:
+      description: Get user's settings
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            settings:
+              $ref: '#/components/schemas/SettingsResource'
+
+    UpdateSettingsRequest:
+      description: Update settings request
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            settings:
+              $ref: '#/components/schemas/SettingsResource'
+
+    UpdateSettingsResponse:
+      description: Update card response
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+
     BaseRequest:
       type: object
       description: The base request - abstraction that holds request type and request id
@@ -662,6 +734,8 @@ components:
           learnCard: '#/components/schemas/LearnCardsRequest'
           deleteCard: '#/components/schemas/DeleteCardRequest'
           resetCard: '#/components/schemas/ResetCardRequest'
+          getSettings: '#/components/schemas/GetSettingsRequest'
+          updateSettings: '#/components/schemas/UpdateSettingsRequest'
 
     BaseResponse:
       type: object
@@ -698,6 +772,8 @@ components:
           learnCard: '#/components/schemas/LearnCardsResponse'
           deleteCard: '#/components/schemas/DeleteCardResponse'
           resetCard: '#/components/schemas/ResetCardResponse'
+          getSettings: '#/components/schemas/GetSettingsResponse'
+          updateSettings: '#/components/schemas/UpdateSettingsResponse'
 
     DictionaryResource:
       description: 'A dictionary resource'
@@ -798,6 +874,20 @@ components:
           additionalProperties:
             type: integer
             format: int64
+
+    SettingsResource:
+      description: 'User`s settings resource'
+      type: object
+      properties:
+        stageShowNumberOfWords:
+          type: integer
+          format: int32
+        stageOptionsNumberOfVariants:
+          type: integer
+          format: int32
+        numberOfWordsPerStage:
+          type: integer
+          format: int32
 
     ErrorResource:
       type: object

@@ -1,7 +1,6 @@
 #### Dictionaries Server
 
 The service uses [NATS](https://nats.io/) as transport to deliver dictionaries' contexts.
-TTS client is located [here](../services).
 
 The server has the following settings (example):
 

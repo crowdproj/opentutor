@@ -2,15 +2,23 @@ package com.gitlab.sszuev.flashcards
 
 import kotlinx.serialization.Serializable
 
+/**
+ * Contains various system settings, passed from environment or system properties on application start.
+ */
 @Serializable
 data class AppConfig(
-    val numberOfRightAnswers: Int,
     val createBuiltinDictionariesOnFirstLogin: Boolean,
+    val defaultNumberOfRightAnswers: Int,
+    val defaultStageShowNumberOfWords: Int,
+    val defaultNumberOfWordsPerStage: Int,
+    val defaultStageOptionsNumberOfVariants: Int,
 ) {
     companion object {
-        const val DEFAULT_NUMBER_OF_RIGHT_ANSWERS = 10
         val DEFAULT = AppConfig(
-            numberOfRightAnswers = DEFAULT_NUMBER_OF_RIGHT_ANSWERS,
+            defaultNumberOfRightAnswers = 10,
+            defaultStageShowNumberOfWords = 10,
+            defaultNumberOfWordsPerStage = 5,
+            defaultStageOptionsNumberOfVariants = 6,
             createBuiltinDictionariesOnFirstLogin = true,
         )
     }

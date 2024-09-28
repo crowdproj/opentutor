@@ -1,8 +1,6 @@
 #### Cards Server
 
 The service uses [NATS](https://nats.io/) as transport to deliver card's contexts.
-TTS client is located [here](../services).
-
 The server has the following settings (example):
 
 ```

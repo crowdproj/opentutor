@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.api.controllers
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.DictionaryService
+import com.gitlab.sszuev.flashcards.services.SettingsService
 import com.gitlab.sszuev.flashcards.services.TTSService
 import io.ktor.server.application.call
 import io.ktor.server.routing.Route
@@ -74,6 +75,20 @@ fun Route.dictionaries(
         }
         post("upload") {
             call.uploadDictionary(service, contextConfig)
+        }
+    }
+}
+
+fun Route.settings(
+    service: SettingsService,
+    contextConfig: ContextConfig,
+) {
+    route("settings") {
+        post("get") {
+            call.getSettings(service, contextConfig)
+        }
+        post("update") {
+            call.updateSettings(service, contextConfig)
         }
     }
 }

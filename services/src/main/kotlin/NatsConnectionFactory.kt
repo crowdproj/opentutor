@@ -22,7 +22,7 @@ object NatsConnectionFactory {
     }
 
     private fun createConnection(): Connection {
-        val url = "nats://${ServiceSettings.natsHost}:${ServiceSettings.natsPort}"
+        val url = "nats://${ServicesConfig.natsHost}:${ServicesConfig.natsPort}"
         if (logger.isDebugEnabled) {
             logger.debug("NATS URL:: $url")
         }

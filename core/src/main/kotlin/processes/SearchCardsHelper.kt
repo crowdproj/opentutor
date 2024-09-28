@@ -29,7 +29,7 @@ internal fun CardContext.findCardDeck(dictionaries: Map<DictionaryId, Dictionary
         .findCardsByDictionaryIdIn(this.normalizedRequestCardFilter.dictionaryIds.map { it.asString() })
         .filter {
             !this.normalizedRequestCardFilter.onlyUnknown
-                || (it.answered ?: -1) < (thresholds[it.dictionaryId] ?: config.numberOfRightAnswers)
+                || (it.answered ?: -1) < (thresholds[it.dictionaryId] ?: config.defaultNumberOfRightAnswers)
         }
         .map { it.toCardEntity() }
 

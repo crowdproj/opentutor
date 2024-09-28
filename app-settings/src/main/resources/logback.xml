@@ -1,0 +1,20 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Log level for packages "com.gitlab.sszuev.*" -->
+    <property name="APP_LOG_LEVEL" value="${APP_LOG_LEVEL:-info}"/>
+
+    <root level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </root>
+
+    <logger name="com.rabbitmq" level="INFO"/>
+
+    <logger name="com.gitlab.sszuev" level="${APP_LOG_LEVEL}" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+</configuration>

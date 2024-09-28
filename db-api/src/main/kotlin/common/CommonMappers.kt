@@ -25,7 +25,15 @@ fun parseCardDetailsJson(json: String): CommonCardDetailsDto {
     return mapper.readValue(json, CommonCardDetailsDto::class.java)
 }
 
+fun parseUserDetailsJson(json: String): CommonUserDetailsDto {
+    return mapper.readValue(json, CommonUserDetailsDto::class.java)
+}
+
 fun CommonCardDetailsDto.toJsonString(): String {
+    return mapper.writeValueAsString(this)
+}
+
+fun CommonUserDetailsDto.toJsonString(): String {
     return mapper.writeValueAsString(this)
 }
 
@@ -40,6 +48,8 @@ fun List<CommonWordDto>.toJsonString(): String {
 data class CommonDictionaryDetailsDto(private val content: Map<String, Any>) : Map<String, Any> by content
 
 data class CommonCardDetailsDto(private val content: Map<String, Any>) : Map<String, Any> by content
+
+data class CommonUserDetailsDto(private val content: Map<String, Any>) : Map<String, Any> by content
 
 data class CommonWordDto(
     val word: String,

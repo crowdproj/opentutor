@@ -53,6 +53,16 @@ function drawDictionariesPage() {
             downloadDictionaryFile(dictionaries, 'json');
             $('#dictionaries-btn-download-options').removeClass('show').hide();
         });
+        $('#dictionaries-btn-settings').off().on('click', function () {
+            if (settings === undefined) {
+                getSettings(function (res) {
+                    settings = res;
+                    fillSettingsDialog();
+                });
+            } else {
+                fillSettingsDialog();
+            }
+        });
 
         bootstrap.Modal.getOrCreateInstance(document.getElementById('delete-dictionary-prompt')).hide();
         bootstrap.Modal.getOrCreateInstance(document.getElementById('add-dictionary-dialog')).hide();
@@ -60,6 +70,7 @@ function drawDictionariesPage() {
         initDictionaryDeletePrompt();
         initAddDictionaryDialog();
         initEditDictionaryDialog(dictionaries);
+        initSettingsDialog();
 
         const headers = $('#dictionaries-table-row th');
         const thName = $(headers[0]);
@@ -226,7 +237,7 @@ function initAddDictionaryDialog() {
         onChangeDictionaryDialogMains(dialogId);
     });
 
-    numberOfRightAnswersInput.val(numberOfRightAnswers);
+    numberOfRightAnswersInput.val(defaultNumberOfRightAnswers);
 
     $('#add-dictionary-dialog-save').off('click').on('click', function () {
         const res = createResourceDictionaryEntity(dialogId)
@@ -273,6 +284,51 @@ function initEditDictionaryDialog(dictionaries) {
         };
         updateDictionary(res, onDone);
     });
+}
+
+function initSettingsDialog() {
+    const inputStageShowNumberOfWord = $('#input-stage-show-number-of-words');
+    const inputStageOptionsNumberOfVariants = $('#input-stage-options-number-of-variants');
+    const inputNumberOfWordsPerStage = $('#input-number-of-words-per-stage');
+    const btnSave = $('#settings-modal-save-btn');
+
+    function isValidUserSettings() {
+        return isIntNumber(inputNumberOfWordsPerStage.val(), 2, 20) &&
+            isIntNumber(inputStageShowNumberOfWord.val(), 2, 20) &&
+            isIntNumber(inputStageOptionsNumberOfVariants.val(), 2, 15);
+    }
+
+    btnSave.prop('disabled', true);
+    inputStageShowNumberOfWord.off('input').on('input', function () {
+        btnSave.prop('disabled', !isValidUserSettings());
+    });
+    inputNumberOfWordsPerStage.off('input').on('input', function () {
+        btnSave.prop('disabled', !isValidUserSettings());
+    });
+    inputStageOptionsNumberOfVariants.off('input').on('input', function () {
+        btnSave.prop('disabled', !isValidUserSettings());
+    });
+    btnSave.off().on('click', function () {
+        btnSave.prop('disabled', true);
+        const _settings = {
+            "stageShowNumberOfWords": inputStageShowNumberOfWord.val(),
+            "stageOptionsNumberOfVariants": inputStageOptionsNumberOfVariants.val(),
+            "numberOfWordsPerStage": inputNumberOfWordsPerStage.val()
+        };
+        updateSettings(_settings, function () {
+            settings = _settings;
+            bootstrap.Modal.getOrCreateInstance(document.getElementById('settings-modal')).hide();
+        });
+    });
+}
+
+function fillSettingsDialog() {
+    const inputStageShowNumberOfWord = $('#input-stage-show-number-of-words');
+    const inputStageOptionsNumberOfVariants = $('#input-stage-options-number-of-variants');
+    const inputNumberOfWordsPerStage = $('#input-number-of-words-per-stage');
+    inputStageOptionsNumberOfVariants.val(settings.stageOptionsNumberOfVariants);
+    inputNumberOfWordsPerStage.val(settings.numberOfWordsPerStage);
+    inputStageShowNumberOfWord.val(settings.stageShowNumberOfWords);
 }
 
 function onChangeDictionaryDialogMains(dialogId) {
@@ -322,12 +378,13 @@ function onSelectDictionary(dictionaries) {
 
 function resetDictionarySelection() {
     disableDictionariesPageButtons();
-    $('#dictionaries-btn-add').prop('disabled', false)
+    $('#dictionaries-btn-add').prop('disabled', false);
+    $('#dictionaries-btn-settings').prop('disabled', false);
     $('#dictionaries-btn-upload-label').removeClass('btn-outline-danger');
 }
 
 function drawRunPage(allDictionaries) {
-    const selectedDictionaries = findSelectedDictionaries(allDictionaries)
+    const selectedDictionaries = findSelectedDictionaries(allDictionaries);
     if (selectedDictionaries.length === 0) {
         return;
     }
@@ -337,7 +394,18 @@ function drawRunPage(allDictionaries) {
         return [dictionary.dictionaryId, dictionary];
     }));
     resetRowSelection($('#dictionaries tbody'));
-    getNextCardDeck(Array.from(dictionaryMap.keys()), numberOfWordsToShow, true, function (cards) {
+    if (settings === undefined) {
+        getSettings(function (res) {
+            settings = res;
+            getNextCardDeckAndDrawStageShow(dictionaryMap);
+        });
+    } else {
+        getNextCardDeckAndDrawStageShow(dictionaryMap);
+    }
+}
+
+function getNextCardDeckAndDrawStageShow(dictionaryMap) {
+    getNextCardDeck(Array.from(dictionaryMap.keys()), settings.stageShowNumberOfWords, true, function (cards) {
         flashcards = cards;
         $.each(cards, function (index, card) {
             const dictionary = dictionaryMap.get(card.dictionaryId);

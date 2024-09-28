@@ -3,7 +3,7 @@ package com.gitlab.sszuev.flashcards.services.remote
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.services.DictionaryService
 import com.gitlab.sszuev.flashcards.services.NatsConnectionFactory
-import com.gitlab.sszuev.flashcards.services.ServiceSettings
+import com.gitlab.sszuev.flashcards.services.ServicesConfig
 import com.gitlab.sszuev.flashcards.utils.dictionaryContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import io.nats.client.Connection
@@ -18,8 +18,8 @@ class RemoteDictionaryService(
     connectionFactory: () -> Connection,
 ) : DictionaryService {
     constructor() : this(
-        topic = ServiceSettings.dictionariesNatsTopic,
-        requestTimeoutInMillis = ServiceSettings.requestTimeoutInMilliseconds,
+        topic = ServicesConfig.dictionariesNatsTopic,
+        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
         connectionFactory = { NatsConnectionFactory.connection }
     )
 

@@ -11,6 +11,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
+import com.gitlab.sszuev.flashcards.api.settingsApiV1
 import com.gitlab.sszuev.flashcards.api.ttsApiV1
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
@@ -107,6 +108,7 @@ fun Application.module(
     val cardService = cardService(runConfig)
     val dictionaryService = dictionaryService(runConfig)
     val ttsService = ttsService(runConfig)
+    val settingsService = settingsService(runConfig)
 
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
         name = "keycloak",
@@ -181,10 +183,12 @@ fun Application.module(
 
     install(Locations)
 
-    intercept(phase = ApplicationCallPipeline.Setup) {
-        val uri = call.request.uri
-        if (uri.startsWith("/webjars") || uri.startsWith("/static")) {
-            call.response.header(name = HttpHeaders.CacheControl, value = "public, max-age=31536642, immutable")
+    if (runConfig.mode == RunConfig.Mode.PROD) {
+        intercept(phase = ApplicationCallPipeline.Setup) {
+            val uri = call.request.uri
+            if (uri.startsWith("/webjars") || uri.startsWith("/static")) {
+                call.response.header(name = HttpHeaders.CacheControl, value = "public, max-age=31536642, immutable")
+            }
         }
     }
 
@@ -203,6 +207,10 @@ fun Application.module(
                 )
                 this@authenticate.ttsApiV1(
                     service = ttsService,
+                    contextConfig = contextConfig,
+                )
+                this@authenticate.settingsApiV1(
+                    service = settingsService,
                     contextConfig = contextConfig,
                 )
             }
@@ -234,6 +242,10 @@ fun Application.module(
             )
             ttsApiV1(
                 service = ttsService,
+                contextConfig = contextConfig,
+            )
+            settingsApiV1(
+                service = settingsService,
                 contextConfig = contextConfig,
             )
             get("/") {
@@ -292,10 +304,7 @@ private fun thymeleafContent(
         )
     }
     val commonConfig = mapOf(
-        "numberOfWordsToShow" to tutorConfig.numberOfWordsToShow.toString(),
-        "numberOfWordsPerStage" to tutorConfig.numberOfWordsPerStage.toString(),
         "numberOfRightAnswers" to tutorConfig.numberOfRightAnswers.toString(),
-        "numberOfOptionsPerWord" to tutorConfig.numberOfOptionsPerWord.toString(),
         "languages" to LANGUAGES,
     )
     res.putAll(userConfig)

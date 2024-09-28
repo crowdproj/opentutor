@@ -35,6 +35,16 @@
  * ```
  */
 let flashcards;
+/**
+ * ```json
+ * {
+ *  "stageShowNumberOfWords": int,
+ *  "stageOptionsNumberOfVariants": int,
+ *  "numberOfWordsPerStage": int
+ * }
+ * ```
+ */
+let settings;
 
 const borderWhite = 'border-white';
 const borderPrimary = 'border-primary';
@@ -77,8 +87,8 @@ function stageOptions() {
         stageResults();
         return;
     }
-    const dataLeft = randomArray(data, numberOfWordsPerStage);
-    const length = dataLeft.length * numberOfOptionsPerWord;
+    const dataLeft = randomArray(data, settings.numberOfWordsPerStage);
+    const length = dataLeft.length * settings.stageOptionsNumberOfVariants;
 
     const dictionaryIds = dataLeft.map(it => it.dictionaryId);
     getNextCardDeck(dictionaryIds, length, false, function (cards) {
@@ -95,7 +105,7 @@ function stageWriting() {
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('writing');
-        drawWritingCardPage(randomArray(data, numberOfWordsPerStage), 0, () => stageSelfTest());
+        drawWritingCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, () => stageSelfTest());
         return;
     }
     stageResults();
@@ -108,7 +118,7 @@ function stageSelfTest() {
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('self-test');
-        drawSelfTestCardPage(randomArray(data, numberOfWordsPerStage), 0, () => stageResults());
+        drawSelfTestCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, () => stageResults());
         return;
     }
     stageResults();
@@ -168,7 +178,7 @@ function drawMosaicCardPage(cards, nextStage) {
     const leftPane = $('#mosaic-left');
     const rightPane = $('#mosaic-right');
 
-    const dataLeft = randomArray(cards, numberOfWordsPerStage);
+    const dataLeft = randomArray(cards, settings.numberOfWordsPerStage);
     const dataRight = randomArray(cards, cards.length);
 
     leftPane.html('');

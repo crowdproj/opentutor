@@ -29,6 +29,5 @@ data class ResourceEntity(
 
     companion object {
         val DUMMY = ResourceEntity(resourceId = Id.NONE, data = ByteArray(0))
-
     }
 }

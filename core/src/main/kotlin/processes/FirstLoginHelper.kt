@@ -17,7 +17,7 @@ private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.
 
 private val users = Caffeine.newBuilder().maximumSize(1024).build<AppAuthId, AppAuthId>()
 
-internal fun DbUserRepository.createUserIfAbsent(id: AppAuthId, onCreate: () -> Unit) {
+internal fun DbUserRepository.createUserIfAbsent(id: AppAuthId, onCreate: () -> Unit = {}) {
     if (users.getIfPresent(id) != null) {
         return
     }

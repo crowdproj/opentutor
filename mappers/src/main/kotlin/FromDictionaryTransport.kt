@@ -66,5 +66,5 @@ fun DictionaryResource.toDictionaryEntity() = DictionaryEntity(
     targetLang = this.targetLang?.let { LangEntity(langId = LangId(it)) } ?: LangEntity.EMPTY,
     totalCardsCount = this.total ?: 0,
     learnedCardsCount = this.learned ?: 0,
-    numberOfRightAnswers = this.numberOfRightAnswers ?: AppConfig.DEFAULT_NUMBER_OF_RIGHT_ANSWERS,
+    numberOfRightAnswers = this.numberOfRightAnswers ?: AppConfig.DEFAULT.defaultNumberOfRightAnswers,
 )

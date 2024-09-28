@@ -133,7 +133,7 @@ internal fun fromDocumentCardTranslationToCommonWordDtoTranslation(phrase: Strin
 private fun AppConfig.status(answered: Int?): DocumentCardStatus = if (answered == null) {
     DocumentCardStatus.UNKNOWN
 } else {
-    if (answered >= this.numberOfRightAnswers) {
+    if (answered >= this.defaultNumberOfRightAnswers) {
         DocumentCardStatus.LEARNED
     } else {
         DocumentCardStatus.IN_PROCESS
@@ -143,5 +143,5 @@ private fun AppConfig.status(answered: Int?): DocumentCardStatus = if (answered 
 private fun AppConfig.answered(status: DocumentCardStatus): Int = when (status) {
     DocumentCardStatus.UNKNOWN -> 0
     DocumentCardStatus.IN_PROCESS -> 1
-    DocumentCardStatus.LEARNED -> this.numberOfRightAnswers
+    DocumentCardStatus.LEARNED -> this.defaultNumberOfRightAnswers
 }

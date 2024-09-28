@@ -5,8 +5,8 @@ import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
 import org.slf4j.LoggerFactory
 
-object ServiceSettings {
-    private val logger = LoggerFactory.getLogger(ServiceSettings::class.java)
+object ServicesConfig {
+    private val logger = LoggerFactory.getLogger(ServicesConfig::class.java)
 
     private val conf: Config = ConfigFactory.load()
 
@@ -18,6 +18,7 @@ object ServiceSettings {
     val ttsNatsTopic = conf.get(key = "client.nats.topic.tts", default = "TTS")
     val cardsNatsTopic = conf.get(key = "client.nats.topic.cards", default = "CARDS")
     val dictionariesNatsTopic = conf.get(key = "client.nats.topic.dictionaries", default = "DICTIONARIES")
+    val settingsNatsTopic = conf.get(key = "client.nats.topic.settings", default = "SETTINGS")
 
     init {
         logger.info(printDetails())
@@ -33,6 +34,7 @@ object ServiceSettings {
             |nats-topic-tts             = $ttsNatsTopic
             |nats-topic-cards           = $cardsNatsTopic
             |nats-topic-dictionaries    = $dictionariesNatsTopic
+            |nats-topic-settings        = $settingsNatsTopic
             |nats-request-timeout-ms    = $requestTimeoutInMilliseconds
             """.replaceIndentByMargin("\t")
     }
