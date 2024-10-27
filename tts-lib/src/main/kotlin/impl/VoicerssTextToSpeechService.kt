@@ -9,7 +9,7 @@ import io.ktor.client.plugins.timeout
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 import io.ktor.client.request.parameter
-import io.ktor.client.statement.readBytes
+import io.ktor.client.statement.readRawBytes
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import kotlinx.coroutines.withTimeout
@@ -91,7 +91,7 @@ class VoicerssTextToSpeechService(
                     connectTimeoutMillis = config.httpClientConnectTimeoutMs
                 }
             }
-        }.readBytes()
+        }.readRawBytes()
     }
 }
 

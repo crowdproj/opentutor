@@ -1,10 +1,8 @@
 package com.gitlab.sszuev.flashcards.api
 
-import com.gitlab.sszuev.flashcards.api.testutils.assertDictionary
 import com.gitlab.sszuev.flashcards.api.testutils.assertError
 import com.gitlab.sszuev.flashcards.api.testutils.deserializeRequest
 import com.gitlab.sszuev.flashcards.api.testutils.deserializeResponse
-import com.gitlab.sszuev.flashcards.api.testutils.dictionary
 import com.gitlab.sszuev.flashcards.api.testutils.error
 import com.gitlab.sszuev.flashcards.api.testutils.normalize
 import com.gitlab.sszuev.flashcards.api.testutils.serialize
@@ -16,8 +14,6 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsResponse
-import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesRequest
-import com.gitlab.sszuev.flashcards.api.v1.models.GetAllDictionariesResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAudioResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
@@ -305,40 +301,10 @@ internal class CardSerializationTest {
         assertError(json)
         val req2 = deserializeResponse<DeleteCardResponse>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1.copy(responseType = "deleteCard"), req2)
-    }
-
-    @Test
-    fun `test serialization for GetAllDictionaryRequest`() {
-        val req1 = GetAllDictionariesRequest(
-            requestId = "request=42",
-        )
-        val json = serialize(req1)
-        Assertions.assertTrue(json.contains("\"requestType\":\"getAllDictionaries\""))
-        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
-
-        val req2 = deserializeRequest<GetAllDictionariesRequest>(json)
-        Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1.copy(requestType = "getAllDictionaries"), req2)
-    }
-
-    @Test
-    fun `test serialization for GetAllDictionaryResponse`() {
-        val res1 = GetAllDictionariesResponse(
-            dictionaries = listOf(dictionary),
-            result = Result.ERROR,
-            requestId = "request=42",
-            errors = listOf(error)
-        )
-        val json = serialize(res1)
-        Assertions.assertTrue(json.contains("\"responseType\":\"getAllDictionaries\""))
-        Assertions.assertTrue(json.contains("\"requestId\":\"request=42\""))
-        assertError(json)
-        assertDictionary(json)
-
-        val req1 = deserializeResponse<GetAllDictionariesResponse>(json)
-        Assertions.assertNotSame(res1, req1)
-        Assertions.assertEquals(res1.copy(responseType = "getAllDictionaries"), req1)
+        Assertions.assertEquals("deleteCard", req2.responseType)
+        Assertions.assertEquals(req1.requestId, req2.requestId)
+        Assertions.assertEquals(req1.errors, req2.errors)
+        Assertions.assertEquals(req1.result, req2.result)
     }
 
     @Test

@@ -15,7 +15,7 @@ data class TutorConfig(
         numberOfRightAnswers = config.getPositiveInt("app.tutor.run.answers", 10),
         numberOfWordsPerStage = config.getPositiveInt("app.tutor.run.words-for-test", 5),
         numberOfOptionsPerWord = config.getPositiveInt("app.tutor.run.stage.option-variants", 6),
-        useBuiltinDictionaries = config.property("app.tutor.create-builtin-dictionaries").getString().toBoolean(),
+        useBuiltinDictionaries = config.getBoolean("app.tutor.create-builtin-dictionaries", false),
     )
 }
 
@@ -23,4 +23,8 @@ private fun ApplicationConfig.getPositiveInt(key: String, default: Int): Int {
     val value = propertyOrNull(key)?.getString() ?: return default
     require(value.matches("\\d+".toRegex()) && value.toInt() > 0)
     return value.toInt()
+}
+
+private fun ApplicationConfig.getBoolean(key: String, default: Boolean): Boolean {
+    return propertyOrNull(key)?.getString()?.toBoolean() ?: return default
 }

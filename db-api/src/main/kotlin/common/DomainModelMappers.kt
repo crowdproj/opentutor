@@ -72,15 +72,15 @@ private fun CommonExampleDto.toCardWordExampleEntity(): DbCard.Word.Example = Db
 )
 
 fun DbDictionary.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto {
-    return CommonCardDetailsDto(this.details)
+    return CommonCardDetailsDto(this.details.toMutableMap())
 }
 
 fun DbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto {
-    return CommonCardDetailsDto(this.details + this.stats.mapKeys { it.key })
+    return CommonCardDetailsDto((this.details + this.stats.mapKeys { it.key }).toMutableMap())
 }
 
 fun DbUser.detailsAsCommonUserDetailsDto(): CommonUserDetailsDto {
-    return CommonUserDetailsDto(this.details)
+    return CommonUserDetailsDto(this.details.toMutableMap())
 }
 
 fun DbCard.Word.Example.toCommonExampleDto(): CommonExampleDto = CommonExampleDto(

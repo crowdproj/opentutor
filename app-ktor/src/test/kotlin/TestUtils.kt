@@ -18,7 +18,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
 import io.ktor.serialization.jackson.jackson
-import io.ktor.server.locations.KtorExperimentalLocationsAPI
+import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
 import java.util.Base64
@@ -42,11 +42,13 @@ private val testJwtVerifier: JWTVerifier = JWT.require(
     .withClaimPresence("sub")
     .build()
 
-@OptIn(KtorExperimentalLocationsAPI::class)
 fun testSecuredApp(
     block: suspend ApplicationTestBuilder.() -> Unit
 ) {
     testApplication {
+        environment {
+            config = ApplicationConfig("application-test.conf")
+        }
         application {
             module(
                 keycloakConfig = testKeycloakConfig,

@@ -1,5 +1,6 @@
 plugins {
     kotlin("jvm") apply false
+    id("org.jetbrains.kotlin.plugin.serialization") apply false
 }
 
 group = "com.gitlab.sszuev.flashcards"

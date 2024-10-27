@@ -37,7 +37,8 @@ internal class DictionarySerializationTest {
 
         val req2 = deserializeRequest<GetAllDictionariesRequest>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1.copy(requestType = "getAllDictionaries"), req2)
+        Assertions.assertEquals("getAllDictionaries", req2.requestType)
+        Assertions.assertEquals(req1.requestId, req2.requestId)
     }
 
     @Test
@@ -87,7 +88,10 @@ internal class DictionarySerializationTest {
 
         val req2 = deserializeResponse<DeleteDictionaryResponse>(json)
         Assertions.assertNotSame(req1, req2)
-        Assertions.assertEquals(req1.copy(responseType = "deleteDictionary"), req2)
+        Assertions.assertEquals("deleteDictionary", req2.responseType)
+        Assertions.assertEquals(req1.requestId, req2.requestId)
+        Assertions.assertEquals(req1.errors, req2.errors)
+        Assertions.assertEquals(req1.result, req2.result)
     }
 
     @Test

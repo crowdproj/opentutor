@@ -25,6 +25,7 @@ import io.ktor.client.engine.apache.Apache
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
+import io.ktor.resources.Resource
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
@@ -42,21 +43,18 @@ import io.ktor.server.auth.jwt.jwt
 import io.ktor.server.auth.oauth
 import io.ktor.server.html.respondHtml
 import io.ktor.server.http.content.staticResources
-import io.ktor.server.locations.KtorExperimentalLocationsAPI
-import io.ktor.server.locations.Location
-import io.ktor.server.locations.Locations
-import io.ktor.server.locations.location
 import io.ktor.server.plugins.autohead.AutoHeadResponse
 import io.ktor.server.plugins.cachingheaders.CachingHeaders
-import io.ktor.server.plugins.callloging.CallLogging
+import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.plugins.forwardedheaders.XForwardedHeaders
 import io.ktor.server.request.uri
+import io.ktor.server.resources.Resources
+import io.ktor.server.resources.resource
 import io.ktor.server.response.header
 import io.ktor.server.response.respond
-import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.param
 import io.ktor.server.routing.routing
@@ -78,8 +76,7 @@ import java.util.concurrent.TimeUnit
 
 private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.AppMainKt")
 
-// use to jetty, not netty, due to exception https://youtrack.jetbrains.com/issue/KTOR-4433
-fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)
+fun main(args: Array<String>) = io.ktor.server.cio.EngineMain.main(args)
 
 /**
  * Backdoors for developing:
@@ -90,7 +87,6 @@ fun main(args: Array<String>) = io.ktor.server.jetty.EngineMain.main(args)
  *
  * Example: `-DBOOTSTRAP_SERVERS=LOGS_KAFKA_HOSTS_IS_UNDEFINED -DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6 -DRUN_MODE=test -DDATA_DIRECTORY=/local/data`
  */
-@KtorExperimentalLocationsAPI
 @Suppress("unused")
 fun Application.module(
     keycloakConfig: KeycloakConfig = KeycloakConfig(environment.config),
@@ -133,8 +129,6 @@ fun Application.module(
             characterEncoding = StandardCharsets.UTF_8.name()
         })
     }
-
-    install(Routing)
 
     install(CachingHeaders)
     install(DefaultHeaders)
@@ -181,7 +175,7 @@ fun Application.module(
         level = Level.INFO
     }
 
-    install(Locations)
+    install(Resources)
 
     if (runConfig.mode == RunConfig.Mode.PROD) {
         intercept(phase = ApplicationCallPipeline.Setup) {
@@ -215,7 +209,7 @@ fun Application.module(
                 )
             }
             authenticate("keycloakOAuth") {
-                location<Index> {
+                resource<Index> {
                     param("error") {
                         handle {
                             call.loginFailed(call.parameters.getAll("error").orEmpty())
@@ -255,23 +249,14 @@ fun Application.module(
     }
 }
 
-internal fun makeJwtVerifier(jwkUrl: String, issuer: String): JWTVerifier = JWT.require(makeJwtAlgorithm(jwkUrl))
-    .withIssuer(issuer)
-    .build()
+internal fun makeJwtVerifier(jwkUrl: String, issuer: String): JWTVerifier =
+    JWT.require(makeJwtAlgorithm(jwkUrl)).withIssuer(issuer).build()
 
 internal fun makeJwtAlgorithm(jwkUrl: String): Algorithm {
-    val jwkProvider = JwkProviderBuilder(URL(jwkUrl))
-        .cached(
-            /* cacheSize = */ 10,
-            /* expiresIn = */ 24,
-            /* unit = */ TimeUnit.HOURS
-        )
-        .rateLimited(
-            /* bucketSize = */ 100,
-            /* refillRate = */ 1,
-            /* unit = */ TimeUnit.MINUTES
-        )
-        .build()
+    val jwkProvider =
+        JwkProviderBuilder(URL(jwkUrl)).cached(/* cacheSize = */ 10,/* expiresIn = */ 24,/* unit = */ TimeUnit.HOURS
+        ).rateLimited(/* bucketSize = */ 100,/* refillRate = */ 1,/* unit = */ TimeUnit.MINUTES
+        ).build()
 
     val keyProvider = object : RSAKeyProvider {
         override fun getPublicKeyById(keyId: String?): RSAPublicKey = jwkProvider.get(keyId).publicKey as RSAPublicKey
@@ -285,9 +270,7 @@ internal fun makeJwtAlgorithm(jwkUrl: String): Algorithm {
 }
 
 private fun thymeleafContent(
-    tutorConfig: TutorConfig,
-    keycloakConfig: KeycloakConfig,
-    principal: OAuthAccessTokenResponse.OAuth2?
+    tutorConfig: TutorConfig, keycloakConfig: KeycloakConfig, principal: OAuthAccessTokenResponse.OAuth2?
 ): ThymeleafContent {
     val res = mutableMapOf<String, Any>()
     val userConfig = if (principal == null) {
@@ -321,8 +304,7 @@ private fun OAuthAccessTokenResponse.OAuth2?.name(): String {
     return token.getClaim("name").asString() ?: "Noname"
 }
 
-@OptIn(KtorExperimentalLocationsAPI::class)
-@Location("/")
+@Resource("/")
 class Index
 
 private suspend fun ApplicationCall.loginFailed(errors: List<String>) {
@@ -344,9 +326,7 @@ private suspend fun ApplicationCall.loginFailed(errors: List<String>) {
 }
 
 private fun Application.printGeneralSettings(
-    runConfig: RunConfig,
-    keycloakConfig: KeycloakConfig,
-    tutorConfig: TutorConfig
+    runConfig: RunConfig, keycloakConfig: KeycloakConfig, tutorConfig: TutorConfig
 ): String {
     val bootstrapServices = System.getProperty("BOOTSTRAP_SERVERS")
     val port = environment.config.property("ktor.deployment.port").getString()

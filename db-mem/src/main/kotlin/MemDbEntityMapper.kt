@@ -27,7 +27,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
 
 internal fun MemDbDictionary.detailsAsJsonString(): String {
-    return CommonDictionaryDetailsDto(this.details).toJsonString()
+    return CommonDictionaryDetailsDto(this.details.toMutableMap()).toJsonString()
 }
 
 internal fun MemDbCard.detailsAsJsonString(): String {
@@ -142,8 +142,10 @@ private fun CommonExampleDto.toMemDbExample(): MemDbExample = MemDbExample(
     translation = translation,
 )
 
-internal fun MemDbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto = CommonCardDetailsDto(this.details)
+internal fun MemDbCard.detailsAsCommonCardDetailsDto(): CommonCardDetailsDto =
+    CommonCardDetailsDto(this.details.toMutableMap())
 
-internal fun MemDbUser.detailsAsCommonUserDetailsDto(): CommonUserDetailsDto = CommonUserDetailsDto(this.details)
+internal fun MemDbUser.detailsAsCommonUserDetailsDto(): CommonUserDetailsDto =
+    CommonUserDetailsDto(this.details.toMutableMap())
 
 private fun CommonCardDetailsDto.toMemDbCardDetails(): Map<String, String> = this.mapValues { it.value.toString() }

@@ -5,6 +5,7 @@ plugins {
     kotlin("jvm")
     id("application")
     id("com.bmuschko.docker-java-application")
+    id("org.jetbrains.kotlin.plugin.serialization")
 }
 
 group = rootProject.group
@@ -31,12 +32,12 @@ dependencies {
     implementation(project(":logs-lib"))
 
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-server-jetty-jvm:$ktorVersion")
+    implementation("io.ktor:ktor-server-cio-jvm:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
-    implementation("io.ktor:ktor-server-locations:$ktorVersion")
+    implementation("io.ktor:ktor-server-resources:$ktorVersion")
     implementation("io.ktor:ktor-server-caching-headers:$ktorVersion")
     implementation("io.ktor:ktor-server-auto-head-response:$ktorVersion")
     implementation("io.ktor:ktor-server-cors:$ktorVersion")
