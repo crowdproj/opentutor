@@ -144,6 +144,23 @@ services:
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
 
+  flashcards-settings-server:
+    image: sszuev/open-tutor-settings-server:2.0.0-snapshot
+    networks:
+      - flashcards-net
+    depends_on:
+      flashcards-nats:
+        condition: service_healthy
+      flashcards-db:
+        condition: service_healthy
+      flashcards-cards-server:
+        condition: service_started
+    environment:
+      SETTINGS_SERVER_NATS_HOST: "flashcards-nats"
+      DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
+      DB_PG_USER: ${POSTGRES_DEFAULT_USER}
+      DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
+
   flashcards-app:
     image: sszuev/open-tutor:2.0.0-snapshot
     networks:
@@ -152,6 +169,7 @@ services:
       - flashcards-tts-server
       - flashcards-cards-server
       - flashcards-dictionaries-server
+      - flashcards-settings-server
       - flashcards-envoy
     environment:
       CLIENT_NATS_HOST: "flashcards-nats"
