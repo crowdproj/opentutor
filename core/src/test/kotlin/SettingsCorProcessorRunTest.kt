@@ -63,6 +63,14 @@ internal class SettingsCorProcessorRunTest {
                 numberOfWordsPerStage = 12,
                 stageShowNumberOfWords = 13,
                 stageOptionsNumberOfVariants = 14,
+                stageMosaicSourceLangToTargetLang = true,
+                stageOptionsSourceLangToTargetLang = true,
+                stageWritingSourceLangToTargetLang = true,
+                stageSelfTestSourceLangToTargetLang = true,
+                stageMosaicTargetLangToSourceLang = false,
+                stageOptionsTargetLangToSourceLang = false,
+                stageWritingTargetLangToSourceLang = false,
+                stageSelfTestTargetLangToSourceLang = false,
             ),
             context.responseSettingsEntity
         )
@@ -94,6 +102,14 @@ internal class SettingsCorProcessorRunTest {
             numberOfWordsPerStage = 14,
             stageShowNumberOfWords = 12,
             stageOptionsNumberOfVariants = 13,
+            stageMosaicSourceLangToTargetLang = false,
+            stageOptionsSourceLangToTargetLang = true,
+            stageWritingSourceLangToTargetLang = false,
+            stageSelfTestSourceLangToTargetLang = true,
+            stageMosaicTargetLangToSourceLang = false,
+            stageOptionsTargetLangToSourceLang = true,
+            stageWritingTargetLangToSourceLang = false,
+            stageSelfTestTargetLangToSourceLang = true,
         )
 
         SettingsCorProcessor().execute(context)
@@ -103,6 +119,14 @@ internal class SettingsCorProcessorRunTest {
                 "numberOfWordsPerStage" to 14,
                 "stageShowNumberOfWords" to 12,
                 "stageOptionsNumberOfVariants" to 13,
+                "stageMosaicSourceLangToTargetLang" to false,
+                "stageOptionsSourceLangToTargetLang" to true,
+                "stageWritingSourceLangToTargetLang" to false,
+                "stageSelfTestSourceLangToTargetLang" to true,
+                "stageMosaicTargetLangToSourceLang" to false,
+                "stageOptionsTargetLangToSourceLang" to true,
+                "stageWritingTargetLangToSourceLang" to false,
+                "stageSelfTestTargetLangToSourceLang" to true,
             ),
             updatedUser?.details
         )

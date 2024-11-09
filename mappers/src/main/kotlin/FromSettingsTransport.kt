@@ -27,4 +27,20 @@ fun SettingsResource.toSettingsEntity(config: AppConfig) = SettingsEntity(
     numberOfWordsPerStage = this.numberOfWordsPerStage ?: config.defaultNumberOfWordsPerStage,
     stageShowNumberOfWords = this.stageShowNumberOfWords ?: config.defaultStageShowNumberOfWords,
     stageOptionsNumberOfVariants = this.stageOptionsNumberOfVariants ?: config.defaultStageOptionsNumberOfVariants,
+    stageMosaicSourceLangToTargetLang = this.stageMosaicSourceLangToTargetLang
+        ?: config.defaultStageMosaicSourceLangToTargetLang,
+    stageOptionsSourceLangToTargetLang = this.stageOptionsSourceLangToTargetLang
+        ?: config.defaultStageOptionsSourceLangToTargetLang,
+    stageWritingSourceLangToTargetLang = this.stageWritingSourceLangToTargetLang
+        ?: config.defaultStageWritingSourceLangToTargetLang,
+    stageSelfTestSourceLangToTargetLang = this.stageSelfTestSourceLangToTargetLang
+        ?: config.defaultStageSelfTestSourceLangToTargetLang,
+    stageMosaicTargetLangToSourceLang = this.stageMosaicTargetLangToSourceLang
+        ?: config.defaultStageMosaicTargetLangToSourceLang,
+    stageOptionsTargetLangToSourceLang = this.stageOptionsTargetLangToSourceLang
+        ?: config.defaultStageOptionsTargetLangToSourceLang,
+    stageWritingTargetLangToSourceLang = this.stageWritingTargetLangToSourceLang
+        ?: config.defaultStageWritingTargetLangToSourceLang,
+    stageSelfTestTargetLangToSourceLang = this.stageSelfTestTargetLangToSourceLang
+        ?: config.defaultStageSelfTestTargetLangToSourceLang,
 )

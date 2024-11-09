@@ -888,6 +888,22 @@ components:
         numberOfWordsPerStage:
           type: integer
           format: int32
+        stageMosaicSourceLangToTargetLang:
+          type: boolean
+        stageOptionsSourceLangToTargetLang:
+          type: boolean
+        stageWritingSourceLangToTargetLang:
+          type: boolean
+        stageSelfTestSourceLangToTargetLang:
+          type: boolean
+        stageMosaicTargetLangToSourceLang:
+          type: boolean
+        stageOptionsTargetLangToSourceLang:
+          type: boolean
+        stageWritingTargetLangToSourceLang:
+          type: boolean
+        stageSelfTestTargetLangToSourceLang:
+          type: boolean
 
     ErrorResource:
       type: object

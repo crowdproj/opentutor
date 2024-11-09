@@ -3,11 +3,21 @@ package com.gitlab.sszuev.flashcards.config
 import io.ktor.server.config.ApplicationConfig
 
 data class TutorConfig(
+    val useBuiltinDictionaries: Boolean,
+
     val numberOfWordsToShow: Int,
     val numberOfRightAnswers: Int,
     val numberOfWordsPerStage: Int,
     val numberOfOptionsPerWord: Int,
-    val useBuiltinDictionaries: Boolean,
+
+    val showStageMosaicSourceToTarget: Boolean,
+    val showStageMosaicTargetToSource: Boolean,
+    val showStageOptionsSourceToTarget: Boolean,
+    val showStageOptionsTargetToSource: Boolean,
+    val showStageWritingSourceToTarget: Boolean,
+    val showStageWritingTargetToSource: Boolean,
+    val showStageSelfTestSourceToTarget: Boolean,
+    val showStageSelfTestTargetToSource: Boolean,
 ) {
 
     constructor(config: ApplicationConfig) : this(
@@ -16,6 +26,14 @@ data class TutorConfig(
         numberOfWordsPerStage = config.getPositiveInt("app.tutor.run.words-for-test", 5),
         numberOfOptionsPerWord = config.getPositiveInt("app.tutor.run.stage.option-variants", 6),
         useBuiltinDictionaries = config.getBoolean("app.tutor.create-builtin-dictionaries", false),
+        showStageOptionsSourceToTarget = config.getBoolean("app.tutor.run.stage.option-source-to-target", true),
+        showStageOptionsTargetToSource = config.getBoolean("app.tutor.run.stage.option-target-to-source", false),
+        showStageMosaicSourceToTarget = config.getBoolean("app.tutor.run.stage.mosaic-source-to-target", true),
+        showStageMosaicTargetToSource = config.getBoolean("app.tutor.run.stage.mosaic-target-to-source", false),
+        showStageWritingSourceToTarget = config.getBoolean("app.tutor.run.stage.writing-source-to-target", true),
+        showStageWritingTargetToSource = config.getBoolean("app.tutor.run.stage.writing-target-to-source", false),
+        showStageSelfTestSourceToTarget = config.getBoolean("app.tutor.run.stage.self-test-source-to-target", true),
+        showStageSelfTestTargetToSource = config.getBoolean("app.tutor.run.stage.self-test-target-to-source", false),
     )
 }
 

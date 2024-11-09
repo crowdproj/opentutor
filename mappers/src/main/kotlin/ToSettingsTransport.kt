@@ -31,4 +31,12 @@ fun SettingsEntity.toSettingsEntity() = SettingsResource(
     numberOfWordsPerStage = this.numberOfWordsPerStage,
     stageShowNumberOfWords = this.stageShowNumberOfWords,
     stageOptionsNumberOfVariants = this.stageOptionsNumberOfVariants,
+    stageMosaicSourceLangToTargetLang = this.stageMosaicSourceLangToTargetLang,
+    stageOptionsSourceLangToTargetLang = this.stageOptionsSourceLangToTargetLang,
+    stageWritingSourceLangToTargetLang = this.stageWritingSourceLangToTargetLang,
+    stageSelfTestSourceLangToTargetLang = this.stageSelfTestSourceLangToTargetLang,
+    stageMosaicTargetLangToSourceLang = this.stageMosaicTargetLangToSourceLang,
+    stageOptionsTargetLangToSourceLang = this.stageOptionsTargetLangToSourceLang,
+    stageWritingTargetLangToSourceLang = this.stageWritingTargetLangToSourceLang,
+    stageSelfTestTargetLangToSourceLang = this.stageSelfTestTargetLangToSourceLang,
 )
