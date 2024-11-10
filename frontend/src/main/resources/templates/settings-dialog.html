@@ -9,21 +9,77 @@
                 <div class="modal-body" id="settings-form">
                     <div class="mb-3">
                         <label for="input-stage-show-number-of-words" class="form-label">
-                            Number of words in stage Show</label>
+                            Number of words in stage "Show" [min=2, max=20]</label>
                         <input type="text" class="form-control" id="input-stage-show-number-of-words"
                                name="StageShowNumberOfWords" placeholder="Enter number" th:value="10">
                     </div>
                     <div class="mb-3">
                         <label for="input-stage-options-number-of-variants" class="form-label">
-                            Number of variants in stage Options</label>
+                            Number of variants in stage "Options" [min=2, max=15]</label>
                         <input type="text" class="form-control" id="input-stage-options-number-of-variants"
                                name="StageOptionsNumberOfVariants" placeholder="Enter number" th:value="4">
                     </div>
                     <div class="mb-3">
                         <label for="input-number-of-words-per-stage" class="form-label">
-                            Number of words per stage</label>
+                            Number of words per stage [min=2, max=20]</label>
                         <input type="text" class="form-control" id="input-number-of-words-per-stage"
                                name="NumberOfWordsPerStage" placeholder="Enter number" th:value="5">
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-mosaic-src-to-dst"
+                               name="StageMosaicSrcToDst">
+                        <label class="form-check-label" for="checkbox-stage-mosaic-src-to-dst">
+                            Enable stage "Mosaic" (Source Language to Target Language)
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-options-src-to-dst"
+                               name="StageOptionsSrcToDst">
+                        <label class="form-check-label" for="checkbox-stage-options-src-to-dst">
+                            Enable stage "Options" (Source Language to Target Language)
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-writing-src-to-dst"
+                               name="StageWritingSrcToDst">
+                        <label class="form-check-label" for="checkbox-stage-writing-src-to-dst">
+                            Enable stage "Writing" (Source Language to Target Language)
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-self-test-src-to-dst"
+                               name="StageSelfTestSrcToDst">
+                        <label class="form-check-label" for="checkbox-stage-self-test-src-to-dst">
+                            Enable stage "Self Test" (Source Language to Target Language)
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-mosaic-dst-to-src"
+                               name="StageMosaicDstToSrc">
+                        <label class="form-check-label" for="checkbox-stage-mosaic-dst-to-src">
+                            Enable stage "Mosaic" (Target Language to Source Language)
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-options-dst-to-src"
+                               name="StageOptionsDstToSrc">
+                        <label class="form-check-label" for="checkbox-stage-options-dst-to-src">
+                            Enable stage "Options" (Target Language to Source Language)
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-writing-dst-to-src"
+                               name="StageWritingDstToSrc">
+                        <label class="form-check-label" for="checkbox-stage-writing-dst-to-src">
+                            Enable stage "Writing" (Target Language to Source Language)
+                        </label>
+                    </div>
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="checkbox-stage-self-test-dst-to-src"
+                               name="StageSelfTestDstToSrc">
+                        <label class="form-check-label" for="checkbox-stage-self-test-dst-to-src">
+                            Enable stage "Self Test" (Target Language to Source Language)
+                        </label>
                     </div>
                 </div>
                 <div class="modal-footer">
