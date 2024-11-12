@@ -40,7 +40,15 @@ let flashcards;
  * {
  *  "stageShowNumberOfWords": int,
  *  "stageOptionsNumberOfVariants": int,
- *  "numberOfWordsPerStage": int
+ *  "numberOfWordsPerStage": int,
+ *  "stageMosaicSourceLangToTargetLang": boolean,
+ *  "stageOptionsSourceLangToTargetLang": boolean,
+ *  "stageWritingSourceLangToTargetLang": boolean,
+ *  "stageSelfTestSourceLangToTargetLang": boolean,
+ *  "stageMosaicTargetLangToSourceLang": boolean,
+ *  "stageOptionsTargetLangToSourceLang": boolean,
+ *  "stageWritingTargetLangToSourceLang": boolean,
+ *  "stageSelfTestTargetLangToSourceLang": boolean
  * }
  * ```
  */
@@ -69,6 +77,10 @@ function stageShow() {
  * Second stage: mosaic.
  */
 function stageMosaic() {
+    if (!settings.stageMosaicSourceLangToTargetLang) {
+        stageOptions();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('mosaic');
@@ -82,6 +94,10 @@ function stageMosaic() {
  * Third stage: options.
  */
 function stageOptions() {
+    if (!settings.stageOptionsSourceLangToTargetLang) {
+        stageWriting();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length === 0) {
         stageResults();
@@ -102,6 +118,10 @@ function stageOptions() {
  * Fourth stage: writing.
  */
 function stageWriting() {
+    if (!settings.stageWritingSourceLangToTargetLang) {
+        stageSelfTest();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('writing');
@@ -115,6 +135,10 @@ function stageWriting() {
  * Fifth stage: self-test.
  */
 function stageSelfTest() {
+    if (!settings.stageSelfTestSourceLangToTargetLang) {
+        stageResults();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('self-test');
