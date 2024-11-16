@@ -78,20 +78,37 @@ function stageShow() {
  */
 function stageMosaic() {
     if (!settings.stageMosaicSourceLangToTargetLang) {
-        stageOptions();
+        stageMosaicReverse();
         return;
     }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('mosaic');
-        drawMosaicCardPage(data, () => stageOptions());
+        drawMosaicCardPage(data, false, () => stageMosaicReverse());
         return;
     }
     stageResults();
 }
 
 /**
- * Third stage: options.
+ * Stage #3: mosaic-reverse.
+ */
+function stageMosaicReverse() {
+    if (!settings.stageMosaicTargetLangToSourceLang) {
+        stageOptions();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length > 0) {
+        displayPage('mosaic');
+        drawMosaicCardPage(data, true, () => stageOptions());
+        return;
+    }
+    stageResults();
+}
+
+/**
+ * Stage #4: options.
  */
 function stageOptions() {
     if (!settings.stageOptionsSourceLangToTargetLang) {
@@ -115,7 +132,7 @@ function stageOptions() {
 }
 
 /**
- * Fourth stage: writing.
+ * Stage #6: writing.
  */
 function stageWriting() {
     if (!settings.stageWritingSourceLangToTargetLang) {
@@ -132,7 +149,7 @@ function stageWriting() {
 }
 
 /**
- * Fifth stage: self-test.
+ * Stage #8: self-test.
  */
 function stageSelfTest() {
     if (!settings.stageSelfTestSourceLangToTargetLang) {
@@ -148,6 +165,9 @@ function stageSelfTest() {
     stageResults();
 }
 
+/**
+ * Stage #9: self-test-reverse.
+ */
 function stageSelfTestReverse() {
     if (!settings.stageSelfTestTargetLangToSourceLang) {
         stageResults();
@@ -208,10 +228,11 @@ function drawShowCardPage(cards, index, nextStage) {
     });
 }
 
-function drawMosaicCardPage(cards, nextStage) {
-    const stage = 'mosaic';
+function drawMosaicCardPage(cards, reverse, nextStage) {
+    const stageTitle = reverse ? 'mosaic (reverse)' : 'mosaic';
+    const stageCode = reverse ? 'mosaic-reverse' : 'mosaic';
 
-    displayTitle($('#mosaic'), stage);
+    displayTitle($('#mosaic'), stageTitle);
 
     const leftPane = $('#mosaic-left');
     const rightPane = $('#mosaic-right');
@@ -221,29 +242,49 @@ function drawMosaicCardPage(cards, nextStage) {
 
     leftPane.html('');
     dataLeft.forEach(function (card) {
-        let left = $(`<div class="card ${borderWhite}" id="${card.cardId}-left"><h4>${getAllWordsAsString(card)}</h4></div>`);
+        let txt;
+        if (reverse) {
+            txt = getTranslationsAsString(card);
+        } else {
+            txt = getAllWordsAsString(card);
+        }
+        const left = $(`<div class="card ${borderWhite}" id="${card.cardId}-left"><h4>${txt}</h4></div>`);
         left.unbind('click').on('click', function () {
             const rightCards = $('#mosaic-right .card');
             const leftCards = $('#mosaic-left .card');
             setBorders(rightCards, borderLight);
             setBorders(leftCards, borderWhite);
             setBorderClass(left, borderPrimary);
-            const sound = card.sound;
-            if (sound != null) {
-                playAudio(sound);
+            if (!reverse) {
+                const sound = card.sound;
+                if (sound != null) {
+                    playAudio(sound);
+                }
             }
         });
         leftPane.append(left);
     });
 
     rightPane.html('');
-    dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderLight}" id="${value.cardId}-right"><h4>${getTranslationsAsString(value)}</h4></div>`);
+    dataRight.forEach(function (card) {
+        let txt;
+        if (reverse) {
+            txt = getAllWordsAsString(card);
+        } else {
+            txt = getTranslationsAsString(card);
+        }
+        const right = $(`<div class="card ${borderLight}" id="${card.cardId}-right"><h4>${txt}</h4></div>`);
         right.unbind('click').on('click', function () {
             const selected = $(`#mosaic-left .${borderPrimary}`);
             if (!selected.length || !$('h4', selected).text().trim()) {
                 // nothing selected or selected already processed item (with empty text)
                 return;
+            }
+            if (reverse) {
+                const sound = card.sound;
+                if (sound != null) {
+                    playAudio(sound);
+                }
             }
             const rightCards = $('#mosaic-right .card');
             const leftCards = $('#mosaic-left .card');
@@ -261,12 +302,12 @@ function drawMosaicCardPage(cards, nextStage) {
             const id = selected.attr('id').replace('-left', '');
             const cardResource = findById(dataLeft, id);
             if (success) {
-                if (!hasStage(cardResource, stage)) {
+                if (!hasStage(cardResource, stageCode)) {
                     // remember only the first answer, the next, even right, will be ignored
-                    rememberAnswer(cardResource, stage, true);
+                    rememberAnswer(cardResource, stageCode, true);
                 }
             } else {
-                rememberAnswer(cardResource, stage, false);
+                rememberAnswer(cardResource, stageCode, false);
             }
             if (!leftCards.filter((i, e) => $(e).text().trim()).length) {
                 // no more options
