@@ -136,13 +136,27 @@ function stageWriting() {
  */
 function stageSelfTest() {
     if (!settings.stageSelfTestSourceLangToTargetLang) {
+        stageSelfTestReverse();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length > 0) {
+        displayPage('self-test');
+        drawSelfTestCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, false, () => stageSelfTestReverse());
+        return;
+    }
+    stageResults();
+}
+
+function stageSelfTestReverse() {
+    if (!settings.stageSelfTestTargetLangToSourceLang) {
         stageResults();
         return;
     }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('self-test');
-        drawSelfTestCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, () => stageResults());
+        drawSelfTestCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, true, () => stageResults());
         return;
     }
     stageResults();
@@ -384,8 +398,9 @@ function drawWritingCardPage(writingData, index, nextStage) {
     });
 }
 
-function drawSelfTestCardPage(selfTestData, index, nextStage) {
-    const stage = 'self-test';
+function drawSelfTestCardPage(selfTestData, index, reverse, nextStage) {
+    const stage = reverse ? 'self-test' : 'self-test (reverse)';
+    const stageCode = reverse ? 'self-test-reverse' : 'self-test';
     if (index >= selfTestData.length) {
         updateCardAndCallNext(selfTestData, nextStage);
         return;
@@ -402,18 +417,33 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const next = index + 1;
 
     const status = '(' + percentage(current, null) + '%) ';
-
-    drawAndPlayAudio(page, current.sound);
+    if (reverse) {
+        $('.sound', page).prop('disabled', true);
+    } else {
+        drawAndPlayAudio(page, current.sound);
+    }
+    let word1;
+    let word2;
+    if (reverse) {
+        word1 = getTranslationsAsString(current);
+        word2 = getAllWordsAsString(current);
+    } else {
+        word2 = getTranslationsAsString(current);
+        word1 = getAllWordsAsString(current);
+    }
     displayTitle(page, stage + ': ' + current.dictionaryName);
-    $('.word', page).html(getAllWordsAsString(current));
+    $('.word', page).html(word1);
     $('.status', page).html(status);
-    translation.html(getTranslationsAsString(current));
+    translation.html(word2);
     correct.prop('disabled', true);
     wrong.prop('disabled', true);
     translation.hide();
     curtain.show();
 
     display.unbind('click').on('click', function () {
+        if (reverse) {
+            drawAndPlayAudio(page, current.sound);
+        }
         display.unbind('click');
         curtain.hide();
         translation.show();
@@ -422,13 +452,13 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     });
     correct.unbind('click').on('click', function () {
         correct.unbind('click');
-        rememberAnswer(current, stage, true);
-        drawSelfTestCardPage(selfTestData, next, nextStage);
+        rememberAnswer(current, stageCode, true);
+        drawSelfTestCardPage(selfTestData, next, reverse, nextStage);
     });
     wrong.unbind('click').on('click', function () {
         wrong.unbind('click');
-        rememberAnswer(current, stage, false);
-        drawSelfTestCardPage(selfTestData, next, nextStage);
+        rememberAnswer(current, stageCode, false);
+        drawSelfTestCardPage(selfTestData, next, reverse, nextStage);
     });
 }
 
