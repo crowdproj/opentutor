@@ -112,6 +112,30 @@ function stageMosaicReverse() {
  */
 function stageOptions() {
     if (!settings.stageOptionsSourceLangToTargetLang) {
+        stageOptionsReverse();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length === 0) {
+        stageResults();
+        return;
+    }
+    const dataLeft = randomArray(data, settings.numberOfWordsPerStage);
+    const length = dataLeft.length * settings.stageOptionsNumberOfVariants;
+
+    const dictionaryIds = dataLeft.map(it => it.dictionaryId);
+    getNextCardDeck(dictionaryIds, length, false, function (cards) {
+        const options = prepareOptionsDataArray(dataLeft, cards);
+        displayPage('options');
+        drawOptionsCardPage(options, 0, false, () => stageOptionsReverse());
+    });
+}
+
+/**
+ * Stage #5: options.
+ */
+function stageOptionsReverse() {
+    if (!settings.stageOptionsTargetLangToSourceLang) {
         stageWriting();
         return;
     }
@@ -127,7 +151,7 @@ function stageOptions() {
     getNextCardDeck(dictionaryIds, length, false, function (cards) {
         const options = prepareOptionsDataArray(dataLeft, cards);
         displayPage('options');
-        drawOptionsCardPage(options, 0, () => stageWriting());
+        drawOptionsCardPage(options, 0, true, () => stageWriting());
     });
 }
 
@@ -320,8 +344,9 @@ function drawMosaicCardPage(cards, reverse, nextStage) {
     });
 }
 
-function drawOptionsCardPage(options, index, nextStage) {
-    const stage = 'options';
+function drawOptionsCardPage(options, index, reverse, nextStage) {
+    const stageTitle = reverse ? 'options (reverse)' : 'options';
+    const stageCode = reverse ? 'options-reverse' : 'options';
     if (index >= options.length) { // no more data => display next stage
         const items = options.map(function (item) {
             return item['left'];
@@ -336,24 +361,44 @@ function drawOptionsCardPage(options, index, nextStage) {
     const dataLeft = options[index]['left'];
     const dataRight = options[index]['right'];
 
-    displayTitle($('#options'), stage + ": " + dataLeft.dictionaryName);
+    displayTitle($('#options'), stageTitle + ": " + dataLeft.dictionaryName);
 
-    let left = $(`<div class="card ${borderWhite}" id="${dataLeft.cardId}-left"><h4>${getAllWordsAsString(dataLeft)}</h4></div>`);
+    let txt;
+    if (reverse) {
+        txt = getTranslationsAsString(dataLeft);
+    } else {
+        txt = getAllWordsAsString(dataLeft);
+    }
+    const left = $(`<div class="card ${borderWhite}" id="${dataLeft.cardId}-left"><h4>${txt}</h4></div>`);
     left.unbind('click').on('click', function () {
         setBorderClass(left, borderPrimary);
         setBorders($('#options-right .card'), borderWhite);
-        const sound = dataLeft.sound;
-        if (sound != null) {
-            playAudio(sound);
+        if (!reverse) {
+            const sound = dataLeft.sound;
+            if (sound != null) {
+                playAudio(sound);
+            }
         }
     });
     leftPane.html('').append(left);
     left.click();
 
     rightPane.html('');
-    dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderLight}" id="${value.cardId}-right"><p class="h4">${getTranslationsAsString(value)}</p></div>`);
+    dataRight.forEach(function (card) {
+        let txt;
+        if (reverse) {
+            txt = getAllWordsAsString(card);
+        } else {
+            txt = getTranslationsAsString(card);
+        }
+        const right = $(`<div class="card ${borderLight}" id="${card.cardId}-right"><p class="h4">${txt}</p></div>`);
         right.unbind('click').on('click', function () {
+            if (reverse) {
+                const sound = card.sound;
+                if (sound != null) {
+                    playAudio(sound);
+                }
+            }
             right.unbind('click');
             setBorderClass(left, borderWhite);
             setBorders($('#options-right .card'), borderLight);
@@ -368,16 +413,16 @@ function drawOptionsCardPage(options, index, nextStage) {
             }
             setBorderClass(right, success ? borderSuccess : borderDanger);
             if (success) {
-                if (!hasStage(dataLeft, stage)) {
+                if (!hasStage(dataLeft, stageCode)) {
                     // remember only the first answer, the next, even right, will be ignored
-                    rememberAnswer(dataLeft, stage, true);
+                    rememberAnswer(dataLeft, stageCode, true);
                 }
             } else {
-                rememberAnswer(dataLeft, stage, false);
+                rememberAnswer(dataLeft, stageCode, false);
             }
             if (success) {
                 // go to next
-                setTimeout(() => drawOptionsCardPage(options, index + 1, nextStage), 500);
+                setTimeout(() => drawOptionsCardPage(options, index + 1, reverse, nextStage), 500);
             }
         });
         rightPane.append(right);
