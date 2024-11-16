@@ -160,13 +160,30 @@ function stageOptionsReverse() {
  */
 function stageWriting() {
     if (!settings.stageWritingSourceLangToTargetLang) {
+        stageWritingReverse();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length > 0) {
+        displayPage('writing');
+        drawWritingCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, false, () => stageWritingReverse());
+        return;
+    }
+    stageResults();
+}
+
+/**
+ * Stage #7: writing (reverse).
+ */
+function stageWritingReverse() {
+    if (!settings.stageWritingTargetLangToSourceLang) {
         stageSelfTest();
         return;
     }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('writing');
-        drawWritingCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, () => stageSelfTest());
+        drawWritingCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, true, () => stageSelfTest());
         return;
     }
     stageResults();
@@ -429,8 +446,9 @@ function drawOptionsCardPage(options, index, reverse, nextStage) {
     });
 }
 
-function drawWritingCardPage(writingData, index, nextStage) {
-    const stage = 'writing';
+function drawWritingCardPage(writingData, index, reverse, nextStage) {
+    const stageTitle = reverse ? 'writing (reverse)' : 'writing';
+    const stageCode = reverse ? 'writing-reverse' : 'writing';
     if (index >= writingData.length) {
         updateCardAndCallNext(writingData, nextStage);
         return;
@@ -440,9 +458,19 @@ function drawWritingCardPage(writingData, index, nextStage) {
 
     const status = '(' + percentage(current, null) + '%) ';
 
-    drawAndPlayAudio(page, current.sound);
-    displayTitle(page, stage + ': ' + current.dictionaryName);
-    $('.word', page).html(getAllWordsAsString(current));
+    if (reverse) {
+        $('.sound', page).prop('disabled', true);
+    } else {
+        drawAndPlayAudio(page, current.sound);
+    }
+    displayTitle(page, stageTitle + ': ' + current.dictionaryName);
+    let txt;
+    if (reverse) {
+        txt = getTranslationsAsString(current);
+    } else {
+        txt = getAllWordsAsString(current);
+    }
+    $('.word', page).html(txt);
 
     const clazz = "d-flex justify-content-start p-5 w-100";
     const testDiv = $('#writing-test').show();
@@ -458,9 +486,17 @@ function drawWritingCardPage(writingData, index, nextStage) {
         testButton.prop("disabled", textareaInput.val().length === 0);
     });
     testButton.unbind('click').on('click', function () {
+        if (reverse) {
+            drawAndPlayAudio(page, current.sound);
+        }
         let res;
         const givenAnswer = textareaInput.val();
-        const rightAnswer = findTranslationStartsWith(current, givenAnswer);
+        let rightAnswer;
+        if (reverse) {
+            rightAnswer = findWordStartsWith(current, givenAnswer);
+        } else {
+            rightAnswer = findTranslationStartsWith(current, givenAnswer);
+        }
         let prefixText;
         if (rightAnswer) {
             res = true;
@@ -469,18 +505,24 @@ function drawWritingCardPage(writingData, index, nextStage) {
             res = false;
             prefixText = $(`<del><h6 class="text-danger">${givenAnswer}</h6></del>`);
         }
-        let suffixText = $(`<h6 class="text-primary">${getTranslationsAsString(current)}</h6>`);
+        let txt;
+        if (reverse) {
+            txt = getAllWordsAsString(current);
+        } else {
+            txt = getTranslationsAsString(current);
+        }
+        let suffixText = $(`<h6 class="text-primary">${txt}</h6>`);
         const translationsDiv = $(`<div class="${clazz}"></div>`)
             .append(prefixText).append(`<h6>&nbsp;&#8212;&nbsp;</h6>`)
             .append(suffixText);
         textareaRow.html('').append(translationsDiv);
         testDiv.hide();
         nextDiv.show();
-        rememberAnswer(current, stage, res);
+        rememberAnswer(current, stageCode, res);
     });
     nextButton.unbind('click').on('click', function () {
         // go to next
-        drawWritingCardPage(writingData, index + 1, nextStage);
+        drawWritingCardPage(writingData, index + 1, reverse, nextStage);
     });
 }
 

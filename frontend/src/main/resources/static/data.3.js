@@ -186,6 +186,22 @@ function findTranslationStartsWith(card, test) {
 }
 
 /**
+ * Returns first word if it matches the given test string.
+ * **[TODO] For first word only.**
+ * @param card - card resource
+ * @param test string to test
+ * @returns {string} or undefined
+ */
+function findWordStartsWith(card, test) {
+    test = test.toLowerCase();
+    const s = card.words[0].word.toLowerCase();
+    if (s.startsWith(test)) {
+        return card.words[0].word;
+    }
+    return undefined;
+}
+
+/**
  * Represents an item translations as a single string.
  * **[TODO] For first word only.**
  * @param card - card resource
