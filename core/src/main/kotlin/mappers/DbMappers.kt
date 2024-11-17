@@ -58,6 +58,14 @@ internal fun SettingsEntity.toDbUserDetails(): Map<String, Any> = mapOf(
     "numberOfWordsPerStage" to this.numberOfWordsPerStage,
     "stageShowNumberOfWords" to this.stageShowNumberOfWords,
     "stageOptionsNumberOfVariants" to this.stageOptionsNumberOfVariants,
+    "stageMosaicSourceLangToTargetLang" to this.stageMosaicSourceLangToTargetLang,
+    "stageOptionsSourceLangToTargetLang" to this.stageOptionsSourceLangToTargetLang,
+    "stageWritingSourceLangToTargetLang" to this.stageWritingSourceLangToTargetLang,
+    "stageSelfTestSourceLangToTargetLang" to this.stageSelfTestSourceLangToTargetLang,
+    "stageMosaicTargetLangToSourceLang" to this.stageMosaicTargetLangToSourceLang,
+    "stageOptionsTargetLangToSourceLang" to this.stageOptionsTargetLangToSourceLang,
+    "stageWritingTargetLangToSourceLang" to this.stageWritingTargetLangToSourceLang,
+    "stageSelfTestTargetLangToSourceLang" to this.stageSelfTestTargetLangToSourceLang,
 )
 
 internal fun fromDbUserDetails(details: Map<String, Any>, config: AppConfig) = SettingsEntity(
@@ -67,6 +75,22 @@ internal fun fromDbUserDetails(details: Map<String, Any>, config: AppConfig) = S
         ?: config.defaultStageShowNumberOfWords,
     stageOptionsNumberOfVariants = details["stageOptionsNumberOfVariants"]?.toString()?.toInt()
         ?: config.defaultStageOptionsNumberOfVariants,
+    stageMosaicSourceLangToTargetLang = details["stageMosaicSourceLangToTargetLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageMosaicSourceLangToTargetLang,
+    stageOptionsSourceLangToTargetLang = details["stageOptionsSourceLangToTargetLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageOptionsSourceLangToTargetLang,
+    stageWritingSourceLangToTargetLang = details["stageWritingSourceLangToTargetLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageWritingSourceLangToTargetLang,
+    stageSelfTestSourceLangToTargetLang = details["stageSelfTestSourceLangToTargetLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageSelfTestSourceLangToTargetLang,
+    stageOptionsTargetLangToSourceLang = details["stageOptionsTargetLangToSourceLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageOptionsTargetLangToSourceLang,
+    stageMosaicTargetLangToSourceLang = details["stageMosaicTargetLangToSourceLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageMosaicTargetLangToSourceLang,
+    stageWritingTargetLangToSourceLang = details["stageWritingTargetLangToSourceLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageWritingTargetLangToSourceLang,
+    stageSelfTestTargetLangToSourceLang = details["stageSelfTestTargetLangToSourceLang"]?.toString()?.toBoolean()
+        ?: config.defaultStageSelfTestTargetLangToSourceLang
 )
 
 private fun CardWordEntity.toDbCardWord() = DbCard.Word(

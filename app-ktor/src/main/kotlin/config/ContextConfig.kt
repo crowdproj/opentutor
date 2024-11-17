@@ -9,5 +9,13 @@ internal fun ContextConfig.toAppConfig() = AppConfig(
     defaultNumberOfWordsPerStage = tutorConfig.numberOfWordsPerStage,
     defaultStageShowNumberOfWords = tutorConfig.numberOfWordsToShow,
     defaultStageOptionsNumberOfVariants = tutorConfig.numberOfOptionsPerWord,
+    defaultStageMosaicSourceLangToTargetLang = tutorConfig.showStageMosaicSourceToTarget,
+    defaultStageOptionsSourceLangToTargetLang = tutorConfig.showStageOptionsSourceToTarget,
+    defaultStageWritingSourceLangToTargetLang = tutorConfig.showStageWritingSourceToTarget,
+    defaultStageSelfTestSourceLangToTargetLang = tutorConfig.showStageSelfTestSourceToTarget,
+    defaultStageMosaicTargetLangToSourceLang = tutorConfig.showStageMosaicTargetToSource,
+    defaultStageOptionsTargetLangToSourceLang = tutorConfig.showStageOptionsTargetToSource,
+    defaultStageWritingTargetLangToSourceLang = tutorConfig.showStageWritingTargetToSource,
+    defaultStageSelfTestTargetLangToSourceLang = tutorConfig.showStageSelfTestTargetToSource,
     createBuiltinDictionariesOnFirstLogin = tutorConfig.useBuiltinDictionaries,
 )

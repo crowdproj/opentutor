@@ -40,7 +40,15 @@ let flashcards;
  * {
  *  "stageShowNumberOfWords": int,
  *  "stageOptionsNumberOfVariants": int,
- *  "numberOfWordsPerStage": int
+ *  "numberOfWordsPerStage": int,
+ *  "stageMosaicSourceLangToTargetLang": boolean,
+ *  "stageOptionsSourceLangToTargetLang": boolean,
+ *  "stageWritingSourceLangToTargetLang": boolean,
+ *  "stageSelfTestSourceLangToTargetLang": boolean,
+ *  "stageMosaicTargetLangToSourceLang": boolean,
+ *  "stageOptionsTargetLangToSourceLang": boolean,
+ *  "stageWritingTargetLangToSourceLang": boolean,
+ *  "stageSelfTestTargetLangToSourceLang": boolean
  * }
  * ```
  */
@@ -69,19 +77,44 @@ function stageShow() {
  * Second stage: mosaic.
  */
 function stageMosaic() {
+    if (!settings.stageMosaicSourceLangToTargetLang) {
+        stageMosaicReverse();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('mosaic');
-        drawMosaicCardPage(data, () => stageOptions());
+        drawMosaicCardPage(data, false, () => stageMosaicReverse());
         return;
     }
     stageResults();
 }
 
 /**
- * Third stage: options.
+ * Stage #3: mosaic-reverse.
+ */
+function stageMosaicReverse() {
+    if (!settings.stageMosaicTargetLangToSourceLang) {
+        stageOptions();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length > 0) {
+        displayPage('mosaic');
+        drawMosaicCardPage(data, true, () => stageOptions());
+        return;
+    }
+    stageResults();
+}
+
+/**
+ * Stage #4: options.
  */
 function stageOptions() {
+    if (!settings.stageOptionsSourceLangToTargetLang) {
+        stageOptionsReverse();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length === 0) {
         stageResults();
@@ -94,31 +127,97 @@ function stageOptions() {
     getNextCardDeck(dictionaryIds, length, false, function (cards) {
         const options = prepareOptionsDataArray(dataLeft, cards);
         displayPage('options');
-        drawOptionsCardPage(options, 0, () => stageWriting());
+        drawOptionsCardPage(options, 0, false, () => stageOptionsReverse());
     });
 }
 
 /**
- * Fourth stage: writing.
+ * Stage #5: options.
+ */
+function stageOptionsReverse() {
+    if (!settings.stageOptionsTargetLangToSourceLang) {
+        stageWriting();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length === 0) {
+        stageResults();
+        return;
+    }
+    const dataLeft = randomArray(data, settings.numberOfWordsPerStage);
+    const length = dataLeft.length * settings.stageOptionsNumberOfVariants;
+
+    const dictionaryIds = dataLeft.map(it => it.dictionaryId);
+    getNextCardDeck(dictionaryIds, length, false, function (cards) {
+        const options = prepareOptionsDataArray(dataLeft, cards);
+        displayPage('options');
+        drawOptionsCardPage(options, 0, true, () => stageWriting());
+    });
+}
+
+/**
+ * Stage #6: writing.
  */
 function stageWriting() {
+    if (!settings.stageWritingSourceLangToTargetLang) {
+        stageWritingReverse();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('writing');
-        drawWritingCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, () => stageSelfTest());
+        drawWritingCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, false, () => stageWritingReverse());
         return;
     }
     stageResults();
 }
 
 /**
- * Fifth stage: self-test.
+ * Stage #7: writing (reverse).
+ */
+function stageWritingReverse() {
+    if (!settings.stageWritingTargetLangToSourceLang) {
+        stageSelfTest();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length > 0) {
+        displayPage('writing');
+        drawWritingCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, true, () => stageSelfTest());
+        return;
+    }
+    stageResults();
+}
+
+/**
+ * Stage #8: self-test.
  */
 function stageSelfTest() {
+    if (!settings.stageSelfTestSourceLangToTargetLang) {
+        stageSelfTestReverse();
+        return;
+    }
     const data = selectNextCardsDeck();
     if (data.length > 0) {
         displayPage('self-test');
-        drawSelfTestCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, () => stageResults());
+        drawSelfTestCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, false, () => stageSelfTestReverse());
+        return;
+    }
+    stageResults();
+}
+
+/**
+ * Stage #9: self-test-reverse.
+ */
+function stageSelfTestReverse() {
+    if (!settings.stageSelfTestTargetLangToSourceLang) {
+        stageResults();
+        return;
+    }
+    const data = selectNextCardsDeck();
+    if (data.length > 0) {
+        displayPage('self-test');
+        drawSelfTestCardPage(randomArray(data, settings.numberOfWordsPerStage), 0, true, () => stageResults());
         return;
     }
     stageResults();
@@ -170,10 +269,11 @@ function drawShowCardPage(cards, index, nextStage) {
     });
 }
 
-function drawMosaicCardPage(cards, nextStage) {
-    const stage = 'mosaic';
+function drawMosaicCardPage(cards, reverse, nextStage) {
+    const stageTitle = reverse ? 'mosaic (reverse)' : 'mosaic';
+    const stageCode = reverse ? 'mosaic-reverse' : 'mosaic';
 
-    displayTitle($('#mosaic'), stage);
+    displayTitle($('#mosaic'), stageTitle);
 
     const leftPane = $('#mosaic-left');
     const rightPane = $('#mosaic-right');
@@ -183,29 +283,49 @@ function drawMosaicCardPage(cards, nextStage) {
 
     leftPane.html('');
     dataLeft.forEach(function (card) {
-        let left = $(`<div class="card ${borderWhite}" id="${card.cardId}-left"><h4>${getAllWordsAsString(card)}</h4></div>`);
+        let txt;
+        if (reverse) {
+            txt = getTranslationsAsString(card);
+        } else {
+            txt = getAllWordsAsString(card);
+        }
+        const left = $(`<div class="card ${borderWhite}" id="${card.cardId}-left"><h4>${txt}</h4></div>`);
         left.unbind('click').on('click', function () {
             const rightCards = $('#mosaic-right .card');
             const leftCards = $('#mosaic-left .card');
             setBorders(rightCards, borderLight);
             setBorders(leftCards, borderWhite);
             setBorderClass(left, borderPrimary);
-            const sound = card.sound;
-            if (sound != null) {
-                playAudio(sound);
+            if (!reverse) {
+                const sound = card.sound;
+                if (sound != null) {
+                    playAudio(sound);
+                }
             }
         });
         leftPane.append(left);
     });
 
     rightPane.html('');
-    dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderLight}" id="${value.cardId}-right"><h4>${getTranslationsAsString(value)}</h4></div>`);
+    dataRight.forEach(function (card) {
+        let txt;
+        if (reverse) {
+            txt = getAllWordsAsString(card);
+        } else {
+            txt = getTranslationsAsString(card);
+        }
+        const right = $(`<div class="card ${borderLight}" id="${card.cardId}-right"><h4>${txt}</h4></div>`);
         right.unbind('click').on('click', function () {
             const selected = $(`#mosaic-left .${borderPrimary}`);
             if (!selected.length || !$('h4', selected).text().trim()) {
                 // nothing selected or selected already processed item (with empty text)
                 return;
+            }
+            if (reverse) {
+                const sound = card.sound;
+                if (sound != null) {
+                    playAudio(sound);
+                }
             }
             const rightCards = $('#mosaic-right .card');
             const leftCards = $('#mosaic-left .card');
@@ -223,12 +343,12 @@ function drawMosaicCardPage(cards, nextStage) {
             const id = selected.attr('id').replace('-left', '');
             const cardResource = findById(dataLeft, id);
             if (success) {
-                if (!hasStage(cardResource, stage)) {
+                if (!hasStage(cardResource, stageCode)) {
                     // remember only the first answer, the next, even right, will be ignored
-                    rememberAnswer(cardResource, stage, true);
+                    rememberAnswer(cardResource, stageCode, true);
                 }
             } else {
-                rememberAnswer(cardResource, stage, false);
+                rememberAnswer(cardResource, stageCode, false);
             }
             if (!leftCards.filter((i, e) => $(e).text().trim()).length) {
                 // no more options
@@ -241,8 +361,9 @@ function drawMosaicCardPage(cards, nextStage) {
     });
 }
 
-function drawOptionsCardPage(options, index, nextStage) {
-    const stage = 'options';
+function drawOptionsCardPage(options, index, reverse, nextStage) {
+    const stageTitle = reverse ? 'options (reverse)' : 'options';
+    const stageCode = reverse ? 'options-reverse' : 'options';
     if (index >= options.length) { // no more data => display next stage
         const items = options.map(function (item) {
             return item['left'];
@@ -257,24 +378,44 @@ function drawOptionsCardPage(options, index, nextStage) {
     const dataLeft = options[index]['left'];
     const dataRight = options[index]['right'];
 
-    displayTitle($('#options'), stage + ": " + dataLeft.dictionaryName);
+    displayTitle($('#options'), stageTitle + ": " + dataLeft.dictionaryName);
 
-    let left = $(`<div class="card ${borderWhite}" id="${dataLeft.cardId}-left"><h4>${getAllWordsAsString(dataLeft)}</h4></div>`);
+    let txt;
+    if (reverse) {
+        txt = getTranslationsAsString(dataLeft);
+    } else {
+        txt = getAllWordsAsString(dataLeft);
+    }
+    const left = $(`<div class="card ${borderWhite}" id="${dataLeft.cardId}-left"><h4>${txt}</h4></div>`);
     left.unbind('click').on('click', function () {
         setBorderClass(left, borderPrimary);
         setBorders($('#options-right .card'), borderWhite);
-        const sound = dataLeft.sound;
-        if (sound != null) {
-            playAudio(sound);
+        if (!reverse) {
+            const sound = dataLeft.sound;
+            if (sound != null) {
+                playAudio(sound);
+            }
         }
     });
     leftPane.html('').append(left);
     left.click();
 
     rightPane.html('');
-    dataRight.forEach(function (value) {
-        let right = $(`<div class="card ${borderLight}" id="${value.cardId}-right"><p class="h4">${getTranslationsAsString(value)}</p></div>`);
+    dataRight.forEach(function (card) {
+        let txt;
+        if (reverse) {
+            txt = getAllWordsAsString(card);
+        } else {
+            txt = getTranslationsAsString(card);
+        }
+        const right = $(`<div class="card ${borderLight}" id="${card.cardId}-right"><p class="h4">${txt}</p></div>`);
         right.unbind('click').on('click', function () {
+            if (reverse) {
+                const sound = card.sound;
+                if (sound != null) {
+                    playAudio(sound);
+                }
+            }
             right.unbind('click');
             setBorderClass(left, borderWhite);
             setBorders($('#options-right .card'), borderLight);
@@ -289,24 +430,25 @@ function drawOptionsCardPage(options, index, nextStage) {
             }
             setBorderClass(right, success ? borderSuccess : borderDanger);
             if (success) {
-                if (!hasStage(dataLeft, stage)) {
+                if (!hasStage(dataLeft, stageCode)) {
                     // remember only the first answer, the next, even right, will be ignored
-                    rememberAnswer(dataLeft, stage, true);
+                    rememberAnswer(dataLeft, stageCode, true);
                 }
             } else {
-                rememberAnswer(dataLeft, stage, false);
+                rememberAnswer(dataLeft, stageCode, false);
             }
             if (success) {
                 // go to next
-                setTimeout(() => drawOptionsCardPage(options, index + 1, nextStage), 500);
+                setTimeout(() => drawOptionsCardPage(options, index + 1, reverse, nextStage), 500);
             }
         });
         rightPane.append(right);
     });
 }
 
-function drawWritingCardPage(writingData, index, nextStage) {
-    const stage = 'writing';
+function drawWritingCardPage(writingData, index, reverse, nextStage) {
+    const stageTitle = reverse ? 'writing (reverse)' : 'writing';
+    const stageCode = reverse ? 'writing-reverse' : 'writing';
     if (index >= writingData.length) {
         updateCardAndCallNext(writingData, nextStage);
         return;
@@ -316,9 +458,19 @@ function drawWritingCardPage(writingData, index, nextStage) {
 
     const status = '(' + percentage(current, null) + '%) ';
 
-    drawAndPlayAudio(page, current.sound);
-    displayTitle(page, stage + ': ' + current.dictionaryName);
-    $('.word', page).html(getAllWordsAsString(current));
+    if (reverse) {
+        $('.sound', page).prop('disabled', true);
+    } else {
+        drawAndPlayAudio(page, current.sound);
+    }
+    displayTitle(page, stageTitle + ': ' + current.dictionaryName);
+    let txt;
+    if (reverse) {
+        txt = getTranslationsAsString(current);
+    } else {
+        txt = getAllWordsAsString(current);
+    }
+    $('.word', page).html(txt);
 
     const clazz = "d-flex justify-content-start p-5 w-100";
     const testDiv = $('#writing-test').show();
@@ -334,9 +486,17 @@ function drawWritingCardPage(writingData, index, nextStage) {
         testButton.prop("disabled", textareaInput.val().length === 0);
     });
     testButton.unbind('click').on('click', function () {
+        if (reverse) {
+            drawAndPlayAudio(page, current.sound);
+        }
         let res;
         const givenAnswer = textareaInput.val();
-        const rightAnswer = findTranslationStartsWith(current, givenAnswer);
+        let rightAnswer;
+        if (reverse) {
+            rightAnswer = findWordStartsWith(current, givenAnswer);
+        } else {
+            rightAnswer = findTranslationStartsWith(current, givenAnswer);
+        }
         let prefixText;
         if (rightAnswer) {
             res = true;
@@ -345,23 +505,30 @@ function drawWritingCardPage(writingData, index, nextStage) {
             res = false;
             prefixText = $(`<del><h6 class="text-danger">${givenAnswer}</h6></del>`);
         }
-        let suffixText = $(`<h6 class="text-primary">${getTranslationsAsString(current)}</h6>`);
+        let txt;
+        if (reverse) {
+            txt = getAllWordsAsString(current);
+        } else {
+            txt = getTranslationsAsString(current);
+        }
+        let suffixText = $(`<h6 class="text-primary">${txt}</h6>`);
         const translationsDiv = $(`<div class="${clazz}"></div>`)
             .append(prefixText).append(`<h6>&nbsp;&#8212;&nbsp;</h6>`)
             .append(suffixText);
         textareaRow.html('').append(translationsDiv);
         testDiv.hide();
         nextDiv.show();
-        rememberAnswer(current, stage, res);
+        rememberAnswer(current, stageCode, res);
     });
     nextButton.unbind('click').on('click', function () {
         // go to next
-        drawWritingCardPage(writingData, index + 1, nextStage);
+        drawWritingCardPage(writingData, index + 1, reverse, nextStage);
     });
 }
 
-function drawSelfTestCardPage(selfTestData, index, nextStage) {
-    const stage = 'self-test';
+function drawSelfTestCardPage(selfTestData, index, reverse, nextStage) {
+    const stage = reverse ? 'self-test' : 'self-test (reverse)';
+    const stageCode = reverse ? 'self-test-reverse' : 'self-test';
     if (index >= selfTestData.length) {
         updateCardAndCallNext(selfTestData, nextStage);
         return;
@@ -378,18 +545,33 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     const next = index + 1;
 
     const status = '(' + percentage(current, null) + '%) ';
-
-    drawAndPlayAudio(page, current.sound);
+    if (reverse) {
+        $('.sound', page).prop('disabled', true);
+    } else {
+        drawAndPlayAudio(page, current.sound);
+    }
+    let word1;
+    let word2;
+    if (reverse) {
+        word1 = getTranslationsAsString(current);
+        word2 = getAllWordsAsString(current);
+    } else {
+        word2 = getTranslationsAsString(current);
+        word1 = getAllWordsAsString(current);
+    }
     displayTitle(page, stage + ': ' + current.dictionaryName);
-    $('.word', page).html(getAllWordsAsString(current));
+    $('.word', page).html(word1);
     $('.status', page).html(status);
-    translation.html(getTranslationsAsString(current));
+    translation.html(word2);
     correct.prop('disabled', true);
     wrong.prop('disabled', true);
     translation.hide();
     curtain.show();
 
     display.unbind('click').on('click', function () {
+        if (reverse) {
+            drawAndPlayAudio(page, current.sound);
+        }
         display.unbind('click');
         curtain.hide();
         translation.show();
@@ -398,13 +580,13 @@ function drawSelfTestCardPage(selfTestData, index, nextStage) {
     });
     correct.unbind('click').on('click', function () {
         correct.unbind('click');
-        rememberAnswer(current, stage, true);
-        drawSelfTestCardPage(selfTestData, next, nextStage);
+        rememberAnswer(current, stageCode, true);
+        drawSelfTestCardPage(selfTestData, next, reverse, nextStage);
     });
     wrong.unbind('click').on('click', function () {
         wrong.unbind('click');
-        rememberAnswer(current, stage, false);
-        drawSelfTestCardPage(selfTestData, next, nextStage);
+        rememberAnswer(current, stageCode, false);
+        drawSelfTestCardPage(selfTestData, next, reverse, nextStage);
     });
 }
 

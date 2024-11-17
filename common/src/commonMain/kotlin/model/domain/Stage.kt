@@ -8,4 +8,8 @@ enum class Stage {
     OPTIONS,
     WRITING,
     SELF_TEST,
+    MOSAIC_REVERSE,
+    OPTIONS_REVERSE,
+    WRITING_REVERSE,
+    SELF_TEST_REVERSE,
 }

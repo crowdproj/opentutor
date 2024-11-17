@@ -290,6 +290,15 @@ function initSettingsDialog() {
     const inputStageShowNumberOfWord = $('#input-stage-show-number-of-words');
     const inputStageOptionsNumberOfVariants = $('#input-stage-options-number-of-variants');
     const inputNumberOfWordsPerStage = $('#input-number-of-words-per-stage');
+    const checkboxStageMosaicSrcToDst = $('#checkbox-stage-mosaic-src-to-dst');
+    const checkboxStageOptionsSrcToDst = $('#checkbox-stage-options-src-to-dst');
+    const checkboxStageWritingSrcToDst = $('#checkbox-stage-writing-src-to-dst');
+    const checkboxStageSelfTestSrcToDst = $('#checkbox-stage-self-test-src-to-dst');
+    const checkboxStageMosaicDstToSrc = $('#checkbox-stage-mosaic-dst-to-src');
+    const checkboxStageOptionsDstToSrc = $('#checkbox-stage-options-dst-to-src');
+    const checkboxStageWritingDstToSrc = $('#checkbox-stage-writing-dst-to-src');
+    const checkboxStageSelfTestDstToSrc = $('#checkbox-stage-self-test-dst-to-src');
+
     const btnSave = $('#settings-modal-save-btn');
 
     function isValidUserSettings() {
@@ -308,12 +317,44 @@ function initSettingsDialog() {
     inputStageOptionsNumberOfVariants.off('input').on('input', function () {
         btnSave.prop('disabled', !isValidUserSettings());
     });
+    checkboxStageMosaicSrcToDst.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageMosaicSourceLangToTargetLang === checkboxStageMosaicSrcToDst.prop('checked'));
+    });
+    checkboxStageOptionsSrcToDst.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageOptionsSourceLangToTargetLang === checkboxStageOptionsSrcToDst.prop('checked'));
+    });
+    checkboxStageWritingSrcToDst.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageWritingSourceLangToTargetLang === checkboxStageWritingSrcToDst.prop('checked'));
+    });
+    checkboxStageSelfTestSrcToDst.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageSelfTestSourceLangToTargetLang === checkboxStageSelfTestSrcToDst.prop('checked'));
+    });
+    checkboxStageMosaicDstToSrc.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageMosaicTargetLangToSourceLang === checkboxStageMosaicDstToSrc.prop('checked'));
+    });
+    checkboxStageOptionsDstToSrc.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageOptionsTargetLangToSourceLang === checkboxStageOptionsDstToSrc.prop('checked'));
+    });
+    checkboxStageWritingDstToSrc.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageWritingTargetLangToSourceLang === checkboxStageWritingDstToSrc.prop('checked'));
+    });
+    checkboxStageSelfTestDstToSrc.off('change').on('change', function () {
+        btnSave.prop('disabled', settings.stageSelfTestTargetLangToSourceLang === checkboxStageSelfTestDstToSrc.prop('checked'));
+    });
     btnSave.off().on('click', function () {
         btnSave.prop('disabled', true);
         const _settings = {
             "stageShowNumberOfWords": inputStageShowNumberOfWord.val(),
             "stageOptionsNumberOfVariants": inputStageOptionsNumberOfVariants.val(),
-            "numberOfWordsPerStage": inputNumberOfWordsPerStage.val()
+            "numberOfWordsPerStage": inputNumberOfWordsPerStage.val(),
+            "stageMosaicSourceLangToTargetLang": checkboxStageMosaicSrcToDst.prop('checked'),
+            "stageOptionsSourceLangToTargetLang": checkboxStageOptionsSrcToDst.prop('checked'),
+            "stageWritingSourceLangToTargetLang": checkboxStageWritingSrcToDst.prop('checked'),
+            "stageSelfTestSourceLangToTargetLang": checkboxStageSelfTestSrcToDst.prop('checked'),
+            "stageMosaicTargetLangToSourceLang": checkboxStageMosaicDstToSrc.prop('checked'),
+            "stageOptionsTargetLangToSourceLang": checkboxStageOptionsDstToSrc.prop('checked'),
+            "stageWritingTargetLangToSourceLang": checkboxStageWritingDstToSrc.prop('checked'),
+            "stageSelfTestTargetLangToSourceLang": checkboxStageSelfTestDstToSrc.prop('checked')
         };
         updateSettings(_settings, function () {
             settings = _settings;
@@ -326,9 +367,25 @@ function fillSettingsDialog() {
     const inputStageShowNumberOfWord = $('#input-stage-show-number-of-words');
     const inputStageOptionsNumberOfVariants = $('#input-stage-options-number-of-variants');
     const inputNumberOfWordsPerStage = $('#input-number-of-words-per-stage');
+    const checkboxStageMosaicSrcToDst = $('#checkbox-stage-mosaic-src-to-dst');
+    const checkboxStageOptionsSrcToDst = $('#checkbox-stage-options-src-to-dst');
+    const checkboxStageWritingSrcToDst = $('#checkbox-stage-writing-src-to-dst');
+    const checkboxStageSelfTestSrcToDst = $('#checkbox-stage-self-test-src-to-dst');
+    const checkboxStageMosaicDstToSrc = $('#checkbox-stage-mosaic-dst-to-src');
+    const checkboxStageOptionsDstToSrc = $('#checkbox-stage-options-dst-to-src');
+    const checkboxStageWritingDstToSrc = $('#checkbox-stage-writing-dst-to-src');
+    const checkboxStageSelfTestDstToSrc = $('#checkbox-stage-self-test-dst-to-src');
     inputStageOptionsNumberOfVariants.val(settings.stageOptionsNumberOfVariants);
     inputNumberOfWordsPerStage.val(settings.numberOfWordsPerStage);
     inputStageShowNumberOfWord.val(settings.stageShowNumberOfWords);
+    checkboxStageMosaicSrcToDst.prop('checked', settings.stageMosaicSourceLangToTargetLang);
+    checkboxStageOptionsSrcToDst.prop('checked', settings.stageOptionsSourceLangToTargetLang);
+    checkboxStageWritingSrcToDst.prop('checked', settings.stageWritingSourceLangToTargetLang);
+    checkboxStageSelfTestSrcToDst.prop('checked', settings.stageSelfTestSourceLangToTargetLang);
+    checkboxStageMosaicDstToSrc.prop('checked', settings.stageMosaicTargetLangToSourceLang);
+    checkboxStageOptionsDstToSrc.prop('checked', settings.stageOptionsTargetLangToSourceLang);
+    checkboxStageWritingDstToSrc.prop('checked', settings.stageWritingTargetLangToSourceLang);
+    checkboxStageSelfTestDstToSrc.prop('checked', settings.stageSelfTestTargetLangToSourceLang);
 }
 
 function onChangeDictionaryDialogMains(dialogId) {

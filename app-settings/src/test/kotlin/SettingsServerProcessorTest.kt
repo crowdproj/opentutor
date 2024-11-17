@@ -105,7 +105,7 @@ internal class SettingsServerProcessorTest {
 
         Assertions.assertTrue(res.errors.isEmpty())
         Assertions.assertEquals(
-            SettingsEntity(
+            SettingsEntity.DEFAULT.copy(
                 numberOfWordsPerStage = 12,
                 stageShowNumberOfWords = 13,
                 stageOptionsNumberOfVariants = 14,
