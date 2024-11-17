@@ -36,9 +36,9 @@ services:
       KC_DB_PASSWORD: "${KEYCLOAK_DB_PASSWORD}"
       DB_USER: "${KEYCLOAK_DB_USER}"
       DB_PASSWORD: "${KEYCLOAK_DB_PASSWORD}"
-      KC_HOSTNAME_URL: "https://localhost/"
-      KC_HOSTNAME_ADMIN_URL: "https://localhost/"
-      KC_HOSTNAME_PORT: "443"
+      KC_HOSTNAME_URL: "http://localhost:8080/"
+      KC_HOSTNAME_ADMIN_URL: "http://localhost:8080/"
+      KC_HOSTNAME_PORT: "8080"
       KC_HEALTH_ENABLED: "true"
       KC_METRICS_ENABLED: "true"
       KC_PROXY: "edge"
@@ -58,9 +58,9 @@ services:
     image: envoyproxy/envoy:v1.29.0
     volumes:
       - "${DATA_DIR}/envoy/envoy.yaml:/etc/envoy/envoy.yaml"
-      - "${DATA_DIR}/envoy/certs:/etc/envoy/certs"
+    #      - "${DATA_DIR}/envoy/certs:/etc/envoy/certs"
     ports:
-      - "443:443"
+      - "8080:8080"
       - "15001:15001"
     command: /usr/local/bin/envoy -c /etc/envoy/envoy.yaml -l info
     networks:
@@ -173,8 +173,8 @@ services:
       - flashcards-envoy
     environment:
       CLIENT_NATS_HOST: "flashcards-nats"
-      KEYCLOAK_AUTHORIZE_ADDRESS: "https://localhost"
-      KEYCLOAK_REDIRECT_ADDRESS: "https://localhost"
+      KEYCLOAK_AUTHORIZE_ADDRESS: "http://localhost:8080"
+      KEYCLOAK_REDIRECT_ADDRESS: "http://localhost:8080"
       KEYCLOAK_ACCESS_TOKEN_ADDRESS: "http://flashcards-keycloak:8080"
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
