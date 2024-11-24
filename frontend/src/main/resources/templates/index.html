@@ -18,6 +18,40 @@
     <script src="/static/main.1.js"></script>
     <title>opentutor</title>
 </head>
+<style>
+    .table-header-sticky th {
+        position: sticky;
+        top: 0;
+        background-color: #f2f2f2;
+        z-index: 2;
+        box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+        width: 100%;
+        overflow-wrap: break-word;
+        white-space: normal;
+        border-collapse: collapse;
+        height: 20px;
+    }
+
+    .table th, .table td {
+        text-align: left;
+        padding: 8px 12px;
+        min-height: 20px;
+        white-space: normal;
+        vertical-align: top;
+        line-height: 1.5;
+        word-break: break-word;
+    }
+
+    .table-container {
+        max-height: 80vh;
+        overflow-y: auto;
+        overflow-x: hidden;
+        margin-bottom: 20px;
+    }
+</style>
 <header th:insert="header.html :: header"></header>
 <script th:inline="javascript">
     const devMode = [[${devMode}]];
@@ -32,15 +66,15 @@
      style="user-select: none; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; ">
     <div class="card-body">
         <h1 class="card-title">opentutor</h1>
-        <div id="dictionaries-table-row" class="row" style="overflow: auto">
-            <table class="table" style="height: 20px;">
-                <thead>
+        <div id="dictionaries-table-row" class="row table-container">
+            <table class="table">
+                <thead class="table-header-sticky">
                 <tr>
-                    <th scope="col">Dictionary name</th>
-                    <th scope="col">Source language</th>
-                    <th scope="col">Target language</th>
-                    <th scope="col">Total number of words</th>
-                    <th scope="col">Number of learned words</th>
+                    <th scope="col" style="width: 28%;">Dictionary name</th>
+                    <th scope="col" style="width: 19%;">Source language</th>
+                    <th scope="col" style="width: 19%;">Target language</th>
+                    <th scope="col" style="width: 16%;">Total number of words</th>
+                    <th scope="col" style="width: 18%;">Number of learned words</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -86,13 +120,13 @@
 <div id="words" class="page card container container-table" style="display: none;">
     <div class="card-body">
         <h1 id="words-title" class="card-title">dictionary</h1>
-        <div id="words-table-row" class="row" style="overflow: auto">
+        <div id="words-table-row" class="row table-container">
             <table class="table">
-                <thead>
+                <thead class="table-header-sticky">
                 <tr>
-                    <th scope="col">Word</th>
-                    <th scope="col">Translation</th>
-                    <th scope="col">Status, %</th>
+                    <th scope="col" style="width: 15%;">Word</th>
+                    <th scope="col" style="width: 77%;">Translation</th>
+                    <th scope="col" style="width: 8%; white-space: nowrap;">Status, %</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
@@ -226,14 +260,14 @@
 <div id="result" class="page card container container-table" style="display: none;">
     <div class="card-body">
         <h6 class="card-title">flashcards:</h6>
-        <div id="result-table-row" class="row" style="overflow: auto">
+        <div id="result-table-row" class="row table-container">
             <table class="table">
                 <thead>
                 <tr>
-                    <th scope="col">Word</th>
-                    <th scope="col">Translation</th>
-                    <th scope="col">Dictionary</th>
-                    <th scope="col">Status, %</th>
+                    <th scope="col" style="width: 25%">Word</th>
+                    <th scope="col" style="width: 42%">Translation</th>
+                    <th scope="col" style="width: 25%">Dictionary</th>
+                    <th scope="col" style="width: 8%; white-space: nowrap;">Status, %</th>
                 </tr>
                 </thead>
                 <tbody></tbody>
