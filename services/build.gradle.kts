@@ -18,6 +18,7 @@ dependencies {
     implementation(project(":db-api"))
     implementation(project(":db-pg"))
     implementation(project(":db-mem"))
+    implementation(project(":tts-api"))
     implementation(project(":tts-lib"))
     implementation(project(":utilities"))
 

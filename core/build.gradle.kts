@@ -13,6 +13,7 @@ dependencies {
 
     implementation(project(":cor-lib"))
     implementation(project(":db-api"))
+    implementation(project(":tts-api"))
     implementation(project(":common"))
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")

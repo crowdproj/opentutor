@@ -14,7 +14,8 @@ kotlin {
         val kotlinxSerializationVersion: String by project
         val commonMain by getting {
             dependencies {
-                implementation(project(":db-api"))
+                api(project(":db-api"))
+                api(project(":tts-api"))
                 implementation(kotlin("stdlib-common"))
                 api("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDatetimeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")

@@ -22,6 +22,7 @@ dependencies {
     val typesafeConfigVersion: String by project
     val lettuceVersion: String by project
 
+    implementation(project(":tts-api"))
     implementation(project(":tts-lib"))
     implementation(project(":common"))
     implementation(project(":core"))
