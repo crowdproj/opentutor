@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
+import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
 
 fun ChainDSL<TranslationContext>.processTranslation() = worker {
@@ -16,13 +17,13 @@ fun ChainDSL<TranslationContext>.processTranslation() = worker {
         val targetLang = this.normalizedRequestTargetLang.asString()
 
         val found =
-            this.repository.fetch(sourceLang = sourceLang, targetLang = targetLang, word = query)?.toCardEntity()
-        if (found == null) {
+            this.repository.fetch(sourceLang = sourceLang, targetLang = targetLang, word = query).toCardEntity()
+        if (found == CardEntity.EMPTY) {
             this.errors.add(
                 runError(
                     operation = TranslationOperation.FETCH_CARD,
                     fieldName = "($sourceLang -> $targetLang):::$query",
-                    description = "no card fetched."
+                    description = "no words fetched."
                 )
             )
             this.status = AppStatus.FAIL

@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.translation.impl
 
-import com.gitlab.sszuev.flashcards.translation.api.TCard
+import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -34,11 +34,11 @@ class LingueeTranslationRepository(
     private val config: TranslationConfig = TranslationConfig(),
 ) : TranslationRepository {
 
-    override suspend fun fetch(sourceLang: String, targetLang: String, word: String): TCard {
+    override suspend fun fetch(sourceLang: String, targetLang: String, word: String): List<TranslationEntity> {
         logger.info("::[LINGUEE][(${sourceLang} -> ${targetLang}):$word]")
         return try {
             withTimeout(config.getResourceTimeoutMs) {
-                fetchResource(sourceLang, targetLang, word).toTCard()
+                fetchResource(sourceLang, targetLang, word).map { it.toTWord() }
             }
         } catch (ex: Exception) {
             logger.error("::[LINGUEE] Can't get resource for [(${sourceLang} -> ${targetLang}):$word]")

@@ -1,8 +1,7 @@
 package com.gitlab.sszuev.flashcards.translation.impl
 
-import com.gitlab.sszuev.flashcards.translation.api.TCard
-import com.gitlab.sszuev.flashcards.translation.api.TExample
-import com.gitlab.sszuev.flashcards.translation.api.TWord
+import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
+import com.gitlab.sszuev.flashcards.translation.api.TranslationExample
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.HttpClientEngine
 import io.ktor.client.engine.mock.MockEngine
@@ -97,7 +96,7 @@ class LingueeTranslationRepositoryTest {
     }
 
     @Test
-    fun testGetResource() = runBlocking {
+    fun testFetchTranslation() = runBlocking {
         val testWord1 = "test-1"
         val testLang1 = "en"
         val testLang2 = "ru"
@@ -116,17 +115,15 @@ class LingueeTranslationRepositoryTest {
         val res1 = service1.fetch(
             sourceLang = testLang1, targetLang = testLang2, word = testWord1
         )
-        val expected = TCard(
-            listOf(
-                TWord(
-                    word = testWord1,
-                    partOfSpeech = "noun",
-                    translations = listOf(listOf("translation for $testWord1")),
-                    examples = listOf(
-                        TExample(
-                            text = "This is a test-1 example.",
-                            translation = "Это пример перевода слова test-1."
-                        )
+        val expected = listOf(
+            TranslationEntity(
+                word = testWord1,
+                partOfSpeech = "noun",
+                translations = listOf(listOf("translation for $testWord1")),
+                examples = listOf(
+                    TranslationExample(
+                        text = "This is a test-1 example.",
+                        translation = "Это пример перевода слова test-1."
                     )
                 )
             )

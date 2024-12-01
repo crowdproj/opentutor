@@ -12,7 +12,7 @@ interface TranslationRepository {
      * @param sourceLang the language code of the source language
      * @param targetLang the language code of the target language
      * @param word the word to be translated
-     * @return a TCard object containing translation data for the word
+     * @return a list of TWord objects containing translation data for the word
      */
-    suspend fun fetch(sourceLang: String, targetLang: String, word: String): TCard?
+    suspend fun fetch(sourceLang: String, targetLang: String, word: String): List<TranslationEntity>
 }

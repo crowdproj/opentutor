@@ -8,8 +8,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
-import com.gitlab.sszuev.flashcards.translation.api.TCard
-import com.gitlab.sszuev.flashcards.translation.api.TWord
+import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 import com.gitlab.sszuev.flashcards.translation.impl.MockTranslationRepository
 import kotlinx.coroutines.test.runTest
@@ -39,14 +38,13 @@ internal class TranslationCorProcessorRunTest {
         val testSrcLang = LangId("EN")
         val testDstLang = LangId(" Ru ")
         val testQuery = "qqq"
-        val testTCard = TCard(
-            words = listOf(
-                TWord(
-                    word = "q",
-                    translations = listOf(listOf("a", "b", "c")),
-                )
+        val testTCard = listOf(
+            TranslationEntity(
+                word = "q",
+                translations = listOf(listOf("a", "b", "c")),
             )
         )
+
         val testCardEntity = CardEntity(
             words = listOf(
                 CardWordEntity(

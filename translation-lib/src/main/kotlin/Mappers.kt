@@ -1,12 +1,9 @@
 package com.gitlab.sszuev.flashcards.translation.impl
 
-import com.gitlab.sszuev.flashcards.translation.api.TCard
-import com.gitlab.sszuev.flashcards.translation.api.TExample
-import com.gitlab.sszuev.flashcards.translation.api.TWord
+import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
+import com.gitlab.sszuev.flashcards.translation.api.TranslationExample
 
-fun List<LingueeEntry>.toTCard(): TCard = TCard(map { it.toTWord() })
-
-private fun LingueeEntry.toTWord() = TWord(
+internal fun LingueeEntry.toTWord() = TranslationEntity(
     partOfSpeech = this.pos,
     word = this.text,
     translations = this.translations.toTTranslations(),
@@ -19,4 +16,4 @@ private fun List<LingueeTranslation>.toTTranslations(): List<List<String>> {
 
 private fun LingueeTranslation.toTExamples() = (this.examples ?: emptyList()).map { it.toTExample() }
 
-private fun LingueeExample.toTExample() = TExample(text = src, translation = dst)
+private fun LingueeExample.toTExample() = TranslationExample(text = src, translation = dst)
