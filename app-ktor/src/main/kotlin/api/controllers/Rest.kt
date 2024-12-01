@@ -5,7 +5,7 @@ import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.DictionaryService
 import com.gitlab.sszuev.flashcards.services.SettingsService
 import com.gitlab.sszuev.flashcards.services.TTSService
-import io.ktor.server.application.call
+import com.gitlab.sszuev.flashcards.services.TranslationService
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
@@ -49,6 +49,17 @@ fun Route.sounds(
     route("sounds") {
         post("get") {
             call.getResource(service, contextConfig)
+        }
+    }
+}
+
+fun Route.translation(
+    service: TranslationService,
+    contextConfig: ContextConfig,
+) {
+    route("translation") {
+        post("fetch") {
+            call.fetchTranslation(service, contextConfig)
         }
     }
 }

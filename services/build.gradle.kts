@@ -20,6 +20,8 @@ dependencies {
     implementation(project(":db-mem"))
     implementation(project(":tts-api"))
     implementation(project(":tts-lib"))
+    implementation(project(":translation-api"))
+    implementation(project(":translation-lib"))
     implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")

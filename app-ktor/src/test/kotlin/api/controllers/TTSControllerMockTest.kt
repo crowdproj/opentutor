@@ -32,12 +32,12 @@ internal class TTSControllerMockTest {
 
         val tutorConfig = mockk<TutorConfig>(relaxed = true)
         val runConfig = mockk<RunConfig>(relaxed = true)
-        val contextContext = ContextConfig(runConfig, tutorConfig)
+        val contextConfig = ContextConfig(runConfig, tutorConfig)
 
         routing {
             authenticate("auth-jwt") {
                 route("test/api") {
-                    sounds(service, contextContext)
+                    sounds(service, contextConfig)
                 }
             }
         }

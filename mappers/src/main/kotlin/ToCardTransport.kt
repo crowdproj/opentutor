@@ -89,7 +89,7 @@ fun CardContext.toResetCardResponse() = ResetCardResponse(
     errors = this.errors.toErrorResourceList(),
 )
 
-private fun CardEntity.toCardResource(): CardResource? {
+internal fun CardEntity.toCardResource(): CardResource? {
     if (this == CardEntity.EMPTY) {
         return null
     }
