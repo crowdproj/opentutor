@@ -16,6 +16,7 @@ kotlin {
             dependencies {
                 api(project(":db-api"))
                 api(project(":tts-api"))
+                api(project(":translation-api"))
                 implementation(kotlin("stdlib-common"))
                 api("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDatetimeVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$kotlinxSerializationVersion")

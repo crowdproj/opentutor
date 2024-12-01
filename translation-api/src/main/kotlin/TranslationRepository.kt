@@ -14,5 +14,5 @@ interface TranslationRepository {
      * @param word the word to be translated
      * @return a TCard object containing translation data for the word
      */
-    suspend fun fetch(sourceLang: String, targetLang: String, word: String): TCard
+    suspend fun fetch(sourceLang: String, targetLang: String, word: String): TCard?
 }

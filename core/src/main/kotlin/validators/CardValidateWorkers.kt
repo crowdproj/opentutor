@@ -36,7 +36,7 @@ fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = w
 fun ChainDSL<CardContext>.validateCardEntityWords(getCard: (CardContext) -> CardEntity) = worker {
     this.name = "Test card-word"
     test {
-        getCard(this).words.any { !isCorrectWrong(it.word) }
+        getCard(this).words.any { !isCorrectWord(it.word) }
     }
     process {
         fail(validationError(fieldName = "card-word"))

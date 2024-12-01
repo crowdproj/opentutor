@@ -1,6 +1,7 @@
 plugins {
     kotlin("jvm")
     id("org.jetbrains.kotlin.plugin.serialization")
+    id("java-test-fixtures")
 }
 
 group = rootProject.group
@@ -23,6 +24,7 @@ dependencies {
     implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kotlinxSerializationVersion")
 
+    testFixturesImplementation(project(":translation-api"))
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")

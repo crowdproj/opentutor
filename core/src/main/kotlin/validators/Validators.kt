@@ -15,7 +15,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
  * @param [txt] to test
  * @return [Boolean]
  */
-internal fun isCorrectWrong(txt: String): Boolean {
+internal fun isCorrectWord(txt: String): Boolean {
     return txt.isNotBlank() && txt.length <= 256
 }
 

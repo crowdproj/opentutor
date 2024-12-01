@@ -17,7 +17,7 @@ fun ChainDSL<TTSContext>.validateResourceGetLangId() = worker {
 fun ChainDSL<TTSContext>.validateResourceGetWord() = worker {
     this.name = "validate get resource word"
     test {
-        !isCorrectWrong(this.normalizedRequestTTSResourceGet.word)
+        !isCorrectWord(this.normalizedRequestTTSResourceGet.word)
     }
     process {
         fail(validationError(fieldName = "audio-resource-word", description = "invalid resource word"))

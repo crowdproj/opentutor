@@ -4,6 +4,7 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.TTSContext
+import com.gitlab.sszuev.flashcards.TranslationContext
 import com.gitlab.sszuev.flashcards.corlib.ChainDSL
 import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.Id
@@ -23,6 +24,7 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
+import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
 
 fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = worker(
     name = "Make a normalized copy of ${operation.name.lowercase()} params"
@@ -57,6 +59,21 @@ fun ChainDSL<TTSContext>.normalizers(operation: TTSOperation) = worker(
     when (operation) {
         TTSOperation.GET_RESOURCE -> {
             this.normalizedRequestTTSResourceGet = this.requestTTSResourceGet.normalize()
+        }
+
+        else -> {}
+    }
+}
+
+fun ChainDSL<TranslationContext>.normalizers(operation: TranslationOperation) = worker(
+    name = "Make a normalized copy of ${operation.name.lowercase()} params"
+) {
+    this.normalizedRequestAppAuthId = this.requestAppAuthId.normalize()
+    when (operation) {
+        TranslationOperation.FETCH_CARD -> {
+            this.normalizedRequestSourceLang = this.requestSourceLang.normalize()
+            this.normalizedRequestTargetLang = this.requestTargetLang.normalize()
+            this.normalizedRequestWord = this.requestWord.lowercase().trim()
         }
 
         else -> {}
