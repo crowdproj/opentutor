@@ -231,7 +231,7 @@ function createCard(card, onDone) {
             handleResponseErrors(res);
         } else {
             if (onDone !== undefined) {
-                onDone(res.card.cardId);
+                onDone(res.card);
             }
         }
     });
@@ -248,7 +248,7 @@ function updateCard(card, onDone) {
             handleResponseErrors(res);
         } else {
             if (onDone !== undefined) {
-                onDone(res.card.cardId);
+                onDone(res.card);
             }
         }
     });
