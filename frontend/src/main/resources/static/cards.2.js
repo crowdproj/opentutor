@@ -80,32 +80,21 @@ function initCardsTable(cards, numberOfRightAnswers) {
     const thStatus = $(headers[2]);
     thWord.off('click').on('click', function () {
         const direction = sortDirection(thWord);
-        cards.sort((a, b) => {
-            const left = getAllWordsAsString(a);
-            const right = getAllWordsAsString(b);
-            return direction ? left.localeCompare(right) : right.localeCompare(left);
-        });
+        sortCardsByWord(cards, direction);
         drawCardsTable(cards, cardPopup, numberOfRightAnswers);
     });
     thTranslation.off('click').on('click', function () {
         const direction = sortDirection(thTranslation);
-        cards.sort((a, b) => {
-            const left = getAllTranslationsAsString(a);
-            const right = getAllTranslationsAsString(b);
-            return direction ? left.localeCompare(right) : right.localeCompare(left);
-        });
+        sortCardsByTranslation(cards, direction);
         drawCardsTable(cards, cardPopup, numberOfRightAnswers);
     });
     thStatus.off('click').on('click', function () {
         const direction = sortDirection(thStatus);
-        cards.sort((a, b) => {
-            const left = percentage(a, numberOfRightAnswers);
-            const right = percentage(b, numberOfRightAnswers);
-            return direction ? left - right : right - left;
-        });
+        sortCardsByStatus(cards, direction, numberOfRightAnswers);
         drawCardsTable(cards, cardPopup, numberOfRightAnswers);
     });
 
+    sortCardsByWord(cards, true);
     drawCardsTable(cards, cardPopup, numberOfRightAnswers);
 }
 
@@ -135,6 +124,30 @@ function drawCardsTable(cards, popup, numberOfRightAnswers) {
             popup.show();
         });
         tbody.append(row);
+    });
+}
+
+function sortCardsByWord(cards, direction) {
+    cards.sort((a, b) => {
+        const left = getAllWordsAsString(a);
+        const right = getAllWordsAsString(b);
+        return direction ? left.localeCompare(right) : right.localeCompare(left);
+    });
+}
+
+function sortCardsByTranslation(cards, direction) {
+    cards.sort((a, b) => {
+        const left = getAllTranslationsAsString(a);
+        const right = getAllTranslationsAsString(b);
+        return direction ? left.localeCompare(right) : right.localeCompare(left);
+    });
+}
+
+function sortCardsByStatus(cards, direction, numberOfRightAnswers) {
+    cards.sort((a, b) => {
+        const left = percentage(a, numberOfRightAnswers);
+        const right = percentage(b, numberOfRightAnswers);
+        return direction ? left - right : right - left;
     });
 }
 
@@ -272,13 +285,9 @@ function initCardDialog(cards) {
         fillCardDialogForm(card);
     });
     $('#words-btn-add').off('click').on('click', function () { // add dialog
-        markRowUnselected(selectedRow());
-        toggleManageCardsButton('edit', true);
-        toggleManageCardsButton('delete', true);
-        toggleManageCardsButton('reset', true);
         const searchInput = $('#words-search');
         const word = searchInput.val();
-        const card = {
+        const newCard = {
             dictionaryId: selectedDictionary.dictionaryId,
             words: [
                 {
@@ -288,8 +297,21 @@ function initCardDialog(cards) {
                 }
             ]
         };
-        onChangeCardDialogMains(1);
-        fillCardDialogForm(card);
+        if (word !== '') {
+            let fetched = false;
+            fetchTranslation(selectedDictionary.sourceLang, selectedDictionary.targetLang, word, function (fetchedCard) {
+                fetched = true;
+                if (isEmptyCard(fetchedCard)) {
+                    activateDialogOnPushAddCardButton(newCard);
+                } else {
+                    activateDialogOnPushAddCardButton(fetchedCard);
+                }
+            });
+            if (fetched) {
+                return;
+            }
+        }
+        activateDialogOnPushAddCardButton(newCard);
     });
     $('#card-dialog-save').off('click').on('click', function () { // push a save dialog button
         const res = createResourceCardItem(cards);
@@ -312,6 +334,15 @@ function initCardDialog(cards) {
         initNextCardDialogAccordionItem(sectionIndex);
         closeAccordionItemsWithExcept(sectionIndex + 1);
     });
+}
+
+function activateDialogOnPushAddCardButton(card) {
+    markRowUnselected(selectedRow());
+    toggleManageCardsButton('edit', true);
+    toggleManageCardsButton('delete', true);
+    toggleManageCardsButton('reset', true);
+    fillCardDialogForm(card);
+    onChangeCardDialogMains(1);
 }
 
 function initNextCardDialogAccordionItem(prevIndex) {

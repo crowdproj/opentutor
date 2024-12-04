@@ -420,9 +420,9 @@ components:
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
-            source-lang:
+            sourceLang:
               type: string
-            target-lang:
+            targetLang:
               type: string
             word:
               type: string

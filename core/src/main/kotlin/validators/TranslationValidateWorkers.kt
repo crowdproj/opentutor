@@ -14,7 +14,12 @@ fun ChainDSL<TranslationContext>.validateLangId(
         !isCorrectLangId(getLang(this).asString())
     }
     process {
-        fail(validationError(fieldName = filedName, description = "invalid translation lang-id"))
+        fail(
+            validationError(
+                fieldName = filedName,
+                description = "invalid translation lang-id='${getLang(this).asString()}'"
+            )
+        )
     }
 }
 

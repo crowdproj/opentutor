@@ -139,19 +139,11 @@ function selectNonAnswered(cards, limit) {
  * @param card
  * @returns {*}
  */
-function getCardFirstWordWord(card) {
-    return card.words[0].word;
-}
-
-/**
- * @param card
- * @returns {*}
- */
 function getAllWordsAsString(card) {
     if (card.allWordsAsString) {
         return card.allWordsAsString;
     }
-    card.allWordsAsString = card.words.map(it => it.word).join(', ');
+    card.allWordsAsString = [...new Set(card.words.map(it => it.word))].join(', ');
     return card.allWordsAsString;
 }
 
@@ -166,7 +158,7 @@ function getAllTranslationsAsString(card) {
     }
     let arrayOfArrays = $.map(card.words.map(it => it.translations), function (n) {
         return n;
-    })
+    });
     card.allTranslationsAsString = $.each(arrayOfArrays, function (n) {
         return n;
     }).join(', ');
@@ -346,4 +338,8 @@ function removeDuplicates(cards) {
         }
     });
     return res;
+}
+
+function isEmptyCard(card) {
+    return card.words.length === 0;
 }
