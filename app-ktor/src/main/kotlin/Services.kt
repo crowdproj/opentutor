@@ -15,6 +15,7 @@ import com.gitlab.sszuev.flashcards.services.remote.RemoteCardService
 import com.gitlab.sszuev.flashcards.services.remote.RemoteDictionaryService
 import com.gitlab.sszuev.flashcards.services.remote.RemoteSettingsService
 import com.gitlab.sszuev.flashcards.services.remote.RemoteTTSService
+import com.gitlab.sszuev.flashcards.services.remote.RemoteTranslationService
 
 internal fun cardService(config: RunConfig): CardService = if (config.mode == RunConfig.Mode.TEST)
     LocalCardService()
@@ -34,7 +35,7 @@ else
 internal fun translationService(config: RunConfig): TranslationService = if (config.mode == RunConfig.Mode.TEST)
     LocalTranslationService()
 else
-    TODO()
+    RemoteTranslationService()
 
 internal fun settingsService(config: RunConfig): SettingsService = if (config.mode == RunConfig.Mode.TEST)
     LocalSettingsService()

@@ -13,10 +13,8 @@ object TranslationSettings {
     val getResourceTimeoutMs = conf.get("translation.get-resource-timeout-ms", default = 5000L)
     val httpClientConnectTimeoutMs = conf.get("translation.http-client.connect-timeout-ms", default = 3000L)
     val httpClientRequestTimeoutMs = conf.get("translation.http-client.request-timeout-ms", default = 3000L)
-    val translationServiceLingueeApiHost =
-        conf.get("translation.service.linguee.api-host", default = "linguee-api.fly.dev")
-    val translationServiceLingueeApiPath =
-        conf.get("translation.service.linguee.api-path", default = "/api/v2/translations")
+    val translationServiceLingueeApiUrl =
+        conf.get("translation.service.linguee-api-url", default = "https://linguee-api.fly.dev/api/v2/translations")
 
     init {
         logger.info(printDetails())
@@ -28,8 +26,7 @@ object TranslationSettings {
             |get-resource-timeout-ms        = $getResourceTimeoutMs
             |http-client-connect-timeout-ms = $httpClientConnectTimeoutMs
             |http-client-request-timeout-ms = $httpClientRequestTimeoutMs
-            |service-linguee-host           = $translationServiceLingueeApiHost
-            |service-linguee-path           = $translationServiceLingueeApiPath
+            |service-linguee-api            = $translationServiceLingueeApiUrl
             """.replaceIndentByMargin("\t")
     }
 

@@ -4,6 +4,5 @@ data class TranslationConfig(
     val getResourceTimeoutMs: Long = TranslationSettings.getResourceTimeoutMs,
     val httpClientConnectTimeoutMs: Long = TranslationSettings.httpClientConnectTimeoutMs,
     val httpClientRequestTimeoutMs: Long = TranslationSettings.httpClientRequestTimeoutMs,
-    val translationServiceLingueeApiHost: String = TranslationSettings.translationServiceLingueeApiHost,
-    val translationServiceLingueeApiPath: String = TranslationSettings.translationServiceLingueeApiPath,
+    val translationServiceLingueeApiUrl: String = TranslationSettings.translationServiceLingueeApiUrl,
 )

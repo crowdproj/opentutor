@@ -4,6 +4,7 @@ import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.TTSContext
+import com.gitlab.sszuev.flashcards.TranslationContext
 import com.gitlab.sszuev.flashcards.model.Id
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DocumentEntity
@@ -63,6 +64,14 @@ fun SettingsContext.toByteArray(): ByteArray = cbor.encodeToByteArray(SettingsCo
 @OptIn(ExperimentalSerializationApi::class)
 fun settingsContextFromByteArray(bytes: ByteArray): SettingsContext =
     cbor.decodeFromByteArray(SettingsContext.serializer(), bytes)
+
+@OptIn(ExperimentalSerializationApi::class)
+fun TranslationContext.toByteArray(): ByteArray = cbor.encodeToByteArray(TranslationContext.serializer(), this)
+
+@OptIn(ExperimentalSerializationApi::class)
+fun translationContextFromByteArray(bytes: ByteArray): TranslationContext =
+    cbor.decodeFromByteArray(TranslationContext.serializer(), bytes)
+
 
 fun DocumentEntity.toJsonString(): String = json.encodeToString(DocumentEntity.serializer(), this)
 

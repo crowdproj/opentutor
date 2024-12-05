@@ -17,6 +17,7 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.withTimeout
 import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
+import java.net.URL
 
 private val logger = LoggerFactory.getLogger(LingueeTranslationRepository::class.java)
 
@@ -34,6 +35,8 @@ class LingueeTranslationRepository(
     private val config: TranslationConfig = TranslationConfig(),
 ) : TranslationRepository {
 
+    private val apiUrl = URL(config.translationServiceLingueeApiUrl)
+
     override suspend fun fetch(sourceLang: String, targetLang: String, word: String): List<TranslationEntity> {
         logger.info("::[LINGUEE][(${sourceLang} -> ${targetLang}):$word]")
         return try {
@@ -41,21 +44,33 @@ class LingueeTranslationRepository(
                 fetchResource(sourceLang, targetLang, word).map { it.toTWord() }
             }
         } catch (ex: Exception) {
-            logger.error("::[LINGUEE] Can't get resource for [(${sourceLang} -> ${targetLang}):$word]")
+            logger.error("::[LINGUEE][(${sourceLang} -> ${targetLang}):$word], error: ${ex.message}", ex)
             throw ex
         }
     }
 
     private suspend fun fetchResource(sourceLang: String, targetLang: String, word: String): List<LingueeEntry> {
+        if (sourceLang !in SUPPORTED_LANGS) {
+            throw IllegalArgumentException("Invalid source lang: '$sourceLang'")
+        }
+        if (targetLang !in SUPPORTED_LANGS) {
+            throw IllegalArgumentException("Invalid target lang: '$targetLang'")
+        }
+        if (word.isBlank()) {
+            throw IllegalArgumentException("Word is required")
+        }
         return clientProducer().use {
             it.get {
                 headers {
                     append(HttpHeaders.Accept, "application/json")
                 }
                 url {
-                    protocol = URLProtocol.HTTPS
-                    host = config.translationServiceLingueeApiHost
-                    encodedPath = config.translationServiceLingueeApiPath
+                    protocol = if (apiUrl.protocol == "http") URLProtocol.HTTP else URLProtocol.HTTPS
+                    host = apiUrl.host
+                    if (apiUrl.port != -1) {
+                        port = apiUrl.port
+                    }
+                    encodedPath = apiUrl.path
                     parameter("src", sourceLang)
                     parameter("dst", targetLang)
                     parameter("query", word)
@@ -66,5 +81,35 @@ class LingueeTranslationRepository(
                 }
             }.body()
         }
+    }
+
+    companion object {
+        val SUPPORTED_LANGS = setOf(
+            "bg",
+            "cs",
+            "da",
+            "de",
+            "el",
+            "en",
+            "es",
+            "et",
+            "fi",
+            "fr",
+            "hu",
+            "it",
+            "ja",
+            "lt",
+            "lv",
+            "mt",
+            "nl",
+            "pl",
+            "pt",
+            "ro",
+            "ru",
+            "sk",
+            "sl",
+            "sv",
+            "zh"
+        )
     }
 }

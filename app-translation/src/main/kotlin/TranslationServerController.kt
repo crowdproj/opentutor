@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.settings
+package com.gitlab.sszuev.flashcards.translation
 
 import kotlinx.coroutines.CoroutineName
 import kotlinx.coroutines.CoroutineScope
@@ -8,12 +8,12 @@ import kotlinx.coroutines.asCoroutineDispatcher
 import kotlinx.coroutines.launch
 import java.util.concurrent.Executors
 
-class SettingsServerController(
-    private val processor: SettingsServerProcessor,
+class TranslationServerController(
+    private val processor: TranslationServerProcessor,
 ) {
     private val scope = CoroutineScope(
         context = Executors.newSingleThreadExecutor()
-            .asCoroutineDispatcher() + CoroutineName("thread-settings-controller")
+            .asCoroutineDispatcher() + CoroutineName("thread-translation-controller")
     )
 
     /**

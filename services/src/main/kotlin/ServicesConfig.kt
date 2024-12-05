@@ -16,6 +16,7 @@ object ServicesConfig {
     val natsUser = conf.get(key = "client.nats.user", default = "dev")
     val natsPassword = conf.get(key = "client.nats.password", default = "dev")
     val ttsNatsTopic = conf.get(key = "client.nats.topic.tts", default = "TTS")
+    val translationNatsTopic = conf.get(key = "client.nats.topic.translation", default = "TRANSLATION")
     val cardsNatsTopic = conf.get(key = "client.nats.topic.cards", default = "CARDS")
     val dictionariesNatsTopic = conf.get(key = "client.nats.topic.dictionaries", default = "DICTIONARIES")
     val settingsNatsTopic = conf.get(key = "client.nats.topic.settings", default = "SETTINGS")
@@ -35,6 +36,7 @@ object ServicesConfig {
             |nats-topic-cards           = $cardsNatsTopic
             |nats-topic-dictionaries    = $dictionariesNatsTopic
             |nats-topic-settings        = $settingsNatsTopic
+            |nats-topic-translation     = $translationNatsTopic
             |nats-request-timeout-ms    = $requestTimeoutInMilliseconds
             """.replaceIndentByMargin("\t")
     }
