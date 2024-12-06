@@ -99,6 +99,17 @@ services:
     networks:
       - flashcards-net
 
+  flashcards-linguee-api:
+    image: "sszuev/linguee-api:latest"
+    restart: unless-stopped
+    healthcheck:
+      test: [ "CMD-SHELL", "test -f /tmp/healthcheck-done || (curl -f 'http://localhost:8000/api/v2/translations?src=en&dst=ru&query=health' && touch /tmp/healthcheck-done)" ]
+      interval: 1m
+      timeout: 10s
+      retries: 3
+    networks:
+      - flashcards-net
+
   flashcards-tts-server:
     image: sszuev/open-tutor-tts-server:2.0.0-snapshot
     networks:
@@ -162,6 +173,19 @@ services:
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
 
+  flashcards-translation-server:
+    image: sszuev/open-tutor-translation-server:2.0.0-snapshot
+    networks:
+      - flashcards-net
+    depends_on:
+      flashcards-nats:
+        condition: service_healthy
+      flashcards-linguee-api:
+        condition: service_healthy
+    environment:
+      TRANSLATION_SERVER_NATS_HOST: "flashcards-nats"
+      TRANSLATION_SERVICE_LINGUEE_API_URL: "http://flashcards-linguee-api:8000/api/v2/translations"
+
   flashcards-app:
     image: sszuev/open-tutor:2.0.0-snapshot
     networks:
@@ -171,6 +195,7 @@ services:
       - flashcards-cards-server
       - flashcards-dictionaries-server
       - flashcards-settings-server
+      - flashcards-translation-server
       - flashcards-envoy
     environment:
       CLIENT_NATS_HOST: "flashcards-nats"

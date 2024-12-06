@@ -11,8 +11,9 @@ The server has the following settings (example):
 	translation-server.nats.port           = 4222
 	translation-server.nats.user           = guest
 	translation-server.nats.password       = guest            
-    translation-server.nats.topic          = TTS
-    translation-server.nats.group          = TTS
+    translation-server.nats.topic          = TRANSLATION
+    translation-server.nats.group          = TRANSLATION
+    translation.service.linguee-api-url    = https://linguee-api.fly.dev/api/v2/translations
 ```
 
 #### build and run application using docker & gradle:

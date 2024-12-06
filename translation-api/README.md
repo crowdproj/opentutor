@@ -4,6 +4,6 @@ contract:
 
 ```kotlin
 interface TranslationRepository {
-    suspend fun fetch(sourceLang: String, targetLang: String, word: String): TCard
+    suspend fun fetch(sourceLang: String, targetLang: String, word: String): List<TranslationEntity>
 }
 ```
