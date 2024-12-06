@@ -20,6 +20,7 @@ const deleteCardURI = '/v1/api/cards/delete';
 const getAudioURI = '/v1/api/sounds/get';
 const getSettingsURI = '/v1/api/settings/get';
 const updateSettingsURI = '/v1/api/settings/update';
+const fetchTranslationURI = "/v1/api/translation/fetch"
 
 const getAllDictionariesRequestType = 'getAllDictionaries';
 const createDictionaryRequestType = 'createDictionary';
@@ -37,6 +38,7 @@ const deleteCardRequestType = 'deleteCard';
 const getAudioRequestType = 'getAudio';
 const getSettingsRequestType = 'getSettings';
 const updateSettingsRequestType = 'updateSettings';
+const fetchTranslationRequestType = 'fetchTranslation';
 
 async function initKeycloak() {
     if (devMode) {
@@ -231,7 +233,7 @@ function createCard(card, onDone) {
             handleResponseErrors(res);
         } else {
             if (onDone !== undefined) {
-                onDone(res.card.cardId);
+                onDone(res.card);
             }
         }
     });
@@ -248,7 +250,7 @@ function updateCard(card, onDone) {
             handleResponseErrors(res);
         } else {
             if (onDone !== undefined) {
-                onDone(res.card.cardId);
+                onDone(res.card);
             }
         }
     });
@@ -325,6 +327,25 @@ function playAudio(resourcePath, callback) {
             const blob = new Blob([bytes], {type: 'audio/wav'});
             const url = window.URL.createObjectURL(blob);
             new Audio(url).play().then(callback);
+        }
+    });
+}
+
+function fetchTranslation(sourceLang, targetLang, queryWord, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': fetchTranslationRequestType,
+        'sourceLang': sourceLang,
+        'targetLang': targetLang,
+        'word': queryWord
+    };
+    post(fetchTranslationURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res)
+        } else {
+            if (onDone !== undefined) {
+                onDone(res.card);
+            }
         }
     });
 }

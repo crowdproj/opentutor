@@ -10,7 +10,6 @@ fun TTSContext.toTTSResponse(): BaseResponse = when (val op = this.operation) {
     else -> throw IllegalArgumentException("Not supported operation $op.")
 }
 
-
 fun TTSContext.toGetAudioResponse() = GetAudioResponse(
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),

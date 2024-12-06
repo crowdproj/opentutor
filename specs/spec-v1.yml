@@ -16,7 +16,11 @@ tags:
   - name: dictionary
     description: A dictionary - collection of learning cards
   - name: audio
-    description: Audio resource, wav
+    description: Get audio resource from external system
+  - name: settings
+    description: Settings api
+  - name: translation
+    description: Fetch translation from external system
 
 paths:
   /api/sounds/get:
@@ -39,6 +43,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GetAudioResponse'
+
+  /api/translation/fetch:
+    post:
+      tags:
+        - translation
+      summary: Gets a translation object from external system
+      operationId: fetchTranslation
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FetchTranslationRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FetchTranslationResponse'
 
   /api/dictionaries/get-all:
     post:
@@ -389,6 +414,28 @@ components:
             word:
               type: string
 
+    FetchTranslationRequest:
+      description: Request to fetch translation resource
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            sourceLang:
+              type: string
+            targetLang:
+              type: string
+            word:
+              type: string
+
+    FetchTranslationResponse:
+      description: Fetch translation resource by source lang, target lang and query word
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          properties:
+            card:
+              $ref: '#/components/schemas/CardResource'
+
     GetAudioResponse:
       description: Get audio resource response
       allOf:
@@ -720,6 +767,7 @@ components:
         propertyName: requestType
         mapping:
           getAudio: '#/components/schemas/GetAudioRequest'
+          fetchTranslation: '#/components/schemas/FetchTranslationRequest'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesRequest'
           createDictionary: '#/components/schemas/CreateDictionaryRequest'
           updateDictionary: '#/components/schemas/UpdateDictionaryRequest'
@@ -758,6 +806,7 @@ components:
         propertyName: responseType
         mapping:
           getAudio: '#/components/schemas/GetAudioResponse'
+          fetchTranslation: '#/components/schemas/FetchTranslationResponse'
           getAllDictionaries: '#/components/schemas/GetAllDictionariesResponse'
           createDictionary: '#/components/schemas/CreateDictionaryResponse'
           updateDictionary: '#/components/schemas/UpdateDictionaryResponse'

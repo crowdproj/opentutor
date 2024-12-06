@@ -14,7 +14,7 @@ dependencies {
     val slf4jVersion: String by project
     val caffeineVersion: String by project
 
-    implementation(project(":common"))
+    implementation(project(":tts-api"))
     implementation(project(":utilities"))
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
     implementation("org.apache.commons:commons-compress:$commonsCompressVersion")
@@ -23,7 +23,7 @@ dependencies {
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
 
-    testFixturesImplementation(project(":common"))
+    testFixturesImplementation(project(":tts-api"))
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")

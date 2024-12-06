@@ -34,7 +34,7 @@ function scrollToRow(rowSelector, headerSelector, onScroll) {
         const row = $(rowSelector);
         const header = $(headerSelector)
         if (row.length && header.length) {
-            const position = row.offset().top - header.offset().top + header.scrollTop();
+            const position = row.offset().top - header.offset().top + header.scrollTop() - row.height();
             header.scrollTop(position);
             if (onScroll) {
                 onScroll(row);
@@ -62,6 +62,10 @@ function findSelectedRows(tbody) {
     return tbody.find('tr').filter(function () {
         return isRowSelected($(this));
     });
+}
+
+function selectedRow() {
+    return $('tr.table-success');
 }
 
 function calcInitTableHeight() {

@@ -13,7 +13,7 @@ class SettingsServerController(
 ) {
     private val scope = CoroutineScope(
         context = Executors.newSingleThreadExecutor()
-            .asCoroutineDispatcher() + CoroutineName("thread-dictionaries-controller")
+            .asCoroutineDispatcher() + CoroutineName("thread-settings-controller")
     )
 
     /**

@@ -1,12 +1,11 @@
-<div th:fragment="cardDialog (id)" class="modal fade" th:id="${id} + '-card-dialog'" tabindex="-1"
-     th:aria-labelledby="${id} + '-card-dialog-label'" aria-hidden="true">
+<div th:fragment="card-dialog-modal" class="modal fade" id="card-dialog" tabindex="-1"
+     aria-labelledby="card-dialog-label" aria-hidden="true">
     <div class="modal-dialog modal-xl">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" th:id="${id} + '-card-dialog-label'" th:text="${#strings.toUpperCase(id)}">edit
-                    word</h5>
+                <h5 class="modal-title" id="card-dialog-label">edit word</h5>
                 <div class="btn-group ms-auto">
-                    <button th:id="${id} + '-card-dialog-fullscreen-btn'" type="button" aria-label="Fullscreen">
+                    <button id="card-dialog-fullscreen-btn" type="button" aria-label="Fullscreen">
                         <i class="bi bi-arrows-fullscreen"></i>
                     </button>
                     <button type="button" data-bs-dismiss="modal" aria-label="Close">
@@ -15,29 +14,30 @@
                 </div>
             </div>
             <div class="modal-body">
-                <div class="accordion" th:id="${id} + '-card-dialog-accordion'">
-                    <div class="accordion-item" th:id="${id} + '-card-dialog-accordion-item-i1'">
-                        <h2 class="accordion-header" th:id="${id} + '-card-dialog-heading-i1'">
+                <div class="accordion" id="card-dialog-accordion">
+                    <div class="accordion-item" id="card-dialog-accordion-item-i1">
+                        <h2 class="accordion-header" id="card-dialog-heading-i1">
                             <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    th:data-bs-target="'#' + ${id} + '-card-dialog-collapse-i1'"
-                                    aria-expanded="true" th:aria-controls="${id} + '-card-dialog-collapse-i1'">
+                                    data-bs-target="#card-dialog-collapse-i1"
+                                    aria-expanded="true"
+                                    aria-controls="card-dialog-collapse-i1">
                                 Word #1
                             </button>
                         </h2>
-                        <div th:id="${id} + '-card-dialog-collapse-i1'" class="accordion-collapse collapse show"
-                             th:aria-labelledby="${id} + '-card-dialog-heading-i1'"
-                             th:data-bs-parent="${id} + '-card-dialog-accordion'">
+                        <div id="card-dialog-collapse-i1" class="accordion-collapse collapse show"
+                             aria-labelledby="card-dialog-heading-i1"
+                             data-bs-parent="card-dialog-accordion">
                             <div class="accordion-body">
                                 <div class="row">
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"
-                                                  th:id="${id} + '-card-dialog-word-sizing-sm-i1'">word</span>
+                                                  id="card-dialog-word-sizing-sm-i1">word</span>
                                         </div>
                                         <input type="text"
                                                class="form-control word"
                                                aria-label="word"
-                                               th:aria-describedby="${id} + '-card-dialog-word-sizing-sm-i1'"/>
+                                               aria-describedby="card-dialog-word-sizing-sm-i1"/>
                                         <div class="input-group-append">
                                             <button th:insert="speaker.html :: svg"
                                                     type="button"
@@ -49,24 +49,24 @@
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend d-flex align-items-stretch">
                                             <span style="width: 120px" class="input-group-text"
-                                                  th:id="${id} + '-card-dialog-translation-sizing-sm-i1'">translation</span>
+                                                  id="card-dialog-translation-sizing-sm-i1">translation</span>
                                         </div>
                                         <textarea rows="1"
                                                   class="form-control translation"
                                                   aria-label="translation"
-                                                  th:aria-describedby="${id} + '-card-dialog-translation-sizing-sm-i1'"></textarea>
+                                                  aria-describedby="card-dialog-translation-sizing-sm-i1"></textarea>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend">
                                             <span style="width: 120px" class="input-group-text"
-                                                  th:id="${id} + '-card-dialog-transcription-sizing-sm-i1'">transcription</span>
+                                                  id="card-dialog-transcription-sizing-sm-i1">transcription</span>
                                         </div>
                                         <input type="text"
                                                class="form-control transcription"
                                                aria-label="transcription"
-                                               th:aria-describedby="${id} + '-card-dialog-transcription-sizing-sm-i1'"/>
+                                               aria-describedby="card-dialog-transcription-sizing-sm-i1"/>
                                     </div>
                                 </div>
                                 <div class="row">
@@ -83,11 +83,11 @@
                                     <div class="input-group input-group-sm mb-3">
                                         <div class="input-group-prepend d-flex align-items-stretch">
                                             <span style="width: 120px" class="input-group-text"
-                                                  th:id="${id} + '-card-dialog-examples-sizing-sm-i1'">examples</span>
+                                                  id="card-dialog-examples-sizing-sm-i1">examples</span>
                                         </div>
                                         <textarea rows="1" class="form-control examples"
                                                   aria-label="examples"
-                                                  th:aria-describedby="${id} + '-card-dialog-examples-sizing-sm-i1'"></textarea>
+                                                  aria-describedby="card-dialog-examples-sizing-sm-i1"></textarea>
                                     </div>
                                 </div>
                                 <div class="row links">
@@ -98,20 +98,20 @@
                                         <h6 class="mb-0 ya-link"></h6>
                                     </div>
                                     <div class="card-header d-flex justify-content-between"
-                                         th:id="${id} + '-card-dialog-lg-header-i1'">
+                                         id="card-dialog-lg-header-i1">
                                         <h6 class="mb-0 lg-link"></h6>
                                         <h6 class="mb-0">
                                             <button class="btn btn-link lg-link-collapse"
                                                     data-bs-toggle="collapse"
-                                                    th:data-bs-target="'#' + ${id} + '-card-dialog-lg-collapse-i1'"
+                                                    data-bs-target="#card-dialog-lg-collapse-i1"
                                                     aria-expanded="false"
-                                                    th:aria-controls="'#' + ${id} + '-card-dialog-lg-collapse-i1'">
+                                                    aria-controls="#card-dialog-lg-collapse-i1">
                                                 <i class="bi bi-caret-down-fill"></i>
                                             </button>
                                         </h6>
                                     </div>
-                                    <div th:id="${id} + '-card-dialog-lg-collapse-i1'" class="collapse lg-link-collapse"
-                                         th:aria-labelledby="${id} + '-card-dialog-lg-header-i1'">
+                                    <div id="card-dialog-lg-collapse-i1" class="collapse lg-link-collapse"
+                                         aria-labelledby="card-dialog-lg-header-i1">
                                         <div class="card-body" style="overflow: auto">
                                         </div>
                                     </div>
@@ -132,7 +132,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button th:id="${id} + '-card-dialog-save'" type="button" class="btn btn-primary" disabled>Save</button>
+                <button id="card-dialog-save" type="button" class="btn btn-primary" disabled>Save</button>
             </div>
         </div>
     </div>
