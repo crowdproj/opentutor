@@ -21,11 +21,9 @@ internal class CborSupportTest {
     fun `test CardContext serialization & deserialization #1`() {
         val entity1 = CardEntity.EMPTY.copy(
             details = mapOf("b" to 42, "c" to 42.42, "a" to "A", "d" to 4242.4242),
-            sound = TTSResourceId("XX:XX:XX:XX:XX:XX:XX"),
         )
         val entity2 = CardEntity.EMPTY.copy(
             stats = mapOf(Stage.SELF_TEST to 42),
-            sound = TTSResourceId("XX:XX:XX:XX:XX:XX:XX"),
         )
         val context1 = CardContext(
             requestCardEntity = entity1,

@@ -14,7 +14,7 @@ import org.junit.jupiter.api.Test
 internal class SettingsCorProcessorRunTest {
 
     companion object {
-        private val testUserId = stubDictionary.userId
+        private val testUserId = testDictionaryEntity.userId
 
         @Suppress("SameParameterValue")
         private fun testContext(
