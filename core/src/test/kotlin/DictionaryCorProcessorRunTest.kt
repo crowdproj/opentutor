@@ -23,7 +23,7 @@ import org.junit.jupiter.api.Test
 
 internal class DictionaryCorProcessorRunTest {
     companion object {
-        private val testUserId = stubDictionary.userId
+        private val testUserId = testDictionaryEntity.userId
 
         @Suppress("SameParameterValue")
         private fun testContext(
@@ -52,7 +52,7 @@ internal class DictionaryCorProcessorRunTest {
 
     @Test
     fun `test get-all-dictionary success`() = runTest {
-        val testResponseEntities = stubDictionaries
+        val testResponseEntities = testDictionaryEntities
 
         var getAllDictionariesWasCalled = false
         var countCardsByDictionaryIdWasCalled = false
@@ -115,12 +115,12 @@ internal class DictionaryCorProcessorRunTest {
     fun `test create-dictionary success`() = runTest {
         val testDictionaryId = DictionaryId("42")
         val givenDictionary =
-            stubDictionary.copy(dictionaryId = DictionaryId.NONE, name = " ${stubDictionary.name} ")
+            testDictionaryEntity.copy(dictionaryId = DictionaryId.NONE, name = " ${testDictionaryEntity.name} ")
         val expectedDictionary =
-            stubDictionary.copy(
+            testDictionaryEntity.copy(
                 dictionaryId = testDictionaryId,
-                sourceLang = stubDictionary.sourceLang.normalize(),
-                targetLang = stubDictionary.targetLang.normalize(),
+                sourceLang = testDictionaryEntity.sourceLang.normalize(),
+                targetLang = testDictionaryEntity.targetLang.normalize(),
             )
 
         var wasCalled = false
@@ -148,12 +148,12 @@ internal class DictionaryCorProcessorRunTest {
     fun `test update-dictionary success`() = runTest {
         val testDictionaryId = DictionaryId("42")
         val givenDictionary =
-            stubDictionary.copy(dictionaryId = testDictionaryId, name = " ${stubDictionary.name} ")
+            testDictionaryEntity.copy(dictionaryId = testDictionaryId, name = " ${testDictionaryEntity.name} ")
         val expectedDictionary =
-            stubDictionary.copy(
+            testDictionaryEntity.copy(
                 dictionaryId = testDictionaryId,
-                sourceLang = stubDictionary.sourceLang.normalize(),
-                targetLang = stubDictionary.targetLang.normalize(),
+                sourceLang = testDictionaryEntity.sourceLang.normalize(),
+                targetLang = testDictionaryEntity.targetLang.normalize(),
             )
 
         var wasCalled = false
@@ -180,7 +180,7 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test delete-dictionary success`() = runTest {
         val testId = DictionaryId("42")
-        val response = stubDictionary
+        val response = testDictionaryEntity
 
         var isDeleteDictionaryCalled = false
         val repository = MockDbDictionaryRepository(
@@ -207,12 +207,12 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test download-dictionary xml success`() = runTest {
         val testId = DictionaryId("42")
-        val testDictionary = stubDictionary.copy(
+        val testDictionary = testDictionaryEntity.copy(
             dictionaryId = testId,
             sourceLang = LangEntity(LangId("en")),
             targetLang = LangEntity(LangId("fr")),
         )
-        val testCard = stubCard.copy(dictionaryId = testId)
+        val testCard = testCardEntity1.copy(dictionaryId = testId)
 
         var isFindDictionaryByIdCalled = false
         var isFindCardsByDictionaryIdCalled = false
@@ -253,12 +253,12 @@ internal class DictionaryCorProcessorRunTest {
     @Test
     fun `test download-dictionary json success`() = runTest {
         val testId = DictionaryId("42")
-        val testDictionary = stubDictionary.copy(
+        val testDictionary = testDictionaryEntity.copy(
             dictionaryId = testId,
             sourceLang = LangEntity(LangId("en")),
             targetLang = LangEntity(LangId("fr")),
         )
-        val testCard = stubCard.copy(dictionaryId = testId)
+        val testCard = testCardEntity1.copy(dictionaryId = testId)
 
         var isFindDictionaryByIdCalled = false
         var isFindCardsByDictionaryIdCalled = false
@@ -324,8 +324,8 @@ internal class DictionaryCorProcessorRunTest {
             </dictionary>
         """.trimIndent().toByteArray(Charsets.UTF_16)
         )
-        val testDictionary = stubDictionary
-        val testCard = stubCard
+        val testDictionary = testDictionaryEntity
+        val testCard = testCardEntity1
 
         var isCreateDictionaryCalled = false
         var isCreateCardsCalled = false
@@ -403,8 +403,8 @@ internal class DictionaryCorProcessorRunTest {
             }
         """.trimIndent().toByteArray(Charsets.UTF_8)
         )
-        val testDictionary = stubDictionary
-        val testCard = stubCard
+        val testDictionary = testDictionaryEntity
+        val testCard = testCardEntity1
 
         var isCreateDictionaryCalled = false
         var isCreateCardsCalled = false

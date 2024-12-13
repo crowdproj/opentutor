@@ -28,7 +28,7 @@ fun ChainDSL<TranslationContext>.processTranslation() = worker {
             )
             this.status = AppStatus.FAIL
         } else {
-            this.responseCardEntity = found.normalize()
+            this.responseCardEntity = postProcess(found.normalize(), this.normalizedRequestSourceLang)
             this.status = AppStatus.RUN
         }
     }

@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
 import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
@@ -50,6 +51,8 @@ internal class TranslationCorProcessorRunTest {
                 CardWordEntity(
                     word = "q",
                     translations = listOf(listOf("a", "b", "c")),
+                    sound = TTSResourceId("en:q"),
+                    primary = true,
                 )
             )
         )

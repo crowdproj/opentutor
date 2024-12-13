@@ -11,9 +11,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
-import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
@@ -22,7 +20,6 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
-import org.junit.jupiter.params.provider.ValueSource
 import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -33,7 +30,7 @@ internal class CardCorProcessorValidationTest {
             "test: ${ParameterizedTest.INDEX_PLACEHOLDER}: \"${ParameterizedTest.ARGUMENTS_WITH_NAMES_PLACEHOLDER}\""
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
-        private val testCard = stubCard.copy()
+        private val testCard = testCardEntity1.copy()
         private val testCardFilter = CardFilter(
             dictionaryIds = listOf(4, 2, 42).map { DictionaryId(it.toString()) },
             length = 42,
@@ -100,11 +97,6 @@ internal class CardCorProcessorValidationTest {
             val ops = listOf(CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD)
             val words = wrongWords()
             return ops.flatMap { op -> words.map { Arguments.of(it, op) } }
-        }
-
-        @JvmStatic
-        private fun wrongLangIds(): List<String> {
-            return listOf("", "xxxxxx", "xxx:", "en~", "42")
         }
     }
 

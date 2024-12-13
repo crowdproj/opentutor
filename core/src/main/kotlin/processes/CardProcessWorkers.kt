@@ -10,8 +10,10 @@ import com.gitlab.sszuev.flashcards.corlib.worker
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
+import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import org.slf4j.LoggerFactory
 
@@ -330,14 +332,40 @@ private fun postProcess(
     dictionary: (DictionaryId) -> DictionaryEntity
 ): CardEntity {
     check(card != CardEntity.EMPTY) { "Null card" }
-    val sourceLang = dictionary.invoke(card.dictionaryId).sourceLang.langId
-    val words = card.words.map { it.copy(sound = TTSResourceGet(it.word, sourceLang).asResourceId()) }
+    return postProcess(card, dictionary.invoke(card.dictionaryId).sourceLang.langId)
+}
 
-    val cardAudioId = if (words.size == 1) {
-        words.single().sound
-    } else {
-        val cardAudioString = card.words.joinToString(",") { it.word.split("|")[0].trim() }
-        TTSResourceGet(cardAudioString, sourceLang).asResourceId()
+internal fun postProcess(
+    card: CardEntity,
+    sourceLang: LangId,
+): CardEntity {
+    check(card != CardEntity.EMPTY) { "Null card" }
+    check(card.words.isNotEmpty()) { "No words found" }
+    val words = card.words
+        .map { it.copy(sound = TTSResourceGet(it.word, sourceLang).asResourceId()) }
+        .sortedByDescending { it.primary }
+    if (words.size > 1 && words.take(2).last().primary) {
+        throw IllegalStateException("Expected single primary word")
     }
-    return card.copy(words = words, sound = cardAudioId)
+    if (words.any { it.primary }) {
+        return card.copy(words = words)
+    }
+    if (words.size == 1) {
+        return card.copy(words = listOf(words[0].copy(primary = true)))
+    }
+    val word = card.words.joinToString(", ") { it.word.substringBefore("|").trim() }
+    val sound = TTSResourceGet(
+        word = card.words.joinToString(",") { it.word.substringBefore("|").trim() },
+        lang = sourceLang,
+    ).asResourceId()
+    val translations = card.words.map { it.translations.flatten() }.filter { it.isNotEmpty() }
+    val examples = card.words.flatMap { it.examples }
+    val primaryCardWord = CardWordEntity(
+        word = word,
+        translations = translations,
+        sound = sound,
+        examples = examples,
+        primary = true,
+    )
+    return card.copy(words = listOf(primaryCardWord) + words)
 }

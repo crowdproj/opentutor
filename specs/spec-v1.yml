@@ -877,8 +877,6 @@ components:
         changedAt:
           type: string
           format: date-time
-        sound:
-          type: string
 
     CardWordResource:
       description: 'A card word resource, information about particular word'
@@ -902,6 +900,8 @@ components:
             $ref: '#/components/schemas/CardWordExampleResource'
         sound:
           type: string
+        primary:
+          type: boolean
 
     CardWordExampleResource:
       description: 'A card word example resource,  part of CardWordResource'
