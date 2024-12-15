@@ -99,6 +99,7 @@ private fun CardWordEntity.toDbCardWord() = DbCard.Word(
     partOfSpeech = this.partOfSpeech,
     examples = this.examples.map { it.toDbCardWordExample() },
     translations = this.translations,
+    primary = this.primary,
 )
 
 private fun CardWordExampleEntity.toDbCardWordExample() =
@@ -110,6 +111,7 @@ private fun DbCard.Word.toCardWordEntity() = CardWordEntity(
     partOfSpeech = this.partOfSpeech,
     examples = this.examples.map { it.toCardWordExampleEntity() },
     translations = this.translations,
+    primary = this.primary,
 )
 
 private fun DbCard.Word.Example.toCardWordExampleEntity() =

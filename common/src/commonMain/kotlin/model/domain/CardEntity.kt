@@ -16,7 +16,6 @@ data class CardEntity(
     val details: Map<String, @Polymorphic Any> = emptyMap(),
     val answered: Int? = null,
     val changedAt: Instant = Instant.NONE,
-    val sound: TTSResourceId = TTSResourceId.NONE,
 ) {
     companion object {
         val EMPTY = CardEntity()
@@ -31,6 +30,7 @@ data class CardWordEntity(
     val examples: List<CardWordExampleEntity> = emptyList(),
     val translations: List<List<String>> = emptyList(),
     val sound: TTSResourceId = TTSResourceId.NONE,
+    val primary: Boolean = false,
 )
 
 @Serializable

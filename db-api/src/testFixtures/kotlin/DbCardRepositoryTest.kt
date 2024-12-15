@@ -94,6 +94,7 @@ abstract class DbCardRepositoryTest {
                         DbCard.Word.Example(text = "nasty weather", translation = "ненастная погода"),
                         DbCard.Word.Example(text = "spell of cold weather", translation = "похолодание"),
                     ),
+                    primary = false,
                 ),
             ),
         )
@@ -155,6 +156,7 @@ abstract class DbCardRepositoryTest {
                     partOfSpeech = "adjective",
                     translations = listOf(listOf("темный"), listOf("пасмурный")),
                     examples = listOf(DbCard.Word.Example.NULL.copy(text = "Well, that's a murky issue, isn't it?")),
+                    primary = true,
                 ),
             ),
         )

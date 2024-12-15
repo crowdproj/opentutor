@@ -61,6 +61,7 @@ data class CommonWordDto(
     val partOfSpeech: String? = null,
     val examples: List<CommonExampleDto> = emptyList(),
     val translations: List<List<String>> = emptyList(),
+    val primary: Boolean = false,
 )
 
 data class CommonExampleDto(

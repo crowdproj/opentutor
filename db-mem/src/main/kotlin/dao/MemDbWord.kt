@@ -6,4 +6,5 @@ data class MemDbWord(
     val partOfSpeech: String? = null,
     val examples: List<MemDbExample> = emptyList(),
     val translations: List<List<String>> = emptyList(),
+    val primary: Boolean = false,
 )

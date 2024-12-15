@@ -136,45 +136,23 @@ function selectNonAnswered(cards, limit) {
 }
 
 /**
+ * Gets primary words as string.
  * @param card
  * @returns {*}
  */
-function getAllWordsAsString(card) {
-    if (card.allWordsAsString) {
-        return card.allWordsAsString;
-    }
-    card.allWordsAsString = [...new Set(card.words.map(it => it.word))].join(', ');
-    return card.allWordsAsString;
-}
-
-/**
- * Represents an item translations as a single string.
- * @param card - card resource
- * @returns {string}
- */
-function getAllTranslationsAsString(card) {
-    if (card.allTranslationsAsString) {
-        return card.allTranslationsAsString;
-    }
-    let arrayOfArrays = $.map(card.words.map(it => it.translations), function (n) {
-        return n;
-    });
-    card.allTranslationsAsString = $.each(arrayOfArrays, function (n) {
-        return n;
-    }).join(', ');
-    return card.allTranslationsAsString;
+function getCardWord(card) {
+    return getPrimaryCardWord(card).word;
 }
 
 /**
  * Finds translation string from the item that starts with the specified substring ignoring case.
- * **[TODO] For first word only.**
  * @param card - card resource
  * @param test string to test
  * @returns {string} or undefined
  */
 function findTranslationStartsWith(card, test) {
     test = test.toLowerCase();
-    return getCardFirstWordTranslationsAsArray(card).find((s) => s.toLowerCase().startsWith(test));
+    return getCardPrimaryWordTranslationsAsArray(card).find((s) => s.toLowerCase().startsWith(test));
 }
 
 /**
@@ -194,25 +172,35 @@ function findWordStartsWith(card, test) {
 }
 
 /**
+ * Searches through a list of card objects to find the first card
+ * whose words, when concatenated as a string, start with the specified prefix.
+ *
+ * @param {Array} cards - An array of card objects to search through.
+ * @param {string} prefix - The prefix to match at the start of the concatenated word string.
+ * @return {object|null} The first card object that matches the prefix, or null if no match is found or the prefix is invalid.
+ */
+function findCardByWordPrefix(cards, prefix) {
+    if (prefix === null || prefix === undefined) {
+        return null;
+    }
+    const search = prefix.trim().toLowerCase();
+    if (search.length === 0) {
+        return null;
+    }
+    return cards.find((card) => getCardWord(card).toLowerCase().startsWith(search));
+}
+
+/**
  * Represents an item translations as a single string.
- * **[TODO] For first word only.**
  * @param card - card resource
  * @returns {string}
  */
 function getTranslationsAsString(card) {
-    return getCardFirstWordTranslationsAsArray(card).join(', ');
+    return getCardPrimaryWordTranslationsAsArray(card).join(', ');
 }
 
 function getTranslationsAsHtml(card) {
-    return card.words
-        .map(word => {
-            return getWordTranslationsAsArray(word)
-        })
-        .filter(item => {
-            return 0 < item.length;
-        })
-        .map(item => item.join(", "))
-        .join("<br>");
+    return getPrimaryCardWord(card).translations.map(item => item.join(", ")).join("<br>");
 }
 
 /**
@@ -221,9 +209,8 @@ function getTranslationsAsHtml(card) {
  * @param card - card resource
  * @returns {array}
  */
-function getCardFirstWordTranslationsAsArray(card) {
-    // first word
-    return getWordTranslationsAsArray(card.words[0]);
+function getCardPrimaryWordTranslationsAsArray(card) {
+    return getWordTranslationsAsArray(getPrimaryCardWord(card));
 }
 
 /**
@@ -254,6 +241,19 @@ function getWordExamplesAsArray(word) {
         const suffix = ex.translation != null ? ` (${ex.translation})` : "";
         return ex.example + suffix;
     })
+}
+
+function getCardSound(card) {
+    return getPrimaryCardWord(card).sound;
+}
+
+function getPrimaryCardWord(card) {
+    const res = card.words.filter(word => word.primary === true);
+    if (res.length === 1) {
+        return res[0];
+    } else {
+        throw new Error("No single primary word found, card: " + card.cardId);
+    }
 }
 
 /**

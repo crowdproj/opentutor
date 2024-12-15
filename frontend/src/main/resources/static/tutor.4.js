@@ -23,14 +23,14 @@
  *          "example": "...",
  *          "translation": "..."
  *        }
- *      ]
+ *      ],
+ *      "primary": boolean
  *    }
  *  ],
  *  "stats": {},
  *  "details": {},
  *  "answered": int,
- *  "wrong": boolean,
- *  "sound": bytes
+ *  "wrong": boolean
  * }
  * ```
  */
@@ -249,9 +249,9 @@ function drawShowCardPage(cards, index, nextStage) {
 
     const status = '(' + percentage(current, null) + '%) ';
 
-    drawAndPlayAudio(page, current.sound);
+    drawAndPlayAudio(page, getCardSound(current));
     displayTitle(page, 'show: ' + current.dictionaryName);
-    $('.word', page).html(getAllWordsAsString(current));
+    $('.word', page).html(getCardWord(current));
     $('.translations', page).html(getTranslationsAsHtml(current));
     $('.examples', page).html(getExamplesAsHtml(current));
     $('.status', page).html(status);
@@ -287,7 +287,7 @@ function drawMosaicCardPage(cards, reverse, nextStage) {
         if (reverse) {
             txt = getTranslationsAsString(card);
         } else {
-            txt = getAllWordsAsString(card);
+            txt = getCardWord(card);
         }
         const left = $(`<div class="card ${borderWhite}" id="${card.cardId}-left"><h4>${txt}</h4></div>`);
         left.unbind('click').on('click', function () {
@@ -297,7 +297,7 @@ function drawMosaicCardPage(cards, reverse, nextStage) {
             setBorders(leftCards, borderWhite);
             setBorderClass(left, borderPrimary);
             if (!reverse) {
-                const sound = card.sound;
+                const sound = getCardSound(card);
                 if (sound != null) {
                     playAudio(sound);
                 }
@@ -310,7 +310,7 @@ function drawMosaicCardPage(cards, reverse, nextStage) {
     dataRight.forEach(function (card) {
         let txt;
         if (reverse) {
-            txt = getAllWordsAsString(card);
+            txt = getCardWord(card);
         } else {
             txt = getTranslationsAsString(card);
         }
@@ -322,7 +322,7 @@ function drawMosaicCardPage(cards, reverse, nextStage) {
                 return;
             }
             if (reverse) {
-                const sound = card.sound;
+                const sound = getCardSound(card);
                 if (sound != null) {
                     playAudio(sound);
                 }
@@ -384,14 +384,14 @@ function drawOptionsCardPage(options, index, reverse, nextStage) {
     if (reverse) {
         txt = getTranslationsAsString(dataLeft);
     } else {
-        txt = getAllWordsAsString(dataLeft);
+        txt = getCardWord(dataLeft);
     }
     const left = $(`<div class="card ${borderWhite}" id="${dataLeft.cardId}-left"><h4>${txt}</h4></div>`);
     left.unbind('click').on('click', function () {
         setBorderClass(left, borderPrimary);
         setBorders($('#options-right .card'), borderWhite);
         if (!reverse) {
-            const sound = dataLeft.sound;
+            const sound = getCardSound(dataLeft);
             if (sound != null) {
                 playAudio(sound);
             }
@@ -404,14 +404,14 @@ function drawOptionsCardPage(options, index, reverse, nextStage) {
     dataRight.forEach(function (card) {
         let txt;
         if (reverse) {
-            txt = getAllWordsAsString(card);
+            txt = getCardWord(card);
         } else {
             txt = getTranslationsAsString(card);
         }
         const right = $(`<div class="card ${borderLight}" id="${card.cardId}-right"><p class="h4">${txt}</p></div>`);
         right.unbind('click').on('click', function () {
             if (reverse) {
-                const sound = card.sound;
+                const sound = getCardSound(card);
                 if (sound != null) {
                     playAudio(sound);
                 }
@@ -461,14 +461,14 @@ function drawWritingCardPage(writingData, index, reverse, nextStage) {
     if (reverse) {
         $('.sound', page).prop('disabled', true);
     } else {
-        drawAndPlayAudio(page, current.sound);
+        drawAndPlayAudio(page, getCardSound(current));
     }
     displayTitle(page, stageTitle + ': ' + current.dictionaryName);
     let txt;
     if (reverse) {
         txt = getTranslationsAsString(current);
     } else {
-        txt = getAllWordsAsString(current);
+        txt = getCardWord(current);
     }
     $('.word', page).html(txt);
 
@@ -487,7 +487,7 @@ function drawWritingCardPage(writingData, index, reverse, nextStage) {
     });
     testButton.unbind('click').on('click', function () {
         if (reverse) {
-            drawAndPlayAudio(page, current.sound);
+            drawAndPlayAudio(page, getCardSound(current));
         }
         let res;
         const givenAnswer = textareaInput.val();
@@ -507,7 +507,7 @@ function drawWritingCardPage(writingData, index, reverse, nextStage) {
         }
         let txt;
         if (reverse) {
-            txt = getAllWordsAsString(current);
+            txt = getCardWord(current);
         } else {
             txt = getTranslationsAsString(current);
         }
@@ -548,16 +548,16 @@ function drawSelfTestCardPage(selfTestData, index, reverse, nextStage) {
     if (reverse) {
         $('.sound', page).prop('disabled', true);
     } else {
-        drawAndPlayAudio(page, current.sound);
+        drawAndPlayAudio(page, getCardSound(current));
     }
     let word1;
     let word2;
     if (reverse) {
         word1 = getTranslationsAsString(current);
-        word2 = getAllWordsAsString(current);
+        word2 = getCardWord(current);
     } else {
         word2 = getTranslationsAsString(current);
-        word1 = getAllWordsAsString(current);
+        word1 = getCardWord(current);
     }
     displayTitle(page, stage + ': ' + current.dictionaryName);
     $('.word', page).html(word1);
@@ -570,7 +570,7 @@ function drawSelfTestCardPage(selfTestData, index, reverse, nextStage) {
 
     display.unbind('click').on('click', function () {
         if (reverse) {
-            drawAndPlayAudio(page, current.sound);
+            drawAndPlayAudio(page, getCardSound(current));
         }
         display.unbind('click');
         curtain.hide();
@@ -606,8 +606,8 @@ function drawResultCardPage() {
     displayTitle(page, 'result');
     learned.forEach(function (card) {
         const row = $(`<tr id="${'w' + card.cardId}">
-                            <td class="text-success"><b>${getAllWordsAsString(card)}</b></td>
-                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td class="text-success"><b>${getCardWord(card)}</b></td>
+                            <td>${getTranslationsAsString(card)}</td>
                             <td>${card.dictionaryName}</td>
                             <td class="text-success"><b>${percentage(card, null)}</b></td>
                           </tr>`);
@@ -615,8 +615,8 @@ function drawResultCardPage() {
     });
     correct.forEach(function (card) {
         const row = $(`<tr id="${'w' + card.cardId}">
-                            <td class="text-primary"><b>${getAllWordsAsString(card)}</b></td>
-                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td class="text-primary"><b>${getCardWord(card)}</b></td>
+                            <td>${getTranslationsAsString(card)}</td>
                             <td>${card.dictionaryName}</td>
                             <td class="text-primary"><b>${percentage(card, null)}</b></td>
                           </tr>`);
@@ -624,8 +624,8 @@ function drawResultCardPage() {
     });
     wrong.forEach(function (card) {
         const row = $(`<tr id="${'w' + card.cardId}">
-                            <td class="text-danger"><b>${getAllWordsAsString(card)}</b></td>
-                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td class="text-danger"><b>${getCardWord(card)}</b></td>
+                            <td>${getTranslationsAsString(card)}</td>
                             <td>${card.dictionaryName}</td>
                             <td class="text-danger"><b>${percentage(card, null)}</b></td>
                           </tr>`);

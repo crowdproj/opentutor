@@ -131,6 +131,7 @@ fun CardWordEntity.normalize() = CardWordEntity(
     partOfSpeech = this.partOfSpeech?.lowercase()?.trim(),
     translations = this.translations.map { it.map { t -> t.trim() } },
     examples = this.examples.map { it.normalize() },
+    primary = this.primary,
 )
 
 fun CardWordExampleEntity.normalize() = CardWordExampleEntity(
