@@ -112,8 +112,8 @@ function drawCardsTable(cards, popup, numberOfRightAnswers) {
     tbody.html('');
     $.each(cards, function (key, card) {
         let row = $(`<tr id="w${card.cardId}">
-                            <td>${getAllWordsAsString(card)}</td>
-                            <td>${getAllTranslationsAsString(card)}</td>
+                            <td>${getCardWord(card)}</td>
+                            <td>${getTranslationsAsString(card)}</td>
                             <td>${percentage(card, numberOfRightAnswers)}</td>
                           </tr>`);
         row.off('click').on('click', function () {
@@ -129,16 +129,16 @@ function drawCardsTable(cards, popup, numberOfRightAnswers) {
 
 function sortCardsByWord(cards, direction) {
     cards.sort((a, b) => {
-        const left = getAllWordsAsString(a);
-        const right = getAllWordsAsString(b);
+        const left = getCardWord(a);
+        const right = getCardWord(b);
         return direction ? left.localeCompare(right) : right.localeCompare(left);
     });
 }
 
 function sortCardsByTranslation(cards, direction) {
     cards.sort((a, b) => {
-        const left = getAllTranslationsAsString(a);
-        const right = getAllTranslationsAsString(b);
+        const left = getTranslationsAsString(a);
+        const right = getTranslationsAsString(b);
         return direction ? left.localeCompare(right) : right.localeCompare(left);
     });
 }
@@ -201,6 +201,8 @@ function fillCardDialogForm(card) {
             }
         }
 
+        $(`#card-dialog-collapse-i${index} .primary-word`).prop('checked', word.primary === true);
+
         const wordInput = $(`#card-dialog-collapse-i${index} .word`);
         wordInput.val(word.word);
         if (card.cardId !== undefined) {
@@ -219,7 +221,7 @@ function fillCardDialogForm(card) {
             initEditCardDialogSound(index);
         } else {
             soundBtn.prop('disabled', true);
-            soundBtn.removeAttr('word-sound', word.sound);
+            soundBtn.removeAttr('word-sound');
         }
 
         const selectIndex = selectedDictionary.partsOfSpeech.indexOf(word.partOfSpeech)
@@ -245,7 +247,7 @@ function selectCardItemForDeleteOrReset(card, actionId) {
     toggleManageCardsButton(actionId, false);
     const body = $(`#${actionId}-card-prompt-body`);
     body.attr('item-id', card.cardId);
-    body.html(getAllWordsAsString(card));
+    body.html(getCardWord(card));
 }
 
 function resetCardSelection() {
@@ -281,8 +283,8 @@ function initCardDialog(cards) {
     $('#words-btn-edit').off('click').on('click', function () { // edit dialog
         const cardId = selectedRow().attr('id').replace('w', '')
         const card = findById(cards, cardId)
-        onChangeCardDialogMains(1);
         fillCardDialogForm(card);
+        onChangeCardDialogMains(1);
     });
     $('#words-btn-add').off('click').on('click', function () { // add dialog
         const searchInput = $('#words-search');
@@ -313,7 +315,7 @@ function initCardDialog(cards) {
         }
         activateDialogOnPushAddCardButton(newCard);
     });
-    $('#card-dialog-save').off('click').on('click', function () { // push a save dialog button
+    $('#card-dialog-save').off('click').on('click', function () { // push 'save' dialog button
         const res = createResourceCardItem(cards);
         const onDone = function (card) {
             drawDictionaryCardsPage();
@@ -419,6 +421,11 @@ function initCardDialogAccordionItemInputs(index) {
         .on('input', function () {
             onChangeCardDialogMains(index);
         });
+    $(`#card-dialog-collapse-i${index} .primary-word`)
+        .off('change')
+        .on('change', function () {
+            onChangeCardDialogMains(index);
+        });
     const select = $(`#card-dialog-collapse-i${index} .part-of-speech`)
         .html('').append($(`<option value="-1"></option>`));
     $.each(selectedDictionary.partsOfSpeech, function (i, value) {
@@ -492,9 +499,13 @@ function onChangeCardDialogMains(index) {
     const save = $('#card-dialog-save');
 
     if (index === 1) {
-        save.prop('disabled', !(word.val() && translation.val()));
+        const checkboxes = $(".row .primary-word").filter(":checked");
+        const enabled = word.val() && translation.val() && checkboxes.length === 1;
+        save.prop('disabled', !enabled);
     } else {
-        save.prop('disabled', !word.val());
+        const checkboxes = $(".row .primary-word").filter(":checked");
+        const enabled = word.val() && checkboxes.length === 1;
+        save.prop('disabled', !enabled);
     }
 
     const addWordButton = $(`#card-dialog-collapse-i${index} .add-word`);
@@ -536,6 +547,7 @@ function createResourceCardItem(cards) {
         const partOfSpeechInput = $(this).find('.part-of-speech option:selected');
         const examplesInput = $(this).find('.examples');
         const translationInput = $(this).find('.translation');
+        const primaryWordCheckbox = $(this).find('.primary-word');
         if (!wordInput.val()) {
             return;
         }
@@ -548,6 +560,7 @@ function createResourceCardItem(cards) {
         w.transcription = transcriptionInput.val().trim();
         w.partOfSpeech = partOfSpeechInput.text();
         w.examples = []
+        w.primary = primaryWordCheckbox.prop('checked') === true;
         const examples = toArray(examplesInput.val(), '\n');
         examples.forEach(function (example) {
             let ex = {example: example}
@@ -569,6 +582,7 @@ function cleanCardItemMains(index) {
     $(`#card-dialog-collapse-i${index} .transcription`).val('');
     $(`#card-dialog-collapse-i${index} .translation`).val('');
     $(`#card-dialog-collapse-i${index} .examples`).val('');
+    $(`#card-dialog-collapse-i${index} .primary-word`).prop('checked', false);
 }
 
 function cleanCardDialogLinks(index) {
@@ -628,25 +642,6 @@ function onCollapseLgFrame(index) {
     frame.attr('height', height);
     lgDiv.html('').append(frame);
     dialogLinksDiv.attr('word-txt', text);
-}
-
-/**
- * Searches through a list of card objects to find the first card
- * whose words, when concatenated as a string, start with the specified prefix.
- *
- * @param {Array} cards - An array of card objects to search through.
- * @param {string} prefix - The prefix to match at the start of the concatenated word string.
- * @return {object|null} The first card object that matches the prefix, or null if no match is found or the prefix is invalid.
- */
-function findCardByWordPrefix(cards, prefix) {
-    if (prefix === null || prefix === undefined) {
-        return null;
-    }
-    const search = prefix.trim().toLowerCase();
-    if (search.length === 0) {
-        return null;
-    }
-    return cards.find((card) => getAllWordsAsString(card).toLowerCase().startsWith(search));
 }
 
 function updateCardDialogAccordionItemIds(element, indexWas, indexNew) {
