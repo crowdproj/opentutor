@@ -18,6 +18,7 @@ data class DbCard(
         val partOfSpeech: String?,
         val examples: List<Example>,
         val translations: List<List<String>>,
+        val primary: Boolean,
     ) {
         data class Example(
             val text: String,
@@ -38,6 +39,7 @@ data class DbCard(
                 partOfSpeech = null,
                 examples = emptyList(),
                 translations = emptyList(),
+                primary = false,
             )
         }
     }

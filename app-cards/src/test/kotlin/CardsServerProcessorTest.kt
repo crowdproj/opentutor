@@ -84,6 +84,7 @@ class CardsServerProcessorTest {
                     examples = listOf(
                         DbCard.Word.Example(text = "weather forecast", translation = "прогноз погоды"),
                     ),
+                    primary = true,
                 ),
             ),
         )

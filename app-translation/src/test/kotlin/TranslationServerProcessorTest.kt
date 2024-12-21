@@ -5,6 +5,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
 import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
@@ -104,7 +105,14 @@ internal class TranslationServerProcessorTest {
         Assertions.assertTrue(res.errors.isEmpty())
         Assertions.assertEquals(
             CardEntity.EMPTY.copy(
-                words = listOf(CardWordEntity(word = testQueryWord, translations = listOf(listOf(testTranslation)))),
+                words = listOf(
+                    CardWordEntity(
+                        word = testQueryWord,
+                        translations = listOf(listOf(testTranslation)),
+                        primary = true,
+                        sound = TTSResourceId("$testSourceLang:$testQueryWord")
+                    )
+                ),
             ),
             res.responseCardEntity
         )

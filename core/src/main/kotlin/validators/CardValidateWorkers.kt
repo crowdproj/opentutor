@@ -36,7 +36,18 @@ fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = w
 fun ChainDSL<CardContext>.validateCardEntityWords(getCard: (CardContext) -> CardEntity) = worker {
     this.name = "Test card-word"
     test {
-        getCard(this).words.any { !isCorrectWord(it.word) }
+        val card = getCard(this)
+        if (card.words.isEmpty()) {
+            return@test true
+        }
+        if (card.words.any { !isCorrectWord(it.word) }) {
+            return@test true
+        }
+        if (!isCorrectTranslation(card.words[0].translations)) {
+            return@test true
+        }
+        val primaries = card.words.count { it.primary }
+        return@test primaries != 0 && primaries != 1
     }
     process {
         fail(validationError(fieldName = "card-word"))

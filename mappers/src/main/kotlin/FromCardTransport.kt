@@ -90,7 +90,6 @@ private fun CardResource.toCardEntity(): CardEntity = CardEntity(
     stats = this.stats.toStats(),
     answered = this.answered,
     changedAt = this.changedAt?.toInstant()?.toKotlinInstant() ?: Instant.NONE,
-    sound = this.sound?.takeIf { it.isNotBlank() }?.let { TTSResourceId(it) } ?: TTSResourceId.NONE,
 )
 
 private fun CardWordResource.toCardWordEntity(): CardWordEntity = CardWordEntity(
@@ -100,6 +99,7 @@ private fun CardWordResource.toCardWordEntity(): CardWordEntity = CardWordEntity
     translations = this.translations ?: emptyList(),
     examples = this.examples?.map { it.toCardWordExampleEntity() } ?: emptyList(),
     sound = this.sound?.takeIf { it.isNotBlank() }?.let { TTSResourceId(it) } ?: TTSResourceId.NONE,
+    primary = this.primary ?: false
 )
 
 private fun CardWordExampleResource.toCardWordExampleEntity() = CardWordExampleEntity(

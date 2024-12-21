@@ -12,7 +12,7 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 
-val stubDictionary = DictionaryEntity(
+val testDictionaryEntity = DictionaryEntity(
     dictionaryId = DictionaryId(42.toString()),
     name = "Stub-dictionary",
     sourceLang = LangEntity(LangId("sl"), listOf("A", "B", "C")),
@@ -21,9 +21,9 @@ val stubDictionary = DictionaryEntity(
     numberOfRightAnswers = 42,
 )
 
-val stubDictionaries = listOf(stubDictionary)
+val testDictionaryEntities = listOf(testDictionaryEntity)
 
-val stubCard = CardEntity(
+val testCardEntity1 = CardEntity(
     cardId = CardId(42.toString()),
     dictionaryId = DictionaryId(42.toString()),
     words = listOf(
@@ -38,25 +38,49 @@ val stubCard = CardEntity(
                 )
             },
             sound = TTSResourceId("sl:stub"),
+            primary = true,
         ),
     ),
     stats = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 21),
-    sound = TTSResourceId("sl:stub"),
 )
 
-val stubCards = IntRange(1, 3)
+val testCardEntity2 = CardEntity(
+    cardId = CardId(42.toString()),
+    dictionaryId = DictionaryId(42.toString()),
+    words = listOf(
+        CardWordEntity(
+            word = "q, w",
+            translations = listOf(listOf("Q")),
+            sound = TTSResourceId("sl:q,w"),
+            primary = true,
+        ),
+        CardWordEntity(
+            word = "q",
+            translations = listOf(listOf("Q")),
+            sound = TTSResourceId("sl:q"),
+            primary = false,
+        ),
+        CardWordEntity(
+            word = "w",
+            sound = TTSResourceId("sl:w"),
+            primary = false,
+        ),
+    ),
+)
+
+val testCardEntities = IntRange(1, 3)
     .flatMap { dictionaryId -> IntRange(1, 42).map { cardId -> dictionaryId to cardId } }
     .map {
         val word = "XXX-${it.first}-${it.second}"
-        stubCard.copy(
+        testCardEntity1.copy(
             cardId = CardId(it.second.toString()),
             dictionaryId = DictionaryId(it.first.toString()),
             words = listOf(
                 CardWordEntity(
                     word = word,
                     sound = TTSResourceId("sl:$word"),
+                    primary = true,
                 ),
             ),
-            sound = TTSResourceId("sl:$word"),
         )
     }

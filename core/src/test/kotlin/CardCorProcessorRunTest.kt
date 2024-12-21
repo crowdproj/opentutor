@@ -1,12 +1,11 @@
 package com.gitlab.sszuev.flashcards.core
 
-import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.CardContext
+import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
-import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -19,10 +18,9 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
+import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
-import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
-import com.gitlab.sszuev.flashcards.speaker.MockTTSResourceRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -31,7 +29,7 @@ import org.junit.jupiter.params.provider.EnumSource
 
 internal class CardCorProcessorRunTest {
     companion object {
-        private val testUserId = stubDictionary.userId
+        private val testUserId = testDictionaryEntity.userId
 
         private fun testContext(
             op: CardOperation,
@@ -71,10 +69,10 @@ internal class CardCorProcessorRunTest {
     }
 
     @Test
-    fun `test get-card success`() = runTest {
+    fun `test get-card success #1`() = runTest {
         val testId = CardId("42")
-        val testResponseCardEntity = stubCard.copy(cardId = testId)
-        val testResponseDictionaryEntity = stubDictionary
+        val testResponseCardEntity = testCardEntity1.copy(cardId = testId)
+        val testResponseDictionaryEntity = testDictionaryEntity
 
         var findCardIsCalled = false
         var findDictionaryIsCalled = false
@@ -115,6 +113,62 @@ internal class CardCorProcessorRunTest {
     }
 
     @Test
+    fun `test get-card success #2`() = runTest {
+        val testId = testCardEntity2.cardId
+        val testResponseCardDbEntity = DbCard.NULL.copy(
+            cardId = testId.asString(),
+            dictionaryId = testCardEntity2.dictionaryId.asString(),
+            words = listOf(
+                DbCard.Word.NULL.copy(
+                    word = testCardEntity2.words[1].word,
+                    translations = testCardEntity2.words[1].translations,
+                ),
+                DbCard.Word.NULL.copy(
+                    word = testCardEntity2.words[2].word,
+                ),
+            ),
+        )
+        val testResponseDictionaryEntity = testDictionaryEntity
+
+        var findCardIsCalled = false
+        var findDictionaryIsCalled = false
+        val cardRepository = MockDbCardRepository(
+            invokeFindCardById = { cardId ->
+                findCardIsCalled = true
+                if (cardId == testId.asString()) testResponseCardDbEntity else null
+            }
+        )
+
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaryById = { dictionaryId ->
+                findDictionaryIsCalled = true
+                if (dictionaryId == testResponseDictionaryEntity.dictionaryId.asString()) {
+                    testResponseDictionaryEntity.toDbDictionary()
+                } else {
+                    null
+                }
+            }
+        )
+
+        val context = testContext(
+            op = CardOperation.GET_CARD,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
+        context.requestCardEntityId = testId
+
+        CardCorProcessor().execute(context)
+
+        Assertions.assertTrue(findCardIsCalled)
+        Assertions.assertTrue(findDictionaryIsCalled)
+        Assertions.assertEquals(requestId(CardOperation.GET_CARD), context.requestId)
+        Assertions.assertTrue(context.errors.isEmpty()) { context.errors.toString() }
+        Assertions.assertEquals(AppStatus.OK, context.status)
+
+        Assertions.assertEquals(testCardEntity2, context.responseCardEntity)
+    }
+
+    @Test
     fun `test get-card error - unexpected fail`() = runTest {
         val testCardId = CardId("42")
 
@@ -140,8 +194,8 @@ internal class CardCorProcessorRunTest {
     @Test
     fun `test get-all-cards success`() = runTest {
         val testDictionaryId = DictionaryId("42")
-        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
-        val testCards = stubCards.map { it.copy(dictionaryId = testDictionaryId) }
+        val testDictionary = testDictionaryEntity.copy(dictionaryId = testDictionaryId)
+        val testCards = testCardEntities.map { it.copy(dictionaryId = testDictionaryId) }
 
         var isFindCardsCalled = false
         var isFindDictionaryCalled = false
@@ -179,8 +233,8 @@ internal class CardCorProcessorRunTest {
     @Test
     fun `test get-all-cards unexpected fail`() = runTest {
         val testDictionaryId = DictionaryId("42")
-        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
-        val testResponseEntities = stubCards
+        val testDictionary = testDictionaryEntity.copy(dictionaryId = testDictionaryId)
+        val testResponseEntities = testCardEntities
 
         var isFindCardsCalled = false
         var isFindDictionaryCalled = false
@@ -217,12 +271,11 @@ internal class CardCorProcessorRunTest {
 
     @Test
     fun `test create-card success`() = runTest {
-        val testDictionary = stubDictionary
-        val testResponseEntity = stubCard.copy(
-            words = listOf(CardWordEntity(word = "HHH", sound = TTSResourceId("sl:HHH"))),
-            sound = TTSResourceId("sl:HHH")
+        val testDictionary = testDictionaryEntity
+        val testResponseEntity = testCardEntity1.copy(
+            words = listOf(CardWordEntity(word = "HHH", sound = TTSResourceId("sl:HHH"), primary = true)),
         )
-        val testRequestEntity = stubCard.copy(
+        val testRequestEntity = testCardEntity1.copy(
             words = listOf(CardWordEntity(word = "XXX")),
             cardId = CardId.NONE,
             dictionaryId = DictionaryId("4200")
@@ -267,8 +320,8 @@ internal class CardCorProcessorRunTest {
 
     @Test
     fun `test create-card unexpected fail`() = runTest {
-        val testDictionary = stubDictionary
-        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = CardId.NONE)
+        val testDictionary = testDictionaryEntity
+        val testRequestEntity = testCardEntity1.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = CardId.NONE)
 
         var isCreateCardCalled = false
         var isFindDictionaryCalled = false
@@ -313,8 +366,8 @@ internal class CardCorProcessorRunTest {
             onlyUnknown = true,
             length = 42,
         )
-        val testCards = stubCards.filter { it.dictionaryId in testFilter.dictionaryIds }
-        val testDictionaries = stubDictionaries
+        val testCards = testCardEntities.filter { it.dictionaryId in testFilter.dictionaryIds }
+        val testDictionaries = testDictionaryEntities
 
         var isFindCardsCalled = false
         var isFindDictionariesCalled = false
@@ -365,8 +418,8 @@ internal class CardCorProcessorRunTest {
             onlyUnknown = false,
             length = 1,
         )
-        val testDictionaries = stubDictionaries
-        val testCards = stubCards
+        val testDictionaries = testDictionaryEntities
+        val testCards = testCardEntities
 
         var isFindCardsCalled = false
         var isFindDictionariesCalled = false
@@ -409,9 +462,9 @@ internal class CardCorProcessorRunTest {
     @Test
     fun `test update-card success`() = runTest {
         val cardId = CardId("42")
-        val testDictionary = stubDictionary
-        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = cardId)
-        val testResponseEntity = stubCard
+        val testDictionary = testDictionaryEntity
+        val testRequestEntity = testCardEntity1.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = cardId)
+        val testResponseEntity = testCardEntity1
 
         var isUpdateCardCalled = false
         var isFindDictionaryCalled = false
@@ -456,8 +509,8 @@ internal class CardCorProcessorRunTest {
     @Test
     fun `test update-card unexpected fail`() = runTest {
         val cardId = CardId("42")
-        val testDictionary = stubDictionary
-        val testRequestEntity = stubCard.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = cardId)
+        val testDictionary = testDictionaryEntity
+        val testRequestEntity = testCardEntity1.copy(words = listOf(CardWordEntity(word = "XXX")), cardId = cardId)
 
         var isUpdateCardCalled = false
         var isFindDictionaryCalled = false
@@ -502,15 +555,15 @@ internal class CardCorProcessorRunTest {
     @Test
     fun `test learn-cards success`() = runTest {
         val testLearn = listOf(
-            CardLearn(cardId = stubCard.cardId, details = mapOf(Stage.WRITING to 42)),
+            CardLearn(cardId = testCardEntity1.cardId, details = mapOf(Stage.WRITING to 42)),
         )
 
-        val testCards = listOf(stubCard)
-        val testDictionaries = listOf(stubDictionary)
+        val testCards = listOf(testCardEntity1)
+        val testDictionaries = listOf(testDictionaryEntity)
         val expectedCards = listOf(
-            stubCard.copy(
+            testCardEntity1.copy(
                 answered = 42,
-                stats = stubCard.stats + mapOf(Stage.WRITING to 42)
+                stats = testCardEntity1.stats + mapOf(Stage.WRITING to 42)
             )
         )
 
@@ -526,7 +579,7 @@ internal class CardCorProcessorRunTest {
                 }
             },
             invokeFindCardsByIdIn = { ids ->
-                if (ids == listOf(stubCard.cardId.asString())) {
+                if (ids == listOf(testCardEntity1.cardId.asString())) {
                     testCards.asSequence().map { it.toDbCard() }
                 } else {
                     emptySequence()
@@ -569,8 +622,8 @@ internal class CardCorProcessorRunTest {
         )
         val ids = testLearn.map { it.cardId }.map { it.asString() }
 
-        val testCards = listOf(stubCard.copy(cardId = CardId("1")), stubCard.copy(cardId = CardId("2")))
-        val testDictionaries = listOf(stubDictionary)
+        val testCards = listOf(testCardEntity1.copy(cardId = CardId("1")), testCardEntity1.copy(cardId = CardId("2")))
+        val testDictionaries = listOf(testDictionaryEntity)
 
         var isUpdateCardsCalled = false
         var isFindDictionariesCalled = false
@@ -626,8 +679,8 @@ internal class CardCorProcessorRunTest {
     fun `test reset-card success`() = runTest {
         val testDictionaryId = DictionaryId("42")
         val testCardId = CardId("42")
-        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
-        val testCard = stubCard.copy(cardId = testCardId, answered = 42, dictionaryId = testDictionaryId)
+        val testDictionary = testDictionaryEntity.copy(dictionaryId = testDictionaryId)
+        val testCard = testCardEntity1.copy(cardId = testCardId, answered = 42, dictionaryId = testDictionaryId)
         val expectedCard = testCard.copy(answered = 0)
 
         var isUpdateCardCalled = false
@@ -666,8 +719,8 @@ internal class CardCorProcessorRunTest {
     fun `test delete-card success`() = runTest {
         val testDictionaryId = DictionaryId("42")
         val testCardId = CardId("42")
-        val testCard = stubCard.copy(cardId = testCardId, dictionaryId = testDictionaryId)
-        val testDictionary = stubDictionary.copy(dictionaryId = testDictionaryId)
+        val testCard = testCardEntity1.copy(cardId = testCardId, dictionaryId = testDictionaryId)
+        val testDictionary = testDictionaryEntity.copy(dictionaryId = testDictionaryId)
 
         var isDeleteCardCalled = false
         val cardRepository = MockDbCardRepository(
@@ -734,11 +787,11 @@ internal class CardCorProcessorRunTest {
         val cardRepository = MockDbCardRepository(
             invokeFindCardById = { _ ->
                 findCardByIdIsCalled = true
-                stubCard.toDbCard()
+                testCardEntity1.toDbCard()
             },
             invokeFindCardsByIdIn = {
                 findCardsByIdInIsCalled = true
-                sequenceOf(stubCard.toDbCard())
+                sequenceOf(testCardEntity1.toDbCard())
             }
         )
 

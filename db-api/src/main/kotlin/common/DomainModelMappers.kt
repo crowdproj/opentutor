@@ -56,14 +56,16 @@ fun DbCard.Word.toCommonWordDto(): CommonWordDto = CommonWordDto(
     partOfSpeech = this.partOfSpeech,
     examples = this.examples.map { it.toCommonExampleDto() },
     translations = this.translations,
+    primary = this.primary,
 )
 
 fun CommonWordDto.toCardWordEntity(): DbCard.Word = DbCard.Word(
-    word = word,
-    transcription = transcription,
-    translations = translations,
-    partOfSpeech = partOfSpeech,
-    examples = examples.map { it.toCardWordExampleEntity() }
+    word = this.word,
+    transcription = this.transcription,
+    translations = this.translations,
+    partOfSpeech = this.partOfSpeech,
+    examples = this.examples.map { it.toCardWordExampleEntity() },
+    primary = this.primary,
 )
 
 private fun CommonExampleDto.toCardWordExampleEntity(): DbCard.Word.Example = DbCard.Word.Example(

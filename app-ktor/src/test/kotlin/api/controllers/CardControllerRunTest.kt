@@ -113,7 +113,6 @@ internal class CardControllerRunTest {
             ), res.card!!.words!!.single().examples?.map { it.example }
         )
         Assertions.assertEquals("en:weather", res.card!!.words!!.single().sound)
-        Assertions.assertEquals("en:weather", res.card!!.sound)
         Assertions.assertNull(res.card!!.answered)
         Assertions.assertEquals(emptyMap<String, Long>(), res.card!!.details)
     }
@@ -249,14 +248,13 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(
             requestBody.card!!.copy(
                 details = emptyMap(),
-                sound = "en:climate",
-                words = listOf(requestBody.card!!.words!!.single().copy(sound = "en:climate")),
+                words = listOf(requestBody.card!!.words!!.single().copy(sound = "en:climate", primary = true)),
             ),
             responseBody.card!!.copy(changedAt = null)
         )
         Assertions.assertEquals(0, responseBody.card!!.details!!.size)
         val actualChangedAt = responseBody.card!!.changedAt!!
-        Assertions.assertTrue(start <= actualChangedAt && actualChangedAt <= end)
+        Assertions.assertTrue(actualChangedAt in start..end)
     }
 
     @Order(9)

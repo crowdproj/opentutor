@@ -19,6 +19,10 @@ internal fun isCorrectWord(txt: String): Boolean {
     return txt.isNotBlank() && txt.length <= 256
 }
 
+internal fun isCorrectTranslation(translations: List<List<String>>): Boolean {
+    return translations.all { it.isNotEmpty() && it.all { t -> t.isNotBlank() } }
+}
+
 /**
  * Example of [langTag]: `EN`, `DE`.
  */

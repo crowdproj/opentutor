@@ -121,7 +121,8 @@ private fun MemDbWord.toCommonWordDto(): CommonWordDto = CommonWordDto(
     transcription = transcription,
     translations = translations,
     partOfSpeech = partOfSpeech,
-    examples = examples.map { it.toCommonExampleDto() }
+    examples = examples.map { it.toCommonExampleDto() },
+    primary = primary,
 )
 
 private fun MemDbExample.toCommonExampleDto(): CommonExampleDto = CommonExampleDto(
@@ -134,7 +135,8 @@ private fun CommonWordDto.toMemDbWord(): MemDbWord = MemDbWord(
     transcription = transcription,
     translations = translations,
     partOfSpeech = partOfSpeech,
-    examples = examples.map { it.toMemDbExample() }
+    examples = examples.map { it.toMemDbExample() },
+    primary = primary,
 )
 
 private fun CommonExampleDto.toMemDbExample(): MemDbExample = MemDbExample(

@@ -101,7 +101,6 @@ internal fun CardEntity.toCardResource(): CardResource? {
         details = this.details,
         answered = this.answered,
         changedAt = this.changedAt.toJavaInstant().atOffset(ZoneOffset.UTC),
-        sound = this.sound.asString().takeIf { it.isNotBlank() },
     )
 }
 
@@ -112,6 +111,7 @@ private fun CardWordEntity.toCardWordResource() = CardWordResource(
     translations = this.translations,
     examples = this.examples.map { it.toCardWordExampleResource() },
     sound = this.sound.asString().takeIf { it.isNotBlank() },
+    primary = this.primary,
 )
 
 private fun CardWordExampleEntity.toCardWordExampleResource() = CardWordExampleResource(
