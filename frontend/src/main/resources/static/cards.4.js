@@ -164,6 +164,7 @@ function cardRowOnClick(row, card) {
     markRowSelected(row);
     selectCardItemForDeleteOrReset(card, 'delete');
     selectCardItemForDeleteOrReset(card, 'reset');
+    fillCardDialogForm(card);
 }
 
 /**
