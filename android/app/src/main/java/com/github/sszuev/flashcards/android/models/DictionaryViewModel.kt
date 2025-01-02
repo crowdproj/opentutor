@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import com.github.sszuev.flashcards.android.Dictionary
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
 import com.github.sszuev.flashcards.android.toDictionary
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
 class DictionaryViewModel(
     private val repository: DictionaryRepository
@@ -17,7 +19,7 @@ class DictionaryViewModel(
     val isLoading = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
-    suspend fun loadDictionaries() {
+    suspend fun loadDictionaries() = withContext(Dispatchers.IO) {
         Log.d(tag, "load dictionaries")
         isLoading.value = true
         errorMessage.value = null

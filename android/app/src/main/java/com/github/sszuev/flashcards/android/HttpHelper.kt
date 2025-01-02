@@ -7,13 +7,11 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
-val clientProducer: () -> HttpClient = {
-    HttpClient(Android) {
-        install(HttpTimeout)
-        expectSuccess = true
+val httpClient: HttpClient = HttpClient(Android) {
+    install(HttpTimeout)
+    expectSuccess = true
 
-        install(ContentNegotiation) {
-            json(Json { ignoreUnknownKeys = true })
-        }
+    install(ContentNegotiation) {
+        json(Json { ignoreUnknownKeys = true })
     }
 }

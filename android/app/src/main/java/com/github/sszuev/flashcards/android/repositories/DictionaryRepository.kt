@@ -10,7 +10,7 @@ class DictionaryRepository(
 ) {
     private val tag = "DictionaryRepository"
 
-    suspend fun getAll(): List<DictionaryResource> = try {
+    suspend fun getAll(): List<DictionaryResource> {
         val requestId = UUID.randomUUID().toString()
         Log.i(tag, "Get all dictionaries with requestId: $requestId")
         val container = authPost<GetAllDictionariesResponse>("$host/v1/api/dictionaries/get-all") {
@@ -25,10 +25,7 @@ class DictionaryRepository(
             tag,
             "Received response for requestId: $requestId, dictionaries count: ${container.dictionaries.size}"
         )
-        container.dictionaries
-    } catch (e: Exception) {
-        Log.e(tag, "Error fetching dictionaries", e)
-        emptyList()
+        return container.dictionaries
     }
 
     @Serializable

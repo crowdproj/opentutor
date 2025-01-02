@@ -27,6 +27,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -48,7 +49,9 @@ import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.Parameters
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -124,9 +127,8 @@ class MainActivity : ComponentActivity() {
             append("post_logout_redirect_uri", serverUri)
         }
 
-        val client = clientProducer()
         try {
-            val response: HttpResponse = client.get(logoutUrl) {
+            val response: HttpResponse = httpClient.get(logoutUrl) {
                 url {
                     parameters.appendAll(params)
                 }
@@ -139,8 +141,6 @@ class MainActivity : ComponentActivity() {
             }
         } catch (e: Exception) {
             Log.e(tag, "Error performing logout", e)
-        } finally {
-            client.close()
         }
     }
 
@@ -153,6 +153,8 @@ class MainActivity : ComponentActivity() {
     }
 
 }
+
+private const val tag = "UI"
 
 //@Preview
 @Composable
@@ -205,7 +207,7 @@ fun TopBar(
 
 @Composable
 fun DictionaryTable(
-   viewModel: DictionaryViewModel,
+    viewModel: DictionaryViewModel,
 ) {
     val dictionaries by viewModel.dictionaries
     val isLoading by viewModel.isLoading
@@ -215,8 +217,13 @@ fun DictionaryTable(
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
+    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        viewModel.loadDictionaries()
+        Log.d(tag, "In LaunchedEffect ::: begin")
+        coroutineScope.launch {
+            viewModel.loadDictionaries()
+        }
+        Log.d(tag, "In LaunchedEffect ::: finish")
     }
 
     Box(
