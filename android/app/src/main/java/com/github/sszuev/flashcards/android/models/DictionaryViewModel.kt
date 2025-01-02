@@ -19,6 +19,9 @@ class DictionaryViewModel(
     val isLoading = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
+    var sortField = mutableStateOf<String?>("name")
+    var isAscending = mutableStateOf(true)
+
     private val _selectedDictionaryIds = mutableStateOf<Set<String>>(emptySet())
     val selectedDictionaryIds: Set<String> get() = _selectedDictionaryIds.value
 
@@ -43,6 +46,30 @@ class DictionaryViewModel(
             currentSet.remove(dictionaryId)
         }
         _selectedDictionaryIds.value = currentSet
+    }
+
+    fun sortBy(field: String) {
+        if (sortField.value == field) {
+            isAscending.value = !isAscending.value
+        } else {
+            sortField.value = field
+            isAscending.value = true
+        }
+        applySorting()
+    }
+
+    private fun applySorting() {
+        dictionaries.value = dictionaries.value.sortedWith { a, b ->
+            val result = when (sortField.value) {
+                "name" -> a.name.compareTo(b.name)
+                "sourceLanguage" -> a.sourceLanguage.compareTo(b.sourceLanguage)
+                "targetLanguage" -> a.targetLanguage.compareTo(b.targetLanguage)
+                "totalWords" -> a.totalWords.compareTo(b.totalWords)
+                "learnedWords" -> a.learnedWords.compareTo(b.learnedWords)
+                else -> 0
+            }
+            if (isAscending.value) result else -result
+        }
     }
 
 }

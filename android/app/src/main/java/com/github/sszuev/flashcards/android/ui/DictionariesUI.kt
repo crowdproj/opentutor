@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -103,8 +102,6 @@ fun DictionaryTable(
     val isLoading by viewModel.isLoading
     val errorMessage by viewModel.errorMessage
 
-    var lastSelectedId by remember { mutableStateOf<String?>(null) }
-
     var containerWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
@@ -127,7 +124,12 @@ fun DictionaryTable(
             return@Box
         }
         Column {
-            TableHeader(containerWidthDp)
+            TableHeader(
+                containerWidthDp = containerWidthDp,
+                onSort = { viewModel.sortBy(it) },
+                currentSortField = viewModel.sortField.value,
+                isAscending = viewModel.isAscending.value
+            )
 
             when {
                 isLoading -> {
@@ -162,7 +164,6 @@ fun DictionaryTable(
                                     dictionaryId = dictionary.dictionaryId,
                                     isSelected = it,
                                 )
-                                lastSelectedId = dictionary.dictionaryId
                             }
                         )
                     }
@@ -174,20 +175,47 @@ fun DictionaryTable(
 }
 
 @Composable
-fun TableHeader(containerWidthDp: Dp) {
+fun TableHeader(
+    containerWidthDp: Dp,
+    onSort: (String) -> Unit,
+    currentSortField: String?,
+    isAscending: Boolean
+) {
     Row(
         modifier = Modifier
             .background(Color.LightGray)
             .border(1.dp, Color.Black)
             .height(100.dp)
     ) {
-        TableRow(
-            first = "Dictionary name",
-            second = "Source language",
-            third = "Target language",
-            fourth = "Total number of words",
-            fifth = "Number of learned words",
+        TableCell(
+            text = "Dictionary name ${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
+            weight = 28,
             containerWidthDp = containerWidthDp,
+            onClick = { onSort("name") }
+        )
+        TableCell(
+            text = "Source language ${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
+            weight = 19,
+            containerWidthDp = containerWidthDp,
+            onClick = { onSort("sourceLanguage") }
+        )
+        TableCell(
+            text = "Target language ${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
+            weight = 19,
+            containerWidthDp = containerWidthDp,
+            onClick = { onSort("targetLanguage") }
+        )
+        TableCell(
+            text = "Total number of words ${if (currentSortField == "totalWords") if (isAscending) "↑" else "↓" else ""}",
+            weight = 16,
+            containerWidthDp = containerWidthDp,
+            onClick = { onSort("totalWords") }
+        )
+        TableCell(
+            text = "Number of learned words ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
+            weight = 18,
+            containerWidthDp = containerWidthDp,
+            onClick = { onSort("learnedWords") }
         )
     }
 }
@@ -202,6 +230,7 @@ fun TableRow(
 ) {
     Row(
         modifier = Modifier
+            .fillMaxWidth()
             .border(1.dp, Color.Black)
             .background(if (isSelected) Color.Green else Color.Transparent)
             .combinedClickable(
@@ -241,12 +270,23 @@ fun TableRow(
 }
 
 @Composable
-fun TableCell(text: String, weight: Int, containerWidthDp: Dp) {
+fun TableCell(
+    text: String,
+    weight: Int,
+    containerWidthDp: Dp,
+    onClick: (() -> Unit)? = null,
+) {
     Box(
         modifier = Modifier
             .width(((containerWidthDp * weight) / 100f))
-            .padding(4.dp),
-
+            .padding(4.dp)
+            .let {
+                if (onClick != null) {
+                    it.clickable { onClick() }
+                } else {
+                    it
+                }
+            },
         contentAlignment = Alignment.TopStart
     ) {
         Text(
