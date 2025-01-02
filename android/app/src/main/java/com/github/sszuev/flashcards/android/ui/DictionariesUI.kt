@@ -1,10 +1,13 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.util.Log
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +24,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -90,6 +94,7 @@ fun TopBar(
     }
 }
 
+@SuppressLint("ReturnFromAwaitPointerEventScope")
 @Composable
 fun DictionaryTable(
     viewModel: DictionaryViewModel,
@@ -97,6 +102,8 @@ fun DictionaryTable(
     val dictionaries by viewModel.dictionaries
     val isLoading by viewModel.isLoading
     val errorMessage by viewModel.errorMessage
+
+    var lastSelectedId by remember { mutableStateOf<String?>(null) }
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
@@ -116,37 +123,52 @@ fun DictionaryTable(
             .fillMaxSize()
             .onSizeChanged { size -> containerWidthPx = size.width }
     ) {
-        if (containerWidthDp > 0.dp) {
-            Column {
-                TableHeader(containerWidthDp)
+        if (containerWidthDp <= 0.dp) {
+            return@Box
+        }
+        Column {
+            TableHeader(containerWidthDp)
 
-                when {
-                    isLoading -> {
-                        CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
-                    }
+            when {
+                isLoading -> {
+                    CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+                }
 
-                    errorMessage != null -> {
-                        Text(
-                            text = checkNotNull(errorMessage),
-                            color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                errorMessage != null -> {
+                    Text(
+                        text = checkNotNull(errorMessage),
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+
+                dictionaries.isEmpty() -> {
+                    Text(
+                        text = "No dictionaries found",
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    )
+                }
+
+                else -> {
+                    dictionaries.forEach { dictionary ->
+                        val isSelected =
+                            viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
+                        TableRow(
+                            dictionary = dictionary,
+                            containerWidthDp = containerWidthDp,
+                            isSelected = isSelected,
+                            onSelect = {
+                                viewModel.toggleSelection(
+                                    dictionaryId = dictionary.dictionaryId,
+                                    isSelected = it,
+                                )
+                                lastSelectedId = dictionary.dictionaryId
+                            }
                         )
-                    }
-
-                    dictionaries.isEmpty() -> {
-                        Text(
-                            text = "No dictionaries found",
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
-                    }
-
-                    else -> {
-                        dictionaries.forEach { row ->
-                            TableRow(row, containerWidthDp)
-                        }
                     }
                 }
             }
+
         }
     }
 }
@@ -170,18 +192,33 @@ fun TableHeader(containerWidthDp: Dp) {
     }
 }
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TableRow(row: Dictionary, containerWidthDp: Dp) {
+fun TableRow(
+    dictionary: Dictionary,
+    containerWidthDp: Dp,
+    isSelected: Boolean,
+    onSelect: (Boolean) -> Unit,
+) {
     Row(
         modifier = Modifier
             .border(1.dp, Color.Black)
+            .background(if (isSelected) Color.Green else Color.Transparent)
+            .combinedClickable(
+                onClick = {
+                    onSelect(!isSelected)
+                },
+                onLongClick = {
+                    onSelect(true)
+                }
+            )
     ) {
         TableRow(
-            first = row.name,
-            second = row.sourceLanguage,
-            third = row.targetLanguage,
-            fourth = row.totalWords.toString(),
-            fifth = row.learnedWords.toString(),
+            first = dictionary.name,
+            second = dictionary.sourceLanguage,
+            third = dictionary.targetLanguage,
+            fourth = dictionary.totalWords.toString(),
+            fifth = dictionary.learnedWords.toString(),
             containerWidthDp = containerWidthDp,
         )
     }

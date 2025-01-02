@@ -19,6 +19,9 @@ class DictionaryViewModel(
     val isLoading = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
+    private val _selectedDictionaryIds = mutableStateOf<Set<String>>(emptySet())
+    val selectedDictionaryIds: Set<String> get() = _selectedDictionaryIds.value
+
     suspend fun loadDictionaries() = withContext(Dispatchers.IO) {
         Log.d(tag, "load dictionaries")
         isLoading.value = true
@@ -31,4 +34,15 @@ class DictionaryViewModel(
             isLoading.value = false
         }
     }
+
+    fun toggleSelection(dictionaryId: String, isSelected: Boolean) {
+        val currentSet = _selectedDictionaryIds.value.toMutableSet()
+        if (isSelected) {
+            currentSet.add(dictionaryId)
+        } else {
+            currentSet.remove(dictionaryId)
+        }
+        _selectedDictionaryIds.value = currentSet
+    }
+
 }
