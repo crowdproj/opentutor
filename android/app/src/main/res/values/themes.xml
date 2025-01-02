@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <color name="splash_bg">#FFBB86FC</color>
+
+    <style name="Theme.FlashcardsAndroid" parent="android:Theme.Material.Light.NoActionBar" />
+
+    <style name="Theme.App.Splash" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenAnimatedIcon" tools:ignore="NewApi">@mipmap/ic_launcher</item>
+        <item name="android:windowSplashScreenBackground" tools:ignore="NewApi">@color/splash_bg</item>
+        <item name="postSplashScreenTheme">@style/Theme.FlashcardsAndroid</item>
+    </style>
+</resources>
