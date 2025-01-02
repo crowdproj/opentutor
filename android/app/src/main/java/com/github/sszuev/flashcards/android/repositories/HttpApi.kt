@@ -14,7 +14,6 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.formUrlEncode
-import kotlinx.coroutines.delay
 import kotlinx.serialization.Serializable
 
 suspend inline fun <reified T> authPost(
