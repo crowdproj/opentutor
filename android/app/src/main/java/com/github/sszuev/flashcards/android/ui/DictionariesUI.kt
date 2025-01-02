@@ -51,10 +51,17 @@ fun MainDictionariesScreen(
     onHomeClick: () -> Unit = {},
     viewModel: DictionaryViewModel,
 ) {
-    Column {
-        TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
-        DictionaryTable(
-            viewModel = viewModel,
+    val selectedDictionaryIds = viewModel.selectedDictionaryIds
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column {
+            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
+            DictionaryTable(
+                viewModel = viewModel,
+            )
+        }
+        BottomToolbar(
+            selectedDictionaryIds = selectedDictionaryIds,
+            modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
 }
@@ -298,5 +305,99 @@ fun TableCell(
             lineHeight = 20.sp,
         )
     }
-
 }
+
+@Composable
+fun BottomToolbar(
+    modifier: Modifier = Modifier,
+    selectedDictionaryIds: Set<String>,
+    onRunClick: () -> Unit = {},
+    onCardsClick: () -> Unit = {},
+    onCreateClick: () -> Unit = {},
+    onEditClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
+) {
+    var containerWidthPx by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
+    val containerWidthDp = with(density) { containerWidthPx.toDp() }
+
+    Row(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.Gray)
+            .padding(8.dp)
+            .onSizeChanged { size -> containerWidthPx = size.width },
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        ToolbarButton(
+            label = "RUN",
+            containerWidthDp = containerWidthDp,
+            weight = 9.375f,
+            onClick = onRunClick,
+        )
+        ToolbarButton(
+            label = "CARDS",
+            containerWidthDp = containerWidthDp,
+            weight = 15.625f,
+            onClick = onCardsClick,
+            enabled = selectedDictionaryIds.size == 1,
+        )
+        ToolbarButton(
+            label = "CREATE",
+            containerWidthDp = containerWidthDp,
+            weight = 18.75f,
+            onClick = onCreateClick,
+        )
+        ToolbarButton(
+            label = "EDIT",
+            containerWidthDp = containerWidthDp,
+            weight = 12.5f,
+            onClick = onEditClick,
+        )
+        ToolbarButton(
+            label = "DELETE",
+            containerWidthDp = containerWidthDp,
+            weight = 18.75f,
+            onClick = onDeleteClick,
+        )
+        ToolbarButton(
+            label = "SETTINGS",
+            containerWidthDp = containerWidthDp,
+            weight = 25f,
+            onClick = onSettingsClick,
+        )
+    }
+}
+
+@Composable
+fun ToolbarButton(
+    label: String,
+    containerWidthDp: Dp,
+    weight: Float,
+    enabled: Boolean = true,
+    onClick: () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .padding(1.dp)
+            .background(
+                if (enabled) MaterialTheme.colorScheme.primary else Color.Gray,
+                shape = MaterialTheme.shapes.small
+            )
+            .clickable(enabled = enabled) { onClick() }
+            .width(((containerWidthDp * weight) / 100f)),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = label,
+            color = if (enabled) MaterialTheme.colorScheme.background else Color.Black,
+            maxLines = Int.MAX_VALUE,
+            overflow = TextOverflow.Visible,
+            textAlign = TextAlign.Center,
+            lineHeight = 16.sp,
+        )
+    }
+}
+
