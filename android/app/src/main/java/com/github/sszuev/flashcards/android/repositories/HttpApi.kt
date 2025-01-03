@@ -41,6 +41,7 @@ suspend inline fun <reified T> authPost(
             Log.d("HttpApi", "second attempt succeeds")
             res
         } else {
+            // TODO: handle invalid: 400 Bad Request. Text: "{"error":"invalid_grant","error_description":"Session not active"}"
             throw e
         }
     }

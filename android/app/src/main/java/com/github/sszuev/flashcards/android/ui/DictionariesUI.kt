@@ -1,7 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
@@ -31,22 +30,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.Dictionary
-import com.github.sszuev.flashcards.android.getUsernameFromPreferences
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import kotlinx.coroutines.launch
 
 private const val tag = "DictionariesUI"
 
 @Composable
-fun MainDictionariesScreen(
+fun DictionariesScreen(
+    navController: NavHostController,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     viewModel: DictionaryViewModel,
@@ -60,42 +59,9 @@ fun MainDictionariesScreen(
             )
         }
         BottomToolbar(
+            onCardsClick = { navController.navigate("cards") },
             selectedDictionaryIds = selectedDictionaryIds,
             modifier = Modifier.align(Alignment.BottomCenter),
-        )
-    }
-}
-
-@Composable
-fun TopBar(
-    onSignOut: () -> Unit,
-    onHomeClick: () -> Unit,
-) {
-    val username = getUsernameFromPreferences(LocalContext.current as Activity)
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.Absolute.Right,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "[ $username ]",
-            modifier = Modifier.padding(end = 16.dp)
-        )
-        Text(
-            text = "home",
-            color = Color.Blue,
-            modifier = Modifier
-                .clickable { onHomeClick() }
-                .padding(end = 16.dp)
-        )
-        Text(
-            text = "sign out",
-            color = Color.Blue,
-            modifier = Modifier
-                .clickable { onSignOut() }
         )
     }
 }
@@ -131,7 +97,7 @@ fun DictionaryTable(
             return@Box
         }
         Column {
-            TableHeader(
+            DictionariesTableHeader(
                 containerWidthDp = containerWidthDp,
                 onSort = { viewModel.sortBy(it) },
                 currentSortField = viewModel.sortField.value,
@@ -182,7 +148,7 @@ fun DictionaryTable(
 }
 
 @Composable
-fun TableHeader(
+fun DictionariesTableHeader(
     containerWidthDp: Dp,
     onSort: (String) -> Unit,
     currentSortField: String?,
