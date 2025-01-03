@@ -65,7 +65,7 @@ fun DictionariesScreen(
                 viewModel = viewModel,
             )
         }
-        BottomToolbar(
+        DictionariesBottomToolbar(
             onCardsClick = {
                 if (selectedDictionaryIds.size == 1) {
                     val dictionaryId = selectedDictionaryIds.first()
@@ -176,34 +176,34 @@ fun DictionariesTableHeader(
         modifier = Modifier
             .background(Color.LightGray)
             .border(1.dp, Color.Black)
-            .height(100.dp)
+            .height(60.dp)
     ) {
-        TableCell(
-            text = "Dictionary name ${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
+        HeaderTableCell(
+            text = "Name ${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("name") }
         )
-        TableCell(
-            text = "Source language ${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
+        HeaderTableCell(
+            text = "Source ${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
             weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("sourceLanguage") }
         )
-        TableCell(
-            text = "Target language ${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
+        HeaderTableCell(
+            text = "Target ${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("targetLanguage") }
         )
-        TableCell(
-            text = "Total number of words ${if (currentSortField == "totalWords") if (isAscending) "↑" else "↓" else ""}",
+        HeaderTableCell(
+            text = "Words ${if (currentSortField == "totalWords") if (isAscending) "↑" else "↓" else ""}",
             weight = FOURTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("totalWords") }
         )
-        TableCell(
-            text = "Number of learned words ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
+        HeaderTableCell(
+            text = "Learned ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("learnedWords") }
@@ -261,7 +261,7 @@ fun DictionariesTableRow(
 }
 
 @Composable
-fun BottomToolbar(
+fun DictionariesBottomToolbar(
     modifier: Modifier = Modifier,
     selectedDictionaryIds: Set<String>,
     onRunClick: () -> Unit = {},
@@ -275,82 +275,65 @@ fun BottomToolbar(
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
-    Row(
+    Column(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.Gray)
             .padding(8.dp)
             .onSizeChanged { size -> containerWidthPx = size.width },
-        horizontalArrangement = Arrangement.SpaceEvenly,
-        verticalAlignment = Alignment.CenterVertically
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        ToolbarButton(
-            label = "RUN",
-            containerWidthDp = containerWidthDp,
-            weight = 9.375f,
-            onClick = onRunClick,
-        )
-        ToolbarButton(
-            label = "CARDS",
-            containerWidthDp = containerWidthDp,
-            weight = 15.625f,
-            onClick = onCardsClick,
-            enabled = selectedDictionaryIds.size == 1,
-        )
-        ToolbarButton(
-            label = "CREATE",
-            containerWidthDp = containerWidthDp,
-            weight = 18.75f,
-            onClick = onCreateClick,
-        )
-        ToolbarButton(
-            label = "EDIT",
-            containerWidthDp = containerWidthDp,
-            weight = 12.5f,
-            onClick = onEditClick,
-        )
-        ToolbarButton(
-            label = "DELETE",
-            containerWidthDp = containerWidthDp,
-            weight = 18.75f,
-            onClick = onDeleteClick,
-        )
-        ToolbarButton(
-            label = "SETTINGS",
-            containerWidthDp = containerWidthDp,
-            weight = 25f,
-            onClick = onSettingsClick,
-        )
-    }
-}
-
-@Composable
-fun ToolbarButton(
-    label: String,
-    containerWidthDp: Dp,
-    weight: Float,
-    enabled: Boolean = true,
-    onClick: () -> Unit,
-) {
-    Box(
-        modifier = Modifier
-            .padding(1.dp)
-            .background(
-                if (enabled) MaterialTheme.colorScheme.primary else Color.Gray,
-                shape = MaterialTheme.shapes.small
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ToolbarButton(
+                label = "RUN",
+                containerWidthDp = containerWidthDp,
+                weight = 21.43f,
+                onClick = onRunClick
             )
-            .clickable(enabled = enabled) { onClick() }
-            .width(((containerWidthDp * weight) / 100f)),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = label,
-            color = if (enabled) MaterialTheme.colorScheme.background else Color.Black,
-            maxLines = Int.MAX_VALUE,
-            overflow = TextOverflow.Visible,
-            textAlign = TextAlign.Center,
-            lineHeight = 16.sp,
-        )
+            ToolbarButton(
+                label = "CARDS",
+                containerWidthDp = containerWidthDp,
+                weight = 35.71f,
+                onClick = onCardsClick,
+                enabled = selectedDictionaryIds.size == 1
+            )
+            ToolbarButton(
+                label = "CREATE",
+                containerWidthDp = containerWidthDp,
+                weight = 42.86f,
+                onClick = onCreateClick
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ToolbarButton(
+                label = "EDIT",
+                containerWidthDp = containerWidthDp,
+                weight = 23.53f,
+                onClick = onEditClick
+            )
+            ToolbarButton(
+                label = "DELETE",
+                containerWidthDp = containerWidthDp,
+                weight = 35.29f,
+                onClick = onDeleteClick
+            )
+            ToolbarButton(
+                label = "SETTINGS",
+                containerWidthDp = containerWidthDp,
+                weight = 41.18f,
+                onClick = onSettingsClick
+            )
+        }
     }
 }
 

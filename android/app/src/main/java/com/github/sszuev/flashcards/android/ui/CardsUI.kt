@@ -4,12 +4,14 @@ import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,8 +37,8 @@ import kotlinx.coroutines.launch
 
 private const val tag = "CardsUI"
 private const val FIRST_COLUMN_WIDTH = 32
-private const val SECOND_COLUMN_WIDTH = 60
-private const val THIRD_COLUMN_WIDTH = 8
+private const val SECOND_COLUMN_WIDTH = 58
+private const val THIRD_COLUMN_WIDTH = 10
 
 @Composable
 fun CardsScreen(
@@ -57,6 +59,10 @@ fun CardsScreen(
                 CardsTable(viewModel, dictionaryId)
             }
         }
+        CardsBottomToolbar(
+            selectedCardId = viewModel.selectedCardId.value,
+            modifier = Modifier.align(Alignment.BottomCenter),
+        )
     }
 }
 
@@ -128,7 +134,14 @@ fun CardsTable(
                                 card = card,
                                 containerWidthDp = containerWidthDp,
                                 isSelected = viewModel.selectedCardId.value == card.cardId,
-                                onSelect = { viewModel.selectedCardId.value = card.cardId }
+                                onSelect = {
+                                    viewModel.selectedCardId.value =
+                                        if (viewModel.selectedCardId.value == card.cardId) {
+                                            null
+                                        } else {
+                                            card.cardId
+                                        }
+                                }
                             )
                         }
                     }
@@ -151,21 +164,21 @@ fun CardsTableHeader(
         modifier = Modifier
             .background(Color.LightGray)
             .border(1.dp, Color.Black)
-            .height(100.dp)
+            .height(60.dp)
     ) {
-        TableCell(
+        HeaderTableCell(
             text = "Word ${if (currentSortField == "word") if (isAscending) "↑" else "↓" else ""}",
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("word") }
         )
-        TableCell(
+        HeaderTableCell(
             text = "Translation ${if (currentSortField == "translation") if (isAscending) "↑" else "↓" else ""}",
             weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("translation") }
         )
-        TableCell(
+        HeaderTableCell(
             text = "% ${if (currentSortField == "status") if (isAscending) "↑" else "↓" else ""}",
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
@@ -205,5 +218,70 @@ fun CardsTableRow(
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp
         )
+    }
+}
+
+@Composable
+fun CardsBottomToolbar(
+    modifier: Modifier = Modifier,
+    selectedCardId: String?,
+    onAddClick: () -> Unit = {},
+    onEditClick: () -> Unit = {},
+    onResetClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+) {
+    var containerWidthPx by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
+    val containerWidthDp = with(density) { containerWidthPx.toDp() }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.Gray)
+            .padding(8.dp)
+            .onSizeChanged { size -> containerWidthPx = size.width },
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ToolbarButton(
+                label = "ADD",
+                containerWidthDp = containerWidthDp,
+                weight = 42.86f,
+                onClick = onAddClick
+            )
+            ToolbarButton(
+                label = "EDIT",
+                containerWidthDp = containerWidthDp,
+                weight = 57.14f,
+                onClick = onEditClick,
+                enabled = selectedCardId != null,
+            )
+        }
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ToolbarButton(
+                label = "RESET",
+                containerWidthDp = containerWidthDp,
+                weight = 45.45f,
+                onClick = onResetClick,
+                enabled = selectedCardId != null,
+            )
+            ToolbarButton(
+                label = "DELETE",
+                containerWidthDp = containerWidthDp,
+                weight = 54.55f,
+                onClick = onDeleteClick,
+                enabled = selectedCardId != null,
+            )
+        }
     }
 }

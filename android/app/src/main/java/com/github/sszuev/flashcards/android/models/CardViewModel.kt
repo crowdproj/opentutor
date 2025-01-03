@@ -19,7 +19,7 @@ class CardViewModel(
     val isLoading = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
-    val selectedCardId = mutableStateOf("")
+    val selectedCardId = mutableStateOf<String?>(null)
 
     var sortField = mutableStateOf<String?>("name")
     var isAscending = mutableStateOf(true)
