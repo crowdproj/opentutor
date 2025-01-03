@@ -59,7 +59,13 @@ fun DictionariesScreen(
             )
         }
         BottomToolbar(
-            onCardsClick = { navController.navigate("cards") },
+            onCardsClick = {
+                if (selectedDictionaryIds.size == 1) {
+                    val dictionaryId = selectedDictionaryIds.first()
+                    Log.i(tag, "Go to cards/$dictionaryId")
+                    navController.navigate("cards/$dictionaryId")
+                }
+            },
             selectedDictionaryIds = selectedDictionaryIds,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
@@ -128,7 +134,7 @@ fun DictionaryTable(
                     dictionaries.forEach { dictionary ->
                         val isSelected =
                             viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
-                        TableRow(
+                        DictionariesTableRow(
                             dictionary = dictionary,
                             containerWidthDp = containerWidthDp,
                             isSelected = isSelected,
@@ -195,7 +201,7 @@ fun DictionariesTableHeader(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TableRow(
+fun DictionariesTableRow(
     dictionary: Dictionary,
     containerWidthDp: Dp,
     isSelected: Boolean,
@@ -215,7 +221,7 @@ fun TableRow(
                 }
             )
     ) {
-        TableRow(
+        DictionariesTableRow(
             first = dictionary.name,
             second = dictionary.sourceLanguage,
             third = dictionary.targetLanguage,
@@ -227,7 +233,7 @@ fun TableRow(
 }
 
 @Composable
-fun TableRow(
+fun DictionariesTableRow(
     first: String,
     second: String,
     third: String,
@@ -240,37 +246,6 @@ fun TableRow(
     TableCell(text = third, weight = 19, containerWidthDp = containerWidthDp)
     TableCell(text = fourth, weight = 16, containerWidthDp = containerWidthDp)
     TableCell(text = fifth, weight = 18, containerWidthDp = containerWidthDp)
-}
-
-@Composable
-fun TableCell(
-    text: String,
-    weight: Int,
-    containerWidthDp: Dp,
-    onClick: (() -> Unit)? = null,
-) {
-    Box(
-        modifier = Modifier
-            .width(((containerWidthDp * weight) / 100f))
-            .padding(4.dp)
-            .let {
-                if (onClick != null) {
-                    it.clickable { onClick() }
-                } else {
-                    it
-                }
-            },
-        contentAlignment = Alignment.TopStart
-    ) {
-        Text(
-            text = text,
-            textAlign = TextAlign.Start,
-            maxLines = Int.MAX_VALUE,
-            overflow = TextOverflow.Clip,
-            softWrap = true,
-            lineHeight = 20.sp,
-        )
-    }
 }
 
 @Composable

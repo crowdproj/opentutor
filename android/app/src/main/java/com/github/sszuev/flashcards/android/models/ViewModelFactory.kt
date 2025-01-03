@@ -24,8 +24,8 @@ class CardsViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CardsViewModel::class.java)) {
-            return CardsViewModel(repository) as T
+        if (modelClass.isAssignableFrom(CardViewModel::class.java)) {
+            return CardViewModel(repository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

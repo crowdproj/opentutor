@@ -9,7 +9,7 @@ import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.CardsViewModelFactory
 import com.github.sszuev.flashcards.android.models.DictionariesViewModelFactory
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
@@ -30,7 +30,7 @@ class MainActivity : ComponentActivity() {
     private val dictionaryViewModel: DictionaryViewModel by viewModels {
         DictionariesViewModelFactory(DictionaryRepository(AppConfig.serverUri))
     }
-    private val cardsViewModel: CardsViewModel by viewModels {
+    private val cardViewModel: CardViewModel by viewModels {
         CardsViewModelFactory(CardsRepository(AppConfig.serverUri))
     }
 
@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                 MainNavigation(
                     onSignOut = { onSignOut() },
                     dictionariesViewModel = dictionaryViewModel,
-                    cardsViewModel = cardsViewModel,
+                    cardViewModel = cardViewModel,
                 )
             }
         }

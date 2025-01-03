@@ -12,7 +12,7 @@ class DictionaryRepository(
 
     suspend fun getAll(): List<DictionaryResource> {
         val requestId = UUID.randomUUID().toString()
-        Log.i(tag, "Get all dictionaries with requestId: $requestId")
+        Log.d(tag, "Get all dictionaries with requestId=$requestId")
         val container = authPost<GetAllDictionariesResponse>("$serverUri/v1/api/dictionaries/get-all") {
             setBody(
                 GetAllDictionariesRequest(
@@ -21,7 +21,7 @@ class DictionaryRepository(
                 )
             )
         }
-        Log.i(
+        Log.d(
             tag,
             "Received response for requestId: $requestId, dictionaries count: ${container.dictionaries.size}"
         )

@@ -4,14 +4,14 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 
 @Composable
 fun MainNavigation(
     onSignOut: () -> Unit = {},
     dictionariesViewModel: DictionaryViewModel,
-    cardsViewModel: CardsViewModel,
+    cardViewModel: CardViewModel,
 ) {
     val navController = rememberNavController()
 
@@ -26,9 +26,11 @@ fun MainNavigation(
                 onSignOut = onSignOut,
             )
         }
-        composable("cards") {
+        composable("cards/{dictionaryId}") { backStackEntry ->
+            val dictionaryId = backStackEntry.arguments?.getString("dictionaryId") ?: ""
             CardsScreen(
-                viewModel = cardsViewModel,
+                dictionaryId = dictionaryId,
+                viewModel = cardViewModel,
                 onSignOut = onSignOut,
                 onHomeClick = { navController.navigate("dictionaries") },
             )
