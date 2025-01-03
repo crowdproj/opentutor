@@ -4,10 +4,8 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.github.sszuev.flashcards.android.Card
-import com.github.sszuev.flashcards.android.Dictionary
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.toCard
-import com.github.sszuev.flashcards.android.toDictionary
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -21,6 +19,11 @@ class CardViewModel(
     val isLoading = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
+    val selectedCardId = mutableStateOf("")
+
+    var sortField = mutableStateOf<String?>("name")
+    var isAscending = mutableStateOf(true)
+
     suspend fun loadCards(dictionaryId: String) = withContext(Dispatchers.IO) {
         Log.d(tag, "load cards for dictionary = $dictionaryId")
         isLoading.value = true
@@ -33,6 +36,28 @@ class CardViewModel(
             Log.e(tag, "Failed to load cards", e)
         } finally {
             isLoading.value = false
+        }
+    }
+
+    fun sortBy(field: String) {
+        if (sortField.value == field) {
+            isAscending.value = !isAscending.value
+        } else {
+            sortField.value = field
+            isAscending.value = true
+        }
+        applySorting()
+    }
+
+    private fun applySorting() {
+        cads.value = cads.value.sortedWith { a, b ->
+            val result = when (sortField.value) {
+                "word" -> a.word.compareTo(b.word)
+                "translation" -> a.translation.compareTo(b.translation)
+                "status" -> a.answered.compareTo(b.answered)
+                else -> 0
+            }
+            if (isAscending.value) result else -result
         }
     }
 }

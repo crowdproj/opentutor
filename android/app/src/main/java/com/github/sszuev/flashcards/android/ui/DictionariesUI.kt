@@ -16,6 +16,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -42,6 +44,11 @@ import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import kotlinx.coroutines.launch
 
 private const val tag = "DictionariesUI"
+private const val FIRST_COLUMN_WIDTH = 28
+private const val SECOND_COLUMN_WIDTH = 19
+private const val THIRD_COLUMN_WIDTH = 19
+private const val FOURTH_COLUMN_WIDTH = 16
+private const val FIFTH_COLUMN_WIDTH = 18
 
 @Composable
 fun DictionariesScreen(
@@ -131,20 +138,25 @@ fun DictionaryTable(
                 }
 
                 else -> {
-                    dictionaries.forEach { dictionary ->
-                        val isSelected =
-                            viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
-                        DictionariesTableRow(
-                            dictionary = dictionary,
-                            containerWidthDp = containerWidthDp,
-                            isSelected = isSelected,
-                            onSelect = {
-                                viewModel.toggleSelection(
-                                    dictionaryId = dictionary.dictionaryId,
-                                    isSelected = it,
-                                )
-                            }
-                        )
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        items(dictionaries) { dictionary ->
+                            val isSelected =
+                                viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
+                            DictionariesTableRow(
+                                dictionary = dictionary,
+                                containerWidthDp = containerWidthDp,
+                                isSelected = isSelected,
+                                onSelect = {
+                                    viewModel.toggleSelection(
+                                        dictionaryId = dictionary.dictionaryId,
+                                        isSelected = it,
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -168,31 +180,31 @@ fun DictionariesTableHeader(
     ) {
         TableCell(
             text = "Dictionary name ${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
-            weight = 28,
+            weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("name") }
         )
         TableCell(
             text = "Source language ${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
-            weight = 19,
+            weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("sourceLanguage") }
         )
         TableCell(
             text = "Target language ${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
-            weight = 19,
+            weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("targetLanguage") }
         )
         TableCell(
             text = "Total number of words ${if (currentSortField == "totalWords") if (isAscending) "↑" else "↓" else ""}",
-            weight = 16,
+            weight = FOURTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("totalWords") }
         )
         TableCell(
             text = "Number of learned words ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
-            weight = 18,
+            weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("learnedWords") }
         )
@@ -241,11 +253,11 @@ fun DictionariesTableRow(
     fifth: String,
     containerWidthDp: Dp
 ) {
-    TableCell(text = first, weight = 28, containerWidthDp = containerWidthDp)
-    TableCell(text = second, weight = 19, containerWidthDp = containerWidthDp)
-    TableCell(text = third, weight = 19, containerWidthDp = containerWidthDp)
-    TableCell(text = fourth, weight = 16, containerWidthDp = containerWidthDp)
-    TableCell(text = fifth, weight = 18, containerWidthDp = containerWidthDp)
+    TableCell(text = first, weight = FIRST_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = second, weight = SECOND_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = third, weight = THIRD_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = fourth, weight = FOURTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = fifth, weight = FIRST_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
 }
 
 @Composable

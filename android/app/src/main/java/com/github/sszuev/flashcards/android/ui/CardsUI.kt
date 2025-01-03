@@ -3,12 +3,15 @@ package com.github.sszuev.flashcards.android.ui
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,6 +34,9 @@ import com.github.sszuev.flashcards.android.models.CardViewModel
 import kotlinx.coroutines.launch
 
 private const val tag = "CardsUI"
+private const val FIRST_COLUMN_WIDTH = 32
+private const val SECOND_COLUMN_WIDTH = 60
+private const val THIRD_COLUMN_WIDTH = 8
 
 @Composable
 fun CardsScreen(
@@ -87,9 +93,9 @@ fun CardsTable(
         Column {
             CardsTableHeader(
                 containerWidthDp = containerWidthDp,
-                onSort = { },
-                currentSortField = null,
-                isAscending = false
+                onSort = { viewModel.sortBy(it) },
+                currentSortField = viewModel.sortField.value,
+                isAscending = viewModel.isAscending.value,
             )
 
             when {
@@ -113,13 +119,18 @@ fun CardsTable(
                 }
 
                 else -> {
-                    cards.forEach { card ->
-                        CardsTableRow(
-                            card = card,
-                            containerWidthDp = containerWidthDp,
-                            isSelected = false,
-                            onSelect = {}
-                        )
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                    ) {
+                        items(cards) { card ->
+                            CardsTableRow(
+                                card = card,
+                                containerWidthDp = containerWidthDp,
+                                isSelected = viewModel.selectedCardId.value == card.cardId,
+                                onSelect = { viewModel.selectedCardId.value = card.cardId }
+                            )
+                        }
                     }
                 }
             }
@@ -144,21 +155,21 @@ fun CardsTableHeader(
     ) {
         TableCell(
             text = "Word ${if (currentSortField == "word") if (isAscending) "↑" else "↓" else ""}",
-            weight = 15,
+            weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
-            onClick = { onSort("name") }
+            onClick = { onSort("word") }
         )
         TableCell(
             text = "Translation ${if (currentSortField == "translation") if (isAscending) "↑" else "↓" else ""}",
-            weight = 67,
+            weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
-            onClick = { onSort("sourceLanguage") }
+            onClick = { onSort("translation") }
         )
         TableCell(
-            text = "Status,% ${if (currentSortField == "status") if (isAscending) "↑" else "↓" else ""}",
-            weight = 18,
+            text = "% ${if (currentSortField == "status") if (isAscending) "↑" else "↓" else ""}",
+            weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
-            onClick = { onSort("targetLanguage") }
+            onClick = { onSort("status") }
         )
     }
 }
@@ -168,16 +179,31 @@ fun CardsTableRow(
     card: Card,
     containerWidthDp: Dp,
     isSelected: Boolean,
-    onSelect: (Boolean) -> Unit,
+    onSelect: () -> Unit,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Black)
             .background(if (isSelected) Color.Green else Color.Transparent)
+            .clickable {
+                onSelect()
+            }
     ) {
-        TableCell(text = card.word, weight = 15, containerWidthDp = containerWidthDp)
-        TableCell(text = card.translation, weight = 67, containerWidthDp = containerWidthDp)
-        TableCell(text = card.answered.toString(), weight = 18, containerWidthDp = containerWidthDp)
+        TableCell(
+            text = card.word,
+            weight = FIRST_COLUMN_WIDTH,
+            containerWidthDp = containerWidthDp
+        )
+        TableCell(
+            text = card.translation,
+            weight = SECOND_COLUMN_WIDTH,
+            containerWidthDp = containerWidthDp
+        )
+        TableCell(
+            text = card.answered.toString(),
+            weight = THIRD_COLUMN_WIDTH,
+            containerWidthDp = containerWidthDp
+        )
     }
 }
