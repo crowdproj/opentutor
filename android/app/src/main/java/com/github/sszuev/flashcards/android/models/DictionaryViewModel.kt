@@ -33,6 +33,7 @@ class DictionaryViewModel(
             dictionaries.value = repository.getAll().map { it.toDictionary() }
         } catch (e: Exception) {
             errorMessage.value = "Failed to load dictionaries: ${e.localizedMessage}"
+            Log.e(tag, "Failed to load dictionaries", e)
         } finally {
             isLoading.value = false
         }

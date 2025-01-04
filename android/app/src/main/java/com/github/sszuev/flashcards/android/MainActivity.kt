@@ -9,10 +9,13 @@ import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import com.github.sszuev.flashcards.android.models.CardViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModelFactory
+import com.github.sszuev.flashcards.android.models.DictionariesViewModelFactory
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
-import com.github.sszuev.flashcards.android.models.ViewModelFactory
+import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
-import com.github.sszuev.flashcards.android.ui.MainDictionariesScreen
+import com.github.sszuev.flashcards.android.ui.MainNavigation
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpStatusCode
@@ -24,8 +27,11 @@ import kotlinx.coroutines.withContext
 class MainActivity : ComponentActivity() {
     private val tag = "MainActivity"
 
-    private val viewModel: DictionaryViewModel by viewModels {
-        ViewModelFactory(DictionaryRepository(AppConfig.serverUri))
+    private val dictionaryViewModel: DictionaryViewModel by viewModels {
+        DictionariesViewModelFactory(DictionaryRepository(AppConfig.serverUri))
+    }
+    private val cardViewModel: CardViewModel by viewModels {
+        CardsViewModelFactory(CardsRepository(AppConfig.serverUri))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,9 +52,10 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             MaterialTheme {
-                MainDictionariesScreen(
+                MainNavigation(
                     onSignOut = { onSignOut() },
-                    viewModel = viewModel,
+                    dictionariesViewModel = dictionaryViewModel,
+                    cardViewModel = cardViewModel,
                 )
             }
         }

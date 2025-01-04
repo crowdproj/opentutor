@@ -1,22 +1,22 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -31,64 +31,46 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.Dictionary
-import com.github.sszuev.flashcards.android.getUsernameFromPreferences
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import kotlinx.coroutines.launch
 
 private const val tag = "DictionariesUI"
+private const val FIRST_COLUMN_WIDTH = 28
+private const val SECOND_COLUMN_WIDTH = 19
+private const val THIRD_COLUMN_WIDTH = 19
+private const val FOURTH_COLUMN_WIDTH = 16
+private const val FIFTH_COLUMN_WIDTH = 18
 
 @Composable
-fun MainDictionariesScreen(
+fun DictionariesScreen(
+    navController: NavHostController,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     viewModel: DictionaryViewModel,
 ) {
-    Column {
-        TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
-        DictionaryTable(
-            viewModel = viewModel,
-        )
-    }
-}
-
-@Composable
-fun TopBar(
-    onSignOut: () -> Unit,
-    onHomeClick: () -> Unit,
-) {
-    val username = getUsernameFromPreferences(LocalContext.current as Activity)
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.White)
-            .padding(8.dp),
-        horizontalArrangement = Arrangement.Absolute.Right,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = "[ $username ]",
-            modifier = Modifier.padding(end = 16.dp)
-        )
-        Text(
-            text = "home",
-            color = Color.Blue,
-            modifier = Modifier
-                .clickable { onHomeClick() }
-                .padding(end = 16.dp)
-        )
-        Text(
-            text = "sign out",
-            color = Color.Blue,
-            modifier = Modifier
-                .clickable { onSignOut() }
+    val selectedDictionaryIds = viewModel.selectedDictionaryIds
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column {
+            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
+            DictionaryTable(
+                viewModel = viewModel,
+            )
+        }
+        DictionariesBottomToolbar(
+            onCardsClick = {
+                if (selectedDictionaryIds.size == 1) {
+                    val dictionaryId = selectedDictionaryIds.first()
+                    Log.i(tag, "Go to cards/$dictionaryId")
+                    navController.navigate("cards/$dictionaryId")
+                }
+            },
+            selectedDictionaryIds = selectedDictionaryIds,
+            modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
 }
@@ -108,11 +90,9 @@ fun DictionaryTable(
 
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        Log.d(tag, "In LaunchedEffect ::: begin")
         coroutineScope.launch {
             viewModel.loadDictionaries()
         }
-        Log.d(tag, "In LaunchedEffect ::: finish")
     }
 
     Box(
@@ -124,7 +104,7 @@ fun DictionaryTable(
             return@Box
         }
         Column {
-            TableHeader(
+            DictionariesTableHeader(
                 containerWidthDp = containerWidthDp,
                 onSort = { viewModel.sortBy(it) },
                 currentSortField = viewModel.sortField.value,
@@ -152,20 +132,26 @@ fun DictionaryTable(
                 }
 
                 else -> {
-                    dictionaries.forEach { dictionary ->
-                        val isSelected =
-                            viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
-                        TableRow(
-                            dictionary = dictionary,
-                            containerWidthDp = containerWidthDp,
-                            isSelected = isSelected,
-                            onSelect = {
-                                viewModel.toggleSelection(
-                                    dictionaryId = dictionary.dictionaryId,
-                                    isSelected = it,
-                                )
-                            }
-                        )
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 145.dp)
+                    ) {
+                        items(dictionaries) { dictionary ->
+                            val isSelected =
+                                viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
+                            DictionariesTableRow(
+                                dictionary = dictionary,
+                                containerWidthDp = containerWidthDp,
+                                isSelected = isSelected,
+                                onSelect = {
+                                    viewModel.toggleSelection(
+                                        dictionaryId = dictionary.dictionaryId,
+                                        isSelected = it,
+                                    )
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -175,7 +161,7 @@ fun DictionaryTable(
 }
 
 @Composable
-fun TableHeader(
+fun DictionariesTableHeader(
     containerWidthDp: Dp,
     onSort: (String) -> Unit,
     currentSortField: String?,
@@ -185,35 +171,35 @@ fun TableHeader(
         modifier = Modifier
             .background(Color.LightGray)
             .border(1.dp, Color.Black)
-            .height(100.dp)
+            .height(60.dp)
     ) {
-        TableCell(
-            text = "Dictionary name ${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
-            weight = 28,
+        HeaderTableCell(
+            text = "Name ${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
+            weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("name") }
         )
-        TableCell(
-            text = "Source language ${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
-            weight = 19,
+        HeaderTableCell(
+            text = "Source ${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
+            weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("sourceLanguage") }
         )
-        TableCell(
-            text = "Target language ${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
-            weight = 19,
+        HeaderTableCell(
+            text = "Target ${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
+            weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("targetLanguage") }
         )
-        TableCell(
-            text = "Total number of words ${if (currentSortField == "totalWords") if (isAscending) "↑" else "↓" else ""}",
-            weight = 16,
+        HeaderTableCell(
+            text = "Words ${if (currentSortField == "totalWords") if (isAscending) "↑" else "↓" else ""}",
+            weight = FOURTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("totalWords") }
         )
-        TableCell(
-            text = "Number of learned words ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
-            weight = 18,
+        HeaderTableCell(
+            text = "Learned ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
+            weight = FIFTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("learnedWords") }
         )
@@ -222,7 +208,7 @@ fun TableHeader(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TableRow(
+fun DictionariesTableRow(
     dictionary: Dictionary,
     containerWidthDp: Dp,
     isSelected: Boolean,
@@ -242,7 +228,7 @@ fun TableRow(
                 }
             )
     ) {
-        TableRow(
+        DictionariesTableRow(
             first = dictionary.name,
             second = dictionary.sourceLanguage,
             third = dictionary.targetLanguage,
@@ -254,7 +240,7 @@ fun TableRow(
 }
 
 @Composable
-fun TableRow(
+fun DictionariesTableRow(
     first: String,
     second: String,
     third: String,
@@ -262,41 +248,92 @@ fun TableRow(
     fifth: String,
     containerWidthDp: Dp
 ) {
-    TableCell(text = first, weight = 28, containerWidthDp = containerWidthDp)
-    TableCell(text = second, weight = 19, containerWidthDp = containerWidthDp)
-    TableCell(text = third, weight = 19, containerWidthDp = containerWidthDp)
-    TableCell(text = fourth, weight = 16, containerWidthDp = containerWidthDp)
-    TableCell(text = fifth, weight = 18, containerWidthDp = containerWidthDp)
+    TableCell(text = first, weight = FIRST_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = second, weight = SECOND_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = third, weight = THIRD_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = fourth, weight = FOURTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = fifth, weight = FIFTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
 }
 
 @Composable
-fun TableCell(
-    text: String,
-    weight: Int,
-    containerWidthDp: Dp,
-    onClick: (() -> Unit)? = null,
+fun DictionariesBottomToolbar(
+    modifier: Modifier = Modifier,
+    selectedDictionaryIds: Set<String>,
+    onRunClick: () -> Unit = {},
+    onCardsClick: () -> Unit = {},
+    onCreateClick: () -> Unit = {},
+    onEditClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+    onSettingsClick: () -> Unit = {},
 ) {
-    Box(
-        modifier = Modifier
-            .width(((containerWidthDp * weight) / 100f))
-            .padding(4.dp)
-            .let {
-                if (onClick != null) {
-                    it.clickable { onClick() }
-                } else {
-                    it
-                }
-            },
-        contentAlignment = Alignment.TopStart
-    ) {
-        Text(
-            text = text,
-            textAlign = TextAlign.Start,
-            maxLines = Int.MAX_VALUE,
-            overflow = TextOverflow.Clip,
-            softWrap = true,
-            lineHeight = 20.sp,
-        )
-    }
+    var containerWidthPx by remember { mutableIntStateOf(0) }
+    val density = LocalDensity.current
+    val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(Color.Gray)
+            .padding(8.dp)
+            .onSizeChanged { size -> containerWidthPx = size.width },
+        verticalArrangement = Arrangement.SpaceBetween,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ToolbarButton(
+                label = "RUN",
+                containerWidthDp = containerWidthDp,
+                weight = 21.43f,
+                onClick = onRunClick
+            )
+            ToolbarButton(
+                label = "CARDS",
+                containerWidthDp = containerWidthDp,
+                weight = 35.71f,
+                onClick = onCardsClick,
+                enabled = selectedDictionaryIds.size == 1,
+            )
+            ToolbarButton(
+                label = "CREATE",
+                containerWidthDp = containerWidthDp,
+                weight = 42.86f,
+                onClick = onCreateClick
+            )
+        }
+
+        Spacer(modifier = Modifier.height(4.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ToolbarButton(
+                label = "EDIT",
+                containerWidthDp = containerWidthDp,
+                weight = 23.53f,
+                onClick = onEditClick,
+                enabled = selectedDictionaryIds.size == 1,
+            )
+            ToolbarButton(
+                label = "DELETE",
+                containerWidthDp = containerWidthDp,
+                weight = 35.29f,
+                onClick = onDeleteClick,
+                enabled = selectedDictionaryIds.size == 1,
+            )
+            ToolbarButton(
+                label = "SETTINGS",
+                containerWidthDp = containerWidthDp,
+                weight = 41.18f,
+                onClick = onSettingsClick,
+                enabled = selectedDictionaryIds.size == 1,
+            )
+        }
+    }
 }
+

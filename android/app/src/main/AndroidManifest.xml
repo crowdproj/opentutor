@@ -27,17 +27,17 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:scheme="com.github.sszuev.flashcards.android"
                     android:host="oauth2redirect"
                     android:path="/"
-                    />
+                    android:scheme="com.github.sszuev.flashcards.android" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.github.sszuev.flashcards.android.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.App.Splash">
+            android:theme="@style/Theme.App.Splash"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
