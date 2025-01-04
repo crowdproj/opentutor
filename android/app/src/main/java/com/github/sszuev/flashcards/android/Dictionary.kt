@@ -9,5 +9,6 @@ data class Dictionary(
     val sourceLanguage: String,
     val targetLanguage: String,
     val totalWords: Int,
-    val learnedWords: Int
+    val learnedWords: Int,
+    val numberOfRightAnswers: Int,
 )

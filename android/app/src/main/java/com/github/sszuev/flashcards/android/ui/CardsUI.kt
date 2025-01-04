@@ -113,11 +113,8 @@ fun CardsTable(
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
-    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            viewModel.loadCards(dictionaryId)
-        }
+        viewModel.loadCards(dictionaryId)
     }
 
     Box(

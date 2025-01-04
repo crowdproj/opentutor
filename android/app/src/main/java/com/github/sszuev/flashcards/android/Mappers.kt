@@ -10,6 +10,7 @@ fun DictionaryResource.toDictionary() = Dictionary(
     targetLanguage = checkNotNull(this.targetLang),
     totalWords = checkNotNull(this.total),
     learnedWords = checkNotNull(this.learned),
+    numberOfRightAnswers = this.numberOfRightAnswers ?: 15
 )
 
 fun CardResource.toCard() = Card(
@@ -22,4 +23,14 @@ fun CardResource.toCard() = Card(
         checkNotNull(it.translations) { "No translation" }.flatten().firstOrNull()
     } ?: throw IllegalArgumentException("Can't find field 'translation' for card = $cardId"),
     answered = checkNotNull(answered),
+)
+
+fun Dictionary.toDictionaryResource() = DictionaryResource(
+    dictionaryId = this.dictionaryId,
+    name = this.name,
+    sourceLang = this.sourceLanguage,
+    targetLang = this.targetLanguage,
+    total= this.totalWords,
+    learned = this.learnedWords,
+    numberOfRightAnswers = this.numberOfRightAnswers,
 )

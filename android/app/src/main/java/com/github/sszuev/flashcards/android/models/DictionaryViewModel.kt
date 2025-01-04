@@ -3,10 +3,13 @@ package com.github.sszuev.flashcards.android.models
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.Dictionary
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
 import com.github.sszuev.flashcards.android.toDictionary
+import com.github.sszuev.flashcards.android.toDictionaryResource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class DictionaryViewModel(
@@ -16,7 +19,8 @@ class DictionaryViewModel(
     private val tag = "DictionaryViewModel"
 
     val dictionaries = mutableStateOf<List<Dictionary>>(emptyList())
-    val isLoading = mutableStateOf(true)
+    val isDictionariesLoading = mutableStateOf(true)
+    val isUpdateInProgress = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
     var sortField = mutableStateOf<String?>("name")
@@ -25,17 +29,47 @@ class DictionaryViewModel(
     private val _selectedDictionaryIds = mutableStateOf<Set<String>>(emptySet())
     val selectedDictionaryIds: Set<String> get() = _selectedDictionaryIds.value
 
-    suspend fun loadDictionaries() = withContext(Dispatchers.IO) {
-        Log.d(tag, "load dictionaries")
-        isLoading.value = true
-        errorMessage.value = null
-        try {
-            dictionaries.value = repository.getAll().map { it.toDictionary() }
-        } catch (e: Exception) {
-            errorMessage.value = "Failed to load dictionaries: ${e.localizedMessage}"
-            Log.e(tag, "Failed to load dictionaries", e)
-        } finally {
-            isLoading.value = false
+    fun loadDictionaries() {
+        viewModelScope.launch {
+            Log.d(tag, "load dictionaries")
+            isDictionariesLoading.value = true
+            errorMessage.value = null
+            try {
+                withContext(Dispatchers.IO) {
+                    dictionaries.value = repository.getAll().map { it.toDictionary() }
+                }
+            } catch (e: Exception) {
+                errorMessage.value = "Failed to load dictionaries: ${e.localizedMessage}"
+                Log.e(tag, "Failed to load dictionaries", e)
+            } finally {
+                isDictionariesLoading.value = false
+            }
+        }
+    }
+
+    fun updateDictionary(dictionary: Dictionary) {
+        viewModelScope.launch {
+            Log.d(tag, "update dictionary")
+            isUpdateInProgress.value = true
+            errorMessage.value = null
+            try {
+                withContext(Dispatchers.IO) {
+                    repository.updateDictionary(dictionary.toDictionaryResource())
+                }
+                val dictionaries = this@DictionaryViewModel.dictionaries.value.toMutableList()
+                dictionaries.toList().forEachIndexed { index, it ->
+                    if (it.dictionaryId == dictionary.dictionaryId) {
+                        dictionaries.removeAt(index)
+                        dictionaries.add(index, dictionary)
+                    }
+                }
+                this@DictionaryViewModel.dictionaries.value = dictionaries
+            } catch (e: Exception) {
+                errorMessage.value = "Failed to update dictionary: ${e.localizedMessage}"
+                Log.e(tag, "Failed to update dictionary", e)
+            } finally {
+                isUpdateInProgress.value = false
+            }
         }
     }
 

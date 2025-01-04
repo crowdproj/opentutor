@@ -15,17 +15,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,10 +37,12 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.Dictionary
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
-import kotlinx.coroutines.launch
+import java.util.Locale
 
 private const val tag = "DictionariesUI"
 private const val FIRST_COLUMN_WIDTH = 28
@@ -45,6 +50,16 @@ private const val SECOND_COLUMN_WIDTH = 19
 private const val THIRD_COLUMN_WIDTH = 19
 private const val FOURTH_COLUMN_WIDTH = 16
 private const val FIFTH_COLUMN_WIDTH = 18
+
+val languages = Locale.getAvailableLocales()
+    .filterNot { it.language.isBlank() }
+    .associate {
+        if (it.language == "en") {
+            it.language to it.getDisplayLanguage(Locale.US)
+        } else {
+            it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})"
+        }
+    }
 
 @Composable
 fun DictionariesScreen(
@@ -54,6 +69,11 @@ fun DictionariesScreen(
     viewModel: DictionaryViewModel,
 ) {
     val selectedDictionaryIds = viewModel.selectedDictionaryIds
+    val isEditPopupOpen = remember { mutableStateOf(false) }
+    val selectedDictionary = viewModel.dictionaries.value.firstOrNull {
+        it.dictionaryId == viewModel.selectedDictionaryIds.firstOrNull()
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
@@ -69,8 +89,23 @@ fun DictionariesScreen(
                     navController.navigate("cards/$dictionaryId")
                 }
             },
+            onEditClick = {
+                if (selectedDictionaryIds.size == 1) {
+                    isEditPopupOpen.value = true
+                }
+            },
             selectedDictionaryIds = selectedDictionaryIds,
             modifier = Modifier.align(Alignment.BottomCenter),
+        )
+    }
+
+    if (isEditPopupOpen.value && selectedDictionary != null) {
+        EditPopup(
+            dictionary = selectedDictionary,
+            onSave = {
+                viewModel.updateDictionary(it)
+            },
+            onDismiss = { isEditPopupOpen.value = false }
         )
     }
 }
@@ -81,18 +116,15 @@ fun DictionaryTable(
     viewModel: DictionaryViewModel,
 ) {
     val dictionaries by viewModel.dictionaries
-    val isLoading by viewModel.isLoading
+    val isLoading by viewModel.isDictionariesLoading
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
-    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            viewModel.loadDictionaries()
-        }
+        viewModel.loadDictionaries()
     }
 
     Box(
@@ -337,3 +369,75 @@ fun DictionariesBottomToolbar(
     }
 }
 
+@Composable
+fun EditPopup(
+    dictionary: Dictionary,
+    onSave: (Dictionary) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var dictionaryName by remember { mutableStateOf(dictionary.name) }
+    var numberOfRightAnswers by remember { mutableStateOf(dictionary.numberOfRightAnswers.toString()) }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
+                .padding(24.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "${languages[dictionary.sourceLanguage]} -> ${languages[dictionary.targetLanguage]}",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Gray
+                )
+                Text(
+                    text = "NAME:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                TextField(
+                    value = dictionaryName,
+                    onValueChange = { dictionaryName = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "ACCEPTED ANSWERS:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                TextField(
+                    value = numberOfRightAnswers,
+                    onValueChange = { numberOfRightAnswers = it.filter { char -> char.isDigit() } },
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        onClick = onDismiss,
+                    ) {
+                        Text(text = "Close", fontSize = 16.sp)
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = {
+                            val updatedDictionary = dictionary.copy(
+                                name = dictionaryName,
+                                numberOfRightAnswers = numberOfRightAnswers.toIntOrNull() ?: 0
+                            )
+                            onSave(updatedDictionary)
+                            onDismiss()
+                        }
+                    ) {
+                        Text(text = "Save", fontSize = 16.sp)
+                    }
+                }
+            }
+        }
+    }
+}

@@ -3,10 +3,12 @@ package com.github.sszuev.flashcards.android.models
 import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.Card
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.toCard
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class CardViewModel(
@@ -24,18 +26,22 @@ class CardViewModel(
     var sortField = mutableStateOf<String?>("name")
     var isAscending = mutableStateOf(true)
 
-    suspend fun loadCards(dictionaryId: String) = withContext(Dispatchers.IO) {
-        Log.d(tag, "load cards for dictionary = $dictionaryId")
-        isLoading.value = true
-        errorMessage.value = null
-        cads.value = emptyList()
-        try {
-            cads.value = repository.getAll(dictionaryId).map { it.toCard() }
-        } catch (e: Exception) {
-            errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
-            Log.e(tag, "Failed to load cards", e)
-        } finally {
-            isLoading.value = false
+    fun loadCards(dictionaryId: String) {
+        viewModelScope.launch {
+            Log.d(tag, "load cards for dictionary = $dictionaryId")
+            isLoading.value = true
+            errorMessage.value = null
+            cads.value = emptyList()
+            try {
+                withContext(Dispatchers.IO) {
+                    cads.value = repository.getAll(dictionaryId).map { it.toCard() }
+                }
+            } catch (e: Exception) {
+                errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
+                Log.e(tag, "Failed to load cards", e)
+            } finally {
+                isLoading.value = false
+            }
         }
     }
 

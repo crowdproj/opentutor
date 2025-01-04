@@ -26,21 +26,23 @@ class CardsRepository(
             tag,
             "Received response for requestId: $requestId, cards count: ${container.cards.size}"
         )
+        handleErrors(container)
         return container.cards
     }
-
-    @Serializable
-    private data class GetAllCardsResponse(
-        val responseType: String? = null,
-        val requestId: String? = null,
-        val cards: List<CardResource> = emptyList()
-    )
-
-    @Suppress("unused")
-    @Serializable
-    data class GetAllCardsRequest(
-        val requestType: String? = null,
-        val requestId: String? = null,
-        val dictionaryId: String? = null
-    )
 }
+
+@Suppress("unused")
+@Serializable
+private data class GetAllCardsRequest(
+    override val requestType: String,
+    override val requestId: String,
+    val dictionaryId: String? = null,
+): BaseRequest
+
+@Serializable
+private data class GetAllCardsResponse(
+    val responseType: String,
+    override val requestId: String,
+    val cards: List<CardResource> = emptyList(),
+    override val errors: List<ErrorResource>? = null,
+): BaseResponse

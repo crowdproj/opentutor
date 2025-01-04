@@ -13,14 +13,16 @@ class DictionaryRepository(
     suspend fun getAll(): List<DictionaryResource> {
         val requestId = UUID.randomUUID().toString()
         Log.d(tag, "Get all dictionaries with requestId=$requestId")
-        val container = authPost<GetAllDictionariesResponse>("$serverUri/v1/api/dictionaries/get-all") {
-            setBody(
-                GetAllDictionariesRequest(
-                    requestType = "getAllDictionaries",
-                    requestId = requestId,
+        val container =
+            authPost<GetAllDictionariesResponse>("$serverUri/v1/api/dictionaries/get-all") {
+                setBody(
+                    GetAllDictionariesRequest(
+                        requestType = "getAllDictionaries",
+                        requestId = requestId,
+                    )
                 )
-            )
-        }
+            }
+        handleErrors(container)
         Log.d(
             tag,
             "Received response for requestId: $requestId, dictionaries count: ${container.dictionaries.size}"
@@ -28,16 +30,55 @@ class DictionaryRepository(
         return container.dictionaries
     }
 
-    @Serializable
-    private data class GetAllDictionariesResponse(
-        val dictionaries: List<DictionaryResource>
-    )
+    suspend fun updateDictionary(dictionary: DictionaryResource) {
+        val requestId = UUID.randomUUID().toString()
+        Log.d(
+            tag,
+            "Update dictionaries with requestId=$requestId, dictionaryId=${dictionary.dictionaryId}"
+        )
+        val container =
+            authPost<UpdateDictionaryResponse>("$serverUri/v1/api/dictionaries/update") {
+                setBody(
+                    UpdateDictionaryRequest(
+                        requestType = "updateDictionary",
+                        requestId = requestId,
+                        dictionary = dictionary,
+                    )
+                )
+            }
+        handleErrors(container)
+        Log.d(
+            tag,
+            "Successfully update dictionary with id=${dictionary.dictionaryId}, requestId=$requestId"
+        )
+    }
 
-    @Suppress("unused")
-    @Serializable
-    private class GetAllDictionariesRequest(
-        val requestType: String,
-        val requestId: String
-    )
 }
 
+@Suppress("unused")
+@Serializable
+private class GetAllDictionariesRequest(
+    override val requestType: String,
+    override val requestId: String,
+) : BaseRequest
+
+@Serializable
+private data class GetAllDictionariesResponse(
+    override val requestId: String,
+    val dictionaries: List<DictionaryResource>,
+    override val errors: List<ErrorResource>? = null,
+) : BaseResponse
+
+@Serializable
+private data class UpdateDictionaryRequest(
+    override val requestType: String,
+    override val requestId: String,
+    val dictionary: DictionaryResource,
+) : BaseRequest
+
+@Serializable
+private data class UpdateDictionaryResponse(
+    override val requestId: String,
+    val dictionary: DictionaryResource,
+    override val errors: List<ErrorResource>? = null,
+) : BaseResponse
