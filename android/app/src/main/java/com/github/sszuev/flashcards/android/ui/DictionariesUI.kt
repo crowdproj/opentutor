@@ -5,17 +5,16 @@ import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
@@ -33,11 +32,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.Dictionary
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
@@ -94,11 +90,9 @@ fun DictionaryTable(
 
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        Log.d(tag, "In LaunchedEffect ::: begin")
         coroutineScope.launch {
             viewModel.loadDictionaries()
         }
-        Log.d(tag, "In LaunchedEffect ::: finish")
     }
 
     Box(
@@ -141,6 +135,7 @@ fun DictionaryTable(
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
+                            .padding(bottom = 145.dp)
                     ) {
                         items(dictionaries) { dictionary ->
                             val isSelected =
@@ -204,7 +199,7 @@ fun DictionariesTableHeader(
         )
         HeaderTableCell(
             text = "Learned ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
-            weight = FIRST_COLUMN_WIDTH,
+            weight = FIFTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("learnedWords") }
         )
@@ -257,7 +252,7 @@ fun DictionariesTableRow(
     TableCell(text = second, weight = SECOND_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
     TableCell(text = third, weight = THIRD_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
     TableCell(text = fourth, weight = FOURTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = fifth, weight = FIRST_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(text = fifth, weight = FIFTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
 }
 
 @Composable
@@ -300,7 +295,7 @@ fun DictionariesBottomToolbar(
                 containerWidthDp = containerWidthDp,
                 weight = 35.71f,
                 onClick = onCardsClick,
-                enabled = selectedDictionaryIds.size == 1
+                enabled = selectedDictionaryIds.size == 1,
             )
             ToolbarButton(
                 label = "CREATE",
@@ -309,6 +304,8 @@ fun DictionariesBottomToolbar(
                 onClick = onCreateClick
             )
         }
+
+        Spacer(modifier = Modifier.height(4.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -319,19 +316,22 @@ fun DictionariesBottomToolbar(
                 label = "EDIT",
                 containerWidthDp = containerWidthDp,
                 weight = 23.53f,
-                onClick = onEditClick
+                onClick = onEditClick,
+                enabled = selectedDictionaryIds.size == 1,
             )
             ToolbarButton(
                 label = "DELETE",
                 containerWidthDp = containerWidthDp,
                 weight = 35.29f,
-                onClick = onDeleteClick
+                onClick = onDeleteClick,
+                enabled = selectedDictionaryIds.size == 1,
             )
             ToolbarButton(
                 label = "SETTINGS",
                 containerWidthDp = containerWidthDp,
                 weight = 41.18f,
-                onClick = onSettingsClick
+                onClick = onSettingsClick,
+                enabled = selectedDictionaryIds.size == 1,
             )
         }
     }

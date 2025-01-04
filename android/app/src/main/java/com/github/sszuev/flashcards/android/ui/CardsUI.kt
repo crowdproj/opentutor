@@ -1,6 +1,5 @@
 package com.github.sszuev.flashcards.android.ui
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -8,19 +7,29 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -35,7 +44,6 @@ import com.github.sszuev.flashcards.android.Card
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import kotlinx.coroutines.launch
 
-private const val tag = "CardsUI"
 private const val FIRST_COLUMN_WIDTH = 32
 private const val SECOND_COLUMN_WIDTH = 58
 private const val THIRD_COLUMN_WIDTH = 10
@@ -47,21 +55,46 @@ fun CardsScreen(
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
 ) {
+    val searchQuery = remember { mutableStateOf("") }
+    val cards by viewModel.cads
+    val listState = rememberLazyListState()
+
+    LaunchedEffect(searchQuery.value) {
+        val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
+        if (index != -1) {
+            listState.animateScrollToItem(index, scrollOffset = 50)
+            viewModel.selectedCardId.value = cards[index].cardId
+        } else {
+            viewModel.selectedCardId.value = null
+        }
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color.White),
+            .background(Color.White)
+            .windowInsetsPadding(WindowInsets.systemBars)
+            .imePadding(),
         contentAlignment = Alignment.Center
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column {
                 TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
-                CardsTable(viewModel, dictionaryId)
+                CardsTable(
+                    viewModel = viewModel,
+                    dictionaryId = dictionaryId,
+                    listState = listState,
+                )
             }
         }
         CardsBottomToolbar(
             selectedCardId = viewModel.selectedCardId.value,
-            modifier = Modifier.align(Alignment.BottomCenter),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .imePadding(),
+            searchQuery = searchQuery,
+            listState = listState,
+            cards = cards,
         )
     }
 }
@@ -70,6 +103,7 @@ fun CardsScreen(
 fun CardsTable(
     viewModel: CardViewModel,
     dictionaryId: String,
+    listState: LazyListState,
 ) {
     val cards by viewModel.cads
     val isLoading by viewModel.isLoading
@@ -81,11 +115,9 @@ fun CardsTable(
 
     val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        Log.d(tag, "In LaunchedEffect ::: begin")
         coroutineScope.launch {
             viewModel.loadCards(dictionaryId)
         }
-        Log.d(tag, "In LaunchedEffect ::: finish")
     }
 
     Box(
@@ -97,6 +129,7 @@ fun CardsTable(
             return@Box
         }
         Column {
+
             CardsTableHeader(
                 containerWidthDp = containerWidthDp,
                 onSort = { viewModel.sortBy(it) },
@@ -126,8 +159,11 @@ fun CardsTable(
 
                 else -> {
                     LazyColumn(
+                        state = listState,
                         modifier = Modifier
                             .fillMaxSize()
+                            .imePadding()
+                            .padding(bottom = 165.dp)
                     ) {
                         items(cards) { card ->
                             CardsTableRow(
@@ -224,6 +260,9 @@ fun CardsTableRow(
 @Composable
 fun CardsBottomToolbar(
     modifier: Modifier = Modifier,
+    searchQuery: MutableState<String>,
+    listState: LazyListState,
+    cards: List<Card>,
     selectedCardId: String?,
     onAddClick: () -> Unit = {},
     onEditClick: () -> Unit = {},
@@ -233,16 +272,35 @@ fun CardsBottomToolbar(
     var containerWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
+    val coroutineScope = rememberCoroutineScope()
 
     Column(
         modifier = modifier
             .fillMaxWidth()
             .background(Color.Gray)
-            .padding(8.dp)
+            .imePadding()
             .onSizeChanged { size -> containerWidthPx = size.width },
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Bottom,
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
+        TextField(
+            value = searchQuery.value,
+            onValueChange = { query ->
+                searchQuery.value = query
+                coroutineScope.launch {
+                    val index =
+                        cards.indexOfFirst { it.word.startsWith(query, ignoreCase = true) }
+                    if (index != -1) {
+                        listState.animateScrollToItem(index)
+                    }
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            placeholder = { Text("Search...") }
+        )
+
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly,
@@ -262,6 +320,8 @@ fun CardsBottomToolbar(
                 enabled = selectedCardId != null,
             )
         }
+
+        Spacer(modifier = Modifier.height(4.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
