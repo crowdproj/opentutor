@@ -78,6 +78,29 @@ class DictionaryRepository(
         return res
     }
 
+    suspend fun deleteDictionary(dictionaryId: String) {
+        val requestId = UUID.randomUUID().toString()
+        Log.d(
+            tag,
+            "Delete dictionary with requestId=$requestId"
+        )
+        val container =
+            authPost<DeleteDictionaryResponse>("$serverUri/v1/api/dictionaries/delete") {
+                setBody(
+                    DeleteDictionaryRequest(
+                        requestType = "deleteDictionary",
+                        requestId = requestId,
+                        dictionaryId = dictionaryId,
+                    )
+                )
+            }
+        handleErrors(container)
+        Log.d(
+            tag,
+            "Successfully delete dictionary with id=${dictionaryId}, requestId=$requestId"
+        )
+    }
+
 }
 
 @Suppress("unused")
@@ -119,5 +142,18 @@ private data class CreateDictionaryRequest(
 private data class CreateDictionaryResponse(
     override val requestId: String,
     val dictionary: DictionaryResource,
+    override val errors: List<ErrorResource>? = null,
+) : BaseResponse
+
+@Serializable
+private data class DeleteDictionaryRequest(
+    override val requestType: String,
+    override val requestId: String,
+    val dictionaryId: String,
+) : BaseRequest
+
+@Serializable
+private data class DeleteDictionaryResponse(
+    override val requestId: String,
     override val errors: List<ErrorResource>? = null,
 ) : BaseResponse

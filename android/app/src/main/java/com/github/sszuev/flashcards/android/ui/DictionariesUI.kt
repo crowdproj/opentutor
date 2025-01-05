@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -72,6 +73,7 @@ fun DictionariesScreen(
     val selectedDictionaryIds = viewModel.selectedDictionaryIds
     val isEditPopupOpen = remember { mutableStateOf(false) }
     val isCreatePopupOpen = remember { mutableStateOf(false) }
+    val isDeletePopupOpen = remember { mutableStateOf(false) }
     val selectedDictionary = viewModel.dictionaries.value.firstOrNull {
         it.dictionaryId == viewModel.selectedDictionaryIds.firstOrNull()
     }
@@ -98,6 +100,9 @@ fun DictionariesScreen(
             },
             onCreateClick = {
                 isCreatePopupOpen.value = true
+            },
+            onDeleteClick = {
+                isDeletePopupOpen.value = true
             },
             selectedDictionaryIds = selectedDictionaryIds,
             modifier = Modifier.align(Alignment.BottomCenter),
@@ -128,6 +133,15 @@ fun DictionariesScreen(
                 viewModel.createDictionary(dictionary)
             },
             onDismiss = { isCreatePopupOpen.value = false }
+        )
+    }
+    if (isDeletePopupOpen.value && selectedDictionary != null) {
+        DeleteDialog(
+            dictionaryName = selectedDictionary.name,
+            onClose = { isDeletePopupOpen.value = false },
+            onConfirm = {
+                viewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
+            }
         )
     }
 }
@@ -555,4 +569,30 @@ fun AddDialog(
             }
         }
     }
+}
+
+@Composable
+fun DeleteDialog(
+    dictionaryName: String,
+    onClose: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text("DELETE:") },
+        text = { Text(dictionaryName) },
+        confirmButton = {
+            Button(onClick = {
+                onConfirm()
+                onClose()
+            }) {
+                Text("CONFIRM")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onClose) {
+                Text("CLOSE")
+            }
+        }
+    )
 }

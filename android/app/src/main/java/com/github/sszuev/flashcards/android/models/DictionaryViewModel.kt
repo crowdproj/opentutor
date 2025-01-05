@@ -22,6 +22,7 @@ class DictionaryViewModel(
     val isDictionariesLoading = mutableStateOf(true)
     val isUpdateInProgress = mutableStateOf(true)
     val isCreateInProgress = mutableStateOf(true)
+    val isDeleteInProgress = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
     var sortField = mutableStateOf<String?>("name")
@@ -90,9 +91,33 @@ class DictionaryViewModel(
                 selectLast(checkNotNull(res.dictionaryId))
             } catch (e: Exception) {
                 errorMessage.value = "Failed to create dictionary: ${e.localizedMessage}"
-                Log.e(tag, "Failed to update dictionary", e)
+                Log.e(tag, "Failed to create dictionary", e)
             } finally {
                 isCreateInProgress.value = false
+            }
+        }
+    }
+
+    fun deleteDictionary(dictionaryId: String) {
+        viewModelScope.launch {
+            Log.d(tag, "delete dictionary")
+            isDeleteInProgress.value = true
+            errorMessage.value = null
+            try {
+                withContext(Dispatchers.IO) {
+                    repository.deleteDictionary(dictionaryId)
+                }
+                val dictionaries = this@DictionaryViewModel.dictionaries.value.toMutableList()
+                dictionaries.removeIf { it.dictionaryId == dictionaryId }
+                this@DictionaryViewModel.dictionaries.value = dictionaries
+                val selectedDictionariesIds = _selectedDictionaryIds.value.toMutableSet()
+                selectedDictionariesIds.removeIf { dictionaryId == it }
+                this@DictionaryViewModel._selectedDictionaryIds.value = selectedDictionariesIds
+            } catch (e: Exception) {
+                errorMessage.value = "Failed to delete dictionary: ${e.localizedMessage}"
+                Log.e(tag, "Failed to delete dictionary", e)
+            } finally {
+                isDeleteInProgress.value = false
             }
         }
     }

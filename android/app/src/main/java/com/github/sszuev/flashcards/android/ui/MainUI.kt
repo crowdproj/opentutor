@@ -24,6 +24,9 @@ fun MainNavigation(
                 navController = navController,
                 viewModel = dictionariesViewModel,
                 onSignOut = onSignOut,
+                onHomeClick = {
+                    dictionariesViewModel.loadDictionaries()
+                }
             )
         }
         composable("cards/{dictionaryId}") { backStackEntry ->
@@ -32,7 +35,9 @@ fun MainNavigation(
                 dictionaryId = dictionaryId,
                 viewModel = cardViewModel,
                 onSignOut = onSignOut,
-                onHomeClick = { navController.navigate("dictionaries") },
+                onHomeClick = {
+                    navController.navigate("dictionaries")
+                },
             )
         }
     }
