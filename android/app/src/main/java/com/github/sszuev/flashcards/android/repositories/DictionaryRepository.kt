@@ -34,7 +34,7 @@ class DictionaryRepository(
         val requestId = UUID.randomUUID().toString()
         Log.d(
             tag,
-            "Update dictionaries with requestId=$requestId, dictionaryId=${dictionary.dictionaryId}"
+            "Update dictionary with requestId=$requestId, dictionaryId=${dictionary.dictionaryId}"
         )
         val container =
             authPost<UpdateDictionaryResponse>("$serverUri/v1/api/dictionaries/update") {
@@ -51,6 +51,31 @@ class DictionaryRepository(
             tag,
             "Successfully update dictionary with id=${dictionary.dictionaryId}, requestId=$requestId"
         )
+    }
+
+    suspend fun createDictionary(dictionary: DictionaryResource): DictionaryResource {
+        val requestId = UUID.randomUUID().toString()
+        Log.d(
+            tag,
+            "Create dictionary with requestId=$requestId"
+        )
+        val container =
+            authPost<CreateDictionaryResponse>("$serverUri/v1/api/dictionaries/create") {
+                setBody(
+                    CreateDictionaryRequest(
+                        requestType = "createDictionary",
+                        requestId = requestId,
+                        dictionary = dictionary,
+                    )
+                )
+            }
+        handleErrors(container)
+        val res = container.dictionary
+        Log.d(
+            tag,
+            "Successfully create dictionary with id=${res.dictionaryId}, requestId=$requestId"
+        )
+        return res
     }
 
 }
@@ -78,6 +103,20 @@ private data class UpdateDictionaryRequest(
 
 @Serializable
 private data class UpdateDictionaryResponse(
+    override val requestId: String,
+    val dictionary: DictionaryResource,
+    override val errors: List<ErrorResource>? = null,
+) : BaseResponse
+
+@Serializable
+private data class CreateDictionaryRequest(
+    override val requestType: String,
+    override val requestId: String,
+    val dictionary: DictionaryResource,
+) : BaseRequest
+
+@Serializable
+private data class CreateDictionaryResponse(
     override val requestId: String,
     val dictionary: DictionaryResource,
     override val errors: List<ErrorResource>? = null,

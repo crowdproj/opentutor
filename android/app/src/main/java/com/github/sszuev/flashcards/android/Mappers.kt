@@ -4,7 +4,7 @@ import com.github.sszuev.flashcards.android.repositories.CardResource
 import com.github.sszuev.flashcards.android.repositories.DictionaryResource
 
 fun DictionaryResource.toDictionary() = Dictionary(
-    dictionaryId = checkNotNull(this.dictionaryId),
+    dictionaryId = this.dictionaryId,
     name = checkNotNull(this.name),
     sourceLanguage = checkNotNull(this.sourceLang),
     targetLanguage = checkNotNull(this.targetLang),

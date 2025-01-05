@@ -21,6 +21,7 @@ class DictionaryViewModel(
     val dictionaries = mutableStateOf<List<Dictionary>>(emptyList())
     val isDictionariesLoading = mutableStateOf(true)
     val isUpdateInProgress = mutableStateOf(true)
+    val isCreateInProgress = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
     var sortField = mutableStateOf<String?>("name")
@@ -71,6 +72,36 @@ class DictionaryViewModel(
                 isUpdateInProgress.value = false
             }
         }
+    }
+
+    fun createDictionary(dictionary: Dictionary) {
+        viewModelScope.launch {
+            Log.d(tag, "create dictionary")
+            isCreateInProgress.value = true
+            errorMessage.value = null
+            try {
+                val res = withContext(Dispatchers.IO) {
+                    repository.createDictionary(dictionary.toDictionaryResource())
+                }
+                val dictionaries = this@DictionaryViewModel.dictionaries.value.toMutableList()
+                dictionaries.add(res.toDictionary())
+                this@DictionaryViewModel.dictionaries.value = dictionaries
+
+                selectLast(checkNotNull(res.dictionaryId))
+            } catch (e: Exception) {
+                errorMessage.value = "Failed to create dictionary: ${e.localizedMessage}"
+                Log.e(tag, "Failed to update dictionary", e)
+            } finally {
+                isCreateInProgress.value = false
+            }
+        }
+    }
+
+    private fun selectLast(dictionaryId: String) {
+        val currentSet = _selectedDictionaryIds.value.toMutableSet()
+        currentSet.clear()
+        currentSet.add(dictionaryId)
+        _selectedDictionaryIds.value = currentSet
     }
 
     fun toggleSelection(dictionaryId: String, isSelected: Boolean) {

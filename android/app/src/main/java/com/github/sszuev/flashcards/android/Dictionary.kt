@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Dictionary(
-    val dictionaryId: String,
+    val dictionaryId: String?,
     val name: String,
     val sourceLanguage: String,
     val targetLanguage: String,

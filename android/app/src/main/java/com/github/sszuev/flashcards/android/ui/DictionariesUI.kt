@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -70,6 +71,7 @@ fun DictionariesScreen(
 ) {
     val selectedDictionaryIds = viewModel.selectedDictionaryIds
     val isEditPopupOpen = remember { mutableStateOf(false) }
+    val isCreatePopupOpen = remember { mutableStateOf(false) }
     val selectedDictionary = viewModel.dictionaries.value.firstOrNull {
         it.dictionaryId == viewModel.selectedDictionaryIds.firstOrNull()
     }
@@ -94,6 +96,9 @@ fun DictionariesScreen(
                     isEditPopupOpen.value = true
                 }
             },
+            onCreateClick = {
+                isCreatePopupOpen.value = true
+            },
             selectedDictionaryIds = selectedDictionaryIds,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
@@ -106,6 +111,23 @@ fun DictionariesScreen(
                 viewModel.updateDictionary(it)
             },
             onDismiss = { isEditPopupOpen.value = false }
+        )
+    }
+    if (isCreatePopupOpen.value) {
+        AddDialog(
+            onSave = { source, target, name, acceptedNum ->
+                val dictionary = Dictionary(
+                    dictionaryId = null,
+                    name = name,
+                    sourceLanguage = source,
+                    targetLanguage = target,
+                    numberOfRightAnswers = acceptedNum,
+                    totalWords = 0,
+                    learnedWords = 0,
+                )
+                viewModel.createDictionary(dictionary)
+            },
+            onDismiss = { isCreatePopupOpen.value = false }
         )
     }
 }
@@ -123,8 +145,16 @@ fun DictionaryTable(
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
+    val listState = rememberLazyListState()
+
     LaunchedEffect(Unit) {
         viewModel.loadDictionaries()
+    }
+
+    LaunchedEffect(dictionaries.size) {
+        if (dictionaries.isNotEmpty()) {
+            listState.animateScrollToItem(dictionaries.size - 1)
+        }
     }
 
     Box(
@@ -165,6 +195,7 @@ fun DictionaryTable(
 
                 else -> {
                     LazyColumn(
+                        state = listState,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 145.dp)
@@ -178,7 +209,7 @@ fun DictionaryTable(
                                 isSelected = isSelected,
                                 onSelect = {
                                     viewModel.toggleSelection(
-                                        dictionaryId = dictionary.dictionaryId,
+                                        dictionaryId = checkNotNull(dictionary.dictionaryId),
                                         isSelected = it,
                                     )
                                 }
@@ -421,7 +452,7 @@ fun EditPopup(
                     Button(
                         onClick = onDismiss,
                     ) {
-                        Text(text = "Close", fontSize = 16.sp)
+                        Text(text = "CLOSE", fontSize = 16.sp)
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Button(
@@ -434,7 +465,91 @@ fun EditPopup(
                             onDismiss()
                         }
                     ) {
-                        Text(text = "Save", fontSize = 16.sp)
+                        Text(text = "SAVE", fontSize = 16.sp)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AddDialog(
+    onSave: (String, String, String, Int) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var dictionaryName by remember { mutableStateOf("") }
+    var numberOfRightAnswers by remember { mutableStateOf("15") }
+    var selectedSourceLanguageTag by remember { mutableStateOf<String?>(null) }
+    var selectedTargetLanguageTag by remember { mutableStateOf<String?>(null) }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
+                .padding(24.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                // Source Language
+                Text(text = "SOURCE:", style = MaterialTheme.typography.bodyLarge)
+                SearchableDropdown(
+                    options = languages,
+                    selectedTag = selectedSourceLanguageTag,
+                    onOptionSelect = { selectedSourceLanguageTag = it }
+                )
+
+                // Target Language
+                Text(text = "TARGET:", style = MaterialTheme.typography.bodyLarge)
+                SearchableDropdown(
+                    options = languages,
+                    selectedTag = selectedTargetLanguageTag,
+                    onOptionSelect = { selectedTargetLanguageTag = it }
+                )
+
+                // Dictionary Name
+                Text(text = "Dictionary Name:", style = MaterialTheme.typography.bodyLarge)
+                TextField(
+                    value = dictionaryName,
+                    onValueChange = { dictionaryName = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "ACCEPTED ANSWERS:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                TextField(
+                    value = numberOfRightAnswers,
+                    onValueChange = { numberOfRightAnswers = it.filter { char -> char.isDigit() } },
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = onDismiss) {
+                        Text(text = "CLOSE")
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = {
+                            if (selectedSourceLanguageTag != null && selectedTargetLanguageTag != null && dictionaryName.isNotBlank()) {
+                                onSave(
+                                    checkNotNull(selectedSourceLanguageTag),
+                                    checkNotNull(selectedTargetLanguageTag),
+                                    dictionaryName,
+                                    numberOfRightAnswers.toInt(),
+                                )
+                                onDismiss()
+                            }
+                        }
+                    ) {
+                        Text(text = "SAVE")
                     }
                 }
             }
