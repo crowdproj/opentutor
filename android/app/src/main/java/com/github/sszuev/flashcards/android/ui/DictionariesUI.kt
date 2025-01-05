@@ -14,18 +14,28 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,10 +44,14 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
-import com.github.sszuev.flashcards.android.Dictionary
+import com.github.sszuev.flashcards.android.entities.DictionaryEntity
+import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
-import kotlinx.coroutines.launch
+import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import java.util.Locale
 
 private const val tag = "DictionariesUI"
 private const val FIRST_COLUMN_WIDTH = 28
@@ -46,19 +60,38 @@ private const val THIRD_COLUMN_WIDTH = 19
 private const val FOURTH_COLUMN_WIDTH = 16
 private const val FIFTH_COLUMN_WIDTH = 18
 
+val languages = Locale.getAvailableLocales()
+    .filterNot { it.language.isBlank() }
+    .associate {
+        if (it.language == "en") {
+            it.language to it.getDisplayLanguage(Locale.US)
+        } else {
+            it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})"
+        }
+    }
+
 @Composable
 fun DictionariesScreen(
     navController: NavHostController,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
-    viewModel: DictionaryViewModel,
+    dictionaryViewModel: DictionaryViewModel,
+    settingsViewModel: SettingsViewModel,
 ) {
-    val selectedDictionaryIds = viewModel.selectedDictionaryIds
+    val selectedDictionaryIds = dictionaryViewModel.selectedDictionaryIds
+    val isEditPopupOpen = remember { mutableStateOf(false) }
+    val isCreatePopupOpen = remember { mutableStateOf(false) }
+    val isDeletePopupOpen = remember { mutableStateOf(false) }
+    val isSettingsPopupOpen = remember { mutableStateOf(false) }
+    val selectedDictionary = dictionaryViewModel.dictionaries.value.firstOrNull {
+        it.dictionaryId == dictionaryViewModel.selectedDictionaryIds.firstOrNull()
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             DictionaryTable(
-                viewModel = viewModel,
+                viewModel = dictionaryViewModel,
             )
         }
         DictionariesBottomToolbar(
@@ -69,9 +102,85 @@ fun DictionariesScreen(
                     navController.navigate("cards/$dictionaryId")
                 }
             },
+            onEditClick = {
+                if (selectedDictionaryIds.size == 1) {
+                    isEditPopupOpen.value = true
+                }
+            },
+            onCreateClick = {
+                isCreatePopupOpen.value = true
+            },
+            onDeleteClick = {
+                isDeletePopupOpen.value = true
+            },
+            onSettingsClick = {
+                isSettingsPopupOpen.value = true
+            },
             selectedDictionaryIds = selectedDictionaryIds,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
+    }
+
+    if (isEditPopupOpen.value && selectedDictionary != null) {
+        EditPopup(
+            dictionary = selectedDictionary,
+            onSave = {
+                dictionaryViewModel.updateDictionary(it)
+            },
+            onDismiss = { isEditPopupOpen.value = false }
+        )
+    }
+    if (isCreatePopupOpen.value) {
+        AddDialog(
+            onSave = { source, target, name, acceptedNum ->
+                val dictionary = DictionaryEntity(
+                    dictionaryId = null,
+                    name = name,
+                    sourceLanguage = source,
+                    targetLanguage = target,
+                    numberOfRightAnswers = acceptedNum,
+                    totalWords = 0,
+                    learnedWords = 0,
+                )
+                dictionaryViewModel.createDictionary(dictionary)
+            },
+            onDismiss = { isCreatePopupOpen.value = false }
+        )
+    }
+    if (isDeletePopupOpen.value && selectedDictionary != null) {
+        DeleteDialog(
+            dictionaryName = selectedDictionary.name,
+            onClose = { isDeletePopupOpen.value = false },
+            onConfirm = {
+                dictionaryViewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
+            }
+        )
+    }
+    if (isSettingsPopupOpen.value) {
+        LaunchedEffect(isSettingsPopupOpen.value) {
+            if (settingsViewModel.settings.value == null) {
+                settingsViewModel.loadSettings()
+            }
+        }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (settingsViewModel.isLoadSettingsInProgress.value) {
+                CircularProgressIndicator()
+            } else {
+                settingsViewModel.settings.value?.let { initialSettings ->
+                    EditSettingsDialog(
+                        onDismiss = { isSettingsPopupOpen.value = false },
+                        onSave = {
+                            settingsViewModel.saveSettings(it)
+                        },
+                        initialSettings = initialSettings
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -81,17 +190,22 @@ fun DictionaryTable(
     viewModel: DictionaryViewModel,
 ) {
     val dictionaries by viewModel.dictionaries
-    val isLoading by viewModel.isLoading
+    val isLoading by viewModel.isDictionariesLoading
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
-    val coroutineScope = rememberCoroutineScope()
+    val listState = rememberLazyListState()
+
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            viewModel.loadDictionaries()
+        viewModel.loadDictionaries()
+    }
+
+    LaunchedEffect(dictionaries.size) {
+        if (dictionaries.isNotEmpty()) {
+            listState.animateScrollToItem(dictionaries.size - 1)
         }
     }
 
@@ -133,6 +247,7 @@ fun DictionaryTable(
 
                 else -> {
                     LazyColumn(
+                        state = listState,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 145.dp)
@@ -146,7 +261,7 @@ fun DictionaryTable(
                                 isSelected = isSelected,
                                 onSelect = {
                                     viewModel.toggleSelection(
-                                        dictionaryId = dictionary.dictionaryId,
+                                        dictionaryId = checkNotNull(dictionary.dictionaryId),
                                         isSelected = it,
                                     )
                                 }
@@ -209,7 +324,7 @@ fun DictionariesTableHeader(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DictionariesTableRow(
-    dictionary: Dictionary,
+    dictionary: DictionaryEntity,
     containerWidthDp: Dp,
     isSelected: Boolean,
     onSelect: (Boolean) -> Unit,
@@ -331,9 +446,352 @@ fun DictionariesBottomToolbar(
                 containerWidthDp = containerWidthDp,
                 weight = 41.18f,
                 onClick = onSettingsClick,
-                enabled = selectedDictionaryIds.size == 1,
+                enabled = true,
             )
         }
     }
 }
 
+@Composable
+fun EditPopup(
+    dictionary: DictionaryEntity,
+    onSave: (DictionaryEntity) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var dictionaryName by remember { mutableStateOf(dictionary.name) }
+    var numberOfRightAnswers by remember { mutableStateOf(dictionary.numberOfRightAnswers.toString()) }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
+                .padding(24.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(
+                    text = "${languages[dictionary.sourceLanguage]} -> ${languages[dictionary.targetLanguage]}",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = Color.Gray
+                )
+                Text(
+                    text = "NAME:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                TextField(
+                    value = dictionaryName,
+                    onValueChange = { dictionaryName = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "ACCEPTED ANSWERS:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                TextField(
+                    value = numberOfRightAnswers,
+                    onValueChange = { numberOfRightAnswers = it.filter { char -> char.isDigit() } },
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(
+                        onClick = onDismiss,
+                    ) {
+                        Text(text = "CLOSE", fontSize = 16.sp)
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = {
+                            val updatedDictionary = dictionary.copy(
+                                name = dictionaryName,
+                                numberOfRightAnswers = numberOfRightAnswers.toIntOrNull() ?: 0
+                            )
+                            onSave(updatedDictionary)
+                            onDismiss()
+                        }
+                    ) {
+                        Text(text = "SAVE", fontSize = 16.sp)
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AddDialog(
+    onSave: (String, String, String, Int) -> Unit,
+    onDismiss: () -> Unit
+) {
+    var dictionaryName by remember { mutableStateOf("") }
+    var numberOfRightAnswers by remember { mutableStateOf("15") }
+    var selectedSourceLanguageTag by remember { mutableStateOf<String?>(null) }
+    var selectedTargetLanguageTag by remember { mutableStateOf<String?>(null) }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
+                .padding(24.dp)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.Start
+            ) {
+                // Source Language
+                Text(text = "SOURCE:", style = MaterialTheme.typography.bodyLarge)
+                SearchableDropdown(
+                    options = languages,
+                    selectedTag = selectedSourceLanguageTag,
+                    onOptionSelect = { selectedSourceLanguageTag = it }
+                )
+
+                // Target Language
+                Text(text = "TARGET:", style = MaterialTheme.typography.bodyLarge)
+                SearchableDropdown(
+                    options = languages,
+                    selectedTag = selectedTargetLanguageTag,
+                    onOptionSelect = { selectedTargetLanguageTag = it }
+                )
+
+                // Dictionary Name
+                Text(text = "Dictionary Name:", style = MaterialTheme.typography.bodyLarge)
+                TextField(
+                    value = dictionaryName,
+                    onValueChange = { dictionaryName = it },
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Text(
+                    text = "ACCEPTED ANSWERS:",
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.padding(top = 8.dp)
+                )
+                TextField(
+                    value = numberOfRightAnswers,
+                    onValueChange = { numberOfRightAnswers = it.filter { char -> char.isDigit() } },
+                    modifier = Modifier.fillMaxWidth(0.5f)
+                )
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    Button(onClick = onDismiss) {
+                        Text(text = "CLOSE")
+                    }
+                    Spacer(modifier = Modifier.width(16.dp))
+                    Button(
+                        onClick = {
+                            if (selectedSourceLanguageTag != null && selectedTargetLanguageTag != null && dictionaryName.isNotBlank()) {
+                                onSave(
+                                    checkNotNull(selectedSourceLanguageTag),
+                                    checkNotNull(selectedTargetLanguageTag),
+                                    dictionaryName,
+                                    numberOfRightAnswers.toInt(),
+                                )
+                                onDismiss()
+                            }
+                        }
+                    ) {
+                        Text(text = "SAVE")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun DeleteDialog(
+    dictionaryName: String,
+    onClose: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text("DELETE:") },
+        text = { Text(dictionaryName) },
+        confirmButton = {
+            Button(onClick = {
+                onConfirm()
+                onClose()
+            }) {
+                Text("CONFIRM")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onClose) {
+                Text("CLOSE")
+            }
+        }
+    )
+}
+
+@Composable
+fun EditSettingsDialog(
+    onDismiss: () -> Unit,
+    onSave: (SettingsEntity) -> Unit,
+    initialSettings: SettingsEntity,
+) {
+    val showWordsCount =
+        remember { mutableStateOf(initialSettings.stageShowNumberOfWords.toString()) }
+    val optionsVariantsCount =
+        remember { mutableStateOf(initialSettings.stageOptionsNumberOfVariants.toString()) }
+    val wordsPerStageCount =
+        remember { mutableStateOf(initialSettings.numberOfWordsPerStage.toString()) }
+
+    val checkboxStates = remember {
+        mutableStateMapOf(
+            "mosaicSourceTarget" to initialSettings.stageMosaicSourceLangToTargetLang,
+            "optionsSourceTarget" to initialSettings.stageOptionsSourceLangToTargetLang,
+            "writingSourceTarget" to initialSettings.stageWritingSourceLangToTargetLang,
+            "selfTestSourceTarget" to initialSettings.stageSelfTestSourceLangToTargetLang,
+            "mosaicTargetSource" to initialSettings.stageMosaicTargetLangToSourceLang,
+            "optionsTargetSource" to initialSettings.stageOptionsTargetLangToSourceLang,
+            "writingTargetSource" to initialSettings.stageWritingTargetLangToSourceLang,
+            "selfTestTargetSource" to initialSettings.stageSelfTestTargetLangToSourceLang,
+        )
+    }
+
+    val checkboxLabels = mapOf(
+        "mosaicSourceTarget" to "Mosaic [source -> target]",
+        "optionsSourceTarget" to "Options [source -> target]",
+        "writingSourceTarget" to "Writing [source -> target]",
+        "selfTestSourceTarget" to "SelfTest [source -> target]",
+        "mosaicTargetSource" to "Mosaic [target -> source]",
+        "optionsTargetSource" to "Options [target -> source]",
+        "writingTargetSource" to "Writing [target -> source]",
+        "selfTestTargetSource" to "SelfTest [target -> source]",
+    )
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 600.dp)
+                .padding(16.dp),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LazyColumn(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                item {
+                    Text(
+                        text = "Edit Settings",
+                        style = MaterialTheme.typography.headlineLarge,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = showWordsCount.value,
+                        onValueChange = {
+                            showWordsCount.value = it.filter { char -> char.isDigit() }
+                        },
+                        label = { Text("Number of words in stage \"Show\" [min=2, max=20]") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = optionsVariantsCount.value,
+                        onValueChange = {
+                            optionsVariantsCount.value = it.filter { char -> char.isDigit() }
+                        },
+                        label = { Text("Number of variants in stage \"Options\" [min=2, max=15]") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = wordsPerStageCount.value,
+                        onValueChange = {
+                            wordsPerStageCount.value = it.filter { char -> char.isDigit() }
+                        },
+                        label = { Text("Number of words per stage [min=2, max=20]") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    )
+                }
+
+                items(checkboxLabels.keys.toList()) { id ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            checkboxLabels[id] ?: "",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Checkbox(
+                            checked = checkboxStates[id] ?: false,
+                            onCheckedChange = { checked ->
+                                checkboxStates[id] = checked
+                            }
+                        )
+                    }
+                }
+
+                item {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(onClick = onDismiss) {
+                            Text("CANCEL")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = {
+                            val updatedSettings = initialSettings.copy(
+                                stageShowNumberOfWords = showWordsCount.value.toIntOrNull()
+                                    ?: initialSettings.stageShowNumberOfWords,
+                                stageOptionsNumberOfVariants = optionsVariantsCount.value.toIntOrNull()
+                                    ?: initialSettings.stageOptionsNumberOfVariants,
+                                numberOfWordsPerStage = wordsPerStageCount.value.toIntOrNull()
+                                    ?: initialSettings.numberOfWordsPerStage,
+                                stageMosaicSourceLangToTargetLang = checkboxStates["mosaicSourceTarget"]
+                                    ?: false,
+                                stageOptionsSourceLangToTargetLang = checkboxStates["optionsSourceTarget"]
+                                    ?: false,
+                                stageWritingSourceLangToTargetLang = checkboxStates["writingSourceTarget"]
+                                    ?: false,
+                                stageSelfTestSourceLangToTargetLang = checkboxStates["selfTestSourceTarget"]
+                                    ?: false,
+                                stageMosaicTargetLangToSourceLang = checkboxStates["mosaicTargetSource"]
+                                    ?: false,
+                                stageOptionsTargetLangToSourceLang = checkboxStates["optionsTargetSource"]
+                                    ?: false,
+                                stageWritingTargetLangToSourceLang = checkboxStates["writingTargetSource"]
+                                    ?: false,
+                                stageSelfTestTargetLangToSourceLang = checkboxStates["selfTestTargetSource"]
+                                    ?: false,
+                            )
+                            onSave(updatedSettings)
+                            onDismiss()
+                        }) {
+                            Text("SAVE")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,6 +1,6 @@
-package com.github.sszuev.flashcards.android
+package com.github.sszuev.flashcards.android.entities
 
-data class Card (
+data class CardEntity (
     val cardId: String,
     val dictionaryId: String,
     val word: String,

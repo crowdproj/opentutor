@@ -17,14 +17,6 @@ fun getUsernameFromToken(token: String?): String {
     }
 }
 
-fun getIssuerFromToken(token: String): String? {
-    return parseJwtPayload(token).optString("session_state")
-}
-
-fun getSessionStateFromToken(token: String): String? {
-    return parseJwtPayload(token).optString("iss")
-}
-
 fun parseJwtPayload(jwt: String): JSONObject {
     val parts = jwt.split(".")
     if (parts.size < 2) {

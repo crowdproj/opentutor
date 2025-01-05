@@ -40,7 +40,7 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.github.sszuev.flashcards.android.Card
+import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import kotlinx.coroutines.launch
 
@@ -113,11 +113,8 @@ fun CardsTable(
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
-    val coroutineScope = rememberCoroutineScope()
     LaunchedEffect(Unit) {
-        coroutineScope.launch {
-            viewModel.loadCards(dictionaryId)
-        }
+        viewModel.loadCards(dictionaryId)
     }
 
     Box(
@@ -225,7 +222,7 @@ fun CardsTableHeader(
 
 @Composable
 fun CardsTableRow(
-    card: Card,
+    card: CardEntity,
     containerWidthDp: Dp,
     isSelected: Boolean,
     onSelect: () -> Unit,
@@ -262,7 +259,7 @@ fun CardsBottomToolbar(
     modifier: Modifier = Modifier,
     searchQuery: MutableState<String>,
     listState: LazyListState,
-    cards: List<Card>,
+    cards: List<CardEntity>,
     selectedCardId: String?,
     onAddClick: () -> Unit = {},
     onEditClick: () -> Unit = {},
