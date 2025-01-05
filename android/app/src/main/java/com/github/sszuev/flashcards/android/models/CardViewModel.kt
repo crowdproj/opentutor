@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.models
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,46 +18,55 @@ class CardViewModel(
 
     private val tag = "CardViewModel"
 
-    val cads = mutableStateOf<List<CardEntity>>(emptyList())
-    val isLoading = mutableStateOf(true)
-    val errorMessage = mutableStateOf<String?>(null)
+    private val _cads = mutableStateOf<List<CardEntity>>(emptyList())
+    val cads: State<List<CardEntity>> = _cads
+    private val _isLoading = mutableStateOf(true)
+    val isLoading: State<Boolean> = _isLoading
+    private val _errorMessage = mutableStateOf<String?>(null)
+    val errorMessage: State<String?> = _errorMessage
+    private val _selectedCardId = mutableStateOf<String?>(null)
+    val selectedCardId: State<String?> = _selectedCardId
 
-    val selectedCardId = mutableStateOf<String?>(null)
-
-    var sortField = mutableStateOf<String?>("name")
-    var isAscending = mutableStateOf(true)
+    private val _sortField = mutableStateOf<String?>("name")
+    var sortField: State<String?> = _sortField
+    private var _isAscending = mutableStateOf(true)
+    var isAscending: State<Boolean> = _isAscending
 
     fun loadCards(dictionaryId: String) {
         viewModelScope.launch {
             Log.d(tag, "load cards for dictionary = $dictionaryId")
-            isLoading.value = true
-            errorMessage.value = null
-            cads.value = emptyList()
+            _isLoading.value = true
+            _errorMessage.value = null
+            _cads.value = emptyList()
             try {
                 withContext(Dispatchers.IO) {
-                    cads.value = repository.getAll(dictionaryId).map { it.toCard() }
+                    _cads.value = repository.getAll(dictionaryId).map { it.toCard() }
                 }
             } catch (e: Exception) {
-                errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
                 Log.e(tag, "Failed to load cards", e)
             } finally {
-                isLoading.value = false
+                _isLoading.value = false
             }
         }
     }
 
+    fun selectCard(cardId: String?) {
+        _selectedCardId.value = cardId
+    }
+
     fun sortBy(field: String) {
-        if (sortField.value == field) {
-            isAscending.value = !isAscending.value
+        if (_sortField.value == field) {
+            _isAscending.value = !_isAscending.value
         } else {
-            sortField.value = field
-            isAscending.value = true
+            _sortField.value = field
+            _isAscending.value = true
         }
         applySorting()
     }
 
     private fun applySorting() {
-        cads.value = cads.value.sortedWith { a, b ->
+        _cads.value = cads.value.sortedWith { a, b ->
             val result = when (sortField.value) {
                 "word" -> a.word.compareTo(b.word)
                 "translation" -> a.translation.compareTo(b.translation)

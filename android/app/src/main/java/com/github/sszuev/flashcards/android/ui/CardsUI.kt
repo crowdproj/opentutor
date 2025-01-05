@@ -41,6 +41,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.sszuev.flashcards.android.entities.CardEntity
+import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import kotlinx.coroutines.launch
 
@@ -50,7 +51,7 @@ private const val THIRD_COLUMN_WIDTH = 10
 
 @Composable
 fun CardsScreen(
-    dictionaryId: String,
+    dictionary: DictionaryEntity,
     viewModel: CardViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
@@ -63,9 +64,9 @@ fun CardsScreen(
         val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
         if (index != -1) {
             listState.animateScrollToItem(index, scrollOffset = 50)
-            viewModel.selectedCardId.value = cards[index].cardId
+            viewModel.selectCard(cards[index].cardId)
         } else {
-            viewModel.selectedCardId.value = null
+            viewModel.selectCard(null)
         }
     }
 
@@ -82,7 +83,7 @@ fun CardsScreen(
                 TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
                 CardsTable(
                     viewModel = viewModel,
-                    dictionaryId = dictionaryId,
+                    dictionaryId = checkNotNull(dictionary.dictionaryId),
                     listState = listState,
                 )
             }
@@ -168,12 +169,13 @@ fun CardsTable(
                                 containerWidthDp = containerWidthDp,
                                 isSelected = viewModel.selectedCardId.value == card.cardId,
                                 onSelect = {
-                                    viewModel.selectedCardId.value =
+                                    viewModel.selectCard(
                                         if (viewModel.selectedCardId.value == card.cardId) {
                                             null
                                         } else {
                                             card.cardId
                                         }
+                                    )
                                 }
                             )
                         }

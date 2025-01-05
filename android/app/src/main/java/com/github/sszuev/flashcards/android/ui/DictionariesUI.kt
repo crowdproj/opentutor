@@ -84,7 +84,7 @@ fun DictionariesScreen(
     val isDeletePopupOpen = remember { mutableStateOf(false) }
     val isSettingsPopupOpen = remember { mutableStateOf(false) }
     val selectedDictionary = dictionaryViewModel.dictionaries.value.firstOrNull {
-        it.dictionaryId == dictionaryViewModel.selectedDictionaryIds.firstOrNull()
+        it.dictionaryId == dictionaryViewModel.selectedDictionaryIds.value.firstOrNull()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -96,14 +96,14 @@ fun DictionariesScreen(
         }
         DictionariesBottomToolbar(
             onCardsClick = {
-                if (selectedDictionaryIds.size == 1) {
-                    val dictionaryId = selectedDictionaryIds.first()
+                if (selectedDictionaryIds.value.size == 1) {
+                    val dictionaryId = selectedDictionaryIds.value.first()
                     Log.i(tag, "Go to cards/$dictionaryId")
                     navController.navigate("cards/$dictionaryId")
                 }
             },
             onEditClick = {
-                if (selectedDictionaryIds.size == 1) {
+                if (selectedDictionaryIds.value.size == 1) {
                     isEditPopupOpen.value = true
                 }
             },
@@ -116,7 +116,7 @@ fun DictionariesScreen(
             onSettingsClick = {
                 isSettingsPopupOpen.value = true
             },
-            selectedDictionaryIds = selectedDictionaryIds,
+            selectedDictionaryIds = selectedDictionaryIds.value,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
@@ -254,7 +254,7 @@ fun DictionaryTable(
                     ) {
                         items(dictionaries) { dictionary ->
                             val isSelected =
-                                viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
+                                viewModel.selectedDictionaryIds.value.contains(dictionary.dictionaryId)
                             DictionariesTableRow(
                                 dictionary = dictionary,
                                 containerWidthDp = containerWidthDp,

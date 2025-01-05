@@ -33,15 +33,24 @@ fun MainNavigation(
             )
         }
         composable("cards/{dictionaryId}") { backStackEntry ->
-            val dictionaryId = backStackEntry.arguments?.getString("dictionaryId") ?: ""
-            CardsScreen(
-                dictionaryId = dictionaryId,
-                viewModel = cardViewModel,
-                onSignOut = onSignOut,
-                onHomeClick = {
-                    navController.navigate("dictionaries")
-                },
-            )
+            val dictionaryId = backStackEntry.arguments
+                ?.getString("dictionaryId")
+                ?.takeIf { it.isNotBlank() }
+                ?: throw IllegalArgumentException("Can't determine dictionaryId")
+            val dictionary = dictionariesViewModel.selectedDictionariesList.singleOrNull()
+            if (dictionary != null) {
+                check(dictionary.dictionaryId == dictionaryId) { "Wrong dictionaryId" }
+                CardsScreen(
+                    dictionary = dictionary,
+                    viewModel = cardViewModel,
+                    onSignOut = onSignOut,
+                    onHomeClick = {
+                        navController.navigate("dictionaries")
+                    },
+                )
+            } else {
+                navController.popBackStack("dictionaries", inclusive = false)
+            }
         }
     }
 }

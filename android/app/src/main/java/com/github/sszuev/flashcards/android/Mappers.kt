@@ -27,7 +27,7 @@ fun CardResource.toCard() = CardEntity(
     translation = checkNotNull(this.words).firstNotNullOfOrNull {
         checkNotNull(it.translations) { "No translation" }.flatten().firstOrNull()
     } ?: throw IllegalArgumentException("Can't find field 'translation' for card = $cardId"),
-    answered = checkNotNull(answered),
+    answered = answered ?: 0,
 )
 
 fun DictionaryEntity.toDictionaryResource() = DictionaryResource(
