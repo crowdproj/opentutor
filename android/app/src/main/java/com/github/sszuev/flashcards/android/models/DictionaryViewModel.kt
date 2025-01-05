@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sszuev.flashcards.android.Dictionary
+import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
 import com.github.sszuev.flashcards.android.toDictionary
 import com.github.sszuev.flashcards.android.toDictionaryResource
@@ -18,7 +18,7 @@ class DictionaryViewModel(
 
     private val tag = "DictionaryViewModel"
 
-    val dictionaries = mutableStateOf<List<Dictionary>>(emptyList())
+    val dictionaries = mutableStateOf<List<DictionaryEntity>>(emptyList())
     val isDictionariesLoading = mutableStateOf(true)
     val isUpdateInProgress = mutableStateOf(true)
     val isCreateInProgress = mutableStateOf(true)
@@ -49,7 +49,7 @@ class DictionaryViewModel(
         }
     }
 
-    fun updateDictionary(dictionary: Dictionary) {
+    fun updateDictionary(dictionary: DictionaryEntity) {
         viewModelScope.launch {
             Log.d(tag, "update dictionary")
             isUpdateInProgress.value = true
@@ -75,7 +75,7 @@ class DictionaryViewModel(
         }
     }
 
-    fun createDictionary(dictionary: Dictionary) {
+    fun createDictionary(dictionary: DictionaryEntity) {
         viewModelScope.launch {
             Log.d(tag, "create dictionary")
             isCreateInProgress.value = true

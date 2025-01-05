@@ -1,9 +1,9 @@
-package com.github.sszuev.flashcards.android
+package com.github.sszuev.flashcards.android.entities
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class Dictionary(
+data class DictionaryEntity(
     val dictionaryId: String?,
     val name: String,
     val sourceLanguage: String,

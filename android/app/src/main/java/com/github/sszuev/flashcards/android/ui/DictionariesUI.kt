@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -21,14 +22,18 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,8 +47,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
-import com.github.sszuev.flashcards.android.Dictionary
+import com.github.sszuev.flashcards.android.entities.DictionaryEntity
+import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import java.util.Locale
 
 private const val tag = "DictionariesUI"
@@ -68,21 +75,23 @@ fun DictionariesScreen(
     navController: NavHostController,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
-    viewModel: DictionaryViewModel,
+    dictionaryViewModel: DictionaryViewModel,
+    settingsViewModel: SettingsViewModel,
 ) {
-    val selectedDictionaryIds = viewModel.selectedDictionaryIds
+    val selectedDictionaryIds = dictionaryViewModel.selectedDictionaryIds
     val isEditPopupOpen = remember { mutableStateOf(false) }
     val isCreatePopupOpen = remember { mutableStateOf(false) }
     val isDeletePopupOpen = remember { mutableStateOf(false) }
-    val selectedDictionary = viewModel.dictionaries.value.firstOrNull {
-        it.dictionaryId == viewModel.selectedDictionaryIds.firstOrNull()
+    val isSettingsPopupOpen = remember { mutableStateOf(false) }
+    val selectedDictionary = dictionaryViewModel.dictionaries.value.firstOrNull {
+        it.dictionaryId == dictionaryViewModel.selectedDictionaryIds.firstOrNull()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             DictionaryTable(
-                viewModel = viewModel,
+                viewModel = dictionaryViewModel,
             )
         }
         DictionariesBottomToolbar(
@@ -104,6 +113,9 @@ fun DictionariesScreen(
             onDeleteClick = {
                 isDeletePopupOpen.value = true
             },
+            onSettingsClick = {
+                isSettingsPopupOpen.value = true
+            },
             selectedDictionaryIds = selectedDictionaryIds,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
@@ -113,7 +125,7 @@ fun DictionariesScreen(
         EditPopup(
             dictionary = selectedDictionary,
             onSave = {
-                viewModel.updateDictionary(it)
+                dictionaryViewModel.updateDictionary(it)
             },
             onDismiss = { isEditPopupOpen.value = false }
         )
@@ -121,7 +133,7 @@ fun DictionariesScreen(
     if (isCreatePopupOpen.value) {
         AddDialog(
             onSave = { source, target, name, acceptedNum ->
-                val dictionary = Dictionary(
+                val dictionary = DictionaryEntity(
                     dictionaryId = null,
                     name = name,
                     sourceLanguage = source,
@@ -130,7 +142,7 @@ fun DictionariesScreen(
                     totalWords = 0,
                     learnedWords = 0,
                 )
-                viewModel.createDictionary(dictionary)
+                dictionaryViewModel.createDictionary(dictionary)
             },
             onDismiss = { isCreatePopupOpen.value = false }
         )
@@ -140,9 +152,35 @@ fun DictionariesScreen(
             dictionaryName = selectedDictionary.name,
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
-                viewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
+                dictionaryViewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
             }
         )
+    }
+    if (isSettingsPopupOpen.value) {
+        LaunchedEffect(isSettingsPopupOpen.value) {
+            if (settingsViewModel.settings.value == null) {
+                settingsViewModel.loadSettings()
+            }
+        }
+
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            if (settingsViewModel.isLoadSettingsInProgress.value) {
+                CircularProgressIndicator()
+            } else {
+                settingsViewModel.settings.value?.let { initialSettings ->
+                    EditSettingsDialog(
+                        onDismiss = { isSettingsPopupOpen.value = false },
+                        onSave = {
+                            settingsViewModel.saveSettings(it)
+                        },
+                        initialSettings = initialSettings
+                    )
+                }
+            }
+        }
     }
 }
 
@@ -286,7 +324,7 @@ fun DictionariesTableHeader(
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DictionariesTableRow(
-    dictionary: Dictionary,
+    dictionary: DictionaryEntity,
     containerWidthDp: Dp,
     isSelected: Boolean,
     onSelect: (Boolean) -> Unit,
@@ -408,7 +446,7 @@ fun DictionariesBottomToolbar(
                 containerWidthDp = containerWidthDp,
                 weight = 41.18f,
                 onClick = onSettingsClick,
-                enabled = selectedDictionaryIds.size == 1,
+                enabled = true,
             )
         }
     }
@@ -416,8 +454,8 @@ fun DictionariesBottomToolbar(
 
 @Composable
 fun EditPopup(
-    dictionary: Dictionary,
-    onSave: (Dictionary) -> Unit,
+    dictionary: DictionaryEntity,
+    onSave: (DictionaryEntity) -> Unit,
     onDismiss: () -> Unit
 ) {
     var dictionaryName by remember { mutableStateOf(dictionary.name) }
@@ -595,4 +633,165 @@ fun DeleteDialog(
             }
         }
     )
+}
+
+@Composable
+fun EditSettingsDialog(
+    onDismiss: () -> Unit,
+    onSave: (SettingsEntity) -> Unit,
+    initialSettings: SettingsEntity,
+) {
+    val showWordsCount =
+        remember { mutableStateOf(initialSettings.stageShowNumberOfWords.toString()) }
+    val optionsVariantsCount =
+        remember { mutableStateOf(initialSettings.stageOptionsNumberOfVariants.toString()) }
+    val wordsPerStageCount =
+        remember { mutableStateOf(initialSettings.numberOfWordsPerStage.toString()) }
+
+    val checkboxStates = remember {
+        mutableStateMapOf(
+            "mosaicSourceTarget" to initialSettings.stageMosaicSourceLangToTargetLang,
+            "optionsSourceTarget" to initialSettings.stageOptionsSourceLangToTargetLang,
+            "writingSourceTarget" to initialSettings.stageWritingSourceLangToTargetLang,
+            "selfTestSourceTarget" to initialSettings.stageSelfTestSourceLangToTargetLang,
+            "mosaicTargetSource" to initialSettings.stageMosaicTargetLangToSourceLang,
+            "optionsTargetSource" to initialSettings.stageOptionsTargetLangToSourceLang,
+            "writingTargetSource" to initialSettings.stageWritingTargetLangToSourceLang,
+            "selfTestTargetSource" to initialSettings.stageSelfTestTargetLangToSourceLang,
+        )
+    }
+
+    val checkboxLabels = mapOf(
+        "mosaicSourceTarget" to "Mosaic [source -> target]",
+        "optionsSourceTarget" to "Options [source -> target]",
+        "writingSourceTarget" to "Writing [source -> target]",
+        "selfTestSourceTarget" to "SelfTest [source -> target]",
+        "mosaicTargetSource" to "Mosaic [target -> source]",
+        "optionsTargetSource" to "Options [target -> source]",
+        "writingTargetSource" to "Writing [target -> source]",
+        "selfTestTargetSource" to "SelfTest [target -> source]",
+    )
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .heightIn(max = 600.dp)
+                .padding(16.dp),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LazyColumn(
+                modifier = Modifier.padding(16.dp)
+            ) {
+                item {
+                    Text(
+                        text = "Edit Settings",
+                        style = MaterialTheme.typography.headlineLarge,
+                        modifier = Modifier.padding(bottom = 16.dp)
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = showWordsCount.value,
+                        onValueChange = {
+                            showWordsCount.value = it.filter { char -> char.isDigit() }
+                        },
+                        label = { Text("Number of words in stage \"Show\" [min=2, max=20]") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = optionsVariantsCount.value,
+                        onValueChange = {
+                            optionsVariantsCount.value = it.filter { char -> char.isDigit() }
+                        },
+                        label = { Text("Number of variants in stage \"Options\" [min=2, max=15]") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = wordsPerStageCount.value,
+                        onValueChange = {
+                            wordsPerStageCount.value = it.filter { char -> char.isDigit() }
+                        },
+                        label = { Text("Number of words per stage [min=2, max=20]") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                    )
+                }
+
+                items(checkboxLabels.keys.toList()) { id ->
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            checkboxLabels[id] ?: "",
+                            style = MaterialTheme.typography.bodyLarge,
+                            modifier = Modifier.weight(1f)
+                        )
+                        Checkbox(
+                            checked = checkboxStates[id] ?: false,
+                            onCheckedChange = { checked ->
+                                checkboxStates[id] = checked
+                            }
+                        )
+                    }
+                }
+
+                item {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(onClick = onDismiss) {
+                            Text("CANCEL")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = {
+                            val updatedSettings = initialSettings.copy(
+                                stageShowNumberOfWords = showWordsCount.value.toIntOrNull()
+                                    ?: initialSettings.stageShowNumberOfWords,
+                                stageOptionsNumberOfVariants = optionsVariantsCount.value.toIntOrNull()
+                                    ?: initialSettings.stageOptionsNumberOfVariants,
+                                numberOfWordsPerStage = wordsPerStageCount.value.toIntOrNull()
+                                    ?: initialSettings.numberOfWordsPerStage,
+                                stageMosaicSourceLangToTargetLang = checkboxStates["mosaicSourceTarget"]
+                                    ?: false,
+                                stageOptionsSourceLangToTargetLang = checkboxStates["optionsSourceTarget"]
+                                    ?: false,
+                                stageWritingSourceLangToTargetLang = checkboxStates["writingSourceTarget"]
+                                    ?: false,
+                                stageSelfTestSourceLangToTargetLang = checkboxStates["selfTestSourceTarget"]
+                                    ?: false,
+                                stageMosaicTargetLangToSourceLang = checkboxStates["mosaicTargetSource"]
+                                    ?: false,
+                                stageOptionsTargetLangToSourceLang = checkboxStates["optionsTargetSource"]
+                                    ?: false,
+                                stageWritingTargetLangToSourceLang = checkboxStates["writingTargetSource"]
+                                    ?: false,
+                                stageSelfTestTargetLangToSourceLang = checkboxStates["selfTestTargetSource"]
+                                    ?: false,
+                            )
+                            onSave(updatedSettings)
+                            onDismiss()
+                        }) {
+                            Text("SAVE")
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

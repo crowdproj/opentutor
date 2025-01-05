@@ -6,12 +6,14 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
 @Composable
 fun MainNavigation(
     onSignOut: () -> Unit = {},
     dictionariesViewModel: DictionaryViewModel,
     cardViewModel: CardViewModel,
+    settingsViewModel: SettingsViewModel,
 ) {
     val navController = rememberNavController()
 
@@ -22,7 +24,8 @@ fun MainNavigation(
         composable("dictionaries") {
             DictionariesScreen(
                 navController = navController,
-                viewModel = dictionariesViewModel,
+                dictionaryViewModel = dictionariesViewModel,
+                settingsViewModel = settingsViewModel,
                 onSignOut = onSignOut,
                 onHomeClick = {
                     dictionariesViewModel.loadDictionaries()

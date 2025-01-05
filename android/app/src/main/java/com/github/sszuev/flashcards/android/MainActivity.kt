@@ -13,8 +13,11 @@ import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.CardsViewModelFactory
 import com.github.sszuev.flashcards.android.models.DictionariesViewModelFactory
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.SettingsViewModelFactory
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
+import com.github.sszuev.flashcards.android.repositories.SettingsRepository
 import com.github.sszuev.flashcards.android.ui.MainNavigation
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
@@ -32,6 +35,9 @@ class MainActivity : ComponentActivity() {
     }
     private val cardViewModel: CardViewModel by viewModels {
         CardsViewModelFactory(CardsRepository(AppConfig.serverUri))
+    }
+    private val settingsViewModel: SettingsViewModel by viewModels {
+        SettingsViewModelFactory(SettingsRepository(AppConfig.serverUri))
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,6 +62,7 @@ class MainActivity : ComponentActivity() {
                     onSignOut = { onSignOut() },
                     dictionariesViewModel = dictionaryViewModel,
                     cardViewModel = cardViewModel,
+                    settingsViewModel = settingsViewModel,
                 )
             }
         }

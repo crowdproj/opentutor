@@ -4,7 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sszuev.flashcards.android.Card
+import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.toCard
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +17,7 @@ class CardViewModel(
 
     private val tag = "CardViewModel"
 
-    val cads = mutableStateOf<List<Card>>(emptyList())
+    val cads = mutableStateOf<List<CardEntity>>(emptyList())
     val isLoading = mutableStateOf(true)
     val errorMessage = mutableStateOf<String?>(null)
 
