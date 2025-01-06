@@ -83,9 +83,7 @@ fun DictionariesScreen(
     val isCreatePopupOpen = remember { mutableStateOf(false) }
     val isDeletePopupOpen = remember { mutableStateOf(false) }
     val isSettingsPopupOpen = remember { mutableStateOf(false) }
-    val selectedDictionary = dictionaryViewModel.dictionaries.value.firstOrNull {
-        it.dictionaryId == dictionaryViewModel.selectedDictionaryIds.value.firstOrNull()
-    }
+    val selectedDictionary = dictionaryViewModel.selectedDictionariesList.firstOrNull()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
@@ -122,7 +120,7 @@ fun DictionariesScreen(
     }
 
     if (isEditPopupOpen.value && selectedDictionary != null) {
-        EditPopup(
+        EditDictionaryDialog(
             dictionary = selectedDictionary,
             onSave = {
                 dictionaryViewModel.updateDictionary(it)
@@ -131,7 +129,7 @@ fun DictionariesScreen(
         )
     }
     if (isCreatePopupOpen.value) {
-        AddDialog(
+        AddDictionaryDialog(
             onSave = { source, target, name, acceptedNum ->
                 val dictionary = DictionaryEntity(
                     dictionaryId = null,
@@ -148,7 +146,7 @@ fun DictionariesScreen(
         )
     }
     if (isDeletePopupOpen.value && selectedDictionary != null) {
-        DeleteDialog(
+        DeleteDictionaryDialog(
             dictionaryName = selectedDictionary.name,
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
@@ -453,7 +451,7 @@ fun DictionariesBottomToolbar(
 }
 
 @Composable
-fun EditPopup(
+fun EditDictionaryDialog(
     dictionary: DictionaryEntity,
     onSave: (DictionaryEntity) -> Unit,
     onDismiss: () -> Unit
@@ -526,7 +524,7 @@ fun EditPopup(
 }
 
 @Composable
-fun AddDialog(
+fun AddDictionaryDialog(
     onSave: (String, String, String, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -610,7 +608,7 @@ fun AddDialog(
 }
 
 @Composable
-fun DeleteDialog(
+fun DeleteDictionaryDialog(
     dictionaryName: String,
     onClose: () -> Unit,
     onConfirm: () -> Unit

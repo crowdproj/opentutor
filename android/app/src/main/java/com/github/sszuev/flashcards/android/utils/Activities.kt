@@ -1,4 +1,4 @@
-package com.github.sszuev.flashcards.android
+package com.github.sszuev.flashcards.android.utils
 
 import android.app.Activity
 import android.app.Activity.MODE_PRIVATE

@@ -29,6 +29,25 @@ class CardsRepository(
         handleErrors(container)
         return container.cards
     }
+
+    suspend fun updateCard(card: CardResource) {
+        val requestId = UUID.randomUUID().toString()
+        Log.d(tag, "Update card with requestId=$requestId and cardId=${card.cardId}")
+        val container = authPost<UpdateCardResponse>("$serverUri/v1/api/cards/update") {
+            setBody(
+                UpdateCardRequest(
+                    requestType = "updateCard",
+                    requestId = requestId,
+                    card = card,
+                )
+            )
+        }
+        Log.d(
+            tag,
+            "Received response for requestId: $requestId"
+        )
+        handleErrors(container)
+    }
 }
 
 @Suppress("unused")
@@ -37,12 +56,24 @@ private data class GetAllCardsRequest(
     override val requestType: String,
     override val requestId: String,
     val dictionaryId: String? = null,
-): BaseRequest
+) : BaseRequest
 
 @Serializable
 private data class GetAllCardsResponse(
-    val responseType: String,
     override val requestId: String,
     val cards: List<CardResource> = emptyList(),
     override val errors: List<ErrorResource>? = null,
-): BaseResponse
+) : BaseResponse
+
+@Serializable
+private data class UpdateCardRequest(
+    override val requestType: String,
+    override val requestId: String,
+    val card: CardResource,
+) : BaseRequest
+
+@Serializable
+private data class UpdateCardResponse(
+    override val requestId: String,
+    override val errors: List<ErrorResource>? = null,
+) : BaseResponse
