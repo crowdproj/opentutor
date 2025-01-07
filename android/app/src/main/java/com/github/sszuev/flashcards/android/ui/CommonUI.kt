@@ -40,7 +40,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import com.github.sszuev.flashcards.android.getUsernameFromPreferences
+import com.github.sszuev.flashcards.android.utils.getUsernameFromPreferences
 
 @Composable
 fun TopBar(
@@ -225,7 +225,7 @@ fun SearchableDropdown(
                     ) {
                         items(
                             options.entries
-                                .filter { it.value.contains(searchQuery, ignoreCase = true) }
+                                .filter { it.value.startsWith(searchQuery, ignoreCase = true) }
                                 .toList()
                         ) { entry ->
                             Text(

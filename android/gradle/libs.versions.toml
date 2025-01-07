@@ -23,6 +23,7 @@ androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecyc
 androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigationVersion" }
+androidx-compose-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
 androidx-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics" }
 androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
@@ -32,10 +33,10 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreenVersion" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browserVersion" }
-ktor-client-android = { group = "io.ktor", name ="ktor-client-android", version.ref = "ktorVersion" }
-ktor-client-content-negotiation = { group = "io.ktor", name ="ktor-client-content-negotiation", version.ref = "ktorVersion" }
-ktor-serialization-kotlinx-json = { group = "io.ktor", name ="ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
-openid = { group = "net.openid", name = "appauth", version.ref = "openIdVersion"}
+ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktorVersion" }
+ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktorVersion" }
+ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
+openid = { group = "net.openid", name = "appauth", version.ref = "openIdVersion" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

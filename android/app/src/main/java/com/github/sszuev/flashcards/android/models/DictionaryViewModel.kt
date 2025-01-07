@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.models
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,6 +12,7 @@ import com.github.sszuev.flashcards.android.toDictionaryResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class DictionaryViewModel(
     private val repository: DictionaryRepository
@@ -18,33 +20,59 @@ class DictionaryViewModel(
 
     private val tag = "DictionaryViewModel"
 
-    val dictionaries = mutableStateOf<List<DictionaryEntity>>(emptyList())
-    val isDictionariesLoading = mutableStateOf(true)
-    val isUpdateInProgress = mutableStateOf(true)
-    val isCreateInProgress = mutableStateOf(true)
-    val isDeleteInProgress = mutableStateOf(true)
-    val errorMessage = mutableStateOf<String?>(null)
+    private val _dictionaries = mutableStateOf<List<DictionaryEntity>>(emptyList())
+    val dictionaries: State<List<DictionaryEntity>> get() = _dictionaries
 
-    var sortField = mutableStateOf<String?>("name")
-    var isAscending = mutableStateOf(true)
+    private val _isDictionariesLoading = mutableStateOf(true)
+    private val _isUpdateInProgress = mutableStateOf(true)
+    private val _isCreateInProgress = mutableStateOf(true)
+    private val _isDeleteInProgress = mutableStateOf(true)
+    val isDictionariesLoading: State<Boolean> = _isDictionariesLoading
+    private val _errorMessage = mutableStateOf<String?>(null)
+    val errorMessage: State<String?> = _errorMessage
+
+    private val _sortField = mutableStateOf<String?>("name")
+    val sortField: State<String?> = _sortField
+    private val _isAscending = mutableStateOf(true)
+    val isAscending: State<Boolean> = _isAscending
 
     private val _selectedDictionaryIds = mutableStateOf<Set<String>>(emptySet())
-    val selectedDictionaryIds: Set<String> get() = _selectedDictionaryIds.value
+    val selectedDictionaryIds: State<Set<String>> get() = _selectedDictionaryIds
+
+    val selectedDictionariesList: List<DictionaryEntity>
+        get() =
+            _dictionaries.value.filter { it.dictionaryId in _selectedDictionaryIds.value }
+
+    val languages = Locale.getAvailableLocales()
+        .filterNot { it.language.isBlank() }
+        .map {
+            if (it.language == "en") {
+                it.language to it.getDisplayLanguage(Locale.US)
+            } else {
+                it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})"
+            }
+        }
+        .sortedBy { it.second }
+        .toMap()
 
     fun loadDictionaries() {
         viewModelScope.launch {
             Log.d(tag, "load dictionaries")
-            isDictionariesLoading.value = true
-            errorMessage.value = null
+            _isDictionariesLoading.value = true
+            _errorMessage.value = null
             try {
                 withContext(Dispatchers.IO) {
-                    dictionaries.value = repository.getAll().map { it.toDictionary() }
+                    _dictionaries.value = repository
+                        .getAll()
+                        .map { it.toDictionary() }
+                        .sortedBy { it.name }
                 }
+                _selectedDictionaryIds.value = emptySet()
             } catch (e: Exception) {
-                errorMessage.value = "Failed to load dictionaries: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to load dictionaries: ${e.localizedMessage}"
                 Log.e(tag, "Failed to load dictionaries", e)
             } finally {
-                isDictionariesLoading.value = false
+                _isDictionariesLoading.value = false
             }
         }
     }
@@ -52,25 +80,25 @@ class DictionaryViewModel(
     fun updateDictionary(dictionary: DictionaryEntity) {
         viewModelScope.launch {
             Log.d(tag, "update dictionary")
-            isUpdateInProgress.value = true
-            errorMessage.value = null
+            _isUpdateInProgress.value = true
+            _errorMessage.value = null
             try {
                 withContext(Dispatchers.IO) {
                     repository.updateDictionary(dictionary.toDictionaryResource())
                 }
-                val dictionaries = this@DictionaryViewModel.dictionaries.value.toMutableList()
+                val dictionaries = _dictionaries.value.toMutableList()
                 dictionaries.toList().forEachIndexed { index, it ->
                     if (it.dictionaryId == dictionary.dictionaryId) {
                         dictionaries.removeAt(index)
                         dictionaries.add(index, dictionary)
                     }
                 }
-                this@DictionaryViewModel.dictionaries.value = dictionaries
+                _dictionaries.value = dictionaries
             } catch (e: Exception) {
-                errorMessage.value = "Failed to update dictionary: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to update dictionary: ${e.localizedMessage}"
                 Log.e(tag, "Failed to update dictionary", e)
             } finally {
-                isUpdateInProgress.value = false
+                _isUpdateInProgress.value = false
             }
         }
     }
@@ -78,22 +106,22 @@ class DictionaryViewModel(
     fun createDictionary(dictionary: DictionaryEntity) {
         viewModelScope.launch {
             Log.d(tag, "create dictionary")
-            isCreateInProgress.value = true
-            errorMessage.value = null
+            _isCreateInProgress.value = true
+            _errorMessage.value = null
             try {
                 val res = withContext(Dispatchers.IO) {
                     repository.createDictionary(dictionary.toDictionaryResource())
                 }
-                val dictionaries = this@DictionaryViewModel.dictionaries.value.toMutableList()
+                val dictionaries = _dictionaries.value.toMutableList()
                 dictionaries.add(res.toDictionary())
-                this@DictionaryViewModel.dictionaries.value = dictionaries
+                _dictionaries.value = dictionaries
 
                 selectLast(checkNotNull(res.dictionaryId))
             } catch (e: Exception) {
-                errorMessage.value = "Failed to create dictionary: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to create dictionary: ${e.localizedMessage}"
                 Log.e(tag, "Failed to create dictionary", e)
             } finally {
-                isCreateInProgress.value = false
+                _isCreateInProgress.value = false
             }
         }
     }
@@ -101,23 +129,23 @@ class DictionaryViewModel(
     fun deleteDictionary(dictionaryId: String) {
         viewModelScope.launch {
             Log.d(tag, "delete dictionary")
-            isDeleteInProgress.value = true
-            errorMessage.value = null
+            _isDeleteInProgress.value = true
+            _errorMessage.value = null
             try {
                 withContext(Dispatchers.IO) {
                     repository.deleteDictionary(dictionaryId)
                 }
-                val dictionaries = this@DictionaryViewModel.dictionaries.value.toMutableList()
+                val dictionaries = _dictionaries.value.toMutableList()
                 dictionaries.removeIf { it.dictionaryId == dictionaryId }
-                this@DictionaryViewModel.dictionaries.value = dictionaries
+                _dictionaries.value = dictionaries
                 val selectedDictionariesIds = _selectedDictionaryIds.value.toMutableSet()
                 selectedDictionariesIds.removeIf { dictionaryId == it }
-                this@DictionaryViewModel._selectedDictionaryIds.value = selectedDictionariesIds
+                _selectedDictionaryIds.value = selectedDictionariesIds
             } catch (e: Exception) {
-                errorMessage.value = "Failed to delete dictionary: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to delete dictionary: ${e.localizedMessage}"
                 Log.e(tag, "Failed to delete dictionary", e)
             } finally {
-                isDeleteInProgress.value = false
+                _isDeleteInProgress.value = false
             }
         }
     }
@@ -141,16 +169,16 @@ class DictionaryViewModel(
 
     fun sortBy(field: String) {
         if (sortField.value == field) {
-            isAscending.value = !isAscending.value
+            _isAscending.value = !_isAscending.value
         } else {
-            sortField.value = field
-            isAscending.value = true
+            _sortField.value = field
+            _isAscending.value = true
         }
         applySorting()
     }
 
     private fun applySorting() {
-        dictionaries.value = dictionaries.value.sortedWith { a, b ->
+        _dictionaries.value = dictionaries.value.sortedWith { a, b ->
             val result = when (sortField.value) {
                 "name" -> a.name.compareTo(b.name)
                 "sourceLanguage" -> a.sourceLanguage.compareTo(b.sourceLanguage)

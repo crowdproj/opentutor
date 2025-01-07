@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.models
 
 import android.util.Log
+import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -15,26 +16,28 @@ import kotlinx.coroutines.withContext
 class SettingsViewModel(private val repository: SettingsRepository) : ViewModel() {
     private val tag = "SettingsViewModel"
 
-    val isLoadSettingsInProgress = mutableStateOf(true)
-    val isSaveSettingsInProgress = mutableStateOf(true)
-    val errorMessage = mutableStateOf<String?>(null)
-    val settings = mutableStateOf<SettingsEntity?>(null)
+    private val _isLoadSettingsInProgress = mutableStateOf(true)
+    val isLoadSettingsInProgress: State<Boolean> get() = _isLoadSettingsInProgress
+    private val _isSaveSettingsInProgress = mutableStateOf(true)
+    private val _errorMessage = mutableStateOf<String?>(null)
+    private val _settings = mutableStateOf<SettingsEntity?>(null)
+    val settings: State<SettingsEntity?> = _settings
 
     fun loadSettings() {
         viewModelScope.launch {
             Log.d(tag, "load settings")
-            isLoadSettingsInProgress.value = true
-            errorMessage.value = null
+            _isLoadSettingsInProgress.value = true
+            _errorMessage.value = null
             try {
                 val settings = withContext(Dispatchers.IO) {
                     repository.get()
                 }.toSettings()
-                this@SettingsViewModel.settings.value = settings
+                _settings.value = settings
             } catch (e: Exception) {
-                errorMessage.value = "Failed to get settings: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to get settings: ${e.localizedMessage}"
                 Log.e(tag, "Failed to get settings", e)
             } finally {
-                isLoadSettingsInProgress.value = false
+                _isLoadSettingsInProgress.value = false
             }
         }
     }
@@ -42,18 +45,18 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
     fun saveSettings(settingsEntity: SettingsEntity) {
         viewModelScope.launch {
             Log.d(tag, "save settings")
-            isSaveSettingsInProgress.value = true
-            errorMessage.value = null
+            _isSaveSettingsInProgress.value = true
+            _errorMessage.value = null
             try {
                 withContext(Dispatchers.IO) {
                     repository.update(settingsEntity.toSettingsResource())
                 }
-                this@SettingsViewModel.settings.value = settingsEntity
+                _settings.value = settingsEntity
             } catch (e: Exception) {
-                errorMessage.value = "Failed to save settings: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to save settings: ${e.localizedMessage}"
                 Log.e(tag, "Failed to save settings", e)
             } finally {
-                isSaveSettingsInProgress.value = false
+                _isSaveSettingsInProgress.value = false
             }
         }
     }

@@ -1,4 +1,4 @@
-package com.github.sszuev.flashcards.android
+package com.github.sszuev.flashcards.android.utils
 
 import android.util.Base64
 import android.util.Log

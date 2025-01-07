@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -12,16 +13,30 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -40,33 +55,55 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
 import com.github.sszuev.flashcards.android.entities.CardEntity
+import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
+import com.github.sszuev.flashcards.android.utils.audioResource
+import com.github.sszuev.flashcards.android.utils.examplesAsList
+import com.github.sszuev.flashcards.android.utils.examplesAsString
 import kotlinx.coroutines.launch
 
 private const val FIRST_COLUMN_WIDTH = 32
 private const val SECOND_COLUMN_WIDTH = 58
 private const val THIRD_COLUMN_WIDTH = 10
 
+private const val tag = "CardsUI"
+
 @Composable
 fun CardsScreen(
-    dictionaryId: String,
+    dictionary: DictionaryEntity,
     viewModel: CardViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
 ) {
     val searchQuery = remember { mutableStateOf("") }
-    val cards by viewModel.cads
+    val cards by viewModel.cards
     val listState = rememberLazyListState()
+    val isEditPopupOpen = remember { mutableStateOf(false) }
+    val isAddPopupOpen = remember { mutableStateOf(false) }
+    val isDeletePopupOpen = remember { mutableStateOf(false) }
+    val isResetPopupOpen = remember { mutableStateOf(false) }
+    val selectedDictionaryIds = viewModel.selectedCardId
+    val selectedCard = viewModel.selectedCard
 
-    LaunchedEffect(searchQuery.value) {
-        val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
-        if (index != -1) {
-            listState.animateScrollToItem(index, scrollOffset = 50)
-            viewModel.selectedCardId.value = cards[index].cardId
-        } else {
-            viewModel.selectedCardId.value = null
+    var previousCardSize by remember { mutableIntStateOf(cards.size) }
+
+    LaunchedEffect(searchQuery.value, cards.size) {
+        if (searchQuery.value.isNotBlank()) {
+            val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
+            if (index != -1) {
+                listState.animateScrollToItem(index, scrollOffset = 50)
+                viewModel.selectCard(cards[index].cardId)
+            } else {
+                viewModel.selectCard(null)
+            }
+        } else if (previousCardSize > 0 && cards.size > previousCardSize) {
+            listState.animateScrollToItem(cards.size - 1)
+            viewModel.selectCard(cards.last().cardId)
         }
+
+        previousCardSize = cards.size
     }
 
     Box(
@@ -82,7 +119,8 @@ fun CardsScreen(
                 TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
                 CardsTable(
                     viewModel = viewModel,
-                    dictionaryId = dictionaryId,
+                    dictionaryId = checkNotNull(dictionary.dictionaryId),
+                    numberOfRightAnswers = dictionary.numberOfRightAnswers,
                     listState = listState,
                 )
             }
@@ -95,6 +133,63 @@ fun CardsScreen(
             searchQuery = searchQuery,
             listState = listState,
             cards = cards,
+            onEditClick = {
+                if (selectedDictionaryIds.value != null) {
+                    isEditPopupOpen.value = true
+                }
+            },
+            onAddClick = {
+                viewModel.clearFetchedCard()
+                isAddPopupOpen.value = true
+            },
+            onDeleteClick = {
+                isDeletePopupOpen.value = true
+            },
+            onResetClick = {
+                isResetPopupOpen.value = true
+            }
+        )
+    }
+    if (isEditPopupOpen.value && selectedCard != null) {
+        EditCardDialog(
+            lang = dictionary.sourceLanguage,
+            onSave = {
+                viewModel.updateCard(it)
+            },
+            onDismiss = { isEditPopupOpen.value = false },
+            card = selectedCard,
+            viewModel = viewModel,
+        )
+    }
+    if (isAddPopupOpen.value) {
+        AddCardDialog(
+            initialWord = searchQuery.value,
+            dictionaryId = checkNotNull(dictionary.dictionaryId),
+            sourceLang = dictionary.sourceLanguage,
+            targetLang = dictionary.targetLanguage,
+            onDismiss = { isAddPopupOpen.value = false },
+            onSave = {
+                viewModel.createCard(it)
+            },
+            viewModel = viewModel,
+        )
+    }
+    if (isDeletePopupOpen.value && selectedCard != null) {
+        DeleteCardDialog(
+            cardName = selectedCard.word,
+            onClose = { isDeletePopupOpen.value = false },
+            onConfirm = {
+                viewModel.deleteCard(checkNotNull(selectedCard.cardId))
+            }
+        )
+    }
+    if (isResetPopupOpen.value && selectedCard != null) {
+        ResetCardDialog(
+            cardName = selectedCard.word,
+            onClose = { isResetPopupOpen.value = false },
+            onConfirm = {
+                viewModel.resetCard(checkNotNull(selectedCard.cardId))
+            }
         )
     }
 }
@@ -103,10 +198,11 @@ fun CardsScreen(
 fun CardsTable(
     viewModel: CardViewModel,
     dictionaryId: String,
+    numberOfRightAnswers: Int,
     listState: LazyListState,
 ) {
-    val cards by viewModel.cads
-    val isLoading by viewModel.isLoading
+    val cards by viewModel.cards
+    val isLoading by viewModel.isCardsLoading
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
@@ -167,13 +263,15 @@ fun CardsTable(
                                 card = card,
                                 containerWidthDp = containerWidthDp,
                                 isSelected = viewModel.selectedCardId.value == card.cardId,
+                                numberOfRightAnswers = numberOfRightAnswers,
                                 onSelect = {
-                                    viewModel.selectedCardId.value =
+                                    viewModel.selectCard(
                                         if (viewModel.selectedCardId.value == card.cardId) {
                                             null
                                         } else {
                                             card.cardId
                                         }
+                                    )
                                 }
                             )
                         }
@@ -223,10 +321,13 @@ fun CardsTableHeader(
 @Composable
 fun CardsTableRow(
     card: CardEntity,
+    numberOfRightAnswers: Int,
     containerWidthDp: Dp,
     isSelected: Boolean,
     onSelect: () -> Unit,
 ) {
+    val percentage =
+        (100.0 * card.answered / numberOfRightAnswers).takeIf { it < 100 }?.toInt() ?: 100
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -247,7 +348,7 @@ fun CardsTableRow(
             containerWidthDp = containerWidthDp
         )
         TableCell(
-            text = card.answered.toString(),
+            text = percentage.toString(),
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp
         )
@@ -341,4 +442,337 @@ fun CardsBottomToolbar(
             )
         }
     }
+}
+
+@Composable
+fun EditCardDialog(
+    lang: String,
+    card: CardEntity,
+    viewModel: CardViewModel,
+    onDismiss: () -> Unit,
+    onSave: (CardEntity) -> Unit,
+) {
+    var word by remember { mutableStateOf(card.word) }
+    var translation by remember { mutableStateOf(card.translation) }
+    var examples by remember { mutableStateOf(examplesAsString(card.examples)) }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .heightIn(max = 600.dp)
+            ) {
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        OutlinedTextField(
+                            value = word,
+                            onValueChange = { word = it },
+                            label = { Text("Word") },
+                            modifier = Modifier.weight(1f)
+                        )
+                        IconButton(
+                            onClick = {
+                                val id = checkNotNull(card.cardId)
+                                if (viewModel.isAudioLoaded(id)) {
+                                    viewModel.playAudio(id)
+                                } else {
+                                    viewModel.loadAudio(id, card.audioId) {
+                                        viewModel.playAudio(id)
+                                    }
+                                }
+                            },
+                            enabled = !viewModel.isAudioLoading.value,
+                            modifier = Modifier.padding(start = 8.dp)
+                        ) {
+                            if (viewModel.isAudioPlaying.value) {
+                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            } else if (viewModel.isAudioLoading.value) {
+                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                            } else {
+                                Icon(
+                                    imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                                    contentDescription = "Play word audio"
+                                )
+                            }
+                        }
+                    }
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = translation,
+                        onValueChange = { translation = it },
+                        label = { Text("Translation") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp)
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "Examples",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    BasicTextField(
+                        value = examples,
+                        onValueChange = { examples = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                            .heightIn(min = 100.dp, max = 300.dp)
+                            .verticalScroll(rememberScrollState())
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                                MaterialTheme.shapes.small
+                            )
+                            .padding(8.dp),
+                        maxLines = Int.MAX_VALUE
+                    )
+                }
+
+                item {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(onClick = onDismiss) {
+                            Text("CLOSE")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            enabled = word.isNotBlank() && translation.isNotBlank(),
+                            onClick = {
+                                val sound = if (card.word == word) {
+                                    card.audioId
+                                } else {
+                                    audioResource(lang, word)
+                                }
+                                onSave(
+                                    card.copy(
+                                        word = word,
+                                        translation = translation,
+                                        examples = examplesAsList(examples),
+                                        audioId = sound,
+                                    )
+                                )
+                                onDismiss()
+                            }) {
+                            Text("SAVE")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AddCardDialog(
+    initialWord: String,
+    dictionaryId: String,
+    sourceLang: String,
+    targetLang: String,
+    onDismiss: () -> Unit,
+    onSave: (CardEntity) -> Unit,
+    viewModel: CardViewModel,
+) {
+    var word by remember { mutableStateOf(initialWord) }
+    var translation by remember { mutableStateOf("") }
+    var examples by remember { mutableStateOf("") }
+
+    LaunchedEffect(initialWord) {
+        viewModel.fetchCard(initialWord, sourceLang, targetLang)
+    }
+
+    val fetchedCard = viewModel.fetchedCard.value
+    LaunchedEffect(fetchedCard) {
+        fetchedCard?.let { fetched ->
+            if (word == initialWord) word = fetched.word
+            if (translation.isBlank()) translation = fetched.translation
+            if (examples.isBlank()) examples = examplesAsString(fetched.examples)
+        }
+    }
+
+    Log.d(tag, "Fetch result: ['$word', '$translation', '$examples']")
+    if (word.isBlank()) {
+        word = initialWord
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+                    .heightIn(max = 600.dp)
+            ) {
+                if (viewModel.isCardFetching.value) {
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = word,
+                        onValueChange = { word = it },
+                        label = { Text("Word") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        enabled = !viewModel.isCardFetching.value,
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = translation,
+                        onValueChange = { translation = it },
+                        label = { Text("Translation") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        enabled = !viewModel.isCardFetching.value,
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "Examples",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    BasicTextField(
+                        value = examples,
+                        onValueChange = { examples = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                            .heightIn(min = 100.dp, max = 300.dp)
+                            .verticalScroll(rememberScrollState())
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                                MaterialTheme.shapes.small
+                            )
+                            .padding(8.dp),
+                        maxLines = Int.MAX_VALUE,
+                        enabled = !viewModel.isCardFetching.value,
+                    )
+                }
+
+                item {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(onClick = onDismiss) {
+                            Text("CLOSE")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(
+                            enabled = word.isNotBlank() && translation.isNotBlank(),
+                            onClick = {
+                                onSave(
+                                    CardEntity(
+                                        cardId = null,
+                                        dictionaryId = dictionaryId,
+                                        word = word,
+                                        translation = translation,
+                                        examples = examplesAsList(examples),
+                                        answered = 0,
+                                        audioId = audioResource(sourceLang, word)
+                                    )
+                                )
+                                onDismiss()
+                            }) {
+                            Text("SAVE")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+fun DeleteCardDialog(
+    cardName: String,
+    onClose: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text("DELETE:") },
+        text = { Text(cardName) },
+        confirmButton = {
+            Button(onClick = {
+                onConfirm()
+                onClose()
+            }) {
+                Text("CONFIRM")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onClose) {
+                Text("CLOSE")
+            }
+        }
+    )
+}
+
+@Composable
+fun ResetCardDialog(
+    cardName: String,
+    onClose: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text("RESET:") },
+        text = { Text(cardName) },
+        confirmButton = {
+            Button(onClick = {
+                onConfirm()
+                onClose()
+            }) {
+                Text("CONFIRM")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onClose) {
+                Text("CLOSE")
+            }
+        }
+    )
 }

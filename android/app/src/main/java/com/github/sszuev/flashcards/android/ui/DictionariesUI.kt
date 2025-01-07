@@ -51,7 +51,6 @@ import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
-import java.util.Locale
 
 private const val tag = "DictionariesUI"
 private const val FIRST_COLUMN_WIDTH = 28
@@ -59,16 +58,6 @@ private const val SECOND_COLUMN_WIDTH = 19
 private const val THIRD_COLUMN_WIDTH = 19
 private const val FOURTH_COLUMN_WIDTH = 16
 private const val FIFTH_COLUMN_WIDTH = 18
-
-val languages = Locale.getAvailableLocales()
-    .filterNot { it.language.isBlank() }
-    .associate {
-        if (it.language == "en") {
-            it.language to it.getDisplayLanguage(Locale.US)
-        } else {
-            it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})"
-        }
-    }
 
 @Composable
 fun DictionariesScreen(
@@ -83,9 +72,7 @@ fun DictionariesScreen(
     val isCreatePopupOpen = remember { mutableStateOf(false) }
     val isDeletePopupOpen = remember { mutableStateOf(false) }
     val isSettingsPopupOpen = remember { mutableStateOf(false) }
-    val selectedDictionary = dictionaryViewModel.dictionaries.value.firstOrNull {
-        it.dictionaryId == dictionaryViewModel.selectedDictionaryIds.firstOrNull()
-    }
+    val selectedDictionary = dictionaryViewModel.selectedDictionariesList.firstOrNull()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
@@ -96,14 +83,14 @@ fun DictionariesScreen(
         }
         DictionariesBottomToolbar(
             onCardsClick = {
-                if (selectedDictionaryIds.size == 1) {
-                    val dictionaryId = selectedDictionaryIds.first()
+                if (selectedDictionaryIds.value.size == 1) {
+                    val dictionaryId = selectedDictionaryIds.value.first()
                     Log.i(tag, "Go to cards/$dictionaryId")
                     navController.navigate("cards/$dictionaryId")
                 }
             },
             onEditClick = {
-                if (selectedDictionaryIds.size == 1) {
+                if (selectedDictionaryIds.value.size == 1) {
                     isEditPopupOpen.value = true
                 }
             },
@@ -116,13 +103,14 @@ fun DictionariesScreen(
             onSettingsClick = {
                 isSettingsPopupOpen.value = true
             },
-            selectedDictionaryIds = selectedDictionaryIds,
+            selectedDictionaryIds = selectedDictionaryIds.value,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
     }
 
     if (isEditPopupOpen.value && selectedDictionary != null) {
-        EditPopup(
+        EditDictionaryDialog(
+            viewModel = dictionaryViewModel,
             dictionary = selectedDictionary,
             onSave = {
                 dictionaryViewModel.updateDictionary(it)
@@ -131,7 +119,8 @@ fun DictionariesScreen(
         )
     }
     if (isCreatePopupOpen.value) {
-        AddDialog(
+        AddDictionaryDialog(
+            viewModel = dictionaryViewModel,
             onSave = { source, target, name, acceptedNum ->
                 val dictionary = DictionaryEntity(
                     dictionaryId = null,
@@ -148,7 +137,7 @@ fun DictionariesScreen(
         )
     }
     if (isDeletePopupOpen.value && selectedDictionary != null) {
-        DeleteDialog(
+        DeleteDictionaryDialog(
             dictionaryName = selectedDictionary.name,
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
@@ -254,7 +243,7 @@ fun DictionaryTable(
                     ) {
                         items(dictionaries) { dictionary ->
                             val isSelected =
-                                viewModel.selectedDictionaryIds.contains(dictionary.dictionaryId)
+                                viewModel.selectedDictionaryIds.value.contains(dictionary.dictionaryId)
                             DictionariesTableRow(
                                 dictionary = dictionary,
                                 containerWidthDp = containerWidthDp,
@@ -453,10 +442,11 @@ fun DictionariesBottomToolbar(
 }
 
 @Composable
-fun EditPopup(
+fun EditDictionaryDialog(
     dictionary: DictionaryEntity,
+    viewModel: DictionaryViewModel,
     onSave: (DictionaryEntity) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     var dictionaryName by remember { mutableStateOf(dictionary.name) }
     var numberOfRightAnswers by remember { mutableStateOf(dictionary.numberOfRightAnswers.toString()) }
@@ -473,7 +463,7 @@ fun EditPopup(
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    text = "${languages[dictionary.sourceLanguage]} -> ${languages[dictionary.targetLanguage]}",
+                    text = "${viewModel.languages[dictionary.sourceLanguage]} -> ${viewModel.languages[dictionary.targetLanguage]}",
                     style = MaterialTheme.typography.titleMedium,
                     color = Color.Gray
                 )
@@ -526,7 +516,8 @@ fun EditPopup(
 }
 
 @Composable
-fun AddDialog(
+fun AddDictionaryDialog(
+    viewModel: DictionaryViewModel,
     onSave: (String, String, String, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
@@ -549,7 +540,7 @@ fun AddDialog(
                 // Source Language
                 Text(text = "SOURCE:", style = MaterialTheme.typography.bodyLarge)
                 SearchableDropdown(
-                    options = languages,
+                    options = viewModel.languages,
                     selectedTag = selectedSourceLanguageTag,
                     onOptionSelect = { selectedSourceLanguageTag = it }
                 )
@@ -557,7 +548,7 @@ fun AddDialog(
                 // Target Language
                 Text(text = "TARGET:", style = MaterialTheme.typography.bodyLarge)
                 SearchableDropdown(
-                    options = languages,
+                    options = viewModel.languages,
                     selectedTag = selectedTargetLanguageTag,
                     onOptionSelect = { selectedTargetLanguageTag = it }
                 )
@@ -610,7 +601,7 @@ fun AddDialog(
 }
 
 @Composable
-fun DeleteDialog(
+fun DeleteDictionaryDialog(
     dictionaryName: String,
     onClose: () -> Unit,
     onConfirm: () -> Unit
