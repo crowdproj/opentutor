@@ -24,6 +24,10 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
     val settings: State<SettingsEntity?> = _settings
 
     fun loadSettings() {
+        if (_settings.value != null) {
+            return
+        }
+
         viewModelScope.launch {
             Log.d(tag, "load settings")
             _isLoadSettingsInProgress.value = true

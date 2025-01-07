@@ -103,6 +103,11 @@ fun DictionariesScreen(
             onSettingsClick = {
                 isSettingsPopupOpen.value = true
             },
+            onRunClick = {
+                if (selectedDictionaryIds.value.isNotEmpty()) {
+                    navController.navigate("StageShow")
+                }
+            },
             selectedDictionaryIds = selectedDictionaryIds.value,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
@@ -147,9 +152,7 @@ fun DictionariesScreen(
     }
     if (isSettingsPopupOpen.value) {
         LaunchedEffect(isSettingsPopupOpen.value) {
-            if (settingsViewModel.settings.value == null) {
-                settingsViewModel.loadSettings()
-            }
+            settingsViewModel.loadSettings()
         }
 
         Box(
@@ -392,7 +395,8 @@ fun DictionariesBottomToolbar(
                 label = "RUN",
                 containerWidthDp = containerWidthDp,
                 weight = 21.43f,
-                onClick = onRunClick
+                onClick = onRunClick,
+                enabled = selectedDictionaryIds.isNotEmpty(),
             )
             ToolbarButton(
                 label = "CARDS",
