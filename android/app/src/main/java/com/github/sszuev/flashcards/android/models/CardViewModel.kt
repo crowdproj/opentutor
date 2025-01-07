@@ -55,6 +55,8 @@ class CardViewModel(
 
     private val _isCardCreating = mutableStateOf(true)
 
+    private val _isCardDeleting = mutableStateOf(true)
+
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
             _cards.value.singleOrNull { it.cardId == _selectedCardId.value }
@@ -159,6 +161,30 @@ class CardViewModel(
                 Log.e(tag, "Failed to fetch card data", e)
             } finally {
                 _isCardFetching.value = false
+            }
+        }
+    }
+
+    fun deleteCard(cardId: String) {
+        viewModelScope.launch {
+            Log.d(tag, "delete card")
+            _isCardDeleting.value = true
+            _errorMessage.value = null
+            try {
+                withContext(Dispatchers.IO) {
+                    cardsRepository.deleteCard(cardId)
+                }
+                val dictionaries = _cards.value.toMutableList()
+                dictionaries.removeIf { it.cardId == cardId }
+                _cards.value = dictionaries
+                if (_selectedCardId.value == cardId) {
+                    _selectedCardId.value = null
+                }
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to delete card: ${e.localizedMessage}"
+                Log.e(tag, "Failed to delete card", e)
+            } finally {
+                _isCardDeleting.value = false
             }
         }
     }

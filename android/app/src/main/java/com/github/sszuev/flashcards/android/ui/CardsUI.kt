@@ -29,6 +29,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -81,24 +82,27 @@ fun CardsScreen(
     val listState = rememberLazyListState()
     val isEditPopupOpen = remember { mutableStateOf(false) }
     val isAddPopupOpen = remember { mutableStateOf(false) }
+    val isDeletePopupOpen = remember { mutableStateOf(false) }
     val selectedDictionaryIds = viewModel.selectedCardId
     val selectedCard = viewModel.selectedCard
 
+    var previousCardSize by remember { mutableIntStateOf(cards.size) }
+
     LaunchedEffect(searchQuery.value, cards.size) {
         if (searchQuery.value.isNotBlank()) {
-            val index =
-                cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
+            val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
             if (index != -1) {
                 listState.animateScrollToItem(index, scrollOffset = 50)
                 viewModel.selectCard(cards[index].cardId)
             } else {
                 viewModel.selectCard(null)
             }
-        } else if (cards.isNotEmpty()) {
-            viewModel.selectCard(null)
+        } else if (cards.size > previousCardSize) {
             listState.animateScrollToItem(cards.size - 1)
             viewModel.selectCard(cards.last().cardId)
         }
+
+        previousCardSize = cards.size
     }
 
     Box(
@@ -136,6 +140,9 @@ fun CardsScreen(
             onAddClick = {
                 viewModel.clearFetchedCard()
                 isAddPopupOpen.value = true
+            },
+            onDeleteClick = {
+                isDeletePopupOpen.value = true
             }
         )
     }
@@ -161,6 +168,15 @@ fun CardsScreen(
                 viewModel.createCard(it)
             },
             viewModel = viewModel,
+        )
+    }
+    if (isDeletePopupOpen.value && selectedCard != null) {
+        DeleteCardDialog(
+            cardName = selectedCard.word,
+            onClose = { isDeletePopupOpen.value = false },
+            onConfirm = {
+                viewModel.deleteCard(checkNotNull(selectedCard.cardId))
+            }
         )
     }
 }
@@ -693,4 +709,31 @@ fun AddCardDialog(
             }
         }
     }
+}
+
+
+@Composable
+fun DeleteCardDialog(
+    cardName: String,
+    onClose: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text("DELETE:") },
+        text = { Text(cardName) },
+        confirmButton = {
+            Button(onClick = {
+                onConfirm()
+                onClose()
+            }) {
+                Text("CONFIRM")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onClose) {
+                Text("CLOSE")
+            }
+        }
+    )
 }

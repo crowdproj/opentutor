@@ -68,6 +68,22 @@ class CardsRepository(
         handleErrors(container)
         return checkNotNull(container.card) { "null card received" }
     }
+
+    suspend fun deleteCard(cardId: String) {
+        val requestId = UUID.randomUUID().toString()
+        Log.d(tag, "Delete card with requestId=$requestId and cardId=$cardId")
+        val container = authPost<DeleteCardResponse>("$serverUri/v1/api/cards/delete") {
+            setBody(
+                DeleteCardRequest(
+                    requestType = "deleteCard",
+                    requestId = requestId,
+                    cardId = cardId,
+                )
+            )
+        }
+        Log.d(tag, "Received response for requestId: $requestId, response: $container")
+        handleErrors(container)
+    }
 }
 
 @Suppress("unused")
@@ -99,15 +115,28 @@ private data class UpdateCardResponse(
 ) : BaseResponse
 
 @Serializable
-private data class CreateCardRequest (
+private data class CreateCardRequest(
     override val requestType: String,
     override val requestId: String,
     val card: CardResource,
 ) : BaseRequest
 
 @Serializable
-private data class CreateCardResponse (
+private data class CreateCardResponse(
     override val requestId: String,
     override val errors: List<ErrorResource>? = null,
     val card: CardResource? = null,
+) : BaseResponse
+
+@Serializable
+private data class DeleteCardRequest(
+    override val requestType: String,
+    override val requestId: String,
+    val cardId: String,
+) : BaseRequest
+
+@Serializable
+private data class DeleteCardResponse(
+    override val requestId: String,
+    override val errors: List<ErrorResource>? = null
 ) : BaseResponse
