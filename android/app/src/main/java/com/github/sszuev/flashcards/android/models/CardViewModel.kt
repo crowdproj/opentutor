@@ -57,6 +57,8 @@ class CardViewModel(
 
     private val _isCardDeleting = mutableStateOf(true)
 
+    private val _isCardResetting = mutableStateOf(true)
+
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
             _cards.value.singleOrNull { it.cardId == _selectedCardId.value }
@@ -70,7 +72,10 @@ class CardViewModel(
             _cards.value = emptyList()
             try {
                 withContext(Dispatchers.IO) {
-                    _cards.value = cardsRepository.getAll(dictionaryId).map { it.toCard() }
+                    _cards.value = cardsRepository
+                        .getAll(dictionaryId)
+                        .map { it.toCard() }
+                        .sortedBy { it.word }
                 }
                 _selectedCardId.value = null
             } catch (e: Exception) {
@@ -174,9 +179,9 @@ class CardViewModel(
                 withContext(Dispatchers.IO) {
                     cardsRepository.deleteCard(cardId)
                 }
-                val dictionaries = _cards.value.toMutableList()
-                dictionaries.removeIf { it.cardId == cardId }
-                _cards.value = dictionaries
+                val cards = _cards.value.toMutableList()
+                cards.removeIf { it.cardId == cardId }
+                _cards.value = cards
                 if (_selectedCardId.value == cardId) {
                     _selectedCardId.value = null
                 }
@@ -185,6 +190,32 @@ class CardViewModel(
                 Log.e(tag, "Failed to delete card", e)
             } finally {
                 _isCardDeleting.value = false
+            }
+        }
+    }
+
+    fun resetCard(cardId: String) {
+        viewModelScope.launch {
+            Log.d(tag, "reset card")
+            _isCardResetting.value = true
+            _errorMessage.value = null
+            try {
+                withContext(Dispatchers.IO) {
+                    cardsRepository.resetCard(cardId)
+                }
+                val cards = _cards.value.toMutableList()
+                cards.toList().forEachIndexed { index, card ->
+                    if (card.cardId == cardId) {
+                        cards[index] = card.copy(answered = 0)
+                        return@forEachIndexed
+                    }
+                }
+                _cards.value = cards
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to delete card: ${e.localizedMessage}"
+                Log.e(tag, "Failed to delete card", e)
+            } finally {
+                _isCardResetting.value = false
             }
         }
     }

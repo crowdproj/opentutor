@@ -62,7 +62,10 @@ class DictionaryViewModel(
             _errorMessage.value = null
             try {
                 withContext(Dispatchers.IO) {
-                    _dictionaries.value = repository.getAll().map { it.toDictionary() }
+                    _dictionaries.value = repository
+                        .getAll()
+                        .map { it.toDictionary() }
+                        .sortedBy { it.name }
                 }
                 _selectedDictionaryIds.value = emptySet()
             } catch (e: Exception) {

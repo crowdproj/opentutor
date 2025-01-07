@@ -83,6 +83,7 @@ fun CardsScreen(
     val isEditPopupOpen = remember { mutableStateOf(false) }
     val isAddPopupOpen = remember { mutableStateOf(false) }
     val isDeletePopupOpen = remember { mutableStateOf(false) }
+    val isResetPopupOpen = remember { mutableStateOf(false) }
     val selectedDictionaryIds = viewModel.selectedCardId
     val selectedCard = viewModel.selectedCard
 
@@ -97,7 +98,7 @@ fun CardsScreen(
             } else {
                 viewModel.selectCard(null)
             }
-        } else if (cards.size > previousCardSize) {
+        } else if (previousCardSize > 0 && cards.size > previousCardSize) {
             listState.animateScrollToItem(cards.size - 1)
             viewModel.selectCard(cards.last().cardId)
         }
@@ -143,6 +144,9 @@ fun CardsScreen(
             },
             onDeleteClick = {
                 isDeletePopupOpen.value = true
+            },
+            onResetClick = {
+                isResetPopupOpen.value = true
             }
         )
     }
@@ -176,6 +180,15 @@ fun CardsScreen(
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
                 viewModel.deleteCard(checkNotNull(selectedCard.cardId))
+            }
+        )
+    }
+    if (isResetPopupOpen.value && selectedCard != null) {
+        ResetCardDialog(
+            cardName = selectedCard.word,
+            onClose = { isResetPopupOpen.value = false },
+            onConfirm = {
+                viewModel.resetCard(checkNotNull(selectedCard.cardId))
             }
         )
     }
@@ -721,6 +734,32 @@ fun DeleteCardDialog(
     AlertDialog(
         onDismissRequest = onClose,
         title = { Text("DELETE:") },
+        text = { Text(cardName) },
+        confirmButton = {
+            Button(onClick = {
+                onConfirm()
+                onClose()
+            }) {
+                Text("CONFIRM")
+            }
+        },
+        dismissButton = {
+            Button(onClick = onClose) {
+                Text("CLOSE")
+            }
+        }
+    )
+}
+
+@Composable
+fun ResetCardDialog(
+    cardName: String,
+    onClose: () -> Unit,
+    onConfirm: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClose,
+        title = { Text("RESET:") },
         text = { Text(cardName) },
         confirmButton = {
             Button(onClick = {
