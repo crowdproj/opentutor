@@ -84,16 +84,20 @@ fun CardsScreen(
     val selectedDictionaryIds = viewModel.selectedCardId
     val selectedCard = viewModel.selectedCard
 
-    LaunchedEffect(searchQuery.value) {
-        if (searchQuery.value.isBlank()) {
-            return@LaunchedEffect
-        }
-        val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
-        if (index != -1) {
-            listState.animateScrollToItem(index, scrollOffset = 50)
-            viewModel.selectCard(cards[index].cardId)
-        } else {
+    LaunchedEffect(searchQuery.value, cards.size) {
+        if (searchQuery.value.isNotBlank()) {
+            val index =
+                cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
+            if (index != -1) {
+                listState.animateScrollToItem(index, scrollOffset = 50)
+                viewModel.selectCard(cards[index].cardId)
+            } else {
+                viewModel.selectCard(null)
+            }
+        } else if (cards.isNotEmpty()) {
             viewModel.selectCard(null)
+            listState.animateScrollToItem(cards.size - 1)
+            viewModel.selectCard(cards.last().cardId)
         }
     }
 
@@ -130,6 +134,7 @@ fun CardsScreen(
                 }
             },
             onAddClick = {
+                viewModel.clearFetchedCard()
                 isAddPopupOpen.value = true
             }
         )
@@ -152,7 +157,9 @@ fun CardsScreen(
             sourceLang = dictionary.sourceLanguage,
             targetLang = dictionary.targetLanguage,
             onDismiss = { isAddPopupOpen.value = false },
-            onSave = {},
+            onSave = {
+                viewModel.createCard(it)
+            },
             viewModel = viewModel,
         )
     }
@@ -519,22 +526,24 @@ fun EditCardDialog(
                             Text("CLOSE")
                         }
                         Spacer(modifier = Modifier.width(8.dp))
-                        Button(onClick = {
-                            val sound = if (card.word == word) {
-                                card.audioId
-                            } else {
-                                audioResource(lang, word)
-                            }
-                            onSave(
-                                card.copy(
-                                    word = word,
-                                    translation = translation,
-                                    examples = examplesAsList(examples),
-                                    audioId = sound,
+                        Button(
+                            enabled = word.isNotBlank() && translation.isNotBlank(),
+                            onClick = {
+                                val sound = if (card.word == word) {
+                                    card.audioId
+                                } else {
+                                    audioResource(lang, word)
+                                }
+                                onSave(
+                                    card.copy(
+                                        word = word,
+                                        translation = translation,
+                                        examples = examplesAsList(examples),
+                                        audioId = sound,
+                                    )
                                 )
-                            )
-                            onDismiss()
-                        }) {
+                                onDismiss()
+                            }) {
                             Text("SAVE")
                         }
                     }
@@ -554,7 +563,6 @@ fun AddCardDialog(
     onSave: (CardEntity) -> Unit,
     viewModel: CardViewModel,
 ) {
-    Log.d(tag, "SearchQuery: ['$initialWord']; $sourceLang -> $targetLang")
     var word by remember { mutableStateOf(initialWord) }
     var translation by remember { mutableStateOf("") }
     var examples by remember { mutableStateOf("") }
@@ -562,13 +570,17 @@ fun AddCardDialog(
     LaunchedEffect(initialWord) {
         viewModel.fetchCard(initialWord, sourceLang, targetLang)
     }
-    viewModel.fetchedCard.value?.let { fetched ->
-        word = fetched.word
-        translation = fetched.translation
-        examples = examplesAsString(fetched.examples)
+
+    val fetchedCard = viewModel.fetchedCard.value
+    LaunchedEffect(fetchedCard) {
+        fetchedCard?.let { fetched ->
+            if (word == initialWord) word = fetched.word
+            if (translation.isBlank()) translation = fetched.translation
+            if (examples.isBlank()) examples = examplesAsString(fetched.examples)
+        }
     }
 
-    Log.d(tag,"Fetch result: ['$word', '$translation', '$examples']")
+    Log.d(tag, "Fetch result: ['$word', '$translation', '$examples']")
     if (word.isBlank()) {
         word = initialWord
     }
@@ -585,6 +597,7 @@ fun AddCardDialog(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .heightIn(max = 600.dp)
             ) {
                 if (viewModel.isCardFetching.value) {
                     item {
@@ -657,20 +670,22 @@ fun AddCardDialog(
                             Text("CLOSE")
                         }
                         Spacer(modifier = Modifier.width(8.dp))
-                        Button(onClick = {
-                            onSave(
-                                CardEntity(
-                                    cardId = null,
-                                    dictionaryId = dictionaryId,
-                                    word = word,
-                                    translation = translation,
-                                    examples = examplesAsList(examples),
-                                    answered = 0,
-                                    audioId = audioResource(sourceLang, word)
+                        Button(
+                            enabled = word.isNotBlank() && translation.isNotBlank(),
+                            onClick = {
+                                onSave(
+                                    CardEntity(
+                                        cardId = null,
+                                        dictionaryId = dictionaryId,
+                                        word = word,
+                                        translation = translation,
+                                        examples = examplesAsList(examples),
+                                        answered = 0,
+                                        audioId = audioResource(sourceLang, word)
+                                    )
                                 )
-                            )
-                            onDismiss()
-                        }) {
+                                onDismiss()
+                            }) {
                             Text("SAVE")
                         }
                     }

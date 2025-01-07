@@ -2,7 +2,6 @@ package com.github.sszuev.flashcards.android.models
 
 import android.media.MediaPlayer
 import android.util.Log
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -53,6 +52,8 @@ class CardViewModel(
     val isCardFetching: State<Boolean> = _isCardFetching
     private val _fetchedCard = mutableStateOf<CardEntity?>(null)
     val fetchedCard: State<CardEntity?> = _fetchedCard
+
+    private val _isCardCreating = mutableStateOf(true)
 
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
@@ -112,7 +113,34 @@ class CardViewModel(
         }
     }
 
+    fun createCard(card: CardEntity) {
+        viewModelScope.launch {
+            Log.d(tag, "create card")
+            _isCardCreating.value = true
+            _errorMessage.value = null
+            try {
+                val res = withContext(Dispatchers.IO) {
+                    cardsRepository.createCard(card.toCardResource())
+                }
+                val cards = _cards.value.toMutableList()
+                cards.add(res.toCard())
+                _cards.value = cards
+                _selectedCardId.value = res.cardId
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to create card: ${e.localizedMessage}"
+                Log.e(tag, "Failed to create card", e)
+            } finally {
+                _isCardCreating.value = false
+            }
+        }
+    }
+
     fun fetchCard(word: String, sourceLang: String, targetLang: String) {
+        if (word.isBlank()) {
+            _fetchedCard.value = null
+            _isCardFetching.value = false
+            return
+        }
         viewModelScope.launch {
             Log.d(tag, "Fetch card data ['$word'; $sourceLang -> $targetLang]")
             _isCardFetching.value = true
@@ -211,6 +239,10 @@ class CardViewModel(
 
     fun selectCard(cardId: String?) {
         _selectedCardId.value = cardId
+    }
+
+    fun clearFetchedCard() {
+        _fetchedCard.value = null
     }
 
     fun sortBy(field: String) {

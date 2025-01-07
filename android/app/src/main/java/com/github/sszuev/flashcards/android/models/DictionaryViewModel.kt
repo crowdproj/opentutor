@@ -12,6 +12,7 @@ import com.github.sszuev.flashcards.android.toDictionaryResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 
 class DictionaryViewModel(
     private val repository: DictionaryRepository
@@ -41,6 +42,18 @@ class DictionaryViewModel(
     val selectedDictionariesList: List<DictionaryEntity>
         get() =
             _dictionaries.value.filter { it.dictionaryId in _selectedDictionaryIds.value }
+
+    val languages = Locale.getAvailableLocales()
+        .filterNot { it.language.isBlank() }
+        .map {
+            if (it.language == "en") {
+                it.language to it.getDisplayLanguage(Locale.US)
+            } else {
+                it.language to "${it.getDisplayLanguage(Locale.US)} (${it.getDisplayLanguage(it)})"
+            }
+        }
+        .sortedBy { it.second }
+        .toMap()
 
     fun loadDictionaries() {
         viewModelScope.launch {

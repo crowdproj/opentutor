@@ -44,6 +44,7 @@ fun CardEntity.toCardResource(): CardResource {
         translations = listOf(listOf(translation)),
         examples = examples,
         sound = this.audioId,
+        primary = true,
     )
     return CardResource(
         dictionaryId = this.dictionaryId,

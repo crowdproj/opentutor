@@ -225,7 +225,7 @@ fun SearchableDropdown(
                     ) {
                         items(
                             options.entries
-                                .filter { it.value.contains(searchQuery, ignoreCase = true) }
+                                .filter { it.value.startsWith(searchQuery, ignoreCase = true) }
                                 .toList()
                         ) { entry ->
                             Text(
