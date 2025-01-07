@@ -2,6 +2,7 @@ package com.github.sszuev.flashcards.android.models
 
 import android.media.MediaPlayer
 import android.util.Log
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.TTSRepository
+import com.github.sszuev.flashcards.android.repositories.TranslationRepository
 import com.github.sszuev.flashcards.android.toCard
 import com.github.sszuev.flashcards.android.toCardResource
 import kotlinx.coroutines.Dispatchers
@@ -20,6 +22,7 @@ import java.io.File
 class CardViewModel(
     private val cardsRepository: CardsRepository,
     private val ttsRepository: TTSRepository,
+    private val translationRepository: TranslationRepository,
 ) : ViewModel() {
 
     private val tag = "CardViewModel"
@@ -45,6 +48,11 @@ class CardViewModel(
     val isAudioPlaying: State<Boolean> get() = _isAudioPlaying
 
     private val _isCardUpdating = mutableStateOf(true)
+
+    private val _isCardFetching = mutableStateOf(true)
+    val isCardFetching: State<Boolean> = _isCardFetching
+    private val _fetchedCard = mutableStateOf<CardEntity?>(null)
+    val fetchedCard: State<CardEntity?> = _fetchedCard
 
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
@@ -85,7 +93,7 @@ class CardViewModel(
                     if (entity.cardId == card.cardId) {
                         if (entity.audioId != card.audioId) {
                             _loadAudio(
-                                cardId = card.cardId,
+                                cardId = checkNotNull(card.cardId),
                                 audioResourceId = card.audioId,
                                 onLoaded = {}
                             )
@@ -100,6 +108,29 @@ class CardViewModel(
                 Log.e(tag, "Failed to load cards", e)
             } finally {
                 _isCardUpdating.value = false
+            }
+        }
+    }
+
+    fun fetchCard(word: String, sourceLang: String, targetLang: String) {
+        viewModelScope.launch {
+            Log.d(tag, "Fetch card data ['$word'; $sourceLang -> $targetLang]")
+            _isCardFetching.value = true
+            _errorMessage.value = null
+            try {
+                val fetched = withContext(Dispatchers.IO) {
+                    translationRepository.fetch(
+                        query = word,
+                        sourceLang = sourceLang,
+                        targetLang = targetLang,
+                    )
+                }.toCard()
+                _fetchedCard.value = fetched
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to fetch card data: ${e.localizedMessage}"
+                Log.e(tag, "Failed to fetch card data", e)
+            } finally {
+                _isCardFetching.value = false
             }
         }
     }

@@ -19,6 +19,7 @@ import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
 import com.github.sszuev.flashcards.android.repositories.SettingsRepository
 import com.github.sszuev.flashcards.android.repositories.TTSRepository
+import com.github.sszuev.flashcards.android.repositories.TranslationRepository
 import com.github.sszuev.flashcards.android.ui.MainNavigation
 import io.ktor.client.request.get
 import io.ktor.client.statement.HttpResponse
@@ -35,7 +36,11 @@ class MainActivity : ComponentActivity() {
         DictionariesViewModelFactory(DictionaryRepository(AppConfig.serverUri))
     }
     private val cardViewModel: CardViewModel by viewModels {
-        CardsViewModelFactory(CardsRepository(AppConfig.serverUri), TTSRepository(AppConfig.serverUri))
+        CardsViewModelFactory(
+            CardsRepository(AppConfig.serverUri),
+            TTSRepository(AppConfig.serverUri),
+            TranslationRepository(AppConfig.serverUri)
+        )
     }
     private val settingsViewModel: SettingsViewModel by viewModels {
         SettingsViewModelFactory(SettingsRepository(AppConfig.serverUri))

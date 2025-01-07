@@ -8,6 +8,7 @@ import com.github.sszuev.flashcards.android.repositories.CardWordExampleResource
 import com.github.sszuev.flashcards.android.repositories.CardWordResource
 import com.github.sszuev.flashcards.android.repositories.DictionaryResource
 import com.github.sszuev.flashcards.android.repositories.SettingsResource
+import com.github.sszuev.flashcards.android.utils.translationsAsString
 
 fun DictionaryResource.toDictionary() = DictionaryEntity(
     dictionaryId = this.dictionaryId,
@@ -20,19 +21,15 @@ fun DictionaryResource.toDictionary() = DictionaryEntity(
 )
 
 fun CardResource.toCard(): CardEntity {
-    val w = checkNotNull(this.words) { "No words" }
-        .firstOrNull()
-        ?: throw IllegalArgumentException("Can't find field 'word' for card = $cardId")
+    val primary = this.words?.firstOrNull()
     return CardEntity(
-        dictionaryId = checkNotNull(this.dictionaryId),
-        cardId = checkNotNull(this.cardId),
-        word = checkNotNull(w.word) { "No word for $cardId" },
-        translation = checkNotNull(this.words).firstNotNullOfOrNull {
-            checkNotNull(it.translations) { "No translation" }.flatten().firstOrNull()
-        } ?: throw IllegalArgumentException("Can't find field 'translation' for card = $cardId"),
+        dictionaryId = this.dictionaryId,
+        cardId = this.cardId,
+        word = primary?.word ?: "",
+        translation = primary?.translations?.let { translationsAsString(it) } ?: "",
         answered = answered ?: 0,
-        examples = w.examples?.mapNotNull { it.example } ?: emptyList(),
-        audioId = checkNotNull(w.sound),
+        examples = primary?.examples?.mapNotNull { it.example } ?: emptyList(),
+        audioId = primary?.sound ?: "",
     )
 }
 

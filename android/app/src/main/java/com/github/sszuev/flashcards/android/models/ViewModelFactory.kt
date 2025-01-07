@@ -6,6 +6,7 @@ import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
 import com.github.sszuev.flashcards.android.repositories.SettingsRepository
 import com.github.sszuev.flashcards.android.repositories.TTSRepository
+import com.github.sszuev.flashcards.android.repositories.TranslationRepository
 
 class DictionariesViewModelFactory(
     private val repository: DictionaryRepository
@@ -23,12 +24,13 @@ class DictionariesViewModelFactory(
 class CardsViewModelFactory(
     private val cardsRepository: CardsRepository,
     private val ttsRepository: TTSRepository,
+    private val translationRepository: TranslationRepository,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CardViewModel::class.java)) {
-            return CardViewModel(cardsRepository, ttsRepository) as T
+            return CardViewModel(cardsRepository, ttsRepository, translationRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -66,6 +67,8 @@ private const val FIRST_COLUMN_WIDTH = 32
 private const val SECOND_COLUMN_WIDTH = 58
 private const val THIRD_COLUMN_WIDTH = 10
 
+private const val tag = "CardsUI"
+
 @Composable
 fun CardsScreen(
     dictionary: DictionaryEntity,
@@ -77,6 +80,7 @@ fun CardsScreen(
     val cards by viewModel.cards
     val listState = rememberLazyListState()
     val isEditPopupOpen = remember { mutableStateOf(false) }
+    val isAddPopupOpen = remember { mutableStateOf(false) }
     val selectedDictionaryIds = viewModel.selectedCardId
     val selectedCard = viewModel.selectedCard
 
@@ -124,6 +128,9 @@ fun CardsScreen(
                 if (selectedDictionaryIds.value != null) {
                     isEditPopupOpen.value = true
                 }
+            },
+            onAddClick = {
+                isAddPopupOpen.value = true
             }
         )
     }
@@ -135,6 +142,17 @@ fun CardsScreen(
             },
             onDismiss = { isEditPopupOpen.value = false },
             card = selectedCard,
+            viewModel = viewModel,
+        )
+    }
+    if (isAddPopupOpen.value) {
+        AddCardDialog(
+            initialWord = searchQuery.value,
+            dictionaryId = checkNotNull(dictionary.dictionaryId),
+            sourceLang = dictionary.sourceLanguage,
+            targetLang = dictionary.targetLanguage,
+            onDismiss = { isAddPopupOpen.value = false },
+            onSave = {},
             viewModel = viewModel,
         )
     }
@@ -431,11 +449,12 @@ fun EditCardDialog(
                         )
                         IconButton(
                             onClick = {
-                                if (viewModel.isAudioLoaded(card.cardId)) {
-                                    viewModel.playAudio(card.cardId)
+                                val id = checkNotNull(card.cardId)
+                                if (viewModel.isAudioLoaded(id)) {
+                                    viewModel.playAudio(id)
                                 } else {
-                                    viewModel.loadAudio(card.cardId, card.audioId) {
-                                        viewModel.playAudio(card.cardId)
+                                    viewModel.loadAudio(id, card.audioId) {
+                                        viewModel.playAudio(id)
                                     }
                                 }
                             },
@@ -512,6 +531,142 @@ fun EditCardDialog(
                                     translation = translation,
                                     examples = examplesAsList(examples),
                                     audioId = sound,
+                                )
+                            )
+                            onDismiss()
+                        }) {
+                            Text("SAVE")
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AddCardDialog(
+    initialWord: String,
+    dictionaryId: String,
+    sourceLang: String,
+    targetLang: String,
+    onDismiss: () -> Unit,
+    onSave: (CardEntity) -> Unit,
+    viewModel: CardViewModel,
+) {
+    Log.d(tag, "SearchQuery: ['$initialWord']; $sourceLang -> $targetLang")
+    var word by remember { mutableStateOf(initialWord) }
+    var translation by remember { mutableStateOf("") }
+    var examples by remember { mutableStateOf("") }
+
+    LaunchedEffect(initialWord) {
+        viewModel.fetchCard(initialWord, sourceLang, targetLang)
+    }
+    viewModel.fetchedCard.value?.let { fetched ->
+        word = fetched.word
+        translation = fetched.translation
+        examples = examplesAsString(fetched.examples)
+    }
+
+    Log.d(tag,"Fetch result: ['$word', '$translation', '$examples']")
+    if (word.isBlank()) {
+        word = initialWord
+    }
+
+    Dialog(onDismissRequest = onDismiss) {
+        Surface(
+            shape = MaterialTheme.shapes.medium,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            color = MaterialTheme.colorScheme.background
+        ) {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                if (viewModel.isCardFetching.value) {
+                    item {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = word,
+                        onValueChange = { word = it },
+                        label = { Text("Word") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        enabled = !viewModel.isCardFetching.value,
+                    )
+                }
+
+                item {
+                    OutlinedTextField(
+                        value = translation,
+                        onValueChange = { translation = it },
+                        label = { Text("Translation") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 8.dp),
+                        enabled = !viewModel.isCardFetching.value,
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "Examples",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(bottom = 4.dp)
+                    )
+                    BasicTextField(
+                        value = examples,
+                        onValueChange = { examples = it },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp)
+                            .heightIn(min = 100.dp, max = 300.dp)
+                            .verticalScroll(rememberScrollState())
+                            .border(
+                                1.dp,
+                                MaterialTheme.colorScheme.onSurface.copy(alpha = 0.5f),
+                                MaterialTheme.shapes.small
+                            )
+                            .padding(8.dp),
+                        maxLines = Int.MAX_VALUE,
+                        enabled = !viewModel.isCardFetching.value,
+                    )
+                }
+
+                item {
+                    Row(
+                        horizontalArrangement = Arrangement.End,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Button(onClick = onDismiss) {
+                            Text("CLOSE")
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Button(onClick = {
+                            onSave(
+                                CardEntity(
+                                    cardId = null,
+                                    dictionaryId = dictionaryId,
+                                    word = word,
+                                    translation = translation,
+                                    examples = examplesAsList(examples),
+                                    answered = 0,
+                                    audioId = audioResource(sourceLang, word)
                                 )
                             )
                             onDismiss()

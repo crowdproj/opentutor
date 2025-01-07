@@ -4,6 +4,7 @@ fun examplesAsString(examples: List<String>) = examples.joinToString("\n")
 
 fun examplesAsList(examples: String) = examples.split("\n")
 
-fun audioResource(lang: String, word: String): String {
-    return lang + ":" + word.replace(" ", "")
-}
+fun audioResource(lang: String, word: String): String = lang + ":" + word.replace(" ", "")
+
+fun translationsAsString(translations: List<List<String>>) =
+    translations.flatten().joinToString(", ")

@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class CardResource(
-    val cardId: String,
+    val cardId: String? = null,
     val dictionaryId: String? = null,
     val words: List<CardWordResource>? = null,
     val stats: Map<String, Long>? = null,
