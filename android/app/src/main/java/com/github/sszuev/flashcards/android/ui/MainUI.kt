@@ -146,6 +146,8 @@ fun MainNavigation(
                         )
 
                         "StageResult" -> StageResultScreen(
+                            cardViewModel = cardViewModel,
+                            dictionariesViewModel = dictionariesViewModel,
                             onHomeClick = { navController.navigate("dictionaries") },
                             onSignOut = onSignOut,
                         )
