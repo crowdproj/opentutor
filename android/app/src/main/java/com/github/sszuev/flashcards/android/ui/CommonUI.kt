@@ -12,14 +12,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -40,6 +44,8 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.github.sszuev.flashcards.android.entities.CardEntity
+import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.utils.getUsernameFromPreferences
 
 @Composable
@@ -250,6 +256,34 @@ fun SearchableDropdown(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun AudioPlayerIcon(
+    viewModel: CardViewModel,
+    card: CardEntity,
+    size: Dp = 24.dp,
+    modifier: Modifier = Modifier
+) {
+    val cardId = checkNotNull(card.cardId)
+
+    IconButton(
+        onClick = {
+            viewModel.loadAndPlayAudio(card)
+        },
+        enabled = !viewModel.isAudioPlaying(cardId) && !viewModel.isAudioLoading(cardId),
+        modifier = modifier.padding(start = 8.dp)
+    ) {
+        if (viewModel.isAudioLoading(cardId)) {
+            CircularProgressIndicator(modifier = Modifier.size(size))
+        } else {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                contentDescription = "Play word audio",
+                modifier = Modifier.size(size)
+            )
         }
     }
 }

@@ -10,7 +10,7 @@ import com.github.sszuev.flashcards.android.repositories.DictionaryResource
 import com.github.sszuev.flashcards.android.repositories.SettingsResource
 import com.github.sszuev.flashcards.android.utils.translationsAsString
 
-fun DictionaryResource.toDictionary() = DictionaryEntity(
+fun DictionaryResource.toDictionaryEntity() = DictionaryEntity(
     dictionaryId = this.dictionaryId,
     name = checkNotNull(this.name),
     sourceLanguage = checkNotNull(this.sourceLang),
@@ -20,7 +20,17 @@ fun DictionaryResource.toDictionary() = DictionaryEntity(
     numberOfRightAnswers = this.numberOfRightAnswers ?: 15
 )
 
-fun CardResource.toCard(): CardEntity {
+fun DictionaryEntity.toDictionaryResource() = DictionaryResource(
+    dictionaryId = this.dictionaryId,
+    name = this.name,
+    sourceLang = this.sourceLanguage,
+    targetLang = this.targetLanguage,
+    total = this.totalWords,
+    learned = this.learnedWords,
+    numberOfRightAnswers = this.numberOfRightAnswers,
+)
+
+fun CardResource.toCardEntity(): CardEntity {
     val primary = this.words?.firstOrNull()
     return CardEntity(
         dictionaryId = this.dictionaryId,
@@ -54,17 +64,6 @@ fun CardEntity.toCardResource(): CardResource {
     )
 }
 
-
-fun DictionaryEntity.toDictionaryResource() = DictionaryResource(
-    dictionaryId = this.dictionaryId,
-    name = this.name,
-    sourceLang = this.sourceLanguage,
-    targetLang = this.targetLanguage,
-    total = this.totalWords,
-    learned = this.learnedWords,
-    numberOfRightAnswers = this.numberOfRightAnswers,
-)
-
 fun SettingsEntity.toSettingsResource() = SettingsResource(
     stageShowNumberOfWords = stageShowNumberOfWords,
     stageOptionsNumberOfVariants = stageOptionsNumberOfVariants,
@@ -79,7 +78,7 @@ fun SettingsEntity.toSettingsResource() = SettingsResource(
     stageSelfTestTargetLangToSourceLang = stageSelfTestTargetLangToSourceLang,
 )
 
-fun SettingsResource.toSettings() = SettingsEntity(
+fun SettingsResource.toSettingsEntity() = SettingsEntity(
     stageShowNumberOfWords = stageShowNumberOfWords ?: 6,
     stageOptionsNumberOfVariants = stageOptionsNumberOfVariants ?: 6,
     numberOfWordsPerStage = numberOfWordsPerStage ?: 15,

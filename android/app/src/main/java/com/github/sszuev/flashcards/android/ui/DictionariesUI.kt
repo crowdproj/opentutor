@@ -49,6 +49,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
+import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
@@ -66,6 +67,7 @@ fun DictionariesScreen(
     onHomeClick: () -> Unit = {},
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    cardViewModel: CardViewModel,
 ) {
     val selectedDictionaryIds = dictionaryViewModel.selectedDictionaryIds
     val isEditPopupOpen = remember { mutableStateOf(false) }
@@ -118,7 +120,8 @@ fun DictionariesScreen(
             viewModel = dictionaryViewModel,
             dictionary = selectedDictionary,
             onSave = {
-                dictionaryViewModel.updateDictionary(it)
+                val numberLearnedCards = cardViewModel.numberOfKnownCards(it.numberOfRightAnswers)
+                dictionaryViewModel.updateDictionary(it.copy(learnedWords = numberLearnedCards))
             },
             onDismiss = { isEditPopupOpen.value = false }
         )

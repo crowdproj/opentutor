@@ -3,6 +3,7 @@ package com.github.sszuev.flashcards.android.models
 import android.media.MediaPlayer
 import android.util.Log
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -11,12 +12,15 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.TTSRepository
 import com.github.sszuev.flashcards.android.repositories.TranslationRepository
-import com.github.sszuev.flashcards.android.toCard
+import com.github.sszuev.flashcards.android.toCardEntity
 import com.github.sszuev.flashcards.android.toCardResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.io.File
+import java.nio.file.Files
+import java.nio.file.Path
+import kotlin.io.path.deleteExisting
+import kotlin.io.path.outputStream
 
 class CardViewModel(
     private val cardsRepository: CardsRepository,
@@ -41,23 +45,28 @@ class CardViewModel(
     val isAscending: State<Boolean> = _isAscending
 
     private val _audioResources = mutableStateMapOf<String, ByteArray?>()
-    private val _isAudioLoading = mutableStateOf(true)
-    val isAudioLoading: State<Boolean> = _isCardsLoading
-    private val _isAudioPlaying = mutableStateOf(false)
-    val isAudioPlaying: State<Boolean> get() = _isAudioPlaying
+    private val _isAudioLoading = mutableStateMapOf<String, Boolean>()
+    private val _isAudioPlaying = mutableStateMapOf<String, Boolean>()
 
     private val _isCardUpdating = mutableStateOf(true)
 
     private val _isCardFetching = mutableStateOf(true)
-    val isCardFetching: State<Boolean> = _isCardFetching
+    val isCardFetching: State<Boolean> get() = _isCardFetching
     private val _fetchedCard = mutableStateOf<CardEntity?>(null)
-    val fetchedCard: State<CardEntity?> = _fetchedCard
+    val fetchedCard: State<CardEntity?> get() = _fetchedCard
 
     private val _isCardCreating = mutableStateOf(true)
 
     private val _isCardDeleting = mutableStateOf(true)
 
     private val _isCardResetting = mutableStateOf(true)
+
+    private val _isCardsDeckLoading = mutableStateOf(true)
+    val isCardsDeckLoading: State<Boolean> get() = _isCardsDeckLoading
+    private val _currentDeckCardIndex = mutableIntStateOf(0)
+    val currentDeckCardIndex: State<Int> get() = _currentDeckCardIndex
+    private val _cardsDeck = mutableStateOf<List<CardEntity>>(emptyList())
+    val cardsDeck: State<List<CardEntity>> = _cardsDeck
 
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
@@ -74,7 +83,7 @@ class CardViewModel(
                 withContext(Dispatchers.IO) {
                     _cards.value = cardsRepository
                         .getAll(dictionaryId)
-                        .map { it.toCard() }
+                        .map { it.toCardEntity() }
                         .sortedBy { it.word }
                 }
                 _selectedCardId.value = null
@@ -130,7 +139,7 @@ class CardViewModel(
                     cardsRepository.createCard(card.toCardResource())
                 }
                 val cards = _cards.value.toMutableList()
-                cards.add(res.toCard())
+                cards.add(res.toCardEntity())
                 _cards.value = cards
                 _selectedCardId.value = res.cardId
             } catch (e: Exception) {
@@ -159,7 +168,7 @@ class CardViewModel(
                         sourceLang = sourceLang,
                         targetLang = targetLang,
                     )
-                }.toCard()
+                }.toCardEntity()
                 _fetchedCard.value = fetched
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to fetch card data: ${e.localizedMessage}"
@@ -220,6 +229,54 @@ class CardViewModel(
         }
     }
 
+    fun loadNextCardDeck(
+        dictionaryIds: Set<String>,
+        random: Boolean,
+        unknown: Boolean,
+        length: Int,
+    ) {
+        viewModelScope.launch {
+            _isCardsDeckLoading.value = true
+            _currentDeckCardIndex.intValue = 0
+            _errorMessage.value = null
+            _cardsDeck.value = emptyList()
+            try {
+                val cards = withContext(Dispatchers.IO) {
+                    cardsRepository.getCardsDeck(
+                        dictionaryIds = dictionaryIds.toList(),
+                        random = random,
+                        unknown = unknown,
+                        length = length,
+                    )
+                }.map { it.toCardEntity() }
+                if (cards.isEmpty()) {
+                    _errorMessage.value = "No cards available in the selected dictionaries."
+                }
+                _cardsDeck.value = cards
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to load cards deck: ${e.localizedMessage}"
+                Log.e(tag, "Failed to load cards deck", e)
+            } finally {
+                _isCardsDeckLoading.value = false
+            }
+        }
+    }
+
+    fun loadAndPlayAudio(card: CardEntity) {
+        val cardId = checkNotNull(card.cardId)
+        if (isAudioPlaying(cardId)) {
+            Log.d(tag, "Audio is already playing for cardId = $cardId")
+            return
+        }
+        if (isAudioLoaded(cardId)) {
+            playAudio(cardId)
+        } else {
+            loadAudio(cardId, card.audioId) {
+                playAudio(cardId)
+            }
+        }
+    }
+
     fun loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
         if (_audioResources.contains(cardId)) {
             if (_audioResources[cardId] != null) {
@@ -235,7 +292,7 @@ class CardViewModel(
     @Suppress("FunctionName")
     private suspend fun _loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
         Log.d(tag, "load audio for card = $cardId")
-        _isAudioLoading.value = true
+        _isAudioLoading[cardId] = true
         _errorMessage.value = null
         val lang = audioResourceId.substringBefore(":")
         val word = audioResourceId.substringAfter(":")
@@ -251,47 +308,70 @@ class CardViewModel(
             _errorMessage.value = "Failed to load audio: ${e.localizedMessage}"
             Log.e(tag, "Failed to load audio", e)
         } finally {
-            _isAudioLoading.value = false
+            _isAudioLoading[cardId] = false
         }
     }
 
     fun playAudio(cardId: String) {
         val audioData = _audioResources[cardId] ?: return
 
+        if (_isAudioPlaying[cardId] == true) {
+            Log.d(tag, "Audio is already playing for cardId = $cardId")
+            return
+        }
+
         viewModelScope.launch(Dispatchers.IO) {
+            var tempFile: Path? = null
             try {
-                val tempFile = File.createTempFile("temp_audio.", ".mp3")
+                tempFile = Files.createTempFile("temp_audio.", ".mp3")
                 Log.d(tag, "Create temp file $tempFile")
                 tempFile.outputStream().use {
                     it.write(audioData)
                 }
 
                 withContext(Dispatchers.Main) {
-                    _isAudioPlaying.value = true
+                    _isAudioPlaying[cardId] = true
                     MediaPlayer().apply {
-                        setDataSource(tempFile.absolutePath)
+                        setDataSource(tempFile.toFile().absolutePath)
                         prepareAsync()
                         setOnPreparedListener { start() }
                         setOnCompletionListener {
-                            it.release()
-                            tempFile.delete()
-                            _isAudioPlaying.value = false
+                            stop()
+                            reset()
+                            release()
+                            tempFile.deleteExisting()
+                            _isAudioPlaying[cardId] = false
+                            Log.d(tag, "playAudion: completed")
                         }
-                        setOnErrorListener { mp, what, extra ->
+                        setOnErrorListener { mp, _, _ ->
+                            mp.stop()
+                            mp.reset()
                             mp.release()
-                            _isAudioPlaying.value = false
+                            tempFile.deleteExisting()
+                            _isAudioPlaying[cardId] = false
+                            Log.d(tag, "playAudion: error")
                             true
                         }
                     }
                 }
             } catch (e: Exception) {
                 Log.e(tag, "Failed to play audio: ${e.localizedMessage}", e)
+                _isAudioPlaying[cardId] = false
+                tempFile?.deleteExisting()
             }
         }
     }
 
     fun isAudioLoaded(cardId: String): Boolean {
         return _audioResources.contains(cardId)
+    }
+
+    fun isAudioLoading(cardId: String): Boolean {
+        return _isAudioLoading[cardId] ?: false
+    }
+
+    fun isAudioPlaying(cardId: String): Boolean {
+        return _isAudioPlaying[cardId] ?: false
     }
 
     fun selectCard(cardId: String?) {
@@ -301,6 +381,48 @@ class CardViewModel(
     fun clearFetchedCard() {
         _fetchedCard.value = null
     }
+
+    fun nextDeckCard(numberOfRightAnswers: Int, onNextCard: (CardEntity) -> Unit = {}): Boolean {
+        val currentDeck = _cardsDeck.value
+        var nextIndex = _currentDeckCardIndex.intValue + 1
+
+        while (nextIndex < currentDeck.size && currentDeck[nextIndex].answered >= numberOfRightAnswers) {
+            nextIndex++
+        }
+
+        return if (nextIndex < currentDeck.size) {
+            _currentDeckCardIndex.intValue = nextIndex
+            onNextCard(currentDeck[nextIndex])
+            true
+        } else {
+            false
+        }
+    }
+
+    fun markCurrentDeckCardAsKnown(numberOfRightAnswers: Int, onResultStage: () -> Unit) {
+        val currentDeck = _cardsDeck.value.toMutableList()
+        val currentIndex = _currentDeckCardIndex.intValue
+
+        if (currentIndex in currentDeck.indices) {
+            val currentCard = currentDeck[currentIndex]
+            val newCard = currentCard.copy(answered = numberOfRightAnswers)
+            currentDeck[currentIndex] = newCard
+            _cardsDeck.value = currentDeck
+            updateCard(newCard)
+        }
+
+        if (allDeckCardsKnown(numberOfRightAnswers)) {
+            onResultStage()
+        } else if (!nextDeckCard(numberOfRightAnswers)) {
+            onResultStage()
+        }
+    }
+
+    private fun allDeckCardsKnown(numberOfRightAnswers: Int): Boolean =
+        _cardsDeck.value.all { it.answered >= numberOfRightAnswers }
+
+    fun numberOfKnownCards(numberOfRightAnswers: Int): Int =
+        _cards.value.count { it.answered >= numberOfRightAnswers }
 
     fun sortBy(field: String) {
         if (_sortField.value == field) {

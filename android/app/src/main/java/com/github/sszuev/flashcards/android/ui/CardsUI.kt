@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -27,13 +26,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -483,31 +478,7 @@ fun EditCardDialog(
                             label = { Text("Word") },
                             modifier = Modifier.weight(1f)
                         )
-                        IconButton(
-                            onClick = {
-                                val id = checkNotNull(card.cardId)
-                                if (viewModel.isAudioLoaded(id)) {
-                                    viewModel.playAudio(id)
-                                } else {
-                                    viewModel.loadAudio(id, card.audioId) {
-                                        viewModel.playAudio(id)
-                                    }
-                                }
-                            },
-                            enabled = !viewModel.isAudioLoading.value,
-                            modifier = Modifier.padding(start = 8.dp)
-                        ) {
-                            if (viewModel.isAudioPlaying.value) {
-                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                            } else if (viewModel.isAudioLoading.value) {
-                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                            } else {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.VolumeUp,
-                                    contentDescription = "Play word audio"
-                                )
-                            }
-                        }
+                        AudioPlayerIcon(viewModel, card)
                     }
                 }
 

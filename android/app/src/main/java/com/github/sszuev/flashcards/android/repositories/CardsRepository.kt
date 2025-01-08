@@ -100,6 +100,31 @@ class CardsRepository(
         Log.d(tag, "Received response for requestId: $requestId, response: $container")
         handleErrors(container)
     }
+
+    suspend fun getCardsDeck(
+        dictionaryIds: List<String>,
+        random: Boolean,
+        unknown: Boolean,
+        length: Int,
+    ): List<CardResource> {
+        val requestId = UUID.randomUUID().toString()
+        Log.d(tag, "Get cards deck with requestId=$requestId")
+        val container = authPost<SearchCardsResponse>("$serverUri/v1/api/cards/search") {
+            setBody(
+                SearchCardsRequest(
+                    requestType = "searchCards",
+                    requestId = requestId,
+                    dictionaryIds = dictionaryIds,
+                    random = random,
+                    unknown = unknown,
+                    length = length,
+                )
+            )
+        }
+        Log.d(tag, "Received response for requestId: $requestId, response: $container")
+        handleErrors(container)
+        return container.cards
+    }
 }
 
 @Suppress("unused")
@@ -169,4 +194,21 @@ private data class ResetCardResponse(
     override val requestId: String,
     override val errors: List<ErrorResource>? = null,
     val card: CardResource? = null,
+) : BaseResponse
+
+@Serializable
+private data class SearchCardsRequest(
+    override val requestType: String,
+    override val requestId: String,
+    val random: Boolean,
+    val unknown: Boolean,
+    val length: Int,
+    val dictionaryIds: List<String>,
+) : BaseRequest
+
+@Serializable
+private data class SearchCardsResponse(
+    override val requestId: String,
+    override val errors: List<ErrorResource>? = null,
+    val cards: List<CardResource>,
 ) : BaseResponse

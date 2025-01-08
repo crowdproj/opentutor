@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
-import com.github.sszuev.flashcards.android.toDictionary
+import com.github.sszuev.flashcards.android.toDictionaryEntity
 import com.github.sszuev.flashcards.android.toDictionaryResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -64,7 +64,7 @@ class DictionaryViewModel(
                 withContext(Dispatchers.IO) {
                     _dictionaries.value = repository
                         .getAll()
-                        .map { it.toDictionary() }
+                        .map { it.toDictionaryEntity() }
                         .sortedBy { it.name }
                 }
                 _selectedDictionaryIds.value = emptySet()
@@ -91,6 +91,7 @@ class DictionaryViewModel(
                     if (it.dictionaryId == dictionary.dictionaryId) {
                         dictionaries.removeAt(index)
                         dictionaries.add(index, dictionary)
+                        return@forEachIndexed
                     }
                 }
                 _dictionaries.value = dictionaries
@@ -113,7 +114,7 @@ class DictionaryViewModel(
                     repository.createDictionary(dictionary.toDictionaryResource())
                 }
                 val dictionaries = _dictionaries.value.toMutableList()
-                dictionaries.add(res.toDictionary())
+                dictionaries.add(res.toDictionaryEntity())
                 _dictionaries.value = dictionaries
 
                 selectLast(checkNotNull(res.dictionaryId))
@@ -166,6 +167,11 @@ class DictionaryViewModel(
         }
         _selectedDictionaryIds.value = currentSet
     }
+
+    fun dictionaryById(id: String): DictionaryEntity =
+        checkNotNull(dictionaries.value.filter { it.dictionaryId == id }.singleOrNull()) {
+            "Can't find dictionary by id = $id"
+        }
 
     fun sortBy(field: String) {
         if (sortField.value == field) {

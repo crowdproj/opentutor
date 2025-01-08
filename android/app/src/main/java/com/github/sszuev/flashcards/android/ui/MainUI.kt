@@ -49,6 +49,7 @@ fun MainNavigation(
                     navController = navController,
                     dictionaryViewModel = dictionariesViewModel,
                     settingsViewModel = settingsViewModel,
+                    cardViewModel = cardViewModel,
                     onSignOut = onSignOut,
                     onHomeClick = {
                         dictionariesViewModel.loadDictionaries()
@@ -79,60 +80,74 @@ fun MainNavigation(
                 composable(stage) {
                     when (stage) {
                         "StageShow" -> StageShowScreen(
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") }
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionariesViewModel,
+                            settingsViewModel = settingsViewModel,
+                            onNextStage = { navigateToNextStage(navController, stageChain, index) },
+                            onHomeClick = { navController.navigate("dictionaries") },
+                            onResultStage = { navController.navigate("StageResult") },
+                            onSignOut = onSignOut,
                         )
 
                         "StageMosaicDirect" -> StageMosaicScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = true,
+                            onSignOut = onSignOut,
                         )
 
                         "StageMosaicReverse" -> StageMosaicScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = false,
+                            onSignOut = onSignOut,
                         )
 
                         "StageOptionsDirect" -> StageOptionsScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = true,
+                            onSignOut = onSignOut,
                         )
 
                         "StageOptionsReverse" -> StageOptionsScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = false,
+                            onSignOut = onSignOut,
                         )
 
                         "StageWritingDirect" -> StageWritingScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = true,
+                            onSignOut = onSignOut,
                         )
 
                         "StageWritingReverse" -> StageWritingScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = false,
+                            onSignOut = onSignOut,
                         )
 
                         "StageSelfTestDirect" -> StageSelfTestScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = true,
+                            onSignOut = onSignOut,
                         )
 
                         "StageSelfTestReverse" -> StageSelfTestScreen(
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = false,
+                            onSignOut = onSignOut,
                         )
 
                         "StageResult" -> StageResultScreen(
-                            onHomeClick = { navController.navigate("dictionaries") }
+                            onHomeClick = { navController.navigate("dictionaries") },
+                            onSignOut = onSignOut,
                         )
                     }
                 }

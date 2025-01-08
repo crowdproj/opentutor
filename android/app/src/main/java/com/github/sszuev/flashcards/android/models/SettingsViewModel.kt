@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.repositories.SettingsRepository
-import com.github.sszuev.flashcards.android.toSettings
+import com.github.sszuev.flashcards.android.toSettingsEntity
 import com.github.sszuev.flashcards.android.toSettingsResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -35,7 +35,7 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
             try {
                 val settings = withContext(Dispatchers.IO) {
                     repository.get()
-                }.toSettings()
+                }.toSettingsEntity()
                 _settings.value = settings
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to get settings: ${e.localizedMessage}"

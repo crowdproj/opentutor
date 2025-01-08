@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,6 +17,10 @@ fun StageResultScreen(
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
 ) {
+    BackHandler {
+        onHomeClick()
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)

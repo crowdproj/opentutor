@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,6 +22,10 @@ fun StageMosaicScreen(
     onNext: () -> Unit = {},
     direction: Boolean = true,
 ) {
+    BackHandler {
+        onHomeClick()
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
