@@ -57,6 +57,8 @@ import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.utils.audioResource
 import com.github.sszuev.flashcards.android.utils.examplesAsList
 import com.github.sszuev.flashcards.android.utils.examplesAsString
+import com.github.sszuev.flashcards.android.utils.isTextShort
+import com.github.sszuev.flashcards.android.utils.shortText
 import kotlinx.coroutines.launch
 
 private const val FIRST_COLUMN_WIDTH = 32
@@ -86,7 +88,8 @@ fun CardsScreen(
 
     LaunchedEffect(searchQuery.value, cards.size) {
         if (searchQuery.value.isNotBlank()) {
-            val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
+            val index =
+                cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
             if (index != -1) {
                 listState.animateScrollToItem(index, scrollOffset = 50)
                 viewModel.selectCard(cards[index].cardId)
@@ -337,11 +340,20 @@ fun CardsTableRow(
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp
         )
-        TableCell(
-            text = card.translation,
-            weight = SECOND_COLUMN_WIDTH,
-            containerWidthDp = containerWidthDp
-        )
+        if (isTextShort(card.translation)) {
+            TableCell(
+                text = card.translation,
+                weight = SECOND_COLUMN_WIDTH,
+                containerWidthDp = containerWidthDp
+            )
+        } else {
+            TableCellWithPopup(
+                shortText = shortText(card.translation),
+                fullText = card.translation,
+                weight = SECOND_COLUMN_WIDTH,
+                containerWidthDp = containerWidthDp
+            )
+        }
         TableCell(
             text = percentage.toString(),
             weight = THIRD_COLUMN_WIDTH,

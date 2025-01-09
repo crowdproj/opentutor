@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.utils.shortText
 
 
 private const val FIRST_COLUMN_WIDTH = 20
@@ -134,8 +135,9 @@ fun StageResultScreen(
                             textColor = statusColor,
                             containerWidthDp = containerWidthDp,
                         )
-                        TableCell(
-                            text = card.translation,
+                        TableCellWithPopup(
+                            shortText = shortText(card.translation),
+                            fullText = card.translation,
                             weight = SECOND_COLUMN_WIDTH,
                             containerWidthDp = containerWidthDp
                         )

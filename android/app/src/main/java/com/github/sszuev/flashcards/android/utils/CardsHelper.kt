@@ -1,5 +1,7 @@
 package com.github.sszuev.flashcards.android.utils
 
+private const val CELL_TEXT_LIMIT = 42
+
 fun examplesAsString(examples: List<String>) = examples.joinToString("\n")
 
 fun examplesAsList(examples: String) = if (examples.isBlank()) emptyList() else examples.split("\n")
@@ -8,3 +10,8 @@ fun audioResource(lang: String, word: String): String = lang + ":" + word.replac
 
 fun translationsAsString(translations: List<List<String>>) =
     translations.flatten().joinToString(", ")
+
+fun isTextShort(text: String) = text.length <= CELL_TEXT_LIMIT
+
+fun shortText(text: String) =
+    if (text.length > CELL_TEXT_LIMIT) text.substring(0, CELL_TEXT_LIMIT - 3) + "..." else text
