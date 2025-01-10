@@ -19,7 +19,7 @@ import com.github.sszuev.flashcards.android.models.SettingsViewModel
 @Composable
 fun MainNavigation(
     onSignOut: () -> Unit = {},
-    dictionariesViewModel: DictionaryViewModel,
+    dictionaryViewModel: DictionaryViewModel,
     cardViewModel: CardViewModel,
     settingsViewModel: SettingsViewModel,
 ) {
@@ -47,12 +47,12 @@ fun MainNavigation(
             composable("dictionaries") {
                 DictionariesScreen(
                     navController = navController,
-                    dictionaryViewModel = dictionariesViewModel,
+                    dictionaryViewModel = dictionaryViewModel,
                     settingsViewModel = settingsViewModel,
                     cardViewModel = cardViewModel,
                     onSignOut = onSignOut,
                     onHomeClick = {
-                        dictionariesViewModel.loadDictionaries()
+                        dictionaryViewModel.loadDictionaries()
                     }
                 )
             }
@@ -61,7 +61,7 @@ fun MainNavigation(
                     ?.getString("dictionaryId")
                     ?.takeIf { it.isNotBlank() }
                     ?: throw IllegalArgumentException("Can't determine dictionaryId")
-                val dictionary = dictionariesViewModel.selectedDictionariesList.singleOrNull()
+                val dictionary = dictionaryViewModel.selectedDictionariesList.singleOrNull()
                 if (dictionary != null) {
                     check(dictionary.dictionaryId == dictionaryId) { "Wrong dictionaryId" }
                     CardsScreen(
@@ -81,7 +81,7 @@ fun MainNavigation(
                     when (stage) {
                         "StageShow" -> StageShowScreen(
                             cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionariesViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
                             onNextStage = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
@@ -90,6 +90,9 @@ fun MainNavigation(
                         )
 
                         "StageMosaicDirect" -> StageMosaicScreen(
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = true,
@@ -97,6 +100,9 @@ fun MainNavigation(
                         )
 
                         "StageMosaicReverse" -> StageMosaicScreen(
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
                             onNext = { navigateToNextStage(navController, stageChain, index) },
                             onHomeClick = { navController.navigate("dictionaries") },
                             direction = false,
@@ -147,7 +153,7 @@ fun MainNavigation(
 
                         "StageResult" -> StageResultScreen(
                             cardViewModel = cardViewModel,
-                            dictionariesViewModel = dictionariesViewModel,
+                            dictionariesViewModel = dictionaryViewModel,
                             onHomeClick = { navController.navigate("dictionaries") },
                             onSignOut = onSignOut,
                         )

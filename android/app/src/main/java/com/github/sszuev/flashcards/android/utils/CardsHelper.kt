@@ -1,6 +1,6 @@
 package com.github.sszuev.flashcards.android.utils
 
-private const val CELL_TEXT_LIMIT = 42
+private const val CELL_TEXT_LIMIT = 22
 
 fun examplesAsString(examples: List<String>) = examples.joinToString("\n")
 

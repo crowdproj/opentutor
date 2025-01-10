@@ -424,6 +424,13 @@ class CardViewModel(
     fun numberOfKnownCards(numberOfRightAnswers: Int): Int =
         _cards.value.count { it.answered >= numberOfRightAnswers }
 
+    fun unknownDeckCards(selectNumberOfRightAnswers: (dictionaryId: String) -> Int): List<CardEntity> =
+        _cardsDeck.value.filter {
+            it.answered < selectNumberOfRightAnswers(checkNotNull(it.dictionaryId) {
+                "Null dictionaryId for card $it"
+            })
+        }
+
     fun sortBy(field: String) {
         if (_sortField.value == field) {
             _isAscending.value = !_isAscending.value

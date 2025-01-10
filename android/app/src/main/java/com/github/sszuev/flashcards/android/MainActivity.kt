@@ -66,7 +66,7 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 MainNavigation(
                     onSignOut = { onSignOut() },
-                    dictionariesViewModel = dictionaryViewModel,
+                    dictionaryViewModel = dictionaryViewModel,
                     cardViewModel = cardViewModel,
                     settingsViewModel = settingsViewModel,
                 )

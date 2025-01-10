@@ -65,7 +65,7 @@ fun StageShowScreen(
             dictionaryViewModel.selectedDictionaryIds.value,
             random = true,
             unknown = true,
-            length = settings.numberOfWordsPerStage,
+            length = settings.stageShowNumberOfWords,
         )
     }
 
