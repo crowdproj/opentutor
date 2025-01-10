@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
+import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
 import com.github.sszuev.flashcards.android.toDictionaryEntity
 import com.github.sszuev.flashcards.android.toDictionaryResource
 import kotlinx.coroutines.Dispatchers
@@ -15,7 +16,8 @@ import kotlinx.coroutines.withContext
 import java.util.Locale
 
 class DictionaryViewModel(
-    private val repository: DictionaryRepository
+    private val repository: DictionaryRepository,
+    private val signOut: () -> Unit,
 ) : ViewModel() {
 
     private val tag = "DictionaryViewModel"
@@ -68,6 +70,8 @@ class DictionaryViewModel(
                         .sortedBy { it.name }
                 }
                 _selectedDictionaryIds.value = emptySet()
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load dictionaries: ${e.localizedMessage}"
                 Log.e(tag, "Failed to load dictionaries", e)
@@ -95,6 +99,8 @@ class DictionaryViewModel(
                     }
                 }
                 _dictionaries.value = dictionaries
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to update dictionary: ${e.localizedMessage}"
                 Log.e(tag, "Failed to update dictionary", e)
@@ -118,6 +124,8 @@ class DictionaryViewModel(
                 _dictionaries.value = dictionaries
 
                 selectLast(checkNotNull(res.dictionaryId))
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to create dictionary: ${e.localizedMessage}"
                 Log.e(tag, "Failed to create dictionary", e)
@@ -142,6 +150,8 @@ class DictionaryViewModel(
                 val selectedDictionariesIds = _selectedDictionaryIds.value.toMutableSet()
                 selectedDictionariesIds.removeIf { dictionaryId == it }
                 _selectedDictionaryIds.value = selectedDictionariesIds
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to delete dictionary: ${e.localizedMessage}"
                 Log.e(tag, "Failed to delete dictionary", e)

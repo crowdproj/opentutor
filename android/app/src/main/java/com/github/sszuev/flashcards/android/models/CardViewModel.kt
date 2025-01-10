@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
+import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
 import com.github.sszuev.flashcards.android.repositories.TTSRepository
 import com.github.sszuev.flashcards.android.repositories.TranslationRepository
 import com.github.sszuev.flashcards.android.toCardEntity
@@ -26,6 +27,7 @@ class CardViewModel(
     private val cardsRepository: CardsRepository,
     private val ttsRepository: TTSRepository,
     private val translationRepository: TranslationRepository,
+    private val signOut: () -> Unit,
 ) : ViewModel() {
 
     private val tag = "CardViewModel"
@@ -87,6 +89,8 @@ class CardViewModel(
                         .sortedBy { it.word }
                 }
                 _selectedCardId.value = null
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
                 Log.e(tag, "Failed to load cards", e)
@@ -120,6 +124,8 @@ class CardViewModel(
                     }
                 }
                 _cards.value = cards
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
                 Log.e(tag, "Failed to load cards", e)
@@ -142,6 +148,8 @@ class CardViewModel(
                 cards.add(res.toCardEntity())
                 _cards.value = cards
                 _selectedCardId.value = res.cardId
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to create card: ${e.localizedMessage}"
                 Log.e(tag, "Failed to create card", e)
@@ -170,6 +178,8 @@ class CardViewModel(
                     )
                 }.toCardEntity()
                 _fetchedCard.value = fetched
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to fetch card data: ${e.localizedMessage}"
                 Log.e(tag, "Failed to fetch card data", e)
@@ -194,6 +204,8 @@ class CardViewModel(
                 if (_selectedCardId.value == cardId) {
                     _selectedCardId.value = null
                 }
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to delete card: ${e.localizedMessage}"
                 Log.e(tag, "Failed to delete card", e)
@@ -220,6 +232,8 @@ class CardViewModel(
                     }
                 }
                 _cards.value = cards
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to delete card: ${e.localizedMessage}"
                 Log.e(tag, "Failed to delete card", e)
@@ -253,6 +267,8 @@ class CardViewModel(
                     _errorMessage.value = "No cards available in the selected dictionaries."
                 }
                 _cardsDeck.value = cards
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load cards deck: ${e.localizedMessage}"
                 Log.e(tag, "Failed to load cards deck", e)
@@ -277,7 +293,7 @@ class CardViewModel(
         }
     }
 
-    fun loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
+    private fun loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
         if (_audioResources.contains(cardId)) {
             if (_audioResources[cardId] != null) {
                 onLoaded()

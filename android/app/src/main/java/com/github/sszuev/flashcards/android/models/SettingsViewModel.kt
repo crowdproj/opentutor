@@ -6,6 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
+import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
 import com.github.sszuev.flashcards.android.repositories.SettingsRepository
 import com.github.sszuev.flashcards.android.toSettingsEntity
 import com.github.sszuev.flashcards.android.toSettingsResource
@@ -13,7 +14,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-class SettingsViewModel(private val repository: SettingsRepository) : ViewModel() {
+class SettingsViewModel(
+    private val repository: SettingsRepository,
+    private val signOut: () -> Unit,
+) : ViewModel() {
     private val tag = "SettingsViewModel"
 
     private val _isLoadSettingsInProgress = mutableStateOf(true)
@@ -37,6 +41,8 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
                     repository.get()
                 }.toSettingsEntity()
                 _settings.value = settings
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to get settings: ${e.localizedMessage}"
                 Log.e(tag, "Failed to get settings", e)
@@ -56,6 +62,8 @@ class SettingsViewModel(private val repository: SettingsRepository) : ViewModel(
                     repository.update(settingsEntity.toSettingsResource())
                 }
                 _settings.value = settingsEntity
+            } catch (e: InvalidTokenException) {
+                signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to save settings: ${e.localizedMessage}"
                 Log.e(tag, "Failed to save settings", e)
