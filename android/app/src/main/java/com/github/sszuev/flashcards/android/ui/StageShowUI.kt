@@ -33,7 +33,7 @@ import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
-private val tag = "StageShowScreen"
+private const val tag = "StageShowUI"
 
 @Composable
 fun StageShowScreen(
@@ -55,7 +55,7 @@ fun StageShowScreen(
     }
 
     val cards = cardViewModel.cardsDeck.value
-    val currentCardIndex = cardViewModel.currentDeckCardIndex.value
+    val currentCardIndex = cardViewModel.stageShowCurrentDeckCardIndex.value
     val isLoading = cardViewModel.isCardsDeckLoading.value
     val errorMessage = cardViewModel.errorMessage.value
     val settings = checkNotNull(settingsViewModel.settings.value)
@@ -189,7 +189,7 @@ fun StageShowScreen(
                 }
             },
             onKnown = {
-                cardViewModel.markCurrentDeckCardAsKnown(
+                cardViewModel.markShowStageCurrentDeckCardAsAnsweredCorrectly(
                     numberOfRightAnswers = currentDictionary.numberOfRightAnswers,
                     onResultStage = onResultStage
                 )

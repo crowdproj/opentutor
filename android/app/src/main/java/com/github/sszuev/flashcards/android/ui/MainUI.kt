@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
@@ -15,6 +16,8 @@ import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+
+private const val tag = "Navigation"
 
 @Composable
 fun MainNavigation(
@@ -69,7 +72,7 @@ fun MainNavigation(
                         viewModel = cardViewModel,
                         onSignOut = onSignOut,
                         onHomeClick = {
-                            navController.navigate("dictionaries")
+                            navController.navigateToDictionariesPage()
                         },
                     )
                 } else {
@@ -83,9 +86,9 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
-                            onNextStage = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
-                            onResultStage = { navController.navigate("StageResult") },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
+                            onResultStage = { navController.navigateToStageResult() },
                             onSignOut = onSignOut,
                         )
 
@@ -93,8 +96,9 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
+                            onResultStage = { navController.navigateToStageResult() },
                             direction = true,
                             onSignOut = onSignOut,
                         )
@@ -103,58 +107,58 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = false,
                             onSignOut = onSignOut,
                         )
 
                         "StageOptionsDirect" -> StageOptionsScreen(
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = true,
                             onSignOut = onSignOut,
                         )
 
                         "StageOptionsReverse" -> StageOptionsScreen(
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = false,
                             onSignOut = onSignOut,
                         )
 
                         "StageWritingDirect" -> StageWritingScreen(
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = true,
                             onSignOut = onSignOut,
                         )
 
                         "StageWritingReverse" -> StageWritingScreen(
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = false,
                             onSignOut = onSignOut,
                         )
 
                         "StageSelfTestDirect" -> StageSelfTestScreen(
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = true,
                             onSignOut = onSignOut,
                         )
 
                         "StageSelfTestReverse" -> StageSelfTestScreen(
-                            onNext = { navigateToNextStage(navController, stageChain, index) },
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = false,
                             onSignOut = onSignOut,
                         )
 
                         "StageResult" -> StageResultScreen(
                             cardViewModel = cardViewModel,
-                            dictionariesViewModel = dictionaryViewModel,
-                            onHomeClick = { navController.navigate("dictionaries") },
+                            dictionaryViewModel = dictionaryViewModel,
+                            onHomeClick = { navController.navigateToDictionariesPage() },
                             onSignOut = onSignOut,
                         )
                     }
@@ -181,14 +185,25 @@ fun buildStageChain(settings: SettingsEntity): List<String> {
     return stages
 }
 
-private fun navigateToNextStage(
-    navController: NavController,
+private fun NavController.navigateToNextStage(
     stageChain: List<String>,
     currentIndex: Int
 ) {
     if (currentIndex < stageChain.size - 1) {
-        navController.navigate(stageChain[currentIndex + 1]) {
+        val stage = stageChain[currentIndex + 1]
+        Log.i(tag, "Go to '$stage'")
+        navigate(stage) {
             popUpTo(stageChain[currentIndex]) { inclusive = true }
         }
     }
+}
+
+private fun NavController.navigateToStageResult() {
+    Log.i(tag, "Go to 'StageResult'")
+    navigate("StageResult")
+}
+
+private fun NavController.navigateToDictionariesPage() {
+    Log.i(tag, "Go to 'dictionaries'")
+    navigate("dictionaries")
 }

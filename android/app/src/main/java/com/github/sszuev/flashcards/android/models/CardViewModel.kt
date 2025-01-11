@@ -65,10 +65,12 @@ class CardViewModel(
 
     private val _isCardsDeckLoading = mutableStateOf(true)
     val isCardsDeckLoading: State<Boolean> get() = _isCardsDeckLoading
-    private val _currentDeckCardIndex = mutableIntStateOf(0)
-    val currentDeckCardIndex: State<Int> get() = _currentDeckCardIndex
+    private val _stageShowCurrentDeckCardIndex = mutableIntStateOf(0)
+    val stageShowCurrentDeckCardIndex: State<Int> get() = _stageShowCurrentDeckCardIndex
     private val _cardsDeck = mutableStateOf<List<CardEntity>>(emptyList())
     val cardsDeck: State<List<CardEntity>> = _cardsDeck
+    private val _wrongAnsweredCardDeckIds = mutableStateOf<Set<String>>(emptySet())
+    val wrongAnsweredCardDeckIds: State<Set<String>> = _wrongAnsweredCardDeckIds
 
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
@@ -251,9 +253,10 @@ class CardViewModel(
     ) {
         viewModelScope.launch {
             _isCardsDeckLoading.value = true
-            _currentDeckCardIndex.intValue = 0
+            _stageShowCurrentDeckCardIndex.intValue = 0
             _errorMessage.value = null
             _cardsDeck.value = emptyList()
+            _wrongAnsweredCardDeckIds.value = emptySet()
             try {
                 val cards = withContext(Dispatchers.IO) {
                     cardsRepository.getCardsDeck(
@@ -328,7 +331,7 @@ class CardViewModel(
         }
     }
 
-    fun playAudio(cardId: String) {
+    private fun playAudio(cardId: String) {
         val audioData = _audioResources[cardId] ?: return
 
         if (_isAudioPlaying[cardId] == true) {
@@ -378,7 +381,7 @@ class CardViewModel(
         }
     }
 
-    fun isAudioLoaded(cardId: String): Boolean {
+    private fun isAudioLoaded(cardId: String): Boolean {
         return _audioResources.contains(cardId)
     }
 
@@ -400,14 +403,14 @@ class CardViewModel(
 
     fun nextDeckCard(numberOfRightAnswers: Int, onNextCard: (CardEntity) -> Unit = {}): Boolean {
         val currentDeck = _cardsDeck.value
-        var nextIndex = _currentDeckCardIndex.intValue + 1
+        var nextIndex = _stageShowCurrentDeckCardIndex.intValue + 1
 
         while (nextIndex < currentDeck.size && currentDeck[nextIndex].answered >= numberOfRightAnswers) {
             nextIndex++
         }
 
         return if (nextIndex < currentDeck.size) {
-            _currentDeckCardIndex.intValue = nextIndex
+            _stageShowCurrentDeckCardIndex.intValue = nextIndex
             onNextCard(currentDeck[nextIndex])
             true
         } else {
@@ -415,9 +418,12 @@ class CardViewModel(
         }
     }
 
-    fun markCurrentDeckCardAsKnown(numberOfRightAnswers: Int, onResultStage: () -> Unit) {
+    fun markShowStageCurrentDeckCardAsAnsweredCorrectly(
+        numberOfRightAnswers: Int,
+        onResultStage: () -> Unit
+    ) {
         val currentDeck = _cardsDeck.value.toMutableList()
-        val currentIndex = _currentDeckCardIndex.intValue
+        val currentIndex = _stageShowCurrentDeckCardIndex.intValue
 
         if (currentIndex in currentDeck.indices) {
             val currentCard = currentDeck[currentIndex]
@@ -427,15 +433,68 @@ class CardViewModel(
             updateCard(newCard)
         }
 
-        if (allDeckCardsKnown(numberOfRightAnswers)) {
+        if (allDeckCardsAnsweredCorrectly(numberOfRightAnswers)) {
             onResultStage()
         } else if (!nextDeckCard(numberOfRightAnswers)) {
             onResultStage()
         }
     }
 
-    private fun allDeckCardsKnown(numberOfRightAnswers: Int): Boolean =
-        _cardsDeck.value.all { it.answered >= numberOfRightAnswers }
+    fun updateDeckCard(
+        cardId: String,
+        numberOfRightAnswers: Int,
+    ) {
+        var card = checkNotNull(_cardsDeck.value.singleOrNull { it.cardId == cardId }) {
+            "Can't find deck card = $cardId"
+        }
+        card = if (!_wrongAnsweredCardDeckIds.value.contains(cardId)) {
+            card.copy(answered = card.answered + 1)
+        } else if (card.answered >= numberOfRightAnswers) {
+            card.copy(answered = numberOfRightAnswers - 1)
+        } else {
+            return
+        }
+        updateCard(card)
+        val cardsDeck = _cardsDeck.value.toMutableList()
+        val index = cardsDeck.indexOfFirst { it.cardId == cardId }
+        cardsDeck[index] = card
+        _cardsDeck.value = cardsDeck
+    }
+
+    fun markDeckCardAsWrong(cardId: String) {
+        val ids = _wrongAnsweredCardDeckIds.value.toMutableSet()
+        ids.add(cardId)
+        _wrongAnsweredCardDeckIds.value = ids
+    }
+
+    fun greenDeckCards(numberOfRightAnswers: (CardEntity) -> Int): List<CardEntity> {
+        return _cardsDeck.value
+            .filter { it.answered >= numberOfRightAnswers(it) }
+            .filter {
+                !_wrongAnsweredCardDeckIds.value.contains(it.cardId)
+            }.sortedBy { -it.answered }
+    }
+
+    fun blueDeckCards(numberOfRightAnswers: (CardEntity) -> Int): List<CardEntity> {
+        return _cardsDeck.value
+            .filter { it.answered < numberOfRightAnswers(it) }
+            .filter {
+                !_wrongAnsweredCardDeckIds.value.contains(it.cardId)
+            }.sortedBy { -it.answered }
+    }
+
+    fun redDeckCards(): List<CardEntity> {
+        return _cardsDeck.value
+            .filter {
+                _wrongAnsweredCardDeckIds.value.contains(it.cardId)
+            }.sortedBy { -it.answered }
+    }
+
+    private fun allDeckCardsAnsweredCorrectly(numberOfRightAnswers: Int): Boolean =
+        _wrongAnsweredCardDeckIds.value.isEmpty() && _cardsDeck.value.all { it.answered >= numberOfRightAnswers }
+
+    fun allDeckCardsAnsweredCorrectly(numberOfRightAnswers: (CardEntity) -> Int): Boolean =
+        _wrongAnsweredCardDeckIds.value.isEmpty() && _cardsDeck.value.all { it.answered >= numberOfRightAnswers(it) }
 
     fun numberOfKnownCards(numberOfRightAnswers: Int): Int =
         _cards.value.count { it.answered >= numberOfRightAnswers }

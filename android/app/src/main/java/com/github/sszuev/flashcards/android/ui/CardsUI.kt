@@ -592,7 +592,7 @@ fun AddCardDialog(
         }
     }
 
-    Log.d(tag, "Fetch result: ['$word', '$translation', '$examples']")
+    Log.d(tag, "Fetch result: [word='$word', translation='$translation', examples='$examples']")
     if (word.isBlank()) {
         word = initialWord
     }

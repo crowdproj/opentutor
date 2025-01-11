@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -25,7 +26,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.utils.shortText
@@ -36,23 +39,41 @@ private const val SECOND_COLUMN_WIDTH = 35
 private const val THIRD_COLUMN_WIDTH = 27
 private const val FOURTH_COLUMN_WIDTH = 18
 
+private const val tag = "StageResultUI"
+
 @Composable
 fun StageResultScreen(
     cardViewModel: CardViewModel,
-    dictionariesViewModel: DictionaryViewModel,
+    dictionaryViewModel: DictionaryViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
 ) {
+    Log.d(tag, "StageResult")
     val cards = cardViewModel.cardsDeck.value.sortedBy { -it.answered }
     if (cards.isEmpty()) {
         return
     }
     val dictionaries =
-        dictionariesViewModel.selectedDictionariesList.associateBy { it.dictionaryId }
+        dictionaryViewModel.selectedDictionariesList.associateBy { it.dictionaryId }
+    if (dictionaries.isEmpty()) {
+        return
+    }
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
+
+    fun dictionaryNumberOfRightAnswers(card: CardEntity): Int {
+        return checkNotNull(
+            dictionaries[checkNotNull(card.dictionaryId) { "can't find dictionary, card = $card" }]
+        ) { "can't find dictionary, dictionaryId = ${card.dictionaryId}" }.numberOfRightAnswers
+    }
+
+    fun dictionaryName(card: CardEntity): String {
+        return checkNotNull(
+            dictionaries[checkNotNull(card.dictionaryId) { "can't find dictionary, card = $card" }]
+        ) { "can't find dictionary, dictionaryId = ${card.dictionaryId}" }.name
+    }
 
     BackHandler {
         onHomeClick()
@@ -112,48 +133,83 @@ fun StageResultScreen(
                     }
                 }
 
-                // Data Rows
-                items(cards) { card ->
-                    val dictionary = checkNotNull(dictionaries[checkNotNull(card.dictionaryId)]) {
-                        "no dictionary for card = ${card.cardId}"
-                    }
-                    val statusColor = if (card.answered >= dictionary.numberOfRightAnswers)
-                        Color.Green
-                    else
-                        Color.Blue
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .border(BorderStroke(1.dp, Color.Gray))
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        TableCell(
-                            text = card.word,
-                            weight = FIRST_COLUMN_WIDTH,
-                            textColor = statusColor,
-                            containerWidthDp = containerWidthDp,
-                        )
-                        TableCellWithPopup(
-                            shortText = shortText(card.translation),
-                            fullText = card.translation,
-                            weight = SECOND_COLUMN_WIDTH,
-                            containerWidthDp = containerWidthDp
-                        )
-                        TableCell(
-                            text = dictionary.name,
-                            weight = THIRD_COLUMN_WIDTH,
-                            containerWidthDp = containerWidthDp
-                        )
-                        TableCell(
-                            text = "${card.answered}%",
-                            weight = FOURTH_COLUMN_WIDTH,
-                            containerWidthDp = containerWidthDp,
-                        )
-                    }
+                val greenCards = cardViewModel.greenDeckCards { dictionaryNumberOfRightAnswers(it) }
+                val blueCards = cardViewModel.blueDeckCards { dictionaryNumberOfRightAnswers(it) }
+                val redCards = cardViewModel.redDeckCards()
+                items(greenCards) { card ->
+                    CardItemRow(
+                        card = card,
+                        statusColor = Color.Green,
+                        containerWidthDp = containerWidthDp,
+                        dictionaryName = {
+                            dictionaryName(it)
+                        },
+                        dictionaryNumberOfRightAnswers = { dictionaryNumberOfRightAnswers(it) },
+                    )
+                }
+                items(blueCards) { card ->
+                    CardItemRow(
+                        card = card,
+                        statusColor = Color.Blue,
+                        containerWidthDp = containerWidthDp,
+                        dictionaryName = {
+                            dictionaryName(it)
+                        },
+                        dictionaryNumberOfRightAnswers = { dictionaryNumberOfRightAnswers(it) },
+                    )
+                }
+                items(redCards) { card ->
+                    CardItemRow(
+                        card = card,
+                        statusColor = Color.Red,
+                        containerWidthDp = containerWidthDp,
+                        dictionaryName = {
+                            dictionaryName(it)
+                        },
+                        dictionaryNumberOfRightAnswers = { dictionaryNumberOfRightAnswers(it) },
+                    )
                 }
             }
         }
+    }
+}
+
+@Composable
+fun CardItemRow(
+    card: CardEntity,
+    statusColor: Color,
+    containerWidthDp: Dp,
+    dictionaryName: (CardEntity) -> String,
+    dictionaryNumberOfRightAnswers: (CardEntity) -> Int,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .border(BorderStroke(1.dp, Color.Gray))
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        TableCell(
+            text = card.word,
+            weight = FIRST_COLUMN_WIDTH,
+            textColor = statusColor,
+            containerWidthDp = containerWidthDp,
+        )
+        TableCellWithPopup(
+            shortText = shortText(card.translation),
+            fullText = card.translation,
+            weight = SECOND_COLUMN_WIDTH,
+            containerWidthDp = containerWidthDp
+        )
+        TableCell(
+            text = dictionaryName(card),
+            weight = THIRD_COLUMN_WIDTH,
+            containerWidthDp = containerWidthDp
+        )
+        TableCell(
+            text = "${100 * card.answered / dictionaryNumberOfRightAnswers(card)}%",
+            weight = FOURTH_COLUMN_WIDTH,
+            containerWidthDp = containerWidthDp,
+        )
     }
 }

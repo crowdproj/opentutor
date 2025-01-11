@@ -2,6 +2,7 @@ package com.github.sszuev.flashcards.android.ui
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -69,6 +70,10 @@ fun DictionariesScreen(
     settingsViewModel: SettingsViewModel,
     cardViewModel: CardViewModel,
 ) {
+    BackHandler {
+        onHomeClick()
+    }
+
     val selectedDictionaryIds = dictionaryViewModel.selectedDictionaryIds
     val isEditPopupOpen = remember { mutableStateOf(false) }
     val isCreatePopupOpen = remember { mutableStateOf(false) }
