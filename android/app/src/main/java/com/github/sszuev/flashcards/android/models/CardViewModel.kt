@@ -2,6 +2,7 @@ package com.github.sszuev.flashcards.android.models
 
 import android.media.MediaPlayer
 import android.util.Log
+import android.util.LruCache
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
@@ -16,11 +17,13 @@ import com.github.sszuev.flashcards.android.repositories.TranslationRepository
 import com.github.sszuev.flashcards.android.toCardEntity
 import com.github.sszuev.flashcards.android.toCardResource
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import java.nio.file.Path
-import kotlin.io.path.deleteExisting
+import java.util.concurrent.ConcurrentHashMap
+import kotlin.io.path.deleteIfExists
 import kotlin.io.path.outputStream
 
 class CardViewModel(
@@ -46,9 +49,21 @@ class CardViewModel(
     private val _isAscending = mutableStateOf(true)
     val isAscending: State<Boolean> = _isAscending
 
-    private val _audioResources = mutableStateMapOf<String, ByteArray?>()
+    private val _audioResources = object : LruCache<String, ByteArray?>(1024) {
+        private val NULL_MARKER = ByteArray(0)
+        fun getNullable(key: String): ByteArray? {
+            return when (val result = get(key)) {
+                NULL_MARKER -> null
+                else -> result
+            }
+        }
+
+        fun putNullable(key: String, value: ByteArray?) {
+            put(key, value ?: NULL_MARKER)
+        }
+    }
     private val _isAudioLoading = mutableStateMapOf<String, Boolean>()
-    private val _isAudioPlaying = mutableStateMapOf<String, Boolean>()
+    private val _isAudioPlaying = ConcurrentHashMap<String, Boolean>()
 
     private val _isCardUpdating = mutableStateOf(true)
 
@@ -219,7 +234,7 @@ class CardViewModel(
 
     fun resetCard(cardId: String) {
         viewModelScope.launch {
-            Log.d(tag, "reset card")
+            Log.d(tag, "reset card $cardId")
             _isCardResetting.value = true
             _errorMessage.value = null
             try {
@@ -284,21 +299,24 @@ class CardViewModel(
     fun loadAndPlayAudio(card: CardEntity) {
         val cardId = checkNotNull(card.cardId)
         if (isAudioPlaying(cardId)) {
-            Log.d(tag, "Audio is already playing for cardId = $cardId")
+            Log.d(
+                tag,
+                "loadAndPlayAudion: audio is already playing for [cardId = $cardId (${card.word})]"
+            )
             return
         }
         if (isAudioLoaded(cardId)) {
-            playAudio(cardId)
+            playAudio(card)
         } else {
             loadAudio(cardId, card.audioId) {
-                playAudio(cardId)
+                playAudio(card)
             }
         }
     }
 
     private fun loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
-        if (_audioResources.contains(cardId)) {
-            if (_audioResources[cardId] != null) {
+        if (_audioResources.get(cardId) != null) {
+            if (_audioResources.getNullable(cardId) != null) {
                 onLoaded()
             }
             return
@@ -319,7 +337,7 @@ class CardViewModel(
             val resource = withContext(Dispatchers.IO) {
                 ttsRepository.get(lang, word)
             }
-            _audioResources[cardId] = resource
+            _audioResources.putNullable(cardId, resource)
             if (resource != null) {
                 onLoaded()
             }
@@ -327,62 +345,123 @@ class CardViewModel(
             _errorMessage.value = "Failed to load audio: ${e.localizedMessage}"
             Log.e(tag, "Failed to load audio", e)
         } finally {
-            _isAudioLoading[cardId] = false
+            _isAudioLoading.remove(cardId)
         }
     }
 
-    private fun playAudio(cardId: String) {
-        val audioData = _audioResources[cardId] ?: return
+    private fun playAudio(card: CardEntity) {
+        val cardId = checkNotNull(card.cardId)
 
-        if (_isAudioPlaying[cardId] == true) {
-            Log.d(tag, "Audio is already playing for cardId = $cardId")
+        val audioData = _audioResources[cardId]
+        if (audioData == null) {
+            Log.d(tag, "playAudion: no audion data for [cardId = $cardId (${card.word})]")
+            return
+        }
+
+        if (_isAudioPlaying.putIfAbsent(cardId, true) == true) {
+            Log.d(tag, "playAudion: audio is already playing for [cardId = $cardId (${card.word})]")
             return
         }
 
         viewModelScope.launch(Dispatchers.IO) {
             var tempFile: Path? = null
             try {
-                tempFile = Files.createTempFile("temp_audio.", ".mp3")
-                Log.d(tag, "Create temp file $tempFile")
+                val tmpFileName = card.audioId
+                    .replace(":", "-")
+                    .replace(" ", "")
+                    .replace(",", "-")
+                tempFile =
+                    Files.createTempFile("temp-audio-$tmpFileName-", ".mp3")
+                Log.d(
+                    tag,
+                    "playAudion: create temp file $tempFile for [cardId = $cardId (${card.word})]"
+                )
                 tempFile.outputStream().use {
                     it.write(audioData)
                 }
 
                 withContext(Dispatchers.Main) {
-                    _isAudioPlaying[cardId] = true
+                    var isCompleted = false
                     MediaPlayer().apply {
+                        val timeoutJob = viewModelScope.launch {
+                            delay(10_000)
+                            if (!isCompleted && !isPlaying) {
+                                Log.w(tag, "playAudion: timeout reached. Stopping playback.")
+                                releaseAudioResources(cardId, tempFile)
+                            }
+                        }
                         setDataSource(tempFile.toFile().absolutePath)
-                        prepareAsync()
-                        setOnPreparedListener { start() }
+                        setOnPreparedListener {
+                            try {
+                                if (!isPlaying) {
+                                    Log.d(
+                                        tag,
+                                        "playAudio: starting playback [cardId = $cardId (${card.word})]"
+                                    )
+                                    start()
+                                }
+                            } catch (e: Exception) {
+                                Log.e(
+                                    tag,
+                                    "playAudion: Error during playback start [cardId = $cardId (${card.word})]:" +
+                                            " ${e.localizedMessage}",
+                                    e
+                                )
+                                releaseAudioResources(cardId, tempFile)
+                            }
+                        }
                         setOnCompletionListener {
-                            stop()
-                            reset()
-                            release()
-                            tempFile.deleteExisting()
-                            _isAudioPlaying[cardId] = false
-                            Log.d(tag, "playAudion: completed")
+                            try {
+                                Log.d(
+                                    tag,
+                                    "playAudion: completed [cardId = $cardId (${card.word})]"
+                                )
+                                onFinish()
+                                isCompleted = true
+                            } finally {
+                                releaseAudioResources(cardId, tempFile)
+                                timeoutJob.cancel()
+                            }
                         }
                         setOnErrorListener { mp, _, _ ->
-                            mp.stop()
-                            mp.reset()
-                            mp.release()
-                            tempFile.deleteExisting()
-                            _isAudioPlaying[cardId] = false
-                            Log.d(tag, "playAudion: error")
-                            true
+                            try {
+                                Log.d(tag, "playAudion: error, [cardId = $cardId (${card.word})]")
+                                mp.onFinish()
+                                isCompleted = true
+                                true
+                            } finally {
+                                releaseAudioResources(cardId, tempFile)
+                                timeoutJob.cancel()
+                            }
                         }
+                        prepareAsync()
                     }
                 }
+
             } catch (e: Exception) {
-                Log.e(tag, "Failed to play audio: ${e.localizedMessage}", e)
-                _isAudioPlaying[cardId] = false
-                tempFile?.deleteExisting()
+                Log.e(
+                    tag,
+                    "playAudion: failed [cardId = $cardId (${card.word})]: ${e.localizedMessage}",
+                    e
+                )
+                releaseAudioResources(cardId, tempFile)
             }
         }
     }
 
+    private fun releaseAudioResources(cardId: String, tempFile: Path?) {
+        _isAudioPlaying.remove(cardId)
+        tempFile?.deleteIfExists()
+    }
+
+    private fun MediaPlayer.onFinish() {
+        stop()
+        reset()
+        release()
+    }
+
     private fun isAudioLoaded(cardId: String): Boolean {
-        return _audioResources.contains(cardId)
+        return _audioResources.get(cardId) != null
     }
 
     fun isAudioLoading(cardId: String): Boolean {
@@ -494,7 +573,11 @@ class CardViewModel(
         _wrongAnsweredCardDeckIds.value.isEmpty() && _cardsDeck.value.all { it.answered >= numberOfRightAnswers }
 
     fun allDeckCardsAnsweredCorrectly(numberOfRightAnswers: (CardEntity) -> Int): Boolean =
-        _wrongAnsweredCardDeckIds.value.isEmpty() && _cardsDeck.value.all { it.answered >= numberOfRightAnswers(it) }
+        _wrongAnsweredCardDeckIds.value.isEmpty() && _cardsDeck.value.all {
+            it.answered >= numberOfRightAnswers(
+                it
+            )
+        }
 
     fun numberOfKnownCards(numberOfRightAnswers: Int): Int =
         _cards.value.count { it.answered >= numberOfRightAnswers }

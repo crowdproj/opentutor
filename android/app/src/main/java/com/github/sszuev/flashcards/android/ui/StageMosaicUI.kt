@@ -17,6 +17,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -82,6 +83,7 @@ fun StageMosaicScreen(
                 initialRightCards = rightCards,
                 onNextStage = onNextStage,
                 onResultStage = onResultStage,
+                direction = direction,
             )
 
             Button(
@@ -100,6 +102,7 @@ fun MosaicPanel(
     dictionaryViewModel: DictionaryViewModel,
     initialLeftCards: List<CardEntity>,
     initialRightCards: List<CardEntity>,
+    direction: Boolean,
     onNextStage: () -> Unit,
     onResultStage: () -> Unit,
 ) {
@@ -134,7 +137,7 @@ fun MosaicPanel(
     fun onSelectItem() {
         val leftItem = selectedLeftItem.value
         val rightItem = selectedRightItem.value
-
+        Log.d(tag, "left = ${leftItem?.cardId}('${leftItem?.word}'), right = ${rightItem?.cardId}('${rightItem?.word}')")
         if (leftItem != null && rightItem != null) {
             val cardId = checkNotNull(leftItem.cardId) { "no card id" }
             if (match()) {
@@ -144,8 +147,6 @@ fun MosaicPanel(
                 }
                 leftCards.remove(leftItem)
                 rightCards.remove(rightItem)
-                selectedLeftItem.value = null
-                selectedRightItem.value = null
                 val wrongAnyway = cardViewModel.wrongAnsweredCardDeckIds.value.contains(cardId)
                 Log.i(
                     tag,
@@ -157,13 +158,16 @@ fun MosaicPanel(
                 )
                 if (cardViewModel.allDeckCardsAnsweredCorrectly {
                         dictionaryNumberOfRightAnswers(it)
-                    }) {
+                    }
+                ) {
                     onResultStage()
                 }
             } else {
                 Log.i(tag, "Wrong answer for card $cardId")
                 cardViewModel.markDeckCardAsWrong(cardId)
             }
+            selectedLeftItem.value = null
+            selectedRightItem.value = null
         }
         if (leftCards.isEmpty()) {
             onNextStage()
@@ -181,17 +185,26 @@ fun MosaicPanel(
                 .padding(end = 8.dp)
                 .border(BorderStroke(1.dp, Color.Gray))
         ) {
-            items(leftCards) { item ->
-                TableCellSelectable(
-                    text = item.word,
-                    isSelected = selectedLeftItem.value == item,
-                    borderColor = color(),
-                    onSelect = {
-                        cardViewModel.loadAndPlayAudio(item)
-                        selectedLeftItem.value = item
-                        onSelectItem()
-                    }
-                )
+            items(leftCards, key = { checkNotNull(it.cardId) }) { item ->
+                if (direction) {
+                    TableCellSelectable(
+                        text = item.word,
+                        isSelected = selectedLeftItem.value?.cardId == item.cardId,
+                        borderColor = color(),
+                        onSelect = {
+                            cardViewModel.loadAndPlayAudio(item)
+                            selectedLeftItem.value = item
+                            onSelectItem()
+                        }
+                    )
+                } else {
+                    TableCellTranslation(
+                        item = item,
+                        selectedItem = selectedLeftItem,
+                        onSelectItem = { onSelectItem() },
+                        color = { color() },
+                    )
+                }
             }
         }
 
@@ -201,24 +214,21 @@ fun MosaicPanel(
                 .padding(start = 8.dp)
                 .border(BorderStroke(1.dp, Color.Gray))
         ) {
-            items(rightCards) { item ->
-                if (isTextShort(item.translation)) {
-                    TableCellSelectable(
-                        text = item.translation,
-                        isSelected = selectedRightItem.value == item,
-                        borderColor = color(),
-                        onSelect = {
-                            selectedRightItem.value = item
-                            onSelectItem()
-                        }
+            items(rightCards, key = { checkNotNull(it.cardId) }) { item ->
+                if (direction) {
+                    TableCellTranslation(
+                        item = item,
+                        selectedItem = selectedRightItem,
+                        onSelectItem = { onSelectItem() },
+                        color = { color() },
                     )
                 } else {
-                    TableCellSelectableWithPopup(
-                        shortText = shortText(item.translation),
-                        fullText = item.translation,
-                        isSelected = selectedRightItem.value == item,
+                    TableCellSelectable(
+                        text = item.word,
+                        isSelected = selectedRightItem.value?.cardId == item.cardId,
                         borderColor = color(),
                         onSelect = {
+                            cardViewModel.loadAndPlayAudio(item)
                             selectedRightItem.value = item
                             onSelectItem()
                         }
@@ -226,5 +236,36 @@ fun MosaicPanel(
                 }
             }
         }
+    }
+}
+
+@Composable
+private fun TableCellTranslation(
+    item: CardEntity,
+    selectedItem: MutableState<CardEntity?>,
+    onSelectItem: () -> Unit,
+    color: () -> Color,
+) {
+    if (isTextShort(item.translation)) {
+        TableCellSelectable(
+            text = item.translation,
+            isSelected = selectedItem.value?.cardId == item.cardId,
+            borderColor = color(),
+            onSelect = {
+                selectedItem.value = item
+                onSelectItem()
+            }
+        )
+    } else {
+        TableCellSelectableWithPopup(
+            shortText = shortText(item.translation),
+            fullText = item.translation,
+            isSelected = selectedItem.value?.cardId == item.cardId,
+            borderColor = color(),
+            onSelect = {
+                selectedItem.value = item
+                onSelectItem()
+            }
+        )
     }
 }

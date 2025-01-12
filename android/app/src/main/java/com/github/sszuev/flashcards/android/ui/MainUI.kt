@@ -187,13 +187,16 @@ fun buildStageChain(settings: SettingsEntity): List<String> {
 
 private fun NavController.navigateToNextStage(
     stageChain: List<String>,
-    currentIndex: Int
+    currentIndex: Int,
 ) {
     if (currentIndex < stageChain.size - 1) {
         val stage = stageChain[currentIndex + 1]
-        Log.i(tag, "Go to '$stage'")
-        navigate(stage) {
-            popUpTo(stageChain[currentIndex]) { inclusive = true }
+        if (currentBackStackEntry?.destination?.route != stage) {
+            Log.i(tag, "Go to '$stage'")
+            navigate(stage) {
+                launchSingleTop = true
+                popUpTo(stageChain[currentIndex]) { inclusive = true }
+            }
         }
     }
 }
