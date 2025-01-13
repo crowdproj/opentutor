@@ -9,6 +9,7 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.github.sszuev.flashcards.android.PLAY_AUDIO_EMERGENCY_TIMEOUT_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
@@ -22,7 +23,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
 import java.nio.file.Path
-import java.util.concurrent.ConcurrentHashMap
 import kotlin.io.path.deleteIfExists
 import kotlin.io.path.outputStream
 
@@ -49,21 +49,22 @@ class CardViewModel(
     private val _isAscending = mutableStateOf(true)
     val isAscending: State<Boolean> = _isAscending
 
+    @Suppress("PrivatePropertyName")
+    private val NULL_AUDIO_MARKER = ByteArray(0)
     private val _audioResources = object : LruCache<String, ByteArray?>(1024) {
-        private val NULL_MARKER = ByteArray(0)
         fun getNullable(key: String): ByteArray? {
             return when (val result = get(key)) {
-                NULL_MARKER -> null
+                NULL_AUDIO_MARKER -> null
                 else -> result
             }
         }
 
         fun putNullable(key: String, value: ByteArray?) {
-            put(key, value ?: NULL_MARKER)
+            put(key, value ?: NULL_AUDIO_MARKER)
         }
     }
     private val _isAudioLoading = mutableStateMapOf<String, Boolean>()
-    private val _isAudioPlaying = ConcurrentHashMap<String, Boolean>()
+    private val _isAudioPlaying = mutableStateMapOf<String, Boolean>()
 
     private val _isCardUpdating = mutableStateOf(true)
 
@@ -352,9 +353,10 @@ class CardViewModel(
     private fun playAudio(card: CardEntity) {
         val cardId = checkNotNull(card.cardId)
 
-        val audioData = _audioResources[cardId]
-        if (audioData == null) {
-            Log.d(tag, "playAudion: no audion data for [cardId = $cardId (${card.word})]")
+        val audioData = _audioResources.get(cardId)
+        @Suppress("ReplaceArrayEqualityOpWithArraysEquals")
+        if (audioData == null || audioData == NULL_AUDIO_MARKER) {
+            Log.d(tag, "playAudion: no audio data for [cardId = $cardId (${card.word})]")
             return
         }
 
@@ -384,7 +386,7 @@ class CardViewModel(
                     var isCompleted = false
                     MediaPlayer().apply {
                         val timeoutJob = viewModelScope.launch {
-                            delay(10_000)
+                            delay(PLAY_AUDIO_EMERGENCY_TIMEOUT_MS)
                             if (!isCompleted && !isPlaying) {
                                 Log.w(tag, "playAudion: timeout reached. Stopping playback.")
                                 releaseAudioResources(cardId, tempFile)
@@ -450,8 +452,10 @@ class CardViewModel(
     }
 
     private fun releaseAudioResources(cardId: String, tempFile: Path?) {
-        _isAudioPlaying.remove(cardId)
-        tempFile?.deleteIfExists()
+        viewModelScope.launch(Dispatchers.Main) {
+            _isAudioPlaying.remove(cardId)
+            tempFile?.deleteIfExists()
+        }
     }
 
     private fun MediaPlayer.onFinish() {
@@ -464,11 +468,20 @@ class CardViewModel(
         return _audioResources.get(cardId) != null
     }
 
+    @Suppress("ReplaceArrayEqualityOpWithArraysEquals")
+    fun audioIsAvailable(cardId: String): Boolean {
+        return _audioResources.get(cardId) != NULL_AUDIO_MARKER
+    }
+
     fun isAudioLoading(cardId: String): Boolean {
         return _isAudioLoading[cardId] ?: false
     }
 
-    fun isAudioPlaying(cardId: String): Boolean {
+    fun isAudioOperationInProgress(cardId: String): Boolean {
+        return isAudioLoading(cardId) || isAudioPlaying(cardId)
+    }
+
+    private fun isAudioPlaying(cardId: String): Boolean {
         return _isAudioPlaying[cardId] ?: false
     }
 

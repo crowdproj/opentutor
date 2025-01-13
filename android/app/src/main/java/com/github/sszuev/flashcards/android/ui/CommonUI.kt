@@ -461,7 +461,7 @@ fun AudioPlayerIcon(
         onClick = {
             viewModel.loadAndPlayAudio(card)
         },
-        enabled = !viewModel.isAudioPlaying(cardId) && !viewModel.isAudioLoading(cardId),
+        enabled = viewModel.audioIsAvailable(cardId) && !viewModel.isAudioOperationInProgress(cardId),
         modifier = modifier.padding(start = 8.dp)
     ) {
         if (viewModel.isAudioLoading(cardId)) {
