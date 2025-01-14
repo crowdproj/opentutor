@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,12 +24,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewModelScope
+import com.github.sszuev.flashcards.android.STAGE_MOSAIC_CELL_DELAY_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 private const val tag = "StageMosaicUI"
 
@@ -83,15 +86,8 @@ fun StageMosaicScreen(
                 initialRightCards = rightCards,
                 onNextStage = onNextStage,
                 onResultStage = onResultStage,
-                direction = direction,
+                direct = direction,
             )
-
-            Button(
-                onClick = onNextStage,
-                modifier = Modifier.align(Alignment.CenterHorizontally)
-            ) {
-                Text("NEXT")
-            }
         }
     }
 }
@@ -102,7 +98,7 @@ fun MosaicPanel(
     dictionaryViewModel: DictionaryViewModel,
     initialLeftCards: List<CardEntity>,
     initialRightCards: List<CardEntity>,
-    direction: Boolean,
+    direct: Boolean,
     onNextStage: () -> Unit,
     onResultStage: () -> Unit,
 ) {
@@ -120,11 +116,12 @@ fun MosaicPanel(
         return selectedRightItem.value?.cardId == selectedLeftItem.value?.cardId
     }
 
-    fun color(): Color {
+    fun color(leftItem: CardEntity?, rightItem: CardEntity?): Color {
         return when {
-            selectedLeftItem.value == null || selectedRightItem.value == null -> Color.Blue
-            match() -> Color.Green
-            else -> Color.Red
+            leftItem != null && rightItem != null && leftItem.cardId == rightItem.cardId -> Color.Green
+            rightItem != null && leftItem != null -> Color.Red
+            leftItem != null || rightItem != null -> Color.Blue
+            else -> Color.Gray
         }
     }
 
@@ -137,40 +134,66 @@ fun MosaicPanel(
     fun onSelectItem() {
         val leftItem = selectedLeftItem.value
         val rightItem = selectedRightItem.value
-        Log.d(tag, "left = ${leftItem?.cardId}('${leftItem?.word}'), right = ${rightItem?.cardId}('${rightItem?.word}')")
-        if (leftItem != null && rightItem != null) {
-            val cardId = checkNotNull(leftItem.cardId) { "no card id" }
+        Log.d(
+            tag,
+            "left = ${leftItem?.cardId}('${leftItem?.word}'), right = ${rightItem?.cardId}('${rightItem?.word}')"
+        )
+
+        if (leftItem == null || rightItem == null) {
+            Log.d(tag, "One of the items is null. No further action.")
+            return
+        }
+
+        val cardId = checkNotNull(leftItem.cardId) { "no card id" }
+
+        cardViewModel.viewModelScope.launch {
             if (match()) {
                 val dictionaryId = checkNotNull(leftItem.dictionaryId) { "no dictionary id" }
                 val dictionary = checkNotNull(selectedDictionariesMap[dictionaryId]) {
                     "unable to find dictionary $dictionaryId"
                 }
+
+                delay(STAGE_MOSAIC_CELL_DELAY_MS)
                 leftCards.remove(leftItem)
                 rightCards.remove(rightItem)
+                selectedLeftItem.value = null
+                selectedRightItem.value = null
+
                 val wrongAnyway = cardViewModel.wrongAnsweredCardDeckIds.value.contains(cardId)
                 Log.i(
                     tag,
                     "Correct answer for card ${cardId}${if (wrongAnyway) ", but it is already marked as wrong" else ""}"
                 )
+
                 cardViewModel.updateDeckCard(
                     cardId = cardId,
                     numberOfRightAnswers = dictionary.numberOfRightAnswers,
                 )
+
                 if (cardViewModel.allDeckCardsAnsweredCorrectly {
                         dictionaryNumberOfRightAnswers(it)
                     }
                 ) {
-                    onResultStage()
+                    cardViewModel.waitForAudioToFinish(cardId) {
+                        onResultStage()
+                    }
                 }
+
             } else {
                 Log.i(tag, "Wrong answer for card $cardId")
+                delay(STAGE_MOSAIC_CELL_DELAY_MS)
+                selectedRightItem.value = null
                 cardViewModel.markDeckCardAsWrong(cardId)
             }
-            selectedLeftItem.value = null
-            selectedRightItem.value = null
-        }
-        if (leftCards.isEmpty()) {
-            onNextStage()
+
+            if (leftCards.isEmpty()) {
+                Log.d(tag, "All left cards are matched. Moving to the next stage.")
+                cardViewModel.waitForAudioToFinish(cardId) {
+                    onNextStage()
+                }
+            } else {
+                Log.d(tag, "Left cards: ${leftCards.size}, Right cards: ${rightCards.size}")
+            }
         }
     }
 
@@ -186,11 +209,14 @@ fun MosaicPanel(
                 .border(BorderStroke(1.dp, Color.Gray))
         ) {
             items(leftCards, key = { checkNotNull(it.cardId) }) { item ->
-                if (direction) {
+                if (direct) {
                     TableCellSelectable(
                         text = item.word,
                         isSelected = selectedLeftItem.value?.cardId == item.cardId,
-                        borderColor = color(),
+                        borderColor = color(
+                            leftItem = selectedLeftItem.value,
+                            rightItem = selectedRightItem.value,
+                        ),
                         onSelect = {
                             cardViewModel.loadAndPlayAudio(item)
                             selectedLeftItem.value = item
@@ -202,7 +228,12 @@ fun MosaicPanel(
                         item = item,
                         selectedItem = selectedLeftItem,
                         onSelectItem = { onSelectItem() },
-                        color = { color() },
+                        color = {
+                            color(
+                                leftItem = selectedLeftItem.value,
+                                rightItem = selectedRightItem.value,
+                            )
+                        },
                     )
                 }
             }
@@ -215,18 +246,26 @@ fun MosaicPanel(
                 .border(BorderStroke(1.dp, Color.Gray))
         ) {
             items(rightCards, key = { checkNotNull(it.cardId) }) { item ->
-                if (direction) {
+                if (direct) {
                     TableCellTranslation(
                         item = item,
                         selectedItem = selectedRightItem,
                         onSelectItem = { onSelectItem() },
-                        color = { color() },
+                        color = {
+                            color(
+                                leftItem = selectedLeftItem.value,
+                                rightItem = selectedRightItem.value,
+                            )
+                        },
                     )
                 } else {
                     TableCellSelectable(
                         text = item.word,
                         isSelected = selectedRightItem.value?.cardId == item.cardId,
-                        borderColor = color(),
+                        borderColor = color(
+                            leftItem = selectedLeftItem.value,
+                            rightItem = selectedRightItem.value,
+                        ),
                         onSelect = {
                             cardViewModel.loadAndPlayAudio(item)
                             selectedRightItem.value = item

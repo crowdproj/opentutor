@@ -32,7 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.github.sszuev.flashcards.android.BUTTONS_DELAY_MS
+import com.github.sszuev.flashcards.android.STAGE_SHOW_BUTTONS_DELAY_MS
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
@@ -192,7 +192,7 @@ fun StageShowScreen(
 
         LaunchedEffect(currentCard) {
             buttonsEnabled = false
-            delay(BUTTONS_DELAY_MS)
+            delay(STAGE_SHOW_BUTTONS_DELAY_MS)
             buttonsEnabled = true
         }
 

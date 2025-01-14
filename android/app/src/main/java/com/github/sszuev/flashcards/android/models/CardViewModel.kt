@@ -315,6 +315,15 @@ class CardViewModel(
         }
     }
 
+    fun waitForAudioToFinish(cardId: String, onComplete: () -> Unit) {
+        viewModelScope.launch {
+            while (isAudioOperationInProgress(cardId)) {
+                delay(100)
+            }
+            onComplete()
+        }
+    }
+
     private fun loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
         if (_audioResources.get(cardId) != null) {
             if (_audioResources.getNullable(cardId) != null) {
