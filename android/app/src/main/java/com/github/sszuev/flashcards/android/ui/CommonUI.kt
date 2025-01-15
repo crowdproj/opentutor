@@ -197,7 +197,7 @@ fun TableCellSelectable(
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
-    borderColor: Color = Color.Red
+    borderColor: Color = Color.Red,
 ) {
     Box(
         modifier = Modifier

@@ -79,7 +79,7 @@ fun StageMosaicScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
 
-            MosaicPanel(
+            MosaicPanels(
                 cardViewModel = cardViewModel,
                 dictionaryViewModel = dictionaryViewModel,
                 initialLeftCards = leftCards,
@@ -93,7 +93,7 @@ fun StageMosaicScreen(
 }
 
 @Composable
-fun MosaicPanel(
+fun MosaicPanels(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     initialLeftCards: List<CardEntity>,
@@ -149,9 +149,7 @@ fun MosaicPanel(
         cardViewModel.viewModelScope.launch {
             if (match()) {
                 val dictionaryId = checkNotNull(leftItem.dictionaryId) { "no dictionary id" }
-                val dictionary = checkNotNull(selectedDictionariesMap[dictionaryId]) {
-                    "unable to find dictionary $dictionaryId"
-                }
+                val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
 
                 delay(STAGE_MOSAIC_CELL_DELAY_MS)
                 leftCards.remove(leftItem)

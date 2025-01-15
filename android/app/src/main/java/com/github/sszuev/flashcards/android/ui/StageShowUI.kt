@@ -65,12 +65,9 @@ fun StageShowScreen(
     val errorMessage = cardViewModel.errorMessage.value
     val settings = checkNotNull(settingsViewModel.settings.value)
 
-
     LaunchedEffect(dictionaryViewModel.selectedDictionaryIds.value) {
         cardViewModel.loadNextCardDeck(
             dictionaryViewModel.selectedDictionaryIds.value,
-            random = true,
-            unknown = true,
             length = settings.stageShowNumberOfWords,
         )
     }
@@ -210,7 +207,7 @@ fun StageShowScreen(
                 }
             },
             onKnown = {
-                cardViewModel.markShowStageCurrentDeckCardAsAnsweredCorrectly(
+                cardViewModel.updateShowStageCurrentDeckCardAsAnsweredCorrectly(
                     numberOfRightAnswers = currentDictionary.numberOfRightAnswers,
                     onResultStage = onResultStage
                 )

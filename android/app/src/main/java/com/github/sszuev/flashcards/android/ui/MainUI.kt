@@ -108,23 +108,30 @@ fun MainNavigation(
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
                             onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            onResultStage = { navController.navigateToStageResult() },
                             onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = false,
                             onSignOut = onSignOut,
                         )
 
                         "StageOptionsDirect" -> StageOptionsScreen(
-                            onNext = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = { navController.navigateToDictionariesPage() },
-                            direction = true,
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
                             onSignOut = onSignOut,
+                            onHomeClick = { navController.navigateToDictionariesPage() },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            direction = true,
                         )
 
                         "StageOptionsReverse" -> StageOptionsScreen(
-                            onNext = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = { navController.navigateToDictionariesPage() },
-                            direction = false,
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
                             onSignOut = onSignOut,
+                            onHomeClick = { navController.navigateToDictionariesPage() },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            direction = false,
                         )
 
                         "StageWritingDirect" -> StageWritingScreen(

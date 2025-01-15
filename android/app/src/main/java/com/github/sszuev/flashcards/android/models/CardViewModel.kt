@@ -87,6 +87,10 @@ class CardViewModel(
     val cardsDeck: State<List<CardEntity>> = _cardsDeck
     private val _wrongAnsweredCardDeckIds = mutableStateOf<Set<String>>(emptySet())
     val wrongAnsweredCardDeckIds: State<Set<String>> = _wrongAnsweredCardDeckIds
+    private val _isAdditionalCardsDeckLoading = mutableStateOf(true)
+    val isAdditionalCardsDeckLoading: State<Boolean> = _isAdditionalCardsDeckLoading
+    private val _additionalCardsDeck = mutableStateOf<List<CardEntity>>(emptyList())
+    val additionalCardsDeck: State<List<CardEntity>> = _additionalCardsDeck
 
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
@@ -263,8 +267,6 @@ class CardViewModel(
 
     fun loadNextCardDeck(
         dictionaryIds: Set<String>,
-        random: Boolean,
-        unknown: Boolean,
         length: Int,
     ) {
         viewModelScope.launch {
@@ -277,8 +279,8 @@ class CardViewModel(
                 val cards = withContext(Dispatchers.IO) {
                     cardsRepository.getCardsDeck(
                         dictionaryIds = dictionaryIds.toList(),
-                        random = random,
-                        unknown = unknown,
+                        random = true,
+                        unknown = true,
                         length = length,
                     )
                 }.map { it.toCardEntity() }
@@ -293,6 +295,38 @@ class CardViewModel(
                 Log.e(tag, "Failed to load cards deck", e)
             } finally {
                 _isCardsDeckLoading.value = false
+            }
+        }
+    }
+
+    fun loadAdditionalCardDeck(
+        dictionaryIds: Set<String>,
+        length: Int,
+    ) {
+        viewModelScope.launch {
+            _isAdditionalCardsDeckLoading.value = true
+            _errorMessage.value = null
+            _additionalCardsDeck.value = emptyList()
+            try {
+                val cards = withContext(Dispatchers.IO) {
+                    cardsRepository.getCardsDeck(
+                        dictionaryIds = dictionaryIds.toList(),
+                        random = true,
+                        unknown = false,
+                        length = length,
+                    )
+                }.map { it.toCardEntity() }
+                if (cards.isEmpty()) {
+                    _errorMessage.value = "No cards available in the selected dictionaries."
+                }
+                _additionalCardsDeck.value = cards
+            } catch (e: InvalidTokenException) {
+                signOut()
+            } catch (e: Exception) {
+                _errorMessage.value = "Failed to load cards deck: ${e.localizedMessage}"
+                Log.e(tag, "Failed to load cards deck", e)
+            } finally {
+                _isAdditionalCardsDeckLoading.value = false
             }
         }
     }
@@ -519,7 +553,7 @@ class CardViewModel(
         }
     }
 
-    fun markShowStageCurrentDeckCardAsAnsweredCorrectly(
+    fun updateShowStageCurrentDeckCardAsAnsweredCorrectly(
         numberOfRightAnswers: Int,
         onResultStage: () -> Unit
     ) {
@@ -596,9 +630,7 @@ class CardViewModel(
 
     fun allDeckCardsAnsweredCorrectly(numberOfRightAnswers: (CardEntity) -> Int): Boolean =
         _wrongAnsweredCardDeckIds.value.isEmpty() && _cardsDeck.value.all {
-            it.answered >= numberOfRightAnswers(
-                it
-            )
+            it.answered >= numberOfRightAnswers(it)
         }
 
     fun numberOfKnownCards(numberOfRightAnswers: Int): Int =

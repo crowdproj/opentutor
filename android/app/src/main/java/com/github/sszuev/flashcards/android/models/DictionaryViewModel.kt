@@ -179,7 +179,7 @@ class DictionaryViewModel(
     }
 
     fun dictionaryById(id: String): DictionaryEntity =
-        checkNotNull(dictionaries.value.filter { it.dictionaryId == id }.singleOrNull()) {
+        checkNotNull(dictionaries.value.singleOrNull { it.dictionaryId == id }) {
             "Can't find dictionary by id = $id"
         }
 
