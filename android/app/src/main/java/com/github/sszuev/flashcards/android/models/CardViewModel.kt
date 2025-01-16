@@ -87,6 +87,7 @@ class CardViewModel(
     val cardsDeck: State<List<CardEntity>> = _cardsDeck
     private val _wrongAnsweredCardDeckIds = mutableStateOf<Set<String>>(emptySet())
     val wrongAnsweredCardDeckIds: State<Set<String>> = _wrongAnsweredCardDeckIds
+    private val _answeredCardDeckIds = mutableStateOf<Set<String>>(emptySet())
     private val _isAdditionalCardsDeckLoading = mutableStateOf(true)
     val isAdditionalCardsDeckLoading: State<Boolean> = _isAdditionalCardsDeckLoading
     private val _additionalCardsDeck = mutableStateOf<List<CardEntity>>(emptyList())
@@ -275,6 +276,7 @@ class CardViewModel(
             _errorMessage.value = null
             _cardsDeck.value = emptyList()
             _wrongAnsweredCardDeckIds.value = emptySet()
+            _answeredCardDeckIds.value = emptySet()
             try {
                 val cards = withContext(Dispatchers.IO) {
                     cardsRepository.getCardsDeck(
@@ -582,6 +584,9 @@ class CardViewModel(
         var card = checkNotNull(_cardsDeck.value.singleOrNull { it.cardId == cardId }) {
             "Can't find deck card = $cardId"
         }
+        val answered = _answeredCardDeckIds.value.toMutableSet()
+        answered.add(cardId)
+        _answeredCardDeckIds.value = answered
         card = if (!_wrongAnsweredCardDeckIds.value.contains(cardId)) {
             card.copy(answered = card.answered + 1)
         } else if (card.answered >= numberOfRightAnswers) {
@@ -597,6 +602,9 @@ class CardViewModel(
     }
 
     fun markDeckCardAsWrong(cardId: String) {
+        val answered = _answeredCardDeckIds.value.toMutableSet()
+        answered.add(cardId)
+        _answeredCardDeckIds.value = answered
         val ids = _wrongAnsweredCardDeckIds.value.toMutableSet()
         ids.add(cardId)
         _wrongAnsweredCardDeckIds.value = ids
@@ -604,6 +612,7 @@ class CardViewModel(
 
     fun greenDeckCards(numberOfRightAnswers: (CardEntity) -> Int): List<CardEntity> {
         return _cardsDeck.value
+            .filter { _answeredCardDeckIds.value.contains(it.cardId) }
             .filter { it.answered >= numberOfRightAnswers(it) }
             .filter {
                 !_wrongAnsweredCardDeckIds.value.contains(it.cardId)
@@ -612,6 +621,7 @@ class CardViewModel(
 
     fun blueDeckCards(numberOfRightAnswers: (CardEntity) -> Int): List<CardEntity> {
         return _cardsDeck.value
+            .filter { _answeredCardDeckIds.value.contains(it.cardId) }
             .filter { it.answered < numberOfRightAnswers(it) }
             .filter {
                 !_wrongAnsweredCardDeckIds.value.contains(it.cardId)
@@ -620,6 +630,7 @@ class CardViewModel(
 
     fun redDeckCards(): List<CardEntity> {
         return _cardsDeck.value
+            .filter { _answeredCardDeckIds.value.contains(it.cardId) }
             .filter {
                 _wrongAnsweredCardDeckIds.value.contains(it.cardId)
             }.sortedBy { -it.answered }

@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.STAGE_OPTIONS_CELL_DELAY_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
@@ -76,6 +77,7 @@ fun StageOptionsScreen(
                 dictionaryViewModel = dictionaryViewModel,
                 settingsViewModel = settingsViewModel,
                 onNextStage = onNextStage,
+                direct = direction,
             )
         }
     }
@@ -87,6 +89,7 @@ fun OptionsPanelDirect(
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
     onNextStage: () -> Unit,
+    direct: Boolean,
 ) {
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
     val leftCards = cardViewModel.unknownDeckCards { id ->
@@ -137,13 +140,15 @@ fun OptionsPanelDirect(
     val selectedOption = remember { mutableStateOf<CardEntity?>(null) }
     val isCorrect = remember { mutableStateOf<Boolean?>(null) }
 
-    LaunchedEffect(currentCard.value) {
-        if (currentCard.value == null) {
-            onNextStage()
-            return@LaunchedEffect
-        }
-        currentCard.value?.let { card ->
-            cardViewModel.loadAndPlayAudio(card)
+    if (direct) {
+        LaunchedEffect(currentCard.value) {
+            if (currentCard.value == null) {
+                onNextStage()
+                return@LaunchedEffect
+            }
+            currentCard.value?.let { card ->
+                cardViewModel.loadAndPlayAudio(card)
+            }
         }
     }
 
@@ -155,13 +160,17 @@ fun OptionsPanelDirect(
         selectedOption.value = selectedItem
         isCorrect.value = match(selectedItem)
 
+        if (!direct) {
+            cardViewModel.loadAndPlayAudio(selectedItem)
+        }
+
         cardViewModel.viewModelScope.launch {
             delay(STAGE_OPTIONS_CELL_DELAY_MS)
             if (isCorrect.value == true) {
-                val card = cardsMap.keys.firstOrNull()
-                val cardId = checkNotNull(card?.cardId)
-                checkNotNull(card?.dictionaryId)
-                val dictionaryId = checkNotNull(card?.dictionaryId) { "no dictionary id" }
+                val card = cardsMap.keys.first()
+                val cardId = checkNotNull(card.cardId)
+
+                val dictionaryId = checkNotNull(card.dictionaryId) { "no dictionary id" }
                 val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
 
                 currentCard.value = card
@@ -219,13 +228,26 @@ fun OptionsPanelDirect(
                 }
                 val dictionary =
                     dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-                Text(
-                    text = card.word,
-                    style = MaterialTheme.typography.displayMedium,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
-                        .weight(1f)
-                )
+                if (direct || isTextShort(card.translation)) {
+                    Text(
+                        text = if (direct) card.word else card.translation,
+                        style = MaterialTheme.typography.displayMedium,
+                        modifier = Modifier
+                            .padding(bottom = 8.dp)
+                            .weight(1f)
+                    )
+                } else {
+                    TextWithPopup(
+                        shortText = shortText(card.translation),
+                        fullText = card.translation,
+                        style = MaterialTheme.typography.displayMedium,
+                        fontSize = 28.sp,
+                        lineHeight = 36.sp,
+                        modifier = Modifier
+                            .padding(bottom = 8.dp)
+                            .weight(1f)
+                    )
+                }
                 Row(
                     modifier = Modifier.weight(0.5f),
                     verticalAlignment = Alignment.CenterVertically,
@@ -236,12 +258,14 @@ fun OptionsPanelDirect(
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(end = 8.dp)
                     )
-                    AudioPlayerIcon(
-                        viewModel = cardViewModel,
-                        card = card,
-                        modifier = Modifier.size(64.dp),
-                        size = 64.dp
-                    )
+                    if (direct) {
+                        AudioPlayerIcon(
+                            viewModel = cardViewModel,
+                            card = card,
+                            modifier = Modifier.size(64.dp),
+                            size = 64.dp
+                        )
+                    }
                 }
             }
         }
@@ -263,12 +287,21 @@ fun OptionsPanelDirect(
                     items(
                         cardsMap[leftCard] ?: emptyList(),
                         key = { checkNotNull(it.cardId) }) { option ->
-                        TableCellTranslation(
-                            optionCard = option,
-                            isSelected = selectedOption.value == option,
-                            isCorrect = isCorrect.value,
-                            onSelectItem = { onOptionSelected(option) }
-                        )
+                        if (direct) {
+                            TableCellTranslation(
+                                optionCard = option,
+                                isSelected = selectedOption.value == option,
+                                isCorrect = isCorrect.value,
+                                onSelectItem = { onOptionSelected(option) }
+                            )
+                        } else {
+                            TableCellWord(
+                                optionCard = option,
+                                isSelected = selectedOption.value == option,
+                                isCorrect = isCorrect.value,
+                                onSelectItem = { onOptionSelected(option) }
+                            )
+                        }
                     }
                 }
             }
@@ -308,4 +341,26 @@ private fun TableCellTranslation(
             }
         )
     }
+}
+
+@Composable
+private fun TableCellWord(
+    optionCard: CardEntity,
+    onSelectItem: () -> Unit,
+    isSelected: Boolean,
+    isCorrect: Boolean?,
+) {
+    val borderColor = when {
+        isSelected && isCorrect == true -> Color.Green
+        isSelected && isCorrect == false -> Color.Red
+        else -> Color.Gray
+    }
+    TableCellSelectable(
+        text = optionCard.word,
+        isSelected = isSelected,
+        borderColor = borderColor,
+        onSelect = {
+            onSelectItem()
+        }
+    )
 }

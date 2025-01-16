@@ -43,6 +43,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -472,6 +473,75 @@ fun AudioPlayerIcon(
                 contentDescription = "Play word audio",
                 modifier = Modifier.size(size)
             )
+        }
+    }
+}
+
+@Composable
+fun TextWithPopup(
+    shortText: String,
+    fullText: String,
+    fontSize: TextUnit = 20.sp,
+    lineHeight: TextUnit = 40.sp,
+    popupFontSize: TextUnit = 20.sp,
+    popupLineHeight: TextUnit = 40.sp,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black
+) {
+    var isPopupVisible by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { isPopupVisible = true }
+                )
+            }
+    ) {
+        Text(
+            text = shortText,
+            style = style.copy(fontSize = fontSize, lineHeight = lineHeight, color = textColor)
+        )
+
+        if (isPopupVisible) {
+            Popup(
+                alignment = Alignment.TopStart,
+                onDismissRequest = { isPopupVisible = false }
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            IconButton(
+                                onClick = { isPopupVisible = false }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Close popup"
+                                )
+                            }
+                        }
+
+                        Text(
+                            text = fullText,
+                            style = style.copy(
+                                fontSize = popupFontSize,
+                                lineHeight = popupLineHeight,
+                                color = textColor
+                            ),
+                            modifier = Modifier.padding(16.dp)
+                        )
+                    }
+                }
+            }
         }
     }
 }
