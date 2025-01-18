@@ -17,6 +17,8 @@ fun shortText(text: String) =
 
 fun translationFromString(translation: String) = translation.split(",").map { it.trim() }
 
+fun wordAsList(word: String) = word.split(", ").map { it.trim() }
+
 fun correctAnswerIndexOf(translation: List<String>, input: String): Int {
     val txt = input.trim()
     if (txt.length < STAGE_WRITING_PREFIX_LENGTH) {

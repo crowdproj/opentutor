@@ -36,13 +36,18 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
-import com.github.sszuev.flashcards.android.STAGE_SHOW_BUTTONS_DELAY_MS
+import com.github.sszuev.flashcards.android.STAGE_WRITING_BUTTONS_DELAY_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.utils.correctAnswerIndexOf
+import com.github.sszuev.flashcards.android.utils.isTextShort
+import com.github.sszuev.flashcards.android.utils.shortText
+import com.github.sszuev.flashcards.android.utils.translationAsString
+import com.github.sszuev.flashcards.android.utils.wordAsList
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -147,13 +152,18 @@ fun WritingPanels(
     }
 
     fun checkAnswer(userInput: String, card: CardEntity): Boolean {
-        val res = correctAnswerIndexOf(card.translation, userInput)
+        val expected = if (direct) {
+            card.translation
+        } else {
+            wordAsList(card.word)
+        }
+        val res = correctAnswerIndexOf(expected, userInput)
         return if (res == -1) {
-            Log.i(tag, "Answer is incorrect. input: $userInput, translations: ${card.translation}")
+            Log.i(tag, "Answer is incorrect. input: $userInput, translations: $expected")
             cardViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
             false
         } else {
-            Log.i(tag, "Answer is correct. input: $userInput, translations: ${card.translation}")
+            Log.i(tag, "Answer is correct. input: $userInput, translations: $expected")
             val cardId = checkNotNull(card.cardId)
             val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
             cardViewModel.updateDeckCard(
@@ -183,13 +193,27 @@ fun WritingPanels(
             val dictionary =
                 dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
 
-            Text(
-                text = card.word,
-                style = MaterialTheme.typography.displayMedium,
-                modifier = Modifier
-                    .padding(bottom = 8.dp)
-                    .weight(1f)
-            )
+            if (direct || isTextShort(card.translationAsString)) {
+                Text(
+                    text = if (direct) card.word else card.translationAsString,
+                    style = MaterialTheme.typography.displayMedium,
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .weight(1f)
+                )
+            } else {
+                val txt = card.translationAsString
+                TextWithPopup(
+                    shortText = shortText(txt),
+                    fullText = txt,
+                    style = MaterialTheme.typography.displayMedium,
+                    fontSize = 28.sp,
+                    lineHeight = 36.sp,
+                    modifier = Modifier
+                        .padding(bottom = 8.dp)
+                        .weight(1f),
+                )
+            }
             Row(
                 modifier = Modifier.weight(0.5f),
                 verticalAlignment = Alignment.CenterVertically,
@@ -200,12 +224,14 @@ fun WritingPanels(
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(end = 8.dp)
                 )
-                AudioPlayerIcon(
-                    viewModel = cardViewModel,
-                    card = card,
-                    modifier = Modifier.size(64.dp),
-                    size = 64.dp
-                )
+                if (direct) {
+                    AudioPlayerIcon(
+                        viewModel = cardViewModel,
+                        card = card,
+                        modifier = Modifier.size(64.dp),
+                        size = 64.dp
+                    )
+                }
             }
         }
 
@@ -217,7 +243,6 @@ fun WritingPanels(
                     .padding(vertical = 16.dp),
                 onValueChange = { it: String ->
                     inputText = it
-                    isCorrect = checkAnswer(it, checkNotNull(currentCard.value))
                 },
                 textStyle = MaterialTheme.typography.bodyLarge,
                 readOnly = !isEditable,
@@ -228,8 +253,14 @@ fun WritingPanels(
         } else {
             BasicText(
                 text = buildAnnotatedString {
+                    val card = checkNotNull(currentCard.value)
+                    val expected = if (direct) {
+                        card.translation
+                    } else {
+                        wordAsList(card.word)
+                    }
                     val correctIndex =
-                        correctAnswerIndexOf(checkNotNull(currentCard.value).translation, inputText)
+                        correctAnswerIndexOf(expected, inputText)
 
                     withStyle(
                         style = if (correctIndex != -1) {
@@ -246,15 +277,15 @@ fun WritingPanels(
 
                     append(" — ")
 
-                    checkNotNull(currentCard.value).translation.forEachIndexed { index, translation ->
+                    expected.forEachIndexed { index, ex ->
                         if (index == correctIndex) {
                             withStyle(style = SpanStyle(color = Color.Green)) {
-                                append(translation)
+                                append(ex)
                             }
                         } else {
-                            append(translation)
+                            append(ex)
                         }
-                        if (index != checkNotNull(currentCard.value).translation.lastIndex) {
+                        if (index != expected.lastIndex) {
                             append(", ")
                         }
                     }
@@ -271,8 +302,9 @@ fun WritingPanels(
         val alpha by animateFloatAsState(if (buttonsEnabled) 1f else 0.5f)
 
         LaunchedEffect(currentCard) {
+            Log.d(tag, "DELAY")
             buttonsEnabled = false
-            delay(STAGE_SHOW_BUTTONS_DELAY_MS)
+            delay(STAGE_WRITING_BUTTONS_DELAY_MS)
             buttonsEnabled = true
         }
 
@@ -281,10 +313,23 @@ fun WritingPanels(
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
                     .alpha(alpha),
-                buttonsEnabled = buttonsEnabled,
+                buttonsEnabled = buttonsEnabled && inputText.isNotBlank(),
                 isEditable = isEditable,
                 onTest = {
+                    val card = checkNotNull(currentCard.value)
+                    isCorrect = checkAnswer(inputText, card)
                     isEditable = false
+
+                    buttonsEnabled = false
+                    cardViewModel.viewModelScope.launch {
+                        delay(STAGE_WRITING_BUTTONS_DELAY_MS)
+                        buttonsEnabled = true
+                        Log.d(tag, "Delay over: enabling buttons")
+                    }
+
+                    if (!direct) {
+                        cardViewModel.loadAndPlayAudio(card)
+                    }
                 },
                 onNext = {
                     onNextCard()
@@ -306,36 +351,41 @@ private fun StageWritingBottomToolbar(
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(Color.Gray)
-            .padding(8.dp)
-            .onSizeChanged { size -> containerWidthPx = size.width },
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.CenterHorizontally
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .background(Color.Gray)
+                .padding(8.dp)
+                .onSizeChanged { size -> containerWidthPx = size.width },
+            verticalArrangement = Arrangement.SpaceBetween,
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if (isEditable) {
-                ToolbarButton(
-                    label = "TEST",
-                    containerWidthDp = containerWidthDp,
-                    weight = 100.0f,
-                    onClick = onTest,
-                    enabled = buttonsEnabled,
-                )
-            } else {
-                ToolbarButton(
-                    label = "NEXT",
-                    containerWidthDp = containerWidthDp,
-                    weight = 100.0f,
-                    onClick = onNext,
-                    enabled = buttonsEnabled,
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                if (isEditable) {
+                    ToolbarButton(
+                        label = "TEST",
+                        containerWidthDp = containerWidthDp,
+                        weight = 100.0f,
+                        onClick = onTest,
+                        enabled = buttonsEnabled,
+                    )
+                } else {
+                    ToolbarButton(
+                        label = "NEXT",
+                        containerWidthDp = containerWidthDp,
+                        weight = 100.0f,
+                        onClick = onNext,
+                        enabled = buttonsEnabled,
+                    )
+                }
             }
         }
     }
