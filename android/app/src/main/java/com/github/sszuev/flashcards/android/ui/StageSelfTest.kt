@@ -32,14 +32,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
-import kotlinx.coroutines.launch
 
 
 private const val tag = "StageSelfTestUI"
@@ -56,11 +54,10 @@ fun StageSelfTestScreen(
 ) {
     Log.d(tag, "StageSelfTest")
     if (cardViewModel.cardsDeck.value.isEmpty()) {
+        onNextStage()
         return
     }
-    if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
-        return
-    }
+
     BackHandler {
         onHomeClick()
     }
@@ -126,30 +123,28 @@ fun SelfTestPanels(
     var buttonsEnabled by remember { mutableStateOf(false) }
 
     fun onNextCard(result: Boolean) {
-        cardViewModel.viewModelScope.launch {
-            val card = cards[0]
-            currentCard.value = card
+        val card = cards[0]
+        currentCard.value = card
 
-            cards.removeAt(0)
-            currentCard.value = cards.firstOrNull()
+        cards.removeAt(0)
+        currentCard.value = cards.firstOrNull()
 
-            isBigButtonVisible = true
-            buttonsEnabled = false
+        isBigButtonVisible = true
+        buttonsEnabled = false
 
-            if (result) {
-                val cardId = checkNotNull(card.cardId)
-                val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-                cardViewModel.updateDeckCard(
-                    cardId,
-                    dictionary.numberOfRightAnswers
-                )
-            } else {
-                cardViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
-            }
+        if (result) {
+            val cardId = checkNotNull(card.cardId)
+            val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+            cardViewModel.updateDeckCard(
+                cardId,
+                dictionary.numberOfRightAnswers
+            )
+        } else {
+            cardViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
+        }
 
-            if (cards.isEmpty()) {
-                onNextStage()
-            }
+        if (cards.isEmpty()) {
+            onNextStage()
         }
     }
 

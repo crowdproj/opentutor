@@ -47,13 +47,10 @@ fun StageMosaicScreen(
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
     direction: Boolean = true,
-    onResultStage: () -> Unit = {},
 ) {
     Log.d(tag, "StageMosaic")
     if (cardViewModel.cardsDeck.value.isEmpty()) {
-        return
-    }
-    if (dictionaryViewModel.selectedDictionariesList.isEmpty()) {
+        onNextStage()
         return
     }
     BackHandler {
@@ -85,9 +82,8 @@ fun StageMosaicScreen(
                 dictionaryViewModel = dictionaryViewModel,
                 initialLeftCards = leftCards,
                 initialRightCards = rightCards,
-                onNextStage = onNextStage,
-                onResultStage = onResultStage,
                 direct = direction,
+                onNextStage = onNextStage,
             )
         }
     }
@@ -101,7 +97,6 @@ fun MosaicPanels(
     initialRightCards: List<CardEntity>,
     direct: Boolean,
     onNextStage: () -> Unit,
-    onResultStage: () -> Unit,
 ) {
 
     val selectedDictionariesMap =
@@ -174,7 +169,7 @@ fun MosaicPanels(
                     }
                 ) {
                     cardViewModel.waitForAudioToFinish(cardId) {
-                        onResultStage()
+                        onNextStage()
                     }
                 }
 

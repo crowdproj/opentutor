@@ -83,35 +83,32 @@ fun MainNavigation(
                 composable(stage) {
                     when (stage) {
                         "StageShow" -> StageShowScreen(
-                            cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
+                            cardViewModel = cardViewModel,
                             settingsViewModel = settingsViewModel,
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = { navController.navigateToDictionariesPage() },
-                            onResultStage = { navController.navigateToStageResult() },
                             onSignOut = onSignOut,
+                            onHomeClick = { navController.navigateToDictionariesPage() },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
                         )
 
                         "StageMosaicDirect" -> StageMosaicScreen(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = { navController.navigateToDictionariesPage() },
-                            onResultStage = { navController.navigateToStageResult() },
-                            direction = true,
                             onSignOut = onSignOut,
+                            onHomeClick = { navController.navigateToDictionariesPage() },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            direction = true,
                         )
 
                         "StageMosaicReverse" -> StageMosaicScreen(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            onResultStage = { navController.navigateToStageResult() },
-                            onHomeClick = { navController.navigateToDictionariesPage() },
-                            direction = false,
                             onSignOut = onSignOut,
+                            onHomeClick = { navController.navigateToDictionariesPage() },
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
+                            direction = false,
                         )
 
                         "StageOptionsDirect" -> StageOptionsScreen(
@@ -218,11 +215,6 @@ private fun NavController.navigateToNextStage(
             }
         }
     }
-}
-
-private fun NavController.navigateToStageResult() {
-    Log.i(tag, "Go to 'StageResult'")
-    navigate("StageResult")
 }
 
 private fun NavController.navigateToDictionariesPage() {

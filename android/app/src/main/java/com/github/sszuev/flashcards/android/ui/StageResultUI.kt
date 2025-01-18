@@ -50,31 +50,21 @@ fun StageResultScreen(
     onHomeClick: () -> Unit = {},
 ) {
     Log.d(tag, "StageResult")
-    val cards = cardViewModel.cardsDeck.value.sortedBy { -it.answered }
-    if (cards.isEmpty()) {
-        return
-    }
-    val dictionaries =
-        dictionaryViewModel.selectedDictionariesList.associateBy { it.dictionaryId }
-    if (dictionaries.isEmpty()) {
-        return
-    }
-
     var containerWidthPx by remember { mutableIntStateOf(0) }
     val density = LocalDensity.current
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
     fun dictionaryNumberOfRightAnswers(card: CardEntity): Int {
-        return checkNotNull(
-            dictionaries[checkNotNull(card.dictionaryId) { "can't find dictionary, card = $card" }]
-        ) { "can't find dictionary, dictionaryId = ${card.dictionaryId}" }.numberOfRightAnswers
+        return dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId)).numberOfRightAnswers
     }
 
     fun dictionaryName(card: CardEntity): String {
-        return checkNotNull(
-            dictionaries[checkNotNull(card.dictionaryId) { "can't find dictionary, card = $card" }]
-        ) { "can't find dictionary, dictionaryId = ${card.dictionaryId}" }.name
+        return dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId)).name
     }
+
+    val greenCards = cardViewModel.greenDeckCards { dictionaryNumberOfRightAnswers(it) }
+    val blueCards = cardViewModel.blueDeckCards { dictionaryNumberOfRightAnswers(it) }
+    val redCards = cardViewModel.redDeckCards()
 
     BackHandler {
         onHomeClick()
@@ -134,9 +124,6 @@ fun StageResultScreen(
                     }
                 }
 
-                val greenCards = cardViewModel.greenDeckCards { dictionaryNumberOfRightAnswers(it) }
-                val blueCards = cardViewModel.blueDeckCards { dictionaryNumberOfRightAnswers(it) }
-                val redCards = cardViewModel.redDeckCards()
                 items(greenCards) { card ->
                     CardItemRow(
                         card = card,

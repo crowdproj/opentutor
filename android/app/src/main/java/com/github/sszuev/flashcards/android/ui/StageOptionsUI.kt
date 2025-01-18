@@ -53,9 +53,7 @@ fun StageOptionsScreen(
 ) {
     Log.d(tag, "StageOptions")
     if (cardViewModel.cardsDeck.value.isEmpty()) {
-        return
-    }
-    if (dictionaryViewModel.selectedDictionariesList.isEmpty()) {
+        onNextStage()
         return
     }
     BackHandler {

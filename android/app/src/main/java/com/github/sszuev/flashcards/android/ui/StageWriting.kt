@@ -65,9 +65,7 @@ fun StageWritingScreen(
 ) {
     Log.d(tag, "StageWriting")
     if (cardViewModel.cardsDeck.value.isEmpty()) {
-        return
-    }
-    if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
+        onNextStage()
         return
     }
     BackHandler {
@@ -135,19 +133,17 @@ fun WritingPanels(
     }
 
     fun onNextCard() {
-        cardViewModel.viewModelScope.launch {
-            val card = cards[0]
-            currentCard.value = card
+        val card = cards[0]
+        currentCard.value = card
 
-            cards.removeAt(0)
-            currentCard.value = cards.firstOrNull()
+        cards.removeAt(0)
+        currentCard.value = cards.firstOrNull()
 
-            inputText = ""
-            isEditable = true
+        inputText = ""
+        isEditable = true
 
-            if (cards.isEmpty()) {
-                onNextStage()
-            }
+        if (cards.isEmpty()) {
+            onNextStage()
         }
     }
 

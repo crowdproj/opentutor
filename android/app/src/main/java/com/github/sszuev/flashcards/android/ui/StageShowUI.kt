@@ -49,11 +49,10 @@ fun StageShowScreen(
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
-    onResultStage: () -> Unit = {},
 ) {
 
     if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
-        return
+        throw IllegalStateException("no dictionaries selected")
     }
 
     BackHandler {
@@ -61,7 +60,6 @@ fun StageShowScreen(
     }
 
     val cards = cardViewModel.cardsDeck.value
-    val currentCardIndex = cardViewModel.stageShowCurrentDeckCardIndex.value
     val isLoading = cardViewModel.isCardsDeckLoading.value
     val errorMessage = cardViewModel.errorMessage.value
     val settings = checkNotNull(settingsViewModel.settings.value)
@@ -73,12 +71,45 @@ fun StageShowScreen(
         )
     }
 
-    LaunchedEffect(cardViewModel.cardsDeck.value) {
-        val currentCards = cardViewModel.cardsDeck.value
-        Log.d(tag, "Cards updated: ${currentCards.size}")
-        if (currentCards.isNotEmpty()) {
-            Log.d(tag, "Playing audio for: ${currentCards.first().word}")
-            cardViewModel.loadAndPlayAudio(currentCards.first())
+    if (isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    if (cards.isEmpty()) {
+        onNextStage()
+        return
+    }
+
+    var currentCard by remember { mutableStateOf(cards.firstOrNull()) }
+
+    LaunchedEffect(currentCard) {
+        currentCard?.let { card ->
+            Log.d(tag, "Playing audio for: ${card.word}")
+            cardViewModel.loadAndPlayAudio(card)
+        }
+    }
+
+    fun onNextCard(know: Boolean) {
+        currentCard?.let { card ->
+            if (know) {
+                val cardId = checkNotNull(card.cardId)
+                val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+                cardViewModel.markDeckCardAsAnswered(cardId, dictionary.numberOfRightAnswers)
+            }
+        }
+
+        val currentIndex = cards.indexOfFirst { it.cardId == currentCard?.cardId }
+        currentCard = if (currentIndex != -1 && currentIndex + 1 < cards.size) {
+            cards[currentIndex + 1]
+        } else {
+            null
+        }
+
+        if (currentCard == null) {
+            onNextStage()
         }
     }
 
@@ -99,13 +130,6 @@ fun StageShowScreen(
                     .align(Alignment.CenterHorizontally)
             )
 
-            if (isLoading) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    CircularProgressIndicator()
-                }
-                return
-            }
-
             if (errorMessage != null) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
@@ -113,16 +137,13 @@ fun StageShowScreen(
                 return
             }
 
-            if (cards.isEmpty()) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text("No cards available.", color = MaterialTheme.colorScheme.error)
-                }
+            if (currentCard == null) {
+                onNextStage()
                 return
             }
 
-            val currentCard = cards[currentCardIndex]
-            val currentDictionary =
-                dictionaryViewModel.dictionaryById(checkNotNull(cards[currentCardIndex].dictionaryId))
+            val card = checkNotNull(currentCard) { "Null currentCard" }
+            val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
 
             Column(
                 modifier = Modifier
@@ -136,7 +157,7 @@ fun StageShowScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = currentCard.word,
+                        text = card.word,
                         style = MaterialTheme.typography.displayMedium,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
@@ -148,13 +169,13 @@ fun StageShowScreen(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "[${(currentCard.answered * 100) / currentDictionary.numberOfRightAnswers}%]",
+                            text = "[${(card.answered * 100) / dictionary.numberOfRightAnswers}%]",
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         AudioPlayerIcon(
                             viewModel = cardViewModel,
-                            card = currentCard,
+                            card = card,
                             modifier = Modifier.size(64.dp),
                             size = 64.dp
                         )
@@ -162,7 +183,7 @@ fun StageShowScreen(
                 }
 
                 Text(
-                    text = currentCard.translationAsString,
+                    text = card.translationAsString,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
@@ -170,7 +191,7 @@ fun StageShowScreen(
                 )
             }
 
-            currentCard.examples.forEach { example ->
+            card.examples.forEach { example ->
                 Text(
                     text = example,
                     style = MaterialTheme.typography.bodyMedium,
@@ -180,9 +201,6 @@ fun StageShowScreen(
                 )
             }
         }
-        val currentCard = cards[currentCardIndex]
-        val currentDictionary =
-            dictionaryViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
 
         var buttonsEnabled by remember { mutableStateOf(false) }
 
@@ -200,18 +218,10 @@ fun StageShowScreen(
                 .alpha(alpha),
             buttonsEnabled = buttonsEnabled,
             onNextCardDeck = {
-                if (!cardViewModel.nextDeckCardForStageShow(
-                        numberOfRightAnswers = currentDictionary.numberOfRightAnswers,
-                        onNextCard = { cardViewModel.loadAndPlayAudio(it) })
-                ) {
-                    onNextStage()
-                }
+                onNextCard(false)
             },
             onKnown = {
-                cardViewModel.updateStageShowCurrentDeckCardAsAnsweredCorrectly(
-                    numberOfRightAnswers = currentDictionary.numberOfRightAnswers,
-                    onResultStage = onResultStage
-                )
+                onNextCard(true)
             },
         )
     }
