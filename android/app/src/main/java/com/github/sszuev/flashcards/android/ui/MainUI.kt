@@ -135,14 +135,20 @@ fun MainNavigation(
                         )
 
                         "StageWritingDirect" -> StageWritingScreen(
-                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = true,
                             onSignOut = onSignOut,
                         )
 
                         "StageWritingReverse" -> StageWritingScreen(
-                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = false,
                             onSignOut = onSignOut,

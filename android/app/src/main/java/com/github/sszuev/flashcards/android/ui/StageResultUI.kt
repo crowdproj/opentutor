@@ -32,6 +32,7 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.utils.shortText
+import com.github.sszuev.flashcards.android.utils.translationAsString
 
 
 private const val FIRST_COLUMN_WIDTH = 20
@@ -196,8 +197,8 @@ fun CardItemRow(
             containerWidthDp = containerWidthDp,
         )
         TableCellWithPopup(
-            shortText = shortText(card.translation),
-            fullText = card.translation,
+            shortText = shortText(card.translationAsString),
+            fullText = card.translationAsString,
             weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp
         )

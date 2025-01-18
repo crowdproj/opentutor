@@ -36,6 +36,7 @@ import com.github.sszuev.flashcards.android.STAGE_SHOW_BUTTONS_DELAY_MS
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.delay
 
 private const val tag = "StageShowUI"
@@ -161,7 +162,7 @@ fun StageShowScreen(
                 }
 
                 Text(
-                    text = currentCard.translation,
+                    text = currentCard.translationAsString,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
@@ -199,7 +200,7 @@ fun StageShowScreen(
                 .alpha(alpha),
             buttonsEnabled = buttonsEnabled,
             onNextCardDeck = {
-                if (!cardViewModel.nextDeckCard(
+                if (!cardViewModel.nextDeckCardForStageShow(
                         numberOfRightAnswers = currentDictionary.numberOfRightAnswers,
                         onNextCard = { cardViewModel.loadAndPlayAudio(it) })
                 ) {
@@ -207,7 +208,7 @@ fun StageShowScreen(
                 }
             },
             onKnown = {
-                cardViewModel.updateShowStageCurrentDeckCardAsAnsweredCorrectly(
+                cardViewModel.updateStageShowCurrentDeckCardAsAnsweredCorrectly(
                     numberOfRightAnswers = currentDictionary.numberOfRightAnswers,
                     onResultStage = onResultStage
                 )
@@ -217,7 +218,7 @@ fun StageShowScreen(
 }
 
 @Composable
-fun StageShowBottomToolbar(
+private fun StageShowBottomToolbar(
     modifier: Modifier = Modifier,
     buttonsEnabled: Boolean,
     onNextCardDeck: () -> Unit = {},

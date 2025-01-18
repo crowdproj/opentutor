@@ -32,6 +32,7 @@ import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
+import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -283,9 +284,9 @@ private fun TableCellTranslation(
     onSelectItem: () -> Unit,
     color: () -> Color,
 ) {
-    if (isTextShort(item.translation)) {
+    if (isTextShort(item.translationAsString)) {
         TableCellSelectable(
-            text = item.translation,
+            text = item.translationAsString,
             isSelected = selectedItem.value?.cardId == item.cardId,
             borderColor = color(),
             onSelect = {
@@ -295,8 +296,8 @@ private fun TableCellTranslation(
         )
     } else {
         TableCellSelectableWithPopup(
-            shortText = shortText(item.translation),
-            fullText = item.translation,
+            shortText = shortText(item.translationAsString),
+            fullText = item.translationAsString,
             isSelected = selectedItem.value?.cardId == item.cardId,
             borderColor = color(),
             onSelect = {

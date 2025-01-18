@@ -35,6 +35,7 @@ import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
+import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
@@ -93,9 +94,7 @@ fun OptionsPanelDirect(
 ) {
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
     val leftCards = cardViewModel.unknownDeckCards { id ->
-        checkNotNull(dictionaryViewModel.selectedDictionariesList
-            .singleOrNull { id == it.dictionaryId }) { "Can't find dictionary by id $id" }
-            .numberOfRightAnswers
+        dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
     }.shuffled().take(settings.numberOfWordsPerStage)
 
     if (leftCards.isEmpty()) {
@@ -147,6 +146,7 @@ fun OptionsPanelDirect(
                 return@LaunchedEffect
             }
             currentCard.value?.let { card ->
+                Log.d(tag, "Playing audio for: ${card.word}")
                 cardViewModel.loadAndPlayAudio(card)
             }
         }
@@ -161,6 +161,7 @@ fun OptionsPanelDirect(
         isCorrect.value = match(selectedItem)
 
         if (!direct) {
+            Log.d(tag, "Playing audio for: ${selectedItem.word}")
             cardViewModel.loadAndPlayAudio(selectedItem)
         }
 
@@ -228,9 +229,9 @@ fun OptionsPanelDirect(
                 }
                 val dictionary =
                     dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-                if (direct || isTextShort(card.translation)) {
+                if (direct || isTextShort(card.translationAsString)) {
                     Text(
-                        text = if (direct) card.word else card.translation,
+                        text = if (direct) card.word else card.translationAsString,
                         style = MaterialTheme.typography.displayMedium,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
@@ -238,8 +239,8 @@ fun OptionsPanelDirect(
                     )
                 } else {
                     TextWithPopup(
-                        shortText = shortText(card.translation),
-                        fullText = card.translation,
+                        shortText = shortText(card.translationAsString),
+                        fullText = card.translationAsString,
                         style = MaterialTheme.typography.displayMedium,
                         fontSize = 28.sp,
                         lineHeight = 36.sp,
@@ -321,9 +322,9 @@ private fun TableCellTranslation(
         isSelected && isCorrect == false -> Color.Red
         else -> Color.Gray
     }
-    if (isTextShort(optionCard.translation)) {
+    if (isTextShort(optionCard.translationAsString)) {
         TableCellSelectable(
-            text = optionCard.translation,
+            text = optionCard.translationAsString,
             isSelected = isSelected,
             borderColor = borderColor,
             onSelect = {
@@ -332,8 +333,8 @@ private fun TableCellTranslation(
         )
     } else {
         TableCellSelectableWithPopup(
-            shortText = shortText(optionCard.translation),
-            fullText = optionCard.translation,
+            shortText = shortText(optionCard.translationAsString),
+            fullText = optionCard.translationAsString,
             isSelected = isSelected,
             borderColor = borderColor,
             onSelect = {

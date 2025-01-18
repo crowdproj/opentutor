@@ -59,6 +59,8 @@ import com.github.sszuev.flashcards.android.utils.examplesAsList
 import com.github.sszuev.flashcards.android.utils.examplesAsString
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
+import com.github.sszuev.flashcards.android.utils.translationAsString
+import com.github.sszuev.flashcards.android.utils.translationFromString
 import kotlinx.coroutines.launch
 
 private const val FIRST_COLUMN_WIDTH = 32
@@ -340,16 +342,16 @@ fun CardsTableRow(
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp
         )
-        if (isTextShort(card.translation)) {
+        if (isTextShort(card.translationAsString)) {
             TableCell(
-                text = card.translation,
+                text = card.translationAsString,
                 weight = SECOND_COLUMN_WIDTH,
                 containerWidthDp = containerWidthDp
             )
         } else {
             TableCellWithPopup(
-                shortText = shortText(card.translation),
-                fullText = card.translation,
+                shortText = shortText(card.translationAsString),
+                fullText = card.translationAsString,
                 weight = SECOND_COLUMN_WIDTH,
                 containerWidthDp = containerWidthDp
             )
@@ -460,7 +462,7 @@ fun EditCardDialog(
     onSave: (CardEntity) -> Unit,
 ) {
     var word by remember { mutableStateOf(card.word) }
-    var translation by remember { mutableStateOf(card.translation) }
+    var translation by remember { mutableStateOf(card.translationAsString) }
     var examples by remember { mutableStateOf(examplesAsString(card.examples)) }
 
     Dialog(onDismissRequest = onDismiss) {
@@ -549,7 +551,7 @@ fun EditCardDialog(
                                 onSave(
                                     card.copy(
                                         word = word,
-                                        translation = translation,
+                                        translation = translationFromString(translation),
                                         examples = examplesAsList(examples),
                                         audioId = sound,
                                     )
@@ -587,7 +589,7 @@ fun AddCardDialog(
     LaunchedEffect(fetchedCard) {
         fetchedCard?.let { fetched ->
             if (word == initialWord) word = fetched.word
-            if (translation.isBlank()) translation = fetched.translation
+            if (translation.isBlank()) translation = fetched.translationAsString
             if (examples.isBlank()) examples = examplesAsString(fetched.examples)
         }
     }
@@ -690,7 +692,7 @@ fun AddCardDialog(
                                         cardId = null,
                                         dictionaryId = dictionaryId,
                                         word = word,
-                                        translation = translation,
+                                        translation = translationFromString(translation),
                                         examples = examplesAsList(examples),
                                         answered = 0,
                                         audioId = audioResource(sourceLang, word)

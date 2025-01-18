@@ -8,7 +8,6 @@ import com.github.sszuev.flashcards.android.repositories.CardWordExampleResource
 import com.github.sszuev.flashcards.android.repositories.CardWordResource
 import com.github.sszuev.flashcards.android.repositories.DictionaryResource
 import com.github.sszuev.flashcards.android.repositories.SettingsResource
-import com.github.sszuev.flashcards.android.utils.translationsAsString
 
 fun DictionaryResource.toDictionaryEntity() = DictionaryEntity(
     dictionaryId = this.dictionaryId,
@@ -36,7 +35,7 @@ fun CardResource.toCardEntity(): CardEntity {
         dictionaryId = this.dictionaryId,
         cardId = this.cardId,
         word = primary?.word ?: "",
-        translation = primary?.translations?.let { translationsAsString(it) } ?: "",
+        translation = primary?.translations?.flatten() ?: emptyList(),
         answered = answered ?: 0,
         examples = primary?.examples?.mapNotNull { it.example } ?: emptyList(),
         audioId = primary?.sound ?: "",
@@ -51,7 +50,7 @@ fun CardEntity.toCardResource(): CardResource {
     }
     val word = CardWordResource(
         word = word,
-        translations = listOf(listOf(translation)),
+        translations = this.translation.map { listOf(it) },
         examples = examples,
         sound = this.audioId,
         primary = true,

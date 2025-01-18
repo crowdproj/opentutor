@@ -17,6 +17,7 @@ import com.github.sszuev.flashcards.android.repositories.TTSRepository
 import com.github.sszuev.flashcards.android.repositories.TranslationRepository
 import com.github.sszuev.flashcards.android.toCardEntity
 import com.github.sszuev.flashcards.android.toCardResource
+import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -538,7 +539,7 @@ class CardViewModel(
         _fetchedCard.value = null
     }
 
-    fun nextDeckCard(numberOfRightAnswers: Int, onNextCard: (CardEntity) -> Unit = {}): Boolean {
+    fun nextDeckCardForStageShow(numberOfRightAnswers: Int, onNextCard: (CardEntity) -> Unit = {}): Boolean {
         val currentDeck = _cardsDeck.value
         var nextIndex = _stageShowCurrentDeckCardIndex.intValue + 1
 
@@ -555,7 +556,7 @@ class CardViewModel(
         }
     }
 
-    fun updateShowStageCurrentDeckCardAsAnsweredCorrectly(
+    fun updateStageShowCurrentDeckCardAsAnsweredCorrectly(
         numberOfRightAnswers: Int,
         onResultStage: () -> Unit
     ) {
@@ -572,7 +573,7 @@ class CardViewModel(
 
         if (allDeckCardsAnsweredCorrectly(numberOfRightAnswers)) {
             onResultStage()
-        } else if (!nextDeckCard(numberOfRightAnswers)) {
+        } else if (!nextDeckCardForStageShow(numberOfRightAnswers)) {
             onResultStage()
         }
     }
@@ -668,7 +669,7 @@ class CardViewModel(
         _cards.value = cards.value.sortedWith { a, b ->
             val result = when (sortField.value) {
                 "word" -> a.word.compareTo(b.word)
-                "translation" -> a.translation.compareTo(b.translation)
+                "translation" -> a.translationAsString.compareTo(b.translationAsString)
                 "status" -> a.answered.compareTo(b.answered)
                 else -> 0
             }
