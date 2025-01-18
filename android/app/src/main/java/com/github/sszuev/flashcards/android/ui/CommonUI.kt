@@ -1,8 +1,11 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.app.Activity
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,14 +15,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.VolumeUp
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -31,7 +41,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -40,6 +52,9 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.Popup
+import com.github.sszuev.flashcards.android.entities.CardEntity
+import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.utils.getUsernameFromPreferences
 
 @Composable
@@ -124,21 +139,201 @@ fun TableCell(
             },
         contentAlignment = Alignment.TopStart
     ) {
-        Text(
+        TableCellText(
             text = text,
-            textAlign = TextAlign.Start,
-            maxLines = Int.MAX_VALUE,
-            overflow = TextOverflow.Clip,
-            softWrap = true,
             lineHeight = lineHeight,
-            style = MaterialTheme.typography.bodyLarge.copy(
-                fontWeight = FontWeight.Bold,
-                color = textColor,
-                fontSize = fontSize,
-                letterSpacing = 0.5.sp,
-            )
+            textColor = textColor,
+            fontSize = fontSize,
         )
     }
+}
+
+@Composable
+fun TableCellWithPopup(
+    shortText: String,
+    fullText: String,
+    weight: Int,
+    containerWidthDp: Dp,
+    fontSize: TextUnit = 20.sp,
+    lineHeight: TextUnit = 40.sp,
+    textColor: Color = Color.DarkGray,
+) {
+    var isPopupVisible by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .width((containerWidthDp * weight / 100f))
+            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        isPopupVisible = true
+                    }
+                )
+            },
+        contentAlignment = Alignment.TopStart
+    ) {
+        TableCellText(
+            text = shortText,
+            lineHeight = lineHeight,
+            textColor = textColor,
+            fontSize = fontSize,
+        )
+        if (isPopupVisible) {
+            TablePopup(
+                text = fullText,
+                fontSize = fontSize,
+                lineHeight = lineHeight,
+                onClose = { isPopupVisible = false },
+            )
+        }
+    }
+}
+
+@Composable
+fun TableCellSelectable(
+    text: String,
+    isSelected: Boolean,
+    onSelect: () -> Unit,
+    fontSize: TextUnit = 20.sp,
+    lineHeight: TextUnit = 40.sp,
+    textColor: Color = Color.DarkGray,
+    borderColor: Color = Color.Red,
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+            .border(
+                BorderStroke(2.dp, if (isSelected) borderColor else Color.Transparent),
+                shape = MaterialTheme.shapes.small
+            )
+            .clickable { onSelect() },
+        contentAlignment = Alignment.CenterStart
+    ) {
+        TableCellText(
+            text = text,
+            fontSize = fontSize,
+            lineHeight = lineHeight,
+            textColor = textColor
+        )
+    }
+}
+
+@Composable
+fun TableCellSelectableWithPopup(
+    shortText: String,
+    fullText: String,
+    isSelected: Boolean,
+    onSelect: () -> Unit,
+    fontSize: TextUnit = 20.sp,
+    lineHeight: TextUnit = 40.sp,
+    textColor: Color = Color.DarkGray,
+    borderColor: Color = Color.Red
+) {
+    var isPopupVisible by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(4.dp)
+            .border(
+                BorderStroke(2.dp, if (isSelected) borderColor else Color.Transparent),
+                shape = MaterialTheme.shapes.small
+            )
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onTap = { onSelect() },
+                    onLongPress = { isPopupVisible = true }
+                )
+            },
+        contentAlignment = Alignment.CenterStart
+    ) {
+        TableCellText(
+            text = shortText,
+            fontSize = fontSize,
+            lineHeight = lineHeight,
+            textColor = textColor
+        )
+
+        if (isPopupVisible) {
+            TablePopup(
+                text = fullText,
+                onClose = { isPopupVisible = false },
+                fontSize = fontSize,
+                lineHeight = lineHeight
+            )
+        }
+    }
+}
+
+
+@Composable
+fun TablePopup(
+    text: String,
+    onClose: () -> Unit,
+    fontSize: TextUnit = 20.sp,
+    lineHeight: TextUnit = 40.sp
+) {
+    Popup(
+        alignment = Alignment.TopStart,
+        onDismissRequest = onClose
+    ) {
+        Card(
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    IconButton(
+                        onClick = onClose
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Close,
+                            contentDescription = "Close popup"
+                        )
+                    }
+                }
+
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyMedium.copy(
+                        fontSize = fontSize,
+                        lineHeight = lineHeight
+                    ),
+                    modifier = Modifier.padding(16.dp)
+                )
+            }
+        }
+    }
+}
+
+@Composable
+fun TableCellText(
+    text: String,
+    fontSize: TextUnit = 20.sp,
+    lineHeight: TextUnit = 40.sp,
+    textColor: Color = Color.DarkGray,
+) {
+    Text(
+        text = text,
+        textAlign = TextAlign.Start,
+        maxLines = Int.MAX_VALUE,
+        overflow = TextOverflow.Clip,
+        softWrap = true,
+        lineHeight = lineHeight,
+        style = MaterialTheme.typography.bodyLarge.copy(
+            fontWeight = FontWeight.Bold,
+            color = textColor,
+            fontSize = fontSize,
+            letterSpacing = 0.5.sp,
+        )
+    )
 }
 
 @Composable
@@ -247,6 +442,103 @@ fun SearchableDropdown(
                         modifier = Modifier.align(Alignment.End)
                     ) {
                         Text("CLOSE")
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun AudioPlayerIcon(
+    viewModel: CardViewModel,
+    card: CardEntity,
+    size: Dp = 24.dp,
+    modifier: Modifier = Modifier
+) {
+    val cardId = checkNotNull(card.cardId)
+
+    IconButton(
+        onClick = {
+            viewModel.loadAndPlayAudio(card)
+        },
+        enabled = viewModel.audioIsAvailable(cardId) && !viewModel.isAudioOperationInProgress(cardId),
+        modifier = modifier.padding(start = 8.dp)
+    ) {
+        if (viewModel.isAudioLoading(cardId)) {
+            CircularProgressIndicator(modifier = Modifier.size(size))
+        } else {
+            Icon(
+                imageVector = Icons.AutoMirrored.Filled.VolumeUp,
+                contentDescription = "Play word audio",
+                modifier = Modifier.size(size)
+            )
+        }
+    }
+}
+
+@Composable
+fun TextWithPopup(
+    shortText: String,
+    fullText: String,
+    fontSize: TextUnit = 20.sp,
+    lineHeight: TextUnit = 40.sp,
+    popupFontSize: TextUnit = 20.sp,
+    popupLineHeight: TextUnit = 40.sp,
+    style: TextStyle = MaterialTheme.typography.bodyMedium,
+    modifier: Modifier = Modifier,
+    textColor: Color = Color.Black
+) {
+    var isPopupVisible by remember { mutableStateOf(false) }
+
+    Box(
+        modifier = modifier
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = { isPopupVisible = true }
+                )
+            }
+    ) {
+        Text(
+            text = shortText,
+            style = style.copy(fontSize = fontSize, lineHeight = lineHeight, color = textColor)
+        )
+
+        if (isPopupVisible) {
+            Popup(
+                alignment = Alignment.TopStart,
+                onDismissRequest = { isPopupVisible = false }
+            ) {
+                Card(
+                    colors = CardDefaults.cardColors(
+                        containerColor = MaterialTheme.colorScheme.surface
+                    ),
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                ) {
+                    Column {
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.End
+                        ) {
+                            IconButton(
+                                onClick = { isPopupVisible = false }
+                            ) {
+                                Icon(
+                                    imageVector = Icons.Default.Close,
+                                    contentDescription = "Close popup"
+                                )
+                            }
+                        }
+
+                        Text(
+                            text = fullText,
+                            style = style.copy(
+                                fontSize = popupFontSize,
+                                lineHeight = popupLineHeight,
+                                color = textColor
+                            ),
+                            modifier = Modifier.padding(16.dp)
+                        )
                     }
                 }
             }

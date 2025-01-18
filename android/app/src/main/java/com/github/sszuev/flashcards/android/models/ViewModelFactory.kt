@@ -9,13 +9,14 @@ import com.github.sszuev.flashcards.android.repositories.TTSRepository
 import com.github.sszuev.flashcards.android.repositories.TranslationRepository
 
 class DictionariesViewModelFactory(
-    private val repository: DictionaryRepository
+    private val repository: DictionaryRepository,
+    private val signOut: () -> Unit,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(DictionaryViewModel::class.java)) {
-            return DictionaryViewModel(repository) as T
+            return DictionaryViewModel(repository, signOut) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
@@ -25,25 +26,27 @@ class CardsViewModelFactory(
     private val cardsRepository: CardsRepository,
     private val ttsRepository: TTSRepository,
     private val translationRepository: TranslationRepository,
+    private val signOut: () -> Unit,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CardViewModel::class.java)) {
-            return CardViewModel(cardsRepository, ttsRepository, translationRepository) as T
+            return CardViewModel(cardsRepository, ttsRepository, translationRepository, signOut) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
 
 class SettingsViewModelFactory(
-    private val repository: SettingsRepository
+    private val repository: SettingsRepository,
+    private val signOut: () -> Unit,
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SettingsViewModel::class.java)) {
-            return SettingsViewModel(repository) as T
+            return SettingsViewModel(repository, signOut) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

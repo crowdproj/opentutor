@@ -33,17 +33,23 @@ class MainActivity : ComponentActivity() {
     private val tag = "MainActivity"
 
     private val dictionaryViewModel: DictionaryViewModel by viewModels {
-        DictionariesViewModelFactory(DictionaryRepository(AppConfig.serverUri))
+        DictionariesViewModelFactory(
+            repository = DictionaryRepository(AppConfig.serverUri),
+            signOut = { onSignOut() },
+        )
     }
     private val cardViewModel: CardViewModel by viewModels {
         CardsViewModelFactory(
-            CardsRepository(AppConfig.serverUri),
-            TTSRepository(AppConfig.serverUri),
-            TranslationRepository(AppConfig.serverUri)
+            cardsRepository = CardsRepository(AppConfig.serverUri),
+            ttsRepository = TTSRepository(AppConfig.serverUri),
+            translationRepository = TranslationRepository(AppConfig.serverUri),
+            signOut = { onSignOut() }
         )
     }
     private val settingsViewModel: SettingsViewModel by viewModels {
-        SettingsViewModelFactory(SettingsRepository(AppConfig.serverUri))
+        SettingsViewModelFactory(
+            repository = SettingsRepository(AppConfig.serverUri),
+            signOut = { onSignOut() })
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +72,7 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 MainNavigation(
                     onSignOut = { onSignOut() },
-                    dictionariesViewModel = dictionaryViewModel,
+                    dictionaryViewModel = dictionaryViewModel,
                     cardViewModel = cardViewModel,
                     settingsViewModel = settingsViewModel,
                 )
@@ -76,7 +82,7 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun onSignOut() {
-        Log.i(tag, "LOG OUT")
+        Log.i(tag, "SIGN OUT")
         val prefs = getSharedPreferences("auth", MODE_PRIVATE)
 
         val idToken = prefs.getString("id_token", null)

@@ -14,5 +14,5 @@ data class SettingsResource (
     val stageMosaicTargetLangToSourceLang: Boolean? = null,
     val stageOptionsTargetLangToSourceLang: Boolean? = null,
     val stageWritingTargetLangToSourceLang: Boolean? = null,
-    val stageSelfTestTargetLangToSourceLang: Boolean? = null
+    val stageSelfTestTargetLangToSourceLang: Boolean? = null,
 )

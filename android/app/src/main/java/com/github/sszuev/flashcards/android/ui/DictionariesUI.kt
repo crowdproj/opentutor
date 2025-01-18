@@ -2,6 +2,7 @@ package com.github.sszuev.flashcards.android.ui
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -49,6 +50,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
+import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
@@ -66,7 +68,12 @@ fun DictionariesScreen(
     onHomeClick: () -> Unit = {},
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    cardViewModel: CardViewModel,
 ) {
+    BackHandler {
+        onHomeClick()
+    }
+
     val selectedDictionaryIds = dictionaryViewModel.selectedDictionaryIds
     val isEditPopupOpen = remember { mutableStateOf(false) }
     val isCreatePopupOpen = remember { mutableStateOf(false) }
@@ -103,6 +110,11 @@ fun DictionariesScreen(
             onSettingsClick = {
                 isSettingsPopupOpen.value = true
             },
+            onRunClick = {
+                if (selectedDictionaryIds.value.isNotEmpty()) {
+                    navController.navigate("StageShow")
+                }
+            },
             selectedDictionaryIds = selectedDictionaryIds.value,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
@@ -113,7 +125,8 @@ fun DictionariesScreen(
             viewModel = dictionaryViewModel,
             dictionary = selectedDictionary,
             onSave = {
-                dictionaryViewModel.updateDictionary(it)
+                val numberLearnedCards = cardViewModel.numberOfKnownCards(it.numberOfRightAnswers)
+                dictionaryViewModel.updateDictionary(it.copy(learnedWords = numberLearnedCards))
             },
             onDismiss = { isEditPopupOpen.value = false }
         )
@@ -147,9 +160,7 @@ fun DictionariesScreen(
     }
     if (isSettingsPopupOpen.value) {
         LaunchedEffect(isSettingsPopupOpen.value) {
-            if (settingsViewModel.settings.value == null) {
-                settingsViewModel.loadSettings()
-            }
+            settingsViewModel.loadSettings()
         }
 
         Box(
@@ -392,7 +403,8 @@ fun DictionariesBottomToolbar(
                 label = "RUN",
                 containerWidthDp = containerWidthDp,
                 weight = 21.43f,
-                onClick = onRunClick
+                onClick = onRunClick,
+                enabled = selectedDictionaryIds.isNotEmpty(),
             )
             ToolbarButton(
                 label = "CARDS",

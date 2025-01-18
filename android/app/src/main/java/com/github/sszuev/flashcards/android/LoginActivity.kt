@@ -21,7 +21,6 @@ class LoginActivity : ComponentActivity() {
     private val tag = "LoginActivity"
 
     private lateinit var authService: AuthorizationService
-    private val authRequestCode = 1001
 
     private lateinit var authorizationLauncher: ActivityResultLauncher<Intent>
 

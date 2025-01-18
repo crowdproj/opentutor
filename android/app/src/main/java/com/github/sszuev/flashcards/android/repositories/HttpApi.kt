@@ -29,20 +29,26 @@ suspend inline fun <reified T> authPost(
             configureRequest()
         }.body<T>()
     } catch (e: ResponseException) {
-        if (e.response.status == HttpStatusCode.Unauthorized) {
-            Log.d("HttpApi", "Received 401. Attempting to refresh token.")
-            refreshToken()
-            token = getAccessToken()
-            val res: T = httpClient.post(url) {
-                headers.append("Authorization", "Bearer $token")
-                contentType(ContentType.Application.Json)
-                configureRequest()
-            }.body()
-            Log.d("HttpApi", "second attempt succeeds")
-            res
-        } else {
-            // TODO: handle invalid: 400 Bad Request. Text: "{"error":"invalid_grant","error_description":"Session not active"}"
-            throw e
+        when (e.response.status) {
+            HttpStatusCode.Unauthorized -> {
+                Log.d("HttpApi", "Received 401. Attempting to refresh token.")
+                refreshToken()
+                token = getAccessToken()
+                val res: T = httpClient.post(url) {
+                    headers.append("Authorization", "Bearer $token")
+                    contentType(ContentType.Application.Json)
+                    configureRequest()
+                }.body()
+                Log.d("HttpApi", "second attempt succeeds")
+                res
+            }
+            HttpStatusCode.BadRequest -> {
+                Log.w("HttpApi", "400 Bad Request: ${e.response}")
+                throw InvalidTokenException("Session expired. Please log in again.", e)
+            }
+            else -> {
+                throw e
+            }
         }
     }
 }
@@ -59,7 +65,7 @@ suspend fun refreshToken() {
     val refreshToken = prefs.getString("refresh_token", null)
         ?: throw IllegalStateException("Refresh token is missing")
 
-    val response: TokenResponse =
+    val response: TokenResponse = try {
         httpClient.post("${AppConfig.serverUri}/realms/flashcards-realm/protocol/openid-connect/token") {
             contentType(ContentType.Application.FormUrlEncoded)
             setBody(
@@ -70,6 +76,14 @@ suspend fun refreshToken() {
                 ).formUrlEncode()
             )
         }.body()
+    } catch (e: ResponseException) {
+        if (e.response.status == HttpStatusCode.BadRequest) {
+            Log.w("HttpApi", "400 Bad Request: ${e.response}")
+            throw InvalidTokenException("Session expired. Please log in again.", e)
+        } else {
+            throw e
+        }
+    }
     prefs.edit()
         .putString("access_token", response.access_token)
         .putString("refresh_token", response.refresh_token)
@@ -85,3 +99,5 @@ data class TokenResponse(
     val expires_in: Int,
     val refresh_expires_in: Int,
 )
+
+class InvalidTokenException(message: String, cause: Exception) : Exception(message, cause)

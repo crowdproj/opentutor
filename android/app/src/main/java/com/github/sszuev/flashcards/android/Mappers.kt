@@ -8,9 +8,8 @@ import com.github.sszuev.flashcards.android.repositories.CardWordExampleResource
 import com.github.sszuev.flashcards.android.repositories.CardWordResource
 import com.github.sszuev.flashcards.android.repositories.DictionaryResource
 import com.github.sszuev.flashcards.android.repositories.SettingsResource
-import com.github.sszuev.flashcards.android.utils.translationsAsString
 
-fun DictionaryResource.toDictionary() = DictionaryEntity(
+fun DictionaryResource.toDictionaryEntity() = DictionaryEntity(
     dictionaryId = this.dictionaryId,
     name = checkNotNull(this.name),
     sourceLanguage = checkNotNull(this.sourceLang),
@@ -20,13 +19,23 @@ fun DictionaryResource.toDictionary() = DictionaryEntity(
     numberOfRightAnswers = this.numberOfRightAnswers ?: 15
 )
 
-fun CardResource.toCard(): CardEntity {
+fun DictionaryEntity.toDictionaryResource() = DictionaryResource(
+    dictionaryId = this.dictionaryId,
+    name = this.name,
+    sourceLang = this.sourceLanguage,
+    targetLang = this.targetLanguage,
+    total = this.totalWords,
+    learned = this.learnedWords,
+    numberOfRightAnswers = this.numberOfRightAnswers,
+)
+
+fun CardResource.toCardEntity(): CardEntity {
     val primary = this.words?.firstOrNull()
     return CardEntity(
         dictionaryId = this.dictionaryId,
         cardId = this.cardId,
         word = primary?.word ?: "",
-        translation = primary?.translations?.let { translationsAsString(it) } ?: "",
+        translation = primary?.translations?.flatten() ?: emptyList(),
         answered = answered ?: 0,
         examples = primary?.examples?.mapNotNull { it.example } ?: emptyList(),
         audioId = primary?.sound ?: "",
@@ -41,7 +50,7 @@ fun CardEntity.toCardResource(): CardResource {
     }
     val word = CardWordResource(
         word = word,
-        translations = listOf(listOf(translation)),
+        translations = this.translation.map { listOf(it) },
         examples = examples,
         sound = this.audioId,
         primary = true,
@@ -53,17 +62,6 @@ fun CardEntity.toCardResource(): CardResource {
         answered = answered,
     )
 }
-
-
-fun DictionaryEntity.toDictionaryResource() = DictionaryResource(
-    dictionaryId = this.dictionaryId,
-    name = this.name,
-    sourceLang = this.sourceLanguage,
-    targetLang = this.targetLanguage,
-    total = this.totalWords,
-    learned = this.learnedWords,
-    numberOfRightAnswers = this.numberOfRightAnswers,
-)
 
 fun SettingsEntity.toSettingsResource() = SettingsResource(
     stageShowNumberOfWords = stageShowNumberOfWords,
@@ -79,7 +77,7 @@ fun SettingsEntity.toSettingsResource() = SettingsResource(
     stageSelfTestTargetLangToSourceLang = stageSelfTestTargetLangToSourceLang,
 )
 
-fun SettingsResource.toSettings() = SettingsEntity(
+fun SettingsResource.toSettingsEntity() = SettingsEntity(
     stageShowNumberOfWords = stageShowNumberOfWords ?: 6,
     stageOptionsNumberOfVariants = stageOptionsNumberOfVariants ?: 6,
     numberOfWordsPerStage = numberOfWordsPerStage ?: 15,

@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -27,13 +26,9 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -62,6 +57,10 @@ import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.utils.audioResource
 import com.github.sszuev.flashcards.android.utils.examplesAsList
 import com.github.sszuev.flashcards.android.utils.examplesAsString
+import com.github.sszuev.flashcards.android.utils.isTextShort
+import com.github.sszuev.flashcards.android.utils.shortText
+import com.github.sszuev.flashcards.android.utils.translationAsString
+import com.github.sszuev.flashcards.android.utils.translationFromString
 import kotlinx.coroutines.launch
 
 private const val FIRST_COLUMN_WIDTH = 32
@@ -91,7 +90,8 @@ fun CardsScreen(
 
     LaunchedEffect(searchQuery.value, cards.size) {
         if (searchQuery.value.isNotBlank()) {
-            val index = cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
+            val index =
+                cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
             if (index != -1) {
                 listState.animateScrollToItem(index, scrollOffset = 50)
                 viewModel.selectCard(cards[index].cardId)
@@ -342,11 +342,20 @@ fun CardsTableRow(
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp
         )
-        TableCell(
-            text = card.translation,
-            weight = SECOND_COLUMN_WIDTH,
-            containerWidthDp = containerWidthDp
-        )
+        if (isTextShort(card.translationAsString)) {
+            TableCell(
+                text = card.translationAsString,
+                weight = SECOND_COLUMN_WIDTH,
+                containerWidthDp = containerWidthDp
+            )
+        } else {
+            TableCellWithPopup(
+                shortText = shortText(card.translationAsString),
+                fullText = card.translationAsString,
+                weight = SECOND_COLUMN_WIDTH,
+                containerWidthDp = containerWidthDp
+            )
+        }
         TableCell(
             text = percentage.toString(),
             weight = THIRD_COLUMN_WIDTH,
@@ -453,7 +462,7 @@ fun EditCardDialog(
     onSave: (CardEntity) -> Unit,
 ) {
     var word by remember { mutableStateOf(card.word) }
-    var translation by remember { mutableStateOf(card.translation) }
+    var translation by remember { mutableStateOf(card.translationAsString) }
     var examples by remember { mutableStateOf(examplesAsString(card.examples)) }
 
     Dialog(onDismissRequest = onDismiss) {
@@ -483,31 +492,7 @@ fun EditCardDialog(
                             label = { Text("Word") },
                             modifier = Modifier.weight(1f)
                         )
-                        IconButton(
-                            onClick = {
-                                val id = checkNotNull(card.cardId)
-                                if (viewModel.isAudioLoaded(id)) {
-                                    viewModel.playAudio(id)
-                                } else {
-                                    viewModel.loadAudio(id, card.audioId) {
-                                        viewModel.playAudio(id)
-                                    }
-                                }
-                            },
-                            enabled = !viewModel.isAudioLoading.value,
-                            modifier = Modifier.padding(start = 8.dp)
-                        ) {
-                            if (viewModel.isAudioPlaying.value) {
-                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                            } else if (viewModel.isAudioLoading.value) {
-                                CircularProgressIndicator(modifier = Modifier.size(24.dp))
-                            } else {
-                                Icon(
-                                    imageVector = Icons.AutoMirrored.Filled.VolumeUp,
-                                    contentDescription = "Play word audio"
-                                )
-                            }
-                        }
+                        AudioPlayerIcon(viewModel, card)
                     }
                 }
 
@@ -566,7 +551,7 @@ fun EditCardDialog(
                                 onSave(
                                     card.copy(
                                         word = word,
-                                        translation = translation,
+                                        translation = translationFromString(translation),
                                         examples = examplesAsList(examples),
                                         audioId = sound,
                                     )
@@ -604,12 +589,12 @@ fun AddCardDialog(
     LaunchedEffect(fetchedCard) {
         fetchedCard?.let { fetched ->
             if (word == initialWord) word = fetched.word
-            if (translation.isBlank()) translation = fetched.translation
+            if (translation.isBlank()) translation = fetched.translationAsString
             if (examples.isBlank()) examples = examplesAsString(fetched.examples)
         }
     }
 
-    Log.d(tag, "Fetch result: ['$word', '$translation', '$examples']")
+    Log.d(tag, "Fetch result: [word='$word', translation='$translation', examples='$examples']")
     if (word.isBlank()) {
         word = initialWord
     }
@@ -707,7 +692,7 @@ fun AddCardDialog(
                                         cardId = null,
                                         dictionaryId = dictionaryId,
                                         word = word,
-                                        translation = translation,
+                                        translation = translationFromString(translation),
                                         examples = examplesAsList(examples),
                                         answered = 0,
                                         audioId = audioResource(sourceLang, word)
