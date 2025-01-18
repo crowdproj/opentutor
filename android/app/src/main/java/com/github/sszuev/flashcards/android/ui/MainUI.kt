@@ -155,14 +155,20 @@ fun MainNavigation(
                         )
 
                         "StageSelfTestDirect" -> StageSelfTestScreen(
-                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = true,
                             onSignOut = onSignOut,
                         )
 
                         "StageSelfTestReverse" -> StageSelfTestScreen(
-                            onNext = { navController.navigateToNextStage(stageChain, index) },
+                            cardViewModel = cardViewModel,
+                            dictionaryViewModel = dictionaryViewModel,
+                            settingsViewModel = settingsViewModel,
+                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = { navController.navigateToDictionariesPage() },
                             direction = false,
                             onSignOut = onSignOut,
