@@ -42,6 +42,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -203,6 +204,7 @@ fun CardsTable(
 ) {
     val cards by viewModel.cards
     val isLoading by viewModel.isCardsLoading
+    val isLoaded = rememberSaveable { mutableStateOf(false) }
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
@@ -210,7 +212,10 @@ fun CardsTable(
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
     LaunchedEffect(Unit) {
-        viewModel.loadCards(dictionaryId)
+        if (!isLoaded.value) {
+            viewModel.loadCards(dictionaryId)
+            isLoaded.value = true
+        }
     }
 
     Box(

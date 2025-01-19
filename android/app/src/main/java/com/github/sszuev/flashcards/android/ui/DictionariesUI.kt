@@ -41,6 +41,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -195,6 +196,7 @@ fun DictionaryTable(
 ) {
     val dictionaries by viewModel.dictionaries
     val isLoading by viewModel.isDictionariesLoading
+    val isLoaded = rememberSaveable { mutableStateOf(false) }
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
@@ -204,7 +206,10 @@ fun DictionaryTable(
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadDictionaries()
+        if (!isLoaded.value) {
+            viewModel.loadDictionaries()
+            isLoaded.value = true
+        }
     }
 
     LaunchedEffect(dictionaries.size) {

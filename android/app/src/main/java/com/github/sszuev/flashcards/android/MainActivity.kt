@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_FlashcardsAndroid)
-        Log.d(tag, "onCreate::start")
 
         val prefs = getSharedPreferences("auth", MODE_PRIVATE)
         val accessToken = prefs.getString("access_token", null)
@@ -66,7 +65,6 @@ class MainActivity : ComponentActivity() {
             navigateToLogin()
             return
         }
-        Log.d(tag, "access token = $accessToken")
 
         setContent {
             MaterialTheme {
@@ -78,7 +76,6 @@ class MainActivity : ComponentActivity() {
                 )
             }
         }
-        Log.d(tag, "onCreate::done")
     }
 
     private fun onSignOut() {
