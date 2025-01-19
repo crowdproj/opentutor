@@ -64,8 +64,8 @@ import com.github.sszuev.flashcards.android.utils.translationFromString
 import kotlinx.coroutines.launch
 
 private const val FIRST_COLUMN_WIDTH = 32
-private const val SECOND_COLUMN_WIDTH = 58
-private const val THIRD_COLUMN_WIDTH = 10
+private const val SECOND_COLUMN_WIDTH = 54
+private const val THIRD_COLUMN_WIDTH = 14
 
 private const val tag = "CardsUI"
 
