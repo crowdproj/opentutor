@@ -52,7 +52,7 @@ fun StageShowScreen(
 ) {
 
     if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
-        throw IllegalStateException("no dictionaries selected")
+        return
     }
 
     BackHandler {
