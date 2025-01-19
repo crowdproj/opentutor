@@ -157,6 +157,7 @@ fun TableCellWithPopup(
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
+    onShortClick: () -> Unit = {},
 ) {
     var isPopupVisible by remember { mutableStateOf(false) }
 
@@ -166,6 +167,9 @@ fun TableCellWithPopup(
             .padding(vertical = 4.dp, horizontal = 8.dp)
             .pointerInput(Unit) {
                 detectTapGestures(
+                    onTap = {
+                        onShortClick()
+                    },
                     onLongPress = {
                         isPopupVisible = true
                     }

@@ -13,6 +13,7 @@ ktorVersion = "3.0.3"
 openIdVersion = "0.11.1"
 splashscreenVersion = "1.0.1"
 browserVersion = "1.8.0"
+constraintlayoutVersion = "2.2.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -33,6 +34,7 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", version.ref = "splashscreenVersion" }
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browserVersion" }
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayoutVersion" }
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktorVersion" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktorVersion" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }

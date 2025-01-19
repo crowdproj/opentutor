@@ -353,7 +353,8 @@ fun CardsTableRow(
                 shortText = shortText(card.translationAsString),
                 fullText = card.translationAsString,
                 weight = SECOND_COLUMN_WIDTH,
-                containerWidthDp = containerWidthDp
+                containerWidthDp = containerWidthDp,
+                onShortClick = onSelect,
             )
         }
         TableCell(
@@ -470,7 +471,8 @@ fun EditCardDialog(
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .imePadding(),
             color = MaterialTheme.colorScheme.background
         ) {
             LazyColumn(
@@ -478,6 +480,7 @@ fun EditCardDialog(
                     .fillMaxWidth()
                     .padding(16.dp)
                     .heightIn(max = 600.dp)
+                    .imePadding(),
             ) {
                 item {
                     Row(
@@ -604,7 +607,8 @@ fun AddCardDialog(
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .imePadding(),
             color = MaterialTheme.colorScheme.background
         ) {
             LazyColumn(
@@ -612,6 +616,7 @@ fun AddCardDialog(
                     .fillMaxWidth()
                     .padding(16.dp)
                     .heightIn(max = 600.dp)
+                    .imePadding(),
             ) {
                 if (viewModel.isCardFetching.value) {
                     item {
