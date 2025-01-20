@@ -40,6 +40,7 @@ class MainActivity : ComponentActivity() {
     }
     private val cardViewModel: CardViewModel by viewModels {
         CardsViewModelFactory(
+            context = application,
             cardsRepository = CardsRepository(AppConfig.serverUri),
             ttsRepository = TTSRepository(AppConfig.serverUri),
             translationRepository = TranslationRepository(AppConfig.serverUri),

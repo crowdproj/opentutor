@@ -86,6 +86,10 @@ fun StageShowScreen(
     var currentCard by remember { mutableStateOf(cards.firstOrNull()) }
 
     LaunchedEffect(currentCard) {
+        if (currentCard == null) {
+            onNextStage()
+            return@LaunchedEffect
+        }
         currentCard?.let { card ->
             Log.d(tag, "Playing audio for: ${card.word}")
             cardViewModel.loadAndPlayAudio(card)

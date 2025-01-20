@@ -90,6 +90,12 @@ fun OptionsPanelDirect(
     onNextStage: () -> Unit,
     direct: Boolean,
 ) {
+    val hasNavigated = remember { mutableStateOf(false) }
+
+    if (hasNavigated.value) {
+        return
+    }
+
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
     val leftCards = cardViewModel.unknownDeckCards { id ->
         dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
@@ -121,37 +127,38 @@ fun OptionsPanelDirect(
     }
 
     if (cardViewModel.additionalCardsDeck.value.size <= 1) {
+        Log.d(tag, "onNextStage: not enough additional cards")
         onNextStage()
         return
     }
 
-    val cardsMap = remember {
-        leftCards.associateWith { leftCard ->
+    val cardsMap = remember { mutableStateOf<Map<CardEntity, List<CardEntity>>>(emptyMap()) }
+
+    LaunchedEffect(Unit) {
+        val newMap = leftCards.associateWith { leftCard ->
             val rightCards = cardViewModel.additionalCardsDeck.value.shuffled()
                 .take(settings.stageOptionsNumberOfVariants - 1)
-            (rightCards + leftCard).distinct().shuffled()
-        }.toMutableMap()
+            (rightCards + leftCard).distinctBy { it.cardId }.shuffled()
+        }
+        Log.d(tag, "=".repeat(42))
+        newMap.forEach { (card, options) ->
+            Log.d(tag, "${card.cardId} => ${options.map { it.cardId }}")
+        }
+        cardsMap.value = newMap
     }
 
     val currentCard = remember { mutableStateOf(leftCards.firstOrNull()) }
     val selectedOption = remember { mutableStateOf<CardEntity?>(null) }
     val isCorrect = remember { mutableStateOf<Boolean?>(null) }
 
-    if (direct) {
-        LaunchedEffect(currentCard.value) {
-            if (currentCard.value == null) {
-                onNextStage()
-                return@LaunchedEffect
-            }
-            currentCard.value?.let { card ->
-                Log.d(tag, "Playing audio for: ${card.word}")
-                cardViewModel.loadAndPlayAudio(card)
-            }
-        }
-    }
-
     fun match(selectedItem: CardEntity): Boolean {
         return selectedItem.cardId == currentCard.value?.cardId
+    }
+
+    fun resetState() {
+        currentCard.value = null
+        cardsMap.value = emptyMap()
+        hasNavigated.value = true
     }
 
     fun onOptionSelected(selectedItem: CardEntity) {
@@ -159,40 +166,38 @@ fun OptionsPanelDirect(
         isCorrect.value = match(selectedItem)
 
         if (!direct) {
-            Log.d(tag, "Playing audio for: ${selectedItem.word}")
+            Log.d(tag, "reverse: playing audio for: [${selectedItem.cardId}: ${selectedItem.word}]")
             cardViewModel.loadAndPlayAudio(selectedItem)
         }
 
         cardViewModel.viewModelScope.launch {
             delay(STAGE_OPTIONS_CELL_DELAY_MS)
             if (isCorrect.value == true) {
-                val card = cardsMap.keys.first()
-                val cardId = checkNotNull(card.cardId)
+                currentCard.value?.let { cardsMap.value -= it }
 
-                val dictionaryId = checkNotNull(card.dictionaryId) { "no dictionary id" }
+                if (cardsMap.value.isEmpty()) {
+                    resetState()
+                    Log.d(tag, "onNextStage: no more cards to proceed")
+                    onNextStage()
+                    return@launch
+                }
+
+                val nextCard = cardsMap.value.keys.firstOrNull()
+
+                if (nextCard == null) {
+                    resetState()
+                    Log.d(tag, "onNextStage: null next card")
+                    onNextStage()
+                    return@launch
+                }
+
+                currentCard.value = nextCard
+
+                val cardId = checkNotNull(nextCard.cardId)
+                val dictionaryId = checkNotNull(nextCard.dictionaryId)
                 val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
 
-                currentCard.value = card
-
-                val wrongAnyway = cardViewModel.wrongAnsweredCardDeckIds.value.contains(cardId)
-                Log.i(
-                    tag,
-                    "Correct answer for card ${cardId}${if (wrongAnyway) ", but it is already marked as wrong" else ""}"
-                )
-
-                cardViewModel.updateDeckCard(
-                    cardId,
-                    dictionary.numberOfRightAnswers
-                )
-
-                cardsMap.remove(currentCard.value)
-                currentCard.value = cardsMap.keys.firstOrNull()
-                selectedOption.value = null
-                isCorrect.value = null
-
-                if (cardsMap.isEmpty()) {
-                    onNextStage()
-                }
+                cardViewModel.updateDeckCard(cardId, dictionary.numberOfRightAnswers)
             } else {
                 val cardId = checkNotNull(currentCard.value?.cardId)
                 Log.i(tag, "Wrong answer for card $cardId")
@@ -200,8 +205,38 @@ fun OptionsPanelDirect(
                 isCorrect.value = null
                 cardViewModel.markDeckCardAsWrong(cardId)
             }
+            selectedOption.value = null
+            isCorrect.value = null
         }
     }
+
+    Log.d(tag, "current word: [${currentCard.value?.cardId}: ${currentCard.value?.word}]")
+
+    val card = currentCard.value
+    if (card == null) {
+        Log.d(tag, "onNextStage: currentCard is null")
+        resetState()
+        onNextStage()
+        return
+    }
+
+    if (direct) {
+        LaunchedEffect(currentCard.value) {
+            if (currentCard.value == null) {
+                Log.d(tag, "onNextStage:LaunchedEffect -- currentCard is null")
+                resetState()
+                onNextStage()
+                return@LaunchedEffect
+            }
+            currentCard.value?.let { card ->
+                Log.d(tag, "direct: playing audio for: [${card.cardId}: ${card.word}]")
+                cardViewModel.loadAndPlayAudio(card)
+            }
+        }
+    }
+
+    val dictionary =
+        dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
 
     Column(
         modifier = Modifier
@@ -220,13 +255,6 @@ fun OptionsPanelDirect(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                val card = currentCard.value
-                if (card == null) {
-                    onNextStage()
-                    return
-                }
-                val dictionary =
-                    dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
                 if (direct || isTextShort(card.translationAsString)) {
                     Text(
                         text = if (direct) card.word else card.translationAsString,
@@ -284,7 +312,7 @@ fun OptionsPanelDirect(
             ) {
                 currentCard.value?.let { leftCard ->
                     items(
-                        cardsMap[leftCard] ?: emptyList(),
+                        cardsMap.value[leftCard] ?: emptyList(),
                         key = { checkNotNull(it.cardId) }) { option ->
                         if (direct) {
                             TableCellTranslation(
