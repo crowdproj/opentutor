@@ -97,9 +97,17 @@ fun OptionsPanelDirect(
     }
 
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
-    val leftCards = cardViewModel.unknownDeckCards { id ->
-        dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
-    }.shuffled().take(settings.numberOfWordsPerStage)
+    val leftCards = remember {
+        cardViewModel.unknownDeckCards { id ->
+            dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
+        }.shuffled().take(settings.numberOfWordsPerStage).also { cards ->
+            cards.firstOrNull()?.let {
+                if (direct) {
+                    cardViewModel.loadAndPlayAudio(it)
+                }
+            }
+        }
+    }
 
     if (leftCards.isEmpty()) {
         onNextStage()
@@ -197,6 +205,10 @@ fun OptionsPanelDirect(
                 val dictionaryId = checkNotNull(nextCard.dictionaryId)
                 val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
 
+                if (direct) {
+                    cardViewModel.loadAndPlayAudio(nextCard)
+                }
+
                 cardViewModel.updateDeckCard(cardId, dictionary.numberOfRightAnswers)
             } else {
                 val cardId = checkNotNull(currentCard.value?.cardId)
@@ -218,21 +230,6 @@ fun OptionsPanelDirect(
         resetState()
         onNextStage()
         return
-    }
-
-    if (direct) {
-        LaunchedEffect(currentCard.value) {
-            if (currentCard.value == null) {
-                Log.d(tag, "onNextStage:LaunchedEffect -- currentCard is null")
-                resetState()
-                onNextStage()
-                return@LaunchedEffect
-            }
-            currentCard.value?.let { card ->
-                Log.d(tag, "direct: playing audio for: [${card.cardId}: ${card.word}]")
-                cardViewModel.loadAndPlayAudio(card)
-            }
-        }
     }
 
     val dictionary =

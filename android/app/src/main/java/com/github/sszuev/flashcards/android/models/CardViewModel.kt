@@ -22,7 +22,6 @@ import com.github.sszuev.flashcards.android.toCardEntity
 import com.github.sszuev.flashcards.android.toCardResource
 import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
@@ -289,6 +288,7 @@ class CardViewModel(
     fun loadNextCardDeck(
         dictionaryIds: Set<String>,
         length: Int,
+        onComplete: (cards: List<CardEntity>) -> Unit,
     ) {
         viewModelScope.launch {
             _isCardsDeckLoading.value = true
@@ -309,6 +309,7 @@ class CardViewModel(
                 if (cards.isEmpty()) {
                     _errorMessage.value = "No cards available in the selected dictionaries."
                 }
+                onComplete(cards)
                 _cardsDeck.value = cards
             } catch (e: InvalidTokenException) {
                 signOut()
@@ -350,15 +351,6 @@ class CardViewModel(
             } finally {
                 _isAdditionalCardsDeckLoading.value = false
             }
-        }
-    }
-
-    fun waitForAudioToFinish(cardId: String, onComplete: () -> Unit) {
-        viewModelScope.launch {
-            while (isAudioLoading(cardId) || isAudioPlaying(cardId)) {
-                delay(100)
-            }
-            onComplete()
         }
     }
 
