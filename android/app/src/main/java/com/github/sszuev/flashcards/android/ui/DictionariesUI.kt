@@ -12,12 +12,16 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -37,6 +41,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -191,6 +196,7 @@ fun DictionaryTable(
 ) {
     val dictionaries by viewModel.dictionaries
     val isLoading by viewModel.isDictionariesLoading
+    val isLoaded = rememberSaveable { mutableStateOf(false) }
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
@@ -200,7 +206,10 @@ fun DictionaryTable(
     val listState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
-        viewModel.loadDictionaries()
+        if (!isLoaded.value) {
+            viewModel.loadDictionaries()
+            isLoaded.value = true
+        }
     }
 
     LaunchedEffect(dictionaries.size) {
@@ -463,63 +472,80 @@ fun EditDictionaryDialog(
     var dictionaryName by remember { mutableStateOf(dictionary.name) }
     var numberOfRightAnswers by remember { mutableStateOf(dictionary.numberOfRightAnswers.toString()) }
 
-    Dialog(onDismissRequest = onDismiss) {
+    Dialog(
+        onDismissRequest = onDismiss
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth(0.9f)
                 .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
                 .padding(24.dp)
+                .windowInsetsPadding(WindowInsets.ime),
         ) {
-            Column(
+            LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.imePadding(),
             ) {
-                Text(
-                    text = "${viewModel.languages[dictionary.sourceLanguage]} -> ${viewModel.languages[dictionary.targetLanguage]}",
-                    style = MaterialTheme.typography.titleMedium,
-                    color = Color.Gray
-                )
-                Text(
-                    text = "NAME:",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-                TextField(
-                    value = dictionaryName,
-                    onValueChange = { dictionaryName = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "ACCEPTED ANSWERS:",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-                TextField(
-                    value = numberOfRightAnswers,
-                    onValueChange = { numberOfRightAnswers = it.filter { char -> char.isDigit() } },
-                    modifier = Modifier.fillMaxWidth(0.5f)
-                )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Button(
-                        onClick = onDismiss,
+                item {
+                    Text(
+                        text = "${viewModel.languages[dictionary.sourceLanguage]} -> ${viewModel.languages[dictionary.targetLanguage]}",
+                        style = MaterialTheme.typography.titleMedium,
+                        color = Color.Gray
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "NAME:",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                    TextField(
+                        value = dictionaryName,
+                        onValueChange = { dictionaryName = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
+
+                item {
+                    Text(
+                        text = "ACCEPTED ANSWERS:",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                    TextField(
+                        value = numberOfRightAnswers,
+                        onValueChange = {
+                            numberOfRightAnswers = it.filter { char -> char.isDigit() }
+                        },
+                        modifier = Modifier.fillMaxWidth(0.5f)
+                    )
+                }
+
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
                     ) {
-                        Text(text = "CLOSE", fontSize = 16.sp)
-                    }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Button(
-                        onClick = {
-                            val updatedDictionary = dictionary.copy(
-                                name = dictionaryName,
-                                numberOfRightAnswers = numberOfRightAnswers.toIntOrNull() ?: 0
-                            )
-                            onSave(updatedDictionary)
-                            onDismiss()
+                        Button(
+                            onClick = onDismiss,
+                        ) {
+                            Text(text = "CLOSE", fontSize = 16.sp)
                         }
-                    ) {
-                        Text(text = "SAVE", fontSize = 16.sp)
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Button(
+                            onClick = {
+                                val updatedDictionary = dictionary.copy(
+                                    name = dictionaryName,
+                                    numberOfRightAnswers = numberOfRightAnswers.toIntOrNull() ?: 0
+                                )
+                                onSave(updatedDictionary)
+                                onDismiss()
+                            }
+                        ) {
+                            Text(text = "SAVE", fontSize = 16.sp)
+                        }
                     }
                 }
             }
@@ -544,67 +570,82 @@ fun AddDictionaryDialog(
                 .fillMaxWidth(0.9f)
                 .background(MaterialTheme.colorScheme.surface, shape = MaterialTheme.shapes.medium)
                 .padding(24.dp)
+                .windowInsetsPadding(WindowInsets.ime),
         ) {
-            Column(
+            LazyColumn(
                 verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.imePadding(),
             ) {
                 // Source Language
-                Text(text = "SOURCE:", style = MaterialTheme.typography.bodyLarge)
-                SearchableDropdown(
-                    options = viewModel.languages,
-                    selectedTag = selectedSourceLanguageTag,
-                    onOptionSelect = { selectedSourceLanguageTag = it }
-                )
+                item {
+                    Text(text = "SOURCE:", style = MaterialTheme.typography.bodyLarge)
+                    SearchableDropdown(
+                        options = viewModel.languages,
+                        selectedTag = selectedSourceLanguageTag,
+                        onOptionSelect = { selectedSourceLanguageTag = it }
+                    )
+                }
 
                 // Target Language
-                Text(text = "TARGET:", style = MaterialTheme.typography.bodyLarge)
-                SearchableDropdown(
-                    options = viewModel.languages,
-                    selectedTag = selectedTargetLanguageTag,
-                    onOptionSelect = { selectedTargetLanguageTag = it }
-                )
+                item {
+                    Text(text = "TARGET:", style = MaterialTheme.typography.bodyLarge)
+                    SearchableDropdown(
+                        options = viewModel.languages,
+                        selectedTag = selectedTargetLanguageTag,
+                        onOptionSelect = { selectedTargetLanguageTag = it }
+                    )
+                }
 
                 // Dictionary Name
-                Text(text = "Dictionary Name:", style = MaterialTheme.typography.bodyLarge)
-                TextField(
-                    value = dictionaryName,
-                    onValueChange = { dictionaryName = it },
-                    modifier = Modifier.fillMaxWidth()
-                )
-                Text(
-                    text = "ACCEPTED ANSWERS:",
-                    style = MaterialTheme.typography.bodyLarge,
-                    modifier = Modifier.padding(top = 8.dp)
-                )
-                TextField(
-                    value = numberOfRightAnswers,
-                    onValueChange = { numberOfRightAnswers = it.filter { char -> char.isDigit() } },
-                    modifier = Modifier.fillMaxWidth(0.5f)
-                )
+                item {
+                    Text(text = "Dictionary Name:", style = MaterialTheme.typography.bodyLarge)
+                    TextField(
+                        value = dictionaryName,
+                        onValueChange = { dictionaryName = it },
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.End
-                ) {
-                    Button(onClick = onDismiss) {
-                        Text(text = "CLOSE")
-                    }
-                    Spacer(modifier = Modifier.width(16.dp))
-                    Button(
-                        onClick = {
-                            if (selectedSourceLanguageTag != null && selectedTargetLanguageTag != null && dictionaryName.isNotBlank()) {
-                                onSave(
-                                    checkNotNull(selectedSourceLanguageTag),
-                                    checkNotNull(selectedTargetLanguageTag),
-                                    dictionaryName,
-                                    numberOfRightAnswers.toInt(),
-                                )
-                                onDismiss()
-                            }
-                        }
+                item {
+                    Text(
+                        text = "ACCEPTED ANSWERS:",
+                        style = MaterialTheme.typography.bodyLarge,
+                        modifier = Modifier.padding(top = 8.dp)
+                    )
+                    TextField(
+                        value = numberOfRightAnswers,
+                        onValueChange = {
+                            numberOfRightAnswers = it.filter { char -> char.isDigit() }
+                        },
+                        modifier = Modifier.fillMaxWidth(0.5f)
+                    )
+                }
+
+                item {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End
                     ) {
-                        Text(text = "SAVE")
+                        Button(onClick = onDismiss) {
+                            Text(text = "CLOSE")
+                        }
+                        Spacer(modifier = Modifier.width(16.dp))
+                        Button(
+                            onClick = {
+                                if (selectedSourceLanguageTag != null && selectedTargetLanguageTag != null && dictionaryName.isNotBlank()) {
+                                    onSave(
+                                        checkNotNull(selectedSourceLanguageTag),
+                                        checkNotNull(selectedTargetLanguageTag),
+                                        dictionaryName,
+                                        numberOfRightAnswers.toInt(),
+                                    )
+                                    onDismiss()
+                                }
+                            }
+                        ) {
+                            Text(text = "SAVE")
+                        }
                     }
                 }
             }
@@ -681,11 +722,14 @@ fun EditSettingsDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .heightIn(max = 600.dp)
-                .padding(16.dp),
+                .padding(16.dp)
+                .imePadding(),
             color = MaterialTheme.colorScheme.background
         ) {
             LazyColumn(
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier
+                    .padding(16.dp)
+                    .imePadding(),
             ) {
                 item {
                     Text(

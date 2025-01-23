@@ -1,6 +1,6 @@
 package com.github.sszuev.flashcards.android.models
 
-import android.media.MediaPlayer
+import android.app.Application
 import android.util.Log
 import android.util.LruCache
 import androidx.compose.runtime.State
@@ -9,7 +9,10 @@ import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.github.sszuev.flashcards.android.PLAY_AUDIO_EMERGENCY_TIMEOUT_MS
+import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
+import androidx.media3.common.Player
+import androidx.media3.exoplayer.ExoPlayer
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
@@ -19,7 +22,6 @@ import com.github.sszuev.flashcards.android.toCardEntity
 import com.github.sszuev.flashcards.android.toCardResource
 import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
@@ -28,6 +30,7 @@ import kotlin.io.path.deleteIfExists
 import kotlin.io.path.outputStream
 
 class CardViewModel(
+    private val context: Application,
     private val cardsRepository: CardsRepository,
     private val ttsRepository: TTSRepository,
     private val translationRepository: TranslationRepository,
@@ -49,21 +52,6 @@ class CardViewModel(
     val sortField: State<String?> = _sortField
     private val _isAscending = mutableStateOf(true)
     val isAscending: State<Boolean> = _isAscending
-
-    @Suppress("PrivatePropertyName")
-    private val NULL_AUDIO_MARKER = ByteArray(0)
-    private val _audioResources = object : LruCache<String, ByteArray?>(1024) {
-        fun getNullable(key: String): ByteArray? {
-            return when (val result = get(key)) {
-                NULL_AUDIO_MARKER -> null
-                else -> result
-            }
-        }
-
-        fun putNullable(key: String, value: ByteArray?) {
-            put(key, value ?: NULL_AUDIO_MARKER)
-        }
-    }
     private val _isAudioLoading = mutableStateMapOf<String, Boolean>()
     private val _isAudioPlaying = mutableStateMapOf<String, Boolean>()
 
@@ -92,6 +80,37 @@ class CardViewModel(
     val isAdditionalCardsDeckLoading: State<Boolean> = _isAdditionalCardsDeckLoading
     private val _additionalCardsDeck = mutableStateOf<List<CardEntity>>(emptyList())
     val additionalCardsDeck: State<List<CardEntity>> = _additionalCardsDeck
+
+    private val activeMediaPlayers = mutableMapOf<String, ExoPlayer>()
+
+    private val _audioResources = object : LruCache<String, ByteArray?>(1024) {
+        private val NULL_AUDIO_MARKER = ByteArray(0)
+
+        @Synchronized
+        fun getNullable(key: String): ByteArray? {
+            return when (val result = get(key)) {
+                NULL_AUDIO_MARKER -> null
+                else -> result
+            }
+        }
+
+        @Synchronized
+        fun putNullable(key: String, value: ByteArray?) {
+            put(key, value ?: NULL_AUDIO_MARKER)
+        }
+
+        @Synchronized
+        fun hasKey(key: String): Boolean {
+            return super.get(key) != null
+        }
+
+        @Suppress("ReplaceArrayEqualityOpWithArraysEquals")
+        @Synchronized
+        fun hasKeyAndValue(key: String): Boolean {
+            val res = super.get(key)
+            return res != null && res != NULL_AUDIO_MARKER
+        }
+    }
 
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
@@ -269,6 +288,7 @@ class CardViewModel(
     fun loadNextCardDeck(
         dictionaryIds: Set<String>,
         length: Int,
+        onComplete: (cards: List<CardEntity>) -> Unit,
     ) {
         viewModelScope.launch {
             _isCardsDeckLoading.value = true
@@ -284,11 +304,12 @@ class CardViewModel(
                         random = true,
                         unknown = true,
                         length = length,
-                    )
+                    ).distinct()
                 }.map { it.toCardEntity() }
                 if (cards.isEmpty()) {
                     _errorMessage.value = "No cards available in the selected dictionaries."
                 }
+                onComplete(cards)
                 _cardsDeck.value = cards
             } catch (e: InvalidTokenException) {
                 signOut()
@@ -316,7 +337,7 @@ class CardViewModel(
                         random = true,
                         unknown = false,
                         length = length,
-                    )
+                    ).distinct()
                 }.map { it.toCardEntity() }
                 if (cards.isEmpty()) {
                     _errorMessage.value = "No cards available in the selected dictionaries."
@@ -342,6 +363,7 @@ class CardViewModel(
             )
             return
         }
+        stopAllAudio()
         if (isAudioLoaded(cardId)) {
             playAudio(card)
         } else {
@@ -351,20 +373,9 @@ class CardViewModel(
         }
     }
 
-    fun waitForAudioToFinish(cardId: String, onComplete: () -> Unit) {
-        viewModelScope.launch {
-            while (isAudioOperationInProgress(cardId)) {
-                delay(100)
-            }
-            onComplete()
-        }
-    }
-
     private fun loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
-        if (_audioResources.get(cardId) != null) {
-            if (_audioResources.getNullable(cardId) != null) {
-                onLoaded()
-            }
+        if (_audioResources.hasKeyAndValue(cardId)) {
+            onLoaded()
             return
         }
         viewModelScope.launch {
@@ -398,14 +409,13 @@ class CardViewModel(
     private fun playAudio(card: CardEntity) {
         val cardId = checkNotNull(card.cardId)
 
-        val audioData = _audioResources.get(cardId)
-        @Suppress("ReplaceArrayEqualityOpWithArraysEquals")
-        if (audioData == null || audioData == NULL_AUDIO_MARKER) {
+        val audioData = _audioResources.getNullable(cardId)
+        if (audioData == null) {
             Log.d(tag, "playAudion: no audio data for [cardId = $cardId (${card.word})]")
             return
         }
 
-        if (_isAudioPlaying.putIfAbsent(cardId, true) == true) {
+        if (setAudioIsPlaying(cardId)) {
             Log.d(tag, "playAudion: audio is already playing for [cardId = $cardId (${card.word})]")
             return
         }
@@ -428,63 +438,40 @@ class CardViewModel(
                 }
 
                 withContext(Dispatchers.Main) {
-                    var isCompleted = false
-                    MediaPlayer().apply {
-                        val timeoutJob = viewModelScope.launch {
-                            delay(PLAY_AUDIO_EMERGENCY_TIMEOUT_MS)
-                            if (!isCompleted && !isPlaying) {
-                                Log.w(tag, "playAudion: timeout reached. Stopping playback.")
-                                releaseAudioResources(cardId, tempFile)
-                            }
-                        }
-                        setDataSource(tempFile.toFile().absolutePath)
-                        setOnPreparedListener {
-                            try {
-                                if (!isPlaying) {
+                    val exoPlayer = ExoPlayer.Builder(context).build()
+
+                    exoPlayer.apply {
+                        val mediaItem = MediaItem.fromUri(tempFile.toUri().toString())
+                        setMediaItem(mediaItem)
+                        prepare()
+                        playWhenReady = true
+
+                        addListener(object : Player.Listener {
+                            override fun onPlaybackStateChanged(playbackState: Int) {
+                                if (playbackState == Player.STATE_ENDED) {
                                     Log.d(
                                         tag,
-                                        "playAudio: starting playback [cardId = $cardId (${card.word})]"
+                                        "playAudio: playback completed [cardId = $cardId (${card.word})]"
                                     )
-                                    start()
+                                    this@apply.onFinish(cardId, tempFile)
                                 }
-                            } catch (e: Exception) {
+                            }
+
+                            override fun onPlayerError(error: PlaybackException) {
                                 Log.e(
                                     tag,
-                                    "playAudion: Error during playback start [cardId = $cardId (${card.word})]:" +
-                                            " ${e.localizedMessage}",
-                                    e
+                                    "playAudio: error occurred [cardId = $cardId (${card.word})]: ${error.message}",
+                                    error
                                 )
-                                releaseAudioResources(cardId, tempFile)
+                                this@apply.onFinish(cardId, tempFile)
                             }
-                        }
-                        setOnCompletionListener {
-                            try {
-                                Log.d(
-                                    tag,
-                                    "playAudion: completed [cardId = $cardId (${card.word})]"
-                                )
-                                onFinish()
-                                isCompleted = true
-                            } finally {
-                                releaseAudioResources(cardId, tempFile)
-                                timeoutJob.cancel()
-                            }
-                        }
-                        setOnErrorListener { mp, _, _ ->
-                            try {
-                                Log.d(tag, "playAudion: error, [cardId = $cardId (${card.word})]")
-                                mp.onFinish()
-                                isCompleted = true
-                                true
-                            } finally {
-                                releaseAudioResources(cardId, tempFile)
-                                timeoutJob.cancel()
-                            }
-                        }
-                        prepareAsync()
+                        })
+
+                        activeMediaPlayers[cardId] = this
+                        Log.d(tag, "playAudio: start playing [cardId = $cardId (${card.word})]")
+                        play()
                     }
                 }
-
             } catch (e: Exception) {
                 Log.e(
                     tag,
@@ -496,38 +483,51 @@ class CardViewModel(
         }
     }
 
+    private fun stopAllAudio() {
+        activeMediaPlayers.forEach { (cardId, player) ->
+            Log.d(tag, "stopAudio($cardId)")
+            try {
+                player.onFinish(cardId, null)
+            } catch (e: Exception) {
+                Log.e(tag, "Error stopping audio for [cardId = $cardId]: ${e.localizedMessage}", e)
+            }
+        }
+        activeMediaPlayers.clear()
+    }
+
+
+    private fun ExoPlayer.onFinish(cardId: String, tempFile: Path?) {
+        try {
+            release()
+        } catch (_: Exception) {
+        }
+        releaseAudioResources(cardId, tempFile)
+    }
+
     private fun releaseAudioResources(cardId: String, tempFile: Path?) {
         viewModelScope.launch(Dispatchers.Main) {
             _isAudioPlaying.remove(cardId)
+            activeMediaPlayers.remove(cardId)
+        }
+        viewModelScope.launch(Dispatchers.IO) {
             tempFile?.deleteIfExists()
         }
     }
 
-    private fun MediaPlayer.onFinish() {
-        stop()
-        reset()
-        release()
+    fun isAudioPlaying(cardId: String): Boolean {
+        return _isAudioPlaying[cardId] ?: false
+    }
+
+    private fun setAudioIsPlaying(cardId: String): Boolean {
+        return _isAudioPlaying.putIfAbsent(cardId, true) == true
     }
 
     private fun isAudioLoaded(cardId: String): Boolean {
-        return _audioResources.get(cardId) != null
-    }
-
-    @Suppress("ReplaceArrayEqualityOpWithArraysEquals")
-    fun audioIsAvailable(cardId: String): Boolean {
-        return _audioResources.get(cardId) != NULL_AUDIO_MARKER
+        return _audioResources.hasKey(cardId)
     }
 
     fun isAudioLoading(cardId: String): Boolean {
         return _isAudioLoading[cardId] ?: false
-    }
-
-    fun isAudioOperationInProgress(cardId: String): Boolean {
-        return isAudioLoading(cardId) || isAudioPlaying(cardId)
-    }
-
-    private fun isAudioPlaying(cardId: String): Boolean {
-        return _isAudioPlaying[cardId] ?: false
     }
 
     fun selectCard(cardId: String?) {

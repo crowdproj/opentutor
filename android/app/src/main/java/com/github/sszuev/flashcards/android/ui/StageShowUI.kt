@@ -1,6 +1,5 @@
 package com.github.sszuev.flashcards.android.ui
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -39,8 +38,6 @@ import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.delay
 
-private const val tag = "StageShowUI"
-
 @Composable
 fun StageShowScreen(
     dictionaryViewModel: DictionaryViewModel,
@@ -52,7 +49,7 @@ fun StageShowScreen(
 ) {
 
     if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
-        throw IllegalStateException("no dictionaries selected")
+        return
     }
 
     BackHandler {
@@ -66,8 +63,13 @@ fun StageShowScreen(
 
     LaunchedEffect(dictionaryViewModel.selectedDictionaryIds.value) {
         cardViewModel.loadNextCardDeck(
-            dictionaryViewModel.selectedDictionaryIds.value,
+            dictionaryIds = dictionaryViewModel.selectedDictionaryIds.value,
             length = settings.stageShowNumberOfWords,
+            onComplete = {
+                it.firstOrNull()?.let { card ->
+                    cardViewModel.loadAndPlayAudio(card)
+                }
+            }
         )
     }
 
@@ -84,13 +86,6 @@ fun StageShowScreen(
     }
 
     var currentCard by remember { mutableStateOf(cards.firstOrNull()) }
-
-    LaunchedEffect(currentCard) {
-        currentCard?.let { card ->
-            Log.d(tag, "Playing audio for: ${card.word}")
-            cardViewModel.loadAndPlayAudio(card)
-        }
-    }
 
     fun onNextCard(know: Boolean) {
         currentCard?.let { card ->
@@ -110,6 +105,8 @@ fun StageShowScreen(
 
         if (currentCard == null) {
             onNextStage()
+        } else {
+            cardViewModel.loadAndPlayAudio(checkNotNull(currentCard))
         }
     }
 

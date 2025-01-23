@@ -56,12 +56,13 @@ fun StageMosaicScreen(
     BackHandler {
         onHomeClick()
     }
+    if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
+        return
+    }
 
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
     val leftCards = cardViewModel.unknownDeckCards { id ->
-        checkNotNull(dictionaryViewModel.selectedDictionariesList
-            .singleOrNull { id == it.dictionaryId }) { "Can't find dictionary by id $id" }
-            .numberOfRightAnswers
+        dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
     }.shuffled().take(settings.numberOfWordsPerStage)
     val rightCards = cardViewModel.cardsDeck.value.shuffled()
 
@@ -168,9 +169,9 @@ fun MosaicPanels(
                         dictionaryNumberOfRightAnswers(it)
                     }
                 ) {
-                    cardViewModel.waitForAudioToFinish(cardId) {
-                        onNextStage()
-                    }
+                    cardViewModel.loadAndPlayAudio(leftItem)
+                    delay(STAGE_MOSAIC_CELL_DELAY_MS)
+                    onNextStage()
                 }
 
             } else {
@@ -182,9 +183,9 @@ fun MosaicPanels(
 
             if (leftCards.isEmpty()) {
                 Log.d(tag, "All left cards are matched. Moving to the next stage.")
-                cardViewModel.waitForAudioToFinish(cardId) {
-                    onNextStage()
-                }
+                //cardViewModel.loadAndPlayAudio(leftItem)
+                delay(STAGE_MOSAIC_CELL_DELAY_MS)
+                onNextStage()
             } else {
                 Log.d(tag, "Left cards: ${leftCards.size}, Right cards: ${rightCards.size}")
             }

@@ -42,6 +42,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,8 +65,8 @@ import com.github.sszuev.flashcards.android.utils.translationFromString
 import kotlinx.coroutines.launch
 
 private const val FIRST_COLUMN_WIDTH = 32
-private const val SECOND_COLUMN_WIDTH = 58
-private const val THIRD_COLUMN_WIDTH = 10
+private const val SECOND_COLUMN_WIDTH = 54
+private const val THIRD_COLUMN_WIDTH = 14
 
 private const val tag = "CardsUI"
 
@@ -203,6 +204,7 @@ fun CardsTable(
 ) {
     val cards by viewModel.cards
     val isLoading by viewModel.isCardsLoading
+    val isLoaded = rememberSaveable { mutableStateOf(false) }
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
@@ -210,7 +212,10 @@ fun CardsTable(
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
     LaunchedEffect(Unit) {
-        viewModel.loadCards(dictionaryId)
+        if (!isLoaded.value) {
+            viewModel.loadCards(dictionaryId)
+            isLoaded.value = true
+        }
     }
 
     Box(
@@ -353,7 +358,8 @@ fun CardsTableRow(
                 shortText = shortText(card.translationAsString),
                 fullText = card.translationAsString,
                 weight = SECOND_COLUMN_WIDTH,
-                containerWidthDp = containerWidthDp
+                containerWidthDp = containerWidthDp,
+                onShortClick = onSelect,
             )
         }
         TableCell(
@@ -470,7 +476,8 @@ fun EditCardDialog(
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .imePadding(),
             color = MaterialTheme.colorScheme.background
         ) {
             LazyColumn(
@@ -478,6 +485,7 @@ fun EditCardDialog(
                     .fillMaxWidth()
                     .padding(16.dp)
                     .heightIn(max = 600.dp)
+                    .imePadding(),
             ) {
                 item {
                     Row(
@@ -604,7 +612,8 @@ fun AddCardDialog(
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(16.dp)
+                .imePadding(),
             color = MaterialTheme.colorScheme.background
         ) {
             LazyColumn(
@@ -612,6 +621,7 @@ fun AddCardDialog(
                     .fillMaxWidth()
                     .padding(16.dp)
                     .heightIn(max = 600.dp)
+                    .imePadding(),
             ) {
                 if (viewModel.isCardFetching.value) {
                     item {

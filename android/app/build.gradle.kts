@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.github.sszuev.flashcards.android"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.github.sszuev.flashcards.android"
@@ -54,9 +54,11 @@ dependencies {
     implementation(libs.androidx.splashscreen)
     implementation(libs.androidx.browser)
     implementation(libs.androidx.compose.icons.extended)
+    implementation(libs.androidx.media3)
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.content.negotiation)
     implementation(libs.ktor.serialization.kotlinx.json)
+    implementation(libs.androidx.constraintlayout)
     implementation(libs.openid)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

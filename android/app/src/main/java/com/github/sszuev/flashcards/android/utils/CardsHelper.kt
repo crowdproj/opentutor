@@ -3,6 +3,7 @@ package com.github.sszuev.flashcards.android.utils
 import com.github.sszuev.flashcards.android.CELL_TEXT_LIMIT
 import com.github.sszuev.flashcards.android.STAGE_WRITING_PREFIX_LENGTH
 import com.github.sszuev.flashcards.android.entities.CardEntity
+import kotlin.math.max
 
 fun examplesAsString(examples: List<String>) = examples.joinToString("\n")
 
@@ -19,18 +20,20 @@ fun translationFromString(translation: String) = translation.split(",").map { it
 
 fun wordAsList(word: String) = word.split(", ").map { it.trim() }
 
-fun correctAnswerIndexOf(translation: List<String>, input: String): Int {
+fun correctAnswerIndexOf(samples: List<String>, input: String): Int {
     val txt = input.trim()
     if (txt.length < STAGE_WRITING_PREFIX_LENGTH) {
-        translation.forEachIndexed { index, tr ->
+        samples.forEachIndexed { index, tr ->
             if (tr.trim().equals(txt, true)) {
                 return index
             }
         }
         return -1
     }
-    translation.forEachIndexed { index, tr ->
-        if (tr.trim().startsWith(txt.substring(0, STAGE_WRITING_PREFIX_LENGTH), true)) {
+    samples.forEachIndexed { index, tr ->
+        if (tr.trim()
+                .startsWith(txt.substring(0, max(input.length, STAGE_WRITING_PREFIX_LENGTH)), true)
+        ) {
             return index
         }
     }
