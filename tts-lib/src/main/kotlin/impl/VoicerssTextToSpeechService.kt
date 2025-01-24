@@ -4,7 +4,6 @@ import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.toResourcePath
 import io.ktor.client.HttpClient
-import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
@@ -18,12 +17,7 @@ import org.slf4j.LoggerFactory
 private val logger = LoggerFactory.getLogger(VoicerssTextToSpeechService::class.java)
 
 class VoicerssTextToSpeechService(
-    private val clientProducer: () -> HttpClient = {
-        HttpClient {
-            install(HttpTimeout)
-            expectSuccess = true
-        }
-    },
+    private val httpClient: HttpClient = defaultHttpClient,
     private val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
     private val config: TTSConfig = TTSConfig(),
 ) : TextToSpeechService {
@@ -72,24 +66,22 @@ class VoicerssTextToSpeechService(
     }
 
     private suspend fun readBytes(lang: String, word: String): ByteArray {
-        return clientProducer().use {
-            it.get {
-                headers {
-                    append(HttpHeaders.Accept, "audio/wav")
-                }
-                url {
-                    protocol = URLProtocol.HTTP
-                    host = config.ttsServiceVoicerssApi
-                    parameter("key", config.ttsServiceVoicerssKey)
-                    parameter("f", config.ttsServiceVoicerssFormat)
-                    parameter("hl", lang)
-                    parameter("src", word)
-                    parameter("c", config.ttsServiceVoicerssCodec)
-                }
-                timeout {
-                    requestTimeoutMillis = config.httpClientRequestTimeoutMs
-                    connectTimeoutMillis = config.httpClientConnectTimeoutMs
-                }
+        return httpClient.get {
+            headers {
+                append(HttpHeaders.Accept, "audio/wav")
+            }
+            url {
+                protocol = URLProtocol.HTTP
+                host = config.ttsServiceVoicerssApi
+                parameter("key", config.ttsServiceVoicerssKey)
+                parameter("f", config.ttsServiceVoicerssFormat)
+                parameter("hl", lang)
+                parameter("src", word)
+                parameter("c", config.ttsServiceVoicerssCodec)
+            }
+            timeout {
+                requestTimeoutMillis = config.httpClientRequestTimeoutMs
+                connectTimeoutMillis = config.httpClientConnectTimeoutMs
             }
         }.readRawBytes()
     }
