@@ -44,6 +44,12 @@ class DictionariesServerProcessor(
                 }
                 context.repositories = repositories
                 corProcessor.execute(context)
+                context.errors.forEach {
+                    logger.error("$it")
+                    it.exception?.let { ex ->
+                        logger.error("Exception: ${ex.message}", ex)
+                    }
+                }
                 connection.publish(msg.replyTo, context.toByteArray())
             }
         }
