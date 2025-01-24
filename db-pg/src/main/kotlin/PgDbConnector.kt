@@ -22,7 +22,7 @@ class PgDbConnector(config: PgDbConfig) {
         it.password = config.jdbcPasswd
         it.maximumPoolSize = config.hikariPoolSize
         it.keepaliveTime = config.hikariPoolKeepAliveTimeMs
-        it.connectionInitSql = "SET timezone = 'UTC'; COMMIT; "
+        it.connectionInitSql = "SET timezone = 'UTC';"
         HikariDataSource(it)
     }
 
