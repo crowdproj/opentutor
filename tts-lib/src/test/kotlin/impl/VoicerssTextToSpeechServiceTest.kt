@@ -67,23 +67,21 @@ internal class VoicerssTextToSpeechServiceTest {
         val testWord1 = "test-1"
         val testLang1 = "XX"
         val service1 = VoicerssTextToSpeechService(
-            {
-                createHttpClient(
-                    createMockEngine(
-                        res = testData,
-                        lang = testLang1,
-                        format = "f1",
-                        key = "s1",
-                        word = testWord1,
-                    )
+            createHttpClient(
+                createMockEngine(
+                    res = testData,
+                    lang = testLang1,
+                    format = "f1",
+                    key = "s1",
+                    word = testWord1,
                 )
-            },
+            ),
             config = TTSConfig().copy(ttsServiceVoicerssFormat = "f1", ttsServiceVoicerssKey = "s1")
         )
         val res1 = service1.getResource("$testLang1:$testWord1")
         Assertions.assertNull(res1)
 
-        val service2 = VoicerssTextToSpeechService({
+        val service2 = VoicerssTextToSpeechService(
             createHttpClient(
                 createMockEngine(
                     res = testData,
@@ -93,7 +91,7 @@ internal class VoicerssTextToSpeechServiceTest {
                     word = "test-2",
                 )
             )
-        })
+        )
         val res2 = service2.getResource("EN:test-2")
         Assertions.assertArrayEquals(testData, res2)
     }

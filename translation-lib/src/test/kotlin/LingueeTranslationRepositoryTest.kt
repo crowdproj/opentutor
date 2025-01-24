@@ -100,19 +100,17 @@ class LingueeTranslationRepositoryTest {
         val testWord1 = "test-1"
         val testLang1 = "en"
         val testLang2 = "ru"
-        val service1 = LingueeTranslationRepository(
-            {
-                createHttpClient(
-                    createMockEngine(
-                        sourceLang = testLang1,
-                        targetLang = testLang2,
-                        word = testWord1,
-                    )
+        val service = LingueeTranslationRepository(
+            createHttpClient(
+                createMockEngine(
+                    sourceLang = testLang1,
+                    targetLang = testLang2,
+                    word = testWord1,
                 )
-            },
+            ),
             config = TranslationConfig()
         )
-        val res1 = service1.fetch(
+        val res1 = service.fetch(
             sourceLang = testLang1, targetLang = testLang2, word = testWord1
         )
         val expected = listOf(

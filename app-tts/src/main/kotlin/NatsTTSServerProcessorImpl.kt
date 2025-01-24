@@ -52,6 +52,12 @@ class NatsTTSServerProcessorImpl(
                 val context = ttsContextFromByteArray(msg.data)
                 context.repository = repository
                 processor.execute(context)
+                context.errors.forEach {
+                    logger.error("$it")
+                    it.exception?.let { ex ->
+                        logger.error("Exception: ${ex.message}", ex)
+                    }
+                }
                 connection.publish(msg.replyTo, context.toByteArray())
             }
         }

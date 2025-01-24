@@ -4,8 +4,6 @@ import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
-import io.ktor.client.plugins.HttpTimeout
-import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.timeout
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
@@ -13,25 +11,14 @@ import io.ktor.client.request.parameter
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
 import io.ktor.http.encodedPath
-import io.ktor.serialization.kotlinx.json.json
 import kotlinx.coroutines.withTimeout
-import kotlinx.serialization.json.Json
 import org.slf4j.LoggerFactory
 import java.net.URL
 
 private val logger = LoggerFactory.getLogger(LingueeTranslationRepository::class.java)
 
 class LingueeTranslationRepository(
-    private val clientProducer: () -> HttpClient = {
-        HttpClient {
-            install(HttpTimeout)
-            expectSuccess = true
-
-            install(ContentNegotiation) {
-                json(Json { ignoreUnknownKeys = true })
-            }
-        }
-    },
+    private val httpClient: HttpClient = defaultHttpClient,
     private val config: TranslationConfig = TranslationConfig(),
 ) : TranslationRepository {
 
@@ -59,28 +46,27 @@ class LingueeTranslationRepository(
         if (word.isBlank()) {
             throw IllegalArgumentException("Word is required")
         }
-        return clientProducer().use {
-            it.get {
-                headers {
-                    append(HttpHeaders.Accept, "application/json")
+        return httpClient.get {
+            headers {
+                append(HttpHeaders.Accept, "application/json")
+            }
+            url {
+                protocol = if (apiUrl.protocol == "http") URLProtocol.HTTP else URLProtocol.HTTPS
+                host = apiUrl.host
+                if (apiUrl.port != -1) {
+                    port = apiUrl.port
                 }
-                url {
-                    protocol = if (apiUrl.protocol == "http") URLProtocol.HTTP else URLProtocol.HTTPS
-                    host = apiUrl.host
-                    if (apiUrl.port != -1) {
-                        port = apiUrl.port
-                    }
-                    encodedPath = apiUrl.path
-                    parameter("src", sourceLang)
-                    parameter("dst", targetLang)
-                    parameter("query", word)
-                }
-                timeout {
-                    requestTimeoutMillis = config.httpClientRequestTimeoutMs
-                    connectTimeoutMillis = config.httpClientConnectTimeoutMs
-                }
-            }.body()
-        }
+                encodedPath = apiUrl.path
+                parameter("src", sourceLang)
+                parameter("dst", targetLang)
+                parameter("query", word)
+            }
+            timeout {
+                requestTimeoutMillis = config.httpClientRequestTimeoutMs
+                connectTimeoutMillis = config.httpClientConnectTimeoutMs
+            }
+        }.body()
+
     }
 
     companion object {
