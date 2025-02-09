@@ -363,7 +363,6 @@ class CardViewModel(
             )
             return
         }
-        stopAllAudio()
         if (isAudioLoaded(cardId)) {
             playAudio(card)
         } else {
@@ -482,19 +481,6 @@ class CardViewModel(
             }
         }
     }
-
-    private fun stopAllAudio() {
-        activeMediaPlayers.forEach { (cardId, player) ->
-            Log.d(tag, "stopAudio($cardId)")
-            try {
-                player.onFinish(cardId, null)
-            } catch (e: Exception) {
-                Log.e(tag, "Error stopping audio for [cardId = $cardId]: ${e.localizedMessage}", e)
-            }
-        }
-        activeMediaPlayers.clear()
-    }
-
 
     private fun ExoPlayer.onFinish(cardId: String, tempFile: Path?) {
         try {
