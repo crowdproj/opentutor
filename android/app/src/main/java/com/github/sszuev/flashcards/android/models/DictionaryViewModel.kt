@@ -29,6 +29,7 @@ class DictionaryViewModel(
     private val _isUpdateInProgress = mutableStateOf(true)
     private val _isCreateInProgress = mutableStateOf(true)
     private val _isDeleteInProgress = mutableStateOf(true)
+    private var _isDictionariesLoaded = false
     val isDictionariesLoading: State<Boolean> = _isDictionariesLoading
     private val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: State<String?> = _errorMessage
@@ -56,6 +57,14 @@ class DictionaryViewModel(
         }
         .sortedBy { it.second }
         .toMap()
+
+    fun loadDictionariesIfNeeded() {
+        if (_isDictionariesLoaded) {
+            return
+        }
+        loadDictionaries()
+        _isDictionariesLoaded = true
+    }
 
     fun loadDictionaries() {
         viewModelScope.launch {

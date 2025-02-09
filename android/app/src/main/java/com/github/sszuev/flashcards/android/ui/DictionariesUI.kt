@@ -207,7 +207,7 @@ fun DictionaryTable(
 
     LaunchedEffect(Unit) {
         if (!isLoaded.value) {
-            viewModel.loadDictionaries()
+            viewModel.loadDictionariesIfNeeded()
             isLoaded.value = true
         }
     }
