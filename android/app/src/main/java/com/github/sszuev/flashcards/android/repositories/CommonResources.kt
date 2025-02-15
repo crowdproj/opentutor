@@ -22,7 +22,7 @@ internal interface BaseResponse {
 
 internal fun handleErrors(container: BaseResponse) {
     if (container.errors?.isNotEmpty() == true) {
-        throw IllegalStateException(
+        throw ApiResponseException(
             "ERRORS::${
                 checkNotNull(container.errors)
                     .map { it.message }
@@ -31,3 +31,5 @@ internal fun handleErrors(container: BaseResponse) {
         )
     }
 }
+
+class ApiResponseException(message: String) : IllegalStateException(message)

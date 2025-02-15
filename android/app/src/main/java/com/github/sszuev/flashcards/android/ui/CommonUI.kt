@@ -462,10 +462,7 @@ fun AudioPlayerIcon(
 ) {
     val cardId = checkNotNull(card.cardId)
 
-    val isAudioPlaying = viewModel.isAudioPlaying(cardId)
-    val isAudioLoading = viewModel.isAudioLoading(cardId)
-
-    val enabled =  !(isAudioLoading || isAudioPlaying)
+    val enabled =  !(viewModel.isAudioProcessing(cardId))
 
     IconButton(
         onClick = {

@@ -14,6 +14,7 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.github.sszuev.flashcards.android.entities.CardEntity
+import com.github.sszuev.flashcards.android.repositories.ApiResponseException
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
 import com.github.sszuev.flashcards.android.repositories.TTSRepository
@@ -22,6 +23,7 @@ import com.github.sszuev.flashcards.android.toCardEntity
 import com.github.sszuev.flashcards.android.toCardResource
 import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.nio.file.Files
@@ -397,6 +399,10 @@ class CardViewModel(
             if (resource != null) {
                 onLoaded()
             }
+        } catch (e: ApiResponseException) {
+            // TODO: handle use case when lang is not supported by TTS service
+            _audioResources.putNullable(cardId, null)
+            Log.e(tag, "Failed to load audio", e)
         } catch (e: Exception) {
             _errorMessage.value = "Failed to load audio: ${e.localizedMessage}"
             Log.e(tag, "Failed to load audio", e)
@@ -448,6 +454,7 @@ class CardViewModel(
                         addListener(object : Player.Listener {
                             override fun onPlaybackStateChanged(playbackState: Int) {
                                 if (playbackState == Player.STATE_ENDED) {
+                                    _isAudioPlaying[cardId] = false
                                     Log.d(
                                         tag,
                                         "playAudio: playback completed [cardId = $cardId (${card.word})]"
@@ -492,15 +499,25 @@ class CardViewModel(
 
     private fun releaseAudioResources(cardId: String, tempFile: Path?) {
         viewModelScope.launch(Dispatchers.Main) {
-            _isAudioPlaying.remove(cardId)
             activeMediaPlayers.remove(cardId)
+            _isAudioPlaying.remove(cardId)
         }
         viewModelScope.launch(Dispatchers.IO) {
             tempFile?.deleteIfExists()
         }
     }
 
-    fun isAudioPlaying(cardId: String): Boolean {
+    suspend fun waitForAudionProcessing(cardId: String) {
+        while (isAudioProcessing(cardId)) {
+            delay(100)
+        }
+    }
+
+    fun isAudioProcessing(cardId: String): Boolean {
+        return isAudioLoading(cardId) || isAudioPlaying(cardId)
+    }
+
+    private fun isAudioPlaying(cardId: String): Boolean {
         return _isAudioPlaying[cardId] ?: false
     }
 
@@ -600,11 +617,6 @@ class CardViewModel(
                 _wrongAnsweredCardDeckIds.value.contains(it.cardId)
             }.sortedBy { -it.answered }
     }
-
-    fun allDeckCardsAnsweredCorrectly(numberOfRightAnswers: (CardEntity) -> Int): Boolean =
-        _wrongAnsweredCardDeckIds.value.isEmpty() && _cardsDeck.value.all {
-            it.answered >= numberOfRightAnswers(it)
-        }
 
     fun numberOfKnownCards(numberOfRightAnswers: Int): Int =
         _cards.value.count { it.answered >= numberOfRightAnswers }
