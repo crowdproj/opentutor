@@ -43,6 +43,7 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.correctAnswerIndexOf
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
@@ -58,6 +59,7 @@ fun StageWritingScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -87,8 +89,9 @@ fun StageWritingScreen(
                 cardViewModel = cardViewModel,
                 dictionaryViewModel = dictionaryViewModel,
                 settingsViewModel = settingsViewModel,
+                ttsViewModel = ttsViewModel,
                 onNextStage = onNextStage,
-                direct = direction
+                direct = direction,
             )
         }
     }
@@ -99,6 +102,7 @@ fun WritingPanels(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit,
     direct: Boolean,
 ) {
@@ -127,7 +131,7 @@ fun WritingPanels(
             }
             currentCard.value?.let { card ->
                 Log.d(tag, "Playing audio for: ${card.word}")
-                cardViewModel.loadAndPlayAudio(card)
+                ttsViewModel.loadAndPlayAudio(card)
             }
         }
     }
@@ -222,7 +226,7 @@ fun WritingPanels(
                 )
                 if (direct) {
                     AudioPlayerIcon(
-                        viewModel = cardViewModel,
+                        ttsViewModel = ttsViewModel,
                         card = card,
                         modifier = Modifier.size(64.dp),
                         size = 64.dp
@@ -324,7 +328,7 @@ fun WritingPanels(
                     }
 
                     if (!direct) {
-                        cardViewModel.loadAndPlayAudio(card)
+                        ttsViewModel.loadAndPlayAudio(card)
                     }
                 },
                 onNext = {

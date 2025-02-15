@@ -33,6 +33,7 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -46,6 +47,7 @@ fun StageOptionsScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -75,6 +77,7 @@ fun StageOptionsScreen(
                 cardViewModel = cardViewModel,
                 dictionaryViewModel = dictionaryViewModel,
                 settingsViewModel = settingsViewModel,
+                ttsViewModel = ttsViewModel,
                 onNextStage = onNextStage,
                 direct = direction,
             )
@@ -87,6 +90,7 @@ fun OptionsPanelDirect(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit,
     direct: Boolean,
 ) {
@@ -108,8 +112,8 @@ fun OptionsPanelDirect(
                             tag,
                             "direct: playing audio for: [${it.cardId}: ${it.word}]"
                         )
-                        cardViewModel.loadAndPlayAudio(it)
-                        cardViewModel.waitForAudionProcessing(checkNotNull(it.cardId))
+                        ttsViewModel.loadAndPlayAudio(it)
+                        ttsViewModel.waitForAudionProcessing(checkNotNull(it.cardId))
                     }
                 }
             }
@@ -204,8 +208,8 @@ fun OptionsPanelDirect(
                         tag,
                         "reverse: playing audio for: [${selectedItem.cardId}: ${selectedItem.word}]"
                     )
-                    cardViewModel.loadAndPlayAudio(selectedItem)
-                    cardViewModel.waitForAudionProcessing(checkNotNull(selectedItem.cardId))
+                    ttsViewModel.loadAndPlayAudio(selectedItem)
+                    ttsViewModel.waitForAudionProcessing(checkNotNull(selectedItem.cardId))
                 } else {
                     delay(STAGE_OPTIONS_CELL_DELAY_MS)
                 }
@@ -241,8 +245,8 @@ fun OptionsPanelDirect(
                             tag,
                             "direct: playing audio for: [${cardId}: ${nextCard.word}]"
                         )
-                        cardViewModel.loadAndPlayAudio(nextCard)
-                        cardViewModel.waitForAudionProcessing(cardId)
+                        ttsViewModel.loadAndPlayAudio(nextCard)
+                        ttsViewModel.waitForAudionProcessing(cardId)
                     }
                 } else {
                     val cardId = checkNotNull(currentCard.value?.cardId)
@@ -321,7 +325,7 @@ fun OptionsPanelDirect(
                     )
                     if (direct) {
                         AudioPlayerIcon(
-                            viewModel = cardViewModel,
+                            ttsViewModel = ttsViewModel,
                             card = card,
                             modifier = Modifier.size(64.dp),
                             size = 64.dp

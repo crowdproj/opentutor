@@ -35,6 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -47,6 +48,7 @@ fun StageSelfTestScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -79,6 +81,7 @@ fun StageSelfTestScreen(
                 settingsViewModel = settingsViewModel,
                 onNextStage = onNextStage,
                 direct = direction,
+                ttsViewModel = ttsViewModel,
             )
         }
     }
@@ -89,6 +92,7 @@ fun SelfTestPanels(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit = {},
     direct: Boolean = true,
 ) {
@@ -114,7 +118,7 @@ fun SelfTestPanels(
             }
             currentCard.value?.let { card ->
                 Log.d(tag, "Playing audio for: ${card.word}")
-                cardViewModel.loadAndPlayAudio(card)
+                ttsViewModel.loadAndPlayAudio(card)
             }
         }
     }
@@ -203,7 +207,7 @@ fun SelfTestPanels(
                 )
                 if (direct) {
                     AudioPlayerIcon(
-                        viewModel = cardViewModel,
+                        ttsViewModel = ttsViewModel,
                         card = card,
                         modifier = Modifier.size(64.dp),
                         size = 64.dp
@@ -240,7 +244,7 @@ fun SelfTestPanels(
                             buttonsEnabled = true
                             if (!direct) {
                                 Log.d(tag, "Playing audio for: ${card.word}")
-                                cardViewModel.loadAndPlayAudio(card)
+                                ttsViewModel.loadAndPlayAudio(card)
                             }
                         },
                     contentAlignment = Alignment.Center

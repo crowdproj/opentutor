@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.translationAsString
 
 @Composable
@@ -41,6 +42,7 @@ fun StageShowScreen(
     dictionaryViewModel: DictionaryViewModel,
     cardViewModel: CardViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -65,7 +67,7 @@ fun StageShowScreen(
             length = settings.stageShowNumberOfWords,
             onComplete = {
                 it.firstOrNull()?.let { card ->
-                    cardViewModel.loadAndPlayAudio(card)
+                    ttsViewModel.loadAndPlayAudio(card)
                 }
             }
         )
@@ -104,7 +106,7 @@ fun StageShowScreen(
         if (currentCard == null) {
             onNextStage()
         } else {
-            cardViewModel.loadAndPlayAudio(checkNotNull(currentCard))
+            ttsViewModel.loadAndPlayAudio(checkNotNull(currentCard))
         }
     }
 
@@ -169,7 +171,7 @@ fun StageShowScreen(
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         AudioPlayerIcon(
-                            viewModel = cardViewModel,
+                            ttsViewModel = ttsViewModel,
                             card = card,
                             modifier = Modifier.size(64.dp),
                             size = 64.dp
@@ -197,7 +199,7 @@ fun StageShowScreen(
             }
         }
 
-        val enabled = !cardViewModel.isAudioProcessing(checkNotNull(currentCard?.cardId))
+        val enabled = !ttsViewModel.isAudioProcessing(checkNotNull(currentCard?.cardId))
 
         val alpha by animateFloatAsState(if (enabled) 1f else 0.5f)
 

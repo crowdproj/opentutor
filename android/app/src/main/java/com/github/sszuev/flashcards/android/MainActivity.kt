@@ -15,6 +15,8 @@ import com.github.sszuev.flashcards.android.models.DictionariesViewModelFactory
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModelFactory
+import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModelFactory
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
 import com.github.sszuev.flashcards.android.repositories.SettingsRepository
@@ -40,10 +42,15 @@ class MainActivity : ComponentActivity() {
     }
     private val cardViewModel: CardViewModel by viewModels {
         CardsViewModelFactory(
-            context = application,
             cardsRepository = CardsRepository(AppConfig.serverUri),
-            ttsRepository = TTSRepository(AppConfig.serverUri),
             translationRepository = TranslationRepository(AppConfig.serverUri),
+            signOut = { onSignOut() }
+        )
+    }
+    private val ttsViewModel: TTSViewModel by viewModels {
+        TTSViewModelFactory(
+            context = application,
+            ttsRepository = TTSRepository(AppConfig.serverUri),
             signOut = { onSignOut() }
         )
     }
@@ -74,6 +81,7 @@ class MainActivity : ComponentActivity() {
                     dictionaryViewModel = dictionaryViewModel,
                     cardViewModel = cardViewModel,
                     settingsViewModel = settingsViewModel,
+                    ttsViewModel = ttsViewModel,
                 )
             }
         }

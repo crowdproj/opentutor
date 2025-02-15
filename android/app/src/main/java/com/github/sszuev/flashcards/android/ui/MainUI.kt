@@ -16,6 +16,7 @@ import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 
 private const val tag = "Navigation"
 
@@ -25,6 +26,7 @@ fun MainNavigation(
     dictionaryViewModel: DictionaryViewModel,
     cardViewModel: CardViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
 ) {
     val navController = rememberNavController()
 
@@ -69,11 +71,12 @@ fun MainNavigation(
                     check(dictionary.dictionaryId == dictionaryId) { "Wrong dictionaryId" }
                     CardsScreen(
                         dictionary = dictionary,
-                        viewModel = cardViewModel,
+                        cardViewModel = cardViewModel,
                         onSignOut = onSignOut,
                         onHomeClick = {
                             navController.navigateToDictionariesPage(dictionaryViewModel)
                         },
+                        ttsViewModel = ttsViewModel,
                     )
                 } else {
                     navController.popBackStack("dictionaries", inclusive = false)
@@ -86,6 +89,7 @@ fun MainNavigation(
                             dictionaryViewModel = dictionaryViewModel,
                             cardViewModel = cardViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onSignOut = onSignOut,
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(
@@ -99,6 +103,7 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onSignOut = onSignOut,
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(
@@ -121,12 +126,14 @@ fun MainNavigation(
                             },
                             onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             direction = false,
+                            ttsViewModel = ttsViewModel,
                         )
 
                         "StageOptionsDirect" -> StageOptionsScreen(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onSignOut = onSignOut,
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(
@@ -141,6 +148,7 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onSignOut = onSignOut,
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(
@@ -155,6 +163,7 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(
@@ -169,6 +178,7 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(
@@ -183,6 +193,7 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(
@@ -197,6 +208,7 @@ fun MainNavigation(
                             cardViewModel = cardViewModel,
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
+                            ttsViewModel = ttsViewModel,
                             onNextStage = { navController.navigateToNextStage(stageChain, index) },
                             onHomeClick = {
                                 navController.navigateToDictionariesPage(

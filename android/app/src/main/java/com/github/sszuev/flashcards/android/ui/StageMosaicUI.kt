@@ -30,6 +30,7 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -43,6 +44,7 @@ fun StageMosaicScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -85,6 +87,7 @@ fun StageMosaicScreen(
                 initialRightCards = rightCards,
                 direct = direction,
                 onNextStage = onNextStage,
+                ttsViewModel = ttsViewModel,
             )
         }
     }
@@ -94,6 +97,7 @@ fun StageMosaicScreen(
 fun MosaicPanels(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
+    ttsViewModel: TTSViewModel,
     initialLeftCards: List<CardEntity>,
     initialRightCards: List<CardEntity>,
     direct: Boolean,
@@ -160,7 +164,7 @@ fun MosaicPanels(
                     val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
 
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                    cardViewModel.waitForAudionProcessing(cardId)
+                    ttsViewModel.waitForAudionProcessing(cardId)
                     leftCards.remove(leftItem)
                     rightCards.remove(rightItem)
                     selectedLeftItem.value = null
@@ -180,7 +184,7 @@ fun MosaicPanels(
                 } else {
                     Log.i(tag, "Wrong answer for card $cardId(${leftItem.word})")
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                    cardViewModel.waitForAudionProcessing(cardId)
+                    ttsViewModel.waitForAudionProcessing(cardId)
                     selectedLeftItem.value = null
                     selectedRightItem.value = null
                     cardViewModel.markDeckCardAsWrong(cardId)
@@ -219,7 +223,7 @@ fun MosaicPanels(
                             rightItem = selectedRightItem.value,
                         ),
                         onSelect = {
-                            cardViewModel.loadAndPlayAudio(item)
+                            ttsViewModel.loadAndPlayAudio(item)
                             selectedLeftItem.value = item
                             onSelectItem()
                         }
@@ -268,7 +272,7 @@ fun MosaicPanels(
                             rightItem = selectedRightItem.value,
                         ),
                         onSelect = {
-                            cardViewModel.loadAndPlayAudio(item)
+                            ttsViewModel.loadAndPlayAudio(item)
                             selectedRightItem.value = item
                             onSelectItem()
                         }

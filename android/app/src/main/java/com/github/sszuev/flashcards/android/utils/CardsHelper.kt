@@ -11,6 +11,14 @@ fun examplesAsList(examples: String) = if (examples.isBlank()) emptyList() else 
 
 fun audioResource(lang: String, word: String): String = lang + ":" + word.replace(" ", "")
 
+fun wordFromAudioResource(audioResourceId: String): String {
+    return audioResourceId.substringAfter(":")
+}
+
+fun langFromAudioResource(audioResourceId: String): String {
+    return audioResourceId.substringBefore(":")
+}
+
 fun isTextShort(text: String) = text.length <= CELL_TEXT_LIMIT
 
 fun shortText(text: String) =
