@@ -138,10 +138,8 @@ fun OptionsPanelDirect(
     }
 
     val errorMessage = cardViewModel.errorMessage.value
+    ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
-        }
         return
     }
 

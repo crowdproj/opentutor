@@ -113,6 +113,12 @@ fun MosaicPanels(
     val isAnswerProcessing = remember { mutableStateOf(false) }
     val isCorrectAnswerProcessing = remember { mutableStateOf(false) }
 
+    val errorMessage = cardViewModel.errorMessage.value
+    ErrorMessageBox(errorMessage)
+    if (errorMessage != null) {
+        return
+    }
+
     fun match(): Boolean {
         val leftId = selectedLeftItem.value?.cardId
         val rightId = selectedRightItem.value?.cardId

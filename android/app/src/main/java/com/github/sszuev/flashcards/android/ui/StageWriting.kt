@@ -118,6 +118,12 @@ fun WritingPanels(
         return
     }
 
+    val errorMessage = cardViewModel.errorMessage.value
+    ErrorMessageBox(errorMessage)
+    if (errorMessage != null) {
+        return
+    }
+
     val currentCard = remember { mutableStateOf(cards.firstOrNull()) }
     var isEditable by remember { mutableStateOf(true) }
     var inputText by remember { mutableStateOf("") }

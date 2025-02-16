@@ -242,13 +242,7 @@ fun CardsTable(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
 
-                errorMessage != null -> {
-                    Text(
-                        text = checkNotNull(errorMessage),
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                }
+                errorMessage != null -> ErrorMessageBox(errorMessage)
 
                 cards.isEmpty() -> {
                     Text(

@@ -108,6 +108,12 @@ fun SelfTestPanels(
         return
     }
 
+    val errorMessage = cardViewModel.errorMessage.value
+    ErrorMessageBox(errorMessage)
+    if (errorMessage != null) {
+        return
+    }
+
     val currentCard = remember { mutableStateOf(cards.firstOrNull()) }
 
     if (direct) {

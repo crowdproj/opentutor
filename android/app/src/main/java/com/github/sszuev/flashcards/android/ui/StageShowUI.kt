@@ -127,10 +127,8 @@ fun StageShowScreen(
                     .align(Alignment.CenterHorizontally)
             )
 
-            if (errorMessage != null) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
-                }
+            ErrorMessageBox(errorMessage)
+            if (!errorMessage.isNullOrBlank()) {
                 return
             }
 

@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -462,7 +463,7 @@ fun AudioPlayerIcon(
 ) {
     val cardId = checkNotNull(card.cardId)
 
-    val enabled =  !(ttsViewModel.isAudioProcessing(cardId))
+    val enabled = !(ttsViewModel.isAudioProcessing(cardId))
 
     IconButton(
         onClick = {
@@ -549,5 +550,19 @@ fun TextWithPopup(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ErrorMessageBox(errorMessage: String?) {
+    AnimatedVisibility(visible = !errorMessage.isNullOrEmpty()) {
+        Text(
+            text = errorMessage ?: "",
+            color = MaterialTheme.colorScheme.error,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(16.dp)
+                .background(Color.White)
+        )
     }
 }

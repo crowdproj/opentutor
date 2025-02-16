@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -29,10 +30,13 @@ fun MainNavigation(
     ttsViewModel: TTSViewModel,
 ) {
     val navController = rememberNavController()
+    val settingsErrorMessage by settingsViewModel.errorMessage
 
     LaunchedEffect(Unit) {
         settingsViewModel.loadSettings()
     }
+
+    ErrorMessageBox(settingsErrorMessage)
 
     val settings = settingsViewModel.settings.value
     if (settings == null) {

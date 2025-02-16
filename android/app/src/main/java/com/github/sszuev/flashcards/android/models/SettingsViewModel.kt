@@ -24,6 +24,7 @@ class SettingsViewModel(
     val isLoadSettingsInProgress: State<Boolean> get() = _isLoadSettingsInProgress
     private val _isSaveSettingsInProgress = mutableStateOf(true)
     private val _errorMessage = mutableStateOf<String?>(null)
+    val errorMessage: State<String?> = _errorMessage
     private val _settings = mutableStateOf<SettingsEntity?>(null)
     val settings: State<SettingsEntity?> = _settings
 

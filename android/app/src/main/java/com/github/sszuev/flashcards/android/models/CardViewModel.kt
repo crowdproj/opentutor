@@ -115,7 +115,7 @@ class CardViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to update card: ${e.localizedMessage}"
                 Log.e(tag, "Failed to load cards", e)
             } finally {
                 _isCardUpdating.value = false
@@ -169,7 +169,7 @@ class CardViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to fetch card data: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to fetch card data for word '$word': ${e.localizedMessage}"
                 Log.e(tag, "Failed to fetch card data", e)
             } finally {
                 _isCardFetching.value = false
