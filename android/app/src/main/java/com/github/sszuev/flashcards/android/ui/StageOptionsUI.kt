@@ -231,6 +231,9 @@ fun OptionsPanelDirect(
                         return@launch
                     }
 
+                    selectedOption.value = null
+                    isCorrect.value = null
+
                     currentCard.value = nextCard
 
                     val cardId = checkNotNull(nextCard.cardId)

@@ -11,6 +11,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
+import com.github.sszuev.flashcards.android.AUDIO_PROCESSING_MAX_DELAY_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.ApiResponseException
 import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
@@ -21,6 +22,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeout
 import java.nio.file.Files
 import java.nio.file.Path
 import kotlin.io.path.deleteIfExists
@@ -225,8 +227,10 @@ class TTSViewModel(
     }
 
     suspend fun waitForAudionProcessing(cardId: String) {
-        while (isAudioProcessing(cardId)) {
-            delay(100)
+        withTimeout(AUDIO_PROCESSING_MAX_DELAY_MS) {
+            while (isAudioProcessing(cardId)) {
+                delay(100)
+            }
         }
     }
 

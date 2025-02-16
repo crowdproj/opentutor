@@ -158,6 +158,7 @@ fun CardsScreen(
             lang = dictionary.sourceLanguage,
             onSave = {
                 cardViewModel.updateCard(it)
+                searchQuery.value = ""
             },
             onDismiss = { isEditPopupOpen.value = false },
             card = selectedCard,
@@ -173,6 +174,7 @@ fun CardsScreen(
             onDismiss = { isAddPopupOpen.value = false },
             onSave = {
                 cardViewModel.createCard(it)
+                searchQuery.value = ""
             },
             viewModel = cardViewModel,
         )
