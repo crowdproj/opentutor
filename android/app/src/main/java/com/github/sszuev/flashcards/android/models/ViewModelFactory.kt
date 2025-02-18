@@ -24,9 +24,7 @@ class DictionariesViewModelFactory(
 }
 
 class CardsViewModelFactory(
-    private val context: Application,
     private val cardsRepository: CardsRepository,
-    private val ttsRepository: TTSRepository,
     private val translationRepository: TranslationRepository,
     private val signOut: () -> Unit,
 ) : ViewModelProvider.Factory {
@@ -35,10 +33,27 @@ class CardsViewModelFactory(
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(CardViewModel::class.java)) {
             return CardViewModel(
-                context = context,
                 cardsRepository = cardsRepository,
-                ttsRepository = ttsRepository,
                 translationRepository = translationRepository,
+                signOut = signOut,
+            ) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class TTSViewModelFactory(
+    private val context: Application,
+    private val ttsRepository: TTSRepository,
+    private val signOut: () -> Unit,
+) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(TTSViewModel::class.java)) {
+            return TTSViewModel(
+                context = context,
+                ttsRepository = ttsRepository,
                 signOut = signOut,
             ) as T
         }

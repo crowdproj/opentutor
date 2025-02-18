@@ -55,6 +55,7 @@ import androidx.compose.ui.window.Dialog
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.audioResource
 import com.github.sszuev.flashcards.android.utils.examplesAsList
 import com.github.sszuev.flashcards.android.utils.examplesAsString
@@ -73,19 +74,20 @@ private const val tag = "CardsUI"
 @Composable
 fun CardsScreen(
     dictionary: DictionaryEntity,
-    viewModel: CardViewModel,
+    cardViewModel: CardViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
 ) {
     val searchQuery = remember { mutableStateOf("") }
-    val cards by viewModel.cards
+    val cards by cardViewModel.cards
     val listState = rememberLazyListState()
     val isEditPopupOpen = remember { mutableStateOf(false) }
     val isAddPopupOpen = remember { mutableStateOf(false) }
     val isDeletePopupOpen = remember { mutableStateOf(false) }
     val isResetPopupOpen = remember { mutableStateOf(false) }
-    val selectedDictionaryIds = viewModel.selectedCardId
-    val selectedCard = viewModel.selectedCard
+    val selectedDictionaryIds = cardViewModel.selectedCardId
+    val selectedCard = cardViewModel.selectedCard
 
     var previousCardSize by remember { mutableIntStateOf(cards.size) }
 
@@ -95,13 +97,13 @@ fun CardsScreen(
                 cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
             if (index != -1) {
                 listState.animateScrollToItem(index, scrollOffset = 50)
-                viewModel.selectCard(cards[index].cardId)
+                cardViewModel.selectCard(cards[index].cardId)
             } else {
-                viewModel.selectCard(null)
+                cardViewModel.selectCard(null)
             }
         } else if (previousCardSize > 0 && cards.size > previousCardSize) {
             listState.animateScrollToItem(cards.size - 1)
-            viewModel.selectCard(cards.last().cardId)
+            cardViewModel.selectCard(cards.last().cardId)
         }
 
         previousCardSize = cards.size
@@ -119,7 +121,7 @@ fun CardsScreen(
             Column {
                 TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
                 CardsTable(
-                    viewModel = viewModel,
+                    viewModel = cardViewModel,
                     dictionaryId = checkNotNull(dictionary.dictionaryId),
                     numberOfRightAnswers = dictionary.numberOfRightAnswers,
                     listState = listState,
@@ -127,7 +129,7 @@ fun CardsScreen(
             }
         }
         CardsBottomToolbar(
-            selectedCardId = viewModel.selectedCardId.value,
+            selectedCardId = cardViewModel.selectedCardId.value,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .imePadding(),
@@ -140,7 +142,7 @@ fun CardsScreen(
                 }
             },
             onAddClick = {
-                viewModel.clearFetchedCard()
+                cardViewModel.clearFetchedCard()
                 isAddPopupOpen.value = true
             },
             onDeleteClick = {
@@ -155,11 +157,12 @@ fun CardsScreen(
         EditCardDialog(
             lang = dictionary.sourceLanguage,
             onSave = {
-                viewModel.updateCard(it)
+                cardViewModel.updateCard(it)
+                searchQuery.value = ""
             },
             onDismiss = { isEditPopupOpen.value = false },
             card = selectedCard,
-            viewModel = viewModel,
+            ttsViewModel = ttsViewModel,
         )
     }
     if (isAddPopupOpen.value) {
@@ -170,9 +173,10 @@ fun CardsScreen(
             targetLang = dictionary.targetLanguage,
             onDismiss = { isAddPopupOpen.value = false },
             onSave = {
-                viewModel.createCard(it)
+                cardViewModel.createCard(it)
+                searchQuery.value = ""
             },
-            viewModel = viewModel,
+            viewModel = cardViewModel,
         )
     }
     if (isDeletePopupOpen.value && selectedCard != null) {
@@ -180,7 +184,7 @@ fun CardsScreen(
             cardName = selectedCard.word,
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
-                viewModel.deleteCard(checkNotNull(selectedCard.cardId))
+                cardViewModel.deleteCard(checkNotNull(selectedCard.cardId))
             }
         )
     }
@@ -189,7 +193,7 @@ fun CardsScreen(
             cardName = selectedCard.word,
             onClose = { isResetPopupOpen.value = false },
             onConfirm = {
-                viewModel.resetCard(checkNotNull(selectedCard.cardId))
+                cardViewModel.resetCard(checkNotNull(selectedCard.cardId))
             }
         )
     }
@@ -240,13 +244,7 @@ fun CardsTable(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
 
-                errorMessage != null -> {
-                    Text(
-                        text = checkNotNull(errorMessage),
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                }
+                errorMessage != null -> ErrorMessageBox(errorMessage)
 
                 cards.isEmpty() -> {
                     Text(
@@ -411,7 +409,7 @@ fun CardsBottomToolbar(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
-            placeholder = { Text("Search...") }
+            placeholder = { Text("Type...") }
         )
 
         Row(
@@ -463,7 +461,7 @@ fun CardsBottomToolbar(
 fun EditCardDialog(
     lang: String,
     card: CardEntity,
-    viewModel: CardViewModel,
+    ttsViewModel: TTSViewModel,
     onDismiss: () -> Unit,
     onSave: (CardEntity) -> Unit,
 ) {
@@ -500,7 +498,7 @@ fun EditCardDialog(
                             label = { Text("Word") },
                             modifier = Modifier.weight(1f)
                         )
-                        AudioPlayerIcon(viewModel, card)
+                        AudioPlayerIcon(ttsViewModel, card)
                     }
                 }
 
@@ -554,6 +552,7 @@ fun EditCardDialog(
                                 val sound = if (card.word == word) {
                                     card.audioId
                                 } else {
+                                    ttsViewModel.invalidate(checkNotNull(card.cardId))
                                     audioResource(lang, word)
                                 }
                                 onSave(

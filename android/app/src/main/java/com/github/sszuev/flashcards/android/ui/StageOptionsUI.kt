@@ -33,6 +33,7 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -46,6 +47,7 @@ fun StageOptionsScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -75,6 +77,7 @@ fun StageOptionsScreen(
                 cardViewModel = cardViewModel,
                 dictionaryViewModel = dictionaryViewModel,
                 settingsViewModel = settingsViewModel,
+                ttsViewModel = ttsViewModel,
                 onNextStage = onNextStage,
                 direct = direction,
             )
@@ -87,6 +90,7 @@ fun OptionsPanelDirect(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit,
     direct: Boolean,
 ) {
@@ -103,7 +107,14 @@ fun OptionsPanelDirect(
         }.shuffled().take(settings.numberOfWordsPerStage).also { cards ->
             cards.firstOrNull()?.let {
                 if (direct) {
-                    cardViewModel.loadAndPlayAudio(it)
+                    cardViewModel.viewModelScope.launch {
+                        Log.d(
+                            tag,
+                            "direct: playing audio for: [${it.cardId}: ${it.word}]"
+                        )
+                        ttsViewModel.loadAndPlayAudio(it)
+                        ttsViewModel.waitForAudionProcessing(checkNotNull(it.cardId))
+                    }
                 }
             }
         }
@@ -127,10 +138,8 @@ fun OptionsPanelDirect(
     }
 
     val errorMessage = cardViewModel.errorMessage.value
+    ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
-        }
         return
     }
 
@@ -159,6 +168,18 @@ fun OptionsPanelDirect(
     val selectedOption = remember { mutableStateOf<CardEntity?>(null) }
     val isCorrect = remember { mutableStateOf<Boolean?>(null) }
 
+    val isAnswerProcessing = remember { mutableStateOf(false) }
+
+    fun color(isSelected: Boolean, isCorrect: Boolean?): Color = when {
+        isSelected && isCorrect == true ->
+            Color.Green
+        isCorrect == false ->
+            Color.Red
+        isSelected ->
+            Color.Blue
+        else -> Color.Gray
+    }
+
     fun match(selectedItem: CardEntity): Boolean {
         return selectedItem.cardId == currentCard.value?.cardId
     }
@@ -170,55 +191,76 @@ fun OptionsPanelDirect(
     }
 
     fun onOptionSelected(selectedItem: CardEntity) {
-        selectedOption.value = selectedItem
-        isCorrect.value = match(selectedItem)
-
-        if (!direct) {
-            Log.d(tag, "reverse: playing audio for: [${selectedItem.cardId}: ${selectedItem.word}]")
-            cardViewModel.loadAndPlayAudio(selectedItem)
-        }
-
         cardViewModel.viewModelScope.launch {
-            delay(STAGE_OPTIONS_CELL_DELAY_MS)
-            if (isCorrect.value == true) {
-                currentCard.value?.let { cardsMap.value -= it }
+            if (isAnswerProcessing.value) {
+                Log.d(tag, "Click ignored: Answer is being processed!")
+                return@launch
+            }
+            isAnswerProcessing.value = true
+            try {
+                selectedOption.value = selectedItem
+                isCorrect.value = match(selectedItem)
 
-                if (cardsMap.value.isEmpty()) {
-                    resetState()
-                    Log.d(tag, "onNextStage: no more cards to proceed")
-                    onNextStage()
-                    return@launch
+                if (!direct) {
+                    Log.d(
+                        tag,
+                        "reverse: playing audio for: [${selectedItem.cardId}: ${selectedItem.word}]"
+                    )
+                    ttsViewModel.loadAndPlayAudio(selectedItem)
+                    ttsViewModel.waitForAudionProcessing(checkNotNull(selectedItem.cardId))
+                } else {
+                    delay(STAGE_OPTIONS_CELL_DELAY_MS)
                 }
 
-                val nextCard = cardsMap.value.keys.firstOrNull()
+                if (isCorrect.value == true) {
+                    currentCard.value?.let { cardsMap.value -= it }
 
-                if (nextCard == null) {
-                    resetState()
-                    Log.d(tag, "onNextStage: null next card")
-                    onNextStage()
-                    return@launch
+                    if (cardsMap.value.isEmpty()) {
+                        resetState()
+                        Log.d(tag, "onNextStage: no more cards to proceed")
+                        onNextStage()
+                        return@launch
+                    }
+
+                    val nextCard = cardsMap.value.keys.firstOrNull()
+
+                    if (nextCard == null) {
+                        resetState()
+                        Log.d(tag, "onNextStage: null next card")
+                        onNextStage()
+                        return@launch
+                    }
+
+                    selectedOption.value = null
+                    isCorrect.value = null
+
+                    currentCard.value = nextCard
+
+                    val cardId = checkNotNull(nextCard.cardId)
+                    val dictionaryId = checkNotNull(nextCard.dictionaryId)
+                    val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
+
+                    cardViewModel.updateDeckCard(cardId, dictionary.numberOfRightAnswers)
+                    if (direct) {
+                        Log.d(
+                            tag,
+                            "direct: playing audio for: [${cardId}: ${nextCard.word}]"
+                        )
+                        ttsViewModel.loadAndPlayAudio(nextCard)
+                        ttsViewModel.waitForAudionProcessing(cardId)
+                    }
+                } else {
+                    val cardId = checkNotNull(currentCard.value?.cardId)
+                    Log.i(tag, "Wrong answer for card $cardId")
+                    selectedOption.value = null
+                    isCorrect.value = null
+                    cardViewModel.markDeckCardAsWrong(cardId)
                 }
-
-                currentCard.value = nextCard
-
-                val cardId = checkNotNull(nextCard.cardId)
-                val dictionaryId = checkNotNull(nextCard.dictionaryId)
-                val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
-
-                if (direct) {
-                    cardViewModel.loadAndPlayAudio(nextCard)
-                }
-
-                cardViewModel.updateDeckCard(cardId, dictionary.numberOfRightAnswers)
-            } else {
-                val cardId = checkNotNull(currentCard.value?.cardId)
-                Log.i(tag, "Wrong answer for card $cardId")
                 selectedOption.value = null
                 isCorrect.value = null
-                cardViewModel.markDeckCardAsWrong(cardId)
+            } finally {
+                isAnswerProcessing.value = false
             }
-            selectedOption.value = null
-            isCorrect.value = null
         }
     }
 
@@ -284,7 +326,7 @@ fun OptionsPanelDirect(
                     )
                     if (direct) {
                         AudioPlayerIcon(
-                            viewModel = cardViewModel,
+                            ttsViewModel = ttsViewModel,
                             card = card,
                             modifier = Modifier.size(64.dp),
                             size = 64.dp
@@ -314,16 +356,22 @@ fun OptionsPanelDirect(
                         if (direct) {
                             TableCellTranslation(
                                 optionCard = option,
+                                onSelectItem = { onOptionSelected(option) },
                                 isSelected = selectedOption.value == option,
-                                isCorrect = isCorrect.value,
-                                onSelectItem = { onOptionSelected(option) }
+                                borderColor = color(
+                                    isSelected = selectedOption.value == option,
+                                    isCorrect = isCorrect.value
+                                ),
                             )
                         } else {
                             TableCellWord(
                                 optionCard = option,
+                                onSelectItem = { onOptionSelected(option) },
                                 isSelected = selectedOption.value == option,
-                                isCorrect = isCorrect.value,
-                                onSelectItem = { onOptionSelected(option) }
+                                borderColor = color(
+                                    isSelected = selectedOption.value == option,
+                                    isCorrect = isCorrect.value
+                                ),
                             )
                         }
                     }
@@ -338,13 +386,8 @@ private fun TableCellTranslation(
     optionCard: CardEntity,
     onSelectItem: () -> Unit,
     isSelected: Boolean,
-    isCorrect: Boolean?,
+    borderColor: Color,
 ) {
-    val borderColor = when {
-        isSelected && isCorrect == true -> Color.Green
-        isSelected && isCorrect == false -> Color.Red
-        else -> Color.Gray
-    }
     if (isTextShort(optionCard.translationAsString)) {
         TableCellSelectable(
             text = optionCard.translationAsString,
@@ -372,13 +415,8 @@ private fun TableCellWord(
     optionCard: CardEntity,
     onSelectItem: () -> Unit,
     isSelected: Boolean,
-    isCorrect: Boolean?,
+    borderColor: Color,
 ) {
-    val borderColor = when {
-        isSelected && isCorrect == true -> Color.Green
-        isSelected && isCorrect == false -> Color.Red
-        else -> Color.Gray
-    }
     TableCellSelectable(
         text = optionCard.word,
         isSelected = isSelected,

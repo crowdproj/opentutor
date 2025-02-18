@@ -6,6 +6,7 @@ import com.github.sszuev.flashcards.android.AppConfig
 import com.github.sszuev.flashcards.android.AppContextProvider
 import com.github.sszuev.flashcards.android.httpClient
 import io.ktor.client.call.body
+import io.ktor.client.network.sockets.SocketTimeoutException
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.post
@@ -15,6 +16,7 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.formUrlEncode
 import kotlinx.serialization.Serializable
+import java.net.UnknownHostException
 
 suspend inline fun <reified T> authPost(
     url: String,
@@ -50,6 +52,12 @@ suspend inline fun <reified T> authPost(
                 throw e
             }
         }
+    } catch (e: UnknownHostException) {
+        Log.e("HttpApi", "Network error: server unavailable", e)
+        throw ServerUnavailableException("Server is unreachable. Check your connection.", e)
+    } catch (e: SocketTimeoutException) {
+        Log.e("HttpApi", "Network timeout", e)
+        throw ServerUnavailableException("Server is taking too long to respond.", e)
     }
 }
 
@@ -83,6 +91,12 @@ suspend fun refreshToken() {
         } else {
             throw e
         }
+    } catch (e: UnknownHostException) {
+        Log.e("HttpApi", "Network error: server unavailable", e)
+        throw ServerUnavailableException("Server is unreachable. Check your connection.", e)
+    } catch (e: SocketTimeoutException) {
+        Log.e("HttpApi", "Network timeout", e)
+        throw ServerUnavailableException("Server is taking too long to respond.", e)
     }
     prefs.edit()
         .putString("access_token", response.access_token)
@@ -99,5 +113,7 @@ data class TokenResponse(
     val expires_in: Int,
     val refresh_expires_in: Int,
 )
+
+class ServerUnavailableException(message: String, cause: Throwable) : Exception(message, cause)
 
 class InvalidTokenException(message: String, cause: Exception) : Exception(message, cause)

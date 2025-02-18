@@ -164,9 +164,11 @@ fun DictionariesScreen(
         )
     }
     if (isSettingsPopupOpen.value) {
+        val settingsErrorMessage by settingsViewModel.errorMessage
         LaunchedEffect(isSettingsPopupOpen.value) {
             settingsViewModel.loadSettings()
         }
+        ErrorMessageBox(settingsErrorMessage)
 
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -207,7 +209,7 @@ fun DictionaryTable(
 
     LaunchedEffect(Unit) {
         if (!isLoaded.value) {
-            viewModel.loadDictionaries()
+            viewModel.loadDictionariesIfNeeded()
             isLoaded.value = true
         }
     }
@@ -239,13 +241,7 @@ fun DictionaryTable(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
 
-                errorMessage != null -> {
-                    Text(
-                        text = checkNotNull(errorMessage),
-                        color = MaterialTheme.colorScheme.error,
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
-                    )
-                }
+                errorMessage != null -> ErrorMessageBox(errorMessage)
 
                 dictionaries.isEmpty() -> {
                     Text(

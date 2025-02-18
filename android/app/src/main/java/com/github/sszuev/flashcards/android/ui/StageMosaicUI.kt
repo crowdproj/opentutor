@@ -30,6 +30,7 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -43,6 +44,7 @@ fun StageMosaicScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -85,6 +87,7 @@ fun StageMosaicScreen(
                 initialRightCards = rightCards,
                 direct = direction,
                 onNextStage = onNextStage,
+                ttsViewModel = ttsViewModel,
             )
         }
     }
@@ -94,14 +97,12 @@ fun StageMosaicScreen(
 fun MosaicPanels(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
+    ttsViewModel: TTSViewModel,
     initialLeftCards: List<CardEntity>,
     initialRightCards: List<CardEntity>,
     direct: Boolean,
     onNextStage: () -> Unit,
 ) {
-
-    val selectedDictionariesMap =
-        dictionaryViewModel.selectedDictionariesList.associateBy { it.dictionaryId }
 
     val leftCards = remember { mutableStateListOf(*initialLeftCards.toTypedArray()) }
     val rightCards = remember { mutableStateListOf(*initialRightCards.toTypedArray()) }
@@ -109,85 +110,100 @@ fun MosaicPanels(
     val selectedLeftItem = remember { mutableStateOf<CardEntity?>(null) }
     val selectedRightItem = remember { mutableStateOf<CardEntity?>(null) }
 
+    val isAnswerProcessing = remember { mutableStateOf(false) }
+    val isCorrectAnswerProcessing = remember { mutableStateOf(false) }
+
+    val errorMessage = cardViewModel.errorMessage.value
+    ErrorMessageBox(errorMessage)
+    if (errorMessage != null) {
+        return
+    }
+
     fun match(): Boolean {
-        return selectedRightItem.value?.cardId == selectedLeftItem.value?.cardId
+        val leftId = selectedLeftItem.value?.cardId
+        val rightId = selectedRightItem.value?.cardId
+        return leftId != null && rightId != null && leftId == rightId
+    }
+
+    fun notMatch(): Boolean {
+        val leftId = selectedLeftItem.value?.cardId
+        val rightId = selectedRightItem.value?.cardId
+        return leftId != null && rightId != null && leftId != rightId
     }
 
     fun color(leftItem: CardEntity?, rightItem: CardEntity?): Color {
         return when {
-            leftItem != null && rightItem != null && leftItem.cardId == rightItem.cardId -> Color.Green
-            rightItem != null && leftItem != null -> Color.Red
+            match() -> Color.Green
+            isCorrectAnswerProcessing.value -> Color.Gray
+            notMatch() -> Color.Red
             leftItem != null || rightItem != null -> Color.Blue
             else -> Color.Gray
         }
     }
 
-    fun dictionaryNumberOfRightAnswers(card: CardEntity): Int {
-        return checkNotNull(
-            selectedDictionariesMap[checkNotNull(card.dictionaryId) { "can't find dictionary, card = $card" }]
-        ) { "can't find dictionary, dictionaryId = ${card.dictionaryId}" }.numberOfRightAnswers
-    }
-
     fun onSelectItem() {
-        val leftItem = selectedLeftItem.value
-        val rightItem = selectedRightItem.value
-        Log.d(
-            tag,
-            "left = ${leftItem?.cardId}('${leftItem?.word}'), right = ${rightItem?.cardId}('${rightItem?.word}')"
-        )
-
-        if (leftItem == null || rightItem == null) {
-            Log.d(tag, "One of the items is null. No further action.")
-            return
-        }
-
-        val cardId = checkNotNull(leftItem.cardId) { "no card id" }
-
         cardViewModel.viewModelScope.launch {
-            if (match()) {
-                val dictionaryId = checkNotNull(leftItem.dictionaryId) { "no dictionary id" }
-                val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
-
-                delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                leftCards.remove(leftItem)
-                rightCards.remove(rightItem)
-                selectedLeftItem.value = null
-                selectedRightItem.value = null
-
-                val wrongAnyway = cardViewModel.wrongAnsweredCardDeckIds.value.contains(cardId)
-                Log.i(
+            if (isAnswerProcessing.value) {
+                Log.d(tag, "Click ignored: Answer is being processed!")
+                return@launch
+            }
+            isAnswerProcessing.value = true
+            try {
+                val leftItem = selectedLeftItem.value
+                val rightItem = selectedRightItem.value
+                Log.d(
                     tag,
-                    "Correct answer for card ${cardId}${if (wrongAnyway) ", but it is already marked as wrong" else ""}"
+                    "left = ${leftItem?.cardId}('${leftItem?.word}'), right = ${rightItem?.cardId}('${rightItem?.word}')"
                 )
 
-                cardViewModel.updateDeckCard(
-                    cardId = cardId,
-                    numberOfRightAnswers = dictionary.numberOfRightAnswers,
-                )
-
-                if (cardViewModel.allDeckCardsAnsweredCorrectly {
-                        dictionaryNumberOfRightAnswers(it)
-                    }
-                ) {
-                    cardViewModel.loadAndPlayAudio(leftItem)
-                    delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                    onNextStage()
+                if (leftItem == null || rightItem == null) {
+                    Log.d(tag, "One of the items is null. No further action.")
+                    return@launch
                 }
 
-            } else {
-                Log.i(tag, "Wrong answer for card $cardId")
-                delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                selectedRightItem.value = null
-                cardViewModel.markDeckCardAsWrong(cardId)
-            }
+                val cardId =
+                    checkNotNull(if (direct) leftItem.cardId else rightItem.cardId) { "no card id" }
 
-            if (leftCards.isEmpty()) {
-                Log.d(tag, "All left cards are matched. Moving to the next stage.")
-                //cardViewModel.loadAndPlayAudio(leftItem)
-                delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                onNextStage()
-            } else {
-                Log.d(tag, "Left cards: ${leftCards.size}, Right cards: ${rightCards.size}")
+                if (match()) {
+                    isCorrectAnswerProcessing.value = true
+                    val dictionaryId = checkNotNull(leftItem.dictionaryId) { "no dictionary id" }
+                    val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
+
+                    delay(STAGE_MOSAIC_CELL_DELAY_MS)
+                    ttsViewModel.waitForAudionProcessing(cardId)
+                    leftCards.remove(leftItem)
+                    rightCards.remove(rightItem)
+                    selectedLeftItem.value = null
+                    selectedRightItem.value = null
+
+                    val wrongAnyway = cardViewModel.wrongAnsweredCardDeckIds.value.contains(cardId)
+                    Log.i(
+                        tag,
+                        "Correct answer for card ${cardId}(${leftItem.word})" +
+                                if (wrongAnyway) ", but it is already marked as wrong" else ""
+                    )
+                    cardViewModel.updateDeckCard(
+                        cardId = cardId,
+                        numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                    )
+                    isCorrectAnswerProcessing.value = false
+                } else {
+                    Log.i(tag, "Wrong answer for card $cardId(${leftItem.word})")
+                    delay(STAGE_MOSAIC_CELL_DELAY_MS)
+                    ttsViewModel.waitForAudionProcessing(cardId)
+                    selectedLeftItem.value = null
+                    selectedRightItem.value = null
+                    cardViewModel.markDeckCardAsWrong(cardId)
+                }
+
+                if (leftCards.isEmpty()) {
+                    Log.d(tag, "All left cards are matched. Moving to the next stage.")
+                    onNextStage()
+                } else {
+                    Log.d(tag, "Left cards: ${leftCards.size}, Right cards: ${rightCards.size}")
+                }
+            } finally {
+                isAnswerProcessing.value = false
             }
         }
     }
@@ -213,7 +229,7 @@ fun MosaicPanels(
                             rightItem = selectedRightItem.value,
                         ),
                         onSelect = {
-                            cardViewModel.loadAndPlayAudio(item)
+                            ttsViewModel.loadAndPlayAudio(item)
                             selectedLeftItem.value = item
                             onSelectItem()
                         }
@@ -262,7 +278,7 @@ fun MosaicPanels(
                             rightItem = selectedRightItem.value,
                         ),
                         onSelect = {
-                            cardViewModel.loadAndPlayAudio(item)
+                            ttsViewModel.loadAndPlayAudio(item)
                             selectedRightItem.value = item
                             onSelectItem()
                         }

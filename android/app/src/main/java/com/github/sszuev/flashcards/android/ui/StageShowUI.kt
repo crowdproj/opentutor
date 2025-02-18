@@ -31,18 +31,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.github.sszuev.flashcards.android.STAGE_SHOW_BUTTONS_DELAY_MS
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.translationAsString
-import kotlinx.coroutines.delay
 
 @Composable
 fun StageShowScreen(
     dictionaryViewModel: DictionaryViewModel,
     cardViewModel: CardViewModel,
     settingsViewModel: SettingsViewModel,
+    ttsViewModel: TTSViewModel,
     onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
@@ -67,7 +67,7 @@ fun StageShowScreen(
             length = settings.stageShowNumberOfWords,
             onComplete = {
                 it.firstOrNull()?.let { card ->
-                    cardViewModel.loadAndPlayAudio(card)
+                    ttsViewModel.loadAndPlayAudio(card)
                 }
             }
         )
@@ -106,7 +106,7 @@ fun StageShowScreen(
         if (currentCard == null) {
             onNextStage()
         } else {
-            cardViewModel.loadAndPlayAudio(checkNotNull(currentCard))
+            ttsViewModel.loadAndPlayAudio(checkNotNull(currentCard))
         }
     }
 
@@ -127,10 +127,8 @@ fun StageShowScreen(
                     .align(Alignment.CenterHorizontally)
             )
 
-            if (errorMessage != null) {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = errorMessage, color = MaterialTheme.colorScheme.error)
-                }
+            ErrorMessageBox(errorMessage)
+            if (!errorMessage.isNullOrBlank()) {
                 return
             }
 
@@ -171,7 +169,7 @@ fun StageShowScreen(
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         AudioPlayerIcon(
-                            viewModel = cardViewModel,
+                            ttsViewModel = ttsViewModel,
                             card = card,
                             modifier = Modifier.size(64.dp),
                             size = 64.dp
@@ -199,21 +197,15 @@ fun StageShowScreen(
             }
         }
 
-        var buttonsEnabled by remember { mutableStateOf(false) }
+        val enabled = !ttsViewModel.isAudioProcessing(checkNotNull(currentCard?.cardId))
 
-        val alpha by animateFloatAsState(if (buttonsEnabled) 1f else 0.5f)
-
-        LaunchedEffect(currentCard) {
-            buttonsEnabled = false
-            delay(STAGE_SHOW_BUTTONS_DELAY_MS)
-            buttonsEnabled = true
-        }
+        val alpha by animateFloatAsState(if (enabled) 1f else 0.5f)
 
         StageShowBottomToolbar(
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .alpha(alpha),
-            buttonsEnabled = buttonsEnabled,
+            buttonsEnabled = enabled,
             onNextCardDeck = {
                 onNextCard(false)
             },

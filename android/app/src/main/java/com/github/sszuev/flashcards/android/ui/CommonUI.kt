@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.app.Activity
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -54,7 +55,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.Popup
 import com.github.sszuev.flashcards.android.entities.CardEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
+import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.getUsernameFromPreferences
 
 @Composable
@@ -455,26 +456,23 @@ fun SearchableDropdown(
 
 @Composable
 fun AudioPlayerIcon(
-    viewModel: CardViewModel,
+    ttsViewModel: TTSViewModel,
     card: CardEntity,
     size: Dp = 24.dp,
     modifier: Modifier = Modifier
 ) {
     val cardId = checkNotNull(card.cardId)
 
-    val isAudioPlaying = viewModel.isAudioPlaying(cardId)
-    val isAudioLoading = viewModel.isAudioLoading(cardId)
-
-    val enabled =  !(isAudioLoading || isAudioPlaying)
+    val enabled = !(ttsViewModel.isAudioProcessing(cardId))
 
     IconButton(
         onClick = {
-            viewModel.loadAndPlayAudio(card)
+            ttsViewModel.loadAndPlayAudio(card)
         },
         enabled = enabled,
         modifier = modifier.padding(start = 8.dp)
     ) {
-        if (viewModel.isAudioLoading(cardId)) {
+        if (ttsViewModel.isAudioLoading(cardId)) {
             CircularProgressIndicator(modifier = Modifier.size(size))
         } else {
             Icon(
@@ -552,5 +550,19 @@ fun TextWithPopup(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun ErrorMessageBox(errorMessage: String?) {
+    AnimatedVisibility(visible = !errorMessage.isNullOrEmpty()) {
+        Text(
+            text = errorMessage ?: "",
+            color = MaterialTheme.colorScheme.error,
+            fontSize = 20.sp,
+            modifier = Modifier
+                .padding(16.dp)
+                .background(Color.White)
+        )
     }
 }
