@@ -111,7 +111,7 @@ services:
       - flashcards-net
 
   flashcards-tts-server:
-    image: sszuev/open-tutor-tts-server:2.0.0-snapshot
+    image: sszuev/open-tutor-tts-server:2.0.1-snapshot
     networks:
       - flashcards-net
     depends_on:
@@ -125,7 +125,7 @@ services:
       TTS_SERVICE_VOICERSS_KEY: "${TTS_SERVICE_VOICERSS_KEY}"
 
   flashcards-cards-server:
-    image: sszuev/open-tutor-cards-server:2.0.0-snapshot
+    image: sszuev/open-tutor-cards-server:2.0.1-snapshot
     networks:
       - flashcards-net
     depends_on:
@@ -140,7 +140,7 @@ services:
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
 
   flashcards-dictionaries-server:
-    image: sszuev/open-tutor-dictionaries-server:2.0.0-snapshot
+    image: sszuev/open-tutor-dictionaries-server:2.0.1-snapshot
     networks:
       - flashcards-net
     depends_on:
@@ -157,7 +157,7 @@ services:
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
 
   flashcards-settings-server:
-    image: sszuev/open-tutor-settings-server:2.0.0-snapshot
+    image: sszuev/open-tutor-settings-server:2.0.1-snapshot
     networks:
       - flashcards-net
     depends_on:
@@ -174,7 +174,7 @@ services:
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
 
   flashcards-translation-server:
-    image: sszuev/open-tutor-translation-server:2.0.0-snapshot
+    image: sszuev/open-tutor-translation-server:2.0.1-snapshot
     networks:
       - flashcards-net
     depends_on:
@@ -187,7 +187,7 @@ services:
       TRANSLATION_SERVICE_LINGUEE_API_URL: "http://flashcards-linguee-api:8000/api/v2/translations"
 
   flashcards-app:
-    image: sszuev/open-tutor:2.0.0-snapshot
+    image: sszuev/open-tutor:2.0.1-snapshot
     networks:
       - flashcards-net
     depends_on:
