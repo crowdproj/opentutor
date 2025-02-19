@@ -3,8 +3,6 @@ package com.gitlab.sszuev.flashcards.config
 import io.ktor.server.config.ApplicationConfig
 
 data class TutorConfig(
-    val useBuiltinDictionaries: Boolean,
-
     val numberOfWordsToShow: Int,
     val numberOfRightAnswers: Int,
     val numberOfWordsPerStage: Int,
@@ -25,7 +23,6 @@ data class TutorConfig(
         numberOfRightAnswers = config.getPositiveInt("app.tutor.run.answers", 10),
         numberOfWordsPerStage = config.getPositiveInt("app.tutor.run.words-for-test", 5),
         numberOfOptionsPerWord = config.getPositiveInt("app.tutor.run.stage.option-variants", 6),
-        useBuiltinDictionaries = config.getBoolean("app.tutor.create-builtin-dictionaries", false),
         showStageOptionsSourceToTarget = config.getBoolean("app.tutor.run.stage.option-source-to-target", true),
         showStageOptionsTargetToSource = config.getBoolean("app.tutor.run.stage.option-target-to-source", false),
         showStageMosaicSourceToTarget = config.getBoolean("app.tutor.run.stage.mosaic-source-to-target", true),

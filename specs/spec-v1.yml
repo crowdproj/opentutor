@@ -451,6 +451,10 @@ components:
       allOf:
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
+          properties:
+            locale:
+              description: used on first login to determine which dictionaries should be shown
+              type: string
 
     GetAllDictionariesResponse:
       description: List of dictionaries

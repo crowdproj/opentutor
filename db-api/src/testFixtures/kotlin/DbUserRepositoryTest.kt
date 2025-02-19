@@ -21,6 +21,7 @@ abstract class DbUserRepositoryTest {
         Assertions.assertEquals("42", res.id)
         Assertions.assertTrue(res.createdAt.toEpochMilliseconds() >= s.toEpochMilliseconds())
         Assertions.assertTrue(res.createdAt.toEpochMilliseconds() <= Clock.System.now().toEpochMilliseconds())
+        Assertions.assertEquals(mapOf("A" to 42L, "B" to true, "C" to "c"), res.details)
         Assertions.assertEquals(
             "42",
             repository.findByUserId("42")?.id
@@ -33,11 +34,11 @@ abstract class DbUserRepositoryTest {
         Assertions.assertNotNull(res1)
 
         val res2 = res1!!.copy(details = mapOf("A" to 42, "B" to true, "C" to "c"))
-        repository.updateUser(res2)
+        val res3 = repository.updateUser(res2)
 
-        val res3 = repository.findByUserId("c9a414f5-3f75-4494-b664-f4c8b33ff4e6")
-        Assertions.assertNotNull(res3)
-        println("" + res3!!.details.hashCode() + " :: " + res2.details.hashCode())
+        val res4 = repository.findByUserId("c9a414f5-3f75-4494-b664-f4c8b33ff4e6")
+        Assertions.assertNotNull(res4)
+        Assertions.assertEquals(res2, res4)
         Assertions.assertEquals(res2, res3)
     }
 }

@@ -39,14 +39,16 @@ class PgDbUserRepository(
 
     override fun createUser(user: DbUser): DbUser = connection.execute {
         val now = Clock.System.now()
+        val detailsAsString = user.detailsAsCommonUserDetailsDto().toJsonString()
         Users.insert {
             it[id] = user.id
             it[createdAt] = now.asJava()
-            it[details] = user.detailsAsCommonUserDetailsDto().toJsonString()
+            it[details] = detailsAsString
         }
         DbUser(
             id = user.id,
             createdAt = now,
+            details = user.details,
         )
     }
 

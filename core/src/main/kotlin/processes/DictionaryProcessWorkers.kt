@@ -21,6 +21,9 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.utils.documentEntityFromJson
 import com.gitlab.sszuev.flashcards.utils.toJsonString
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.DictionaryProcessWorkersKt")
 
 fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     this.name = "process get-all-dictionary request"
@@ -30,9 +33,17 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     process {
         val userId = this.normalizedRequestAppAuthId
 
-        if (this.config.createBuiltinDictionariesOnFirstLogin) {
-            this.repositories.userRepository.createUserIfAbsent(userId) {
-                this.populateBuiltinDictionaries()
+        val locale = this.userLocale
+        if (locale == null) {
+            if (logger.isDebugEnabled)
+                logger.debug("GetAllDictionaries: no locale specified")
+            this.repositories.userRepository.getOrCreateUser(id = userId)
+        } else {
+            if (logger.isDebugEnabled)
+                logger.debug("GetAllDictionaries: locale = $locale")
+            this.repositories.userRepository.createOrUpdateUser(id = userId, locale = locale) {
+                logger.info("GetAllDictionaries: populate builtin dictionaries for locale $locale")
+                this.populateBuiltinDictionaries(locale)
             }
         }
 

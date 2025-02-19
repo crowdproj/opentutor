@@ -66,9 +66,11 @@ async function initKeycloak() {
 }
 
 function getDictionaries(onDone) {
+    // Chinese locale by default
     const data = {
         'requestId': uuid(),
-        'requestType': getAllDictionariesRequestType
+        'requestType': getAllDictionariesRequestType,
+        'locale': "zh"
     };
     post(getAllDictionariesURI, data, function (res) {
         if (hasResponseErrors(res)) {

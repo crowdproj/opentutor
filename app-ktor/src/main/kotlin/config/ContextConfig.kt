@@ -17,5 +17,4 @@ internal fun ContextConfig.toAppConfig() = AppConfig(
     defaultStageOptionsTargetLangToSourceLang = tutorConfig.showStageOptionsTargetToSource,
     defaultStageWritingTargetLangToSourceLang = tutorConfig.showStageWritingTargetToSource,
     defaultStageSelfTestTargetLangToSourceLang = tutorConfig.showStageSelfTestTargetToSource,
-    createBuiltinDictionariesOnFirstLogin = tutorConfig.useBuiltinDictionaries,
 )

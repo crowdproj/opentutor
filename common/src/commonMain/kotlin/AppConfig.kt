@@ -7,7 +7,6 @@ import kotlinx.serialization.Serializable
  */
 @Serializable
 data class AppConfig(
-    val createBuiltinDictionariesOnFirstLogin: Boolean,
 
     val defaultNumberOfRightAnswers: Int,
     val defaultStageShowNumberOfWords: Int,
@@ -26,7 +25,6 @@ data class AppConfig(
 ) {
     companion object {
         val DEFAULT = AppConfig(
-            createBuiltinDictionariesOnFirstLogin = true,
             defaultNumberOfRightAnswers = 10,
             defaultStageShowNumberOfWords = 10,
             defaultNumberOfWordsPerStage = 5,
