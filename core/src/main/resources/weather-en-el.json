@@ -1,0 +1,943 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "el",
+    "partsOfSpeech": [
+      "ουσιαστικό",
+      "ρήμα",
+      "επίθετο",
+      "επίρρημα",
+      "αντωνυμία",
+      "πρόθεση",
+      "σύνδεσμος",
+      "επιφώνημα",
+      "άρθρο"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ατμοσφαιρικός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "καιρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "χιόνι"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "βροχή"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "άνεμος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "χαλάζι"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "καταιγίδα"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "κατακρήμνιση"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "βροντή"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "αστραπή"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "αντικυκλώνας"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ατμόσφαιρα"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "βαρόμετρο"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ανεμώδης"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "υγρασία"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "υγρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "υγρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "υγρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ανατολή ηλίου"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "βαθμός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "πίεση"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "αποπνικτικός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ζέστη"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ζεστός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "δύση ηλίου"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "παγετός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ψιλή βροχή"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ομίχλη"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "πάγος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "μπόρα"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "λακκούβα"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "μετεωρολογία"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "συννεφιασμένος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "λιώσιμο"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "δροσερός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "σκονισμένος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ουράνιο τόξο"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "φρέσκος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ολισθηρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "λιωμένο χιόνι"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "νέφος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "χιονόπτωση"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ηλιόλουστος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ξηρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "υγρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "θερμοκρασία"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ζεστός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "θερμόμετρο"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ομίχλη"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ομίχλη"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ομιχλώδης"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "νερό"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "κρύος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "κυκλώνας"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "θύελλα"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "καθαρός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "χιονόνερο"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "σύννεφο"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "κρύος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "καταιγιστική βροχή"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "θυελλώδης άνεμος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "καυτός"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "σκόνη"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "θυελλώδης"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "συννεφιασμένος"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

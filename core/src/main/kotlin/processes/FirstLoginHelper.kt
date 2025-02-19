@@ -15,10 +15,32 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.FirstLoginHelper")
 
+private const val DEFAULT_TARGET_LOCAL = "zh"
 private val RESOURCE_DOCUMENTS_BY_LOCALE = mapOf(
     "ru" to listOf("/irregular-verbs-en-ru.json", "/weather-en-ru.json"),
+    "en" to listOf("/weather-zh-en.json"),
     "zh" to listOf("/weather-en-zh.json"),
     "es" to listOf("/weather-en-es.json"),
+    "pt" to listOf("/weather-en-pt.json"),
+    "ja" to listOf("/weather-en-ja.json"),
+    "de" to listOf("/weather-en-de.json"),
+    "fr" to listOf("/weather-en-fr.json"),
+    "it" to listOf("/weather-en-it.json"),
+    "pl" to listOf("/weather-en-pl.json"),
+    "nl" to listOf("/weather-en-nl.json"),
+    "el" to listOf("/weather-en-el.json"),
+    "hu" to listOf("/weather-en-hu.json"),
+    "cs" to listOf("/weather-en-cs.json"),
+    "sv" to listOf("/weather-en-sv.json"),
+    "bg" to listOf("/weather-en-bg.json"),
+    "da" to listOf("/weather-en-da.json"),
+    "fi" to listOf("/weather-en-fi.json"),
+    "sk" to listOf("/weather-en-sk.json"),
+    "lt" to listOf("/weather-en-lt.json"),
+    "lv" to listOf("/weather-en-lv.json"),
+    "sl" to listOf("/weather-en-sl.json"),
+    "et" to listOf("/weather-en-et.json"),
+    "mt" to listOf("/weather-en-mt.json"),
 )
 
 internal val users = Caffeine.newBuilder().maximumSize(1024).build<AppAuthId, DbUser>()
@@ -63,7 +85,7 @@ internal fun DbUserRepository.getOrCreateUser(id: AppAuthId): DbUser {
     return dbUser
 }
 
-internal fun DbUserRepository.putUser(id: AppAuthId ,dbUser: DbUser) {
+internal fun DbUserRepository.putUser(id: AppAuthId, dbUser: DbUser) {
     users.put(id, this.updateUser(dbUser))
 }
 
@@ -82,7 +104,8 @@ internal fun DictionaryContext.populateBuiltinDictionaries(locale: String) {
 }
 
 internal fun loadBuiltinDocuments(locale: String): Sequence<DocumentEntity> {
-    val resources = RESOURCE_DOCUMENTS_BY_LOCALE[locale] ?: return emptySequence()
+    val resources = RESOURCE_DOCUMENTS_BY_LOCALE[locale] ?: RESOURCE_DOCUMENTS_BY_LOCALE[DEFAULT_TARGET_LOCAL]
+    ?: return emptySequence()
     return resources.asSequence().map {
         checkNotNull(object {}.javaClass.getResourceAsStream(it)) { "Can't find resource $it" }
             .bufferedReader(Charsets.UTF_8)

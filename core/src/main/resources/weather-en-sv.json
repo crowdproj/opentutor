@@ -1,0 +1,943 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "sv",
+    "partsOfSpeech": [
+      "substantiv",
+      "verb",
+      "adjektiv",
+      "adverb",
+      "pronomen",
+      "preposition",
+      "konjunktion",
+      "interjektion",
+      "artikel"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "atmosfärisk"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "väder"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "snö"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "regn"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "vind"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "hagel"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "åskväder"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "nederbörd"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "åska"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "blixt"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "anticyklon"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "atmosfär"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "blåsigt"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "luftfuktighet"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "fuktig"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "fuktig"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "fuktig"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "soluppgång"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "grad"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "tryck"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "instängt"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "värme"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "het"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "solnedgång"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "frost"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "duggregn"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dis"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "is"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "skur"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "pöl"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "meteorologi"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "molnigt"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "töväder"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "sval"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dammig"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "regnbåge"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "frisk"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "hal"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "slask"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "smog"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "snöfall"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "soligt"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "torr"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "blöt"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "temperatur"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "varm"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "termometer"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dimma"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dimma"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dimmig"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "vatten"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kall"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "cyklon"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "storm"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "klar"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "snöblandat regn"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "moln"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kylig"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "störtregn"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "stormvind"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "brännande"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "damm"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "stormigt"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "mulet"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

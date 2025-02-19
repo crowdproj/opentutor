@@ -1,0 +1,943 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "pt",
+    "partsOfSpeech": [
+      "substantivo",
+      "verbo",
+      "adjetivo",
+      "advérbio",
+      "pronome",
+      "preposição",
+      "conjunção",
+      "interjeição",
+      "artigo"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "atmosférico"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "tempo"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "neve"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "chuva"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "vento"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "granizo"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "tempestade"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "precipitação"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "trovão"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "raio"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "anticiclone"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "atmosfera"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "barômetro"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ventoso"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "umidade"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "úmido"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "úmido"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "úmido"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "nascer do sol"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "grau"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "pressão"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "abafado"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "calor"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "quente"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "pôr do sol"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "geada"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "garoa"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "névoa"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "gelo"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "chuvisco"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "poça"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "meteorologia"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "nublado"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "degelo"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "fresco"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "empoeirado"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "arco-íris"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "fresco"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "escorregadio"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "lama"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "smog"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "nevasca"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ensolarado"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "seco"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "molhado"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "temperatura"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "morno"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "termômetro"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "neblina"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "bruma"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "nevoento"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "água"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "frio"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ciclone"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "tempestade"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "claro"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "granizo"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "nuvem"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "frio"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "chuva forte"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "vendaval"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "escaldante"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "poeira"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "tempestuoso"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "nublado"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

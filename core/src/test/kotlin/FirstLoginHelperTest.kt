@@ -20,8 +20,30 @@ internal class FirstLoginHelperTest {
         @JvmStatic
         private fun builtIntVocabularies(): List<Arguments> {
             return listOf(
-                Arguments.of("zh", "天气"),
-                Arguments.of("es", "clima")
+                Arguments.of("xx", "weather", "天气"), // unknown locale => en->zh
+                Arguments.of("zh", "weather", "天气"),
+                Arguments.of("en", "天气", "weather"),
+                Arguments.of("es", "weather", "clima"),
+                Arguments.of("pt", "weather", "tempo"),
+                Arguments.of("ja", "weather", "天気"),
+                Arguments.of("de", "weather", "Wetter"),
+                Arguments.of("fr", "weather", "météo"),
+                Arguments.of("it", "weather", "tempo"),
+                Arguments.of("pl", "weather", "pogoda"),
+                Arguments.of("nl", "weather", "weer"),
+                Arguments.of("el", "weather", "καιρός"),
+                Arguments.of("hu", "weather", "időjárás"),
+                Arguments.of("cs", "weather", "počasí"),
+                Arguments.of("sv", "weather", "väder"),
+                Arguments.of("bg", "weather", "времето"),
+                Arguments.of("da", "weather", "vejr"),
+                Arguments.of("fi", "weather", "sää"),
+                Arguments.of("sk", "weather", "počasie"),
+                Arguments.of("lt", "weather", "oras"),
+                Arguments.of("lv", "weather", "laikapstākļi"),
+                Arguments.of("sl", "weather", "vreme"),
+                Arguments.of("et", "weather", "ilm"),
+                Arguments.of("mt", "weather", "temp"),
             )
         }
     }
@@ -65,10 +87,10 @@ internal class FirstLoginHelperTest {
 
     @ParameterizedTest
     @MethodSource(value = ["builtIntVocabularies"])
-    fun `test load builtin documents`(locale: String, word: String) {
+    fun `test load builtin documents`(locale: String, word: String, expected: String) {
         val document = loadBuiltinDocuments(locale).single()
         val actual =
-            document.cards.single { it.words.single().word == "weather" }.words.single().translations.single().single()
-        Assertions.assertEquals(word, actual)
+            document.cards.single { it.words.single().word == word }.words.single().translations.single().single()
+        Assertions.assertEquals(expected, actual)
     }
 }

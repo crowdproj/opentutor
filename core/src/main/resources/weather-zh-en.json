@@ -1,0 +1,915 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "zh",
+    "partsOfSpeech": [
+      "名词",
+      "动词",
+      "形容词",
+      "副词",
+      "代词",
+      "介词",
+      "连词",
+      "感叹词",
+      "冠词"
+    ]
+  },
+  "targetLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "大气的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "atmospheric"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "天气",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "weather"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "雪",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "snow"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "雨",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "rain"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "风",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "wind"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "冰雹",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "hail"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "雷暴",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "thunderstorm"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "降水",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "precipitation"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "雷",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "闪电",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "lightning"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "反气旋",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "anticyclone"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "大气",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "atmosphere"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "气压计",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "有风的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "windy"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "湿度",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "humidity"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "潮湿的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "wet"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "湿润的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "moist"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "日出",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "度",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "degree"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "压力",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "pressure"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "闷热的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "stuffy"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "炎热",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "heat"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "热的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "hot"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "日落",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "霜冻",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "frost"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "毛毛雨",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "drizzle"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "霾",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "haze"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "冰",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ice"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "阵雨",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "shower"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "水坑",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "puddle"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "气象学",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "meteorology"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "多云的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "cloudy"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "解冻",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "thaw"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "凉爽的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "cool"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "多尘的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dusty"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "彩虹",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "rainbow"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "新鲜的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "fresh"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "滑的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "slippery"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "泥泞",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "slush"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "雾霾",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "smog"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "降雪",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "snowfall"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "阳光明媚的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "sunny"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "干燥的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dry"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "温度",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "temperature"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "温暖的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "warm"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "温度计",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "thermometer"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "雾",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "fog"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "薄雾",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "mist"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "有雾的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "foggy"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "水",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "water"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "寒冷的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "cold"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "气旋",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "cyclone"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "风暴",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "storm"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "晴朗的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "clear"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "雨夹雪",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "云",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "阴冷的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "暴雨",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "downpour"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "大风",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "gale"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "炽热的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "scorching"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "灰尘",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "dust"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "狂风的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "blustery"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "阴天的",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "overcast"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}
