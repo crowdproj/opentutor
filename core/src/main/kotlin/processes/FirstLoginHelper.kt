@@ -18,6 +18,7 @@ private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.
 private val RESOURCE_DOCUMENTS_BY_LOCALE = mapOf(
     "ru" to listOf("/irregular-verbs-en-ru.json", "/weather-en-ru.json"),
     "zh" to listOf("/weather-en-zh.json"),
+    "es" to listOf("/weather-en-es.json"),
 )
 
 internal val users = Caffeine.newBuilder().maximumSize(1024).build<AppAuthId, DbUser>()
