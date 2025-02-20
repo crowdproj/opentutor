@@ -19,8 +19,7 @@ fun ChainDSL<SettingsContext>.processGetSettings() = worker {
     }
     process {
         val userId = this.normalizedRequestAppAuthId
-        this.repositories.userRepository.createUserIfAbsent(userId)
-        val dbUser = checkNotNull(this.repositories.userRepository.findByUserId(userId.asString()))
+        val dbUser = this.repositories.userRepository.getOrCreateUser(userId)
         val settings = fromDbUserDetails(dbUser.details, this.config)
         this.responseSettingsEntity = settings
         this.status = AppStatus.RUN
@@ -31,7 +30,7 @@ fun ChainDSL<SettingsContext>.processGetSettings() = worker {
                 operation = SettingsOperation.GET_SETTINGS,
                 fieldName = this.normalizedRequestAppAuthId.toFieldName(),
                 description = "exception",
-                exception = it
+                exception = it,
             )
         )
     }
@@ -44,13 +43,13 @@ fun ChainDSL<SettingsContext>.processUpdateSettings() = worker {
     }
     process {
         val userId = this.normalizedRequestAppAuthId
-        this.repositories.userRepository.createUserIfAbsent(userId)
+        val foundUser = this.repositories.userRepository.getOrCreateUser(userId)
         val settings = this.requestSettingsEntity
         if (logger.isDebugEnabled) {
             logger.debug("Updated settings: $settings")
         }
-        val dbUser = DbUser(userId.asString(), details = settings.toDbUserDetails())
-        this.repositories.userRepository.updateUser(dbUser)
+        val dbUser = DbUser(userId.asString(), details = foundUser.details + settings.toDbUserDetails())
+        this.repositories.userRepository.putUser(userId, dbUser)
         this.status = AppStatus.RUN
     }
     onException {

@@ -14,12 +14,12 @@ docker rm tutor-deploy-flashcards-settings-server-1
 docker rm tutor-deploy-flashcards-translation-server-1
 docker rm tutor-deploy-flashcards-app-1
 
-docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor-cards-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor-dictionaries-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor-settings-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor-translation-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor:2.0.0-snapshot
+docker rmi sszuev/open-tutor-tts-server:2.0.1-snapshot
+docker rmi sszuev/open-tutor-cards-server:2.0.1-snapshot
+docker rmi sszuev/open-tutor-dictionaries-server:2.0.1-snapshot
+docker rmi sszuev/open-tutor-settings-server:2.0.1-snapshot
+docker rmi sszuev/open-tutor-translation-server:2.0.1-snapshot
+docker rmi sszuev/open-tutor:2.0.1-snapshot
 
 cd ..
 gradle clean build -x test

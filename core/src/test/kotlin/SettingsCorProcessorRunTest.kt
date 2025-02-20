@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.core
 import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
+import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.domain.SettingsEntity
 import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
@@ -14,11 +15,11 @@ import org.junit.jupiter.api.Test
 internal class SettingsCorProcessorRunTest {
 
     companion object {
-        private val testUserId = testDictionaryEntity.userId
 
         @Suppress("SameParameterValue")
         private fun testContext(
             op: SettingsOperation,
+            testUserId: AppAuthId,
             userRepository: MockDbUserRepository = MockDbUserRepository(),
         ): SettingsContext {
             val context = SettingsContext(
@@ -39,6 +40,7 @@ internal class SettingsCorProcessorRunTest {
 
     @Test
     fun `test get settings`() = runTest {
+        val testUserId = AppAuthId("1")
         val userRepository = MockDbUserRepository(
             invokeFindUserById = {
                 DbUser(
@@ -54,7 +56,11 @@ internal class SettingsCorProcessorRunTest {
             invokeUpdateUser = { Assertions.fail() },
         )
 
-        val context = testContext(SettingsOperation.GET_SETTINGS, userRepository)
+        val context = testContext(
+            op = SettingsOperation.GET_SETTINGS,
+            testUserId = testUserId,
+            userRepository = userRepository,
+        )
 
         SettingsCorProcessor().execute(context)
 
@@ -78,6 +84,7 @@ internal class SettingsCorProcessorRunTest {
 
     @Test
     fun `test update settings`() = runTest {
+        val testUserId = AppAuthId("2")
         var updatedUser: DbUser? = null
         val userRepository = MockDbUserRepository(
             invokeFindUserById = {
@@ -97,7 +104,11 @@ internal class SettingsCorProcessorRunTest {
             },
         )
 
-        val context = testContext(SettingsOperation.UPDATE_SETTINGS, userRepository)
+        val context = testContext(
+            op = SettingsOperation.UPDATE_SETTINGS,
+            testUserId = testUserId,
+            userRepository = userRepository,
+        )
         context.requestSettingsEntity = SettingsEntity(
             numberOfWordsPerStage = 14,
             stageShowNumberOfWords = 12,
