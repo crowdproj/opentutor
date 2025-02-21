@@ -297,7 +297,7 @@ fun OptionsPanelDirect(
                 if (direct || isTextShort(card.translationAsString)) {
                     Text(
                         text = if (direct) card.word else card.translationAsString,
-                        style = MaterialTheme.typography.displayMedium,
+                        fontSize = 35.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
                             .weight(1f)
@@ -306,9 +306,8 @@ fun OptionsPanelDirect(
                     TextWithPopup(
                         shortText = shortText(card.translationAsString),
                         fullText = card.translationAsString,
-                        style = MaterialTheme.typography.displayMedium,
-                        fontSize = 28.sp,
-                        lineHeight = 36.sp,
+                        fontSize = 30.sp,
+                        lineHeight = 32.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
                             .weight(1f)

@@ -29,7 +29,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -51,7 +53,6 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
@@ -457,6 +458,7 @@ fun CardsBottomToolbar(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditCardDialog(
     lang: String,
@@ -469,7 +471,10 @@ fun EditCardDialog(
     var translation by remember { mutableStateOf(card.translationAsString) }
     var examples by remember { mutableStateOf(examplesAsString(card.examples)) }
 
-    Dialog(onDismissRequest = onDismiss) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        modifier = Modifier.fillMaxSize(),
+    ) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
@@ -574,6 +579,7 @@ fun EditCardDialog(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddCardDialog(
     initialWord: String,
@@ -606,7 +612,10 @@ fun AddCardDialog(
         word = initialWord
     }
 
-    Dialog(onDismissRequest = onDismiss) {
+    ModalBottomSheet(
+        onDismissRequest = onDismiss,
+        modifier = Modifier.fillMaxSize(),
+    ) {
         Surface(
             shape = MaterialTheme.shapes.medium,
             modifier = Modifier
