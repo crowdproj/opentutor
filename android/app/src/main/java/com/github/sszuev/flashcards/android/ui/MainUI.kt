@@ -9,6 +9,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.intl.Locale
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -33,7 +34,12 @@ fun MainNavigation(
     val settingsErrorMessage by settingsViewModel.errorMessage
 
     LaunchedEffect(Unit) {
+        Log.i(tag, "Load Settings")
         settingsViewModel.loadSettings()
+    }
+    LaunchedEffect(Unit) {
+        Log.i(tag,"CURRENT-LOCALE-LANGUAGE::" + Locale.current.language)
+        dictionaryViewModel.loadDictionaries(Locale.current.language)
     }
 
     ErrorMessageBox(settingsErrorMessage)
