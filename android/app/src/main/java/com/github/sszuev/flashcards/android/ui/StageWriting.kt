@@ -62,7 +62,6 @@ fun StageWritingScreen(
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
     direction: Boolean = true,
@@ -78,7 +77,6 @@ fun StageWritingScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             Text(
                 text = "Stage: writing [${if (direction) "source -> target" else "target -> source"}]",
                 style = MaterialTheme.typography.headlineSmall,

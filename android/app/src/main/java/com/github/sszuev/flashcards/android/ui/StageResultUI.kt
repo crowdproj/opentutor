@@ -46,7 +46,6 @@ private const val tag = "StageResultUI"
 fun StageResultScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
 ) {
     Log.d(tag, "StageResult")
@@ -77,8 +76,6 @@ fun StageResultScreen(
             .onSizeChanged { size -> containerWidthPx = size.width }
     ) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
-
             Text(
                 text = "Stage: results",
                 style = MaterialTheme.typography.headlineSmall,

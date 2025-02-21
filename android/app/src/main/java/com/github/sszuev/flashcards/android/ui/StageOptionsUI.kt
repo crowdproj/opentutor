@@ -48,7 +48,6 @@ fun StageOptionsScreen(
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
     direction: Boolean = true,
@@ -64,7 +63,6 @@ fun StageOptionsScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             Text(
                 text = "Stage: options [${if (direction) "source -> target" else "target -> source"}]",
                 style = MaterialTheme.typography.headlineSmall,

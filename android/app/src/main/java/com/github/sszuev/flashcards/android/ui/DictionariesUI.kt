@@ -69,7 +69,6 @@ private const val FIFTH_COLUMN_WIDTH = 18
 @Composable
 fun DictionariesScreen(
     navController: NavHostController,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
@@ -88,7 +87,6 @@ fun DictionariesScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             DictionaryTable(
                 viewModel = dictionaryViewModel,
             )

@@ -45,7 +45,6 @@ fun StageMosaicScreen(
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
     direction: Boolean = true,
@@ -70,7 +69,6 @@ fun StageMosaicScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             Text(
                 text = "Stage: mosaic [${if (direction) "source -> target" else "target -> source"}]",
                 style = MaterialTheme.typography.headlineSmall,

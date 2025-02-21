@@ -77,8 +77,6 @@ fun CardsScreen(
     dictionary: DictionaryEntity,
     cardViewModel: CardViewModel,
     ttsViewModel: TTSViewModel,
-    onSignOut: () -> Unit = {},
-    onHomeClick: () -> Unit = {},
 ) {
     val searchQuery = remember { mutableStateOf("") }
     val cards by cardViewModel.cards
@@ -120,7 +118,6 @@ fun CardsScreen(
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Column {
-                TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
                 CardsTable(
                     viewModel = cardViewModel,
                     dictionaryId = checkNotNull(dictionary.dictionaryId),
