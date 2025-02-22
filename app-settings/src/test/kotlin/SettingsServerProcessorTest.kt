@@ -77,7 +77,7 @@ internal class SettingsServerProcessorTest {
             repositories.userRepository
         } returns userRepository
         every {
-            userRepository.findByUserId(testUserId)
+            userRepository.findOrCreateUser(testUserId)
         } returns testDbUser
 
         val processor = SettingsServerProcessor(

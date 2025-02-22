@@ -47,27 +47,18 @@ internal val users = Caffeine.newBuilder().maximumSize(1024).build<AppAuthId, Db
 
 internal fun DbUserRepository.createOrUpdateUser(id: AppAuthId, locale: String, onCreateOrUpdate: () -> Unit) {
     var dbUser = users.getIfPresent(id)
+
     if (dbUser != null && dbUser.details.containsKey("locale")) {
         return
     }
-    if (dbUser == null) {
-        dbUser = findByUserId(id.asString())
-    }
-    if (dbUser == null) {
-        dbUser = DbUser(id = id.asString(), details = mapOf("locale" to locale))
-        users.put(id, this.createUser(dbUser))
+    dbUser = findOrCreateUser(id.asString(), mapOf("locale" to locale), onCreateOrUpdate)
+
+    if (!dbUser.details.containsKey("locale")) {
+        dbUser = addUserDetails(id.asString(), mapOf("locale" to locale))
         onCreateOrUpdate()
-        return
     }
-    if (dbUser.details.containsKey("locale")) {
-        users.put(id, dbUser)
-        return
-    }
-    dbUser = dbUser.copy(details = dbUser.details + mapOf("locale" to locale))
-    this.updateUser(dbUser)
+
     users.put(id, dbUser)
-    onCreateOrUpdate()
-    return
 }
 
 internal fun DbUserRepository.getOrCreateUser(id: AppAuthId): DbUser {
@@ -75,12 +66,9 @@ internal fun DbUserRepository.getOrCreateUser(id: AppAuthId): DbUser {
     if (dbUser != null) {
         return dbUser
     }
-    dbUser = findByUserId(id.asString())
-    if (dbUser == null) {
-        dbUser = DbUser(id = id.asString())
-        users.put(id, this.createUser(dbUser))
-        return dbUser
-    }
+
+    dbUser = findOrCreateUser(id.asString())
+
     users.put(id, dbUser)
     return dbUser
 }
