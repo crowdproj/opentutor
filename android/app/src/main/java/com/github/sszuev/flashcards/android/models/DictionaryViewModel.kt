@@ -66,7 +66,7 @@ class DictionaryViewModel(
         _isDictionariesLoaded = true
     }
 
-    fun loadDictionaries() {
+    fun loadDictionaries(language: String? = null) {
         viewModelScope.launch {
             Log.d(tag, "load dictionaries")
             _isDictionariesLoading.value = true
@@ -74,7 +74,7 @@ class DictionaryViewModel(
             try {
                 withContext(Dispatchers.IO) {
                     _dictionaries.value = repository
-                        .getAll()
+                        .getAll(language)
                         .map { it.toDictionaryEntity() }
                         .sortedBy { it.name }
                 }

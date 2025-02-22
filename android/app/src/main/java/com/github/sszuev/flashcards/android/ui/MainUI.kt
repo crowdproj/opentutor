@@ -2,6 +2,7 @@ package com.github.sszuev.flashcards.android.ui
 
 import android.util.Log
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
@@ -9,6 +10,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.intl.Locale
 import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -30,209 +32,263 @@ fun MainNavigation(
     ttsViewModel: TTSViewModel,
 ) {
     val navController = rememberNavController()
+
     val settingsErrorMessage by settingsViewModel.errorMessage
+    val dictionaryErrorMessage by dictionaryViewModel.errorMessage
 
     LaunchedEffect(Unit) {
+        Log.i(tag, "Load Settings")
         settingsViewModel.loadSettings()
     }
+    LaunchedEffect(Unit) {
+        Log.i(tag, "CURRENT-LOCALE-LANGUAGE::" + Locale.current.language)
+        dictionaryViewModel.loadDictionaries(Locale.current.language)
+    }
 
-    ErrorMessageBox(settingsErrorMessage)
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column {
 
-    val settings = settingsViewModel.settings.value
-    if (settings == null) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-    } else {
-        val stageChain = buildStageChain(settings)
-
-        NavHost(
-            navController = navController,
-            startDestination = "dictionaries",
-        ) {
-            composable("dictionaries") {
-                DictionariesScreen(
-                    navController = navController,
-                    dictionaryViewModel = dictionaryViewModel,
-                    settingsViewModel = settingsViewModel,
-                    cardViewModel = cardViewModel,
-                    onSignOut = onSignOut,
-                    onHomeClick = {
-                        dictionaryViewModel.loadDictionaries()
-                    }
-                )
-            }
-            composable("cards/{dictionaryId}") { backStackEntry ->
-                val dictionaryId = backStackEntry.arguments
-                    ?.getString("dictionaryId")
-                    ?.takeIf { it.isNotBlank() }
-                    ?: throw IllegalArgumentException("Can't determine dictionaryId")
-                val dictionary = dictionaryViewModel.selectedDictionariesList.singleOrNull()
-                if (dictionary != null) {
-                    check(dictionary.dictionaryId == dictionaryId) { "Wrong dictionaryId" }
-                    CardsScreen(
-                        dictionary = dictionary,
-                        cardViewModel = cardViewModel,
-                        onSignOut = onSignOut,
-                        onHomeClick = {
-                            navController.navigateToDictionariesPage(dictionaryViewModel)
-                        },
-                        ttsViewModel = ttsViewModel,
-                    )
-                } else {
-                    navController.popBackStack("dictionaries", inclusive = false)
+            TopBar(
+                onSignOut = onSignOut,
+                onHomeClick = {
+                    navController.navigateToDictionariesPage(dictionaryViewModel, settingsViewModel)
                 }
+            )
+
+            settingsErrorMessage?.let {
+                ErrorMessageBox(it)
             }
-            stageChain.forEachIndexed { index, stage ->
-                composable(stage) {
-                    when (stage) {
-                        "StageShow" -> StageShowScreen(
-                            dictionaryViewModel = dictionaryViewModel,
-                            cardViewModel = cardViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onSignOut = onSignOut,
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
-                                )
-                            },
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                        )
+            dictionaryErrorMessage?.let {
+                ErrorMessageBox(it)
+            }
 
-                        "StageMosaicDirect" -> StageMosaicScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onSignOut = onSignOut,
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
-                                )
-                            },
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            direction = true,
-                        )
+            val settings = settingsViewModel.settings.value
+            if (settings == null) {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                val stageChain = buildStageChain(settings)
 
-                        "StageMosaicReverse" -> StageMosaicScreen(
-                            cardViewModel = cardViewModel,
+                NavHost(
+                    navController = navController,
+                    startDestination = "dictionaries",
+                ) {
+                    composable("dictionaries") {
+                        DictionariesScreen(
+                            navController = navController,
+                            onHomeClick = {
+                                dictionaryViewModel.loadDictionaries()
+                            },
                             dictionaryViewModel = dictionaryViewModel,
                             settingsViewModel = settingsViewModel,
-                            onSignOut = onSignOut,
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
-                                )
-                            },
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            direction = false,
-                            ttsViewModel = ttsViewModel,
+                            cardViewModel = cardViewModel
                         )
+                    }
+                    composable("cards/{dictionaryId}") { backStackEntry ->
+                        val dictionaryId = backStackEntry.arguments
+                            ?.getString("dictionaryId")
+                            ?.takeIf { it.isNotBlank() }
+                            ?: throw IllegalArgumentException("Can't determine dictionaryId")
+                        val dictionary = dictionaryViewModel.selectedDictionariesList.singleOrNull()
+                        if (dictionary != null) {
+                            check(dictionary.dictionaryId == dictionaryId) { "Wrong dictionaryId" }
+                            CardsScreen(
+                                dictionary = dictionary,
+                                cardViewModel = cardViewModel,
+                                ttsViewModel = ttsViewModel,
+                            )
+                        } else {
+                            navController.popBackStack("dictionaries", inclusive = false)
+                        }
+                    }
+                    stageChain.forEachIndexed { index, stage ->
+                        composable(stage) {
+                            when (stage) {
+                                "StageShow" -> StageShowScreen(
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    cardViewModel = cardViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                )
 
-                        "StageOptionsDirect" -> StageOptionsScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onSignOut = onSignOut,
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
+                                "StageMosaicDirect" -> StageMosaicScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = true,
                                 )
-                            },
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            direction = true,
-                        )
 
-                        "StageOptionsReverse" -> StageOptionsScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onSignOut = onSignOut,
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
+                                "StageMosaicReverse" -> StageMosaicScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = false,
                                 )
-                            },
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            direction = false,
-                        )
 
-                        "StageWritingDirect" -> StageWritingScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
+                                "StageOptionsDirect" -> StageOptionsScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = true,
                                 )
-                            },
-                            direction = true,
-                            onSignOut = onSignOut,
-                        )
 
-                        "StageWritingReverse" -> StageWritingScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
+                                "StageOptionsReverse" -> StageOptionsScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = false,
                                 )
-                            },
-                            direction = false,
-                            onSignOut = onSignOut,
-                        )
 
-                        "StageSelfTestDirect" -> StageSelfTestScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
+                                "StageWritingDirect" -> StageWritingScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = true,
                                 )
-                            },
-                            direction = true,
-                            onSignOut = onSignOut,
-                        )
 
-                        "StageSelfTestReverse" -> StageSelfTestScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            settingsViewModel = settingsViewModel,
-                            ttsViewModel = ttsViewModel,
-                            onNextStage = { navController.navigateToNextStage(stageChain, index) },
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
+                                "StageWritingReverse" -> StageWritingScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = false,
                                 )
-                            },
-                            direction = false,
-                            onSignOut = onSignOut,
-                        )
 
-                        "StageResult" -> StageResultScreen(
-                            cardViewModel = cardViewModel,
-                            dictionaryViewModel = dictionaryViewModel,
-                            onHomeClick = {
-                                navController.navigateToDictionariesPage(
-                                    dictionaryViewModel
+                                "StageSelfTestDirect" -> StageSelfTestScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = true,
                                 )
-                            },
-                            onSignOut = onSignOut,
-                        )
+
+                                "StageSelfTestReverse" -> StageSelfTestScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    settingsViewModel = settingsViewModel,
+                                    ttsViewModel = ttsViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                    onNextStage = {
+                                        navController.navigateToNextStage(
+                                            stageChain,
+                                            index
+                                        )
+                                    },
+                                    direction = false,
+                                )
+
+                                "StageResult" -> StageResultScreen(
+                                    cardViewModel = cardViewModel,
+                                    dictionaryViewModel = dictionaryViewModel,
+                                    onHomeClick = {
+                                        navController.navigateToDictionariesPage(
+                                            dictionaryViewModel, settingsViewModel
+                                        )
+                                    },
+                                )
+                            }
+                        }
                     }
                 }
             }
@@ -273,8 +329,27 @@ private fun NavController.navigateToNextStage(
     }
 }
 
-private fun NavController.navigateToDictionariesPage(dictionaryViewModel: DictionaryViewModel) {
+private fun NavController.navigateToDictionariesPage(
+    dictionaryViewModel: DictionaryViewModel,
+    settingsViewModel: SettingsViewModel,
+) {
     Log.i(tag, "Go to 'dictionaries'")
-    navigate("dictionaries")
+
+    if (currentDestination?.route == "dictionaries") {
+        Log.w(tag, "Already on 'dictionaries' screen, skipping navigation")
+    } else {
+        try {
+            if (currentBackStackEntry != null) {
+                navigate("dictionaries") {
+                    popUpTo("dictionaries") { inclusive = true }
+                }
+            } else {
+                Log.w(tag, "NavController is not ready yet, skipping navigation")
+            }
+        } catch (e: Exception) {
+            Log.e(tag, "Error navigating to 'dictionaries': ${e.localizedMessage}", e)
+        }
+    }
+    settingsViewModel.loadSettings()
     dictionaryViewModel.loadDictionaries()
 }

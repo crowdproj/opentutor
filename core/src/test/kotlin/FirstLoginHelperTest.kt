@@ -68,17 +68,17 @@ internal class FirstLoginHelperTest {
         )
 
         val counts = AtomicInteger()
-        userRepository.createOrUpdateUser(id = id, locale = "xx") {
+        userRepository.createOrUpdateUser(id = id, language = "xx") {
             counts.incrementAndGet()
         }
-        userRepository.createOrUpdateUser(id = id, locale = "xx") {
+        userRepository.createOrUpdateUser(id = id, language = "xx") {
             counts.incrementAndGet()
         }
         Assertions.assertEquals(1, counts.get())
         Assertions.assertEquals(1, data.size)
 
         users.invalidateAll()
-        userRepository.createOrUpdateUser(id = id, locale = "xx") {
+        userRepository.createOrUpdateUser(id = id, language = "xx") {
             counts.incrementAndGet()
         }
         Assertions.assertEquals(1, counts.get())

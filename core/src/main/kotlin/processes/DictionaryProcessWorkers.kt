@@ -33,17 +33,17 @@ fun ChainDSL<DictionaryContext>.processGetAllDictionary() = worker {
     process {
         val userId = this.normalizedRequestAppAuthId
 
-        val locale = this.userLocale
-        if (locale == null) {
+        val language = this.userLanguage
+        if (language == null) {
             if (logger.isDebugEnabled)
-                logger.debug("GetAllDictionaries: no locale specified")
+                logger.debug("GetAllDictionaries: no language specified")
             this.repositories.userRepository.getOrCreateUser(id = userId)
         } else {
             if (logger.isDebugEnabled)
-                logger.debug("GetAllDictionaries: locale = $locale")
-            this.repositories.userRepository.createOrUpdateUser(id = userId, locale = locale) {
-                logger.info("GetAllDictionaries: populate builtin dictionaries for locale $locale")
-                this.populateBuiltinDictionaries(locale)
+                logger.debug("GetAllDictionaries: language = $language")
+            this.repositories.userRepository.createOrUpdateUser(id = userId, language = language) {
+                logger.info("GetAllDictionaries: populate builtin dictionaries for language $language")
+                this.populateBuiltinDictionaries(language)
             }
         }
 

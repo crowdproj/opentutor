@@ -22,13 +22,14 @@ internal interface BaseResponse {
 
 internal fun handleErrors(container: BaseResponse) {
     if (container.errors?.isNotEmpty() == true) {
-        throw ApiResponseException(
-            "ERRORS::${
+        val error = ApiResponseException(
+            "ERRORS:\n${
                 checkNotNull(container.errors)
                     .map { it.message }
-                    .joinToString(separator = "' ", prefix = "'", postfix = "'")
+                    .joinToString(separator = "\n")
             }"
         )
+        throw error
     }
 }
 

@@ -46,5 +46,5 @@ data class DictionaryContext(
     // upload/create/update dictionary response
     var responseDictionaryEntity: DictionaryEntity = DictionaryEntity.EMPTY,
     // used on first login to determine which dictionaries should be shown
-    var userLocale: String? = null,
+    var userLanguage: String? = null,
 ) : AppContext

@@ -452,7 +452,7 @@ components:
         - $ref: '#/components/schemas/BaseRequest'
         - type: object
           properties:
-            locale:
+            language:
               description: used on first login to determine which dictionaries should be shown
               type: string
 

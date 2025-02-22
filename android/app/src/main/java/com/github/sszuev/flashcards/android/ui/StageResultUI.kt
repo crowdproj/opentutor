@@ -37,8 +37,8 @@ import com.github.sszuev.flashcards.android.utils.translationAsString
 
 private const val FIRST_COLUMN_WIDTH = 20
 private const val SECOND_COLUMN_WIDTH = 35
-private const val THIRD_COLUMN_WIDTH = 27
-private const val FOURTH_COLUMN_WIDTH = 18
+private const val THIRD_COLUMN_WIDTH = 25
+private const val FOURTH_COLUMN_WIDTH = 20
 
 private const val tag = "StageResultUI"
 
@@ -46,7 +46,6 @@ private const val tag = "StageResultUI"
 fun StageResultScreen(
     cardViewModel: CardViewModel,
     dictionaryViewModel: DictionaryViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
 ) {
     Log.d(tag, "StageResult")
@@ -77,8 +76,6 @@ fun StageResultScreen(
             .onSizeChanged { size -> containerWidthPx = size.width }
     ) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
-
             Text(
                 text = "Stage: results",
                 style = MaterialTheme.typography.headlineSmall,
@@ -195,7 +192,7 @@ fun CardItemRow(
             containerWidthDp = containerWidthDp
         )
         TableCell(
-            text = "${100 * card.answered / dictionaryNumberOfRightAnswers(card)}%",
+            text = "${100 * card.answered / dictionaryNumberOfRightAnswers(card)}",
             weight = FOURTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
         )

@@ -1,7 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.app.Activity
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -555,14 +554,26 @@ fun TextWithPopup(
 
 @Composable
 fun ErrorMessageBox(errorMessage: String?) {
-    AnimatedVisibility(visible = !errorMessage.isNullOrEmpty()) {
-        Text(
-            text = errorMessage ?: "",
-            color = MaterialTheme.colorScheme.error,
-            fontSize = 20.sp,
+    if (errorMessage.isNullOrEmpty()) return
+    Column(
+        modifier = Modifier.fillMaxWidth()
+    ) {
+        Box(
             modifier = Modifier
-                .padding(16.dp)
-                .background(Color.White)
-        )
+                .fillMaxWidth()
+                .background(Color(0xFFFFCDD2))
+                .padding(16.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = errorMessage,
+                    color = MaterialTheme.colorScheme.error,
+                    fontSize = 20.sp
+                )
+            }
+        }
     }
 }

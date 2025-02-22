@@ -12,8 +12,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.BasicText
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -60,7 +62,6 @@ fun StageWritingScreen(
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
     direction: Boolean = true,
@@ -76,7 +77,6 @@ fun StageWritingScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             Text(
                 text = "Stage: writing [${if (direction) "source -> target" else "target -> source"}]",
                 style = MaterialTheme.typography.headlineSmall,
@@ -180,21 +180,19 @@ fun WritingPanels(
         }
     }
 
-    Column(
+    LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
+            .imePadding()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
-        Row(
-            modifier = Modifier.padding(vertical = 8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
+        item {
             val card = currentCard.value
             if (card == null) {
                 onNextStage()
-                return
+                return@item
             }
             val dictionary =
                 dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
@@ -205,7 +203,6 @@ fun WritingPanels(
                     style = MaterialTheme.typography.displayMedium,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
-                        .weight(1f)
                 )
             } else {
                 val txt = card.translationAsString
@@ -217,11 +214,10 @@ fun WritingPanels(
                     lineHeight = 36.sp,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
-                        .weight(1f),
                 )
             }
             Row(
-                modifier = Modifier.weight(0.5f),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
@@ -241,106 +237,111 @@ fun WritingPanels(
             }
         }
 
-        if (isEditable) {
-            TextField(
-                value = inputText,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                onValueChange = { it: String ->
-                    inputText = it
-                },
-                textStyle = MaterialTheme.typography.bodyLarge,
-                readOnly = !isEditable,
-                enabled = true,
-                singleLine = false,
-                maxLines = 4
-            )
-        } else {
-            BasicText(
-                text = buildAnnotatedString {
-                    val card = checkNotNull(currentCard.value)
-                    val expected = if (direct) {
-                        card.translation
-                    } else {
-                        wordAsList(card.word)
-                    }
-                    val correctIndex =
-                        correctAnswerIndexOf(expected, inputText)
-
-                    withStyle(
-                        style = if (correctIndex != -1) {
-                            SpanStyle(color = Color.Green)
+        item {
+            if (isEditable) {
+                TextField(
+                    value = inputText,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    onValueChange = { it: String ->
+                        inputText = it
+                    },
+                    textStyle = MaterialTheme.typography.bodyLarge,
+                    readOnly = !isEditable,
+                    enabled = true,
+                    singleLine = false,
+                    maxLines = 4
+                )
+            } else {
+                BasicText(
+                    text = buildAnnotatedString {
+                        val card = checkNotNull(currentCard.value)
+                        val expected = if (direct) {
+                            card.translation
                         } else {
-                            SpanStyle(
-                                color = Color.Red,
-                                textDecoration = TextDecoration.LineThrough
-                            )
+                            wordAsList(card.word)
                         }
-                    ) {
-                        append(inputText.trim())
-                    }
+                        val correctIndex =
+                            correctAnswerIndexOf(expected, inputText)
 
-                    append(" — ")
+                        withStyle(
+                            style = if (correctIndex != -1) {
+                                SpanStyle(color = Color.Green)
+                            } else {
+                                SpanStyle(
+                                    color = Color.Red,
+                                    textDecoration = TextDecoration.LineThrough
+                                )
+                            }
+                        ) {
+                            append(inputText.trim())
+                        }
 
-                    expected.forEachIndexed { index, ex ->
-                        if (index == correctIndex) {
-                            withStyle(style = SpanStyle(color = Color.Green)) {
+                        append(" — ")
+
+                        expected.forEachIndexed { index, ex ->
+                            if (index == correctIndex) {
+                                withStyle(style = SpanStyle(color = Color.Green)) {
+                                    append(ex)
+                                }
+                            } else {
                                 append(ex)
                             }
-                        } else {
-                            append(ex)
+                            if (index != expected.lastIndex) {
+                                append(", ")
+                            }
                         }
-                        if (index != expected.lastIndex) {
-                            append(", ")
-                        }
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 16.dp),
-                style = MaterialTheme.typography.bodyLarge
-            )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp),
+                    style = MaterialTheme.typography.bodyLarge
+                )
+            }
         }
 
-        var buttonsEnabled by remember { mutableStateOf(false) }
+        item {
 
-        val alpha by animateFloatAsState(if (buttonsEnabled) 1f else 0.5f)
+            var buttonsEnabled by remember { mutableStateOf(false) }
 
-        LaunchedEffect(currentCard) {
-            Log.d(tag, "DELAY")
-            buttonsEnabled = false
-            delay(STAGE_WRITING_BUTTONS_DELAY_MS)
-            buttonsEnabled = true
-        }
+            val alpha by animateFloatAsState(if (buttonsEnabled) 1f else 0.5f)
 
-        Box {
-            StageWritingBottomToolbar(
-                modifier = Modifier
-                    .align(Alignment.BottomCenter)
-                    .alpha(alpha),
-                buttonsEnabled = buttonsEnabled && inputText.isNotBlank(),
-                isEditable = isEditable,
-                onTest = {
-                    val card = checkNotNull(currentCard.value)
-                    isCorrect = checkAnswer(inputText, card)
-                    isEditable = false
+            LaunchedEffect(currentCard) {
+                Log.d(tag, "DELAY")
+                buttonsEnabled = false
+                delay(STAGE_WRITING_BUTTONS_DELAY_MS)
+                buttonsEnabled = true
+            }
 
-                    buttonsEnabled = false
-                    cardViewModel.viewModelScope.launch {
-                        delay(STAGE_WRITING_BUTTONS_DELAY_MS)
-                        buttonsEnabled = true
-                        Log.d(tag, "Delay over: enabling buttons")
+            Box {
+                StageWritingBottomToolbar(
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .alpha(alpha),
+                    buttonsEnabled = buttonsEnabled && inputText.isNotBlank(),
+                    isEditable = isEditable,
+                    onTest = {
+                        val card = checkNotNull(currentCard.value)
+                        isCorrect = checkAnswer(inputText, card)
+                        isEditable = false
+
+                        buttonsEnabled = false
+                        cardViewModel.viewModelScope.launch {
+                            delay(STAGE_WRITING_BUTTONS_DELAY_MS)
+                            buttonsEnabled = true
+                            Log.d(tag, "Delay over: enabling buttons")
+                        }
+
+                        if (!direct) {
+                            ttsViewModel.loadAndPlayAudio(card)
+                        }
+                    },
+                    onNext = {
+                        onNextCard()
                     }
-
-                    if (!direct) {
-                        ttsViewModel.loadAndPlayAudio(card)
-                    }
-                },
-                onNext = {
-                    onNextCard()
-                }
-            )
+                )
+            }
         }
     }
 }

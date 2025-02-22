@@ -10,7 +10,7 @@ class DictionaryRepository(
 ) {
     private val tag = "DictionaryRepository"
 
-    suspend fun getAll(): List<DictionaryResource> {
+    suspend fun getAll(language: String? = null): List<DictionaryResource> {
         val requestId = UUID.randomUUID().toString()
         Log.d(tag, "Get all dictionaries with requestId=$requestId")
         val container =
@@ -19,6 +19,7 @@ class DictionaryRepository(
                     GetAllDictionariesRequest(
                         requestType = "getAllDictionaries",
                         requestId = requestId,
+                        language = language,
                     )
                 )
             }
@@ -108,6 +109,7 @@ class DictionaryRepository(
 private class GetAllDictionariesRequest(
     override val requestType: String,
     override val requestId: String,
+    val language: String? = null,
 ) : BaseRequest
 
 @Serializable

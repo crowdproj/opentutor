@@ -43,7 +43,6 @@ fun StageShowScreen(
     cardViewModel: CardViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
 ) {
@@ -117,7 +116,6 @@ fun StageShowScreen(
                 .padding(bottom = 60.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
 
             Text(
                 text = "Stage: show",

@@ -48,7 +48,6 @@ fun StageOptionsScreen(
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
-    onSignOut: () -> Unit = {},
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
     direction: Boolean = true,
@@ -64,7 +63,6 @@ fun StageOptionsScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            TopBar(onSignOut = onSignOut, onHomeClick = onHomeClick)
             Text(
                 text = "Stage: options [${if (direction) "source -> target" else "target -> source"}]",
                 style = MaterialTheme.typography.headlineSmall,
@@ -297,7 +295,7 @@ fun OptionsPanelDirect(
                 if (direct || isTextShort(card.translationAsString)) {
                     Text(
                         text = if (direct) card.word else card.translationAsString,
-                        style = MaterialTheme.typography.displayMedium,
+                        fontSize = 35.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
                             .weight(1f)
@@ -306,9 +304,8 @@ fun OptionsPanelDirect(
                     TextWithPopup(
                         shortText = shortText(card.translationAsString),
                         fullText = card.translationAsString,
-                        style = MaterialTheme.typography.displayMedium,
-                        fontSize = 28.sp,
-                        lineHeight = 36.sp,
+                        fontSize = 30.sp,
+                        lineHeight = 32.sp,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
                             .weight(1f)
