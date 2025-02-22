@@ -28,7 +28,7 @@ fun DictionaryContext.fromDictionaryTransport(request: BaseRequest) = when (requ
 
 fun DictionaryContext.fromGetAllDictionariesRequest(request: GetAllDictionariesRequest) {
     this.requestId = request.requestId()
-    this.userLocale = request.locale
+    this.userLanguage = request.language
 }
 
 fun DictionaryContext.fromCreateDictionaryRequest(request: CreateDictionaryRequest) {

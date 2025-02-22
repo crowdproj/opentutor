@@ -19,7 +19,7 @@ class DictionaryRepository(
                     GetAllDictionariesRequest(
                         requestType = "getAllDictionaries",
                         requestId = requestId,
-                        locale = language,
+                        language = language,
                     )
                 )
             }
@@ -109,7 +109,7 @@ class DictionaryRepository(
 private class GetAllDictionariesRequest(
     override val requestType: String,
     override val requestId: String,
-    val locale: String? = null,
+    val language: String? = null,
 ) : BaseRequest
 
 @Serializable

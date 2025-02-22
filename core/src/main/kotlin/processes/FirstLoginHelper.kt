@@ -15,8 +15,8 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.FirstLoginHelper")
 
-private const val DEFAULT_TARGET_LOCAL = "zh"
-private val RESOURCE_DOCUMENTS_BY_LOCALE = mapOf(
+private const val DEFAULT_TARGET_LANGUAGE = "zh"
+private val RESOURCE_DOCUMENTS_BY_LANGUAGE = mapOf(
     "ru" to listOf("/irregular-verbs-en-ru.json", "/weather-en-ru.json"),
     "en" to listOf("/weather-zh-en.json"),
     "zh" to listOf("/weather-en-zh.json"),
@@ -45,16 +45,16 @@ private val RESOURCE_DOCUMENTS_BY_LOCALE = mapOf(
 
 internal val users = Caffeine.newBuilder().maximumSize(1024).build<AppAuthId, DbUser>()
 
-internal fun DbUserRepository.createOrUpdateUser(id: AppAuthId, locale: String, onCreateOrUpdate: () -> Unit) {
+internal fun DbUserRepository.createOrUpdateUser(id: AppAuthId, language: String, onCreateOrUpdate: () -> Unit) {
     var dbUser = users.getIfPresent(id)
 
-    if (dbUser != null && dbUser.details.containsKey("locale")) {
+    if (dbUser != null && dbUser.details.containsKey("language")) {
         return
     }
-    dbUser = findOrCreateUser(id.asString(), mapOf("locale" to locale), onCreateOrUpdate)
+    dbUser = findOrCreateUser(id.asString(), mapOf("language" to language), onCreateOrUpdate)
 
-    if (!dbUser.details.containsKey("locale")) {
-        dbUser = addUserDetails(id.asString(), mapOf("locale" to locale))
+    if (!dbUser.details.containsKey("language")) {
+        dbUser = addUserDetails(id.asString(), mapOf("language" to language))
         onCreateOrUpdate()
     }
 
@@ -77,9 +77,9 @@ internal fun DbUserRepository.putUser(id: AppAuthId, dbUser: DbUser) {
     users.put(id, this.updateUser(dbUser))
 }
 
-internal fun DictionaryContext.populateBuiltinDictionaries(locale: String) {
+internal fun DictionaryContext.populateBuiltinDictionaries(language: String) {
     val userId = this.normalizedRequestAppAuthId
-    val documents = loadBuiltinDocuments(locale).toList()
+    val documents = loadBuiltinDocuments(language).toList()
 
     documents.forEach { document ->
         val dictionary = document.dictionary.copy(userId = userId).toDbDictionary()
@@ -91,8 +91,8 @@ internal fun DictionaryContext.populateBuiltinDictionaries(locale: String) {
     }
 }
 
-internal fun loadBuiltinDocuments(locale: String): Sequence<DocumentEntity> {
-    val resources = RESOURCE_DOCUMENTS_BY_LOCALE[locale] ?: RESOURCE_DOCUMENTS_BY_LOCALE[DEFAULT_TARGET_LOCAL]
+internal fun loadBuiltinDocuments(language: String): Sequence<DocumentEntity> {
+    val resources = RESOURCE_DOCUMENTS_BY_LANGUAGE[language] ?: RESOURCE_DOCUMENTS_BY_LANGUAGE[DEFAULT_TARGET_LANGUAGE]
     ?: return emptySequence()
     return resources.asSequence().map {
         checkNotNull(object {}.javaClass.getResourceAsStream(it)) { "Can't find resource $it" }
