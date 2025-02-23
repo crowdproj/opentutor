@@ -1,0 +1,5189 @@
+{
+  "name": "Irregular Verbs",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "zh",
+    "partsOfSpeech": [
+      "名词",
+      "形容词",
+      "数词",
+      "代词",
+      "动词",
+      "副词",
+      "分词",
+      "介词",
+      "连词",
+      "助词",
+      "感叹词"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "arise",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "出现"
+            ]
+          ]
+        },
+        {
+          "word": "arose"
+        },
+        {
+          "word": "arisen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "awake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "醒来"
+            ]
+          ]
+        },
+        {
+          "word": "awakened | awoke"
+        },
+        {
+          "word": "awakened | awoken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "backslide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "退步"
+            ]
+          ]
+        },
+        {
+          "word": "backslid"
+        },
+        {
+          "word": "backslidden | backslid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "承受"
+            ]
+          ]
+        },
+        {
+          "word": "bore"
+        },
+        {
+          "word": "born | borne"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "beat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "打败"
+            ]
+          ]
+        },
+        {
+          "word": "beat"
+        },
+        {
+          "word": "beaten | beat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "become",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "成为"
+            ]
+          ]
+        },
+        {
+          "word": "became"
+        },
+        {
+          "word": "become"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "begin",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "开始"
+            ]
+          ]
+        },
+        {
+          "word": "began"
+        },
+        {
+          "word": "begun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "弯曲"
+            ]
+          ]
+        },
+        {
+          "word": "bent"
+        },
+        {
+          "word": "bent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "打赌"
+            ]
+          ]
+        },
+        {
+          "word": "bet"
+        },
+        {
+          "word": "bet"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "绑"
+            ]
+          ]
+        },
+        {
+          "word": "bound"
+        },
+        {
+          "word": "bound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "咬"
+            ]
+          ]
+        },
+        {
+          "word": "bit"
+        },
+        {
+          "word": "bitten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bleed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "流血"
+            ]
+          ]
+        },
+        {
+          "word": "bled"
+        },
+        {
+          "word": "bled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "吹"
+            ]
+          ]
+        },
+        {
+          "word": "blew"
+        },
+        {
+          "word": "blown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "break",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "打破"
+            ]
+          ]
+        },
+        {
+          "word": "broke"
+        },
+        {
+          "word": "broken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "breed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "繁殖"
+            ]
+          ]
+        },
+        {
+          "word": "bred"
+        },
+        {
+          "word": "bred"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "带来"
+            ]
+          ]
+        },
+        {
+          "word": "brought"
+        },
+        {
+          "word": "brought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "broadcast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "广播"
+            ]
+          ]
+        },
+        {
+          "word": "broadcast | broadcasted"
+        },
+        {
+          "word": "broadcast | broadcasted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "browbeat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "威吓"
+            ]
+          ]
+        },
+        {
+          "word": "browbeat"
+        },
+        {
+          "word": "browbeaten | browbeat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "build",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "建造"
+            ]
+          ]
+        },
+        {
+          "word": "built"
+        },
+        {
+          "word": "built"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "burn",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "燃烧"
+            ]
+          ]
+        },
+        {
+          "word": "burned | burnt"
+        },
+        {
+          "word": "burned | burnt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "burst",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "爆裂"
+            ]
+          ]
+        },
+        {
+          "word": "burst"
+        },
+        {
+          "word": "burst"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bust",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "破产"
+            ]
+          ]
+        },
+        {
+          "word": "busted | bust"
+        },
+        {
+          "word": "busted | bust"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "buy",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "买"
+            ]
+          ]
+        },
+        {
+          "word": "bought"
+        },
+        {
+          "word": "bought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "can",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "能够"
+            ]
+          ]
+        },
+        {
+          "word": "could"
+        },
+        {
+          "word": "could"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "投掷"
+            ]
+          ]
+        },
+        {
+          "word": "cast"
+        },
+        {
+          "word": "cast"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "catch",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "抓住"
+            ]
+          ]
+        },
+        {
+          "word": "caught"
+        },
+        {
+          "word": "caught"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "choose",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "选择"
+            ]
+          ]
+        },
+        {
+          "word": "chose"
+        },
+        {
+          "word": "chosen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "紧贴"
+            ]
+          ]
+        },
+        {
+          "word": "clung"
+        },
+        {
+          "word": "clung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clothe",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "穿衣"
+            ]
+          ]
+        },
+        {
+          "word": "clothed | clad"
+        },
+        {
+          "word": "clothed | clad"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "come",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "来"
+            ]
+          ]
+        },
+        {
+          "word": "came"
+        },
+        {
+          "word": "come"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cost",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "花费"
+            ]
+          ]
+        },
+        {
+          "word": "cost"
+        },
+        {
+          "word": "cost"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "creep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "爬行"
+            ]
+          ]
+        },
+        {
+          "word": "crept"
+        },
+        {
+          "word": "crept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "切割"
+            ]
+          ]
+        },
+        {
+          "word": "cut"
+        },
+        {
+          "word": "cut"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "deal",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "处理"
+            ]
+          ]
+        },
+        {
+          "word": "dealt"
+        },
+        {
+          "word": "dealt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dig",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "挖"
+            ]
+          ]
+        },
+        {
+          "word": "dug"
+        },
+        {
+          "word": "dug"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "潜水"
+            ]
+          ]
+        },
+        {
+          "word": "dove | dived"
+        },
+        {
+          "word": "dived"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "do",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "做"
+            ]
+          ]
+        },
+        {
+          "word": "did"
+        },
+        {
+          "word": "done"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "draw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "画"
+            ]
+          ]
+        },
+        {
+          "word": "drew"
+        },
+        {
+          "word": "drawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dream",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "做梦"
+            ]
+          ]
+        },
+        {
+          "word": "dreamed | dreamt"
+        },
+        {
+          "word": "dreamed | dreamt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "喝"
+            ]
+          ]
+        },
+        {
+          "word": "drank"
+        },
+        {
+          "word": "drunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "驾驶"
+            ]
+          ]
+        },
+        {
+          "word": "drove"
+        },
+        {
+          "word": "driven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dwell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "居住"
+            ]
+          ]
+        },
+        {
+          "word": "dwelt | dwelled"
+        },
+        {
+          "word": "dwelt | dwelled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "eat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "吃"
+            ]
+          ]
+        },
+        {
+          "word": "ate"
+        },
+        {
+          "word": "eaten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fall",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "掉落"
+            ]
+          ]
+        },
+        {
+          "word": "fell"
+        },
+        {
+          "word": "fallen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "feed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "喂养"
+            ]
+          ]
+        },
+        {
+          "word": "fed"
+        },
+        {
+          "word": "fed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "feel",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "感觉"
+            ]
+          ]
+        },
+        {
+          "word": "felt"
+        },
+        {
+          "word": "felt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fight",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "战斗"
+            ]
+          ]
+        },
+        {
+          "word": "fought"
+        },
+        {
+          "word": "fought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "find",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "找到"
+            ]
+          ]
+        },
+        {
+          "word": "found"
+        },
+        {
+          "word": "found"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "适合"
+            ]
+          ]
+        },
+        {
+          "word": "fit"
+        },
+        {
+          "word": "fit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "flee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "逃跑"
+            ]
+          ]
+        },
+        {
+          "word": "fled"
+        },
+        {
+          "word": "fled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "投掷"
+            ]
+          ]
+        },
+        {
+          "word": "flung"
+        },
+        {
+          "word": "flung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fly",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "飞"
+            ]
+          ]
+        },
+        {
+          "word": "flew"
+        },
+        {
+          "word": "flown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "禁止"
+            ]
+          ]
+        },
+        {
+          "word": "forbade"
+        },
+        {
+          "word": "forbidden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forecast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "预测"
+            ]
+          ]
+        },
+        {
+          "word": "forecast"
+        },
+        {
+          "word": "forecast"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foresee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "预见"
+            ]
+          ]
+        },
+        {
+          "word": "foresaw"
+        },
+        {
+          "word": "foreseen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foretell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "预言"
+            ]
+          ]
+        },
+        {
+          "word": "foretold"
+        },
+        {
+          "word": "foretold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forget",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "忘记"
+            ]
+          ]
+        },
+        {
+          "word": "forgot"
+        },
+        {
+          "word": "forgotten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forgive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "原谅"
+            ]
+          ]
+        },
+        {
+          "word": "forgave"
+        },
+        {
+          "word": "forgiven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forsake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "抛弃"
+            ]
+          ]
+        },
+        {
+          "word": "forsook"
+        },
+        {
+          "word": "forsaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "freeze",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "冻结"
+            ]
+          ]
+        },
+        {
+          "word": "froze"
+        },
+        {
+          "word": "frozen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "get",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "得到"
+            ]
+          ]
+        },
+        {
+          "word": "got"
+        },
+        {
+          "word": "gotten | got"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "give",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "给予"
+            ]
+          ]
+        },
+        {
+          "word": "gave"
+        },
+        {
+          "word": "given"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "go",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "去"
+            ]
+          ]
+        },
+        {
+          "word": "went"
+        },
+        {
+          "word": "gone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "grind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "磨"
+            ]
+          ]
+        },
+        {
+          "word": "ground"
+        },
+        {
+          "word": "ground"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "grow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "成长"
+            ]
+          ]
+        },
+        {
+          "word": "grew"
+        },
+        {
+          "word": "grown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hang",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "悬挂"
+            ]
+          ]
+        },
+        {
+          "word": "hung | hanged"
+        },
+        {
+          "word": "hung | hanged"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "听"
+            ]
+          ]
+        },
+        {
+          "word": "heard"
+        },
+        {
+          "word": "heard"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "砍"
+            ]
+          ]
+        },
+        {
+          "word": "hewed"
+        },
+        {
+          "word": "hewn | hewed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "隐藏"
+            ]
+          ]
+        },
+        {
+          "word": "hid"
+        },
+        {
+          "word": "hidden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "打"
+            ]
+          ]
+        },
+        {
+          "word": "hit"
+        },
+        {
+          "word": "hit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "握住"
+            ]
+          ]
+        },
+        {
+          "word": "held"
+        },
+        {
+          "word": "held"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hurt",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "伤害"
+            ]
+          ]
+        },
+        {
+          "word": "hurt"
+        },
+        {
+          "word": "hurt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "inlay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "镶嵌"
+            ]
+          ]
+        },
+        {
+          "word": "inlaid"
+        },
+        {
+          "word": "inlaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "input",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "输入"
+            ]
+          ]
+        },
+        {
+          "word": "input | inputted"
+        },
+        {
+          "word": "input | inputted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "interweave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "交织"
+            ]
+          ]
+        },
+        {
+          "word": "interwove"
+        },
+        {
+          "word": "interwoven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "keep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "保持"
+            ]
+          ]
+        },
+        {
+          "word": "kept"
+        },
+        {
+          "word": "kept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "kneel",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "跪下"
+            ]
+          ]
+        },
+        {
+          "word": "knelt | kneeled"
+        },
+        {
+          "word": "knelt | kneeled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "knit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "编织"
+            ]
+          ]
+        },
+        {
+          "word": "knitted | knit"
+        },
+        {
+          "word": "knitted | knit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "know",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "知道"
+            ]
+          ]
+        },
+        {
+          "word": "knew"
+        },
+        {
+          "word": "known"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "放置"
+            ]
+          ]
+        },
+        {
+          "word": "laid"
+        },
+        {
+          "word": "laid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lead",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "领导"
+            ]
+          ]
+        },
+        {
+          "word": "led"
+        },
+        {
+          "word": "led"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lean",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "倾斜"
+            ]
+          ]
+        },
+        {
+          "word": "leaned | leant"
+        },
+        {
+          "word": "leaned | leant"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "leap",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "跳跃"
+            ]
+          ]
+        },
+        {
+          "word": "leaped | leapt"
+        },
+        {
+          "word": "leaped | leapt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "learn",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "学习"
+            ]
+          ]
+        },
+        {
+          "word": "learnt | learned"
+        },
+        {
+          "word": "learnt | learned"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "leave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "离开"
+            ]
+          ]
+        },
+        {
+          "word": "left"
+        },
+        {
+          "word": "left"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "借出"
+            ]
+          ]
+        },
+        {
+          "word": "lent"
+        },
+        {
+          "word": "lent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "let",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "让"
+            ]
+          ]
+        },
+        {
+          "word": "let"
+        },
+        {
+          "word": "let"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lie",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "躺"
+            ]
+          ]
+        },
+        {
+          "word": "lay"
+        },
+        {
+          "word": "lain"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "light",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "点燃"
+            ]
+          ]
+        },
+        {
+          "word": "lit | lighted"
+        },
+        {
+          "word": "lit | lighted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lose",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "失去"
+            ]
+          ]
+        },
+        {
+          "word": "lost"
+        },
+        {
+          "word": "lost"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "make",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "制造"
+            ]
+          ]
+        },
+        {
+          "word": "made"
+        },
+        {
+          "word": "made"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "may",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "可能"
+            ]
+          ]
+        },
+        {
+          "word": "might"
+        },
+        {
+          "word": "might"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mean",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "意思"
+            ]
+          ]
+        },
+        {
+          "word": "meant"
+        },
+        {
+          "word": "meant"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "遇见"
+            ]
+          ]
+        },
+        {
+          "word": "met"
+        },
+        {
+          "word": "met"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "割草"
+            ]
+          ]
+        },
+        {
+          "word": "mowed"
+        },
+        {
+          "word": "mowed | mown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "offset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "抵消"
+            ]
+          ]
+        },
+        {
+          "word": "offset"
+        },
+        {
+          "word": "offset"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "出价更高"
+            ]
+          ]
+        },
+        {
+          "word": "outbid"
+        },
+        {
+          "word": "outbid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outdo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "胜过"
+            ]
+          ]
+        },
+        {
+          "word": "outdid"
+        },
+        {
+          "word": "outdone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outfight",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "打败"
+            ]
+          ]
+        },
+        {
+          "word": "outfought"
+        },
+        {
+          "word": "outfought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outgrow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "长得比…快"
+            ]
+          ]
+        },
+        {
+          "word": "outgrew"
+        },
+        {
+          "word": "outgrown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "output",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "输出"
+            ]
+          ]
+        },
+        {
+          "word": "output | outputted"
+        },
+        {
+          "word": "output | outputted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outrun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "跑赢"
+            ]
+          ]
+        },
+        {
+          "word": "outran"
+        },
+        {
+          "word": "outrun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outsell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "畅销"
+            ]
+          ]
+        },
+        {
+          "word": "outsold"
+        },
+        {
+          "word": "outsold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outshine",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "胜过"
+            ]
+          ]
+        },
+        {
+          "word": "outshone"
+        },
+        {
+          "word": "outshone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "повелевать"
+            ]
+          ]
+        },
+        {
+          "word": "overbid"
+        },
+        {
+          "word": "overbid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcome",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "克服"
+            ]
+          ]
+        },
+        {
+          "word": "overcame"
+        },
+        {
+          "word": "overcome"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overdo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "做过头"
+            ]
+          ]
+        },
+        {
+          "word": "overdid"
+        },
+        {
+          "word": "overdone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overdraw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "透支"
+            ]
+          ]
+        },
+        {
+          "word": "overdrew"
+        },
+        {
+          "word": "overdrawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overeat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "吃得过多"
+            ]
+          ]
+        },
+        {
+          "word": "overate"
+        },
+        {
+          "word": "overeaten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overfly",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "飞越"
+            ]
+          ]
+        },
+        {
+          "word": "overflew"
+        },
+        {
+          "word": "overflown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overhang",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "悬垂"
+            ]
+          ]
+        },
+        {
+          "word": "overhung"
+        },
+        {
+          "word": "overhung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overhear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "偷听"
+            ]
+          ]
+        },
+        {
+          "word": "overheard"
+        },
+        {
+          "word": "overheard"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overlay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "覆盖"
+            ]
+          ]
+        },
+        {
+          "word": "overlaid"
+        },
+        {
+          "word": "overlaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overpay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "多付"
+            ]
+          ]
+        },
+        {
+          "word": "overpaid"
+        },
+        {
+          "word": "overpaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "override",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "推翻"
+            ]
+          ]
+        },
+        {
+          "word": "overrode"
+        },
+        {
+          "word": "overridden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overrun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "泛滥"
+            ]
+          ]
+        },
+        {
+          "word": "overran"
+        },
+        {
+          "word": "overrun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "oversee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "监督"
+            ]
+          ]
+        },
+        {
+          "word": "oversaw"
+        },
+        {
+          "word": "overseen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overshoot",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "超出"
+            ]
+          ]
+        },
+        {
+          "word": "overshot"
+        },
+        {
+          "word": "overshot"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "oversleep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "睡过头"
+            ]
+          ]
+        },
+        {
+          "word": "overslept"
+        },
+        {
+          "word": "overslept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overtake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "赶上"
+            ]
+          ]
+        },
+        {
+          "word": "overtook"
+        },
+        {
+          "word": "overtaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overthrow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "推翻"
+            ]
+          ]
+        },
+        {
+          "word": "overthrew"
+        },
+        {
+          "word": "overthrown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "partake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "参与"
+            ]
+          ]
+        },
+        {
+          "word": "partook"
+        },
+        {
+          "word": "partaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "支付"
+            ]
+          ]
+        },
+        {
+          "word": "paid"
+        },
+        {
+          "word": "paid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "plead",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "恳求"
+            ]
+          ]
+        },
+        {
+          "word": "pleaded | pled"
+        },
+        {
+          "word": "pleaded | pled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "prepay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "预付"
+            ]
+          ]
+        },
+        {
+          "word": "prepaid"
+        },
+        {
+          "word": "prepaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "prove",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "证明"
+            ]
+          ]
+        },
+        {
+          "word": "proved"
+        },
+        {
+          "word": "proven | proved"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "put",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "放"
+            ]
+          ]
+        },
+        {
+          "word": "put"
+        },
+        {
+          "word": "put"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "quit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "退出"
+            ]
+          ]
+        },
+        {
+          "word": "quit | quitted"
+        },
+        {
+          "word": "quit | quitted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "read",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "阅读"
+            ]
+          ]
+        },
+        {
+          "word": "read"
+        },
+        {
+          "word": "read"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rebind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перевязывать"
+            ]
+          ]
+        },
+        {
+          "word": "rebound"
+        },
+        {
+          "word": "rebound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rebuild",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重建"
+            ]
+          ]
+        },
+        {
+          "word": "rebuilt"
+        },
+        {
+          "word": "rebuilt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "recast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "изменять"
+            ],
+            [
+              "перестраивать"
+            ]
+          ]
+        },
+        {
+          "word": "recast"
+        },
+        {
+          "word": "recast"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "redo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重做"
+            ]
+          ]
+        },
+        {
+          "word": "redid"
+        },
+        {
+          "word": "redone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rehear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "слушать вторично"
+            ]
+          ]
+        },
+        {
+          "word": "reheard"
+        },
+        {
+          "word": "reheard"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "remake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重新制作"
+            ]
+          ]
+        },
+        {
+          "word": "remade"
+        },
+        {
+          "word": "remade"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "撕裂"
+            ]
+          ]
+        },
+        {
+          "word": "rent"
+        },
+        {
+          "word": "rent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "repay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "偿还"
+            ]
+          ]
+        },
+        {
+          "word": "repaid"
+        },
+        {
+          "word": "repaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rerun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重播"
+            ]
+          ]
+        },
+        {
+          "word": "reran"
+        },
+        {
+          "word": "rerun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "resell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "转售"
+            ]
+          ]
+        },
+        {
+          "word": "resold"
+        },
+        {
+          "word": "resold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "reset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重置"
+            ]
+          ]
+        },
+        {
+          "word": "reset"
+        },
+        {
+          "word": "reset"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "resit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重考"
+            ]
+          ]
+        },
+        {
+          "word": "resat"
+        },
+        {
+          "word": "resat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "retake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重新占领"
+            ]
+          ]
+        },
+        {
+          "word": "retook"
+        },
+        {
+          "word": "retaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "retell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "复述"
+            ]
+          ]
+        },
+        {
+          "word": "retold"
+        },
+        {
+          "word": "retold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rewrite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "重写"
+            ]
+          ]
+        },
+        {
+          "word": "rewrote"
+        },
+        {
+          "word": "rewritten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "摆脱"
+            ]
+          ]
+        },
+        {
+          "word": "rid"
+        },
+        {
+          "word": "rid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ride",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "骑"
+            ]
+          ]
+        },
+        {
+          "word": "rode"
+        },
+        {
+          "word": "ridden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "响"
+            ]
+          ]
+        },
+        {
+          "word": "rang"
+        },
+        {
+          "word": "rung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rise",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "上升"
+            ]
+          ]
+        },
+        {
+          "word": "rose"
+        },
+        {
+          "word": "risen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "run",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "跑"
+            ]
+          ]
+        },
+        {
+          "word": "ran"
+        },
+        {
+          "word": "run"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "saw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "锯"
+            ]
+          ]
+        },
+        {
+          "word": "sawed"
+        },
+        {
+          "word": "sawed | sawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "say",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "说"
+            ]
+          ]
+        },
+        {
+          "word": "said"
+        },
+        {
+          "word": "said"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "see",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "看见"
+            ]
+          ]
+        },
+        {
+          "word": "saw"
+        },
+        {
+          "word": "seen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "seek",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "寻找"
+            ]
+          ]
+        },
+        {
+          "word": "sought"
+        },
+        {
+          "word": "sought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "卖"
+            ]
+          ]
+        },
+        {
+          "word": "sold"
+        },
+        {
+          "word": "sold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "send",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "发送"
+            ]
+          ]
+        },
+        {
+          "word": "sent"
+        },
+        {
+          "word": "sent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "set",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "设置"
+            ]
+          ]
+        },
+        {
+          "word": "set"
+        },
+        {
+          "word": "set"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "шить"
+            ]
+          ]
+        },
+        {
+          "word": "sewed"
+        },
+        {
+          "word": "sewn | sewed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "摇"
+            ]
+          ]
+        },
+        {
+          "word": "shook"
+        },
+        {
+          "word": "shaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "剃"
+            ]
+          ]
+        },
+        {
+          "word": "shaved"
+        },
+        {
+          "word": "shaved | shaven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "修剪"
+            ]
+          ]
+        },
+        {
+          "word": "sheared"
+        },
+        {
+          "word": "sheared | shorn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "脱落"
+            ]
+          ]
+        },
+        {
+          "word": "shed"
+        },
+        {
+          "word": "shed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shine",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "闪耀"
+            ]
+          ]
+        },
+        {
+          "word": "shined | shone"
+        },
+        {
+          "word": "shined | shone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shoot",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "射击"
+            ]
+          ]
+        },
+        {
+          "word": "shot"
+        },
+        {
+          "word": "shot"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "show",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "展示"
+            ]
+          ]
+        },
+        {
+          "word": "showed"
+        },
+        {
+          "word": "shown | showed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shrink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "收缩"
+            ]
+          ]
+        },
+        {
+          "word": "shrank | shrunk"
+        },
+        {
+          "word": "shrunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "关闭"
+            ]
+          ]
+        },
+        {
+          "word": "shut"
+        },
+        {
+          "word": "shut"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sing",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "唱"
+            ]
+          ]
+        },
+        {
+          "word": "sang"
+        },
+        {
+          "word": "sung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "下沉"
+            ]
+          ]
+        },
+        {
+          "word": "sank | sunk"
+        },
+        {
+          "word": "sunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "坐"
+            ]
+          ]
+        },
+        {
+          "word": "sat"
+        },
+        {
+          "word": "sat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "杀害"
+            ]
+          ]
+        },
+        {
+          "word": "slew | slayed"
+        },
+        {
+          "word": "slain | slayed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "睡觉"
+            ]
+          ]
+        },
+        {
+          "word": "slept"
+        },
+        {
+          "word": "slept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "滑动"
+            ]
+          ]
+        },
+        {
+          "word": "slid"
+        },
+        {
+          "word": "slid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "投掷"
+            ]
+          ]
+        },
+        {
+          "word": "slung"
+        },
+        {
+          "word": "slung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "красться"
+            ],
+            [
+              "идти крадучись"
+            ]
+          ]
+        },
+        {
+          "word": "slunk"
+        },
+        {
+          "word": "slunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "撕裂"
+            ]
+          ]
+        },
+        {
+          "word": "slit"
+        },
+        {
+          "word": "slit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "闻"
+            ]
+          ]
+        },
+        {
+          "word": "smelled | smelt"
+        },
+        {
+          "word": "smelled | smelt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "播种"
+            ]
+          ]
+        },
+        {
+          "word": "sowed"
+        },
+        {
+          "word": "sown | sowed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "speak",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "说话"
+            ]
+          ]
+        },
+        {
+          "word": "spoke"
+        },
+        {
+          "word": "spoken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "speed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "加速"
+            ]
+          ]
+        },
+        {
+          "word": "sped | speeded"
+        },
+        {
+          "word": "sped | speeded"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "拼写"
+            ]
+          ]
+        },
+        {
+          "word": "spelled | spelt"
+        },
+        {
+          "word": "spelled | spelt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "花费"
+            ]
+          ]
+        },
+        {
+          "word": "spent"
+        },
+        {
+          "word": "spent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spill",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "洒出"
+            ]
+          ]
+        },
+        {
+          "word": "spilled | spilt"
+        },
+        {
+          "word": "spilled | spilt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spin",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "прясть"
+            ]
+          ]
+        },
+        {
+          "word": "spun"
+        },
+        {
+          "word": "spun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "плевать"
+            ]
+          ]
+        },
+        {
+          "word": "spit | spat"
+        },
+        {
+          "word": "spit | spat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "split",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "分裂"
+            ]
+          ]
+        },
+        {
+          "word": "split"
+        },
+        {
+          "word": "split"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spoil",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "портить"
+            ]
+          ]
+        },
+        {
+          "word": "spoiled | spoilt"
+        },
+        {
+          "word": "spoiled | spoilt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spread",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "传播"
+            ]
+          ]
+        },
+        {
+          "word": "spread"
+        },
+        {
+          "word": "spread"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "跳"
+            ]
+          ]
+        },
+        {
+          "word": "sprang | sprung"
+        },
+        {
+          "word": "sprung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "站立"
+            ]
+          ]
+        },
+        {
+          "word": "stood"
+        },
+        {
+          "word": "stood"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "steal",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "偷"
+            ]
+          ]
+        },
+        {
+          "word": "stole"
+        },
+        {
+          "word": "stolen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stick",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "粘贴"
+            ]
+          ]
+        },
+        {
+          "word": "stuck"
+        },
+        {
+          "word": "stuck"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sting",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "刺"
+            ]
+          ]
+        },
+        {
+          "word": "stung"
+        },
+        {
+          "word": "stung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "臭"
+            ]
+          ]
+        },
+        {
+          "word": "stunk | stank"
+        },
+        {
+          "word": "stunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "усеять"
+            ],
+            [
+              "устлать"
+            ]
+          ]
+        },
+        {
+          "word": "strewed"
+        },
+        {
+          "word": "strewn | strewed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stride",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "шагать"
+            ],
+            [
+              "наносить удар"
+            ]
+          ]
+        },
+        {
+          "word": "strode"
+        },
+        {
+          "word": "stridden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strike",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "打击"
+            ]
+          ]
+        },
+        {
+          "word": "struck"
+        },
+        {
+          "word": "struck"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "string",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "串"
+            ]
+          ]
+        },
+        {
+          "word": "strung"
+        },
+        {
+          "word": "strung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "努力"
+            ]
+          ]
+        },
+        {
+          "word": "strove | strived"
+        },
+        {
+          "word": "striven | strived"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sublet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "передавать в субаренду"
+            ]
+          ]
+        },
+        {
+          "word": "sublet"
+        },
+        {
+          "word": "sublet"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "发誓"
+            ]
+          ]
+        },
+        {
+          "word": "swore"
+        },
+        {
+          "word": "sworn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sweep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "打扫"
+            ]
+          ]
+        },
+        {
+          "word": "swept"
+        },
+        {
+          "word": "swept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "膨胀"
+            ]
+          ]
+        },
+        {
+          "word": "swelled"
+        },
+        {
+          "word": "swollen | swelled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swim",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "游泳"
+            ]
+          ]
+        },
+        {
+          "word": "swam"
+        },
+        {
+          "word": "swum"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swing",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "摇摆"
+            ]
+          ]
+        },
+        {
+          "word": "swung"
+        },
+        {
+          "word": "swung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "take",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "拿"
+            ]
+          ]
+        },
+        {
+          "word": "took"
+        },
+        {
+          "word": "taken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "teach",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "教"
+            ]
+          ]
+        },
+        {
+          "word": "taught"
+        },
+        {
+          "word": "taught"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "撕裂"
+            ]
+          ]
+        },
+        {
+          "word": "tore"
+        },
+        {
+          "word": "torn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "告诉"
+            ]
+          ]
+        },
+        {
+          "word": "told"
+        },
+        {
+          "word": "told"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "think",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "思考"
+            ]
+          ]
+        },
+        {
+          "word": "thought"
+        },
+        {
+          "word": "thought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "throw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "投掷"
+            ]
+          ]
+        },
+        {
+          "word": "threw"
+        },
+        {
+          "word": "thrown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thrust",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "колоть"
+            ],
+            [
+              "пронзать"
+            ]
+          ]
+        },
+        {
+          "word": "thrust"
+        },
+        {
+          "word": "thrust"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tread",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "踩"
+            ]
+          ]
+        },
+        {
+          "word": "trod"
+        },
+        {
+          "word": "trodden | trod"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unbend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "выпрямляться"
+            ],
+            [
+              "разгибаться"
+            ]
+          ]
+        },
+        {
+          "word": "unbent"
+        },
+        {
+          "word": "unbent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "снижать цену"
+            ]
+          ]
+        },
+        {
+          "word": "underbid"
+        },
+        {
+          "word": "underbid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undercut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "сбивать цены"
+            ]
+          ]
+        },
+        {
+          "word": "undercut"
+        },
+        {
+          "word": "undercut"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undergo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "испытывать"
+            ],
+            [
+              "переносить"
+            ]
+          ]
+        },
+        {
+          "word": "underwent"
+        },
+        {
+          "word": "undergone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underlie",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "лежать в основе"
+            ]
+          ]
+        },
+        {
+          "word": "underlay"
+        },
+        {
+          "word": "underlain"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underpay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "оплачивать слишком низко"
+            ]
+          ]
+        },
+        {
+          "word": "underpaid"
+        },
+        {
+          "word": "underpaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undersell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "продавать дешевле"
+            ]
+          ]
+        },
+        {
+          "word": "undersold"
+        },
+        {
+          "word": "undersold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "understand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "理解"
+            ]
+          ]
+        },
+        {
+          "word": "understood"
+        },
+        {
+          "word": "understood"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undertake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "承担"
+            ]
+          ]
+        },
+        {
+          "word": "undertook"
+        },
+        {
+          "word": "undertaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underwrite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "подписываться"
+            ]
+          ]
+        },
+        {
+          "word": "underwrote"
+        },
+        {
+          "word": "underwritten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "уничтожать сделанное"
+            ]
+          ]
+        },
+        {
+          "word": "undid"
+        },
+        {
+          "word": "undone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unfreeze",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "размораживать"
+            ]
+          ]
+        },
+        {
+          "word": "unfroze"
+        },
+        {
+          "word": "unfrozen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unsay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "брать назад свои слова"
+            ]
+          ]
+        },
+        {
+          "word": "unsaid"
+        },
+        {
+          "word": "unsaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unwind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "развертывать"
+            ]
+          ]
+        },
+        {
+          "word": "unwound"
+        },
+        {
+          "word": "unwound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "uphold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "поддерживать"
+            ]
+          ]
+        },
+        {
+          "word": "upheld"
+        },
+        {
+          "word": "upheld"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "upset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "使心烦"
+            ]
+          ]
+        },
+        {
+          "word": "upset"
+        },
+        {
+          "word": "upset"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "醒来"
+            ]
+          ]
+        },
+        {
+          "word": "woke | waked"
+        },
+        {
+          "word": "woken | waked"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "waylay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "подстерегать"
+            ]
+          ]
+        },
+        {
+          "word": "waylaid"
+        },
+        {
+          "word": "waylaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "穿"
+            ]
+          ]
+        },
+        {
+          "word": "wore"
+        },
+        {
+          "word": "worn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "编织"
+            ]
+          ]
+        },
+        {
+          "word": "wove | weaved"
+        },
+        {
+          "word": "woven | weaved"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "жениться"
+            ],
+            [
+              "выдавать замуж"
+            ]
+          ]
+        },
+        {
+          "word": "wed | wedded"
+        },
+        {
+          "word": "wed | wedded"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "哭泣"
+            ]
+          ]
+        },
+        {
+          "word": "wept"
+        },
+        {
+          "word": "wept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "мочить"
+            ],
+            [
+              "увлажнять"
+            ]
+          ]
+        },
+        {
+          "word": "wet | wetted"
+        },
+        {
+          "word": "wet | wetted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "win",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "赢"
+            ]
+          ]
+        },
+        {
+          "word": "won"
+        },
+        {
+          "word": "won"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "缠绕"
+            ]
+          ]
+        },
+        {
+          "word": "wound"
+        },
+        {
+          "word": "wound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withdraw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "撤退"
+            ]
+          ]
+        },
+        {
+          "word": "withdrew"
+        },
+        {
+          "word": "withdrawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withhold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "拒绝"
+            ]
+          ]
+        },
+        {
+          "word": "withheld"
+        },
+        {
+          "word": "withheld"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withstand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "抵挡"
+            ]
+          ]
+        },
+        {
+          "word": "withstood"
+        },
+        {
+          "word": "withstood"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "скрутить"
+            ],
+            [
+              "сжимать"
+            ]
+          ]
+        },
+        {
+          "word": "wrung"
+        },
+        {
+          "word": "wrung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "write",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "写"
+            ]
+          ]
+        },
+        {
+          "word": "wrote"
+        },
+        {
+          "word": "written"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "be",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "是"
+            ]
+          ]
+        },
+        {
+          "word": "was | were"
+        },
+        {
+          "word": "been"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "have | has",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "有"
+            ]
+          ]
+        },
+        {
+          "word": "had"
+        },
+        {
+          "word": "had"
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}
