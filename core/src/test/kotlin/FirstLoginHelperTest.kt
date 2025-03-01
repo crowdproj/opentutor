@@ -173,27 +173,66 @@ internal class FirstLoginHelperTest {
                 Arguments.of("mt",
                     listOf(
                         mapOf("read" to "taqra", "write" to "tikteb"),
-                        mapOf("weather" to "temp")
+                        mapOf("weather" to "temp"),
                     )
                 ),
                 Arguments.of("hi",
                     listOf(
                         mapOf("read" to "पढ़ना", "write" to "लिखना"),
+                        mapOf("weather" to "मौसम"),
                     )
                 ),
                 Arguments.of("ar",
                     listOf(
                         mapOf("read" to "يقرأ", "write" to "يكتب"),
+                        mapOf("weather" to "طقس"),
                     )
                 ),
                 Arguments.of("bn",
                     listOf(
                         mapOf("read" to "পড়া", "write" to "লেখা"),
+                        mapOf("weather" to "আবহাওয়া"),
                     )
                 ),
                 Arguments.of("pa",
                     listOf(
                         mapOf("read" to "ਪੜ੍ਹਨਾ", "write" to "ਲਿਖਣਾ"),
+                        mapOf("weather" to "ਮੌਸਮ"),
+                    )
+                ),
+                Arguments.of("vi",
+                    listOf(
+                        mapOf("weather" to "thời tiết"),
+                    )
+                ),
+                Arguments.of("mr",
+                    listOf(
+                        mapOf("weather" to "हवामान"),
+                    )
+                ),
+                Arguments.of("te",
+                    listOf(
+                        mapOf("weather" to "వాతావరణం"),
+                    )
+                ),
+                Arguments.of("jv",
+                    listOf(
+                        mapOf("weather" to "cuaca"),
+                    )
+                ),
+                Arguments.of("ko",
+                    listOf(
+                        mapOf("weather" to "날씨"),
+                    )
+                ),
+                Arguments.of("ta",
+                    listOf(
+                        mapOf("weather" to "வானிலை"),
+                    )
+                ),
+                Arguments.of("tr",
+                    listOf(
+                        mapOf("weather" to "hava durumu"),
                     )
                 ),
             )

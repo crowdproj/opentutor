@@ -1,0 +1,1008 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "jv",
+    "partsOfSpeech": [
+      "tembung aran",
+      "tembung kriya",
+      "tembung sipat",
+      "tembung katrangan",
+      "tembung ganti",
+      "tembung panerang",
+      "tembung pangiket",
+      "tembung seru",
+      "tembung katerangan"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "transcription": "ˌætməs'ferik",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "udara"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "transcription": "'weðə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "cuaca"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "transcription": "snəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "salju"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "transcription": "rein",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "udan"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "wind",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "angin"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "transcription": "heil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "udan es"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "transcription": "'θʌndəstɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "udan grimis"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "transcription": "priˌsipi'teiʃ(ə)n",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "curah udan"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "transcription": "'θʌndə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "gledek"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "transcription": "'laitniŋ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kilat"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "transcription": "'ænti'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "antisiklon"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "transcription": "'ætməsfiə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "atmosfer"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "transcription": "bə'rɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "transcription": "'windi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "kenceng angin"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "transcription": "hjuː'midəti",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kelembaban"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "transcription": "'hjuːmid",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "lembab"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "transcription": "mɔist",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "udan-udan"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "transcription": "dæmp",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "panas lembab"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "transcription": "'sʌnraiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "srengenge munggah"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "transcription": "di'griː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "derajat"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "transcription": "'preʃə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "tekanan"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "transcription": "'stʌfi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "pakewuh"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "transcription": "hiːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "panas"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "transcription": "hɔt",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "sengit"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "transcription": "'sʌnset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "srengenge surup"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "transcription": "frɔst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "embun upas"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "transcription": "'drizl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "udan rintik-rintik"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "transcription": "heiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kesamaran"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "transcription": "ais",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "es"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "transcription": "'ʃəuə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "udan deres"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "transcription": "'pʌdl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kedhung"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "transcription": "ˌmiːti(ə)'rɔləʤi",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ilmu cuaca"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "transcription": "'klaudi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "mendung"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "transcription": "θɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "salju leleh"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "transcription": "kuːl",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "adem"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "transcription": "'dʌsti",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "berdebu"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "transcription": "'reinbəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "pélangi"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "transcription": "freʃ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "seger"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "transcription": "'slipəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "licin"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "transcription": "slʌʃ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kubangan"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "transcription": "smɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kumelun polusi"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "transcription": "",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "salju mudhun"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "transcription": "'sʌni",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "srengenge cerah"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "transcription": "drai",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "garing"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "wet",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "teles"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "transcription": "'tempriʧə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "suhu"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "transcription": "wɔːm",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "anget"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "transcription": "θə'mɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "termometer"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "transcription": "fɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kebul"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "transcription": "mist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "kandhut"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "transcription": "'fɔgi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "berkabut"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "transcription": "'wɔːtə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "banyu"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "transcription": "kəuld",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "adhem"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "transcription": "'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "puting beliung"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "transcription": "stɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "pralayan"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "transcription": "kliə",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "bening"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "transcription": "sliːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "udan es"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "transcription": "klaud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "méga"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "transcription": "'ʧili",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "adhem"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "transcription": "'daunpɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "udan deres banget"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "transcription": "geil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "angin gedhé"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "transcription": "'skɔːʧiŋ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "panas banget"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "transcription": "dʌst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "debu"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "transcription": "'blʌstəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "angin kuat"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "transcription": "'əuvəkɑːst",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "mendung banget"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

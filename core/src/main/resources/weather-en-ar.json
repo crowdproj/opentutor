@@ -1,0 +1,1008 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "ar",
+    "partsOfSpeech": [
+      "اسم",
+      "فعل",
+      "صفة",
+      "حال",
+      "ضمير",
+      "حرف جر",
+      "أداة ربط",
+      "أداة تعجب",
+      "أداة تعريف"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "transcription": "ˌætməs'ferik",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "جوي"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "transcription": "'weðə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "طقس"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "transcription": "snəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ثلج"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "transcription": "rein",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "مطر"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "wind",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "رياح"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "transcription": "heil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "بَرَد"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "transcription": "'θʌndəstɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "عاصفة رعدية"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "transcription": "priˌsipi'teiʃ(ə)n",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "هطول"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "transcription": "'θʌndə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "رعد"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "transcription": "'laitniŋ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "برق"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "transcription": "'ænti'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "مضاد للإعصار"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "transcription": "'ætməsfiə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "الغلاف الجوي"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "transcription": "bə'rɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "بارومتر"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "transcription": "'windi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "عاصف"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "transcription": "hjuː'midəti",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "رطوبة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "transcription": "'hjuːmid",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "رطب"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "transcription": "mɔist",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "مبلل"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "transcription": "dæmp",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "رطب"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "transcription": "'sʌnraiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "شروق الشمس"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "transcription": "di'griː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "درجة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "transcription": "'preʃə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ضغط"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "transcription": "'stʌfi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "خانق"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "transcription": "hiːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "حرارة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "transcription": "hɔt",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "حار"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "transcription": "'sʌnset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "غروب الشمس"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "transcription": "frɔst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "صقيع"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "transcription": "'drizl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "رذاذ"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "transcription": "heiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ضباب خفيف"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "transcription": "ais",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "جليد"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "transcription": "'ʃəuə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "زخات مطر"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "transcription": "'pʌdl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "بركة ماء"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "transcription": "ˌmiːti(ə)'rɔləʤi",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "الأرصاد الجوية"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "transcription": "'klaudi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "غائم"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "transcription": "θɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ذوبان الثلج"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "transcription": "kuːl",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "بارد"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "transcription": "'dʌsti",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "مغبر"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "transcription": "'reinbəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "قوس قزح"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "transcription": "freʃ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "منعش"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "transcription": "'slipəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "زلق"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "transcription": "slʌʃ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "وحل ثلجي"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "transcription": "smɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ضباب دخاني"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "transcription": "",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "تساقط الثلوج"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "transcription": "'sʌni",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "مشمس"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "transcription": "drai",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "جاف"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "wet",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "مبلل"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "transcription": "'tempriʧə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "درجة الحرارة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "transcription": "wɔːm",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "دافئ"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "transcription": "θə'mɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ميزان الحرارة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "transcription": "fɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ضباب"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "transcription": "mist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ضباب خفيف"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "transcription": "'fɔgi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "ضبابي"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "transcription": "'wɔːtə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ماء"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "transcription": "kəuld",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "بارد"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "transcription": "'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "إعصار"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "transcription": "stɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "عاصفة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "transcription": "kliə",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "صافٍ"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "transcription": "sliːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "مطر متجمد"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "transcription": "klaud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "سحابة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "transcription": "'ʧili",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "بارد جدًا"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "transcription": "'daunpɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "أمطار غزيرة"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "transcription": "geil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ريح قوية"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "transcription": "'skɔːʧiŋ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "حارق"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "transcription": "dʌst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "غبار"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "transcription": "'blʌstəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "عاصف جدًا"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "transcription": "'əuvəkɑːst",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "ملبد بالغيوم"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

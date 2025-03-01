@@ -1,0 +1,1008 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "ta",
+    "partsOfSpeech": [
+      "பெயர்ச்சொல்",
+      "வினைச்சொல்",
+      "விகுதி",
+      "வினையெச்சம்",
+      "சர்வநாமம்",
+      "முன்னொட்டு",
+      "இணைப்புச்சொல்",
+      "உச்சரிப்பு",
+      "குறிப்புச்சொல்"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "transcription": "ˌætməs'ferik",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "வாயுமண்டல"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "transcription": "'weðə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "வானிலை"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "transcription": "snəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மணல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "transcription": "rein",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மழை"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "wind",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "காற்று"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "transcription": "heil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ஆலங்கட்டி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "transcription": "'θʌndəstɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "இடி மின்னல் புயல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "transcription": "priˌsipi'teiʃ(ə)n",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மழைப்பொழிவு"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "transcription": "'θʌndə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "இடி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "transcription": "'laitniŋ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மின்னல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "transcription": "'ænti'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "பதில்சுழற்சி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "transcription": "'ætməsfiə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "வளிமண்டலம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "transcription": "bə'rɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மழைக் கட்டியம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "transcription": "'windi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "காற்றடிக்கும்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "transcription": "hjuː'midəti",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ஈரப்பதம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "transcription": "'hjuːmid",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "ஈரமான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "transcription": "mɔist",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "ஈரநிலை"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "transcription": "dæmp",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "சரிந்த"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "transcription": "'sʌnraiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "சூரியோதயம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "transcription": "di'griː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "டிகிரி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "transcription": "'preʃə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "அழுத்தம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "transcription": "'stʌfi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "மந்தமான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "transcription": "hiːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "சூடான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "transcription": "hɔt",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "கடுமையான வெப்பம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "transcription": "'sʌnset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "சூரியாஸ்தமனம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "transcription": "frɔst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "பனி உறைபதி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "transcription": "'drizl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "திரவமழை"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "transcription": "heiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மங்கலான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "transcription": "ais",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "பனி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "transcription": "'ʃəuə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மழை தூறல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "transcription": "'pʌdl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "நீர் குழி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "transcription": "ˌmiːti(ə)'rɔləʤi",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "வானிலை அறிவியல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "transcription": "'klaudi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "முகில்மயமான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "transcription": "θɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "உருகுதல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "transcription": "kuːl",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "குளிர்ந்த"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "transcription": "'dʌsti",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "தூசியான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "transcription": "'reinbəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "வானவில்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "transcription": "freʃ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "புதிய"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "transcription": "'slipəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "சறுக்கும்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "transcription": "slʌʃ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "ஒழுங்கில்லாத பனி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "transcription": "smɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "புகைமூட்டம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "transcription": "",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "பனிபொழிவு"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "transcription": "'sʌni",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "வெயிலான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "transcription": "drai",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "உலர்ந்த"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "wet",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "ஈரமான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "transcription": "'tempriʧə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "வெப்பநிலை"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "transcription": "wɔːm",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "சுட்ட"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "transcription": "θə'mɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "வெப்பமானி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "transcription": "fɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மூடுபனி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "transcription": "mist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "மங்கலான பனி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "transcription": "'fɔgi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "மூடுபனியாக"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "transcription": "'wɔːtə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "நீர்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "transcription": "kəuld",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "குளிர்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "transcription": "'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "சுழற்சி புயல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "transcription": "stɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "புயல்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "transcription": "kliə",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "தெளிவான"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "transcription": "sliːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "பனியுடன் மழை"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "transcription": "klaud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "முகில்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "transcription": "'ʧili",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "குளிர் அதிகம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "transcription": "'daunpɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "பெரிய மழை"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "transcription": "geil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "தீவிர காற்று"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "transcription": "'skɔːʧiŋ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "கடுமையான வெப்பம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "transcription": "dʌst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "தூசி"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "transcription": "'blʌstəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "வீசிய காற்று"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "transcription": "'əuvəkɑːst",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "மேகமூட்டம்"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}
