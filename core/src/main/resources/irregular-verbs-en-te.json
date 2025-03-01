@@ -1,0 +1,5161 @@
+{
+  "name": "Irregular Verbs",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "te",
+    "partsOfSpeech": [
+      "నామవాచకం",
+      "క్రియ",
+      "గుణవాచకం",
+      "క్రియావిశేషణం",
+      "సర్వనామం",
+      "ఉపసర్గం",
+      "సంధి",
+      "విస్మయార్థక పదం",
+      "నిర్దేశక పదం"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "arise",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఉత్పన్నమగు"
+            ]
+          ]
+        },
+        {
+          "word": "arose",
+          "translations": []
+        },
+        {
+          "word": "arisen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "awake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "మేలుకో"
+            ]
+          ]
+        },
+        {
+          "word": "awakened | awoke",
+          "translations": []
+        },
+        {
+          "word": "awakened | awoken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "backslide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వెనుకకు జారుట"
+            ]
+          ]
+        },
+        {
+          "word": "backslid",
+          "translations": []
+        },
+        {
+          "word": "backslidden | backslid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "భరించు"
+            ]
+          ]
+        },
+        {
+          "word": "bore",
+          "translations": []
+        },
+        {
+          "word": "born | borne",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "beat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కొట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "beat",
+          "translations": [
+            [
+              "కొట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "beaten | beat",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "become",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "అవ్వుట"
+            ]
+          ]
+        },
+        {
+          "word": "became",
+          "translations": []
+        },
+        {
+          "word": "become",
+          "translations": [
+            [
+              "అవ్వుట"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "begin",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ప్రారంభించు"
+            ]
+          ]
+        },
+        {
+          "word": "began",
+          "translations": []
+        },
+        {
+          "word": "begun",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వంచు"
+            ]
+          ]
+        },
+        {
+          "word": "bent",
+          "translations": []
+        },
+        {
+          "word": "bent",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పందెం వేయు"
+            ]
+          ]
+        },
+        {
+          "word": "bet",
+          "translations": [
+            [
+              "పందెం వేయు"
+            ]
+          ]
+        },
+        {
+          "word": "bet",
+          "translations": [
+            [
+              "పందెం వేయు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "bound",
+          "translations": []
+        },
+        {
+          "word": "bound",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కరుచు"
+            ]
+          ]
+        },
+        {
+          "word": "bit",
+          "translations": []
+        },
+        {
+          "word": "bitten",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bleed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "రక్తస్రావం చేయు"
+            ]
+          ]
+        },
+        {
+          "word": "bled",
+          "translations": []
+        },
+        {
+          "word": "bled",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "దెబ్బ కొట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "blew",
+          "translations": []
+        },
+        {
+          "word": "blown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "break",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పగులు"
+            ]
+          ]
+        },
+        {
+          "word": "broke",
+          "translations": []
+        },
+        {
+          "word": "broken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "breed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "bred",
+          "translations": []
+        },
+        {
+          "word": "bred",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తీసుకు రా"
+            ]
+          ]
+        },
+        {
+          "word": "brought",
+          "translations": []
+        },
+        {
+          "word": "brought",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "broadcast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "broadcast | broadcasted",
+          "translations": []
+        },
+        {
+          "word": "broadcast | broadcasted",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "browbeat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "browbeat",
+          "translations": []
+        },
+        {
+          "word": "browbeaten | browbeat",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "build",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "నిర్మించు"
+            ]
+          ]
+        },
+        {
+          "word": "built",
+          "translations": []
+        },
+        {
+          "word": "built",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "burn",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కాలి పో"
+            ]
+          ]
+        },
+        {
+          "word": "burned | burnt",
+          "translations": []
+        },
+        {
+          "word": "burned | burnt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "burst",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "విస్ఫోటించు"
+            ]
+          ]
+        },
+        {
+          "word": "burst",
+          "translations": [
+            [
+              "విస్ఫోటించు"
+            ]
+          ]
+        },
+        {
+          "word": "burst",
+          "translations": [
+            [
+              "విస్ఫోటించు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bust",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "busted | bust",
+          "translations": []
+        },
+        {
+          "word": "busted | bust",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "buy",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కొను"
+            ]
+          ]
+        },
+        {
+          "word": "bought",
+          "translations": []
+        },
+        {
+          "word": "bought",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "can",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "could",
+          "translations": []
+        },
+        {
+          "word": "could",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "cast",
+          "translations": []
+        },
+        {
+          "word": "cast",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "catch",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పట్టుకో"
+            ]
+          ]
+        },
+        {
+          "word": "caught",
+          "translations": []
+        },
+        {
+          "word": "caught",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "choose",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఎంచుకో"
+            ]
+          ]
+        },
+        {
+          "word": "chose",
+          "translations": []
+        },
+        {
+          "word": "chosen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "clung",
+          "translations": []
+        },
+        {
+          "word": "clung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clothe",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "clothed | clad",
+          "translations": []
+        },
+        {
+          "word": "clothed | clad",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "come",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "రా"
+            ]
+          ]
+        },
+        {
+          "word": "came",
+          "translations": []
+        },
+        {
+          "word": "come",
+          "translations": [
+            [
+              "రా"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cost",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఖర్చు అవ్వుట"
+            ]
+          ]
+        },
+        {
+          "word": "cost",
+          "translations": [
+            [
+              "ఖర్చు అవ్వుట"
+            ]
+          ]
+        },
+        {
+          "word": "cost",
+          "translations": [
+            [
+              "ఖర్చు అవ్వుట"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "creep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "crept",
+          "translations": []
+        },
+        {
+          "word": "crept",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కత్తిరించు"
+            ]
+          ]
+        },
+        {
+          "word": "cut",
+          "translations": [
+            [
+              "కత్తిరించు"
+            ]
+          ]
+        },
+        {
+          "word": "cut",
+          "translations": [
+            [
+              "కత్తిరించు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "deal",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వ్యాపారం చేయు"
+            ]
+          ]
+        },
+        {
+          "word": "dealt",
+          "translations": []
+        },
+        {
+          "word": "dealt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dig",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తవ్వు"
+            ]
+          ]
+        },
+        {
+          "word": "dug",
+          "translations": []
+        },
+        {
+          "word": "dug",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "dove | dived",
+          "translations": []
+        },
+        {
+          "word": "dived",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "do",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చేయు"
+            ]
+          ]
+        },
+        {
+          "word": "did",
+          "translations": []
+        },
+        {
+          "word": "done",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "draw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వేయు"
+            ]
+          ]
+        },
+        {
+          "word": "drew",
+          "translations": []
+        },
+        {
+          "word": "drawn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dream",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కల"
+            ]
+          ]
+        },
+        {
+          "word": "dreamed | dreamt",
+          "translations": []
+        },
+        {
+          "word": "dreamed | dreamt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తాగు"
+            ]
+          ]
+        },
+        {
+          "word": "drank",
+          "translations": []
+        },
+        {
+          "word": "drunk",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "నడుపు"
+            ]
+          ]
+        },
+        {
+          "word": "drove",
+          "translations": []
+        },
+        {
+          "word": "driven",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dwell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "dwelt | dwelled",
+          "translations": []
+        },
+        {
+          "word": "dwelt | dwelled",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "eat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తిను"
+            ]
+          ]
+        },
+        {
+          "word": "ate",
+          "translations": []
+        },
+        {
+          "word": "eaten",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fall",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పడు"
+            ]
+          ]
+        },
+        {
+          "word": "fell",
+          "translations": []
+        },
+        {
+          "word": "fallen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "feed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఆహారం పెట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "fed",
+          "translations": []
+        },
+        {
+          "word": "fed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "feel",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "అనుభవించు"
+            ]
+          ]
+        },
+        {
+          "word": "felt",
+          "translations": []
+        },
+        {
+          "word": "felt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fight",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పోరాడు"
+            ]
+          ]
+        },
+        {
+          "word": "fought",
+          "translations": []
+        },
+        {
+          "word": "fought",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "find",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కనుగొను"
+            ]
+          ]
+        },
+        {
+          "word": "found",
+          "translations": []
+        },
+        {
+          "word": "found",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "fit",
+          "translations": []
+        },
+        {
+          "word": "fit",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "flee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "fled",
+          "translations": []
+        },
+        {
+          "word": "fled",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "flung",
+          "translations": []
+        },
+        {
+          "word": "flung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fly",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఎగురు"
+            ]
+          ]
+        },
+        {
+          "word": "flew",
+          "translations": []
+        },
+        {
+          "word": "flown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "forbade",
+          "translations": []
+        },
+        {
+          "word": "forbidden",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forecast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "forecast",
+          "translations": []
+        },
+        {
+          "word": "forecast",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foresee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "foresaw",
+          "translations": []
+        },
+        {
+          "word": "foreseen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foretell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "foretold",
+          "translations": []
+        },
+        {
+          "word": "foretold",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forget",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "మర్చిపో"
+            ]
+          ]
+        },
+        {
+          "word": "forgot",
+          "translations": []
+        },
+        {
+          "word": "forgotten",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forgive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "క్షమించు"
+            ]
+          ]
+        },
+        {
+          "word": "forgave",
+          "translations": []
+        },
+        {
+          "word": "forgiven",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forsake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "forsook",
+          "translations": []
+        },
+        {
+          "word": "forsaken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "freeze",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "గడ్డకట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "froze",
+          "translations": []
+        },
+        {
+          "word": "frozen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "get",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పొందు"
+            ]
+          ]
+        },
+        {
+          "word": "got",
+          "translations": []
+        },
+        {
+          "word": "gotten | got",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "give",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఇవ్వు"
+            ]
+          ]
+        },
+        {
+          "word": "gave",
+          "translations": []
+        },
+        {
+          "word": "given",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "go",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వెళ్ళు"
+            ]
+          ]
+        },
+        {
+          "word": "went",
+          "translations": []
+        },
+        {
+          "word": "gone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "grind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "ground",
+          "translations": []
+        },
+        {
+          "word": "ground",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "grow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పెరుగుట"
+            ]
+          ]
+        },
+        {
+          "word": "grew",
+          "translations": []
+        },
+        {
+          "word": "grown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hang",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తాళు"
+            ]
+          ]
+        },
+        {
+          "word": "hung | hanged",
+          "translations": []
+        },
+        {
+          "word": "hung | hanged",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "విను"
+            ]
+          ]
+        },
+        {
+          "word": "heard",
+          "translations": []
+        },
+        {
+          "word": "heard",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "hewed",
+          "translations": []
+        },
+        {
+          "word": "hewn | hewed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "దాచు"
+            ]
+          ]
+        },
+        {
+          "word": "hid",
+          "translations": []
+        },
+        {
+          "word": "hidden",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తగిలించు"
+            ]
+          ]
+        },
+        {
+          "word": "hit",
+          "translations": [
+            [
+              "తగిలించు"
+            ]
+          ]
+        },
+        {
+          "word": "hit",
+          "translations": [
+            [
+              "తగిలించు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పట్టుకో"
+            ]
+          ]
+        },
+        {
+          "word": "held",
+          "translations": []
+        },
+        {
+          "word": "held",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hurt",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "హాని చేయు"
+            ]
+          ]
+        },
+        {
+          "word": "hurt",
+          "translations": [
+            [
+              "హాని చేయు"
+            ]
+          ]
+        },
+        {
+          "word": "hurt",
+          "translations": [
+            [
+              "హాని చేయు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "inlay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "inlaid",
+          "translations": []
+        },
+        {
+          "word": "inlaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "input",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "input | inputted",
+          "translations": []
+        },
+        {
+          "word": "input | inputted",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "interweave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "interwove",
+          "translations": []
+        },
+        {
+          "word": "interwoven",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "keep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వుంచు"
+            ]
+          ]
+        },
+        {
+          "word": "kept",
+          "translations": []
+        },
+        {
+          "word": "kept",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "kneel",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "knelt | kneeled",
+          "translations": []
+        },
+        {
+          "word": "knelt | kneeled",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "knit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "knitted | knit",
+          "translations": []
+        },
+        {
+          "word": "knitted | knit",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "know",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తెలుసుకో"
+            ]
+          ]
+        },
+        {
+          "word": "knew",
+          "translations": []
+        },
+        {
+          "word": "known",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "laid",
+          "translations": []
+        },
+        {
+          "word": "laid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lead",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "led",
+          "translations": []
+        },
+        {
+          "word": "led",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lean",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "leaned | leant",
+          "translations": []
+        },
+        {
+          "word": "leaned | leant",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "leap",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "leaped | leapt",
+          "translations": []
+        },
+        {
+          "word": "leaped | leapt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "learn",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "నేర్చుకో"
+            ]
+          ]
+        },
+        {
+          "word": "learnt | learned",
+          "translations": []
+        },
+        {
+          "word": "learnt | learned",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "leave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వదిలి వేయు"
+            ]
+          ]
+        },
+        {
+          "word": "left",
+          "translations": []
+        },
+        {
+          "word": "left",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఋణంగా ఇవ్వు"
+            ]
+          ]
+        },
+        {
+          "word": "lent",
+          "translations": []
+        },
+        {
+          "word": "lent",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "let",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "అనుమతించు"
+            ]
+          ]
+        },
+        {
+          "word": "let",
+          "translations": [
+            [
+              "అనుమతించు"
+            ]
+          ]
+        },
+        {
+          "word": "let",
+          "translations": [
+            [
+              "అనుమతించు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lie",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "lay",
+          "translations": []
+        },
+        {
+          "word": "lain",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "light",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "lit | lighted",
+          "translations": []
+        },
+        {
+          "word": "lit | lighted",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lose",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కోల్పోవు"
+            ]
+          ]
+        },
+        {
+          "word": "lost",
+          "translations": []
+        },
+        {
+          "word": "lost",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "make",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చేయు"
+            ]
+          ]
+        },
+        {
+          "word": "made",
+          "translations": []
+        },
+        {
+          "word": "made",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "may",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "might",
+          "translations": []
+        },
+        {
+          "word": "might",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mean",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "అర్థం చెప్పు"
+            ]
+          ]
+        },
+        {
+          "word": "meant",
+          "translations": []
+        },
+        {
+          "word": "meant",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కలవు"
+            ]
+          ]
+        },
+        {
+          "word": "met",
+          "translations": []
+        },
+        {
+          "word": "met",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "mowed",
+          "translations": []
+        },
+        {
+          "word": "mowed | mown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "offset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "offset",
+          "translations": []
+        },
+        {
+          "word": "offset",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "outbid",
+          "translations": []
+        },
+        {
+          "word": "outbid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outdo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "outdid",
+          "translations": []
+        },
+        {
+          "word": "outdone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outfight",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "outfought",
+          "translations": []
+        },
+        {
+          "word": "outfought",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outgrow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "outgrew",
+          "translations": []
+        },
+        {
+          "word": "outgrown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "output",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "output | outputted",
+          "translations": []
+        },
+        {
+          "word": "output | outputted",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outrun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "outran",
+          "translations": []
+        },
+        {
+          "word": "outrun",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outsell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "outsold",
+          "translations": []
+        },
+        {
+          "word": "outsold",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outshine",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "outshone",
+          "translations": []
+        },
+        {
+          "word": "outshone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overbid",
+          "translations": []
+        },
+        {
+          "word": "overbid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcome",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overcame",
+          "translations": []
+        },
+        {
+          "word": "overcome",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overdo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overdid",
+          "translations": []
+        },
+        {
+          "word": "overdone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overdraw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overdrew",
+          "translations": []
+        },
+        {
+          "word": "overdrawn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overeat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overate",
+          "translations": []
+        },
+        {
+          "word": "overeaten",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overfly",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overflew",
+          "translations": []
+        },
+        {
+          "word": "overflown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overhang",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overhung",
+          "translations": []
+        },
+        {
+          "word": "overhung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overhear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overheard",
+          "translations": []
+        },
+        {
+          "word": "overheard",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overlay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overlaid",
+          "translations": []
+        },
+        {
+          "word": "overlaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overpay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overpaid",
+          "translations": []
+        },
+        {
+          "word": "overpaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "override",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overrode",
+          "translations": []
+        },
+        {
+          "word": "overridden",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overrun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overran",
+          "translations": []
+        },
+        {
+          "word": "overrun",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "oversee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "oversaw",
+          "translations": []
+        },
+        {
+          "word": "overseen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overshoot",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overshot",
+          "translations": []
+        },
+        {
+          "word": "overshot",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "oversleep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overslept",
+          "translations": []
+        },
+        {
+          "word": "overslept",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overtake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overtook",
+          "translations": []
+        },
+        {
+          "word": "overtaken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overthrow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "overthrew",
+          "translations": []
+        },
+        {
+          "word": "overthrown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "partake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "partook",
+          "translations": []
+        },
+        {
+          "word": "partaken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చెల్లించు"
+            ]
+          ]
+        },
+        {
+          "word": "paid",
+          "translations": []
+        },
+        {
+          "word": "paid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "plead",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "pleaded | pled",
+          "translations": []
+        },
+        {
+          "word": "pleaded | pled",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "prepay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "prepaid",
+          "translations": []
+        },
+        {
+          "word": "prepaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "prove",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "proved",
+          "translations": []
+        },
+        {
+          "word": "proven | proved",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "put",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వుంచు"
+            ]
+          ]
+        },
+        {
+          "word": "put",
+          "translations": [
+            [
+              "వుంచు"
+            ]
+          ]
+        },
+        {
+          "word": "put",
+          "translations": [
+            [
+              "వుంచు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "quit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "quit | quitted",
+          "translations": []
+        },
+        {
+          "word": "quit | quitted",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "read",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చదవు"
+            ]
+          ]
+        },
+        {
+          "word": "read",
+          "translations": [
+            [
+              "చదవు"
+            ]
+          ]
+        },
+        {
+          "word": "read",
+          "translations": [
+            [
+              "చదవు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rebind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "rebound",
+          "translations": []
+        },
+        {
+          "word": "rebound",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rebuild",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "rebuilt",
+          "translations": []
+        },
+        {
+          "word": "rebuilt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "recast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "recast",
+          "translations": []
+        },
+        {
+          "word": "recast",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "redo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "redid",
+          "translations": []
+        },
+        {
+          "word": "redone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rehear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "reheard",
+          "translations": []
+        },
+        {
+          "word": "reheard",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "remake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "remade",
+          "translations": []
+        },
+        {
+          "word": "remade",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "rent",
+          "translations": []
+        },
+        {
+          "word": "rent",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "repay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "repaid",
+          "translations": []
+        },
+        {
+          "word": "repaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rerun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "reran",
+          "translations": []
+        },
+        {
+          "word": "rerun",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "resell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "resold",
+          "translations": []
+        },
+        {
+          "word": "resold",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "reset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "reset",
+          "translations": []
+        },
+        {
+          "word": "reset",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "resit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "resat",
+          "translations": []
+        },
+        {
+          "word": "resat",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "retake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "retook",
+          "translations": []
+        },
+        {
+          "word": "retaken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "retell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "retold",
+          "translations": []
+        },
+        {
+          "word": "retold",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rewrite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "rewrote",
+          "translations": []
+        },
+        {
+          "word": "rewritten",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "rid",
+          "translations": []
+        },
+        {
+          "word": "rid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ride",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఎక్కి ప్రయాణించు"
+            ]
+          ]
+        },
+        {
+          "word": "rode",
+          "translations": []
+        },
+        {
+          "word": "ridden",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "మోగించు"
+            ]
+          ]
+        },
+        {
+          "word": "rang",
+          "translations": []
+        },
+        {
+          "word": "rung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rise",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "rose",
+          "translations": []
+        },
+        {
+          "word": "risen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "run",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పరుగెత్తు"
+            ]
+          ]
+        },
+        {
+          "word": "ran",
+          "translations": []
+        },
+        {
+          "word": "run",
+          "translations": [
+            [
+              "పరుగెత్తు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "saw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sawed",
+          "translations": []
+        },
+        {
+          "word": "sawed | sawn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "say",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చెప్పు"
+            ]
+          ]
+        },
+        {
+          "word": "said",
+          "translations": []
+        },
+        {
+          "word": "said",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "see",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చూడు"
+            ]
+          ]
+        },
+        {
+          "word": "saw",
+          "translations": []
+        },
+        {
+          "word": "seen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "seek",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sought",
+          "translations": []
+        },
+        {
+          "word": "sought",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "అమ్ము"
+            ]
+          ]
+        },
+        {
+          "word": "sold",
+          "translations": []
+        },
+        {
+          "word": "sold",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "send",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పంపు"
+            ]
+          ]
+        },
+        {
+          "word": "sent",
+          "translations": []
+        },
+        {
+          "word": "sent",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "set",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "నిర్ణయించు"
+            ]
+          ]
+        },
+        {
+          "word": "set",
+          "translations": [
+            [
+              "నిర్ణయించు"
+            ]
+          ]
+        },
+        {
+          "word": "set",
+          "translations": [
+            [
+              "నిర్ణయించు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sewed",
+          "translations": []
+        },
+        {
+          "word": "sewn | sewed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ల摇ించు"
+            ]
+          ]
+        },
+        {
+          "word": "shook",
+          "translations": []
+        },
+        {
+          "word": "shaken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "shaved",
+          "translations": []
+        },
+        {
+          "word": "shaved | shaven",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sheared",
+          "translations": []
+        },
+        {
+          "word": "sheared | shorn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "shed",
+          "translations": []
+        },
+        {
+          "word": "shed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shine",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కాంతించు"
+            ]
+          ]
+        },
+        {
+          "word": "shined | shone",
+          "translations": []
+        },
+        {
+          "word": "shined | shone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shoot",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "వేట కొట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "shot",
+          "translations": []
+        },
+        {
+          "word": "shot",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "show",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చూపించు"
+            ]
+          ]
+        },
+        {
+          "word": "showed",
+          "translations": []
+        },
+        {
+          "word": "shown | showed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shrink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "shrank | shrunk",
+          "translations": []
+        },
+        {
+          "word": "shrunk",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "మూయు"
+            ]
+          ]
+        },
+        {
+          "word": "shut",
+          "translations": [
+            [
+              "మూయు"
+            ]
+          ]
+        },
+        {
+          "word": "shut",
+          "translations": [
+            [
+              "మూయు"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sing",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పాడు"
+            ]
+          ]
+        },
+        {
+          "word": "sang",
+          "translations": []
+        },
+        {
+          "word": "sung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sank | sunk",
+          "translations": []
+        },
+        {
+          "word": "sunk",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "కూర్చో"
+            ]
+          ]
+        },
+        {
+          "word": "sat",
+          "translations": []
+        },
+        {
+          "word": "sat",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "slew | slayed",
+          "translations": []
+        },
+        {
+          "word": "slain | slayed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "నిద్రపో"
+            ]
+          ]
+        },
+        {
+          "word": "slept",
+          "translations": []
+        },
+        {
+          "word": "slept",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "slid",
+          "translations": []
+        },
+        {
+          "word": "slid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "slung",
+          "translations": []
+        },
+        {
+          "word": "slung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "slunk",
+          "translations": []
+        },
+        {
+          "word": "slunk",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "slit",
+          "translations": []
+        },
+        {
+          "word": "slit",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "smelled | smelt",
+          "translations": []
+        },
+        {
+          "word": "smelled | smelt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sowed",
+          "translations": []
+        },
+        {
+          "word": "sown | sowed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "speak",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "మాట్లాడు"
+            ]
+          ]
+        },
+        {
+          "word": "spoke",
+          "translations": []
+        },
+        {
+          "word": "spoken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "speed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sped | speeded",
+          "translations": []
+        },
+        {
+          "word": "sped | speeded",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "spelled | spelt",
+          "translations": []
+        },
+        {
+          "word": "spelled | spelt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఖర్చు పెట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "spent",
+          "translations": []
+        },
+        {
+          "word": "spent",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spill",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "spilled | spilt",
+          "translations": []
+        },
+        {
+          "word": "spilled | spilt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spin",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "spun",
+          "translations": []
+        },
+        {
+          "word": "spun",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "spit | spat",
+          "translations": []
+        },
+        {
+          "word": "spit | spat",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "split",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "split",
+          "translations": []
+        },
+        {
+          "word": "split",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spoil",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "spoiled | spoilt",
+          "translations": []
+        },
+        {
+          "word": "spoiled | spoilt",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spread",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "spread",
+          "translations": []
+        },
+        {
+          "word": "spread",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sprang | sprung",
+          "translations": []
+        },
+        {
+          "word": "sprung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "నిలబడు"
+            ]
+          ]
+        },
+        {
+          "word": "stood",
+          "translations": []
+        },
+        {
+          "word": "stood",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "steal",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "దొంగిలించు"
+            ]
+          ]
+        },
+        {
+          "word": "stole",
+          "translations": []
+        },
+        {
+          "word": "stolen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stick",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "stuck",
+          "translations": []
+        },
+        {
+          "word": "stuck",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sting",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "stung",
+          "translations": []
+        },
+        {
+          "word": "stung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "stunk | stank",
+          "translations": []
+        },
+        {
+          "word": "stunk",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "strewed",
+          "translations": []
+        },
+        {
+          "word": "strewn | strewed",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stride",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "strode",
+          "translations": []
+        },
+        {
+          "word": "stridden",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strike",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "struck",
+          "translations": []
+        },
+        {
+          "word": "struck",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "string",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "strung",
+          "translations": []
+        },
+        {
+          "word": "strung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "strove | strived",
+          "translations": []
+        },
+        {
+          "word": "striven | strived",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sublet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "sublet",
+          "translations": []
+        },
+        {
+          "word": "sublet",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "swore",
+          "translations": []
+        },
+        {
+          "word": "sworn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sweep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "swept",
+          "translations": []
+        },
+        {
+          "word": "swept",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "swelled",
+          "translations": []
+        },
+        {
+          "word": "swollen | swelled",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swim",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఈత కొట్టు"
+            ]
+          ]
+        },
+        {
+          "word": "swam",
+          "translations": []
+        },
+        {
+          "word": "swum",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swing",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "swung",
+          "translations": []
+        },
+        {
+          "word": "swung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "take",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "తీసుకో"
+            ]
+          ]
+        },
+        {
+          "word": "took",
+          "translations": []
+        },
+        {
+          "word": "taken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "teach",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "బోధించు"
+            ]
+          ]
+        },
+        {
+          "word": "taught",
+          "translations": []
+        },
+        {
+          "word": "taught",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "పారుచు"
+            ]
+          ]
+        },
+        {
+          "word": "tore",
+          "translations": []
+        },
+        {
+          "word": "torn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "చెప్పు"
+            ]
+          ]
+        },
+        {
+          "word": "told",
+          "translations": []
+        },
+        {
+          "word": "told",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "think",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఆలోచించు"
+            ]
+          ]
+        },
+        {
+          "word": "thought",
+          "translations": []
+        },
+        {
+          "word": "thought",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "throw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఎగరేయు"
+            ]
+          ]
+        },
+        {
+          "word": "threw",
+          "translations": []
+        },
+        {
+          "word": "thrown",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thrust",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "thrust",
+          "translations": []
+        },
+        {
+          "word": "thrust",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tread",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "trod",
+          "translations": []
+        },
+        {
+          "word": "trodden | trod",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unbend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "unbent",
+          "translations": []
+        },
+        {
+          "word": "unbent",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "underbid",
+          "translations": []
+        },
+        {
+          "word": "underbid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undercut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "undercut",
+          "translations": []
+        },
+        {
+          "word": "undercut",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undergo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "underwent",
+          "translations": []
+        },
+        {
+          "word": "undergone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underlie",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "underlay",
+          "translations": []
+        },
+        {
+          "word": "underlain",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underpay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "underpaid",
+          "translations": []
+        },
+        {
+          "word": "underpaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undersell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "undersold",
+          "translations": []
+        },
+        {
+          "word": "undersold",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "understand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "అర్ధం చేసుకో"
+            ]
+          ]
+        },
+        {
+          "word": "understood",
+          "translations": []
+        },
+        {
+          "word": "understood",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undertake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "undertook",
+          "translations": []
+        },
+        {
+          "word": "undertaken",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underwrite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "underwrote",
+          "translations": []
+        },
+        {
+          "word": "underwritten",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "undid",
+          "translations": []
+        },
+        {
+          "word": "undone",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unfreeze",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "unfroze",
+          "translations": []
+        },
+        {
+          "word": "unfrozen",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unsay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "unsaid",
+          "translations": []
+        },
+        {
+          "word": "unsaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unwind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "unwound",
+          "translations": []
+        },
+        {
+          "word": "unwound",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "uphold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "upheld",
+          "translations": []
+        },
+        {
+          "word": "upheld",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "upset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "upset",
+          "translations": []
+        },
+        {
+          "word": "upset",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "లేచిపో"
+            ]
+          ]
+        },
+        {
+          "word": "woke | waked",
+          "translations": []
+        },
+        {
+          "word": "woken | waked",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "waylay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "waylaid",
+          "translations": []
+        },
+        {
+          "word": "waylaid",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ధరించు"
+            ]
+          ]
+        },
+        {
+          "word": "wore",
+          "translations": []
+        },
+        {
+          "word": "worn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "wove | weaved",
+          "translations": []
+        },
+        {
+          "word": "woven | weaved",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "wed | wedded",
+          "translations": []
+        },
+        {
+          "word": "wed | wedded",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "wept",
+          "translations": []
+        },
+        {
+          "word": "wept",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "wet | wetted",
+          "translations": []
+        },
+        {
+          "word": "wet | wetted",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "win",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "గెలుచు"
+            ]
+          ]
+        },
+        {
+          "word": "won",
+          "translations": []
+        },
+        {
+          "word": "won",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "wound",
+          "translations": []
+        },
+        {
+          "word": "wound",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withdraw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "withdrew",
+          "translations": []
+        },
+        {
+          "word": "withdrawn",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withhold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "withheld",
+          "translations": []
+        },
+        {
+          "word": "withheld",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withstand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "withstood",
+          "translations": []
+        },
+        {
+          "word": "withstood",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "wrung",
+          "translations": []
+        },
+        {
+          "word": "wrung",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "write",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "రాయు"
+            ]
+          ]
+        },
+        {
+          "word": "wrote",
+          "translations": []
+        },
+        {
+          "word": "written",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "be",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": []
+        },
+        {
+          "word": "was | were",
+          "translations": []
+        },
+        {
+          "word": "been",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "have | has",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ఉండు"
+            ]
+          ]
+        },
+        {
+          "word": "had",
+          "translations": []
+        },
+        {
+          "word": "had",
+          "translations": []
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

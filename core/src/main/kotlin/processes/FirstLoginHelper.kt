@@ -45,13 +45,13 @@ private val RESOURCE_DOCUMENTS_BY_LANGUAGE = mapOf(
     "ar" to listOf("/irregular-verbs-en-ar.json", "/weather-en-ar.json"),
     "bn" to listOf("/irregular-verbs-en-bn.json", "/weather-en-bn.json"),
     "pa" to listOf("/irregular-verbs-en-pa.json", "/weather-en-pa.json"),
-    "vi" to listOf("/weather-en-vi.json"),
-    "mr" to listOf("/weather-en-mr.json"),
-    "te" to listOf("/weather-en-te.json"),
-    "jv" to listOf("/weather-en-jv.json"),
-    "ko" to listOf("/weather-en-ko.json"),
-    "ta" to listOf("/weather-en-ta.json"),
-    "tr" to listOf("/weather-en-tr.json"),
+    "vi" to listOf("/irregular-verbs-en-vi.json", "/weather-en-vi.json"),
+    "mr" to listOf("/irregular-verbs-en-mr.json", "/weather-en-mr.json"),
+    "te" to listOf("/irregular-verbs-en-te.json", "/weather-en-te.json"),
+    "jv" to listOf("/irregular-verbs-en-jv.json", "/weather-en-jv.json"),
+    "ko" to listOf("/irregular-verbs-en-ko.json", "/weather-en-ko.json"),
+    "ta" to listOf("/irregular-verbs-en-ta.json", "/weather-en-ta.json"),
+    "tr" to listOf("/irregular-verbs-en-tr.json", "/weather-en-tr.json"),
 )
 
 internal val users = Caffeine.newBuilder().maximumSize(1024).build<AppAuthId, DbUser>()

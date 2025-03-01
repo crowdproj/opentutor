@@ -202,36 +202,43 @@ internal class FirstLoginHelperTest {
                 ),
                 Arguments.of("vi",
                     listOf(
+                        mapOf("read" to "đọc", "write" to "viết"),
                         mapOf("weather" to "thời tiết"),
                     )
                 ),
                 Arguments.of("mr",
                     listOf(
+                        mapOf("read" to "वाचणे", "write" to "लिहिणे"),
                         mapOf("weather" to "हवामान"),
                     )
                 ),
                 Arguments.of("te",
                     listOf(
+                        mapOf("read" to "చదవు", "write" to "రాయు"),
                         mapOf("weather" to "వాతావరణం"),
                     )
                 ),
                 Arguments.of("jv",
                     listOf(
+                        mapOf("read" to "maca", "write" to "nulis"),
                         mapOf("weather" to "cuaca"),
                     )
                 ),
                 Arguments.of("ko",
                     listOf(
+                        mapOf("read" to "읽다", "write" to "쓰다"),
                         mapOf("weather" to "날씨"),
                     )
                 ),
                 Arguments.of("ta",
                     listOf(
+                        mapOf("read" to "படி", "write" to "எழுது"),
                         mapOf("weather" to "வானிலை"),
                     )
                 ),
                 Arguments.of("tr",
                     listOf(
+                        mapOf("read" to "okumak", "write" to "yazmak"),
                         mapOf("weather" to "hava durumu"),
                     )
                 ),
