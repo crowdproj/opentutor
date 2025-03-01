@@ -1,0 +1,1008 @@
+{
+  "name": "Weather",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "ko",
+    "partsOfSpeech": [
+      "명사",
+      "동사",
+      "형용사",
+      "부사",
+      "대명사",
+      "전치사",
+      "접속사",
+      "감탄사",
+      "관사"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "transcription": "ˌætməs'ferik",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "대기의"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weather",
+          "transcription": "'weðə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "날씨"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snow",
+          "transcription": "snəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "눈"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "transcription": "rein",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "비"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "wind",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "바람"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hail",
+          "transcription": "heil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "우박"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunderstorm",
+          "transcription": "'θʌndəstɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "뇌우"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "transcription": "priˌsipi'teiʃ(ə)n",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "강수량"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "transcription": "'θʌndə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "천둥"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lightning",
+          "transcription": "'laitniŋ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "번개"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "transcription": "'ænti'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "고기압"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "transcription": "'ætməsfiə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "대기"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "transcription": "bə'rɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "기압계"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
+          "transcription": "'windi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "바람이 많이 부는"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "transcription": "hjuː'midəti",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "습도"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "humid",
+          "transcription": "'hjuːmid",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "습한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "moist",
+          "transcription": "mɔist",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "촉촉한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "damp",
+          "transcription": "dæmp",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "습기찬"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "transcription": "'sʌnraiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "일출"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "transcription": "di'griː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "도"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pressure",
+          "transcription": "'preʃə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "기압"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "transcription": "'stʌfi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "답답한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "transcription": "hiːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "열"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "transcription": "hɔt",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "덥다"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunset",
+          "transcription": "'sʌnset",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "일몰"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "frost",
+          "transcription": "frɔst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "서리"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "transcription": "'drizl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "이슬비"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "haze",
+          "transcription": "heiz",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "실안개"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ice",
+          "transcription": "ais",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "얼음"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shower",
+          "transcription": "'ʃəuə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "소나기"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "transcription": "'pʌdl",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "물웅덩이"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "transcription": "ˌmiːti(ə)'rɔləʤi",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "기상학"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "transcription": "'klaudi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "흐린"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "transcription": "θɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "녹다"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "transcription": "kuːl",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "시원한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "transcription": "'dʌsti",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "먼지투성이의"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "transcription": "'reinbəu",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "무지개"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "transcription": "freʃ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "신선한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "transcription": "'slipəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "미끄러운"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "transcription": "slʌʃ",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "진눈깨비"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "transcription": "smɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "스모그"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "transcription": "",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "강설"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "transcription": "'sʌni",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "맑은"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "transcription": "drai",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "건조한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "wet",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "젖은"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "transcription": "'tempriʧə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "온도"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "transcription": "wɔːm",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "따뜻한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "transcription": "θə'mɔmitə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "온도계"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "transcription": "fɔg",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "안개"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "transcription": "mist",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "엷은 안개"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "transcription": "'fɔgi",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "안개가 낀"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "transcription": "'wɔːtə",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "물"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "transcription": "kəuld",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "추운"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "transcription": "'saikləun",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "사이클론"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "transcription": "stɔːm",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "폭풍"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "transcription": "kliə",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "맑은"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "transcription": "sliːt",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "진눈깨비"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "transcription": "klaud",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "구름"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "transcription": "'ʧili",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "쌀쌀한"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "transcription": "'daunpɔː",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "폭우"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "transcription": "geil",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "강풍"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "transcription": "'skɔːʧiŋ",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "타는 듯한 더위"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "transcription": "dʌst",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "먼지"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blustery",
+          "transcription": "'blʌstəri",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "거센 바람이 부는"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "transcription": "'əuvəkɑːst",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "흐린 하늘"
+            ]
+          ]
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

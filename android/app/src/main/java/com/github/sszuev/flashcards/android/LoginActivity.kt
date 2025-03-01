@@ -50,9 +50,16 @@ class LoginActivity : ComponentActivity() {
                 Log.e(tag, "ActivityResult::$result, Extras::${result.data?.extras}")
             }
         }
-
-        findViewById<Button>(R.id.loginButton).setOnClickListener {
-            startLogin()
+        val loginButton: Button = findViewById(R.id.loginButton)
+        loginButton.setOnClickListener {
+            loginButton.isEnabled = false
+            loginButton.alpha = 0.5f
+            try {
+                startLogin()
+            } finally {
+                loginButton.isEnabled = true
+                loginButton.alpha = 1.0f
+            }
         }
     }
 
@@ -61,7 +68,8 @@ class LoginActivity : ComponentActivity() {
         val serverUri = AppConfig.serverUri
         val serviceConfig = AuthorizationServiceConfiguration(
             /* authorizationEndpoint = */ Uri.parse("$serverUri/realms/flashcards-realm/protocol/openid-connect/auth"),
-            /* tokenEndpoint = */ Uri.parse("$serverUri/realms/flashcards-realm/protocol/openid-connect/token")
+            /* tokenEndpoint = */
+            Uri.parse("$serverUri/realms/flashcards-realm/protocol/openid-connect/token")
         )
 
         val authRequest = AuthorizationRequest.Builder(
