@@ -457,7 +457,7 @@ class MemDatabase private constructor(
                 "changed_at",
             )
             .setSkipHeaderRecord(!withHeader)
-            .build()
+            .get()
 
         private fun cardCsvFormat(withHeader: Boolean): CSVFormat = CSVFormat.DEFAULT.builder()
             .setHeader(
@@ -469,7 +469,7 @@ class MemDatabase private constructor(
                 "changed_at",
             )
             .setSkipHeaderRecord(!withHeader)
-            .build()
+            .get()
 
         private fun userCsvFormat(withHeader: Boolean): CSVFormat = CSVFormat.DEFAULT.builder()
             .setHeader(
@@ -478,7 +478,7 @@ class MemDatabase private constructor(
                 "details",
             )
             .setSkipHeaderRecord(!withHeader)
-            .build()
+            .get()
 
         private fun CSVRecord.value(key: String): String =
             requireNotNull(get(key)) { "null value for '$key'. record = $this" }
