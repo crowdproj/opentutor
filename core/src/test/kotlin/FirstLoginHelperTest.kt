@@ -20,30 +20,228 @@ internal class FirstLoginHelperTest {
         @JvmStatic
         private fun builtIntVocabularies(): List<Arguments> {
             return listOf(
-                Arguments.of("xx", "weather", "天气"), // unknown locale => en->zh
-                Arguments.of("zh", "weather", "天气"),
-                Arguments.of("en", "天气", "weather"),
-                Arguments.of("es", "weather", "clima"),
-                Arguments.of("pt", "weather", "tempo"),
-                Arguments.of("ja", "weather", "天気"),
-                Arguments.of("de", "weather", "Wetter"),
-                Arguments.of("fr", "weather", "météo"),
-                Arguments.of("it", "weather", "tempo"),
-                Arguments.of("pl", "weather", "pogoda"),
-                Arguments.of("nl", "weather", "weer"),
-                Arguments.of("el", "weather", "καιρός"),
-                Arguments.of("hu", "weather", "időjárás"),
-                Arguments.of("cs", "weather", "počasí"),
-                Arguments.of("sv", "weather", "väder"),
-                Arguments.of("bg", "weather", "времето"),
-                Arguments.of("da", "weather", "vejr"),
-                Arguments.of("fi", "weather", "sää"),
-                Arguments.of("sk", "weather", "počasie"),
-                Arguments.of("lt", "weather", "oras"),
-                Arguments.of("lv", "weather", "laikapstākļi"),
-                Arguments.of("sl", "weather", "vreme"),
-                Arguments.of("et", "weather", "ilm"),
-                Arguments.of("mt", "weather", "temp"),
+                Arguments.of(
+                    "xx", listOf(
+                        mapOf("be" to "是", "write" to "写"),
+                        mapOf("weather" to "天气"),
+                    )
+                ), // unknown locale => en->zh
+                Arguments.of(
+                    "zh", listOf(
+                        mapOf("be" to "是", "write" to "写"),
+                        mapOf("weather" to "天气"),
+                    )
+                ),
+                Arguments.of("en", listOf(mapOf("天气" to "weather"))),
+                Arguments.of(
+                    "es",
+                    listOf(
+                        mapOf("be" to "ser", "write" to "escribir"),
+                        mapOf("weather" to "clima"),
+                    )
+                ),
+                Arguments.of(
+                    "pt",
+                    listOf(
+                        mapOf("be" to "ser", "write" to "escrever"),
+                        mapOf("weather" to "tempo"),
+                    )
+                ),
+                Arguments.of(
+                    "ja",
+                    listOf(
+                        mapOf("be" to "いる", "write" to "書く"),
+                        mapOf("weather" to "天気"),
+                    )
+                ),
+                Arguments.of(
+                    "de",
+                    listOf(
+                        mapOf("be" to "sein", "write" to "schreiben"),
+                        mapOf("weather" to "Wetter"),
+                    )
+                ),
+                Arguments.of(
+                    "fr",
+                    listOf(
+                        mapOf("be" to "être", "write" to "écrire"),
+                        mapOf("weather" to "météo"),
+                    )
+                ),
+                Arguments.of(
+                    "it",
+                    listOf(
+                        mapOf("be" to "essere", "write" to "scrivere"),
+                        mapOf("weather" to "tempo"),
+                    )
+                ),
+                Arguments.of(
+                    "pl",
+                    listOf(
+                        mapOf("be" to "być", "write" to "pisać"),
+                        mapOf("weather" to "pogoda")
+                    ),
+                ),
+                Arguments.of(
+                    "nl",
+                    listOf(
+                        mapOf("read" to "lezen", "write" to "schrijven"),
+                        mapOf("weather" to "weer"),
+                    )
+                ),
+                Arguments.of(
+                    "el",
+                    listOf(
+                        mapOf("read" to "διαβάζω", "write" to "γράφω"),
+                        mapOf("weather" to "καιρός"),
+                    )
+                ),
+                Arguments.of(
+                    "hu",
+                    listOf(
+                        mapOf("read" to "olvas", "write" to "ír"),
+                        mapOf("weather" to "időjárás"),
+                    )
+                ),
+                Arguments.of(
+                    "cs",
+                    listOf(
+                        mapOf("read" to "číst", "write" to "psát"),
+                        mapOf("weather" to "počasí"),
+                    )
+                ),
+                Arguments.of(
+                    "sv",
+                    listOf(
+                        mapOf("read" to "läsa", "write" to "skriva"),
+                        mapOf("weather" to "väder"),
+                    )
+                ),
+                Arguments.of(
+                    "bg",
+                    listOf(
+                        mapOf("read" to "чета", "write" to "пиша"),
+                        mapOf("weather" to "времето"),
+                    )
+                ),
+                Arguments.of(
+                    "da",
+                    listOf(
+                        mapOf("read" to "læse", "write" to "skrive"),
+                        mapOf("weather" to "vejr"),
+                    )
+                ),
+                Arguments.of(
+                    "fi",
+                    listOf(
+                        mapOf("read" to "lukea", "write" to "kirjoittaa"),
+                        mapOf("weather" to "sää"),
+                    )
+                ),
+                Arguments.of(
+                    "sk",
+                    listOf(
+                        mapOf("read" to "čítať", "write" to "písať"),
+                        mapOf("weather" to "počasie"),
+                    )
+                ),
+                Arguments.of(
+                    "lt",
+                    listOf(
+                        mapOf("read" to "skaityti", "write" to "rašyti"),
+                        mapOf("weather" to "oras"),
+                    )
+                ),
+                Arguments.of("lv",
+                    listOf(
+                        mapOf("read" to "lasīt", "write" to "rakstīt"),
+                        mapOf("weather" to "laikapstākļi"),
+                    )
+                ),
+                Arguments.of("sl",
+                    listOf(
+                        mapOf("read" to "brati", "write" to "pisati"),
+                        mapOf("weather" to "vreme"),
+                    )
+                ),
+                Arguments.of("et",
+                    listOf(
+                        mapOf("read" to "lugeda", "write" to "kirjutada"),
+                        mapOf("weather" to "ilm"),
+                    )
+                ),
+                Arguments.of("mt",
+                    listOf(
+                        mapOf("read" to "taqra", "write" to "tikteb"),
+                        mapOf("weather" to "temp"),
+                    )
+                ),
+                Arguments.of("hi",
+                    listOf(
+                        mapOf("read" to "पढ़ना", "write" to "लिखना"),
+                        mapOf("weather" to "मौसम"),
+                    )
+                ),
+                Arguments.of("ar",
+                    listOf(
+                        mapOf("read" to "يقرأ", "write" to "يكتب"),
+                        mapOf("weather" to "طقس"),
+                    )
+                ),
+                Arguments.of("bn",
+                    listOf(
+                        mapOf("read" to "পড়া", "write" to "লেখা"),
+                        mapOf("weather" to "আবহাওয়া"),
+                    )
+                ),
+                Arguments.of("pa",
+                    listOf(
+                        mapOf("read" to "ਪੜ੍ਹਨਾ", "write" to "ਲਿਖਣਾ"),
+                        mapOf("weather" to "ਮੌਸਮ"),
+                    )
+                ),
+                Arguments.of("vi",
+                    listOf(
+                        mapOf("read" to "đọc", "write" to "viết"),
+                        mapOf("weather" to "thời tiết"),
+                    )
+                ),
+                Arguments.of("mr",
+                    listOf(
+                        mapOf("read" to "वाचणे", "write" to "लिहिणे"),
+                        mapOf("weather" to "हवामान"),
+                    )
+                ),
+                Arguments.of("te",
+                    listOf(
+                        mapOf("read" to "చదవు", "write" to "రాయు"),
+                        mapOf("weather" to "వాతావరణం"),
+                    )
+                ),
+                Arguments.of("jv",
+                    listOf(
+                        mapOf("read" to "maca", "write" to "nulis"),
+                        mapOf("weather" to "cuaca"),
+                    )
+                ),
+                Arguments.of("ko",
+                    listOf(
+                        mapOf("read" to "읽다", "write" to "쓰다"),
+                        mapOf("weather" to "날씨"),
+                    )
+                ),
+                Arguments.of("ta",
+                    listOf(
+                        mapOf("read" to "படி", "write" to "எழுது"),
+                        mapOf("weather" to "வானிலை"),
+                    )
+                ),
+                Arguments.of("tr",
+                    listOf(
+                        mapOf("read" to "okumak", "write" to "yazmak"),
+                        mapOf("weather" to "hava durumu"),
+                    )
+                ),
             )
         }
     }
@@ -87,10 +285,18 @@ internal class FirstLoginHelperTest {
 
     @ParameterizedTest
     @MethodSource(value = ["builtIntVocabularies"])
-    fun `test load builtin documents`(locale: String, word: String, expected: String) {
-        val document = loadBuiltinDocuments(locale).single()
-        val actual =
-            document.cards.single { it.words.single().word == word }.words.single().translations.single().single()
-        Assertions.assertEquals(expected, actual)
+    fun `test load builtin documents`(locale: String, given: List<Map<String, String>>) {
+        val documents = loadBuiltinDocuments(locale).toList()
+        Assertions.assertEquals(documents.size, given.size)
+        given.forEachIndexed { index, map ->
+            val document = documents[index]
+            map.forEach { (word, expected) ->
+                val actual = document.cards
+                    .single { it.words.first().word == word }
+                    .words.first()
+                    .translations.single().single()
+                Assertions.assertEquals(expected, actual)
+            }
+        }
     }
 }

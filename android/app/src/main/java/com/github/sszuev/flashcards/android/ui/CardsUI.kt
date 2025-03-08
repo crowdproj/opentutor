@@ -61,6 +61,7 @@ import com.github.sszuev.flashcards.android.utils.audioResource
 import com.github.sszuev.flashcards.android.utils.examplesAsList
 import com.github.sszuev.flashcards.android.utils.examplesAsString
 import com.github.sszuev.flashcards.android.utils.isTextShort
+import com.github.sszuev.flashcards.android.utils.normalizeWord
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
 import com.github.sszuev.flashcards.android.utils.translationFromString
@@ -95,7 +96,7 @@ fun CardsScreen(
             val index =
                 cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
             if (index != -1) {
-                listState.animateScrollToItem(index, scrollOffset = 50)
+                listState.animateScrollToItem(index, scrollOffset = 10)
                 cardViewModel.selectCard(cards[index].cardId)
             } else {
                 cardViewModel.selectCard(null)
@@ -165,7 +166,7 @@ fun CardsScreen(
     }
     if (isAddPopupOpen.value) {
         AddCardDialog(
-            initialWord = searchQuery.value,
+            initialWord = normalizeWord(searchQuery.value),
             dictionaryId = checkNotNull(dictionary.dictionaryId),
             sourceLang = dictionary.sourceLanguage,
             targetLang = dictionary.targetLanguage,

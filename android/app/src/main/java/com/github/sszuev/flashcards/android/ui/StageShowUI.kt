@@ -91,7 +91,7 @@ fun StageShowScreen(
             if (know) {
                 val cardId = checkNotNull(card.cardId)
                 val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-                cardViewModel.markDeckCardAsAnswered(cardId, dictionary.numberOfRightAnswers)
+                cardViewModel.markDeckCardAsKnow(cardId, dictionary.numberOfRightAnswers)
             }
         }
 
