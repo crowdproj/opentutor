@@ -26,7 +26,9 @@ fun shortText(text: String) =
 
 fun translationFromString(translation: String) = translation.split(",").map { it.trim() }
 
-fun wordAsList(word: String) = word.split(", ").map { it.trim() }
+fun wordAsList(word: String) = listOf(word.trim())
+
+fun normalizeWord(word: String) = word.replace("\n", "").trim()
 
 fun correctAnswerIndexOf(samples: List<String>, input: String): Int {
     val txt = input.trim()

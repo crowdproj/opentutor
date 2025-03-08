@@ -308,16 +308,16 @@ class CardViewModel(
         _fetchedCard.value = null
     }
 
-    fun markDeckCardAsAnswered(
+    fun markDeckCardAsKnow(
         cardId: String,
         numberOfRightAnswers: Int,
     ) {
-        val answered = _answeredCardDeckIds.value.toMutableSet()
-        answered.add(cardId)
-        _answeredCardDeckIds.value = answered
         var card = checkNotNull(_cardsDeck.value.singleOrNull { it.cardId == cardId }) {
             "Can't find deck card = $cardId"
         }
+        val answered = _answeredCardDeckIds.value.toMutableSet()
+        answered.add(cardId)
+        _answeredCardDeckIds.value = answered
         card = card.copy(answered = numberOfRightAnswers)
         updateCard(card)
         val cardsDeck = _cardsDeck.value.toMutableList()
