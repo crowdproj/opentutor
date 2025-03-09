@@ -1,10 +1,12 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +45,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -95,6 +100,11 @@ fun TopBar(
             style = style,
             modifier = Modifier
                 .clickable { onSignOut() }
+                .focusable(true)
+                .semantics {
+                    contentDescription = "SIGN_OUT"
+                    role = androidx.compose.ui.semantics.Role.Button
+                }
         )
     }
 }
@@ -458,7 +468,7 @@ fun AudioPlayerIcon(
     ttsViewModel: TTSViewModel,
     card: CardEntity,
     size: Dp = 24.dp,
-    modifier: Modifier = Modifier
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     val cardId = checkNotNull(card.cardId)
 
@@ -492,7 +502,7 @@ fun TextWithPopup(
     popupFontSize: TextUnit = 20.sp,
     popupLineHeight: TextUnit = 40.sp,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
-    modifier: Modifier = Modifier,
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     textColor: Color = Color.Black
 ) {
     var isPopupVisible by remember { mutableStateOf(false) }
