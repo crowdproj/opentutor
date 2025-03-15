@@ -384,32 +384,41 @@ fun ToolbarButton(
 fun SearchableDropdown(
     options: Map<String, String>,
     selectedTag: String?,
-    onOptionSelect: (String) -> Unit
+    onOptionSelect: (String) -> Unit,
+    id: Int,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         TextField(
             value = options[selectedTag] ?: "",
             onValueChange = {},
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true },
+                .fillMaxWidth(),
             readOnly = true,
             placeholder = { Text(text = "Select...") },
             trailingIcon = {
                 Icon(
                     imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                     contentDescription = null,
-                    modifier = Modifier.clickable { expanded = !expanded }
                 )
             }
         )
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .clickable { expanded = !expanded }
+                .semantics {
+                    contentDescription = "SelectField$id"
+                },
+        )
+    }
 
-        if (!expanded) {
-            return
-        }
+    if (expanded) {
         Dialog(onDismissRequest = { expanded = false }) {
             Box(
                 modifier = Modifier
@@ -423,7 +432,10 @@ fun SearchableDropdown(
                         onValueChange = { searchQuery = it },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp),
+                            .padding(bottom = 8.dp)
+                            .semantics {
+                                contentDescription = "SearchField$id"
+                            },
                         placeholder = { Text("Search...") }
                     )
 

@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android
 
 import android.util.Log
+import android.view.KeyEvent
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.action.ViewActions.click
@@ -42,6 +43,7 @@ class InstrumentedE2ETest {
     @Test
     fun test() {
         testSignIn()
+        testCreateDictionary()
     }
 
     private fun testSignIn() {
@@ -136,6 +138,47 @@ class InstrumentedE2ETest {
         Log.i(tag, "=== E2E sign-in scenario completed successfully! ===")
     }
 
+    private fun testCreateDictionary() {
+        val foundCreate = device.wait(Until.hasObject(By.text("CREATE")), 5_000)
+        assertTrue("CREATE button not found", foundCreate)
+        Log.i(tag, "Click CREATE button")
+        device.findObject(By.text("CREATE")).click()
+
+        device.wait(Until.hasObject(By.desc("SelectField1")), 3_000)
+        device.findObject(By.desc("SelectField1")).click()
+
+        device.wait(Until.hasObject(By.desc("SearchField1")), 3_000)
+        device.findObject(By.desc("SearchField1")).click()
+
+        device.pressKeyCode(KeyEvent.KEYCODE_E)
+        device.pressKeyCode(KeyEvent.KEYCODE_N)
+
+        device.wait(Until.hasObject(By.text("English")), 3_000)
+        device.findObject(By.text("English")).click()
+
+        device.wait(Until.hasObject(By.desc("SelectField2")), 3_000)
+        device.findObject(By.desc("SelectField2")).click()
+
+        device.wait(Until.hasObject(By.desc("SearchField2")), 3_000)
+        device.findObject(By.desc("SearchField2")).click()
+
+        device.pressKeyCode(KeyEvent.KEYCODE_R)
+        device.pressKeyCode(KeyEvent.KEYCODE_U)
+
+        device.wait(Until.hasObject(By.text("Russian (русский)")), 3_000)
+        device.findObject(By.text("Russian (русский)")).click()
+
+        device.wait(Until.hasObject(By.desc("DictionaryName")), 3_000)
+        device.findObject(By.desc("DictionaryName")).text = testDictionaryName
+
+        device.wait(Until.hasObject(By.desc("AcceptedAnswers")), 3_000)
+        device.findObject(By.desc("AcceptedAnswers")).text = "14"
+
+        device.wait(Until.hasObject(By.text("SAVE")), 3_000)
+        Log.i(tag, "Click SAVE button")
+        device.findObject(By.text("SAVE")).click()
+    }
+
     private fun trySignOutIfAvailable() {
         val foundSignOut = device.hasObject(By.desc("SIGN_OUT"))
         if (foundSignOut) {
@@ -168,5 +211,9 @@ class InstrumentedE2ETest {
             Thread.sleep(500)
         }
         return this.hasObject(targetSelector)
+    }
+
+    companion object TestData {
+        private val testDictionaryName = "test-weather-${System.currentTimeMillis()}"
     }
 }

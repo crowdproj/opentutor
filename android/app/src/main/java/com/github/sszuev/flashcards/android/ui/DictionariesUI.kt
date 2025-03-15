@@ -48,6 +48,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -577,7 +579,8 @@ fun AddDictionaryDialog(
                     SearchableDropdown(
                         options = viewModel.languages,
                         selectedTag = selectedSourceLanguageTag,
-                        onOptionSelect = { selectedSourceLanguageTag = it }
+                        onOptionSelect = { selectedSourceLanguageTag = it },
+                        id = 1,
                     )
                 }
 
@@ -587,7 +590,8 @@ fun AddDictionaryDialog(
                     SearchableDropdown(
                         options = viewModel.languages,
                         selectedTag = selectedTargetLanguageTag,
-                        onOptionSelect = { selectedTargetLanguageTag = it }
+                        onOptionSelect = { selectedTargetLanguageTag = it },
+                        id = 2,
                     )
                 }
 
@@ -598,6 +602,9 @@ fun AddDictionaryDialog(
                         value = dictionaryName,
                         onValueChange = { dictionaryName = it },
                         modifier = Modifier.fillMaxWidth()
+                            .semantics {
+                                contentDescription = "DictionaryName"
+                            }
                     )
                 }
 
@@ -606,6 +613,9 @@ fun AddDictionaryDialog(
                         text = "ACCEPTED ANSWERS:",
                         style = MaterialTheme.typography.bodyLarge,
                         modifier = Modifier.padding(top = 8.dp)
+                            .semantics {
+                                contentDescription = "AcceptedAnswers"
+                            }
                     )
                     TextField(
                         value = numberOfRightAnswers,
