@@ -11,6 +11,7 @@ import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.By
+import androidx.test.uiautomator.BySelector
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.Until
 import org.junit.Assert.assertTrue
@@ -39,7 +40,11 @@ class InstrumentedE2ETest {
     }
 
     @Test
-    fun test1_SignInFlow() {
+    fun test() {
+        testSignIn()
+    }
+
+    private fun testSignIn() {
         val onLoginScreen = try {
             onView(withId(R.id.loginButton))
                 .check(matches(isDisplayed()))
@@ -49,7 +54,10 @@ class InstrumentedE2ETest {
         }
 
         if (!onLoginScreen) {
-            Log.i(tag, "No SIGN IN / SIGN UP -> possibly in MainActivity? We'll skip to sign out logic.")
+            Log.i(
+                tag,
+                "No SIGN IN / SIGN UP -> possibly in MainActivity? We'll skip to sign out logic."
+            )
             trySignOutIfAvailable()
         }
 
@@ -65,7 +73,10 @@ class InstrumentedE2ETest {
             Log.i(tag, "We landed in MainActivity without Keycloak form -> sign out first.")
             device.findObject(By.desc("SIGN_OUT")).click()
             device.wait(Until.hasObject(By.text("SIGN IN / SIGN UP")), 5_000)
-            Log.i(tag, "Signed out, now definitely on login screen -> click SIGN IN / SIGN UP again.")
+            Log.i(
+                tag,
+                "Signed out, now definitely on login screen -> click SIGN IN / SIGN UP again."
+            )
             onView(withId(R.id.loginButton))
                 .check(matches(isDisplayed()))
                 .perform(click())
@@ -74,12 +85,18 @@ class InstrumentedE2ETest {
         Log.i(tag, "Wait for Keycloak login page (res=username, password)")
         val foundUsername = device.wait(Until.hasObject(By.res("username")), 10_000)
         if (!foundUsername) {
-            Log.w(tag, "No Keycloak form. Possibly the user got in w/o login again? Checking SIGN_OUT.")
+            Log.w(
+                tag,
+                "No Keycloak form. Possibly the user got in w/o login again? Checking SIGN_OUT."
+            )
             val foundSignOut = device.hasObject(By.desc("SIGN_OUT"))
             if (!foundSignOut) {
                 throw AssertionError("Neither Keycloak form nor SIGN_OUT found => unknown state.")
             } else {
-                Log.i(tag, "Well, SIGN_OUT is found => user is in. Test ends successfully, but no real login was performed.")
+                Log.i(
+                    tag,
+                    "Well, SIGN_OUT is found => user is in. Test ends successfully, but no real login was performed."
+                )
                 return
             }
         }
@@ -87,11 +104,25 @@ class InstrumentedE2ETest {
         Log.i(tag, "Type username = ${BuildConfig.TEST_KEYCLOAK_USER}")
         device.findObject(By.res("username")).text = BuildConfig.TEST_KEYCLOAK_USER
 
+        val passwdSelector = By.res("password")
+        if (!device.hasObject(passwdSelector)) {
+            val foundAfterScroll = device.scrollUntilVisible(passwdSelector, maxSwipes = 5)
+            if (!foundAfterScroll) {
+                throw AssertionError("Can't find password text-box")
+            }
+        }
         Log.i(tag, "Type password = ${BuildConfig.TEST_KEYCLOAK_PASSWORD}")
-        device.findObject(By.res("password")).text = BuildConfig.TEST_KEYCLOAK_PASSWORD
+        device.findObject(passwdSelector).text = BuildConfig.TEST_KEYCLOAK_PASSWORD
 
+        val loginSelector = By.res("kc-login")
+        if (!device.hasObject(loginSelector)) {
+            val foundAfterScroll = device.scrollUntilVisible(loginSelector, maxSwipes = 5)
+            if (!foundAfterScroll) {
+                throw AssertionError("Can't find log-in button")
+            }
+        }
         Log.i(tag, "Push LOG IN (kc-login)")
-        device.findObject(By.res("kc-login")).click()
+        device.findObject(loginSelector).click()
 
         val pkgName = InstrumentationRegistry.getInstrumentation().targetContext.packageName
         val foundOurApp = device.wait(Until.hasObject(By.pkg(pkgName)), 10_000)
@@ -114,5 +145,28 @@ class InstrumentedE2ETest {
         } else {
             Log.i(tag, "trySignOutIfAvailable -> no SIGN_OUT.")
         }
+    }
+
+    private fun UiDevice.scrollUntilVisible(
+        targetSelector: BySelector,
+        maxSwipes: Int = 5
+    ): Boolean {
+        val screenWidth = this.displayWidth
+        val screenHeight = this.displayHeight
+
+        repeat(maxSwipes) { attempt ->
+            if (this.hasObject(targetSelector)) {
+                return true
+            }
+            swipe(
+                screenWidth / 2,   // fromX
+                (screenHeight * 3) / 4,  // fromY
+                screenWidth / 2,   // toX
+                screenHeight / 4,  // toY
+                20
+            )
+            Thread.sleep(500)
+        }
+        return this.hasObject(targetSelector)
     }
 }
