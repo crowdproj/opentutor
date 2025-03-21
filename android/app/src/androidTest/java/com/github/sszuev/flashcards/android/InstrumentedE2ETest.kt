@@ -28,7 +28,13 @@ import org.junit.runners.MethodSorters
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 class InstrumentedE2ETest {
 
-    private val tag = "E2E-Test"
+    @Suppress("ConstPropertyName")
+    companion object {
+        private const val tag = "E2E-Test"
+        private const val google_account_refusal_label_ru = "Продолжить без входа в аккаунт"
+        private const val google_account_refusal_label_en = "No thanks"
+        private val testDictionaryName = "test-weather-${System.currentTimeMillis()}"
+    }
 
     @get:Rule
     val activityRule = ActivityScenarioRule(LoginActivity::class.java)
@@ -74,8 +80,16 @@ class InstrumentedE2ETest {
             .check(matches(isDisplayed()))
             .perform(click())
 
+        device.wait(Until.hasObject(By.text(google_account_refusal_label_ru)), 3_000)
+        val noThanks = device.findObject(By.text(google_account_refusal_label_en))
+            ?: device.findObject(By.text(google_account_refusal_label_ru))
+        if (noThanks != null) {
+            noThanks.click()
+            device.waitForIdle(1_000)
+        }
+
         Log.i(tag, "Wait short time for SIGN_OUT (desc) to appear (1-2 seconds).")
-        val foundSignOutQuick = device.wait(Until.hasObject(By.desc("SIGN_OUT")), 2000)
+        val foundSignOutQuick = device.wait(Until.hasObject(By.desc("SIGN_OUT")), 2_000)
 
         if (foundSignOutQuick) {
             Log.i(tag, "We landed in MainActivity without Keycloak form -> sign out first.")
@@ -91,8 +105,10 @@ class InstrumentedE2ETest {
         }
 
         Log.i(tag, "Wait for Keycloak login page (res=username, password)")
-        val foundUsername = device.wait(Until.hasObject(By.res("username")), 10_000)
-        if (!foundUsername) {
+        val foundEditFields =
+            device.wait(Until.hasObject(By.clazz("android.widget.EditText")), 10_000)
+
+        if (!foundEditFields) {
             Log.w(
                 tag,
                 "No Keycloak form. Possibly the user got in w/o login again? Checking SIGN_OUT."
@@ -110,21 +126,25 @@ class InstrumentedE2ETest {
         }
 
         Log.i(tag, "Type username = ${BuildConfig.TEST_KEYCLOAK_USER}")
-        device.findObject(By.res("username")).text = BuildConfig.TEST_KEYCLOAK_USER
+        device.findObjects(By.clazz("android.widget.EditText"))[0].text =
+            BuildConfig.TEST_KEYCLOAK_USER
 
-        val passwdSelector = By.res("password")
-        if (!device.hasObject(passwdSelector)) {
-            val foundAfterScroll = device.scrollUntilVisible(targetSelector = passwdSelector, maxSwipes = 5)
+        if (device.findObjects(By.clazz("android.widget.EditText")).size != 2) {
+            val foundAfterScroll = device.scrollUntilVisible(maxSwipes = 5) {
+                device.findObjects(By.clazz("android.widget.EditText")).size == 2
+            }
             if (!foundAfterScroll) {
                 throw AssertionError("Can't find password text-box")
             }
         }
         Log.i(tag, "Type password = ${BuildConfig.TEST_KEYCLOAK_PASSWORD}")
-        device.findObject(passwdSelector).text = BuildConfig.TEST_KEYCLOAK_PASSWORD
+        device.findObjects(By.clazz("android.widget.EditText"))[1].text =
+            BuildConfig.TEST_KEYCLOAK_PASSWORD
 
-        val loginSelector = By.res("kc-login")
+        val loginSelector = By.text("Sign In")
         if (!device.hasObject(loginSelector)) {
-            val foundAfterScroll = device.scrollUntilVisible(targetSelector = loginSelector, maxSwipes = 5)
+            val foundAfterScroll =
+                device.scrollUntilVisible(targetSelector = loginSelector, maxSwipes = 5)
             if (!foundAfterScroll) {
                 throw AssertionError("Can't find log-in button")
             }
@@ -250,9 +270,11 @@ class InstrumentedE2ETest {
         device.findObject(By.desc("AddDialogTranslation")).click()
         device.clearTextField()
         device.type("pogoda")
-        device.pressBack()
 
         val saveSelector = By.text("SAVE")
+        if (!device.hasObject(saveSelector)) {
+            device.pressBack()
+        }
         val foundSave = device.wait(Until.hasObject(saveSelector), 1_000)
         if (foundSave) {
             device.findObject(saveSelector).click()
@@ -279,11 +301,19 @@ class InstrumentedE2ETest {
         maxSwipes: Int = 5,
         fromTopToBottom: Boolean = true,
     ): Boolean {
+        return scrollUntilVisible(maxSwipes, fromTopToBottom) { this.hasObject(targetSelector) }
+    }
+
+    private fun UiDevice.scrollUntilVisible(
+        maxSwipes: Int = 5,
+        fromTopToBottom: Boolean = true,
+        condition: () -> Boolean,
+    ): Boolean {
         val screenWidth = this.displayWidth
         val screenHeight = this.displayHeight
 
         repeat(maxSwipes) { _ ->
-            if (this.hasObject(targetSelector)) {
+            if (condition()) {
                 return true
             }
             if (fromTopToBottom) {
@@ -305,7 +335,7 @@ class InstrumentedE2ETest {
             }
             Thread.sleep(500)
         }
-        return this.hasObject(targetSelector)
+        return condition()
     }
 
     private fun UiDevice.clearTextField(times: Int = 50) {
@@ -334,7 +364,4 @@ class InstrumentedE2ETest {
         }
     }
 
-    companion object TestData {
-        private val testDictionaryName = "test-weather-${System.currentTimeMillis()}"
-    }
 }
