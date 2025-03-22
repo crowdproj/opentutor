@@ -7,7 +7,7 @@ import com.gitlab.sszuev.flashcards.dbmem.MemDbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.createDirectTTSResourceRepository
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
-import com.gitlab.sszuev.flashcards.translation.impl.LingueeTranslationRepository
+import com.gitlab.sszuev.flashcards.translation.impl.createTranslationRepository
 
 val localDbRepositories: DbRepositories by lazy {
     DbRepositories(
@@ -22,5 +22,5 @@ val localTTSRepository: TTSResourceRepository by lazy {
 }
 
 val localTranslationRepository: TranslationRepository by lazy {
-    LingueeTranslationRepository()
+    createTranslationRepository()
 }

@@ -26,8 +26,14 @@ object TranslationSettings {
             |get-resource-timeout-ms        = $getResourceTimeoutMs
             |http-client-connect-timeout-ms = $httpClientConnectTimeoutMs
             |http-client-request-timeout-ms = $httpClientRequestTimeoutMs
-            |service-linguee-api            = $translationServiceLingueeApiUrl
+            |translation-service            = ${whichService()}
             """.replaceIndentByMargin("\t")
+    }
+
+    private fun whichService(): String = if (TranslationSettings::class.java.getResource("/google-key.json") != null) {
+        "GOOGLE"
+    } else {
+        "LINGUEE"
     }
 
 }
