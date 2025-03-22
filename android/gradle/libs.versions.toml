@@ -1,29 +1,50 @@
 [versions]
-agp = "8.7.3"
-kotlin = "2.1.0"
-coreKtx = "1.13.1"
-junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
-lifecycleRuntimeKtx = "2.8.6"
-activityCompose = "1.9.3"
-composeBom = "2024.12.01"
-composeNavigationVersion = "2.8.5"
-ktorVersion = "3.0.3"
+# https://developer.android.com/build/releases/gradle-plugin
+agpVersion = "8.7.3"
+# https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
+kotlinVersion = "2.1.10"
+# https://mvnrepository.com/artifact/androidx.core/core-ktx
+coreKtxVersion = "1.15.0"
+# https://mvnrepository.com/artifact/junit/junit
+junit4Version = "4.13.2"
+# https://mvnrepository.com/artifact/androidx.test.ext/junit
+androidJunitVersion = "1.2.1"
+# https://mvnrepository.com/artifact/androidx.test.espresso/espresso-core
+espressoCoreVersion = "3.6.1"
+# https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-ktx
+lifecycleRuntimeKtxVersion = "2.8.7"
+# https://mvnrepository.com/artifact/androidx.activity/activity-compose
+activityComposeVersion = "1.10.1"
+# https://mvnrepository.com/artifact/androidx.compose/compose-bom
+composeBomVersion = "2025.02.00"
+# https://mvnrepository.com/artifact/androidx.navigation/navigation-compose
+composeNavigationVersion = "2.8.8"
+# https://mvnrepository.com/artifact/io.ktor/ktor-client-android
+ktorVersion = "3.1.1"
+# https://mvnrepository.com/artifact/net.openid/appauth
 openIdVersion = "0.11.1"
+# https://mvnrepository.com/artifact/androidx.core/core-splashscreen
 splashscreenVersion = "1.0.1"
+# https://mvnrepository.com/artifact/androidx.browser/browser
 browserVersion = "1.8.0"
-constraintlayoutVersion = "2.2.0"
+# https://mvnrepository.com/artifact/androidx.constraintlayout/constraintlayout
+constraintlayoutVersion = "2.2.1"
+# https://mvnrepository.com/artifact/androidx.media3/media3-exoplayer
 media3Version = "1.5.1"
+# https://mvnrepository.com/artifact/androidx.test.uiautomator/uiautomator
+uiautomatorVersion = "2.3.0"
+# https://mvnrepository.com/artifact/androidx.test/rules
+testRulesVersion = "1.6.1"
 
 [libraries]
-androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
-androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
-androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
-androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
-androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityCompose" }
-androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBom" }
+androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
+junit = { group = "junit", name = "junit", version.ref = "junit4Version" }
+androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "androidJunitVersion" }
+androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCoreVersion" }
+androidx-test-rules = { group = "androidx.test", name = "rules", version.ref = "testRulesVersion" }
+androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
+androidx-activity-compose = { group = "androidx.activity", name = "activity-compose", version.ref = "activityComposeVersion" }
+androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "composeBomVersion" }
 androidx-compose-navigation = { group = "androidx.navigation", name = "navigation-compose", version.ref = "composeNavigationVersion" }
 androidx-compose-icons-extended = { group = "androidx.compose.material", name = "material-icons-extended" }
 androidx-ui = { group = "androidx.compose.ui", name = "ui" }
@@ -37,13 +58,14 @@ androidx-splashscreen = { group = "androidx.core", name = "core-splashscreen", v
 androidx-browser = { group = "androidx.browser", name = "browser", version.ref = "browserVersion" }
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "constraintlayoutVersion" }
 androidx-media3 = { group = "androidx.media3", name = "media3-exoplayer", version.ref = "media3Version" }
+androidx-test-uiautomator = { group = "androidx.test.uiautomator", name = "uiautomator", version.ref = "uiautomatorVersion" }
 ktor-client-android = { group = "io.ktor", name = "ktor-client-android", version.ref = "ktorVersion" }
 ktor-client-content-negotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktorVersion" }
 ktor-serialization-kotlinx-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktorVersion" }
 openid = { group = "net.openid", name = "appauth", version.ref = "openIdVersion" }
 
 [plugins]
-android-application = { id = "com.android.application", version.ref = "agp" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+android-application = { id = "com.android.application", version.ref = "agpVersion" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }

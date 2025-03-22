@@ -1,10 +1,12 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.focusable
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,6 +45,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -95,6 +100,11 @@ fun TopBar(
             style = style,
             modifier = Modifier
                 .clickable { onSignOut() }
+                .focusable(true)
+                .semantics {
+                    contentDescription = "SIGN_OUT"
+                    role = androidx.compose.ui.semantics.Role.Button
+                }
         )
     }
 }
@@ -374,32 +384,41 @@ fun ToolbarButton(
 fun SearchableDropdown(
     options: Map<String, String>,
     selectedTag: String?,
-    onOptionSelect: (String) -> Unit
+    onOptionSelect: (String) -> Unit,
+    id: Int,
 ) {
     var expanded by remember { mutableStateOf(false) }
     var searchQuery by remember { mutableStateOf("") }
 
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
         TextField(
             value = options[selectedTag] ?: "",
             onValueChange = {},
             modifier = Modifier
-                .fillMaxWidth()
-                .clickable { expanded = true },
+                .fillMaxWidth(),
             readOnly = true,
             placeholder = { Text(text = "Select...") },
             trailingIcon = {
                 Icon(
                     imageVector = if (expanded) Icons.Default.KeyboardArrowUp else Icons.Default.KeyboardArrowDown,
                     contentDescription = null,
-                    modifier = Modifier.clickable { expanded = !expanded }
                 )
             }
         )
+        Box(
+            modifier = Modifier
+                .matchParentSize()
+                .clickable { expanded = !expanded }
+                .semantics {
+                    contentDescription = "SelectField$id"
+                },
+        )
+    }
 
-        if (!expanded) {
-            return
-        }
+    if (expanded) {
         Dialog(onDismissRequest = { expanded = false }) {
             Box(
                 modifier = Modifier
@@ -413,7 +432,10 @@ fun SearchableDropdown(
                         onValueChange = { searchQuery = it },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp),
+                            .padding(bottom = 8.dp)
+                            .semantics {
+                                contentDescription = "SearchField$id"
+                            },
                         placeholder = { Text("Search...") }
                     )
 
@@ -458,7 +480,7 @@ fun AudioPlayerIcon(
     ttsViewModel: TTSViewModel,
     card: CardEntity,
     size: Dp = 24.dp,
-    modifier: Modifier = Modifier
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
     val cardId = checkNotNull(card.cardId)
 
@@ -492,7 +514,7 @@ fun TextWithPopup(
     popupFontSize: TextUnit = 20.sp,
     popupLineHeight: TextUnit = 40.sp,
     style: TextStyle = MaterialTheme.typography.bodyMedium,
-    modifier: Modifier = Modifier,
+    @SuppressLint("ModifierParameter") modifier: Modifier = Modifier,
     textColor: Color = Color.Black
 ) {
     var isPopupVisible by remember { mutableStateOf(false) }

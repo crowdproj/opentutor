@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,9 +7,22 @@ plugins {
     alias(libs.plugins.kotlin.serialization)
 }
 
+val localProps = Properties()
+val localPropsFile = rootDir.resolve("local.properties")
+if (localPropsFile.exists()) {
+    localPropsFile.inputStream().use { localProps.load(it) }
+}
+
+val testKeycloakUser = localProps.getProperty("TEST_KEYCLOAK_USER") ?: "***"
+val testKeycloakPass = localProps.getProperty("TEST_KEYCLOAK_PASSWORD") ?: "***"
+
 android {
     namespace = "com.github.sszuev.flashcards.android"
     compileSdk = 35
+
+    buildFeatures {
+        buildConfig = true
+    }
 
     defaultConfig {
         applicationId = "com.github.sszuev.flashcards.android"
@@ -18,7 +33,9 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.github.sszuev.flashcards.android"
-    }
+
+        buildConfigField("String", "TEST_KEYCLOAK_USER", "\"$testKeycloakUser\"")
+        buildConfigField("String", "TEST_KEYCLOAK_PASSWORD", "\"$testKeycloakPass\"")    }
 
     buildTypes {
         release {
@@ -65,6 +82,8 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
     androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.androidx.test.uiautomator)
+    androidTestImplementation(libs.androidx.test.rules)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

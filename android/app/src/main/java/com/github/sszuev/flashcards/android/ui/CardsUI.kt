@@ -51,6 +51,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.sszuev.flashcards.android.entities.CardEntity
@@ -407,7 +409,10 @@ fun CardsBottomToolbar(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
+                .padding(8.dp)
+                .semantics {
+                    contentDescription = "CardWordName"
+                },
             placeholder = { Text("Type...") }
         )
 
@@ -500,6 +505,9 @@ fun EditCardDialog(
                             onValueChange = { word = it },
                             label = { Text("Word") },
                             modifier = Modifier.weight(1f)
+                                .semantics {
+                                    contentDescription = "EditDialogWord"
+                                },
                         )
                         AudioPlayerIcon(ttsViewModel, card)
                     }
@@ -513,6 +521,9 @@ fun EditCardDialog(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(bottom = 8.dp)
+                            .semantics {
+                                contentDescription = "EditDialogTranslation"
+                            },
                     )
                 }
 
@@ -649,7 +660,10 @@ fun AddCardDialog(
                         label = { Text("Word") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp),
+                            .padding(bottom = 8.dp)
+                            .semantics {
+                                contentDescription = "AddDialogWord"
+                            },
                         enabled = !viewModel.isCardFetching.value,
                     )
                 }
@@ -661,7 +675,10 @@ fun AddCardDialog(
                         label = { Text("Translation") },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(bottom = 8.dp),
+                            .padding(bottom = 8.dp)
+                            .semantics {
+                                contentDescription = "AddDialogTranslation"
+                            },
                         enabled = !viewModel.isCardFetching.value,
                     )
                 }

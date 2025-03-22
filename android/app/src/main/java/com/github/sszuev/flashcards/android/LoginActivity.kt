@@ -1,7 +1,6 @@
 package com.github.sszuev.flashcards.android
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -9,6 +8,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.browser.customtabs.CustomTabsIntent
+import androidx.core.content.edit
+import androidx.core.net.toUri
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -67,19 +69,21 @@ class LoginActivity : ComponentActivity() {
         Log.i(tag, "Login: begin")
         val serverUri = AppConfig.serverUri
         val serviceConfig = AuthorizationServiceConfiguration(
-            /* authorizationEndpoint = */ Uri.parse("$serverUri/realms/flashcards-realm/protocol/openid-connect/auth"),
+            /* authorizationEndpoint = */ "$serverUri/realms/flashcards-realm/protocol/openid-connect/auth".toUri(),
             /* tokenEndpoint = */
-            Uri.parse("$serverUri/realms/flashcards-realm/protocol/openid-connect/token")
+            "$serverUri/realms/flashcards-realm/protocol/openid-connect/token".toUri()
         )
 
         val authRequest = AuthorizationRequest.Builder(
             /* configuration = */ serviceConfig,
             /* clientId = */ "flashcards-android",
             /* responseType = */ ResponseTypeValues.CODE,
-            /* redirectUri = */ Uri.parse("com.github.sszuev.flashcards.android://oauth2redirect")
+            /* redirectUri = */ "com.github.sszuev.flashcards.android://oauth2redirect".toUri()
         ).setScope("openid profile email").build()
 
-        val authIntent = authService.getAuthorizationRequestIntent(authRequest)
+        val customTabsIntent = CustomTabsIntent.Builder().build()
+
+        val authIntent = authService.getAuthorizationRequestIntent(authRequest, customTabsIntent)
 
         authorizationLauncher.launch(authIntent)
         Log.i(tag, "Login: finish")
@@ -99,11 +103,11 @@ class LoginActivity : ComponentActivity() {
                 Log.d(tag, "Id Token: $idToken")
 
                 val prefs = getSharedPreferences("auth", MODE_PRIVATE)
-                prefs.edit()
-                    .putString("access_token", accessToken)
-                    .putString("refresh_token", refreshToken)
-                    .putString("id_token", idToken)
-                    .apply()
+                prefs.edit {
+                    putString("access_token", accessToken)
+                        .putString("refresh_token", refreshToken)
+                        .putString("id_token", idToken)
+                }
 
                 val intent = Intent(this, MainActivity::class.java)
                 Log.i(tag, "go to MainActivity")
