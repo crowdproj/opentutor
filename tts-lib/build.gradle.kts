@@ -13,6 +13,7 @@ dependencies {
     val ktorVersion: String by project
     val slf4jVersion: String by project
     val caffeineVersion: String by project
+    val googleTextToSpeechVersion: String by project
 
     implementation(project(":tts-api"))
     implementation(project(":utilities"))
@@ -22,11 +23,18 @@ dependencies {
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     api("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-cio-jvm:$ktorVersion")
+    implementation("com.google.cloud:google-cloud-texttospeech:$googleTextToSpeechVersion")
 
     testFixturesImplementation(project(":tts-api"))
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+}
+
+tasks.processResources {
+    from("../tutor-deploy") {
+        include("google-key.json")
+    }
 }
 
 tasks.test {

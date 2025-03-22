@@ -1,21 +1,14 @@
 package com.gitlab.sszuev.flashcards.speaker.impl
 
 import com.gitlab.sszuev.flashcards.speaker.ResourceCache
-import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
-import com.gitlab.sszuev.flashcards.speaker.toResourcePath
 
 class CombinedTextToSpeechService(
-    resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
-    config: TTSConfig = TTSConfig(),
+    private val primaryTextToSpeechService: TextToSpeechService,
+    private val secondaryTestToSpeechService: TextToSpeechService,
     private val cache: ResourceCache = CaffeineResourceCache(),
     private val onGetResource: () -> Unit = {},
 ) : TextToSpeechService {
-
-    private val voicerssTextToSpeechService =
-        VoicerssTextToSpeechService(resourceIdMapper = resourceIdMapper, config = config)
-    private val espeakNgTestToSpeechService =
-        EspeakNgTestToSpeechService(resourceIdMapper = resourceIdMapper, config = config)
 
     override suspend fun getResource(id: String, vararg args: String): ByteArray? {
         var res = cache.get(id)
@@ -24,7 +17,7 @@ class CombinedTextToSpeechService(
         }
         var error: Exception? = null
         res = try {
-            voicerssTextToSpeechService.getResource(id, *args)
+            primaryTextToSpeechService.getResource(id, *args)
         } catch (voicerssError: Exception) {
             error = voicerssError
             null
@@ -35,7 +28,7 @@ class CombinedTextToSpeechService(
             return res
         }
         return try {
-            espeakNgTestToSpeechService.getResource(id, *args)
+            secondaryTestToSpeechService.getResource(id, *args)
         } catch (espeakNgError: Exception) {
             error?.let {
                 error.addSuppressed(espeakNgError)
@@ -49,7 +42,7 @@ class CombinedTextToSpeechService(
         if (cache.get(id) != null) {
             return true
         }
-        return voicerssTextToSpeechService.containsResource(id) || espeakNgTestToSpeechService.containsResource(id)
+        return primaryTextToSpeechService.containsResource(id) || secondaryTestToSpeechService.containsResource(id)
     }
 
 }

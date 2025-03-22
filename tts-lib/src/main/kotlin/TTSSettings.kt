@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker
 
+import com.gitlab.sszuev.flashcards.speaker.impl.EspeakNgTestToSpeechService
 import com.gitlab.sszuev.flashcards.utilities.get
 import com.typesafe.config.Config
 import com.typesafe.config.ConfigFactory
@@ -26,18 +27,22 @@ object TTSSettings {
     private fun printDetails(): String {
         return """
             |
-            |local-data-directory           = $localDataDirectory
             |get-resource-timeout-ms        = $getResourceTimeoutMs
             |http-client-connect-timeout-ms = $httpClientConnectTimeoutMs
             |http-client-request-timeout-ms = $httpClientRequestTimeoutMs
-            |service-voicerss-api           = $ttsServiceVoicerssApi
-            |service-voicerss-key           = ${secret()}
-            |service-voicerss-format        = $ttsServiceVoicerssFormat
-            |service-voicerss-codec         = $ttsServiceVoicerssCodec
+            |tts-service                    = ${whichService()}
             """.replaceIndentByMargin("\t")
     }
 
-    private fun secret(): String {
-        return if (ttsServiceVoicerssKey.isBlank() || ttsServiceVoicerssKey == "secret") "no-secret" else "***"
+    private fun whichService() = if (TextToSpeechService::class.java.getResource("/google-key.json") != null) {
+        "GOOGLE"
+    } else if (ttsServiceVoicerssKey.isNotBlank() && ttsServiceVoicerssKey != "secret") {
+        "VOICERSS"
+    } else if (EspeakNgTestToSpeechService.isEspeakNgAvailable()) {
+        "ESPEAK-NG"
+    } else if (localDataDirectory.isNotBlank()) {
+        "LOCAL"
+    } else {
+        "UNAVAILABLE"
     }
 }
