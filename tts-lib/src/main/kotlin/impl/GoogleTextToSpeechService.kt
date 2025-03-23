@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker.impl
 
+import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.toResourcePath
 import com.google.auth.oauth2.ServiceAccountCredentials
@@ -9,12 +10,14 @@ import com.google.cloud.texttospeech.v1.SynthesisInput
 import com.google.cloud.texttospeech.v1.TextToSpeechClient
 import com.google.cloud.texttospeech.v1.TextToSpeechSettings
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams
+import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger(GoogleTextToSpeechService::class.java)
 
 class GoogleTextToSpeechService(
     private val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
+    private val config: TTSConfig = TTSConfig(),
 ) : TextToSpeechService {
 
     private val credentials = GoogleTextToSpeechService::class.java.getResourceAsStream("/google-key.json")
@@ -40,19 +43,27 @@ class GoogleTextToSpeechService(
         }
         val word = langToWord.second
         logger.info("::[GOOGLE-TTS] $lang [${languagesGoogleTagToName[lang]}] ::: '$word'")
-        val input = SynthesisInput.newBuilder().setText(word).build()
 
-        val voice = VoiceSelectionParams.newBuilder()
-            .setLanguageCode(lang)
-            .build()
+        return try {
+            withTimeout(config.getResourceTimeoutMs) {
+                val input = SynthesisInput.newBuilder().setText(word).build()
 
-        val audioConfig = AudioConfig.newBuilder()
-            .setAudioEncoding(AudioEncoding.MP3)
-            .build()
+                val voice = VoiceSelectionParams.newBuilder()
+                    .setLanguageCode(lang)
+                    .build()
 
-        val response = client.synthesizeSpeech(input, voice, audioConfig)
-        val audioBytes = response.audioContent
-        return audioBytes.toByteArray()
+                val audioConfig = AudioConfig.newBuilder()
+                    .setAudioEncoding(AudioEncoding.MP3)
+                    .build()
+
+                val response = client.synthesizeSpeech(input, voice, audioConfig)
+                val audioBytes = response.audioContent
+                audioBytes.toByteArray()
+            }
+        } catch (ex: Exception) {
+            logger.error("::[GOOGLE-TTS] Can't get resource for [${lang}:$word]")
+            throw ex
+        }
     }
 
     companion object {

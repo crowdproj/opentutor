@@ -5,11 +5,14 @@ import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 import com.google.auth.oauth2.ServiceAccountCredentials
 import com.google.cloud.translate.Translate.TranslateOption
 import com.google.cloud.translate.TranslateOptions
+import kotlinx.coroutines.withTimeout
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger(GoogleTranslationRepository::class.java)
 
-class GoogleTranslationRepository : TranslationRepository {
+class GoogleTranslationRepository(
+    private val config: TranslationConfig = TranslationConfig(),
+) : TranslationRepository {
 
     private val credentials = GoogleTranslationRepository::class.java.getResourceAsStream("/google-key.json")
         ?: throw IllegalStateException("Unable to obtain google key json")
@@ -31,13 +34,20 @@ class GoogleTranslationRepository : TranslationRepository {
         }
         logger.info("[GOOGLE-TRANSLATION] ::: [${SUPPORTED_LANGS[sourceLang]} -> ${SUPPORTED_LANGS[targetLang]}] '$word'")
 
-        val result = translate.translate(
-            word,
-            TranslateOption.sourceLanguage(sourceLang),
-            TranslateOption.targetLanguage(targetLang),
-            TranslateOption.format("text")
-        )
-        return listOf(TranslationEntity(word = word, translations = listOf(listOf(result.translatedText))))
+        return try {
+            withTimeout(config.getResourceTimeoutMs) {
+                val result = translate.translate(
+                    word,
+                    TranslateOption.sourceLanguage(sourceLang),
+                    TranslateOption.targetLanguage(targetLang),
+                    TranslateOption.format("text")
+                )
+                listOf(TranslationEntity(word = word, translations = listOf(listOf(result.translatedText))))
+            }
+        } catch (ex: Exception) {
+            logger.error("::[GOOGLE-TRANSLATION][(${sourceLang} -> ${targetLang}):$word], error: ${ex.message}", ex)
+            throw ex
+        }
     }
 
     companion object {
