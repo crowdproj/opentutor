@@ -13,8 +13,14 @@ object TranslationSettings {
     val getResourceTimeoutMs = conf.get("translation.get-resource-timeout-ms", default = 5000L)
     val httpClientConnectTimeoutMs = conf.get("translation.http-client.connect-timeout-ms", default = 3000L)
     val httpClientRequestTimeoutMs = conf.get("translation.http-client.request-timeout-ms", default = 3000L)
-    val translationServiceLingueeApiUrl =
-        conf.get("translation.service.linguee-api-url", default = "https://linguee-api.fly.dev/api/v2/translations")
+    val translationServiceLingueeApi =
+        conf.get("translation.service.linguee-api", default = "https://linguee-api.fly.dev/api/v2/translations")
+    val translationServiceYandexApi =
+        conf.get(
+            "translation.service.yandex-api",
+            default = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
+        )
+    val translationServiceYandexKey = conf.get("translation.service.yandex-key", default = "secret")
 
     init {
         logger.info(printDetails())
@@ -26,8 +32,23 @@ object TranslationSettings {
             |get-resource-timeout-ms        = $getResourceTimeoutMs
             |http-client-connect-timeout-ms = $httpClientConnectTimeoutMs
             |http-client-request-timeout-ms = $httpClientRequestTimeoutMs
-            |service-linguee-api            = $translationServiceLingueeApiUrl
+            |translation-service            = ${whichService()}
             """.replaceIndentByMargin("\t")
+    }
+
+    private fun whichService(): String {
+        val hasGoogleTranslationService = TranslationSettings::class.java.getResource("/google-key.json") != null
+        val hasYandexTranslationService =
+            translationServiceYandexKey.takeIf { it != "secret" }?.isNotBlank() == true
+        return if (hasGoogleTranslationService && hasYandexTranslationService) {
+            "YANDEX+GOOGLE"
+        } else if (hasYandexTranslationService) {
+            "YANDEX"
+        } else if (hasGoogleTranslationService) {
+            "GOOGLE"
+        } else {
+            "LINGUEE"
+        }
     }
 
 }

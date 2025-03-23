@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.translation
 
-import com.gitlab.sszuev.flashcards.translation.impl.LingueeTranslationRepository
+import com.gitlab.sszuev.flashcards.translation.impl.createTranslationRepository
 import io.nats.client.Nats
 import org.slf4j.LoggerFactory
 import kotlin.concurrent.thread
@@ -10,7 +10,7 @@ private val logger = LoggerFactory.getLogger(TranslationServerSettings::class.ja
 fun main() {
     val connectionUrl = "nats://${TranslationServerSettings.host}:${TranslationServerSettings.port}"
     val processor = TranslationServerProcessor(
-        repository = LingueeTranslationRepository(),
+        repository = createTranslationRepository(),
         topic = TranslationServerSettings.topic,
         group = TranslationServerSettings.group,
         connectionFactory = {

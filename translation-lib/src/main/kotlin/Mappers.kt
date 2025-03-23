@@ -10,10 +10,19 @@ internal fun LingueeEntry.toTWord() = TranslationEntity(
     examples = this.translations.flatMap { it.toTExamples() }
 )
 
-private fun List<LingueeTranslation>.toTTranslations(): List<List<String>> {
-    return filterNot { it.text.isNullOrBlank() }.map { listOf(checkNotNull(it.text)) }
+private fun List<LingueeEntryTranslation>.toTTranslations(): List<List<String>> {
+    return listOf(filterNot { it.text.isNullOrBlank() }.map { checkNotNull(it.text) })
 }
 
-private fun LingueeTranslation.toTExamples() = (this.examples ?: emptyList()).map { it.toTExample() }
+private fun LingueeEntryTranslation.toTExamples() = (this.examples ?: emptyList()).map { it.toTExample() }
 
-private fun LingueeExample.toTExample() = TranslationExample(text = src, translation = dst)
+private fun LingueeEntryExample.toTExample() = TranslationExample(text = src, translation = dst)
+
+internal fun YandexEntry.toTWords() = this.def.map { it.toTEntity() }
+
+private fun YandexEntryDefinition.toTEntity(): TranslationEntity = TranslationEntity(
+    word = this.text,
+    partOfSpeech = this.pos,
+    transcription = this.ts,
+    translations = listOf(this.tr.map { it.text })
+)

@@ -184,7 +184,8 @@ services:
         condition: service_healthy
     environment:
       TRANSLATION_SERVER_NATS_HOST: "flashcards-nats"
-      TRANSLATION_SERVICE_LINGUEE_API_URL: "http://flashcards-linguee-api:8000/api/v2/translations"
+      TRANSLATION_SERVICE_LINGUEE_API: "http://flashcards-linguee-api:8000/api/v2/translations"
+      TRANSLATION_SERVICE_YANDEX_KEY: "${TRANSLATION_SERVICE_YANDEX_KEY}"
 
   flashcards-app:
     image: sszuev/open-tutor:2.0.1-snapshot

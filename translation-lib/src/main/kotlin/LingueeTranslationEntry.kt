@@ -10,28 +10,28 @@ data class LingueeEntry(
     val pos: String?,
     val forms: List<String>?,
     @SerialName("grammar_info") val grammarInfo: String?,
-    @SerialName("audio_links") val audioLinks: List<LingueeAudioLink>?,
-    val translations: List<LingueeTranslation>
+    @SerialName("audio_links") val audioLinks: List<LingueeEntryAudioLink>?,
+    val translations: List<LingueeEntryTranslation>
 )
 
 @Serializable
-data class LingueeAudioLink(
+data class LingueeEntryAudioLink(
     val url: String?,
     val lang: String?,
 )
 
 @Serializable
-data class LingueeTranslation(
+data class LingueeEntryTranslation(
     val featured: Boolean,
     val text: String?,
     val pos: String?,
-    @SerialName("audio_links") val audioLinks: List<LingueeAudioLink>?,
-    val examples: List<LingueeExample>?,
+    @SerialName("audio_links") val audioLinks: List<LingueeEntryAudioLink>?,
+    val examples: List<LingueeEntryExample>?,
     @SerialName("usage_frequency") val usageFrequency: String?
 )
 
 @Serializable
-data class LingueeExample(
+data class LingueeEntryExample(
     val src: String,
     val dst: String
 )

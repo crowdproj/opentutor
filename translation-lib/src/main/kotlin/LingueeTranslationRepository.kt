@@ -22,7 +22,7 @@ class LingueeTranslationRepository(
     private val config: TranslationConfig = TranslationConfig(),
 ) : TranslationRepository {
 
-    private val apiUrl = URL(config.translationServiceLingueeApiUrl)
+    private val apiUrl = URL(config.translationServiceLingueeApi)
 
     override suspend fun fetch(sourceLang: String, targetLang: String, word: String): List<TranslationEntity> {
         logger.info("::[LINGUEE][(${sourceLang} -> ${targetLang}):$word]")
