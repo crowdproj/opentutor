@@ -22,6 +22,7 @@ android {
 
     buildFeatures {
         buildConfig = true
+        compose = true
     }
 
     defaultConfig {
@@ -35,11 +36,22 @@ android {
         manifestPlaceholders["appAuthRedirectScheme"] = "com.github.sszuev.flashcards.android"
 
         buildConfigField("String", "TEST_KEYCLOAK_USER", "\"$testKeycloakUser\"")
-        buildConfigField("String", "TEST_KEYCLOAK_PASSWORD", "\"$testKeycloakPass\"")    }
+        buildConfigField("String", "TEST_KEYCLOAK_PASSWORD", "\"$testKeycloakPass\"")
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = localProps["RELEASE_STORE_FILE"]?.let { file(it.toString()) }
+            storePassword = localProps["RELEASE_STORE_PASSWORD"] as String
+            keyAlias = localProps["RELEASE_KEY_ALIAS"] as String
+            keyPassword = localProps["RELEASE_KEY_PASSWORD"] as String
+        }
+    }
 
     buildTypes {
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -52,9 +64,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
-    }
-    buildFeatures {
-        compose = true
     }
 }
 
