@@ -3,15 +3,23 @@
 The ktor-based web-application for composing custom dictionaries and learning words via flashcards.
 
 #### Standalone App
-There is a standalone edition for local single-user running. 
-This app version does not require any extra services and dependencies.         
-The user dictionaries and cards data is located in the directory `/app/userdata`, which can be mounted as a docker-volume.           
-By default, [espeak-ng](https://github.com/espeak-ng/espeak-ng) is used as Text-To-Speech service (it is pre-installed inside `sszuev/ubuntu-jammy-openjdk-17-espeak-ng`).        
-To use [voicerss](https://www.voicerss.org/api/) TTS service (better quality) 
-obtain API-key and specify it as an environment variable `VOICERSS-KEY`, e.g. `docker run ... -e VOICERSS-KEY=${your-key} ...`
+
+This is a main application server, which, in prod, connects to other services (cards, tts, etc.) via NATs.
+There is also a standalone edition for local single-user running,
+which does not require any extra services and dependencies.         
+The user dictionaries and cards data is located in the directory `/app/userdata`,
+which can be mounted as a docker-volume.           
+By default, [espeak-ng](https://github.com/espeak-ng/espeak-ng) is used as Text-To-Speech service
+(it is pre-installed inside `sszuev/ubuntu-jammy-openjdk-17-espeak-ng`).        
+Also, it is possible to use [voicerss](https://www.voicerss.org/api/) TTS service (better quality):
+get API-key and specify it as an environment variable `VOICERSS-KEY`,
+e.g. `docker run ... -e VOICERSS-KEY=${your-key} ...`
 
 #### Prod App
-There is also prod mode, which requires a prepared ecosystem (see [tutor-deploy dir](../tutor-deploy/README.md)).
+
+The prod version uses google TTS & translation and yandex translation services and consists of several microservices:
+cards, dictionaries, settings, tts, translation, etc.
+For more details see [tutor-deploy dir](../tutor-deploy/README.md).
 
 #### run standalone application from dockerhub (pre-build) image:
 ```shell
@@ -31,25 +39,8 @@ $ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:lat
 #### build and run prod application using docker & gradle:
 
 ```shell
-$ docker rm tutor-deploy-flashcards-tts-server-1
-$ docker rm tutor-deploy-flashcards-cards-server-1
-$ docker rm tutor-deploy-flashcards-dictionaries-server-1
-$ docker rm tutor-deploy-flashcards-app-1
-$ docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
-$ docker rmi sszuev/open-tutor-cards-server:2.0.0-snapshot
-$ docker rmi sszuev/open-tutor-dictionaries-server:2.0.0-snapshot
-$ docker rmi sszuev/open-tutor:2.0.0-snapshot
-$ cd ..
-$ gradle clean build -x test
-$ cd ./app-tts
-$ gradle dockerBuildImage
-$ cd ../app-cards
-$ gradle dockerBuildImage
-$ cd ../app-dictionaries
-$ gradle dockerBuildImage
-$ cd ../app-ktor
-$ gradle dockerBuildImage
 $ cd ../tutor-deploy
+$ ./build-images.sh
 $ docker-compose -f docker-compose-app.yml up  
 ```
 

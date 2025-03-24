@@ -7,12 +7,16 @@ The directory contains docker-composer files allowing to set up environment.
 - flashcards-keycloak. Authorization (demo:demo).
 - flashcards-nats (transport)
 - flashcards-redis (cache)
+- flashcards-envoy
 - flashcards-tts-server
 - flashcards-cards-server
 - flashcards-dictionaries-server
+- flashcards-settings-server
+- flashcards-translation-server
+- flashcards-linguee-api (for local run and testing only)
 - flashcards-app
 
-[docker-compose-elk-stack.yml](docker-compose-elk-stack.yml)
+[docker-compose-elk-stack.yml](docker-compose-elk-stack.yml):
 
 - [elasticsearch](elasticsearch.Dockerfile),
 - [logstash](logstash.Dockerfile)
@@ -27,36 +31,12 @@ URLs:
 - rabbitmq: http://localhost:15672/
 - application: http://localhost:8080/
 
-Build tts-server & cards-server & dictionaries-server & app images (see `build-images` script):
-
-```shell
-docker rm tutor-deploy-flashcards-tts-server-1
-docker rm tutor-deploy-flashcards-cards-server-1
-docker rm tutor-deploy-flashcards-dictionaries-server-1
-docker rm tutor-deploy-flashcards-app-1
-
-docker rmi sszuev/open-tutor-tts-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor-cards-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor-dictionaries-server:2.0.0-snapshot
-docker rmi sszuev/open-tutor:2.0.0-snapshot
-
-cd ..
-gradle clean build -x test
-cd ./app-tts
-gradle dockerBuildImage
-cd ../app-cards
-gradle dockerBuildImage
-cd ../app-dictionaries
-gradle dockerBuildImage
-cd ../app-ktor
-gradle dockerBuildImage
-cd ../tutor-deploy
-```
+For build service's images (tts, cards, dictionaries, settings, translation, app)
+use [build-images.bat](build-images.bat) or [build-images.sh](build-images.sh) scripts.
 
 Example commands to deploy environment:
 ```
-docker-compose -f docker-compose-app.yml up flashcards-db flashcards-keycloak flashcards-nats 
-docker-compose -f docker-compose-app.yml up flashcards-tts-server flashcards-dictionaries-serve flashcards-cards-server flashcards-app
+docker-compose -f docker-compose-app.yml up flashcards-db flashcards-keycloak flashcards-nats flashcards-envoy 
 docker-compose -f docker-compose-elk-stack.yml -p flashcards-elk-stack up
 ```
 
