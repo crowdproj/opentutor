@@ -4,6 +4,7 @@ networks:
 services:
   flashcards-db:
     image: postgres:16.2-alpine
+    restart: unless-stopped
     networks:
       - flashcards-net
     ports:
@@ -23,6 +24,7 @@ services:
 
   flashcards-keycloak:
     image: quay.io/keycloak/keycloak:24.0.4
+    restart: unless-stopped
     networks:
       - flashcards-net
     depends_on:
@@ -57,6 +59,7 @@ services:
 
   flashcards-envoy:
     image: envoyproxy/envoy:v1.29.0
+    restart: unless-stopped
     volumes:
       - "${DATA_DIR}/envoy/envoy.yaml:/etc/envoy/envoy.yaml"
     #      - "${DATA_DIR}/envoy/certs:/etc/envoy/certs"
@@ -72,6 +75,7 @@ services:
 
   flashcards-nats:
     image: nats:2.10.14-alpine
+    restart: unless-stopped
     volumes:
       - "${DATA_DIR}/nats/nats-config.conf:/etc/nats/nats-config.conf"
     healthcheck:
@@ -86,11 +90,11 @@ services:
 
   flashcards-redis:
     image: "redis:7.4.0"
+    restart: unless-stopped
     volumes:
       - "${DATA_DIR}/redis:/data"
       - "${DATA_DIR}/redis/redis.conf:/usr/local/etc/redis/redis.conf"
     command: [ "redis-server", "/usr/local/etc/redis/redis.conf" ]
-    restart: unless-stopped
     healthcheck:
       test: [ "CMD", "redis-cli", "ping" ]
       interval: 30s
@@ -112,6 +116,7 @@ services:
 
   flashcards-tts-server:
     image: sszuev/open-tutor-tts-server:2.0.1-snapshot
+    restart: unless-stopped
     networks:
       - flashcards-net
     depends_on:
@@ -126,6 +131,7 @@ services:
 
   flashcards-cards-server:
     image: sszuev/open-tutor-cards-server:2.0.1-snapshot
+    restart: unless-stopped
     networks:
       - flashcards-net
     depends_on:
@@ -141,6 +147,7 @@ services:
 
   flashcards-dictionaries-server:
     image: sszuev/open-tutor-dictionaries-server:2.0.1-snapshot
+    restart: unless-stopped
     networks:
       - flashcards-net
     depends_on:
@@ -158,6 +165,7 @@ services:
 
   flashcards-settings-server:
     image: sszuev/open-tutor-settings-server:2.0.1-snapshot
+    restart: unless-stopped
     networks:
       - flashcards-net
     depends_on:
@@ -175,6 +183,7 @@ services:
 
   flashcards-translation-server:
     image: sszuev/open-tutor-translation-server:2.0.1-snapshot
+    restart: unless-stopped
     networks:
       - flashcards-net
     depends_on:
@@ -189,6 +198,7 @@ services:
 
   flashcards-app:
     image: sszuev/open-tutor:2.0.1-snapshot
+    restart: unless-stopped
     networks:
       - flashcards-net
     depends_on:
