@@ -251,8 +251,8 @@ fun DictionaryTable(
                 }
 
                 else -> {
-                    LazyColumn(
-                        state = listState,
+                    FadeLazyColumn(
+                        listState = listState,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 145.dp)

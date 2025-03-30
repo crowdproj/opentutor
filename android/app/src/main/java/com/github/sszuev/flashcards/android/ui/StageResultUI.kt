@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -82,44 +81,42 @@ fun StageResultScreen(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
             )
 
-            LazyColumn(
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(Color.LightGray)
+                    .border(BorderStroke(1.dp, Color.Gray))
+                    .padding(8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                TableCell(
+                    text = "Word",
+                    weight = FIRST_COLUMN_WIDTH,
+                    containerWidthDp = containerWidthDp
+                )
+                TableCell(
+                    text = "Translation",
+                    weight = SECOND_COLUMN_WIDTH,
+                    containerWidthDp = containerWidthDp
+                )
+                TableCell(
+                    text = "Dictionary",
+                    weight = THIRD_COLUMN_WIDTH,
+                    containerWidthDp = containerWidthDp
+                )
+                TableCell(
+                    text = "%",
+                    weight = FOURTH_COLUMN_WIDTH,
+                    containerWidthDp = containerWidthDp
+                )
+            }
+
+            FadeLazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 8.dp)
                     .border(BorderStroke(1.dp, Color.Gray))
             ) {
-                // Header Row
-                item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .background(Color.LightGray)
-                            .border(BorderStroke(1.dp, Color.Gray))
-                            .padding(8.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        TableCell(
-                            text = "Word",
-                            weight = FIRST_COLUMN_WIDTH,
-                            containerWidthDp = containerWidthDp
-                        )
-                        TableCell(
-                            text = "Translation",
-                            weight = SECOND_COLUMN_WIDTH,
-                            containerWidthDp = containerWidthDp
-                        )
-                        TableCell(
-                            text = "Dictionary",
-                            weight = THIRD_COLUMN_WIDTH,
-                            containerWidthDp = containerWidthDp
-                        )
-                        TableCell(
-                            text = "%",
-                            weight = FOURTH_COLUMN_WIDTH,
-                            containerWidthDp = containerWidthDp
-                        )
-                    }
-                }
 
                 items(greenCards) { card ->
                     CardItemRow(

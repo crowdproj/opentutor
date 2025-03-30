@@ -255,8 +255,8 @@ fun CardsTable(
                 }
 
                 else -> {
-                    LazyColumn(
-                        state = listState,
+                    FadeLazyColumn(
+                        listState = listState,
                         modifier = Modifier
                             .fillMaxSize()
                             .imePadding()
