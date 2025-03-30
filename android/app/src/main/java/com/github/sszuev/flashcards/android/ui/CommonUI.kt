@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Close
@@ -219,8 +220,8 @@ fun TableCellSelectable(
             .fillMaxWidth()
             .padding(4.dp)
             .border(
-                BorderStroke(2.dp, if (isSelected) borderColor else Color.Transparent),
-                shape = MaterialTheme.shapes.small
+                border = BorderStroke(2.dp, if (isSelected) borderColor else Color.LightGray),
+                shape = RoundedCornerShape(4.dp)
             )
             .clickable { onSelect() },
         contentAlignment = Alignment.CenterStart
@@ -252,7 +253,7 @@ fun TableCellSelectableWithPopup(
             .fillMaxWidth()
             .padding(4.dp)
             .border(
-                BorderStroke(2.dp, if (isSelected) borderColor else Color.Transparent),
+                BorderStroke(2.dp, if (isSelected) borderColor else Color.LightGray),
                 shape = MaterialTheme.shapes.small
             )
             .pointerInput(Unit) {
