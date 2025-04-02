@@ -238,7 +238,8 @@ fun TableCellSelectable(
             text = text,
             fontSize = fontSize,
             lineHeight = lineHeight,
-            textColor = textColor
+            textColor = textColor,
+            innerPadding = 8.dp,
         )
     }
 }
@@ -276,7 +277,8 @@ fun TableCellSelectableWithPopup(
             text = shortText,
             fontSize = fontSize,
             lineHeight = lineHeight,
-            textColor = textColor
+            textColor = textColor,
+            innerPadding = 8.dp,
         )
 
         if (isPopupVisible) {
@@ -342,21 +344,24 @@ fun TableCellText(
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
+    innerPadding: Dp = 2.dp
 ) {
-    Text(
-        text = text,
-        textAlign = TextAlign.Start,
-        maxLines = Int.MAX_VALUE,
-        overflow = TextOverflow.Clip,
-        softWrap = true,
-        lineHeight = lineHeight,
-        style = MaterialTheme.typography.bodyLarge.copy(
-            fontWeight = FontWeight.Bold,
-            color = textColor,
-            fontSize = fontSize,
-            letterSpacing = 0.5.sp,
+    Box(modifier = Modifier.padding(innerPadding)) {
+        Text(
+            text = text,
+            textAlign = TextAlign.Start,
+            maxLines = Int.MAX_VALUE,
+            overflow = TextOverflow.Clip,
+            softWrap = true,
+            lineHeight = lineHeight,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.Bold,
+                color = textColor,
+                fontSize = fontSize,
+                letterSpacing = 0.5.sp,
+            )
         )
-    )
+    }
 }
 
 @Composable
