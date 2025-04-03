@@ -201,6 +201,8 @@ fun WritingPanels(
                 Text(
                     text = if (direct) card.word else card.translationAsString,
                     style = MaterialTheme.typography.displayMedium,
+                    fontSize = 28.sp,
+                    lineHeight = 36.sp,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
                 )
