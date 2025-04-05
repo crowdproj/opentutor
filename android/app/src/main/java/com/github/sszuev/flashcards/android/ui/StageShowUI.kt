@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,16 +61,20 @@ fun StageShowScreen(
     val errorMessage = cardViewModel.errorMessage.value
     val settings = checkNotNull(settingsViewModel.settings.value)
 
+    val deckLoaded = rememberSaveable { mutableStateOf(false) }
     LaunchedEffect(dictionaryViewModel.selectedDictionaryIds.value) {
-        cardViewModel.loadNextCardDeck(
-            dictionaryIds = dictionaryViewModel.selectedDictionaryIds.value,
-            length = settings.stageShowNumberOfWords,
-            onComplete = {
-                it.firstOrNull()?.let { card ->
-                    ttsViewModel.loadAndPlayAudio(card)
+        if (!deckLoaded.value) {
+            cardViewModel.loadNextCardDeck(
+                dictionaryIds = dictionaryViewModel.selectedDictionaryIds.value,
+                length = settings.stageShowNumberOfWords,
+                onComplete = {
+                    it.firstOrNull()?.let { card ->
+                        ttsViewModel.loadAndPlayAudio(card)
+                    }
                 }
-            }
-        )
+            )
+            deckLoaded.value = true
+        }
     }
 
     if (isLoading) {
@@ -84,7 +89,8 @@ fun StageShowScreen(
         return
     }
 
-    var currentCard by remember { mutableStateOf(cards.firstOrNull()) }
+    val currentCardId = rememberSaveable { mutableStateOf(cards.firstOrNull()?.cardId) }
+    val currentCard = cards.firstOrNull { it.cardId == currentCardId.value }
 
     fun onNextCard(know: Boolean) {
         currentCard?.let { card ->
@@ -95,17 +101,15 @@ fun StageShowScreen(
             }
         }
 
-        val currentIndex = cards.indexOfFirst { it.cardId == currentCard?.cardId }
-        currentCard = if (currentIndex != -1 && currentIndex + 1 < cards.size) {
-            cards[currentIndex + 1]
-        } else {
-            null
-        }
+        val currentIndex = cards.indexOfFirst { it.cardId == currentCardId.value }
+        val nextCard = cards.getOrNull(currentIndex + 1)
 
-        if (currentCard == null) {
-            onNextStage()
+        if (nextCard != null) {
+            currentCardId.value = nextCard.cardId
+            ttsViewModel.loadAndPlayAudio(nextCard)
         } else {
-            ttsViewModel.loadAndPlayAudio(checkNotNull(currentCard))
+            currentCardId.value = null
+            onNextStage()
         }
     }
 
@@ -131,12 +135,10 @@ fun StageShowScreen(
             }
 
             if (currentCard == null) {
-                onNextStage()
                 return
             }
-
-            val card = checkNotNull(currentCard) { "Null currentCard" }
-            val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+            val dictionary =
+                dictionaryViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
 
             Column(
                 modifier = Modifier
@@ -150,7 +152,7 @@ fun StageShowScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = card.word,
+                        text = currentCard.word,
                         style = MaterialTheme.typography.displayMedium,
                         modifier = Modifier
                             .padding(bottom = 8.dp)
@@ -162,13 +164,13 @@ fun StageShowScreen(
                         horizontalArrangement = Arrangement.End
                     ) {
                         Text(
-                            text = "[${(card.answered * 100) / dictionary.numberOfRightAnswers}%]",
+                            text = "[${(currentCard.answered * 100) / dictionary.numberOfRightAnswers}%]",
                             style = MaterialTheme.typography.bodyLarge,
                             modifier = Modifier.padding(end = 8.dp)
                         )
                         AudioPlayerIcon(
                             ttsViewModel = ttsViewModel,
-                            card = card,
+                            card = currentCard,
                             modifier = Modifier.size(64.dp),
                             size = 64.dp
                         )
@@ -176,7 +178,7 @@ fun StageShowScreen(
                 }
 
                 Text(
-                    text = card.translationAsString,
+                    text = currentCard.translationAsString,
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
@@ -184,7 +186,7 @@ fun StageShowScreen(
                 )
             }
 
-            card.examples.forEach { example ->
+            currentCard.examples.forEach { example ->
                 Text(
                     text = example,
                     style = MaterialTheme.typography.bodyMedium,
