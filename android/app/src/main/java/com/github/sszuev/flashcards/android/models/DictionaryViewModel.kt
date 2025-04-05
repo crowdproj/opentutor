@@ -29,7 +29,7 @@ class DictionaryViewModel(
     private val _isUpdateInProgress = mutableStateOf(true)
     private val _isCreateInProgress = mutableStateOf(true)
     private val _isDeleteInProgress = mutableStateOf(true)
-    private var _isDictionariesLoaded = false
+    private var _isDictionariesInitialized = false
     val isDictionariesLoading: State<Boolean> = _isDictionariesLoading
     private val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: State<String?> = _errorMessage
@@ -58,17 +58,22 @@ class DictionaryViewModel(
         .sortedBy { it.second }
         .toMap()
 
-    fun loadDictionariesIfNeeded() {
-        if (_isDictionariesLoaded) {
+    fun loadDictionariesInit(language: String) {
+        if (_isDictionariesInitialized) {
             return
         }
-        loadDictionaries()
-        _isDictionariesLoaded = true
+        Log.i(tag, "Load dictionaries with locale=$language")
+        loadDictionariesInternal(language)
+        _isDictionariesInitialized = true
     }
 
-    fun loadDictionaries(language: String? = null) {
+    fun loadDictionaries() {
+        Log.d(tag, "load dictionaries")
+        loadDictionariesInternal()
+    }
+
+    private fun loadDictionariesInternal(language: String? = null) {
         viewModelScope.launch {
-            Log.d(tag, "load dictionaries")
             _isDictionariesLoading.value = true
             _errorMessage.value = null
             try {

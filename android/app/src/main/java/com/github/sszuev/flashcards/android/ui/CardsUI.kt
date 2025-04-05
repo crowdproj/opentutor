@@ -84,10 +84,10 @@ fun CardsScreen(
     val searchQuery = remember { mutableStateOf("") }
     val cards by cardViewModel.cards
     val listState = rememberLazyListState()
-    val isEditPopupOpen = remember { mutableStateOf(false) }
-    val isAddPopupOpen = remember { mutableStateOf(false) }
-    val isDeletePopupOpen = remember { mutableStateOf(false) }
-    val isResetPopupOpen = remember { mutableStateOf(false) }
+    val isEditPopupOpen = rememberSaveable { mutableStateOf(false) }
+    val isAddPopupOpen = rememberSaveable { mutableStateOf(false) }
+    val isDeletePopupOpen = rememberSaveable { mutableStateOf(false) }
+    val isResetPopupOpen = rememberSaveable { mutableStateOf(false) }
     val selectedDictionaryIds = cardViewModel.selectedCardId
     val selectedCard = cardViewModel.selectedCard
 
@@ -470,9 +470,9 @@ fun EditCardDialog(
     onDismiss: () -> Unit,
     onSave: (CardEntity) -> Unit,
 ) {
-    var word by remember { mutableStateOf(card.word) }
-    var translation by remember { mutableStateOf(card.translationAsString) }
-    var examples by remember { mutableStateOf(examplesAsString(card.examples)) }
+    var word by rememberSaveable { mutableStateOf(card.word) }
+    var translation by rememberSaveable { mutableStateOf(card.translationAsString) }
+    var examples by rememberSaveable { mutableStateOf(examplesAsString(card.examples)) }
 
     ModalBottomSheet(
         onDismissRequest = onDismiss,
@@ -599,9 +599,9 @@ fun AddCardDialog(
     onSave: (CardEntity) -> Unit,
     viewModel: CardViewModel,
 ) {
-    var word by remember { mutableStateOf(initialWord) }
-    var translation by remember { mutableStateOf("") }
-    var examples by remember { mutableStateOf("") }
+    var word by rememberSaveable { mutableStateOf(initialWord) }
+    var translation by rememberSaveable { mutableStateOf("") }
+    var examples by rememberSaveable { mutableStateOf("") }
 
     LaunchedEffect(initialWord) {
         viewModel.fetchCard(initialWord, sourceLang, targetLang)

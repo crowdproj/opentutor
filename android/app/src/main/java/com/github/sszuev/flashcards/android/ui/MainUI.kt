@@ -36,12 +36,10 @@ fun MainNavigation(
     val dictionaryErrorMessage by dictionaryViewModel.errorMessage
 
     LaunchedEffect(Unit) {
-        Log.i(tag, "Load Settings")
-        settingsViewModel.loadSettings()
+        dictionaryViewModel.loadDictionariesInit(Locale.current.language)
     }
     LaunchedEffect(Unit) {
-        Log.i(tag, "CURRENT-LOCALE-LANGUAGE::" + Locale.current.language)
-        dictionaryViewModel.loadDictionaries(Locale.current.language)
+        settingsViewModel.loadSettings()
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -333,11 +331,10 @@ private fun NavController.navigateToDictionariesPage(
     dictionaryViewModel: DictionaryViewModel,
     settingsViewModel: SettingsViewModel,
 ) {
-    Log.i(tag, "Go to 'dictionaries'")
-
     if (currentDestination?.route == "dictionaries") {
-        Log.w(tag, "Already on 'dictionaries' screen, skipping navigation")
+        Log.i(tag, "Already on 'dictionaries' screen, skipping navigation")
     } else {
+        Log.i(tag, "Go to 'dictionaries'")
         try {
             if (currentBackStackEntry != null) {
                 navigate("dictionaries") {
