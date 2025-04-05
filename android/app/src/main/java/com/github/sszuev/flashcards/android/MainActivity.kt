@@ -7,8 +7,10 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
+import androidx.core.content.edit
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.compose.rememberNavController
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.CardsViewModelFactory
 import com.github.sszuev.flashcards.android.models.DictionariesViewModelFactory
@@ -75,6 +77,7 @@ class MainActivity : ComponentActivity() {
         }
 
         setContent {
+            val navController = rememberNavController()
             MaterialTheme {
                 MainNavigation(
                     onSignOut = { onSignOut() },
@@ -82,6 +85,7 @@ class MainActivity : ComponentActivity() {
                     cardViewModel = cardViewModel,
                     settingsViewModel = settingsViewModel,
                     ttsViewModel = ttsViewModel,
+                    navController = navController,
                 )
             }
         }
@@ -98,20 +102,20 @@ class MainActivity : ComponentActivity() {
                 withContext(Dispatchers.IO) {
                     performLogoutRequest(idToken)
                 }
-                prefs.edit()
-                    .remove("access_token")
-                    .remove("refresh_token")
-                    .remove("id_token")
-                    .apply()
+                prefs.edit {
+                    remove("access_token")
+                        .remove("refresh_token")
+                        .remove("id_token")
+                }
                 navigateToLogin()
             }
         } else {
             Log.e(tag, "Unknown id token")
-            prefs.edit()
-                .remove("access_token")
-                .remove("refresh_token")
-                .remove("id_token")
-                .apply()
+            prefs.edit {
+                remove("access_token")
+                    .remove("refresh_token")
+                    .remove("id_token")
+            }
             navigateToLogin()
         }
     }

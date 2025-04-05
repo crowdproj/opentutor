@@ -12,9 +12,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.intl.Locale
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.models.CardViewModel
 import com.github.sszuev.flashcards.android.models.DictionaryViewModel
@@ -30,9 +30,8 @@ fun MainNavigation(
     cardViewModel: CardViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
+    navController: NavHostController,
 ) {
-    val navController = rememberNavController()
-
     val settingsErrorMessage by settingsViewModel.errorMessage
     val dictionaryErrorMessage by dictionaryViewModel.errorMessage
 
@@ -93,7 +92,8 @@ fun MainNavigation(
                             ?.getString("dictionaryId")
                             ?.takeIf { it.isNotBlank() }
                             ?: throw IllegalArgumentException("Can't determine dictionaryId")
-                        val dictionary = dictionaryViewModel.selectedDictionariesList.singleOrNull()
+                        val dictionary = dictionaryViewModel.dictionaries.value
+                            .firstOrNull { it.dictionaryId == dictionaryId }
                         if (dictionary != null) {
                             check(dictionary.dictionaryId == dictionaryId) { "Wrong dictionaryId" }
                             CardsScreen(
