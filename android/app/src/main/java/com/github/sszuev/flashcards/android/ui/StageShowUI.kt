@@ -32,23 +32,25 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.translationAsString
 
 @Composable
 fun StageShowScreen(
-    dictionaryViewModel: DictionaryViewModel,
-    cardViewModel: CardViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
+    tutorViewModel: TutorViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onHomeClick: () -> Unit = {},
     onNextStage: () -> Unit = {},
 ) {
 
-    if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
+    if (dictionariesViewModel.selectedDictionaryIds.value.isEmpty()) {
         return
     }
 
@@ -56,16 +58,16 @@ fun StageShowScreen(
         onHomeClick()
     }
 
-    val cards = cardViewModel.cardsDeck.value
-    val isLoading = cardViewModel.isCardsDeckLoading.value
-    val errorMessage = cardViewModel.errorMessage.value
+    val cards = tutorViewModel.cardsDeck.value
+    val isLoading = tutorViewModel.isCardsDeckLoading.value
+    val errorMessage = tutorViewModel.errorMessage.value
     val settings = checkNotNull(settingsViewModel.settings.value)
 
     val deckLoaded = rememberSaveable { mutableStateOf(false) }
-    LaunchedEffect(dictionaryViewModel.selectedDictionaryIds.value) {
+    LaunchedEffect(dictionariesViewModel.selectedDictionaryIds.value) {
         if (!deckLoaded.value) {
-            cardViewModel.loadNextCardDeck(
-                dictionaryIds = dictionaryViewModel.selectedDictionaryIds.value,
+            tutorViewModel.loadNextCardDeck(
+                dictionaryIds = dictionariesViewModel.selectedDictionaryIds.value,
                 length = settings.stageShowNumberOfWords,
                 onComplete = {
                     it.firstOrNull()?.let { card ->
@@ -96,8 +98,13 @@ fun StageShowScreen(
         currentCard?.let { card ->
             if (know) {
                 val cardId = checkNotNull(card.cardId)
-                val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-                cardViewModel.markDeckCardAsKnow(cardId, dictionary.numberOfRightAnswers)
+                val dictionary =
+                    dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+                tutorViewModel.markDeckCardAsKnow(
+                    cardId = cardId,
+                    numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                    updateCard = { cardsViewModel.updateCard(it) }
+                )
             }
         }
 
@@ -138,7 +145,7 @@ fun StageShowScreen(
                 return
             }
             val dictionary =
-                dictionaryViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
+                dictionariesViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
 
             Column(
                 modifier = Modifier

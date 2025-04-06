@@ -16,27 +16,29 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 
 private const val tag = "Navigation"
 
 @Composable
 fun MainNavigation(
     onSignOut: () -> Unit = {},
-    dictionaryViewModel: DictionaryViewModel,
-    cardViewModel: CardViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    tutorViewModel: TutorViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     navController: NavHostController,
 ) {
     val settingsErrorMessage by settingsViewModel.errorMessage
-    val dictionaryErrorMessage by dictionaryViewModel.errorMessage
+    val dictionaryErrorMessage by dictionariesViewModel.errorMessage
 
     LaunchedEffect(Unit) {
-        dictionaryViewModel.loadDictionariesInit(Locale.current.language)
+        dictionariesViewModel.loadDictionariesInit(Locale.current.language)
     }
     LaunchedEffect(Unit) {
         settingsViewModel.loadSettings()
@@ -48,7 +50,10 @@ fun MainNavigation(
             TopBar(
                 onSignOut = onSignOut,
                 onHomeClick = {
-                    navController.navigateToDictionariesPage(dictionaryViewModel, settingsViewModel)
+                    navController.navigateToDictionariesPage(
+                        dictionariesViewModel,
+                        settingsViewModel
+                    )
                 }
             )
 
@@ -78,11 +83,11 @@ fun MainNavigation(
                         DictionariesScreen(
                             navController = navController,
                             onHomeClick = {
-                                dictionaryViewModel.loadDictionaries()
+                                dictionariesViewModel.loadDictionaries()
                             },
-                            dictionaryViewModel = dictionaryViewModel,
+                            dictionariesViewModel = dictionariesViewModel,
                             settingsViewModel = settingsViewModel,
-                            cardViewModel = cardViewModel
+                            cardsViewModel = cardsViewModel,
                         )
                     }
                     composable("cards/{dictionaryId}") { backStackEntry ->
@@ -90,13 +95,13 @@ fun MainNavigation(
                             ?.getString("dictionaryId")
                             ?.takeIf { it.isNotBlank() }
                             ?: throw IllegalArgumentException("Can't determine dictionaryId")
-                        val dictionary = dictionaryViewModel.dictionaries.value
+                        val dictionary = dictionariesViewModel.dictionaries.value
                             .firstOrNull { it.dictionaryId == dictionaryId }
                         if (dictionary != null) {
                             check(dictionary.dictionaryId == dictionaryId) { "Wrong dictionaryId" }
                             CardsScreen(
                                 dictionary = dictionary,
-                                cardViewModel = cardViewModel,
+                                cardsViewModel = cardsViewModel,
                                 ttsViewModel = ttsViewModel,
                             )
                         } else {
@@ -107,15 +112,16 @@ fun MainNavigation(
                         composable(stage) {
                             when (stage) {
                                 "StageShow" -> {
-                                    cardViewModel.clearFlashcardsSessionState()
+                                    tutorViewModel.clearFlashcardsSessionState()
                                     StageShowScreen(
-                                        dictionaryViewModel = dictionaryViewModel,
-                                        cardViewModel = cardViewModel,
+                                        dictionariesViewModel = dictionariesViewModel,
+                                        cardsViewModel = cardsViewModel,
+                                        tutorViewModel = tutorViewModel,
                                         settingsViewModel = settingsViewModel,
                                         ttsViewModel = ttsViewModel,
                                         onHomeClick = {
                                             navController.navigateToDictionariesPage(
-                                                dictionaryViewModel, settingsViewModel
+                                                dictionariesViewModel, settingsViewModel
                                             )
                                         },
                                         onNextStage = {
@@ -128,13 +134,14 @@ fun MainNavigation(
                                 }
 
                                 "StageMosaicDirect" -> StageMosaicScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -147,13 +154,14 @@ fun MainNavigation(
                                 )
 
                                 "StageMosaicReverse" -> StageMosaicScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -166,13 +174,14 @@ fun MainNavigation(
                                 )
 
                                 "StageOptionsDirect" -> StageOptionsScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -185,13 +194,14 @@ fun MainNavigation(
                                 )
 
                                 "StageOptionsReverse" -> StageOptionsScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -204,13 +214,14 @@ fun MainNavigation(
                                 )
 
                                 "StageWritingDirect" -> StageWritingScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -223,13 +234,14 @@ fun MainNavigation(
                                 )
 
                                 "StageWritingReverse" -> StageWritingScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -242,13 +254,14 @@ fun MainNavigation(
                                 )
 
                                 "StageSelfTestDirect" -> StageSelfTestScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -261,13 +274,14 @@ fun MainNavigation(
                                 )
 
                                 "StageSelfTestReverse" -> StageSelfTestScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
+                                    cardsViewModel = cardsViewModel,
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
@@ -280,11 +294,11 @@ fun MainNavigation(
                                 )
 
                                 "StageResult" -> StageResultScreen(
-                                    cardViewModel = cardViewModel,
-                                    dictionaryViewModel = dictionaryViewModel,
+                                    tutorViewModel = tutorViewModel,
+                                    dictionariesViewModel = dictionariesViewModel,
                                     onHomeClick = {
                                         navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
+                                            dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                 )
@@ -331,7 +345,7 @@ private fun NavController.navigateToNextStage(
 }
 
 private fun NavController.navigateToDictionariesPage(
-    dictionaryViewModel: DictionaryViewModel,
+    dictionariesViewModel: DictionariesViewModel,
     settingsViewModel: SettingsViewModel,
 ) {
     if (currentDestination?.route == "dictionaries") {
@@ -351,5 +365,5 @@ private fun NavController.navigateToDictionariesPage(
         }
     }
     settingsViewModel.loadSettings()
-    dictionaryViewModel.loadDictionaries()
+    dictionariesViewModel.loadDictionaries()
 }

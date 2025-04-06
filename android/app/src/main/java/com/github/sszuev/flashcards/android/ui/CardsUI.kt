@@ -57,7 +57,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.audioResource
 import com.github.sszuev.flashcards.android.utils.examplesAsList
@@ -78,18 +78,18 @@ private const val tag = "CardsUI"
 @Composable
 fun CardsScreen(
     dictionary: DictionaryEntity,
-    cardViewModel: CardViewModel,
+    cardsViewModel: CardsViewModel,
     ttsViewModel: TTSViewModel,
 ) {
     val searchQuery = remember { mutableStateOf("") }
-    val cards by cardViewModel.cards
+    val cards by cardsViewModel.cards
     val listState = rememberLazyListState()
     val isEditPopupOpen = rememberSaveable { mutableStateOf(false) }
     val isAddPopupOpen = rememberSaveable { mutableStateOf(false) }
     val isDeletePopupOpen = rememberSaveable { mutableStateOf(false) }
     val isResetPopupOpen = rememberSaveable { mutableStateOf(false) }
-    val selectedDictionaryIds = cardViewModel.selectedCardId
-    val selectedCard = cardViewModel.selectedCard
+    val selectedDictionaryIds = cardsViewModel.selectedCardId
+    val selectedCard = cardsViewModel.selectedCard
 
     var previousCardSize by remember { mutableIntStateOf(cards.size) }
 
@@ -99,13 +99,13 @@ fun CardsScreen(
                 cards.indexOfFirst { it.word.startsWith(searchQuery.value, ignoreCase = true) }
             if (index != -1) {
                 listState.animateScrollToItem(index, scrollOffset = 10)
-                cardViewModel.selectCard(cards[index].cardId)
+                cardsViewModel.selectCard(cards[index].cardId)
             } else {
-                cardViewModel.selectCard(null)
+                cardsViewModel.selectCard(null)
             }
         } else if (previousCardSize > 0 && cards.size > previousCardSize) {
             listState.animateScrollToItem(cards.size - 1)
-            cardViewModel.selectCard(cards.last().cardId)
+            cardsViewModel.selectCard(cards.last().cardId)
         }
 
         previousCardSize = cards.size
@@ -122,7 +122,7 @@ fun CardsScreen(
         Box(modifier = Modifier.fillMaxSize()) {
             Column {
                 CardsTable(
-                    viewModel = cardViewModel,
+                    viewModel = cardsViewModel,
                     dictionaryId = checkNotNull(dictionary.dictionaryId),
                     numberOfRightAnswers = dictionary.numberOfRightAnswers,
                     listState = listState,
@@ -130,7 +130,7 @@ fun CardsScreen(
             }
         }
         CardsBottomToolbar(
-            selectedCardId = cardViewModel.selectedCardId.value,
+            selectedCardId = cardsViewModel.selectedCardId.value,
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .imePadding(),
@@ -143,7 +143,7 @@ fun CardsScreen(
                 }
             },
             onAddClick = {
-                cardViewModel.clearFetchedCard()
+                cardsViewModel.clearFetchedCard()
                 isAddPopupOpen.value = true
             },
             onDeleteClick = {
@@ -158,7 +158,7 @@ fun CardsScreen(
         EditCardDialog(
             lang = dictionary.sourceLanguage,
             onSave = {
-                cardViewModel.updateCard(it)
+                cardsViewModel.updateCard(it)
                 searchQuery.value = ""
             },
             onDismiss = { isEditPopupOpen.value = false },
@@ -174,10 +174,10 @@ fun CardsScreen(
             targetLang = dictionary.targetLanguage,
             onDismiss = { isAddPopupOpen.value = false },
             onSave = {
-                cardViewModel.createCard(it)
+                cardsViewModel.createCard(it)
                 searchQuery.value = ""
             },
-            viewModel = cardViewModel,
+            viewModel = cardsViewModel,
         )
     }
     if (isDeletePopupOpen.value && selectedCard != null) {
@@ -185,7 +185,7 @@ fun CardsScreen(
             cardName = selectedCard.word,
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
-                cardViewModel.deleteCard(checkNotNull(selectedCard.cardId))
+                cardsViewModel.deleteCard(checkNotNull(selectedCard.cardId))
             }
         )
     }
@@ -194,7 +194,7 @@ fun CardsScreen(
             cardName = selectedCard.word,
             onClose = { isResetPopupOpen.value = false },
             onConfirm = {
-                cardViewModel.resetCard(checkNotNull(selectedCard.cardId))
+                cardsViewModel.resetCard(checkNotNull(selectedCard.cardId))
             }
         )
     }
@@ -202,7 +202,7 @@ fun CardsScreen(
 
 @Composable
 fun CardsTable(
-    viewModel: CardViewModel,
+    viewModel: CardsViewModel,
     dictionaryId: String,
     numberOfRightAnswers: Int,
     listState: LazyListState,
@@ -597,7 +597,7 @@ fun AddCardDialog(
     targetLang: String,
     onDismiss: () -> Unit,
     onSave: (CardEntity) -> Unit,
-    viewModel: CardViewModel,
+    viewModel: CardsViewModel,
 ) {
     var word by rememberSaveable { mutableStateOf(initialWord) }
     var translation by rememberSaveable { mutableStateOf("") }

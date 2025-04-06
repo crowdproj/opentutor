@@ -29,10 +29,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.STAGE_OPTIONS_CELL_DELAY_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -43,8 +44,9 @@ private const val tag = "StageOptionsUI"
 
 @Composable
 fun StageOptionsScreen(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onHomeClick: () -> Unit = {},
@@ -52,7 +54,7 @@ fun StageOptionsScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageOptions")
-    if (cardViewModel.cardsDeck.value.isEmpty()) {
+    if (tutorViewModel.cardsDeck.value.isEmpty()) {
         onNextStage()
         return
     }
@@ -71,8 +73,9 @@ fun StageOptionsScreen(
             )
 
             OptionsPanelDirect(
-                cardViewModel = cardViewModel,
-                dictionaryViewModel = dictionaryViewModel,
+                tutorViewModel = tutorViewModel,
+                dictionariesViewModel = dictionariesViewModel,
+                cardsViewModel = cardsViewModel,
                 settingsViewModel = settingsViewModel,
                 ttsViewModel = ttsViewModel,
                 onNextStage = onNextStage,
@@ -84,8 +87,9 @@ fun StageOptionsScreen(
 
 @Composable
 fun OptionsPanelDirect(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit,
@@ -99,12 +103,12 @@ fun OptionsPanelDirect(
 
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
     val leftCards = remember {
-        cardViewModel.unknownDeckCards { id ->
-            dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
+        tutorViewModel.unknownDeckCards { id ->
+            dictionariesViewModel.dictionaryById(id).numberOfRightAnswers
         }.shuffled().take(settings.numberOfWordsPerStage).also { cards ->
             cards.firstOrNull()?.let {
                 if (direct) {
-                    cardViewModel.viewModelScope.launch {
+                    tutorViewModel.viewModelScope.launch {
                         Log.d(
                             tag,
                             "direct: playing audio for: [${it.cardId}: ${it.word}]"
@@ -124,23 +128,23 @@ fun OptionsPanelDirect(
 
     val rightCardsSize = leftCards.size * (settings.stageOptionsNumberOfVariants - 1)
     LaunchedEffect(Unit) {
-        cardViewModel.loadAdditionalCardDeck(
-            dictionaryIds = dictionaryViewModel.selectedDictionaryIds.value,
+        tutorViewModel.loadAdditionalCardDeck(
+            dictionaryIds = dictionariesViewModel.selectedDictionaryIds.value,
             length = rightCardsSize
         )
     }
-    if (cardViewModel.isAdditionalCardsDeckLoading.value) {
+    if (tutorViewModel.isAdditionalCardsDeckLoading.value) {
         CircularProgressIndicator()
         return
     }
 
-    val errorMessage = cardViewModel.errorMessage.value
+    val errorMessage = tutorViewModel.errorMessage.value
     ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
         return
     }
 
-    if (cardViewModel.additionalCardsDeck.value.size <= 1) {
+    if (tutorViewModel.additionalCardsDeck.value.size <= 1) {
         Log.d(tag, "onNextStage: not enough additional cards")
         onNextStage()
         return
@@ -150,7 +154,7 @@ fun OptionsPanelDirect(
 
     LaunchedEffect(Unit) {
         val newMap = leftCards.associateWith { leftCard ->
-            val rightCards = cardViewModel.additionalCardsDeck.value.shuffled()
+            val rightCards = tutorViewModel.additionalCardsDeck.value.shuffled()
                 .take(settings.stageOptionsNumberOfVariants - 1)
             (rightCards + leftCard).distinctBy { it.cardId }.shuffled()
         }
@@ -170,10 +174,13 @@ fun OptionsPanelDirect(
     fun color(isSelected: Boolean, isCorrect: Boolean?): Color = when {
         isSelected && isCorrect == true ->
             Color.Green
+
         isCorrect == false ->
             Color.Red
+
         isSelected ->
             Color.Blue
+
         else -> Color.Gray
     }
 
@@ -188,7 +195,7 @@ fun OptionsPanelDirect(
     }
 
     fun onOptionSelected(selectedItem: CardEntity) {
-        cardViewModel.viewModelScope.launch {
+        tutorViewModel.viewModelScope.launch {
             if (isAnswerProcessing.value) {
                 Log.d(tag, "Click ignored: Answer is being processed!")
                 return@launch
@@ -235,9 +242,13 @@ fun OptionsPanelDirect(
 
                     val cardId = checkNotNull(nextCard.cardId)
                     val dictionaryId = checkNotNull(nextCard.dictionaryId)
-                    val dictionary = dictionaryViewModel.dictionaryById(dictionaryId)
+                    val dictionary = dictionariesViewModel.dictionaryById(dictionaryId)
 
-                    cardViewModel.updateDeckCard(cardId, dictionary.numberOfRightAnswers)
+                    tutorViewModel.updateDeckCard(
+                        cardId = cardId,
+                        numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                        updateCard = { cardsViewModel.updateCard(it) }
+                    )
                     if (direct) {
                         Log.d(
                             tag,
@@ -251,7 +262,7 @@ fun OptionsPanelDirect(
                     Log.i(tag, "Wrong answer for card $cardId")
                     selectedOption.value = null
                     isCorrect.value = null
-                    cardViewModel.markDeckCardAsWrong(cardId)
+                    tutorViewModel.markDeckCardAsWrong(cardId)
                 }
                 selectedOption.value = null
                 isCorrect.value = null
@@ -272,7 +283,7 @@ fun OptionsPanelDirect(
     }
 
     val dictionary =
-        dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+        dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
 
     Column(
         modifier = Modifier

@@ -11,14 +11,16 @@ import androidx.core.content.edit
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
-import com.github.sszuev.flashcards.android.models.CardViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
 import com.github.sszuev.flashcards.android.models.CardsViewModelFactory
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.DictionariesViewModelFactory
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModelFactory
 import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModelFactory
+import com.github.sszuev.flashcards.android.models.TutorViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModelFactory
 import com.github.sszuev.flashcards.android.repositories.CardsRepository
 import com.github.sszuev.flashcards.android.repositories.DictionaryRepository
 import com.github.sszuev.flashcards.android.repositories.SettingsRepository
@@ -36,30 +38,37 @@ import kotlinx.coroutines.withContext
 class MainActivity : ComponentActivity() {
     private val tag = "MainActivity"
 
-    private val dictionaryViewModel: DictionaryViewModel by viewModels {
+    private val dictionariesViewModel: DictionariesViewModel by viewModels {
         DictionariesViewModelFactory(
             repository = DictionaryRepository(AppConfig.serverUri),
             signOut = { onSignOut() },
         )
     }
-    private val cardViewModel: CardViewModel by viewModels {
+    private val cardsViewModel: CardsViewModel by viewModels {
         CardsViewModelFactory(
             cardsRepository = CardsRepository(AppConfig.serverUri),
             translationRepository = TranslationRepository(AppConfig.serverUri),
-            signOut = { onSignOut() }
+            signOut = { onSignOut() },
+        )
+    }
+    private val tutorViewModel: TutorViewModel by viewModels {
+        TutorViewModelFactory(
+            cardsRepository = CardsRepository(AppConfig.serverUri),
+            signOut = { onSignOut() },
         )
     }
     private val ttsViewModel: TTSViewModel by viewModels {
         TTSViewModelFactory(
             context = application,
             ttsRepository = TTSRepository(AppConfig.serverUri),
-            signOut = { onSignOut() }
+            signOut = { onSignOut() },
         )
     }
     private val settingsViewModel: SettingsViewModel by viewModels {
         SettingsViewModelFactory(
             repository = SettingsRepository(AppConfig.serverUri),
-            signOut = { onSignOut() })
+            signOut = { onSignOut() },
+        )
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -81,8 +90,9 @@ class MainActivity : ComponentActivity() {
             MaterialTheme {
                 MainNavigation(
                     onSignOut = { onSignOut() },
-                    dictionaryViewModel = dictionaryViewModel,
-                    cardViewModel = cardViewModel,
+                    dictionariesViewModel = dictionariesViewModel,
+                    cardsViewModel = cardsViewModel,
+                    tutorViewModel = tutorViewModel,
                     settingsViewModel = settingsViewModel,
                     ttsViewModel = ttsViewModel,
                     navController = navController,

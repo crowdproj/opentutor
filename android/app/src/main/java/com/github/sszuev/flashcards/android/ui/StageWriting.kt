@@ -42,10 +42,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.STAGE_WRITING_BUTTONS_DELAY_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.correctAnswerIndexOf
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
@@ -58,8 +59,9 @@ private const val tag = "StageWritingUI"
 
 @Composable
 fun StageWritingScreen(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onHomeClick: () -> Unit = {},
@@ -67,7 +69,7 @@ fun StageWritingScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageWriting")
-    if (cardViewModel.cardsDeck.value.isEmpty()) {
+    if (tutorViewModel.cardsDeck.value.isEmpty()) {
         onNextStage()
         return
     }
@@ -86,8 +88,9 @@ fun StageWritingScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             WritingPanels(
-                cardViewModel = cardViewModel,
-                dictionaryViewModel = dictionaryViewModel,
+                tutorViewModel = tutorViewModel,
+                dictionariesViewModel = dictionariesViewModel,
+                cardsViewModel = cardsViewModel,
                 settingsViewModel = settingsViewModel,
                 ttsViewModel = ttsViewModel,
                 onNextStage = onNextStage,
@@ -99,8 +102,9 @@ fun StageWritingScreen(
 
 @Composable
 fun WritingPanels(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit,
@@ -108,8 +112,8 @@ fun WritingPanels(
 ) {
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
     val cards = remember {
-        cardViewModel.unknownDeckCards { id ->
-            dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
+        tutorViewModel.unknownDeckCards { id ->
+            dictionariesViewModel.dictionaryById(id).numberOfRightAnswers
         }.shuffled().take(settings.numberOfWordsPerStage).toMutableList()
     }
 
@@ -118,7 +122,7 @@ fun WritingPanels(
         return
     }
 
-    val errorMessage = cardViewModel.errorMessage.value
+    val errorMessage = tutorViewModel.errorMessage.value
     ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
         return
@@ -166,15 +170,16 @@ fun WritingPanels(
         val res = correctAnswerIndexOf(expected, userInput)
         return if (res == -1) {
             Log.i(tag, "Answer is incorrect. input: $userInput, translations: $expected")
-            cardViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
+            tutorViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
             false
         } else {
             Log.i(tag, "Answer is correct. input: $userInput, translations: $expected")
             val cardId = checkNotNull(card.cardId)
-            val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-            cardViewModel.updateDeckCard(
-                cardId,
-                dictionary.numberOfRightAnswers
+            val dictionary = dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+            tutorViewModel.updateDeckCard(
+                cardId = cardId,
+                numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                updateCard = { cardsViewModel.updateCard(it) },
             )
             true
         }
@@ -195,7 +200,7 @@ fun WritingPanels(
                 return@item
             }
             val dictionary =
-                dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+                dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
 
             if (direct || isTextShort(card.translationAsString)) {
                 Text(
@@ -329,7 +334,7 @@ fun WritingPanels(
                         isEditable = false
 
                         buttonsEnabled = false
-                        cardViewModel.viewModelScope.launch {
+                        tutorViewModel.viewModelScope.launch {
                             delay(STAGE_WRITING_BUTTONS_DELAY_MS)
                             buttonsEnabled = true
                             Log.d(tag, "Delay over: enabling buttons")

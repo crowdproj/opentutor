@@ -15,12 +15,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Locale
 
-class DictionaryViewModel(
+class DictionariesViewModel(
     private val repository: DictionaryRepository,
     private val signOut: () -> Unit,
 ) : ViewModel() {
 
-    private val tag = "DictionaryViewModel"
+    private val tag = "DictionariesViewModel"
 
     private val _dictionaries = mutableStateOf<List<DictionaryEntity>>(emptyList())
     val dictionaries: State<List<DictionaryEntity>> get() = _dictionaries

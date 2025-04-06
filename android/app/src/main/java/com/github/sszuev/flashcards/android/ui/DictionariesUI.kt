@@ -56,8 +56,8 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
 private const val tag = "DictionariesUI"
@@ -71,25 +71,25 @@ private const val FIFTH_COLUMN_WIDTH = 18
 fun DictionariesScreen(
     navController: NavHostController,
     onHomeClick: () -> Unit = {},
-    dictionaryViewModel: DictionaryViewModel,
+    dictionariesViewModel: DictionariesViewModel,
     settingsViewModel: SettingsViewModel,
-    cardViewModel: CardViewModel,
+    cardsViewModel: CardsViewModel,
 ) {
     BackHandler {
         onHomeClick()
     }
 
-    val selectedDictionaryIds = dictionaryViewModel.selectedDictionaryIds
+    val selectedDictionaryIds = dictionariesViewModel.selectedDictionaryIds
     val isEditPopupOpen = rememberSaveable { mutableStateOf(false) }
     val isCreatePopupOpen = rememberSaveable { mutableStateOf(false) }
     val isDeletePopupOpen = rememberSaveable { mutableStateOf(false) }
     val isSettingsPopupOpen = rememberSaveable { mutableStateOf(false) }
-    val selectedDictionary = dictionaryViewModel.selectedDictionariesList.firstOrNull()
+    val selectedDictionary = dictionariesViewModel.selectedDictionariesList.firstOrNull()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             DictionaryTable(
-                viewModel = dictionaryViewModel,
+                viewModel = dictionariesViewModel,
             )
         }
         DictionariesBottomToolbar(
@@ -126,18 +126,18 @@ fun DictionariesScreen(
 
     if (isEditPopupOpen.value && selectedDictionary != null) {
         EditDictionaryDialog(
-            viewModel = dictionaryViewModel,
+            viewModel = dictionariesViewModel,
             dictionary = selectedDictionary,
             onSave = {
-                val numberLearnedCards = cardViewModel.numberOfKnownCards(it.numberOfRightAnswers)
-                dictionaryViewModel.updateDictionary(it.copy(learnedWords = numberLearnedCards))
+                val numberLearnedCards = cardsViewModel.numberOfKnownCards(it.numberOfRightAnswers)
+                dictionariesViewModel.updateDictionary(it.copy(learnedWords = numberLearnedCards))
             },
             onDismiss = { isEditPopupOpen.value = false }
         )
     }
     if (isCreatePopupOpen.value) {
         AddDictionaryDialog(
-            viewModel = dictionaryViewModel,
+            viewModel = dictionariesViewModel,
             onSave = { source, target, name, acceptedNum ->
                 val dictionary = DictionaryEntity(
                     dictionaryId = null,
@@ -148,7 +148,7 @@ fun DictionariesScreen(
                     totalWords = 0,
                     learnedWords = 0,
                 )
-                dictionaryViewModel.createDictionary(dictionary)
+                dictionariesViewModel.createDictionary(dictionary)
             },
             onDismiss = { isCreatePopupOpen.value = false }
         )
@@ -158,7 +158,7 @@ fun DictionariesScreen(
             dictionaryName = selectedDictionary.name,
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
-                dictionaryViewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
+                dictionariesViewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
             }
         )
     }
@@ -193,7 +193,7 @@ fun DictionariesScreen(
 @SuppressLint("ReturnFromAwaitPointerEventScope")
 @Composable
 fun DictionaryTable(
-    viewModel: DictionaryViewModel,
+    viewModel: DictionariesViewModel,
 ) {
     val dictionaries by viewModel.dictionaries
     val isLoading by viewModel.isDictionariesLoading
@@ -452,7 +452,7 @@ fun DictionariesBottomToolbar(
 @Composable
 fun EditDictionaryDialog(
     dictionary: DictionaryEntity,
-    viewModel: DictionaryViewModel,
+    viewModel: DictionariesViewModel,
     onSave: (DictionaryEntity) -> Unit,
     onDismiss: () -> Unit,
 ) {
@@ -542,7 +542,7 @@ fun EditDictionaryDialog(
 
 @Composable
 fun AddDictionaryDialog(
-    viewModel: DictionaryViewModel,
+    viewModel: DictionariesViewModel,
     onSave: (String, String, String, Int) -> Unit,
     onDismiss: () -> Unit
 ) {

@@ -32,10 +32,11 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -45,8 +46,9 @@ private const val tag = "StageSelfTestUI"
 
 @Composable
 fun StageSelfTestScreen(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onHomeClick: () -> Unit = {},
@@ -54,7 +56,7 @@ fun StageSelfTestScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageSelfTest")
-    if (cardViewModel.cardsDeck.value.isEmpty()) {
+    if (tutorViewModel.cardsDeck.value.isEmpty()) {
         onNextStage()
         return
     }
@@ -74,8 +76,9 @@ fun StageSelfTestScreen(
             )
             Spacer(modifier = Modifier.height(16.dp))
             SelfTestPanels(
-                cardViewModel = cardViewModel,
-                dictionaryViewModel = dictionaryViewModel,
+                tutorViewModel = tutorViewModel,
+                dictionariesViewModel = dictionariesViewModel,
+                cardsViewModel = cardsViewModel,
                 settingsViewModel = settingsViewModel,
                 onNextStage = onNextStage,
                 direct = direction,
@@ -87,8 +90,9 @@ fun StageSelfTestScreen(
 
 @Composable
 fun SelfTestPanels(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit = {},
@@ -96,8 +100,8 @@ fun SelfTestPanels(
 ) {
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
     val cards = remember {
-        cardViewModel.unknownDeckCards { id ->
-            dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
+        tutorViewModel.unknownDeckCards { id ->
+            dictionariesViewModel.dictionaryById(id).numberOfRightAnswers
         }.shuffled().take(settings.numberOfWordsPerStage).toMutableList()
     }
 
@@ -106,7 +110,7 @@ fun SelfTestPanels(
         return
     }
 
-    val errorMessage = cardViewModel.errorMessage.value
+    val errorMessage = tutorViewModel.errorMessage.value
     ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
         return
@@ -142,13 +146,14 @@ fun SelfTestPanels(
 
         if (result) {
             val cardId = checkNotNull(card.cardId)
-            val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-            cardViewModel.updateDeckCard(
-                cardId,
-                dictionary.numberOfRightAnswers
+            val dictionary = dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+            tutorViewModel.updateDeckCard(
+                cardId = cardId,
+                numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                updateCard = { cardsViewModel.updateCard(it) },
             )
         } else {
-            cardViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
+            tutorViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
         }
 
         if (cards.isEmpty()) {
@@ -176,7 +181,7 @@ fun SelfTestPanels(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val dictionary =
-                dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+                dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
 
             if (direct || isTextShort(card.translationAsString)) {
                 Text(

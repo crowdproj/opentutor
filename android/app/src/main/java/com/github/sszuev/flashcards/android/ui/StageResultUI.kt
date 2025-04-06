@@ -28,8 +28,8 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.sszuev.flashcards.android.entities.CardEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
 
@@ -43,8 +43,8 @@ private const val tag = "StageResultUI"
 
 @Composable
 fun StageResultScreen(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
     onHomeClick: () -> Unit = {},
 ) {
     Log.d(tag, "StageResult")
@@ -53,16 +53,16 @@ fun StageResultScreen(
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
     fun dictionaryNumberOfRightAnswers(card: CardEntity): Int {
-        return dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId)).numberOfRightAnswers
+        return dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId)).numberOfRightAnswers
     }
 
     fun dictionaryName(card: CardEntity): String {
-        return dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId)).name
+        return dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId)).name
     }
 
-    val greenCards = cardViewModel.greenDeckCards { dictionaryNumberOfRightAnswers(it) }
-    val blueCards = cardViewModel.blueDeckCards { dictionaryNumberOfRightAnswers(it) }
-    val redCards = cardViewModel.redDeckCards()
+    val greenCards = tutorViewModel.greenDeckCards { dictionaryNumberOfRightAnswers(it) }
+    val blueCards = tutorViewModel.blueDeckCards { dictionaryNumberOfRightAnswers(it) }
+    val redCards = tutorViewModel.redDeckCards()
 
     BackHandler {
         onHomeClick()

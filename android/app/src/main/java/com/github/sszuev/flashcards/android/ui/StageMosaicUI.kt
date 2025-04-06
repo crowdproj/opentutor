@@ -25,10 +25,11 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.STAGE_MOSAIC_CELL_DELAY_MS
 import com.github.sszuev.flashcards.android.entities.CardEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -39,8 +40,9 @@ private const val tag = "StageMosaicUI"
 
 @Composable
 fun StageMosaicScreen(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onHomeClick: () -> Unit = {},
@@ -48,21 +50,21 @@ fun StageMosaicScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageMosaic")
-    if (cardViewModel.cardsDeck.value.isEmpty()) {
+    if (tutorViewModel.cardsDeck.value.isEmpty()) {
         onNextStage()
         return
     }
     BackHandler {
         onHomeClick()
     }
-    if (dictionaryViewModel.selectedDictionaryIds.value.isEmpty()) {
+    if (dictionariesViewModel.selectedDictionaryIds.value.isEmpty()) {
         return
     }
 
     val settings = checkNotNull(settingsViewModel.settings.value)
     LaunchedEffect(Unit) {
-        cardViewModel.initStageMosaic(
-            selectNumberOfRightAnswers = { dictionaryViewModel.dictionaryById(it).numberOfRightAnswers },
+        tutorViewModel.initStageMosaic(
+            selectNumberOfRightAnswers = { dictionariesViewModel.dictionaryById(it).numberOfRightAnswers },
             numberOfWords = settings.numberOfWordsPerStage
         )
     }
@@ -79,8 +81,9 @@ fun StageMosaicScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             MosaicPanels(
-                cardViewModel = cardViewModel,
-                dictionaryViewModel = dictionaryViewModel,
+                tutorViewModel = tutorViewModel,
+                dictionariesViewModel = dictionariesViewModel,
+                cardsViewModel = cardsViewModel,
                 ttsViewModel = ttsViewModel,
                 direct = direction,
                 onNextStage = onNextStage,
@@ -91,22 +94,23 @@ fun StageMosaicScreen(
 
 @Composable
 fun MosaicPanels(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     ttsViewModel: TTSViewModel,
     direct: Boolean,
     onNextStage: () -> Unit,
 ) {
-    val leftCards = cardViewModel.stageMosaicLeftCards
-    val rightCards = cardViewModel.stageMosaicRightCards
-    val selectedLeftId = cardViewModel.stageMosaicSelectedLeftCardId
-    val selectedRightId = cardViewModel.stageMosaicSelectedRightCardId
+    val leftCards = tutorViewModel.stageMosaicLeftCards
+    val rightCards = tutorViewModel.stageMosaicRightCards
+    val selectedLeftId = tutorViewModel.stageMosaicSelectedLeftCardId
+    val selectedRightId = tutorViewModel.stageMosaicSelectedRightCardId
 
-    val deck = cardViewModel.cardsDeck.value
+    val deck = tutorViewModel.cardsDeck.value
     val isAnswerProcessing = rememberSaveable { mutableStateOf(false) }
     val isCorrectAnswerProcessing = rememberSaveable { mutableStateOf(false) }
 
-    val errorMessage = cardViewModel.errorMessage.value
+    val errorMessage = tutorViewModel.errorMessage.value
     ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
         return
@@ -129,7 +133,7 @@ fun MosaicPanels(
     }
 
     fun onSelectItem() {
-        cardViewModel.viewModelScope.launch {
+        tutorViewModel.viewModelScope.launch {
             if (isAnswerProcessing.value) {
                 return@launch
             }
@@ -147,47 +151,48 @@ fun MosaicPanels(
 
                 val card = if (direct) leftItem else rightItem
                 val cardId = card.cardId
-                val dictionary = dictionaryViewModel.dictionaryById(leftItem.dictionaryId!!)
+                val dictionary = dictionariesViewModel.dictionaryById(leftItem.dictionaryId!!)
 
                 if (match()) {
                     isCorrectAnswerProcessing.value = true
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
                     ttsViewModel.waitForAudionProcessing(checkNotNull(cardId))
-                    cardViewModel.stageMosaicLeftCards.value =
+                    tutorViewModel.stageMosaicLeftCards.value =
                         leftCards.value.filter { it.cardId != cardId }
-                    cardViewModel.stageMosaicRightCards.value =
+                    tutorViewModel.stageMosaicRightCards.value =
                         rightCards.value.filter { it.cardId != cardId }
 
-                    val wrongAnyway = cardViewModel.wrongAnsweredCardDeckIds.value.contains(cardId)
+                    val wrongAnyway = tutorViewModel.wrongAnsweredCardDeckIds.value.contains(cardId)
                     Log.i(
                         tag,
                         "Correct answer for card ${cardId}(${card.word})" +
                                 if (wrongAnyway) ", but it is already marked as wrong" else ""
                     )
-                    cardViewModel.updateDeckCard(
+                    tutorViewModel.updateDeckCard(
                         cardId = cardId,
-                        numberOfRightAnswers = dictionary.numberOfRightAnswers
+                        numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                        updateCard = { cardsViewModel.updateCard(it) }
                     )
                     isCorrectAnswerProcessing.value = false
                 } else {
                     Log.i(tag, "Wrong answer for card $cardId(${card.word})")
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
                     ttsViewModel.waitForAudionProcessing(cardId!!)
-                    cardViewModel.markDeckCardAsWrong(cardId)
+                    tutorViewModel.markDeckCardAsWrong(cardId)
                 }
 
                 selectedLeftId.value = null
                 selectedRightId.value = null
 
-                if (cardViewModel.stageMosaicLeftCards.value.isEmpty()) {
+                if (tutorViewModel.stageMosaicLeftCards.value.isEmpty()) {
                     Log.i(tag, "All left cards are matched. Moving to the next stage.")
-                    cardViewModel.clearFlashcardsSessionState()
+                    tutorViewModel.clearFlashcardsSessionState()
                     onNextStage()
                 } else {
                     Log.d(
                         tag,
-                        "Left cards: ${cardViewModel.stageMosaicLeftCards.value.size}, " +
-                                "Right cards: ${cardViewModel.stageMosaicRightCards.value.size}"
+                        "Left cards: ${tutorViewModel.stageMosaicLeftCards.value.size}, " +
+                                "Right cards: ${tutorViewModel.stageMosaicRightCards.value.size}"
                     )
                 }
             } finally {
