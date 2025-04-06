@@ -106,23 +106,26 @@ fun MainNavigation(
                     stageChain.forEachIndexed { index, stage ->
                         composable(stage) {
                             when (stage) {
-                                "StageShow" -> StageShowScreen(
-                                    dictionaryViewModel = dictionaryViewModel,
-                                    cardViewModel = cardViewModel,
-                                    settingsViewModel = settingsViewModel,
-                                    ttsViewModel = ttsViewModel,
-                                    onHomeClick = {
-                                        navController.navigateToDictionariesPage(
-                                            dictionaryViewModel, settingsViewModel
-                                        )
-                                    },
-                                    onNextStage = {
-                                        navController.navigateToNextStage(
-                                            stageChain,
-                                            index
-                                        )
-                                    },
-                                )
+                                "StageShow" -> {
+                                    cardViewModel.clearFlashcardsSessionState()
+                                    StageShowScreen(
+                                        dictionaryViewModel = dictionaryViewModel,
+                                        cardViewModel = cardViewModel,
+                                        settingsViewModel = settingsViewModel,
+                                        ttsViewModel = ttsViewModel,
+                                        onHomeClick = {
+                                            navController.navigateToDictionariesPage(
+                                                dictionaryViewModel, settingsViewModel
+                                            )
+                                        },
+                                        onNextStage = {
+                                            navController.navigateToNextStage(
+                                                stageChain,
+                                                index
+                                            )
+                                        },
+                                    )
+                                }
 
                                 "StageMosaicDirect" -> StageMosaicScreen(
                                     cardViewModel = cardViewModel,
@@ -136,8 +139,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = true,
@@ -155,8 +158,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = false,
@@ -174,8 +177,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = true,
@@ -193,8 +196,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = false,
@@ -212,8 +215,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = true,
@@ -231,8 +234,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = false,
@@ -250,8 +253,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = true,
@@ -269,8 +272,8 @@ fun MainNavigation(
                                     },
                                     onNextStage = {
                                         navController.navigateToNextStage(
-                                            stageChain,
-                                            index
+                                            stageChain = stageChain,
+                                            currentIndex = index
                                         )
                                     },
                                     direction = false,

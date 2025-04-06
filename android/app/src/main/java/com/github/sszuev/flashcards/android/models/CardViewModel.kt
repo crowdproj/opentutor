@@ -65,6 +65,12 @@ class CardViewModel(
     private val _additionalCardsDeck = mutableStateOf<List<CardEntity>>(emptyList())
     val additionalCardsDeck: State<List<CardEntity>> = _additionalCardsDeck
 
+    val stageMosaicSelectedLeftCardId = mutableStateOf<String?>(null)
+    val stageMosaicSelectedRightCardId = mutableStateOf<String?>(null)
+    val stageMosaicLeftCards = mutableStateOf<List<CardEntity>>(emptyList())
+    val stageMosaicRightCards = mutableStateOf<List<CardEntity>>(emptyList())
+    private val _isStageMosaicInitialized = mutableStateOf(false)
+
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
             _cards.value.singleOrNull { it.cardId == _selectedCardId.value }
@@ -169,7 +175,8 @@ class CardViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to fetch card data for word '$word': ${e.localizedMessage}"
+                _errorMessage.value =
+                    "Failed to fetch card data for word '$word': ${e.localizedMessage}"
                 Log.e(tag, "Failed to fetch card data", e)
             } finally {
                 _isCardFetching.value = false
@@ -298,6 +305,31 @@ class CardViewModel(
                 _isAdditionalCardsDeckLoading.value = false
             }
         }
+    }
+
+    fun initStageMosaic(
+        selectNumberOfRightAnswers: (dictionaryId: String) -> Int,
+        numberOfWords: Int
+    ) {
+        if (_isStageMosaicInitialized.value) return
+
+        val left = unknownDeckCards(selectNumberOfRightAnswers).shuffled().take(numberOfWords)
+        val right = cardsDeck.value.shuffled()
+
+        stageMosaicLeftCards.value = left
+        stageMosaicRightCards.value = right
+        stageMosaicSelectedLeftCardId.value = null
+        stageMosaicSelectedRightCardId.value = null
+
+        _isStageMosaicInitialized.value = true
+    }
+
+    fun clearFlashcardsSessionState() {
+        stageMosaicLeftCards.value = emptyList()
+        stageMosaicRightCards.value = emptyList()
+        stageMosaicSelectedLeftCardId.value = null
+        stageMosaicSelectedRightCardId.value = null
+        _isStageMosaicInitialized.value = false
     }
 
     fun selectCard(cardId: String?) {

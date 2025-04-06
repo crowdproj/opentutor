@@ -1,7 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -46,6 +45,7 @@ import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,14 +69,14 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.Popup
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.TTSViewModel
-import com.github.sszuev.flashcards.android.utils.getUsernameFromPreferences
+import com.github.sszuev.flashcards.android.utils.username
 
 @Composable
 fun TopBar(
     onSignOut: () -> Unit,
     onHomeClick: () -> Unit,
 ) {
-    val username = getUsernameFromPreferences(LocalContext.current as Activity)
+    val username = LocalContext.current.username()
     val style = MaterialTheme.typography.bodyLarge.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
@@ -178,7 +178,7 @@ fun TableCellWithPopup(
     textColor: Color = Color.DarkGray,
     onShortClick: () -> Unit = {},
 ) {
-    var isPopupVisible by remember { mutableStateOf(false) }
+    var isPopupVisible by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -255,7 +255,7 @@ fun TableCellSelectableWithPopup(
     textColor: Color = Color.DarkGray,
     borderColor: Color = Color.Red
 ) {
-    var isPopupVisible by remember { mutableStateOf(false) }
+    var isPopupVisible by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -590,7 +590,9 @@ fun TextWithPopup(
 
 @Composable
 fun ErrorMessageBox(errorMessage: String?) {
-    if (errorMessage.isNullOrEmpty()) return
+    if (errorMessage.isNullOrEmpty()) {
+        return
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
