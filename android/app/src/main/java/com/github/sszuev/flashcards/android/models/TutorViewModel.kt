@@ -45,6 +45,16 @@ class TutorViewModel(
     val stageMosaicRightCards = mutableStateOf<List<CardEntity>>(emptyList())
     private val _isStageMosaicInitialized = mutableStateOf(false)
 
+    val stageOptionsLeftCards = mutableStateOf<List<CardEntity>>(emptyList())
+    val stageOptionsCardsMap = mutableStateOf<Map<CardEntity, List<CardEntity>>>(emptyMap())
+    val stageOptionsCurrentCard = mutableStateOf<CardEntity?>(null)
+    val stageOptionsSelectedOption = mutableStateOf<CardEntity?>(null)
+    val stageOptionsIsCorrect = mutableStateOf<Boolean?>(null)
+    private val _isStageOptionsInitialized = mutableStateOf(false)
+
+    private val _isAdditionalDeckLoaded = mutableStateOf(false)
+    val isAdditionalDeckLoaded: Boolean get() = _isAdditionalDeckLoaded.value
+
     fun loadNextCardDeck(
         dictionaryIds: Set<String>,
         length: Int,
@@ -87,6 +97,7 @@ class TutorViewModel(
         length: Int,
     ) {
         viewModelScope.launch {
+            Log.d(tag, "load additional card deck with length = $length")
             _isAdditionalCardsDeckLoading.value = true
             _errorMessage.value = null
             _additionalCardsDeck.value = emptyList()
@@ -106,8 +117,8 @@ class TutorViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to load cards deck: ${e.localizedMessage}"
-                Log.e(tag, "Failed to load cards deck", e)
+                _errorMessage.value = "Failed to load additional cards deck: ${e.localizedMessage}"
+                Log.e(tag, "Failed to load additional cards deck", e)
             } finally {
                 _isAdditionalCardsDeckLoading.value = false
             }
@@ -118,7 +129,9 @@ class TutorViewModel(
         selectNumberOfRightAnswers: (dictionaryId: String) -> Int,
         numberOfWords: Int
     ) {
-        if (_isStageMosaicInitialized.value) return
+        if (_isStageMosaicInitialized.value) {
+            return
+        }
 
         val left = unknownDeckCards(selectNumberOfRightAnswers).shuffled().take(numberOfWords)
         val right = cardsDeck.value.shuffled()
@@ -131,12 +144,55 @@ class TutorViewModel(
         _isStageMosaicInitialized.value = true
     }
 
+    fun initStageOptions(
+        selectNumberOfRightAnswers: (dictionaryId: String) -> Int,
+        numberOfWordsPerStage: Int,
+    ) {
+        if (_isStageOptionsInitialized.value) {
+            return
+        }
+        val cards =
+            unknownDeckCards(selectNumberOfRightAnswers).shuffled().take(numberOfWordsPerStage)
+
+        stageOptionsLeftCards.value = cards
+        stageOptionsCurrentCard.value = cards.firstOrNull()
+
+        _isStageOptionsInitialized.value = true
+    }
+
+    fun generateOptionsCardsMap(numberOfVariants: Int) {
+        val leftCards = stageOptionsLeftCards.value
+        val rightCards = additionalCardsDeck.value
+        if (stageOptionsCardsMap.value.isNotEmpty() || leftCards.isEmpty() || rightCards.size < leftCards.size) {
+            return
+        }
+
+        val map = leftCards.associateWith { leftCard ->
+            val variants = (rightCards.shuffled()
+                .take(numberOfVariants - 1) + leftCard)
+                .distinctBy { it.cardId }.shuffled()
+            variants
+        }
+        stageOptionsCardsMap.value = map
+    }
+
     fun clearFlashcardsSessionState() {
         stageMosaicLeftCards.value = emptyList()
         stageMosaicRightCards.value = emptyList()
         stageMosaicSelectedLeftCardId.value = null
         stageMosaicSelectedRightCardId.value = null
         _isStageMosaicInitialized.value = false
+
+        stageOptionsLeftCards.value = emptyList()
+        stageOptionsCardsMap.value = emptyMap()
+        stageOptionsCurrentCard.value = null
+        _isStageOptionsInitialized.value = false
+
+        _isAdditionalDeckLoaded.value = false
+    }
+
+    fun markAdditionalDeckLoaded() {
+        _isAdditionalDeckLoaded.value = true
     }
 
     fun markDeckCardAsKnow(
