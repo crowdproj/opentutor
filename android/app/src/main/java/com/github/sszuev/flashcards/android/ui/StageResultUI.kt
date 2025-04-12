@@ -34,10 +34,9 @@ import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
 
 
-private const val FIRST_COLUMN_WIDTH = 20
-private const val SECOND_COLUMN_WIDTH = 35
-private const val THIRD_COLUMN_WIDTH = 25
-private const val FOURTH_COLUMN_WIDTH = 20
+private const val FIRST_COLUMN_WIDTH = 32
+private const val SECOND_COLUMN_WIDTH = 54
+private const val THIRD_COLUMN_WIDTH = 14
 
 private const val tag = "StageResultUI"
 
@@ -54,10 +53,6 @@ fun StageResultScreen(
 
     fun dictionaryNumberOfRightAnswers(card: CardEntity): Int {
         return dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId)).numberOfRightAnswers
-    }
-
-    fun dictionaryName(card: CardEntity): String {
-        return dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId)).name
     }
 
     val greenCards = tutorViewModel.greenDeckCards { dictionaryNumberOfRightAnswers(it) }
@@ -100,13 +95,8 @@ fun StageResultScreen(
                     containerWidthDp = containerWidthDp
                 )
                 TableCell(
-                    text = "Dictionary",
-                    weight = THIRD_COLUMN_WIDTH,
-                    containerWidthDp = containerWidthDp
-                )
-                TableCell(
                     text = "%",
-                    weight = FOURTH_COLUMN_WIDTH,
+                    weight = THIRD_COLUMN_WIDTH,
                     containerWidthDp = containerWidthDp
                 )
             }
@@ -123,9 +113,6 @@ fun StageResultScreen(
                         card = card,
                         statusColor = Color.Green,
                         containerWidthDp = containerWidthDp,
-                        dictionaryName = {
-                            dictionaryName(it)
-                        },
                         dictionaryNumberOfRightAnswers = { dictionaryNumberOfRightAnswers(it) },
                     )
                 }
@@ -134,9 +121,6 @@ fun StageResultScreen(
                         card = card,
                         statusColor = Color.Blue,
                         containerWidthDp = containerWidthDp,
-                        dictionaryName = {
-                            dictionaryName(it)
-                        },
                         dictionaryNumberOfRightAnswers = { dictionaryNumberOfRightAnswers(it) },
                     )
                 }
@@ -145,9 +129,6 @@ fun StageResultScreen(
                         card = card,
                         statusColor = Color.Red,
                         containerWidthDp = containerWidthDp,
-                        dictionaryName = {
-                            dictionaryName(it)
-                        },
                         dictionaryNumberOfRightAnswers = { dictionaryNumberOfRightAnswers(it) },
                     )
                 }
@@ -161,7 +142,6 @@ fun CardItemRow(
     card: CardEntity,
     statusColor: Color,
     containerWidthDp: Dp,
-    dictionaryName: (CardEntity) -> String,
     dictionaryNumberOfRightAnswers: (CardEntity) -> Int,
 ) {
     Row(
@@ -184,13 +164,8 @@ fun CardItemRow(
             containerWidthDp = containerWidthDp
         )
         TableCell(
-            text = dictionaryName(card),
-            weight = THIRD_COLUMN_WIDTH,
-            containerWidthDp = containerWidthDp
-        )
-        TableCell(
             text = "${100 * card.answered / dictionaryNumberOfRightAnswers(card)}",
-            weight = FOURTH_COLUMN_WIDTH,
+            weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
         )
     }
