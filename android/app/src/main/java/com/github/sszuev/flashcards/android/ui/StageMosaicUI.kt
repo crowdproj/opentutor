@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -62,11 +63,30 @@ fun StageMosaicScreen(
     }
 
     val settings = checkNotNull(settingsViewModel.settings.value)
+
+    val isNavigatingToNextStage = rememberSaveable { mutableStateOf(false) }
+
     LaunchedEffect(Unit) {
         tutorViewModel.initStageMosaic(
             selectNumberOfRightAnswers = { dictionariesViewModel.dictionaryById(it).numberOfRightAnswers },
             numberOfWords = settings.numberOfWordsPerStage
         )
+    }
+
+    LaunchedEffect(tutorViewModel.stageMosaicLeftCards.value) {
+        if (!isNavigatingToNextStage.value && tutorViewModel.stageMosaicLeftCards.value.isEmpty()) {
+            Log.d(tag, "StageMosaic is empty, going to next stage")
+            isNavigatingToNextStage.value = true
+            tutorViewModel.clearFlashcardsSessionState()
+            onNextStage()
+        }
+    }
+
+    if (isNavigatingToNextStage.value) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
     }
 
     Box(modifier = Modifier.fillMaxSize()) {
@@ -201,6 +221,7 @@ fun MosaicPanels(
         }
     }
 
+    Log.d(tag, "Left-cards (${if (direct) "direct" else "reverse"}): ${leftCards.value.size}")
     Row(
         modifier = Modifier
             .fillMaxSize()
@@ -212,7 +233,7 @@ fun MosaicPanels(
                 .padding(end = 8.dp)
                 .border(BorderStroke(1.dp, Color.Gray))
         ) {
-            items(leftCards.value, key = { checkNotNull(it.cardId) }) { item ->
+            items(items = leftCards.value, key = { checkNotNull(it.cardId) }) { item ->
                 val isSelected = selectedLeftId.value == item.cardId
                 val border = color(item.cardId, selectedRightId.value)
                 val onClick = {
@@ -246,7 +267,7 @@ fun MosaicPanels(
                 .padding(start = 8.dp)
                 .border(BorderStroke(1.dp, Color.Gray))
         ) {
-            items(rightCards.value, key = { checkNotNull(it.cardId) }) { item ->
+            items(items = rightCards.value, key = { checkNotNull(it.cardId) }) { item ->
                 val isSelected = selectedRightId.value == item.cardId
                 val border = color(selectedLeftId.value, item.cardId)
                 val onClick = {
