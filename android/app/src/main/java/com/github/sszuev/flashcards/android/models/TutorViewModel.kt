@@ -52,6 +52,13 @@ class TutorViewModel(
     val stageOptionsIsCorrect = mutableStateOf<Boolean?>(null)
     private val _isStageOptionsInitialized = mutableStateOf(false)
 
+    val writingCards = mutableStateOf<List<CardEntity>>(emptyList())
+    val writingCurrentCard = mutableStateOf<CardEntity?>(null)
+    val writingInputText = mutableStateOf("")
+    val writingIsEditable = mutableStateOf(true)
+    val writingIsCorrect = mutableStateOf<Boolean?>(null)
+    private val _isStageWritingInitialized = mutableStateOf(false)
+
     private val _isAdditionalDeckLoaded = mutableStateOf(false)
     val isAdditionalDeckLoaded: Boolean get() = _isAdditionalDeckLoaded.value
 
@@ -160,6 +167,21 @@ class TutorViewModel(
         _isStageOptionsInitialized.value = true
     }
 
+    fun initStageWriting(
+        selectNumberOfRightAnswers: (dictionaryId: String) -> Int,
+        numberOfWordsPerStage: Int
+    ) {
+        if (_isStageWritingInitialized.value) return
+        val cards = unknownDeckCards(selectNumberOfRightAnswers)
+            .shuffled().take(numberOfWordsPerStage)
+        writingCards.value = cards
+        writingCurrentCard.value = cards.firstOrNull()
+        writingInputText.value = ""
+        writingIsEditable.value = true
+        writingIsCorrect.value = null
+        _isStageWritingInitialized.value = true
+    }
+
     fun generateOptionsCardsMap(numberOfVariants: Int) {
         val leftCards = stageOptionsLeftCards.value
         val rightCards = additionalCardsDeck.value
@@ -189,6 +211,17 @@ class TutorViewModel(
         _isStageOptionsInitialized.value = false
 
         _isAdditionalDeckLoaded.value = false
+
+        writingCards.value = emptyList()
+        writingCurrentCard.value = null
+        writingInputText.value = ""
+        writingIsEditable.value = true
+        writingIsCorrect.value = null
+        _isStageWritingInitialized.value = false
+    }
+
+    fun setWritingCards(list: List<CardEntity>) {
+        writingCards.value = list
     }
 
     fun markAdditionalDeckLoaded() {
