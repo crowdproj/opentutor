@@ -169,8 +169,8 @@ fun OptionsPanel(
     }
 
     val errorMessage = tutorViewModel.errorMessage.value
-    ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
+        Log.e(tag, errorMessage)
         return
     }
 

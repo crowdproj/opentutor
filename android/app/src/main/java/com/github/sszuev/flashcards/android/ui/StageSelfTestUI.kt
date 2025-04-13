@@ -121,8 +121,10 @@ fun SelfTestPanels(
     }
 
     val errorMessage = tutorViewModel.errorMessage.value
-    ErrorMessageBox(errorMessage)
-    if (errorMessage != null) return
+    if (errorMessage != null) {
+        Log.e(tag, errorMessage)
+        return
+    }
 
     var isBigButtonVisible by rememberSaveable { mutableStateOf(true) }
     var buttonsEnabled by rememberSaveable { mutableStateOf(false) }

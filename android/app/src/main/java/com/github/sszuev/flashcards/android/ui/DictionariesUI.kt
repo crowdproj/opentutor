@@ -79,6 +79,12 @@ fun DictionariesScreen(
         onHomeClick()
     }
 
+    val errorMessage = dictionariesViewModel.errorMessage.value
+    if (errorMessage != null) {
+        Log.e(tag, errorMessage)
+        return
+    }
+
     val selectedDictionaryIds = dictionariesViewModel.selectedDictionaryIds
     val isEditPopupOpen = rememberSaveable { mutableStateOf(false) }
     val isCreatePopupOpen = rememberSaveable { mutableStateOf(false) }
@@ -163,11 +169,9 @@ fun DictionariesScreen(
         )
     }
     if (isSettingsPopupOpen.value) {
-        val settingsErrorMessage by settingsViewModel.errorMessage
         LaunchedEffect(isSettingsPopupOpen.value) {
             settingsViewModel.loadSettings()
         }
-        ErrorMessageBox(settingsErrorMessage)
 
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -232,7 +236,7 @@ fun DictionaryTable(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
 
-                errorMessage != null -> ErrorMessageBox(errorMessage)
+                errorMessage != null -> Log.e(tag, checkNotNull(errorMessage))
 
                 dictionaries.isEmpty() -> {
                     Text(

@@ -132,8 +132,10 @@ fun WritingPanels(
     }
 
     val errorMessage = tutorViewModel.errorMessage.value
-    ErrorMessageBox(errorMessage)
-    if (errorMessage != null) return
+    if (errorMessage != null) {
+        Log.e(tag, errorMessage)
+        return
+    }
 
     var isEditable by rememberSaveable { mutableStateOf(true) }
     var inputText by rememberSaveable { mutableStateOf("") }

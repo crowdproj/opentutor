@@ -36,6 +36,7 @@ fun MainNavigation(
 ) {
     val settingsErrorMessage by settingsViewModel.errorMessage
     val dictionaryErrorMessage by dictionariesViewModel.errorMessage
+    val cardsErrorMessage by cardsViewModel.errorMessage
 
     LaunchedEffect(Unit) {
         dictionariesViewModel.loadDictionariesInit(Locale.current.language)
@@ -50,6 +51,7 @@ fun MainNavigation(
             TopBar(
                 onSignOut = onSignOut,
                 onHomeClick = {
+                    cardsViewModel.clearError()
                     navController.navigateToDictionariesPage(
                         dictionariesViewModel,
                         settingsViewModel
@@ -61,6 +63,9 @@ fun MainNavigation(
                 ErrorMessageBox(it)
             }
             dictionaryErrorMessage?.let {
+                ErrorMessageBox(it)
+            }
+            cardsErrorMessage?.let {
                 ErrorMessageBox(it)
             }
 
@@ -103,6 +108,12 @@ fun MainNavigation(
                                 dictionary = dictionary,
                                 cardsViewModel = cardsViewModel,
                                 ttsViewModel = ttsViewModel,
+                                onHomeClick = {
+                                    cardsViewModel.clearError()
+                                    navController.navigateToDictionariesPage(
+                                        dictionariesViewModel, settingsViewModel
+                                    )
+                                },
                             )
                         } else {
                             navController.popBackStack("dictionaries", inclusive = false)
@@ -125,6 +136,7 @@ fun MainNavigation(
                                             )
                                         },
                                         onNextStage = {
+                                            cardsViewModel.clearError()
                                             navController.navigateToNextStage(
                                                 stageChain,
                                                 index
@@ -145,6 +157,7 @@ fun MainNavigation(
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index
@@ -165,6 +178,7 @@ fun MainNavigation(
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index
@@ -185,6 +199,7 @@ fun MainNavigation(
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index
@@ -205,6 +220,7 @@ fun MainNavigation(
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index
@@ -220,11 +236,13 @@ fun MainNavigation(
                                     settingsViewModel = settingsViewModel,
                                     ttsViewModel = ttsViewModel,
                                     onHomeClick = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToDictionariesPage(
                                             dictionariesViewModel, settingsViewModel
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index
@@ -245,6 +263,7 @@ fun MainNavigation(
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index
@@ -265,6 +284,7 @@ fun MainNavigation(
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index
@@ -285,6 +305,7 @@ fun MainNavigation(
                                         )
                                     },
                                     onNextStage = {
+                                        cardsViewModel.clearError()
                                         navController.navigateToNextStage(
                                             stageChain = stageChain,
                                             currentIndex = index

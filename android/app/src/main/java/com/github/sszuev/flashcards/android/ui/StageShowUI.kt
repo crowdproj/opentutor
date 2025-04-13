@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
+import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -38,6 +39,8 @@ import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.translationAsString
+
+private const val tag = "StageShowUI"
 
 @Composable
 fun StageShowScreen(
@@ -136,8 +139,8 @@ fun StageShowScreen(
                     .align(Alignment.CenterHorizontally)
             )
 
-            ErrorMessageBox(errorMessage)
-            if (!errorMessage.isNullOrBlank()) {
+            if (errorMessage != null) {
+                Log.e(tag, errorMessage)
                 return
             }
 

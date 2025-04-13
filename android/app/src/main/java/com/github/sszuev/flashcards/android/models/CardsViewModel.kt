@@ -213,6 +213,10 @@ class CardsViewModel(
         }
     }
 
+    fun clearError() {
+        _errorMessage.value = null
+    }
+
     fun selectCard(cardId: String?) {
         _selectedCardId.value = cardId
     }

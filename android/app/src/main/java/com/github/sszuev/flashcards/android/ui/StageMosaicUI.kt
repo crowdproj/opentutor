@@ -131,8 +131,8 @@ fun MosaicPanels(
     val isCorrectAnswerProcessing = rememberSaveable { mutableStateOf(false) }
 
     val errorMessage = tutorViewModel.errorMessage.value
-    ErrorMessageBox(errorMessage)
     if (errorMessage != null) {
+        Log.e(tag, errorMessage)
         return
     }
 

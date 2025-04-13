@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -78,9 +79,21 @@ private const val tag = "CardsUI"
 @Composable
 fun CardsScreen(
     dictionary: DictionaryEntity,
+    onHomeClick: () -> Unit,
     cardsViewModel: CardsViewModel,
     ttsViewModel: TTSViewModel,
 ) {
+
+    BackHandler {
+        onHomeClick()
+    }
+
+    val errorMessage = cardsViewModel.errorMessage.value
+    if (errorMessage != null) {
+        Log.e(tag, errorMessage)
+        return
+    }
+
     val searchQuery = remember { mutableStateOf("") }
     val cards by cardsViewModel.cards
     val listState = rememberLazyListState()
@@ -245,7 +258,7 @@ fun CardsTable(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
 
-                errorMessage != null -> ErrorMessageBox(errorMessage)
+                errorMessage != null -> Log.e(tag, checkNotNull(errorMessage))
 
                 cards.isEmpty() -> {
                     Text(
@@ -504,7 +517,8 @@ fun EditCardDialog(
                             value = word,
                             onValueChange = { word = it },
                             label = { Text("Word") },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier
+                                .weight(1f)
                                 .semantics {
                                     contentDescription = "EditDialogWord"
                                 },
