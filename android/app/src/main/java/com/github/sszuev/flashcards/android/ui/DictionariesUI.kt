@@ -62,9 +62,9 @@ import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
 private const val tag = "DictionariesUI"
 private const val FIRST_COLUMN_WIDTH = 28
-private const val SECOND_COLUMN_WIDTH = 19
-private const val THIRD_COLUMN_WIDTH = 19
-private const val FOURTH_COLUMN_WIDTH = 16
+private const val SECOND_COLUMN_WIDTH = 18
+private const val THIRD_COLUMN_WIDTH = 18
+private const val FOURTH_COLUMN_WIDTH = 18
 private const val FIFTH_COLUMN_WIDTH = 18
 
 @Composable
@@ -363,11 +363,31 @@ fun DictionariesTableRow(
     fifth: String,
     containerWidthDp: Dp
 ) {
-    TableCell(text = first, weight = FIRST_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = second, weight = SECOND_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = third, weight = THIRD_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = fourth, weight = FOURTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = fifth, weight = FIFTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(
+        text = first,
+        weight = FIRST_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = second,
+        weight = SECOND_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = third,
+        weight = THIRD_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = fourth,
+        weight = FOURTH_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = fifth,
+        weight = FIFTH_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
 }
 
 @Composable

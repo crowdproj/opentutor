@@ -65,14 +65,7 @@ fun StageOptionsScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            Text(
-                text = "Stage: options [${if (direction) "source -> target" else "target -> source"}]",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-
+            StageHeader("OPTIONS (${if (direction) "direct" else "reverse"})")
             OptionsPanel(
                 tutorViewModel = tutorViewModel,
                 dictionariesViewModel = dictionariesViewModel,

@@ -143,6 +143,7 @@ fun TableCell(
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
+    softWrap: Boolean = true,
     onClick: (() -> Unit)? = null,
 ) {
     Box(
@@ -163,6 +164,7 @@ fun TableCell(
             lineHeight = lineHeight,
             textColor = textColor,
             fontSize = fontSize,
+            softWrap = softWrap,
         )
     }
 }
@@ -351,7 +353,8 @@ fun TableCellText(
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
-    innerPadding: Dp = 2.dp
+    innerPadding: Dp = 2.dp,
+    softWrap: Boolean = true,
 ) {
     Box(modifier = Modifier.padding(innerPadding)) {
         Text(
@@ -359,7 +362,7 @@ fun TableCellText(
             textAlign = TextAlign.Start,
             maxLines = Int.MAX_VALUE,
             overflow = TextOverflow.Clip,
-            softWrap = true,
+            softWrap = softWrap,
             lineHeight = lineHeight,
             style = MaterialTheme.typography.bodyLarge.copy(
                 fontWeight = FontWeight.Bold,
@@ -689,3 +692,24 @@ fun FadeLazyColumn(
     }
 }
 
+@Composable
+fun StageHeader(text: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onSurface
+            ),
+            modifier = Modifier
+                .padding(12.dp)
+        )
+    }
+}

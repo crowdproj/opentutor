@@ -377,7 +377,7 @@ fun CardsTableRow(
         TableCell(
             text = percentage.toString(),
             weight = THIRD_COLUMN_WIDTH,
-            containerWidthDp = containerWidthDp
+            containerWidthDp = containerWidthDp,
         )
     }
 }

@@ -131,13 +131,7 @@ fun StageShowScreen(
                 .verticalScroll(rememberScrollState())
         ) {
 
-            Text(
-                text = "Stage: show",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
+            StageHeader("SHOW")
 
             if (errorMessage != null) {
                 Log.e(tag, errorMessage)
