@@ -123,10 +123,12 @@ fun Exception.toClientException(): Exception {
             ServerUnavailableException("Server is taking too long to respond.", this)
         }
 
-        else -> this
+        else -> UnknownConnectionException("Something went wrong.", this)
     }
 }
 
 class ServerUnavailableException(message: String, cause: Throwable) : Exception(message, cause)
 
 class InvalidTokenException(message: String, cause: Exception) : Exception(message, cause)
+
+class UnknownConnectionException(message: String, cause: Exception) : Exception(message, cause)

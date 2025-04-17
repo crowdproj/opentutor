@@ -124,7 +124,7 @@ fun OptionsPanel(
     )
 
     val hasPlayedAudio = rememberSaveable { mutableStateOf(false) }
-    if (direct && !hasPlayedAudio.value) {
+    if (direct && !hasPlayedAudio.value && tutorViewModel.isAdditionalDeckLoaded) {
         tutorViewModel.stageOptionsCurrentCard.value?.let { first ->
             LaunchedEffect(first.cardId) {
                 ttsViewModel.loadAndPlayAudio(first)
