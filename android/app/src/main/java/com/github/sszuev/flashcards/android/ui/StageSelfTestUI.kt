@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,21 +32,22 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
-
 
 private const val tag = "StageSelfTestUI"
 
 @Composable
 fun StageSelfTestScreen(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onHomeClick: () -> Unit = {},
@@ -54,7 +55,8 @@ fun StageSelfTestScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageSelfTest")
-    if (cardViewModel.cardsDeck.value.isEmpty()) {
+
+    if (tutorViewModel.cardsDeck.value.isEmpty()) {
         onNextStage()
         return
     }
@@ -65,17 +67,11 @@ fun StageSelfTestScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            Text(
-                text = "Stage: self-test [${if (direction) "source -> target" else "target -> source"}]",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            StageHeader("SELF TEST (${if (direction) "direct" else "reverse"})")
             SelfTestPanels(
-                cardViewModel = cardViewModel,
-                dictionaryViewModel = dictionaryViewModel,
+                tutorViewModel = tutorViewModel,
+                dictionariesViewModel = dictionariesViewModel,
+                cardsViewModel = cardsViewModel,
                 settingsViewModel = settingsViewModel,
                 onNextStage = onNextStage,
                 direct = direction,
@@ -87,71 +83,72 @@ fun StageSelfTestScreen(
 
 @Composable
 fun SelfTestPanels(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit = {},
     direct: Boolean = true,
 ) {
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
-    val cards = remember {
-        cardViewModel.unknownDeckCards { id ->
-            dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
-        }.shuffled().take(settings.numberOfWordsPerStage).toMutableList()
+
+    val cardIds = rememberSaveable {
+        tutorViewModel.unknownDeckCards { id ->
+            dictionariesViewModel.dictionaryById(id).numberOfRightAnswers
+        }.shuffled().take(settings.numberOfWordsPerStage).mapNotNull { it.cardId }
     }
 
-    if (cards.isEmpty()) {
+    val cards = cardIds.mapNotNull { id ->
+        tutorViewModel.cardsDeck.value.find { it.cardId == id }
+    }
+
+    val currentIndex = rememberSaveable { mutableIntStateOf(0) }
+
+    val currentCard = cards.getOrNull(currentIndex.intValue)
+
+    if (cards.isEmpty() || currentCard == null) {
         onNextStage()
         return
     }
 
-    val errorMessage = cardViewModel.errorMessage.value
-    ErrorMessageBox(errorMessage)
+    val errorMessage = tutorViewModel.errorMessage.value
     if (errorMessage != null) {
+        Log.e(tag, errorMessage)
         return
     }
 
-    val currentCard = remember { mutableStateOf(cards.firstOrNull()) }
+    var isBigButtonVisible by rememberSaveable { mutableStateOf(true) }
+    var buttonsEnabled by rememberSaveable { mutableStateOf(false) }
 
-    if (direct) {
-        LaunchedEffect(currentCard.value) {
-            if (currentCard.value == null) {
-                onNextStage()
-                return@LaunchedEffect
-            }
-            currentCard.value?.let { card ->
-                Log.d(tag, "Playing audio for: ${card.word}")
-                ttsViewModel.loadAndPlayAudio(card)
-            }
+    val hasPlayedAudio = rememberSaveable(currentCard.cardId) { mutableStateOf(false) }
+    if (direct && !hasPlayedAudio.value) {
+        LaunchedEffect(currentCard.cardId) {
+            Log.d(tag, "Playing audio for: ${currentCard.word}")
+            ttsViewModel.loadAndPlayAudio(currentCard)
+            hasPlayedAudio.value = true
         }
     }
-
-    var isBigButtonVisible by remember { mutableStateOf(true) }
-    var buttonsEnabled by remember { mutableStateOf(false) }
-
     fun onNextCard(result: Boolean) {
-        val card = cards[0]
-        currentCard.value = card
+        if (result) {
+            val cardId = checkNotNull(currentCard.cardId)
+            val dictionary =
+                dictionariesViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
+            tutorViewModel.updateDeckCard(
+                cardId = cardId,
+                numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                updateCard = { cardsViewModel.updateCard(it) }
+            )
+        } else {
+            tutorViewModel.markDeckCardAsWrong(checkNotNull(currentCard.cardId))
+        }
 
-        cards.removeAt(0)
-        currentCard.value = cards.firstOrNull()
+        currentIndex.intValue++
 
         isBigButtonVisible = true
         buttonsEnabled = false
 
-        if (result) {
-            val cardId = checkNotNull(card.cardId)
-            val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-            cardViewModel.updateDeckCard(
-                cardId,
-                dictionary.numberOfRightAnswers
-            )
-        } else {
-            cardViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
-        }
-
-        if (cards.isEmpty()) {
+        if (currentIndex.intValue >= cards.size) {
             onNextStage()
         }
     }
@@ -163,11 +160,6 @@ fun SelfTestPanels(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
-        val card = currentCard.value
-        if (card == null) {
-            onNextStage()
-            return
-        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -176,18 +168,20 @@ fun SelfTestPanels(
             verticalAlignment = Alignment.CenterVertically
         ) {
             val dictionary =
-                dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+                dictionariesViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
 
-            if (direct || isTextShort(card.translationAsString)) {
+            if (direct || isTextShort(currentCard.translationAsString)) {
                 Text(
-                    text = if (direct) card.word else card.translationAsString,
+                    text = if (direct) currentCard.word else currentCard.translationAsString,
                     style = MaterialTheme.typography.displayMedium,
+                    fontSize = 28.sp,
+                    lineHeight = 36.sp,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
                         .weight(1f)
                 )
             } else {
-                val txt = card.translationAsString
+                val txt = currentCard.translationAsString
                 TextWithPopup(
                     shortText = shortText(txt),
                     fullText = txt,
@@ -196,23 +190,24 @@ fun SelfTestPanels(
                     lineHeight = 36.sp,
                     modifier = Modifier
                         .padding(bottom = 8.dp)
-                        .weight(1f),
+                        .weight(1f)
                 )
             }
+
             Row(
                 modifier = Modifier.weight(0.5f),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.End
             ) {
                 Text(
-                    text = "[${(card.answered * 100) / dictionary.numberOfRightAnswers}%]",
+                    text = "[${(currentCard.answered * 100) / dictionary.numberOfRightAnswers}%]",
                     style = MaterialTheme.typography.bodyLarge,
                     modifier = Modifier.padding(end = 8.dp)
                 )
                 if (direct) {
                     AudioPlayerIcon(
                         ttsViewModel = ttsViewModel,
-                        card = card,
+                        card = currentCard,
                         modifier = Modifier.size(64.dp),
                         size = 64.dp
                     )
@@ -225,6 +220,7 @@ fun SelfTestPanels(
         val density = LocalDensity.current
         val containerWidthDp = with(density) { containerWidthPx.toDp() }
         val containerHeightDp = with(density) { containerHeightPx.toDp() }
+
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -235,7 +231,7 @@ fun SelfTestPanels(
                     containerHeightPx = size.height
                 }
                 .padding(16.dp),
-            contentAlignment = Alignment.Center,
+            contentAlignment = Alignment.Center
         ) {
             if (isBigButtonVisible) {
                 Box(
@@ -247,8 +243,8 @@ fun SelfTestPanels(
                             isBigButtonVisible = false
                             buttonsEnabled = true
                             if (!direct) {
-                                Log.d(tag, "Playing audio for: ${card.word}")
-                                ttsViewModel.loadAndPlayAudio(card)
+                                Log.d(tag, "Playing audio for: ${currentCard.word}")
+                                ttsViewModel.loadAndPlayAudio(currentCard)
                             }
                         },
                     contentAlignment = Alignment.Center
@@ -265,7 +261,7 @@ fun SelfTestPanels(
                 }
             } else {
                 Text(
-                    text = if (direct) card.translationAsString else card.word,
+                    text = if (direct) currentCard.translationAsString else currentCard.word,
                     style = MaterialTheme.typography.bodyLarge.copy(
                         fontSize = 28.sp,
                         lineHeight = 32.sp

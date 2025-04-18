@@ -1,7 +1,6 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -11,8 +10,10 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
@@ -20,7 +21,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListScope
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.VolumeUp
 import androidx.compose.material.icons.filled.Close
@@ -36,12 +41,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithContent
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
@@ -60,14 +69,14 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.Popup
 import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.TTSViewModel
-import com.github.sszuev.flashcards.android.utils.getUsernameFromPreferences
+import com.github.sszuev.flashcards.android.utils.username
 
 @Composable
 fun TopBar(
     onSignOut: () -> Unit,
     onHomeClick: () -> Unit,
 ) {
-    val username = getUsernameFromPreferences(LocalContext.current as Activity)
+    val username = LocalContext.current.username()
     val style = MaterialTheme.typography.bodyLarge.copy(
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp,
@@ -134,6 +143,7 @@ fun TableCell(
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
+    softWrap: Boolean = true,
     onClick: (() -> Unit)? = null,
 ) {
     Box(
@@ -154,6 +164,7 @@ fun TableCell(
             lineHeight = lineHeight,
             textColor = textColor,
             fontSize = fontSize,
+            softWrap = softWrap,
         )
     }
 }
@@ -169,7 +180,7 @@ fun TableCellWithPopup(
     textColor: Color = Color.DarkGray,
     onShortClick: () -> Unit = {},
 ) {
-    var isPopupVisible by remember { mutableStateOf(false) }
+    var isPopupVisible by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
@@ -219,8 +230,8 @@ fun TableCellSelectable(
             .fillMaxWidth()
             .padding(4.dp)
             .border(
-                BorderStroke(2.dp, if (isSelected) borderColor else Color.Transparent),
-                shape = MaterialTheme.shapes.small
+                border = BorderStroke(2.dp, if (isSelected) borderColor else Color.LightGray),
+                shape = RoundedCornerShape(4.dp)
             )
             .clickable { onSelect() },
         contentAlignment = Alignment.CenterStart
@@ -229,7 +240,8 @@ fun TableCellSelectable(
             text = text,
             fontSize = fontSize,
             lineHeight = lineHeight,
-            textColor = textColor
+            textColor = textColor,
+            innerPadding = 8.dp,
         )
     }
 }
@@ -245,14 +257,14 @@ fun TableCellSelectableWithPopup(
     textColor: Color = Color.DarkGray,
     borderColor: Color = Color.Red
 ) {
-    var isPopupVisible by remember { mutableStateOf(false) }
+    var isPopupVisible by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .fillMaxWidth()
             .padding(4.dp)
             .border(
-                BorderStroke(2.dp, if (isSelected) borderColor else Color.Transparent),
+                BorderStroke(2.dp, if (isSelected) borderColor else Color.LightGray),
                 shape = MaterialTheme.shapes.small
             )
             .pointerInput(Unit) {
@@ -267,7 +279,8 @@ fun TableCellSelectableWithPopup(
             text = shortText,
             fontSize = fontSize,
             lineHeight = lineHeight,
-            textColor = textColor
+            textColor = textColor,
+            innerPadding = 8.dp,
         )
 
         if (isPopupVisible) {
@@ -297,7 +310,14 @@ fun TablePopup(
             colors = CardDefaults.cardColors(
                 containerColor = MaterialTheme.colorScheme.surface
             ),
-            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+            modifier = Modifier
+                .padding(8.dp)
+                .border(
+                    width = 1.dp,
+                    color = MaterialTheme.colorScheme.outline,
+                    shape = MaterialTheme.shapes.medium
+                )
         ) {
             Column {
                 Row(
@@ -333,21 +353,25 @@ fun TableCellText(
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
+    innerPadding: Dp = 2.dp,
+    softWrap: Boolean = true,
 ) {
-    Text(
-        text = text,
-        textAlign = TextAlign.Start,
-        maxLines = Int.MAX_VALUE,
-        overflow = TextOverflow.Clip,
-        softWrap = true,
-        lineHeight = lineHeight,
-        style = MaterialTheme.typography.bodyLarge.copy(
-            fontWeight = FontWeight.Bold,
-            color = textColor,
-            fontSize = fontSize,
-            letterSpacing = 0.5.sp,
+    Box(modifier = Modifier.padding(innerPadding)) {
+        Text(
+            text = text,
+            textAlign = TextAlign.Start,
+            maxLines = Int.MAX_VALUE,
+            overflow = TextOverflow.Clip,
+            softWrap = softWrap,
+            lineHeight = lineHeight,
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontWeight = FontWeight.Bold,
+                color = textColor,
+                fontSize = fontSize,
+                letterSpacing = 0.5.sp,
+            )
         )
-    )
+    }
 }
 
 @Composable
@@ -541,7 +565,14 @@ fun TextWithPopup(
                     colors = CardDefaults.cardColors(
                         containerColor = MaterialTheme.colorScheme.surface
                     ),
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+                    modifier = Modifier
+                        .padding(8.dp)
+                        .border(
+                            width = 1.dp,
+                            color = MaterialTheme.colorScheme.outline,
+                            shape = MaterialTheme.shapes.medium
+                        )
                 ) {
                     Column {
                         Row(
@@ -576,7 +607,9 @@ fun TextWithPopup(
 
 @Composable
 fun ErrorMessageBox(errorMessage: String?) {
-    if (errorMessage.isNullOrEmpty()) return
+    if (errorMessage.isNullOrEmpty()) {
+        return
+    }
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {
@@ -597,5 +630,86 @@ fun ErrorMessageBox(errorMessage: String?) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun FadeLazyColumn(
+    modifier: Modifier = Modifier,
+    topFadeHeight: Float = 100f,
+    bottomFadeHeight: Float = 100f,
+    contentPadding: PaddingValues = PaddingValues(0.dp),
+    listState: LazyListState = rememberLazyListState(),
+    content: LazyListScope.() -> Unit,
+) {
+    val showTopFade by remember {
+        derivedStateOf {
+            val firstVisible = listState.layoutInfo.visibleItemsInfo.firstOrNull()?.index ?: 0
+            firstVisible > 0
+        }
+    }
+
+    val showBottomFade by remember {
+        derivedStateOf {
+            val layoutInfo = listState.layoutInfo
+            val visibleCount = layoutInfo.visibleItemsInfo.size
+            val totalCount = layoutInfo.totalItemsCount
+            val lastVisible = layoutInfo.visibleItemsInfo.lastOrNull()?.index ?: 0
+            totalCount > visibleCount && lastVisible < totalCount - 1
+        }
+    }
+
+    Box(
+        modifier = modifier
+            .drawWithContent {
+                drawContent()
+                if (showTopFade) {
+                    drawRect(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.White, Color.Transparent),
+                            startY = 0f,
+                            endY = topFadeHeight
+                        )
+                    )
+                }
+                if (showBottomFade) {
+                    drawRect(
+                        Brush.verticalGradient(
+                            colors = listOf(Color.Transparent, Color.White),
+                            startY = size.height - bottomFadeHeight,
+                            endY = size.height
+                        )
+                    )
+                }
+            }
+    ) {
+        LazyColumn(
+            state = listState,
+            contentPadding = contentPadding,
+            modifier = Modifier.fillMaxSize(),
+            content = content
+        )
+    }
+}
+
+@Composable
+fun StageHeader(text: String) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp, vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline)
+    ) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.headlineMedium.copy(
+                fontWeight = FontWeight.ExtraBold,
+                color = MaterialTheme.colorScheme.onSurface
+            ),
+            modifier = Modifier
+                .padding(12.dp)
+        )
     }
 }

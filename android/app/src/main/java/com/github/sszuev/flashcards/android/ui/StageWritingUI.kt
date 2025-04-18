@@ -8,10 +8,8 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -26,6 +24,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,11 +40,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewModelScope
 import com.github.sszuev.flashcards.android.STAGE_WRITING_BUTTONS_DELAY_MS
-import com.github.sszuev.flashcards.android.entities.CardEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.correctAnswerIndexOf
 import com.github.sszuev.flashcards.android.utils.isTextShort
 import com.github.sszuev.flashcards.android.utils.shortText
@@ -58,8 +57,9 @@ private const val tag = "StageWritingUI"
 
 @Composable
 fun StageWritingScreen(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onHomeClick: () -> Unit = {},
@@ -67,7 +67,7 @@ fun StageWritingScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageWriting")
-    if (cardViewModel.cardsDeck.value.isEmpty()) {
+    if (tutorViewModel.cardsDeck.value.isEmpty()) {
         onNextStage()
         return
     }
@@ -77,17 +77,12 @@ fun StageWritingScreen(
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
-            Text(
-                text = "Stage: writing [${if (direction) "source -> target" else "target -> source"}]",
-                style = MaterialTheme.typography.headlineSmall,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+            StageHeader("WRITING (${if (direction) "direct" else "reverse"})")
+
             WritingPanels(
-                cardViewModel = cardViewModel,
-                dictionaryViewModel = dictionaryViewModel,
+                tutorViewModel = tutorViewModel,
+                dictionariesViewModel = dictionariesViewModel,
+                cardsViewModel = cardsViewModel,
                 settingsViewModel = settingsViewModel,
                 ttsViewModel = ttsViewModel,
                 onNextStage = onNextStage,
@@ -99,110 +94,100 @@ fun StageWritingScreen(
 
 @Composable
 fun WritingPanels(
-    cardViewModel: CardViewModel,
-    dictionaryViewModel: DictionaryViewModel,
+    tutorViewModel: TutorViewModel,
+    dictionariesViewModel: DictionariesViewModel,
+    cardsViewModel: CardsViewModel,
     settingsViewModel: SettingsViewModel,
     ttsViewModel: TTSViewModel,
     onNextStage: () -> Unit,
     direct: Boolean,
 ) {
     val settings = checkNotNull(settingsViewModel.settings.value) { "no settings" }
-    val cards = remember {
-        cardViewModel.unknownDeckCards { id ->
-            dictionaryViewModel.dictionaryById(id).numberOfRightAnswers
-        }.shuffled().take(settings.numberOfWordsPerStage).toMutableList()
+
+    // save cardIds and currentIndex
+    val cardIds = rememberSaveable {
+        tutorViewModel.unknownDeckCards { id ->
+            dictionariesViewModel.dictionaryById(id).numberOfRightAnswers
+        }.shuffled().take(settings.numberOfWordsPerStage).mapNotNull { it.cardId }
     }
 
-    if (cards.isEmpty()) {
+    val cards = cardIds.mapNotNull { id ->
+        tutorViewModel.cardsDeck.value.find { it.cardId == id }
+    }
+
+    val currentIndex = rememberSaveable { mutableIntStateOf(0) }
+
+    val card = cards.getOrNull(currentIndex.intValue)
+    if (card == null) {
         onNextStage()
         return
     }
 
-    val errorMessage = cardViewModel.errorMessage.value
-    ErrorMessageBox(errorMessage)
+    val errorMessage = tutorViewModel.errorMessage.value
     if (errorMessage != null) {
+        Log.e(tag, errorMessage)
         return
     }
 
-    val currentCard = remember { mutableStateOf(cards.firstOrNull()) }
-    var isEditable by remember { mutableStateOf(true) }
-    var inputText by remember { mutableStateOf("") }
-    var isCorrect by remember { mutableStateOf(false) }
+    var isEditable by rememberSaveable { mutableStateOf(true) }
+    var inputText by rememberSaveable { mutableStateOf("") }
+    var isCorrect by rememberSaveable { mutableStateOf(false) }
 
-    if (direct) {
-        LaunchedEffect(currentCard.value) {
-            if (currentCard.value == null) {
-                onNextStage()
-                return@LaunchedEffect
-            }
-            currentCard.value?.let { card ->
-                Log.d(tag, "Playing audio for: ${card.word}")
-                ttsViewModel.loadAndPlayAudio(card)
-            }
+    val hasPlayedAudio = rememberSaveable(card.cardId) { mutableStateOf(false) }
+    if (direct && !hasPlayedAudio.value) {
+        LaunchedEffect(card.cardId) {
+            Log.d(tag, "Playing audio for: ${card.word}")
+            ttsViewModel.loadAndPlayAudio(card)
+            hasPlayedAudio.value = true
         }
     }
 
-    fun onNextCard() {
-        val card = cards[0]
-        currentCard.value = card
-
-        cards.removeAt(0)
-        currentCard.value = cards.firstOrNull()
-
-        inputText = ""
-        isEditable = true
-
-        if (cards.isEmpty()) {
-            onNextStage()
-        }
-    }
-
-    fun checkAnswer(userInput: String, card: CardEntity): Boolean {
-        val expected = if (direct) {
-            card.translation
-        } else {
-            wordAsList(card.word)
-        }
+    fun checkAnswer(userInput: String): Boolean {
+        val expected = if (direct) card.translation else wordAsList(card.word)
         val res = correctAnswerIndexOf(expected, userInput)
         return if (res == -1) {
-            Log.i(tag, "Answer is incorrect. input: $userInput, translations: $expected")
-            cardViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
+            tutorViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
             false
         } else {
-            Log.i(tag, "Answer is correct. input: $userInput, translations: $expected")
             val cardId = checkNotNull(card.cardId)
-            val dictionary = dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
-            cardViewModel.updateDeckCard(
-                cardId,
-                dictionary.numberOfRightAnswers
+            val dictionary = dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+            tutorViewModel.updateDeckCard(
+                cardId = cardId,
+                numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                updateCard = { cardsViewModel.updateCard(it) }
             )
             true
         }
     }
 
+    fun onNextCard() {
+        currentIndex.intValue++
+        isEditable = true
+        inputText = ""
+        if (currentIndex.intValue >= cards.size) {
+            onNextStage()
+        }
+    }
+
+    // UI
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
             .imePadding()
             .padding(horizontal = 16.dp, vertical = 8.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
+        verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         item {
-            val card = currentCard.value
-            if (card == null) {
-                onNextStage()
-                return@item
-            }
-            val dictionary =
-                dictionaryViewModel.dictionaryById(checkNotNull(card.dictionaryId))
+            val dictionary = dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
 
             if (direct || isTextShort(card.translationAsString)) {
                 Text(
                     text = if (direct) card.word else card.translationAsString,
                     style = MaterialTheme.typography.displayMedium,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
+                    fontSize = 28.sp,
+                    lineHeight = 36.sp,
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
             } else {
                 val txt = card.translationAsString
@@ -212,10 +197,10 @@ fun WritingPanels(
                     style = MaterialTheme.typography.displayMedium,
                     fontSize = 28.sp,
                     lineHeight = 36.sp,
-                    modifier = Modifier
-                        .padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = 8.dp)
                 )
             }
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
@@ -241,29 +226,19 @@ fun WritingPanels(
             if (isEditable) {
                 TextField(
                     value = inputText,
+                    onValueChange = { inputText = it },
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(vertical = 16.dp),
-                    onValueChange = { it: String ->
-                        inputText = it
-                    },
                     textStyle = MaterialTheme.typography.bodyLarge,
-                    readOnly = !isEditable,
-                    enabled = true,
                     singleLine = false,
                     maxLines = 4
                 )
             } else {
                 BasicText(
                     text = buildAnnotatedString {
-                        val card = checkNotNull(currentCard.value)
-                        val expected = if (direct) {
-                            card.translation
-                        } else {
-                            wordAsList(card.word)
-                        }
-                        val correctIndex =
-                            correctAnswerIndexOf(expected, inputText)
+                        val expected = if (direct) card.translation else wordAsList(card.word)
+                        val correctIndex = correctAnswerIndexOf(expected, inputText)
 
                         withStyle(
                             style = if (correctIndex != -1) {
@@ -288,9 +263,7 @@ fun WritingPanels(
                             } else {
                                 append(ex)
                             }
-                            if (index != expected.lastIndex) {
-                                append(", ")
-                            }
+                            if (index != expected.lastIndex) append(", ")
                         }
                     },
                     modifier = Modifier
@@ -302,16 +275,20 @@ fun WritingPanels(
         }
 
         item {
-
-            var buttonsEnabled by remember { mutableStateOf(false) }
-
+            var buttonsEnabled by rememberSaveable { mutableStateOf(false) }
             val alpha by animateFloatAsState(if (buttonsEnabled) 1f else 0.5f)
 
-            LaunchedEffect(currentCard) {
-                Log.d(tag, "DELAY")
-                buttonsEnabled = false
-                delay(STAGE_WRITING_BUTTONS_DELAY_MS)
-                buttonsEnabled = true
+            val lastCardId = rememberSaveable { mutableStateOf<String?>(null) }
+            val cardId = card.cardId
+
+            LaunchedEffect(cardId) {
+                if (cardId != null && cardId != lastCardId.value) {
+                    lastCardId.value = cardId
+                    Log.d(tag, "DELAY")
+                    buttonsEnabled = false
+                    delay(STAGE_WRITING_BUTTONS_DELAY_MS)
+                    buttonsEnabled = true
+                }
             }
 
             Box {
@@ -322,17 +299,13 @@ fun WritingPanels(
                     buttonsEnabled = buttonsEnabled && inputText.isNotBlank(),
                     isEditable = isEditable,
                     onTest = {
-                        val card = checkNotNull(currentCard.value)
-                        isCorrect = checkAnswer(inputText, card)
+                        isCorrect = checkAnswer(inputText)
                         isEditable = false
-
                         buttonsEnabled = false
-                        cardViewModel.viewModelScope.launch {
+                        tutorViewModel.viewModelScope.launch {
                             delay(STAGE_WRITING_BUTTONS_DELAY_MS)
                             buttonsEnabled = true
-                            Log.d(tag, "Delay over: enabling buttons")
                         }
-
                         if (!direct) {
                             ttsViewModel.loadAndPlayAudio(card)
                         }

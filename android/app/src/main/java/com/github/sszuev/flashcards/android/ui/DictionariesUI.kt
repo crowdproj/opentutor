@@ -38,7 +38,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateMapOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -57,40 +56,46 @@ import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.github.sszuev.flashcards.android.entities.DictionaryEntity
 import com.github.sszuev.flashcards.android.entities.SettingsEntity
-import com.github.sszuev.flashcards.android.models.CardViewModel
-import com.github.sszuev.flashcards.android.models.DictionaryViewModel
+import com.github.sszuev.flashcards.android.models.CardsViewModel
+import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
 private const val tag = "DictionariesUI"
 private const val FIRST_COLUMN_WIDTH = 28
-private const val SECOND_COLUMN_WIDTH = 19
-private const val THIRD_COLUMN_WIDTH = 19
-private const val FOURTH_COLUMN_WIDTH = 16
+private const val SECOND_COLUMN_WIDTH = 18
+private const val THIRD_COLUMN_WIDTH = 18
+private const val FOURTH_COLUMN_WIDTH = 18
 private const val FIFTH_COLUMN_WIDTH = 18
 
 @Composable
 fun DictionariesScreen(
     navController: NavHostController,
     onHomeClick: () -> Unit = {},
-    dictionaryViewModel: DictionaryViewModel,
+    dictionariesViewModel: DictionariesViewModel,
     settingsViewModel: SettingsViewModel,
-    cardViewModel: CardViewModel,
+    cardsViewModel: CardsViewModel,
 ) {
     BackHandler {
         onHomeClick()
     }
 
-    val selectedDictionaryIds = dictionaryViewModel.selectedDictionaryIds
-    val isEditPopupOpen = remember { mutableStateOf(false) }
-    val isCreatePopupOpen = remember { mutableStateOf(false) }
-    val isDeletePopupOpen = remember { mutableStateOf(false) }
-    val isSettingsPopupOpen = remember { mutableStateOf(false) }
-    val selectedDictionary = dictionaryViewModel.selectedDictionariesList.firstOrNull()
+    val errorMessage = dictionariesViewModel.errorMessage.value
+    if (errorMessage != null) {
+        Log.e(tag, errorMessage)
+        return
+    }
+
+    val selectedDictionaryIds = dictionariesViewModel.selectedDictionaryIds
+    val isEditPopupOpen = rememberSaveable { mutableStateOf(false) }
+    val isCreatePopupOpen = rememberSaveable { mutableStateOf(false) }
+    val isDeletePopupOpen = rememberSaveable { mutableStateOf(false) }
+    val isSettingsPopupOpen = rememberSaveable { mutableStateOf(false) }
+    val selectedDictionary = dictionariesViewModel.selectedDictionariesList.firstOrNull()
 
     Box(modifier = Modifier.fillMaxSize()) {
         Column {
             DictionaryTable(
-                viewModel = dictionaryViewModel,
+                viewModel = dictionariesViewModel,
             )
         }
         DictionariesBottomToolbar(
@@ -127,18 +132,18 @@ fun DictionariesScreen(
 
     if (isEditPopupOpen.value && selectedDictionary != null) {
         EditDictionaryDialog(
-            viewModel = dictionaryViewModel,
+            viewModel = dictionariesViewModel,
             dictionary = selectedDictionary,
             onSave = {
-                val numberLearnedCards = cardViewModel.numberOfKnownCards(it.numberOfRightAnswers)
-                dictionaryViewModel.updateDictionary(it.copy(learnedWords = numberLearnedCards))
+                val numberLearnedCards = cardsViewModel.numberOfKnownCards(it.numberOfRightAnswers)
+                dictionariesViewModel.updateDictionary(it.copy(learnedWords = numberLearnedCards))
             },
             onDismiss = { isEditPopupOpen.value = false }
         )
     }
     if (isCreatePopupOpen.value) {
         AddDictionaryDialog(
-            viewModel = dictionaryViewModel,
+            viewModel = dictionariesViewModel,
             onSave = { source, target, name, acceptedNum ->
                 val dictionary = DictionaryEntity(
                     dictionaryId = null,
@@ -149,7 +154,7 @@ fun DictionariesScreen(
                     totalWords = 0,
                     learnedWords = 0,
                 )
-                dictionaryViewModel.createDictionary(dictionary)
+                dictionariesViewModel.createDictionary(dictionary)
             },
             onDismiss = { isCreatePopupOpen.value = false }
         )
@@ -159,16 +164,14 @@ fun DictionariesScreen(
             dictionaryName = selectedDictionary.name,
             onClose = { isDeletePopupOpen.value = false },
             onConfirm = {
-                dictionaryViewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
+                dictionariesViewModel.deleteDictionary(checkNotNull(selectedDictionary.dictionaryId))
             }
         )
     }
     if (isSettingsPopupOpen.value) {
-        val settingsErrorMessage by settingsViewModel.errorMessage
         LaunchedEffect(isSettingsPopupOpen.value) {
             settingsViewModel.loadSettings()
         }
-        ErrorMessageBox(settingsErrorMessage)
 
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -194,11 +197,10 @@ fun DictionariesScreen(
 @SuppressLint("ReturnFromAwaitPointerEventScope")
 @Composable
 fun DictionaryTable(
-    viewModel: DictionaryViewModel,
+    viewModel: DictionariesViewModel,
 ) {
     val dictionaries by viewModel.dictionaries
     val isLoading by viewModel.isDictionariesLoading
-    val isLoaded = rememberSaveable { mutableStateOf(false) }
     val errorMessage by viewModel.errorMessage
 
     var containerWidthPx by remember { mutableIntStateOf(0) }
@@ -206,13 +208,6 @@ fun DictionaryTable(
     val containerWidthDp = with(density) { containerWidthPx.toDp() }
 
     val listState = rememberLazyListState()
-
-    LaunchedEffect(Unit) {
-        if (!isLoaded.value) {
-            viewModel.loadDictionariesIfNeeded()
-            isLoaded.value = true
-        }
-    }
 
     LaunchedEffect(dictionaries.size) {
         if (dictionaries.isNotEmpty()) {
@@ -241,7 +236,7 @@ fun DictionaryTable(
                     CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
                 }
 
-                errorMessage != null -> ErrorMessageBox(errorMessage)
+                errorMessage != null -> Log.e(tag, checkNotNull(errorMessage))
 
                 dictionaries.isEmpty() -> {
                     Text(
@@ -251,8 +246,8 @@ fun DictionaryTable(
                 }
 
                 else -> {
-                    LazyColumn(
-                        state = listState,
+                    FadeLazyColumn(
+                        listState = listState,
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(bottom = 145.dp)
@@ -368,11 +363,31 @@ fun DictionariesTableRow(
     fifth: String,
     containerWidthDp: Dp
 ) {
-    TableCell(text = first, weight = FIRST_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = second, weight = SECOND_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = third, weight = THIRD_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = fourth, weight = FOURTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
-    TableCell(text = fifth, weight = FIFTH_COLUMN_WIDTH, containerWidthDp = containerWidthDp)
+    TableCell(
+        text = first,
+        weight = FIRST_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = second,
+        weight = SECOND_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = third,
+        weight = THIRD_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = fourth,
+        weight = FOURTH_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
+    TableCell(
+        text = fifth,
+        weight = FIFTH_COLUMN_WIDTH,
+        containerWidthDp = containerWidthDp,
+    )
 }
 
 @Composable
@@ -461,12 +476,12 @@ fun DictionariesBottomToolbar(
 @Composable
 fun EditDictionaryDialog(
     dictionary: DictionaryEntity,
-    viewModel: DictionaryViewModel,
+    viewModel: DictionariesViewModel,
     onSave: (DictionaryEntity) -> Unit,
     onDismiss: () -> Unit,
 ) {
-    var dictionaryName by remember { mutableStateOf(dictionary.name) }
-    var numberOfRightAnswers by remember { mutableStateOf(dictionary.numberOfRightAnswers.toString()) }
+    var dictionaryName by rememberSaveable { mutableStateOf(dictionary.name) }
+    var numberOfRightAnswers by rememberSaveable { mutableStateOf(dictionary.numberOfRightAnswers.toString()) }
 
     Dialog(
         onDismissRequest = onDismiss
@@ -551,14 +566,14 @@ fun EditDictionaryDialog(
 
 @Composable
 fun AddDictionaryDialog(
-    viewModel: DictionaryViewModel,
+    viewModel: DictionariesViewModel,
     onSave: (String, String, String, Int) -> Unit,
     onDismiss: () -> Unit
 ) {
-    var dictionaryName by remember { mutableStateOf("") }
-    var numberOfRightAnswers by remember { mutableStateOf("15") }
-    var selectedSourceLanguageTag by remember { mutableStateOf<String?>(null) }
-    var selectedTargetLanguageTag by remember { mutableStateOf<String?>(null) }
+    var dictionaryName by rememberSaveable { mutableStateOf("") }
+    var numberOfRightAnswers by rememberSaveable { mutableStateOf("15") }
+    var selectedSourceLanguageTag by rememberSaveable { mutableStateOf<String?>(null) }
+    var selectedTargetLanguageTag by rememberSaveable { mutableStateOf<String?>(null) }
 
     Dialog(onDismissRequest = onDismiss) {
         Box(
@@ -601,7 +616,8 @@ fun AddDictionaryDialog(
                     TextField(
                         value = dictionaryName,
                         onValueChange = { dictionaryName = it },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
                             .semantics {
                                 contentDescription = "DictionaryName"
                             }
@@ -612,7 +628,8 @@ fun AddDictionaryDialog(
                     Text(
                         text = "ACCEPTED ANSWERS:",
                         style = MaterialTheme.typography.bodyLarge,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier
+                            .padding(top = 8.dp)
                             .semantics {
                                 contentDescription = "AcceptedAnswers"
                             }
@@ -690,22 +707,24 @@ fun EditSettingsDialog(
     initialSettings: SettingsEntity,
 ) {
     val showWordsCount =
-        remember { mutableStateOf(initialSettings.stageShowNumberOfWords.toString()) }
+        rememberSaveable { mutableStateOf(initialSettings.stageShowNumberOfWords.toString()) }
     val optionsVariantsCount =
-        remember { mutableStateOf(initialSettings.stageOptionsNumberOfVariants.toString()) }
+        rememberSaveable { mutableStateOf(initialSettings.stageOptionsNumberOfVariants.toString()) }
     val wordsPerStageCount =
-        remember { mutableStateOf(initialSettings.numberOfWordsPerStage.toString()) }
+        rememberSaveable { mutableStateOf(initialSettings.numberOfWordsPerStage.toString()) }
 
-    val checkboxStates = remember {
-        mutableStateMapOf(
-            "mosaicSourceTarget" to initialSettings.stageMosaicSourceLangToTargetLang,
-            "optionsSourceTarget" to initialSettings.stageOptionsSourceLangToTargetLang,
-            "writingSourceTarget" to initialSettings.stageWritingSourceLangToTargetLang,
-            "selfTestSourceTarget" to initialSettings.stageSelfTestSourceLangToTargetLang,
-            "mosaicTargetSource" to initialSettings.stageMosaicTargetLangToSourceLang,
-            "optionsTargetSource" to initialSettings.stageOptionsTargetLangToSourceLang,
-            "writingTargetSource" to initialSettings.stageWritingTargetLangToSourceLang,
-            "selfTestTargetSource" to initialSettings.stageSelfTestTargetLangToSourceLang,
+    val checkboxStates = rememberSaveable {
+        mutableStateOf(
+            mapOf(
+                "mosaicSourceTarget" to initialSettings.stageMosaicSourceLangToTargetLang,
+                "optionsSourceTarget" to initialSettings.stageOptionsSourceLangToTargetLang,
+                "writingSourceTarget" to initialSettings.stageWritingSourceLangToTargetLang,
+                "selfTestSourceTarget" to initialSettings.stageSelfTestSourceLangToTargetLang,
+                "mosaicTargetSource" to initialSettings.stageMosaicTargetLangToSourceLang,
+                "optionsTargetSource" to initialSettings.stageOptionsTargetLangToSourceLang,
+                "writingTargetSource" to initialSettings.stageWritingTargetLangToSourceLang,
+                "selfTestTargetSource" to initialSettings.stageSelfTestTargetLangToSourceLang,
+            )
         )
     }
 
@@ -793,9 +812,10 @@ fun EditSettingsDialog(
                             modifier = Modifier.weight(1f)
                         )
                         Checkbox(
-                            checked = checkboxStates[id] ?: false,
+                            checked = checkboxStates.value[id] ?: false,
                             onCheckedChange = { checked ->
-                                checkboxStates[id] = checked
+                                checkboxStates.value =
+                                    checkboxStates.value.toMutableMap().apply { put(id, checked) }
                             }
                         )
                     }
@@ -818,21 +838,21 @@ fun EditSettingsDialog(
                                     ?: initialSettings.stageOptionsNumberOfVariants,
                                 numberOfWordsPerStage = wordsPerStageCount.value.toIntOrNull()
                                     ?: initialSettings.numberOfWordsPerStage,
-                                stageMosaicSourceLangToTargetLang = checkboxStates["mosaicSourceTarget"]
+                                stageMosaicSourceLangToTargetLang = checkboxStates.value["mosaicSourceTarget"]
                                     ?: false,
-                                stageOptionsSourceLangToTargetLang = checkboxStates["optionsSourceTarget"]
+                                stageOptionsSourceLangToTargetLang = checkboxStates.value["optionsSourceTarget"]
                                     ?: false,
-                                stageWritingSourceLangToTargetLang = checkboxStates["writingSourceTarget"]
+                                stageWritingSourceLangToTargetLang = checkboxStates.value["writingSourceTarget"]
                                     ?: false,
-                                stageSelfTestSourceLangToTargetLang = checkboxStates["selfTestSourceTarget"]
+                                stageSelfTestSourceLangToTargetLang = checkboxStates.value["selfTestSourceTarget"]
                                     ?: false,
-                                stageMosaicTargetLangToSourceLang = checkboxStates["mosaicTargetSource"]
+                                stageMosaicTargetLangToSourceLang = checkboxStates.value["mosaicTargetSource"]
                                     ?: false,
-                                stageOptionsTargetLangToSourceLang = checkboxStates["optionsTargetSource"]
+                                stageOptionsTargetLangToSourceLang = checkboxStates.value["optionsTargetSource"]
                                     ?: false,
-                                stageWritingTargetLangToSourceLang = checkboxStates["writingTargetSource"]
+                                stageWritingTargetLangToSourceLang = checkboxStates.value["writingTargetSource"]
                                     ?: false,
-                                stageSelfTestTargetLangToSourceLang = checkboxStates["selfTestTargetSource"]
+                                stageSelfTestTargetLangToSourceLang = checkboxStates.value["selfTestTargetSource"]
                                     ?: false,
                             )
                             onSave(updatedSettings)

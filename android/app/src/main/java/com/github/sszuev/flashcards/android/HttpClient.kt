@@ -8,7 +8,11 @@ import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
 
 val httpClient: HttpClient = HttpClient(Android) {
-    install(HttpTimeout)
+    install(HttpTimeout) {
+        requestTimeoutMillis = 9_000
+        connectTimeoutMillis = 5_000
+        socketTimeoutMillis = 10_000
+    }
     expectSuccess = true
 
     install(ContentNegotiation) {

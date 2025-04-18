@@ -2,11 +2,14 @@ package com.github.sszuev.flashcards.android.repositories
 
 import android.content.Context
 import android.util.Log
+import androidx.core.content.edit
 import com.github.sszuev.flashcards.android.AppConfig
 import com.github.sszuev.flashcards.android.AppContextProvider
 import com.github.sszuev.flashcards.android.httpClient
 import io.ktor.client.call.body
+import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
+import io.ktor.client.plugins.HttpRequestTimeoutException
 import io.ktor.client.plugins.ResponseException
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.post
@@ -52,12 +55,8 @@ suspend inline fun <reified T> authPost(
                 throw e
             }
         }
-    } catch (e: UnknownHostException) {
-        Log.e("HttpApi", "Network error: server unavailable", e)
-        throw ServerUnavailableException("Server is unreachable. Check your connection.", e)
-    } catch (e: SocketTimeoutException) {
-        Log.e("HttpApi", "Network timeout", e)
-        throw ServerUnavailableException("Server is taking too long to respond.", e)
+    } catch (e: Exception) {
+        throw e.toClientException()
     }
 }
 
@@ -91,17 +90,13 @@ suspend fun refreshToken() {
         } else {
             throw e
         }
-    } catch (e: UnknownHostException) {
-        Log.e("HttpApi", "Network error: server unavailable", e)
-        throw ServerUnavailableException("Server is unreachable. Check your connection.", e)
-    } catch (e: SocketTimeoutException) {
-        Log.e("HttpApi", "Network timeout", e)
-        throw ServerUnavailableException("Server is taking too long to respond.", e)
+    } catch (e: Exception) {
+        throw e.toClientException()
     }
-    prefs.edit()
-        .putString("access_token", response.access_token)
-        .putString("refresh_token", response.refresh_token)
-        .apply()
+    prefs.edit {
+        putString("access_token", response.access_token)
+            .putString("refresh_token", response.refresh_token)
+    }
     Log.d("HttpApi", "refresh succeeds")
 }
 
@@ -114,6 +109,26 @@ data class TokenResponse(
     val refresh_expires_in: Int,
 )
 
+fun Exception.toClientException(): Exception {
+    return when (this) {
+        is UnknownHostException -> {
+            Log.e("HttpApi", "Network error: server unavailable", this)
+            ServerUnavailableException("Server is unreachable. Check your connection.", this)
+        }
+
+        is SocketTimeoutException,
+        is ConnectTimeoutException,
+        is HttpRequestTimeoutException -> {
+            Log.e("HttpApi", "Timeout", this)
+            ServerUnavailableException("Server is taking too long to respond.", this)
+        }
+
+        else -> UnknownConnectionException("Something went wrong.", this)
+    }
+}
+
 class ServerUnavailableException(message: String, cause: Throwable) : Exception(message, cause)
 
 class InvalidTokenException(message: String, cause: Exception) : Exception(message, cause)
+
+class UnknownConnectionException(message: String, cause: Exception) : Exception(message, cause)

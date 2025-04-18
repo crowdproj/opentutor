@@ -16,8 +16,8 @@ class DictionariesViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DictionaryViewModel::class.java)) {
-            return DictionaryViewModel(repository, signOut) as T
+        if (modelClass.isAssignableFrom(DictionariesViewModel::class.java)) {
+            return DictionariesViewModel(repository, signOut) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
@@ -31,10 +31,27 @@ class CardsViewModelFactory(
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(CardViewModel::class.java)) {
-            return CardViewModel(
+        if (modelClass.isAssignableFrom(CardsViewModel::class.java)) {
+            return CardsViewModel(
                 cardsRepository = cardsRepository,
                 translationRepository = translationRepository,
+                signOut = signOut,
+            ) as T
+        }
+        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+}
+
+class TutorViewModelFactory(
+    private val cardsRepository: CardsRepository,
+    private val signOut: () -> Unit,
+) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if (modelClass.isAssignableFrom(TutorViewModel::class.java)) {
+            return TutorViewModel(
+                cardsRepository = cardsRepository,
                 signOut = signOut,
             ) as T
         }
