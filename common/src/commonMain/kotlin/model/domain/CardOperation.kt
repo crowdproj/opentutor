@@ -11,6 +11,7 @@ enum class CardOperation: AppOperation {
     UPDATE_CARD,
     DELETE_CARD,
     LEARN_CARDS,
+    RESET_CARDS,
     RESET_CARD,
 }
 

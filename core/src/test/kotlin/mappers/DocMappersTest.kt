@@ -42,7 +42,7 @@ internal class DocMappersTest {
                     )
                 )
             ),
-            answered = 10,
+            answered = 15,
         )
 
         private fun assertSplitWords(expectedSize: Int, givenString: String) {
