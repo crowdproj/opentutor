@@ -43,4 +43,9 @@ interface CardService {
      */
     suspend fun deleteCard(context: CardContext): CardContext
 
+    /**
+     * Reset all cards.
+     */
+    suspend fun resetAllCards(context: CardContext): CardContext
+
 }

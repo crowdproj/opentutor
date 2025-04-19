@@ -95,7 +95,7 @@ fun ChainDSL<CardContext>.normalizers(operation: CardOperation) = worker(
             this.normalizedRequestCardFilter = this.requestCardFilter.normalize()
         }
 
-        CardOperation.GET_ALL_CARDS -> {
+        CardOperation.GET_ALL_CARDS, CardOperation.RESET_CARDS -> {
             this.normalizedRequestDictionaryId = this.requestDictionaryId.normalize()
         }
 

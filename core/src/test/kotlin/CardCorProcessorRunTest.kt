@@ -676,6 +676,63 @@ internal class CardCorProcessorRunTest {
     }
 
     @Test
+    fun `test reset-cards success`() = runTest {
+        val testCards = listOf(
+            testCardEntity1.copy(
+                cardId = CardId("1"),
+                stats = mapOf(Stage.SELF_TEST to 42, Stage.OPTIONS to 13),
+                answered = 42,
+            ),
+            testCardEntity2.copy(
+                cardId = CardId("2"),
+                stats = mapOf(Stage.WRITING to 42, Stage.MOSAIC to 13),
+                answered = 13,
+            )
+        )
+        var actualCards: List<DbCard> = emptyList()
+
+        val cardRepository = MockDbCardRepository(
+            invokeUpdateCards = { givenCards ->
+                actualCards = givenCards.toList()
+                actualCards
+            },
+            invokeFindCardsByDictionaryId = { givenId ->
+                if (givenId == testDictionaryEntity.dictionaryId.asString()) {
+                    testCards.asSequence().map { it.toDbCard() }
+                } else {
+                    Assertions.fail()
+                }
+            },
+        )
+        val dictionaryRepository = MockDbDictionaryRepository(
+            invokeFindDictionaryById = { givenDictionaryId ->
+                if (testDictionaryEntity.dictionaryId.asString() == givenDictionaryId) {
+                    testDictionaryEntity.toDbDictionary()
+                } else {
+                    Assertions.fail()
+                }
+            }
+        )
+
+        val context = testContext(
+            op = CardOperation.RESET_CARDS,
+            cardRepository = cardRepository,
+            dictionaryRepository = dictionaryRepository,
+        )
+        context.requestDictionaryId = testDictionaryEntity.dictionaryId
+
+        CardCorProcessor().execute(context)
+
+        Assertions.assertEquals(requestId(CardOperation.RESET_CARDS), context.requestId)
+        Assertions.assertEquals(AppStatus.OK, context.status)
+        Assertions.assertEquals(listOf("1", "2"), actualCards.map { it.cardId })
+        actualCards.forEach {
+            Assertions.assertTrue(it.details.isEmpty())
+            Assertions.assertEquals(0, it.answered)
+        }
+    }
+
+    @Test
     fun `test reset-card success`() = runTest {
         val testDictionaryId = DictionaryId("42")
         val testCardId = CardId("42")
@@ -784,6 +841,7 @@ internal class CardCorProcessorRunTest {
 
         var findCardByIdIsCalled = false
         var findCardsByIdInIsCalled = false
+        var findCardsByDictionaryIdIsCalled = false
         val cardRepository = MockDbCardRepository(
             invokeFindCardById = { _ ->
                 findCardByIdIsCalled = true
@@ -791,6 +849,10 @@ internal class CardCorProcessorRunTest {
             },
             invokeFindCardsByIdIn = {
                 findCardsByIdInIsCalled = true
+                sequenceOf(testCardEntity1.toDbCard())
+            },
+            invokeFindCardsByDictionaryId = {
+                findCardsByDictionaryIdIsCalled = true
                 sequenceOf(testCardEntity1.toDbCard())
             }
         )
@@ -806,19 +868,28 @@ internal class CardCorProcessorRunTest {
 
         when (op) {
             CardOperation.NONE -> Assertions.fail()
-            CardOperation.SEARCH_CARDS, CardOperation.GET_ALL_CARDS, CardOperation.CREATE_CARD, CardOperation.UPDATE_CARD -> {
+            CardOperation.SEARCH_CARDS,
+            CardOperation.GET_ALL_CARDS,
+            CardOperation.CREATE_CARD,
+            CardOperation.UPDATE_CARD,
+            CardOperation.RESET_CARDS -> {
                 Assertions.assertFalse(findCardByIdIsCalled)
                 Assertions.assertFalse(findCardsByIdInIsCalled)
+                Assertions.assertFalse(findCardsByDictionaryIdIsCalled)
             }
 
-            CardOperation.GET_CARD, CardOperation.DELETE_CARD, CardOperation.RESET_CARD -> {
+            CardOperation.GET_CARD,
+            CardOperation.DELETE_CARD,
+            CardOperation.RESET_CARD -> {
                 Assertions.assertTrue(findCardByIdIsCalled)
                 Assertions.assertFalse(findCardsByIdInIsCalled)
+                Assertions.assertFalse(findCardsByDictionaryIdIsCalled)
             }
 
             CardOperation.LEARN_CARDS -> {
                 Assertions.assertFalse(findCardByIdIsCalled)
                 Assertions.assertTrue(findCardsByIdInIsCalled)
+                Assertions.assertFalse(findCardsByDictionaryIdIsCalled)
             }
         }
         Assertions.assertEquals(requestId(op), context.requestId)

@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetAllCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
@@ -91,6 +92,15 @@ suspend fun ApplicationCall.deleteCard(
 ) {
     execute<DeleteCardRequest>(CardOperation.DELETE_CARD, logger, contextConfig) {
         service.deleteCard(this)
+    }
+}
+
+suspend fun ApplicationCall.resetAllCards(
+    service: CardService,
+    contextConfig: ContextConfig
+) {
+    execute<ResetAllCardsRequest>(CardOperation.RESET_CARDS, logger, contextConfig) {
+        service.resetAllCards(this)
     }
 }
 

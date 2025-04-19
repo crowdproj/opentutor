@@ -10,6 +10,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.DeleteCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsResponse
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetAllCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardResponse
@@ -31,6 +32,7 @@ fun CardContext.toCardResponse(): BaseResponse = when (val op = this.operation) 
     CardOperation.DELETE_CARD -> this.toDeleteCardResponse()
     CardOperation.LEARN_CARDS -> this.toLearnCardResponse()
     CardOperation.RESET_CARD -> this.toResetCardResponse()
+    CardOperation.RESET_CARDS -> this.toResetAllCardsResponse()
     else -> throw IllegalArgumentException("Not supported operation $op.")
 }
 
@@ -84,6 +86,12 @@ fun CardContext.toLearnCardResponse() = LearnCardsResponse(
 
 fun CardContext.toResetCardResponse() = ResetCardResponse(
     card = this.responseCardEntity.toCardResource(),
+    requestId = this.requestId.toResponseId(),
+    result = this.status.toResponseResult(),
+    errors = this.errors.toErrorResourceList(),
+)
+
+fun CardContext.toResetAllCardsResponse() = ResetAllCardsResponse(
     requestId = this.requestId.toResponseId(),
     result = this.status.toResponseResult(),
     errors = this.errors.toErrorResourceList(),

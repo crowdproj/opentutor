@@ -25,7 +25,7 @@ data class AppConfig(
 ) {
     companion object {
         val DEFAULT = AppConfig(
-            defaultNumberOfRightAnswers = 10,
+            defaultNumberOfRightAnswers = 15,
             defaultStageShowNumberOfWords = 10,
             defaultNumberOfWordsPerStage = 5,
             defaultStageOptionsNumberOfVariants = 6,

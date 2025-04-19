@@ -11,6 +11,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.GetAllCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.GetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetAllCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.SearchCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.UpdateCardRequest
@@ -34,6 +35,7 @@ fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
     is DeleteCardRequest -> fromDeleteCardRequest(request)
     is LearnCardsRequest -> fromLearnCardRequest(request)
     is ResetCardRequest -> fromResetCardRequest(request)
+    is ResetAllCardsRequest -> fromResetAllCardsRequest(request)
     else -> throw IllegalArgumentException("Unknown request ${request.javaClass}")
 }
 
@@ -80,6 +82,11 @@ fun CardContext.fromLearnCardRequest(request: LearnCardsRequest) {
 fun CardContext.fromResetCardRequest(request: ResetCardRequest) {
     this.requestId = request.requestId()
     this.requestCardEntityId = toCardId(request.cardId)
+}
+
+fun CardContext.fromResetAllCardsRequest(request: ResetAllCardsRequest) {
+    this.requestId = request.requestId()
+    this.requestDictionaryId = toDictionaryId(request.dictionaryId)
 }
 
 private fun CardResource.toCardEntity(): CardEntity = CardEntity(

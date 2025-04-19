@@ -9,6 +9,7 @@ import com.gitlab.sszuev.flashcards.core.processes.processGetAllCards
 import com.gitlab.sszuev.flashcards.core.processes.processGetCard
 import com.gitlab.sszuev.flashcards.core.processes.processLearnCards
 import com.gitlab.sszuev.flashcards.core.processes.processResetCard
+import com.gitlab.sszuev.flashcards.core.processes.processResetCards
 import com.gitlab.sszuev.flashcards.core.processes.processUpdateCard
 import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityDictionaryId
 import com.gitlab.sszuev.flashcards.core.validators.validateCardEntityHasNoCardId
@@ -54,7 +55,7 @@ class CardCorProcessor {
                 normalizers(CardOperation.GET_ALL_CARDS)
                 validators(CardOperation.GET_ALL_CARDS) {
                     validateUserId(CardOperation.GET_ALL_CARDS)
-                    validateDictionaryId { (it as CardContext).normalizedRequestDictionaryId }
+                    validateDictionaryId { it.normalizedRequestDictionaryId }
                 }
                 runs(CardOperation.GET_ALL_CARDS) {
                     processGetAllCards()
@@ -97,6 +98,17 @@ class CardCorProcessor {
                 }
                 runs(CardOperation.LEARN_CARDS) {
                     processLearnCards()
+                }
+            }
+
+            operation(CardOperation.RESET_CARDS) {
+                normalizers(CardOperation.RESET_CARDS)
+                validators(CardOperation.RESET_CARDS) {
+                    validateUserId(CardOperation.RESET_CARDS)
+                    validateDictionaryId { it.normalizedRequestDictionaryId }
+                }
+                runs(CardOperation.RESET_CARDS) {
+                    processResetCards()
                 }
             }
 
