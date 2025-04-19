@@ -184,13 +184,29 @@ function drawDictionariesTable(dictionaries) {
 
 function uploadDictionaryFile(file) {
     const btnUpload = $('#dictionaries-btn-upload-label');
+    const btnInput = $('#dictionaries-btn-upload');
     const reader = new FileReader()
     const type = getFileExtensionType(file.name)
+
+    btnUpload.addClass('disabled');
+    btnInput.prop('disabled', true);
+
     reader.onload = function (e) {
         const txt = e.target.result;
-        uploadDictionary(txt, drawDictionariesPage, type, function () {
-            btnUpload.addClass('btn-outline-danger');
-        });
+        uploadDictionary(txt,
+            function onDone() {
+                drawDictionariesPage();
+
+                btnUpload.removeClass('disabled');
+                btnInput.prop('disabled', false);
+            },
+            type,
+            function onFail() {
+                btnUpload.addClass('btn-outline-danger');
+
+                btnUpload.removeClass('disabled');
+                btnInput.prop('disabled', false);
+            });
     }
     reader.readAsArrayBuffer(file);
     $('#dictionaries-btn-upload').val('');
