@@ -39,6 +39,9 @@ fun Route.cards(
         post("delete") {
             call.deleteCard(service, contextConfig)
         }
+        post("reset-all") {
+            call.resetAllCards(service, contextConfig)
+        }
     }
 }
 

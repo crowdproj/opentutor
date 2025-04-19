@@ -359,6 +359,27 @@ paths:
               schema:
                 $ref: '#/components/schemas/ResetCardResponse'
 
+  /api/cards/reset-all:
+    post:
+      tags:
+        - card
+      summary: Reset all cards by dictionary id
+      operationId: resetAllCards
+      requestBody:
+        description: request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetAllCardsRequest'
+        required: true
+      responses:
+        200:
+          description: response body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResetAllCardsResponse'
+
   /api/settings/get:
     post:
       tags:
@@ -708,6 +729,22 @@ components:
         - type: object
           description: Delete card
 
+    ResetAllCardsRequest:
+      description: Reset cards by dictionary id request
+      allOf:
+        - $ref: '#/components/schemas/BaseRequest'
+        - type: object
+          properties:
+            dictionaryId:
+              type: string
+
+    ResetAllCardsResponse:
+      description: Reset cards response
+      allOf:
+        - $ref: '#/components/schemas/BaseResponse'
+        - type: object
+          description: Reset cards
+
     ResetCardRequest:
       description: Reset card status request
       allOf:
@@ -786,6 +823,7 @@ components:
           learnCard: '#/components/schemas/LearnCardsRequest'
           deleteCard: '#/components/schemas/DeleteCardRequest'
           resetCard: '#/components/schemas/ResetCardRequest'
+          resetCards: '#/components/schemas/ResetAllCardsRequest'
           getSettings: '#/components/schemas/GetSettingsRequest'
           updateSettings: '#/components/schemas/UpdateSettingsRequest'
 
@@ -825,6 +863,7 @@ components:
           learnCard: '#/components/schemas/LearnCardsResponse'
           deleteCard: '#/components/schemas/DeleteCardResponse'
           resetCard: '#/components/schemas/ResetCardResponse'
+          resetCards: '#/components/schemas/ResetAllCardsResponse'
           getSettings: '#/components/schemas/GetSettingsResponse'
           updateSettings: '#/components/schemas/UpdateSettingsResponse'
 
