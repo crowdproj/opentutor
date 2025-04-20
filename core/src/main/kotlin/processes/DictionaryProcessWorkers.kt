@@ -223,6 +223,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         when (this.normalizedRequestDownloadDocumentType) {
             "xml" -> {
+                var dictionaryId: String? = null
                 try {
                     val document = createReader().parse(this.requestDictionaryResourceEntity.data)
                     val dictionary = this.repositories.dictionaryRepository
@@ -230,6 +231,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
                             document.toDictionaryEntity().normalize().copy(userId = userId).toDbDictionary()
                         )
                         .toDictionaryEntity(config).normalize()
+                    dictionaryId = dictionary.dictionaryId.asString()
                     val cards = document.cards.asSequence()
                         .map { it.toCardEntity(this.config) }
                         .map { it.copy(dictionaryId = dictionary.dictionaryId) }
@@ -240,11 +242,19 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
                     }
                     this.responseDictionaryEntity = dictionary
                 } catch (ex: Exception) {
+                    if (dictionaryId != null) {
+                        try {
+                            this.repositories.dictionaryRepository.deleteDictionary(dictionaryId)
+                        } catch (s: Exception) {
+                            ex.addSuppressed(s)
+                        }
+                    }
                     handleThrowable(DictionaryOperation.UPLOAD_DICTIONARY, ex)
                 }
             }
 
             "json" -> {
+                var dictionaryId: String? = null
                 try {
                     val document =
                         documentEntityFromJson(this.requestDictionaryResourceEntity.data.toString(Charsets.UTF_8))
@@ -253,6 +263,7 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
                             document.dictionary.normalize().copy(userId = userId).toDbDictionary()
                         )
                         .toDictionaryEntity(config).normalize()
+                    dictionaryId = dictionary.dictionaryId.asString()
                     val cards =
                         document.cards.map { it.copy(dictionaryId = dictionary.dictionaryId) }.map { it.toDbCard() }
                     if (cards.isNotEmpty()) {
@@ -260,6 +271,13 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
                     }
                     this.responseDictionaryEntity = dictionary
                 } catch (ex: Exception) {
+                    if (dictionaryId != null) {
+                        try {
+                            this.repositories.dictionaryRepository.deleteDictionary(dictionaryId)
+                        } catch (s: Exception) {
+                            ex.addSuppressed(s)
+                        }
+                    }
                     handleThrowable(DictionaryOperation.UPLOAD_DICTIONARY, ex)
                 }
             }
