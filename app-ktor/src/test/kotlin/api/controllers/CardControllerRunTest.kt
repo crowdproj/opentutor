@@ -16,6 +16,8 @@ import com.gitlab.sszuev.flashcards.api.v1.models.GetCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.LearnResource
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetAllCardsRequest
+import com.gitlab.sszuev.flashcards.api.v1.models.ResetAllCardsResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.ResetCardResponse
 import com.gitlab.sszuev.flashcards.api.v1.models.Result
@@ -269,6 +271,21 @@ internal class CardControllerRunTest {
         Assertions.assertEquals(200, response.status.value)
         Assertions.assertEquals("success-request", res.requestId)
         Assertions.assertNull(res.errors) { "Errors: ${res.errors}" }
+        Assertions.assertEquals(Result.SUCCESS, res.result)
+    }
+
+    @Order(10)
+    @Test
+    fun `test reset-all-cards success`() = testSecuredApp {
+        val requestBody = ResetAllCardsRequest(
+            requestId = "success-request",
+            dictionaryId = "2",
+        )
+        val response = testPost("/v1/api/cards/reset-all", requestBody)
+        val res = response.body<ResetAllCardsResponse>()
+        Assertions.assertEquals(200, response.status.value)
+        Assertions.assertEquals("success-request", res.requestId)
+        Assertions.assertNull(res.errors) { "Has errors: ${res.errors}" }
         Assertions.assertEquals(Result.SUCCESS, res.result)
     }
 }

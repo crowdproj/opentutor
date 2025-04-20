@@ -27,3 +27,13 @@ internal fun CardContext.learnCards(
     }
     return this.repositories.cardRepository.updateCards(cards).map { it.toCardEntity() }
 }
+
+internal fun CardContext.resetCards(
+    foundCards: Iterable<CardEntity>,
+): List<CardEntity> {
+
+    val cards = foundCards.map { card ->
+        card.copy(answered = 0, details = emptyMap()).toDbCard()
+    }
+    return this.repositories.cardRepository.updateCards(cards).map { it.toCardEntity() }
+}

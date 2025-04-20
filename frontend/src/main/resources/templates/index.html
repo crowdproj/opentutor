@@ -10,9 +10,9 @@
     <script src="/webjars/keycloak-js/25.0.4/dist/keycloak.min.js"></script>
     <script src="/static/utilities.3.js"></script>
     <script src="/static/data.5.js"></script>
-    <script src="/static/api.6.js"></script>
+    <script src="/static/api.7.js"></script>
     <script src="/static/tables.2.js"></script>
-    <script src="/static/dictionaries.4.js"></script>
+    <script src="/static/dictionaries.5.js"></script>
     <script src="/static/cards.4.js"></script>
     <script src="/static/tutor.4.js"></script>
     <script src="/static/main.1.js"></script>
@@ -97,6 +97,9 @@
                 <button id="dictionaries-btn-delete" type="button" class="btn btn-secondary" data-bs-toggle="modal"
                         data-bs-target="#delete-dictionary-prompt" disabled>Delete
                 </button>
+                <button id="dictionaries-btn-reset-cards" type="button" class="btn btn-secondary" data-bs-toggle="modal"
+                        data-bs-target="#reset-cards-prompt" disabled>Reset
+                </button>
                 <div class="dropdown" style="flex: 1 1 0;">
                     <button id="dictionaries-btn-download" type="button" class="btn btn-secondary"
                             style="width: 100%; border-radius: 0; flex-grow: 1;" disabled>Download
@@ -157,6 +160,7 @@
 <div th:replace="dictionary-dialog.html :: dictionaryDialog(id='add')"></div>
 <div th:replace="dictionary-dialog.html :: dictionaryDialog(id='edit')"></div>
 <div th:replace="prompt.html :: prompt(id='delete-dictionary')"></div>
+<div th:replace="prompt.html :: prompt(id='reset-cards')"></div>
 <div th:insert="card-dialog.html :: card-dialog-modal"></div>
 <div th:replace="prompt.html :: prompt(id='delete-card')"></div>
 <div th:replace="prompt.html :: prompt(id='reset-card')"></div>

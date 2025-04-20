@@ -17,6 +17,7 @@ const updateCardURI = '/v1/api/cards/update';
 const learnCardURI = '/v1/api/cards/learn';
 const resetCardURI = '/v1/api/cards/reset';
 const deleteCardURI = '/v1/api/cards/delete';
+const resetAllCardsURI = '/v1/api/cards/reset-all';
 const getAudioURI = '/v1/api/sounds/get';
 const getSettingsURI = '/v1/api/settings/get';
 const updateSettingsURI = '/v1/api/settings/update';
@@ -35,6 +36,7 @@ const updateCardRequestType = 'updateCard';
 const learnCardRequestType = 'learnCard';
 const resetCardRequestType = 'resetCard';
 const deleteCardRequestType = 'deleteCard';
+const resetAllCardRequestType = 'resetCards';
 const getAudioRequestType = 'getAudio';
 const getSettingsRequestType = 'getSettings';
 const updateSettingsRequestType = 'updateSettings';
@@ -66,11 +68,11 @@ async function initKeycloak() {
 }
 
 function getDictionaries(onDone) {
-    // Chinese language by default
+    // russian language by default
     const data = {
         'requestId': uuid(),
         'requestType': getAllDictionariesRequestType,
-        'language': "zh"
+        'language': "ru"
     };
     post(getAllDictionariesURI, data, function (res) {
         if (hasResponseErrors(res)) {
@@ -301,6 +303,23 @@ function learnCard(learns, onDone) {
     post(learnCardURI, data, function (res) {
         if (hasResponseErrors(res)) {
             handleResponseErrors(res)
+        } else {
+            if (onDone !== undefined) {
+                onDone();
+            }
+        }
+    });
+}
+
+function resetAllCards(dictionaryId, onDone) {
+    const data = {
+        'requestId': uuid(),
+        'requestType': resetAllCardRequestType,
+        'dictionaryId': dictionaryId
+    };
+    post(resetAllCardsURI, data, function (res) {
+        if (hasResponseErrors(res)) {
+            handleResponseErrors(res);
         } else {
             if (onDone !== undefined) {
                 onDone();

@@ -16,6 +16,7 @@ class LocalCardService : CardService {
     override suspend fun learnCard(context: CardContext): CardContext = context.exec()
     override suspend fun resetCard(context: CardContext): CardContext = context.exec()
     override suspend fun deleteCard(context: CardContext): CardContext = context.exec()
+    override suspend fun resetAllCards(context: CardContext): CardContext = context.exec()
 
     private suspend fun CardContext.exec(): CardContext {
         this.repositories = localDbRepositories

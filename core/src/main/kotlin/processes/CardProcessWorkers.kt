@@ -242,6 +242,31 @@ fun ChainDSL<CardContext>.processLearnCards() = worker {
     }
 }
 
+fun ChainDSL<CardContext>.processResetCards() = worker {
+    this.name = "process reset-cards request"
+    test {
+        this.status == AppStatus.RUN
+    }
+    process {
+        val userId = this.normalizedRequestAppAuthId
+        val dictionaryId = this.normalizedRequestDictionaryId
+        val foundDictionary = this.repositories.dictionaryRepository.findDictionaryById(dictionaryId.asString())
+        if (foundDictionary == null) {
+            errors.add(noDictionaryFoundDataError(CardOperation.RESET_CARDS, dictionaryId, userId))
+        } else if (foundDictionary.userId != userId.asString()) {
+            errors.add(forbiddenEntityDataError(CardOperation.RESET_CARDS, dictionaryId, userId))
+        } else {
+            val cards = this.repositories.cardRepository.findCardsByDictionaryId(dictionaryId.asString())
+                .map { it.toCardEntity() }.toList()
+            resetCards(cards)
+        }
+        this.status = if (this.errors.isNotEmpty()) AppStatus.FAIL else AppStatus.RUN
+    }
+    onException {
+        this.handleThrowable(CardOperation.RESET_CARDS, it)
+    }
+}
+
 fun ChainDSL<CardContext>.processResetCard() = worker {
     this.name = "process reset-cards request"
     test {

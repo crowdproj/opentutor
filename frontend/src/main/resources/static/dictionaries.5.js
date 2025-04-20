@@ -65,9 +65,11 @@ function drawDictionariesPage() {
         });
 
         bootstrap.Modal.getOrCreateInstance(document.getElementById('delete-dictionary-prompt')).hide();
+        bootstrap.Modal.getOrCreateInstance(document.getElementById('reset-cards-prompt')).hide();
         bootstrap.Modal.getOrCreateInstance(document.getElementById('add-dictionary-dialog')).hide();
         bootstrap.Modal.getOrCreateInstance(document.getElementById('edit-dictionary-dialog')).hide();
         initDictionaryDeletePrompt();
+        initResetAllCardsPrompt();
         initAddDictionaryDialog();
         initEditDictionaryDialog(dictionaries);
         initSettingsDialog();
@@ -184,13 +186,29 @@ function drawDictionariesTable(dictionaries) {
 
 function uploadDictionaryFile(file) {
     const btnUpload = $('#dictionaries-btn-upload-label');
+    const btnInput = $('#dictionaries-btn-upload');
     const reader = new FileReader()
     const type = getFileExtensionType(file.name)
+
+    btnUpload.addClass('disabled');
+    btnInput.prop('disabled', true);
+
     reader.onload = function (e) {
         const txt = e.target.result;
-        uploadDictionary(txt, drawDictionariesPage, type, function () {
-            btnUpload.addClass('btn-outline-danger');
-        });
+        uploadDictionary(txt,
+            function onDone() {
+                drawDictionariesPage();
+
+                btnUpload.removeClass('disabled');
+                btnInput.prop('disabled', false);
+            },
+            type,
+            function onFail() {
+                btnUpload.addClass('btn-outline-danger');
+
+                btnUpload.removeClass('disabled');
+                btnInput.prop('disabled', false);
+            });
     }
     reader.readAsArrayBuffer(file);
     $('#dictionaries-btn-upload').val('');
@@ -214,6 +232,17 @@ function initDictionaryDeletePrompt() {
             return;
         }
         deleteDictionary(id, drawDictionariesPage);
+    });
+}
+
+function initResetAllCardsPrompt() {
+    $('#reset-cards-prompt-confirm').off('click').on('click', function () {
+        const body = $('#reset-cards-prompt-body');
+        const id = body.attr('item-id');
+        if (!id) {
+            return;
+        }
+        resetAllCards(id, drawDictionariesPage);
     });
 }
 
@@ -422,9 +451,14 @@ function onSelectDictionary(dictionaries) {
         return;
     }
     const selectedDictionary = selectedDictionaries[0];
+
     const deleteDictionaryPromptBody = $('#delete-dictionary-prompt-body');
     deleteDictionaryPromptBody.attr('item-id', selectedDictionary.dictionaryId);
     deleteDictionaryPromptBody.html(selectedDictionary.name);
+
+    const resetCardsPromptBody = $('#reset-cards-prompt-body');
+    resetCardsPromptBody.attr('item-id', selectedDictionary.dictionaryId);
+    resetCardsPromptBody.html(selectedDictionary.name);
 
     $('#edit-dictionary-dialog').attr('item-id', selectedDictionary.dictionaryId);
     $('#edit-dictionary-dialog-name').val(selectedDictionary.name)
@@ -494,10 +528,12 @@ function toggleManageDictionariesPageButtons(disabled) {
     const btnDelete = $('#dictionaries-btn-delete');
     const btnEdit = $('#dictionaries-btn-edit');
     const btnDownload = $('#dictionaries-btn-download');
+    const btnResetCards = $('#dictionaries-btn-reset-cards');
     btnCards.prop('disabled', disabled);
     btnEdit.prop('disabled', disabled);
     btnDelete.prop('disabled', disabled);
     btnDownload.prop('disabled', disabled);
+    btnResetCards.prop('disabled', disabled);
 }
 
 function disableDictionariesPageButtons() {
