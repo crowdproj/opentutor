@@ -1,0 +1,8474 @@
+{
+  "name": "Common Words #02",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "ru",
+    "partsOfSpeech": [
+      "существительное",
+      "прилагательное",
+      "числительное",
+      "местоимение",
+      "глагол",
+      "наречие",
+      "причастие",
+      "предлог",
+      "союз",
+      "частица",
+      "междометие"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "terms",
+          "translations": [
+            [
+              "условия"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.867Z"
+    },
+    {
+      "words": [
+        {
+          "word": "seriousness",
+          "transcription": "'sɪərɪəsnəs",
+          "translations": [
+            [
+              "серьёзность"
+            ],
+            [
+              "значимость",
+              "важность"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.503Z"
+    },
+    {
+      "words": [
+        {
+          "word": "buck off",
+          "translations": [
+            [
+              "сбрасывать (с седла)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.392Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dozen",
+          "transcription": "'dʌz(ə)n",
+          "translations": [
+            [
+              "дюжина"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.462Z"
+    },
+    {
+      "words": [
+        {
+          "word": "alongside",
+          "transcription": "əˌlɔŋ'saɪd",
+          "translations": [
+            [
+              "неподалёку",
+              "поблизости"
+            ],
+            [
+              "около",
+              "возле",
+              "рядом"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.002Z"
+    },
+    {
+      "words": [
+        {
+          "word": "splotch",
+          "translations": [
+            [
+              "забрызгивать"
+            ],
+            [
+              "пачкать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.809Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sandy",
+          "transcription": "'sændɪ",
+          "translations": [
+            [
+              "песчаный"
+            ],
+            [
+              "песочный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.558Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dispose of",
+          "translations": [
+            [
+              "распоряжаться имуществом: ликвидировать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.342Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fist",
+          "transcription": "fɪst",
+          "translations": [
+            [
+              "кулак"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.680Z"
+    },
+    {
+      "words": [
+        {
+          "word": "greenhouse",
+          "transcription": "'griːnhaus",
+          "translations": [
+            [
+              "оранжерея",
+              "теплица"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.188Z"
+    },
+    {
+      "words": [
+        {
+          "word": "capital punishment",
+          "transcription": "ˌkæpɪt(ə)l'pʌnɪʃmənt",
+          "translations": [
+            [
+              "смертная казнь",
+              "высшая мера наказания"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.543Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gradually",
+          "transcription": "'grædjuəlɪ",
+          "translations": [
+            [
+              "исподволь",
+              "мало-помалу",
+              "понемногу",
+              "постепенно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.175Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pale",
+          "transcription": "peɪl",
+          "translations": [
+            [
+              "бледный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.694Z"
+    },
+    {
+      "words": [
+        {
+          "word": "steppe",
+          "transcription": "step",
+          "translations": [
+            [
+              "степь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.485Z"
+    },
+    {
+      "words": [
+        {
+          "word": "arrest",
+          "transcription": "ə'rest",
+          "translations": [
+            [
+              "арестовывать",
+              "задерживать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.033Z"
+    },
+    {
+      "words": [
+        {
+          "word": "twirl",
+          "translations": [
+            [
+              "вертеться",
+              "кружиться",
+              "вращаться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.467Z"
+    },
+    {
+      "words": [
+        {
+          "word": "set aside",
+          "translations": [
+            [
+              "откладывать"
+            ],
+            [
+              "выделять"
+            ],
+            [
+              "отменять"
+            ],
+            [
+              "отбросить"
+            ],
+            [
+              "оставлять"
+            ],
+            [
+              "отвергнуть"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-29T09:21:16.549Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fingertip",
+          "transcription": "'fɪŋgətɪp",
+          "translations": [
+            [
+              "кончик пальца"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.732Z"
+    },
+    {
+      "words": [
+        {
+          "word": "spill over",
+          "translations": [
+            [
+              "перетекать"
+            ],
+            [
+              "распространяться"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-05T20:48:44.074Z"
+    },
+    {
+      "words": [
+        {
+          "word": "compel",
+          "translations": [
+            [
+              "заставлять"
+            ],
+            [
+              "вынуждать"
+            ],
+            [
+              "принуждать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-18T09:58:44.306Z"
+    },
+    {
+      "words": [
+        {
+          "word": "a tidal wave",
+          "translations": [
+            [
+              "приливная волна/взрыв общего чувства/волна увлечения"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.561Z"
+    },
+    {
+      "words": [
+        {
+          "word": "advance",
+          "translations": [
+            [
+              "успех",
+              "прогресс",
+              "достижение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.492Z"
+    },
+    {
+      "words": [
+        {
+          "word": "wand",
+          "transcription": "wɔnd",
+          "translations": [
+            [
+              "палочка",
+              "прутик"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.840Z"
+    },
+    {
+      "words": [
+        {
+          "word": "washing-up",
+          "translations": [
+            [
+              "грязная посуда",
+              "собранная для мытья"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.075Z"
+    },
+    {
+      "words": [
+        {
+          "word": "doorpost",
+          "transcription": "'dɔːpəust",
+          "translations": [
+            [
+              "дверной косяк"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.092Z"
+    },
+    {
+      "words": [
+        {
+          "word": "retain",
+          "transcription": "rɪ'teɪn",
+          "translations": [
+            [
+              "держать"
+            ],
+            [
+              "удерживать",
+              "аккумулировать",
+              "вмещать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.892Z"
+    },
+    {
+      "words": [
+        {
+          "word": "push up",
+          "translations": [
+            [
+              "отжать"
+            ],
+            [
+              "повышать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.976Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dump",
+          "translations": [
+            [
+              "выбрасывать за борт (при аварии)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.277Z"
+    },
+    {
+      "words": [
+        {
+          "word": "owl",
+          "transcription": "aul",
+          "translations": [
+            [
+              "сова"
+            ],
+            [
+              "сыч"
+            ],
+            [
+              "филин"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.851Z"
+    },
+    {
+      "words": [
+        {
+          "word": "signal",
+          "transcription": "'sɪgn(ə)l",
+          "translations": [
+            [
+              "знак",
+              "сигнал"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.190Z"
+    },
+    {
+      "words": [
+        {
+          "word": "be for",
+          "translations": [
+            [
+              "быть \"за\"",
+              "одобрять"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.942Z"
+    },
+    {
+      "words": [
+        {
+          "word": "advance against/on/towards",
+          "translations": [
+            [
+              "продвижение к",
+              "продвижение по направлению к"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.949Z"
+    },
+    {
+      "words": [
+        {
+          "word": "abuse",
+          "translations": [
+            [
+              "злоупотреблять"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:28.959Z"
+    },
+    {
+      "words": [
+        {
+          "word": "prowl",
+          "translations": [
+            [
+              "красться",
+              "бродить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.172Z"
+    },
+    {
+      "words": [
+        {
+          "word": "freckle",
+          "transcription": "'frekl",
+          "translations": [
+            [
+              "веснушка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.293Z"
+    },
+    {
+      "words": [
+        {
+          "word": "stretch out",
+          "translations": [
+            [
+              "растягиваться",
+              "вытягиваться в полный рост"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.175Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hang about/(a)round",
+          "translations": [
+            [
+              "слоняться",
+              "болтаться",
+              "шататься"
+            ],
+            [
+              "бездельничать",
+              "быть неподалёку",
+              "топтаться на местеб быть близким",
+              "надвигаться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.452Z"
+    },
+    {
+      "words": [
+        {
+          "word": "freak accident",
+          "translations": [
+            [
+              "нелепый [невероятный] случай"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.977Z"
+    },
+    {
+      "words": [
+        {
+          "word": "enrolment",
+          "transcription": "ɪn'rəulmənt",
+          "translations": [
+            [
+              "внесение в официальные списки",
+              "регистрация"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.189Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pinch",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "прищемить",
+              "защемить",
+              "ущемить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.345Z"
+    },
+    {
+      "words": [
+        {
+          "word": "flee",
+          "transcription": "fliː",
+          "translations": [
+            [
+              "убегать",
+              "спасаться бегством"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.469Z"
+    },
+    {
+      "words": [
+        {
+          "word": "at any rate",
+          "translations": [
+            [
+              "во всяком случае"
+            ],
+            [
+              "по меньшей мере"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.858Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pitiful",
+          "transcription": "'pɪtɪf(ə)l",
+          "translations": [
+            [
+              "плачевный",
+              "прискорбный"
+            ],
+            [
+              "достойный сожаления",
+              "печальный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.855Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sickening",
+          "transcription": "'sɪk(ə)nɪŋ",
+          "translations": [
+            [
+              "тошнотворный (о запахе)"
+            ],
+            [
+              "отвратительный",
+              "противный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.384Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ounce",
+          "translations": [
+            [
+              "капля",
+              "чуточку"
+            ],
+            [
+              "унция"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.473Z"
+    },
+    {
+      "words": [
+        {
+          "word": "due north",
+          "translations": [
+            [
+              "точно на север"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.422Z"
+    },
+    {
+      "words": [
+        {
+          "word": "found",
+          "transcription": "faund",
+          "translations": [
+            [
+              "начинать строительство",
+              "закладывать (фундамент, город)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.355Z"
+    },
+    {
+      "words": [
+        {
+          "word": "predominantly",
+          "transcription": "prɪ'dɔmɪnəntlɪ",
+          "translations": [
+            [
+              "особенно",
+              "преимущественно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.121Z"
+    },
+    {
+      "words": [
+        {
+          "word": "necklace",
+          "transcription": "'nekləs",
+          "translations": [
+            [
+              "ожерелье"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.573Z"
+    },
+    {
+      "words": [
+        {
+          "word": "favourable",
+          "transcription": "'feɪv(ə)rəbl",
+          "translations": [
+            [
+              "благоприятный"
+            ],
+            [
+              "благоприятствующий"
+            ],
+            [
+              "подходящий"
+            ],
+            [
+              "годный",
+              "удобный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.845Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ear-splitting",
+          "transcription": "'ɪəˌsplɪtɪŋ",
+          "translations": [
+            [
+              "оглушительный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.939Z"
+    },
+    {
+      "words": [
+        {
+          "word": "to have a crack",
+          "translations": [
+            [
+              "совершить попытку",
+              "попытаться (сделать что-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.276Z"
+    },
+    {
+      "words": [
+        {
+          "word": "constipation",
+          "transcription": "ˌkɔn(t)stɪ'peɪʃ(ə)n",
+          "translations": [
+            [
+              "запор"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.353Z"
+    },
+    {
+      "words": [
+        {
+          "word": "scissors",
+          "transcription": "'sɪzəz",
+          "translations": [
+            [
+              "ножницы"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.783Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pass up",
+          "translations": [
+            [
+              "пропустить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.256Z"
+    },
+    {
+      "words": [
+        {
+          "word": "banister",
+          "translations": [
+            [
+              "перила (лестницы)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.795Z"
+    },
+    {
+      "words": [
+        {
+          "word": "unfathomable",
+          "translations": [
+            [
+              "непостижимый"
+            ],
+            [
+              "неизмеримый"
+            ],
+            [
+              "бездонный"
+            ],
+            [
+              "безмерный"
+            ],
+            [
+              "необъятный"
+            ],
+            [
+              "необъяснимый"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-14T11:21:23.078Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sparkle",
+          "translations": [
+            [
+              "искриться"
+            ],
+            [
+              "сверкать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.412Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fry",
+          "translations": [
+            [
+              "мелкая рыбёшка",
+              "мальки (обычно о сёмге)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.671Z"
+    },
+    {
+      "words": [
+        {
+          "word": "seafarer",
+          "transcription": "'siːˌfeərə",
+          "translations": [
+            [
+              "мореплаватель",
+              "моряк"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.770Z"
+    },
+    {
+      "words": [
+        {
+          "word": "frantic",
+          "transcription": "'fræntɪk",
+          "translations": [
+            [
+              "безумный",
+              "неистовый",
+              "яростный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.909Z"
+    },
+    {
+      "words": [
+        {
+          "word": "shouldering",
+          "translations": [
+            [
+              "работа плечами"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.222Z"
+    },
+    {
+      "words": [
+        {
+          "word": "shore",
+          "transcription": "ʃɔː",
+          "translations": [
+            [
+              "берег (моря, озера, океана, но не реки)"
+            ],
+            [
+              "побережье"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.667Z"
+    },
+    {
+      "words": [
+        {
+          "word": "common sense",
+          "translations": [
+            [
+              "здравый смысл"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.292Z"
+    },
+    {
+      "words": [
+        {
+          "word": "whoop",
+          "transcription": "(h)wuːp",
+          "translations": [
+            [
+              "выкрикивать",
+              "кричать (обычно от радости, ликования, воодушевления)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.246Z"
+    },
+    {
+      "words": [
+        {
+          "word": "scandalize",
+          "transcription": "'skænd(ə)laɪz",
+          "translations": [
+            [
+              "возмущать",
+              "шокировать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.427Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slipped your mind",
+          "translations": [
+            [
+              "из головы выскочило"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.959Z"
+    },
+    {
+      "words": [
+        {
+          "word": "influx",
+          "translations": [
+            [
+              "втекание"
+            ],
+            [
+              "приток"
+            ],
+            [
+              "наплыв"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-18T10:38:44.250Z"
+    },
+    {
+      "words": [
+        {
+          "word": "challenge",
+          "transcription": "'ʧælɪnʤ",
+          "translations": [
+            [
+              "вызов (на соревнование, поединок, дуэль)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.147Z"
+    },
+    {
+      "words": [
+        {
+          "word": "horn",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "наставлять рога",
+              "изменять"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.138Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cruelty",
+          "transcription": "'kruːəltɪ",
+          "translations": [
+            [
+              "жестокость",
+              "зверство"
+            ],
+            [
+              "безжалостность",
+              "бессердечие",
+              "бездушие"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.111Z"
+    },
+    {
+      "words": [
+        {
+          "word": "waffle",
+          "transcription": "'wɔfl",
+          "translations": [
+            [
+              "вафля"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.357Z"
+    },
+    {
+      "words": [
+        {
+          "word": "oblige",
+          "translations": [
+            [
+              "обязывать"
+            ],
+            [
+              "связывать (обязательством, клятвой)"
+            ],
+            [
+              "заставлять",
+              "принуждать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.505Z"
+    },
+    {
+      "words": [
+        {
+          "word": "assertion",
+          "transcription": "ə'sɜːʃ(ə)n",
+          "translations": [
+            [
+              "утверждение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.547Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bounce",
+          "transcription": "baun(t)s",
+          "translations": [
+            [
+              "прыжок"
+            ],
+            [
+              "отскок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.271Z"
+    },
+    {
+      "words": [
+        {
+          "word": "explode",
+          "transcription": "ɪk'spləud",
+          "translations": [
+            [
+              "взрываться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.577Z"
+    },
+    {
+      "words": [
+        {
+          "word": "absently",
+          "transcription": "'æbs(ə)ntlɪ",
+          "translations": [
+            [
+              "рассеянно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.367Z"
+    },
+    {
+      "words": [
+        {
+          "word": "raucous",
+          "transcription": "'rɔːkəs",
+          "translations": [
+            [
+              "хриплый",
+              "охрипший",
+              "сиплый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.030Z"
+    },
+    {
+      "words": [
+        {
+          "word": "whirr",
+          "transcription": "(h)wɜː",
+          "translations": [
+            [
+              "шуметь (о машинах и т. п.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.642Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ruin",
+          "translations": [
+            [
+              "разрушать",
+              "превращать в руины"
+            ],
+            [
+              "уничтожать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.758Z"
+    },
+    {
+      "words": [
+        {
+          "word": "knight",
+          "transcription": "naɪt",
+          "translations": [
+            [
+              "рыцарь"
+            ],
+            [
+              "витязь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.827Z"
+    },
+    {
+      "words": [
+        {
+          "word": "a bee in one's bonnet",
+          "translations": [
+            [
+              "причуда"
+            ],
+            [
+              "навязчивая идея",
+              "мания"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.750Z"
+    },
+    {
+      "words": [
+        {
+          "word": "enchantment",
+          "translations": [
+            [
+              "волшебство",
+              "колдовство",
+              "магия"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.786Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hefty",
+          "translations": [
+            [
+              "большой",
+              "объёмистый",
+              "массивный"
+            ],
+            [
+              "изрядный",
+              "обильный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.762Z"
+    },
+    {
+      "words": [
+        {
+          "word": "swollen",
+          "transcription": "'swəulən",
+          "translations": [
+            [
+              "вздутый",
+              "раздутый"
+            ],
+            [
+              "опухший"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.559Z"
+    },
+    {
+      "words": [
+        {
+          "word": "nose",
+          "transcription": "nəuz",
+          "translations": [
+            [
+              "нос"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.241Z"
+    },
+    {
+      "words": [
+        {
+          "word": "four-poster",
+          "transcription": "ˌfɔː'pəustə",
+          "translations": [
+            [
+              "кровать с пологом на четырёх столбиках"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.755Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tape",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "бинтовать",
+              "забинтовывать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.701Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dash up",
+          "translations": [
+            [
+              "прибывать с полной скоростью"
+            ],
+            [
+              "прибывать на полной скорости"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.190Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bias",
+          "translations": [
+            [
+              "склонять"
+            ],
+            [
+              "оказывать влияние (обычно плохое)"
+            ],
+            [
+              "настраивать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.083Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dismay",
+          "transcription": "dɪs'meɪ",
+          "translations": [
+            [
+              "испуг",
+              "беспокойство",
+              "волнение",
+              "смятение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.702Z"
+    },
+    {
+      "words": [
+        {
+          "word": "defraud",
+          "translations": [
+            [
+              "обманом лишать"
+            ],
+            [
+              "выманивать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-09T17:55:06.610Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sense",
+          "translations": [
+            [
+              "ощущать",
+              "чувствовать"
+            ],
+            [
+              "воспринимать органами чувств"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.101Z"
+    },
+    {
+      "words": [
+        {
+          "word": "merely",
+          "transcription": "'mɪəlɪ",
+          "translations": [
+            [
+              "только",
+              "просто"
+            ],
+            [
+              "единственно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.654Z"
+    },
+    {
+      "words": [
+        {
+          "word": "get up",
+          "translations": [
+            [
+              "подниматься",
+              "вставать (после сна)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.841Z"
+    },
+    {
+      "words": [
+        {
+          "word": "volition",
+          "transcription": "və'lɪʃ(ə)n",
+          "translations": [
+            [
+              "волевой акт",
+              "хотение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.861Z"
+    },
+    {
+      "words": [
+        {
+          "word": "in sight",
+          "translations": [
+            [
+              "в поле зрения"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.919Z"
+    },
+    {
+      "words": [
+        {
+          "word": "punish",
+          "transcription": "'pʌnɪʃ",
+          "translations": [
+            [
+              "наказывать"
+            ],
+            [
+              "карать"
+            ],
+            [
+              "налагать взыскание"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.649Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rescue",
+          "transcription": "'reskjuː",
+          "translations": [
+            [
+              "спасать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.088Z"
+    },
+    {
+      "words": [
+        {
+          "word": "intimate",
+          "translations": [
+            [
+              "внутренний"
+            ],
+            [
+              "глубокий"
+            ],
+            [
+              "глубинный"
+            ],
+            [
+              "глубоко личный"
+            ],
+            [
+              "интимный"
+            ],
+            [
+              "сокровенный"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-09T17:57:32.345Z"
+    },
+    {
+      "words": [
+        {
+          "word": "vacuum",
+          "translations": [
+            [
+              "чистить пылесосом"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.267Z"
+    },
+    {
+      "words": [
+        {
+          "word": "spurt out",
+          "translations": [
+            [
+              "брызнуть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.385Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hellish",
+          "translations": [
+            [
+              "жестокий"
+            ],
+            [
+              "адский"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-03T17:59:39.168Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dodgy",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "изворотливый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2024-12-16T11:27:48.912Z"
+    },
+    {
+      "words": [
+        {
+          "word": "apron",
+          "translations": [
+            [
+              "фартук"
+            ],
+            [
+              "перрон"
+            ],
+            [
+              "авансцена"
+            ],
+            [
+              "передник"
+            ],
+            [
+              "бетонированная площадка"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-05T17:43:41.111Z"
+    },
+    {
+      "words": [
+        {
+          "word": "brush up",
+          "translations": [
+            [
+              "освежать (знания)"
+            ],
+            [
+              "улучшать"
+            ],
+            [
+              "совершенствовать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-20T20:07:31.773Z"
+    },
+    {
+      "words": [
+        {
+          "word": "struggle",
+          "translations": [
+            [
+              "бороться"
+            ],
+            [
+              "борьба"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.840Z"
+    },
+    {
+      "words": [
+        {
+          "word": "apart from",
+          "translations": [
+            [
+              "не говоря (уже) о"
+            ],
+            [
+              "кроме"
+            ],
+            [
+              "не считая"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.380Z"
+    },
+    {
+      "words": [
+        {
+          "word": "appropriate",
+          "transcription": "ə'prəuprɪət",
+          "translations": [
+            [
+              "подходящий",
+              "соответствующий"
+            ],
+            [
+              "должный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.235Z"
+    },
+    {
+      "words": [
+        {
+          "word": "armful",
+          "transcription": "'ɑːmful",
+          "translations": [
+            [
+              "охапка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.139Z"
+    },
+    {
+      "words": [
+        {
+          "word": "horror",
+          "transcription": "'hɔrə",
+          "translations": [
+            [
+              "ужас",
+              "страх",
+              "боязнь",
+              "опасение",
+              "тревога"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.758Z"
+    },
+    {
+      "words": [
+        {
+          "word": "prise",
+          "translations": [
+            [
+              "поднимать",
+              "передвигать или взламывать посредством рычага"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.555Z"
+    },
+    {
+      "words": [
+        {
+          "word": "chain",
+          "transcription": "ʧeɪn",
+          "translations": [
+            [
+              "цепь",
+              "цепочка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.681Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sunshine",
+          "transcription": "'sʌnʃaɪn",
+          "translations": [
+            [
+              "солнечный свет"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.420Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hedge",
+          "transcription": "heʤ",
+          "translations": [
+            [
+              "живая изгородь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.634Z"
+    },
+    {
+      "words": [
+        {
+          "word": "grease",
+          "translations": [
+            [
+              "смазывать (жиром) (например",
+              "противень)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.903Z"
+    },
+    {
+      "words": [
+        {
+          "word": "outrage",
+          "translations": [
+            [
+              "возмущение",
+              "гнев",
+              "негодование"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.883Z"
+    },
+    {
+      "words": [
+        {
+          "word": "awful",
+          "transcription": "'ɔːf(ə)l",
+          "translations": [
+            [
+              "страшный",
+              "ужасный",
+              "отвратительный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.129Z"
+    },
+    {
+      "words": [
+        {
+          "word": "arduous",
+          "translations": [
+            [
+              "трудный"
+            ],
+            [
+              "сложный"
+            ],
+            [
+              "напряжённый"
+            ],
+            [
+              "непростой"
+            ],
+            [
+              "тяжёлый"
+            ],
+            [
+              "тяжкий"
+            ],
+            [
+              "труднодоступный"
+            ],
+            [
+              "нелёгкий"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-14T20:01:42.050Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tableware",
+          "transcription": "'teɪblweə",
+          "translations": [
+            [
+              "столовая посуда"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.092Z"
+    },
+    {
+      "words": [
+        {
+          "word": "anecdotal evidence",
+          "translations": [
+            [
+              "случайные факты",
+              "разрозненные сведения"
+            ],
+            [
+              "случаи из жизни"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.108Z"
+    },
+    {
+      "words": [
+        {
+          "word": "blossom",
+          "translations": [
+            [
+              "преуспевать",
+              "добиваться успеха"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.467Z"
+    },
+    {
+      "words": [
+        {
+          "word": "walk round",
+          "translations": [
+            [
+              "обходить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.793Z"
+    },
+    {
+      "words": [
+        {
+          "word": "napkin",
+          "transcription": "'næpkɪn",
+          "translations": [
+            [
+              "салфетка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.084Z"
+    },
+    {
+      "words": [
+        {
+          "word": "joy",
+          "transcription": "ʤɔɪ",
+          "translations": [
+            [
+              "радость",
+              "счастье"
+            ],
+            [
+              "восторг"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.985Z"
+    },
+    {
+      "words": [
+        {
+          "word": "long for",
+          "translations": [
+            [
+              "жаждать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-17T15:59:57.432Z"
+    },
+    {
+      "words": [
+        {
+          "word": "afresh",
+          "transcription": "ə'freʃ",
+          "translations": [
+            [
+              "опять",
+              "снова",
+              "сызнова"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.960Z"
+    },
+    {
+      "words": [
+        {
+          "word": "duty",
+          "translations": [
+            [
+              "долг",
+              "обязательство"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.120Z"
+    },
+    {
+      "words": [
+        {
+          "word": "oriental",
+          "transcription": "ˌɔːrɪ'entl",
+          "translations": [
+            [
+              "восточный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.368Z"
+    },
+    {
+      "words": [
+        {
+          "word": "spring up",
+          "translations": [
+            [
+              "быстро расти",
+              "вырастать"
+            ],
+            [
+              "развернуть войска в боевой порядок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.603Z"
+    },
+    {
+      "words": [
+        {
+          "word": "steeply",
+          "translations": [
+            [
+              "круто"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.994Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sightseeing",
+          "transcription": "'saɪtˌsiːɪŋ",
+          "translations": [
+            [
+              "осмотр достопримечательностей"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.555Z"
+    },
+    {
+      "words": [
+        {
+          "word": "kitten",
+          "transcription": "'kɪt(ə)n",
+          "translations": [
+            [
+              "котёнок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.260Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bawl",
+          "translations": [
+            [
+              "кричать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-15T08:35:17.572Z"
+    },
+    {
+      "words": [
+        {
+          "word": "revolt",
+          "translations": [
+            [
+              "восставать",
+              "бунтовать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.801Z"
+    },
+    {
+      "words": [
+        {
+          "word": "horrify",
+          "transcription": "'hɔrɪfaɪ",
+          "translations": [
+            [
+              "ужасать"
+            ],
+            [
+              "шокировать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.314Z"
+    },
+    {
+      "words": [
+        {
+          "word": "frowning",
+          "transcription": "fraunɪŋ",
+          "translations": [
+            [
+              "нахмуренный",
+              "сморщенный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.332Z"
+    },
+    {
+      "words": [
+        {
+          "word": "refute",
+          "transcription": "rɪ'fjuːt",
+          "translations": [
+            [
+              "опровергать",
+              "доказывать ложность",
+              "несостоятельность"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.046Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ditch",
+          "translations": [
+            [
+              "выбрасывать",
+              "сбрасывать (в канаву)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.039Z"
+    },
+    {
+      "words": [
+        {
+          "word": "amateur",
+          "transcription": "'æmətə",
+          "translations": [
+            [
+              "любитель"
+            ],
+            [
+              "поклонник"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.896Z"
+    },
+    {
+      "words": [
+        {
+          "word": "interior",
+          "transcription": "ɪn'tɪərɪə",
+          "translations": [
+            [
+              "внутренняя часть"
+            ],
+            [
+              "интерьер"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.964Z"
+    },
+    {
+      "words": [
+        {
+          "word": "collapsible",
+          "translations": [
+            [
+              "откидной",
+              "откидывающийся"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.916Z"
+    },
+    {
+      "words": [
+        {
+          "word": "trail",
+          "translations": [
+            [
+              "тянуться сзади (чего-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.792Z"
+    },
+    {
+      "words": [
+        {
+          "word": "a fortiori",
+          "translations": [
+            [
+              "тем более"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.409Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hang",
+          "transcription": "hæŋ",
+          "translations": [
+            [
+              "вешать",
+              "развешивать",
+              "подвешивать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.379Z"
+    },
+    {
+      "words": [
+        {
+          "word": "go broke",
+          "translations": [
+            [
+              "разоряться",
+              "прогорать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.684Z"
+    },
+    {
+      "words": [
+        {
+          "word": "taken aback",
+          "translations": [
+            [
+              "ошеломлённый",
+              "захваченный врасплох"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.746Z"
+    },
+    {
+      "words": [
+        {
+          "word": "alleyway",
+          "transcription": "'ælɪweɪ",
+          "translations": [
+            [
+              "переулок"
+            ],
+            [
+              "улочка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.289Z"
+    },
+    {
+      "words": [
+        {
+          "word": "over and over again",
+          "translations": [
+            [
+              "много раз",
+              "вновь и вновь",
+              "неоднократно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.990Z"
+    },
+    {
+      "words": [
+        {
+          "word": "grocery",
+          "translations": [
+            [
+              "бакалея"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-03T07:46:40.530Z"
+    },
+    {
+      "words": [
+        {
+          "word": "foretell",
+          "transcription": "fɔː'tel",
+          "translations": [
+            [
+              "предсказывать",
+              "прогнозировать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.587Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tune",
+          "transcription": "t(j)uːn",
+          "translations": [
+            [
+              "мелодия"
+            ],
+            [
+              "напев"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.676Z"
+    },
+    {
+      "words": [
+        {
+          "word": "humanity",
+          "transcription": "hjuː'mænətɪ",
+          "translations": [
+            [
+              "человечество"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.972Z"
+    },
+    {
+      "words": [
+        {
+          "word": "warily",
+          "translations": [
+            [
+              "осторожно"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-26T10:37:01.496Z"
+    },
+    {
+      "words": [
+        {
+          "word": "a rough night",
+          "translations": [
+            [
+              "тяжелая ночь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.491Z"
+    },
+    {
+      "words": [
+        {
+          "word": "poise",
+          "translations": [
+            [
+              "приводить в готовность",
+              "быть готовым к действию"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.669Z"
+    },
+    {
+      "words": [
+        {
+          "word": "at the very least",
+          "translations": [
+            [
+              "по меньшей мере"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.063Z"
+    },
+    {
+      "words": [
+        {
+          "word": "stir",
+          "translations": [
+            [
+              "шевелить"
+            ],
+            [
+              "двигать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.609Z"
+    },
+    {
+      "words": [
+        {
+          "word": "iron",
+          "translations": [
+            [
+              "заковывать в кандалы"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.526Z"
+    },
+    {
+      "words": [
+        {
+          "word": "delve",
+          "translations": [
+            [
+              "копать"
+            ],
+            [
+              "рыть"
+            ],
+            [
+              "делать изыскания"
+            ],
+            [
+              "изучать"
+            ],
+            [
+              "тщательно исследовать"
+            ],
+            [
+              "рыться"
+            ],
+            [
+              "копаться"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-12T10:33:37.227Z"
+    },
+    {
+      "words": [
+        {
+          "word": "swerve",
+          "transcription": "swɜːv",
+          "translations": [
+            [
+              "отклонение (от курса)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.450Z"
+    },
+    {
+      "words": [
+        {
+          "word": "to lean forward",
+          "translations": [
+            [
+              "податься вперёд"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.987Z"
+    },
+    {
+      "words": [
+        {
+          "word": "insight",
+          "transcription": "'ɪnˌsaɪt",
+          "translations": [
+            [
+              "проницательность",
+              "способность проникновения в суть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.836Z"
+    },
+    {
+      "words": [
+        {
+          "word": "incredible",
+          "transcription": "ɪn'kredɪbl",
+          "translations": [
+            [
+              "маловероятный",
+              "невероятный",
+              "немыслимый",
+              "неправдоподобный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.266Z"
+    },
+    {
+      "words": [
+        {
+          "word": "edge",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пододвигать незаметно или постепенно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.070Z"
+    },
+    {
+      "words": [
+        {
+          "word": "unkindly",
+          "transcription": "ʌn'kaɪndlɪ",
+          "translations": [
+            [
+              "недоброжелательный"
+            ],
+            [
+              "недобрый",
+              "злой"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.398Z"
+    },
+    {
+      "words": [
+        {
+          "word": "plonk",
+          "translations": [
+            [
+              "уронить",
+              "бросить (что-л. тяжёлое)"
+            ],
+            [
+              "грохнуть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.869Z"
+    },
+    {
+      "words": [
+        {
+          "word": "clear-cut",
+          "transcription": "ˌklɪə'kʌt",
+          "translations": [
+            [
+              "ясно очерченный"
+            ],
+            [
+              "чёткий",
+              "ясный",
+              "отчётливый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.483Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sadness",
+          "transcription": "'sædnəs",
+          "translations": [
+            [
+              "грусть",
+              "печаль",
+              "уныние"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.210Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slimy",
+          "transcription": "'slaɪmɪ",
+          "translations": [
+            [
+              "вязкий",
+              "липкий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.116Z"
+    },
+    {
+      "words": [
+        {
+          "word": "get on",
+          "translations": [
+            [
+              "делать успехи",
+              "преуспевать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.781Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slyly",
+          "transcription": "'slaɪlɪ",
+          "translations": [
+            [
+              "ловко",
+              "хитро",
+              "лукаво"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.452Z"
+    },
+    {
+      "words": [
+        {
+          "word": "leap",
+          "transcription": "liːp",
+          "translations": [
+            [
+              "прыжок",
+              "скачок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.439Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sigh",
+          "transcription": "saɪ",
+          "translations": [
+            [
+              "вздыхать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.441Z"
+    },
+    {
+      "words": [
+        {
+          "word": "meantime",
+          "transcription": "'miːntaɪm",
+          "translations": [
+            [
+              "тем временем",
+              "между тем",
+              "пока"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.135Z"
+    },
+    {
+      "words": [
+        {
+          "word": "give-away",
+          "translations": [
+            [
+              "(ненамеренное) разоблачение тайны"
+            ],
+            [
+              "предательство"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.880Z"
+    },
+    {
+      "words": [
+        {
+          "word": "put on",
+          "translations": [
+            [
+              "надевать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.682Z"
+    },
+    {
+      "words": [
+        {
+          "word": "to keep still",
+          "translations": [
+            [
+              "не шуметь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.730Z"
+    },
+    {
+      "words": [
+        {
+          "word": "weigh",
+          "transcription": "weɪ",
+          "translations": [
+            [
+              "взвешивать",
+              "весить",
+              "оценивать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.973Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bitterness",
+          "transcription": "'bɪtənəs",
+          "translations": [
+            [
+              "горечь"
+            ],
+            [
+              "обида"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.989Z"
+    },
+    {
+      "words": [
+        {
+          "word": "stress",
+          "translations": [
+            [
+              "ударение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.756Z"
+    },
+    {
+      "words": [
+        {
+          "word": "petrify",
+          "translations": [
+            [
+              "остолбенеть",
+              "оцепенеть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.088Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pull",
+          "transcription": "pul",
+          "translations": [
+            [
+              "тянуть",
+              "тащить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.691Z"
+    },
+    {
+      "words": [
+        {
+          "word": "near",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "подходить",
+              "приближаться"
+            ],
+            [
+              "надвигаться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.575Z"
+    },
+    {
+      "words": [
+        {
+          "word": "explodable",
+          "translations": [
+            [
+              "взрывчатый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.898Z"
+    },
+    {
+      "words": [
+        {
+          "word": "down and out",
+          "translations": [
+            [
+              "обессиленный",
+              "выбившийся из сил"
+            ],
+            [
+              "измотанный [получивший нокаут",
+              "нокаутированный"
+            ],
+            [
+              "]"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.709Z"
+    },
+    {
+      "words": [
+        {
+          "word": "jacket",
+          "transcription": "'ʤækɪt",
+          "translations": [
+            [
+              "куртка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.554Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tearful",
+          "transcription": "'tɪəf(ə)l",
+          "translations": [
+            [
+              "плачущий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.409Z"
+    },
+    {
+      "words": [
+        {
+          "word": "exempt",
+          "transcription": "ɪg'zempt",
+          "translations": [
+            [
+              "свободный",
+              "освобождённый (от обязанностей, налога, военной службы)"
+            ],
+            [
+              "пользующийся привилегиями"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.113Z"
+    },
+    {
+      "words": [
+        {
+          "word": "get in",
+          "translations": [
+            [
+              "сажать (что-л.) в почву"
+            ],
+            [
+              "входить"
+            ],
+            [
+              "влезать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.023Z"
+    },
+    {
+      "words": [
+        {
+          "word": "twig",
+          "transcription": "twɪg",
+          "translations": [
+            [
+              "веточка",
+              "прут",
+              "хворостинка"
+            ],
+            [
+              "ветвь",
+              "ветка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.383Z"
+    },
+    {
+      "words": [
+        {
+          "word": "let off",
+          "translations": [
+            [
+              "выпустить газы",
+              "пукнуть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.371Z"
+    },
+    {
+      "words": [
+        {
+          "word": "burgeon",
+          "translations": [
+            [
+              "пускать почки"
+            ],
+            [
+              "давать ростки"
+            ],
+            [
+              "распускаться"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-02T18:33:49.134Z"
+    },
+    {
+      "words": [
+        {
+          "word": "not in the least",
+          "translations": [
+            [
+              "нисколько"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.645Z"
+    },
+    {
+      "words": [
+        {
+          "word": "booth",
+          "transcription": "buːð",
+          "translations": [
+            [
+              "киоск"
+            ],
+            [
+              "палатка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.385Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bundle",
+          "transcription": "'bʌndl",
+          "translations": [
+            [
+              "узел",
+              "связка"
+            ],
+            [
+              "пачка"
+            ],
+            [
+              "вязанка"
+            ],
+            [
+              "пучок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.122Z"
+    },
+    {
+      "words": [
+        {
+          "word": "get around",
+          "translations": [
+            [
+              "навещать",
+              "посещать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.435Z"
+    },
+    {
+      "words": [
+        {
+          "word": "committee",
+          "translations": [
+            [
+              "комитет",
+              "комиссия"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-01-07T16:28:35.119Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slay",
+          "transcription": "sleɪ",
+          "translations": [
+            [
+              "убивать",
+              "уничтожать",
+              "лишать жизни"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.694Z"
+    },
+    {
+      "words": [
+        {
+          "word": "no point",
+          "translations": [
+            [
+              "ни к чему"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.263Z"
+    },
+    {
+      "words": [
+        {
+          "word": "mystify",
+          "transcription": "'mɪstɪfaɪ",
+          "translations": [
+            [
+              "мистифицировать",
+              "озадачивать"
+            ],
+            [
+              "вводить в заблуждение"
+            ],
+            [
+              "смущать",
+              "ставить в тупик",
+              "сбивать с толку"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.056Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fluster",
+          "translations": [
+            [
+              "беспокойство",
+              "возбуждение",
+              "волнение"
+            ],
+            [
+              "суета",
+              "суматоха"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.661Z"
+    },
+    {
+      "words": [
+        {
+          "word": "in all the confusion",
+          "translations": [
+            [
+              "во всей этой путанице"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.383Z"
+    },
+    {
+      "words": [
+        {
+          "word": "kelpie",
+          "translations": [
+            [
+              "австралийская овчарка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.874Z"
+    },
+    {
+      "words": [
+        {
+          "word": "thud",
+          "transcription": "θʌd",
+          "translations": [
+            [
+              "глухой звук",
+              "стук (от падения тяжёлого предмета)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.074Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rig up",
+          "translations": [
+            [
+              "строить наспех"
+            ],
+            [
+              "приспосабливать из подручных материалов"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.773Z"
+    },
+    {
+      "words": [
+        {
+          "word": "outskirt",
+          "translations": [
+            [
+              "окраина"
+            ],
+            [
+              "край"
+            ],
+            [
+              "периферийный"
+            ],
+            [
+              "окраинный"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-11T18:06:49.714Z"
+    },
+    {
+      "words": [
+        {
+          "word": "animate",
+          "translations": [
+            [
+              "оживить",
+              "вдохнуть жизнь",
+              "дать жизнь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.953Z"
+    },
+    {
+      "words": [
+        {
+          "word": "torrential",
+          "transcription": "tə'ren(t)ʃ(ə)l",
+          "translations": [
+            [
+              "текущий быстрым потоком",
+              "стремительно текущий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.982Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bossy",
+          "transcription": "'bɔsɪ",
+          "translations": [
+            [
+              "любящий командовать",
+              "распоряжаться"
+            ],
+            [
+              "властный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.412Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tosh",
+          "transcription": "tɔʃ",
+          "translations": [
+            [
+              "абсурд",
+              "вздор",
+              "ерунда"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.675Z"
+    },
+    {
+      "words": [
+        {
+          "word": "depict",
+          "transcription": "dɪ'pɪkt",
+          "translations": [
+            [
+              "изображать на картине",
+              "рисовать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.622Z"
+    },
+    {
+      "words": [
+        {
+          "word": "drip",
+          "translations": [
+            [
+              "капанье"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.872Z"
+    },
+    {
+      "words": [
+        {
+          "word": "repot",
+          "transcription": "ˌriː'pɔt",
+          "translations": [
+            [
+              "пересаживать в другой горшок (растение)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.612Z"
+    },
+    {
+      "words": [
+        {
+          "word": "anger",
+          "transcription": "'æŋgə",
+          "translations": [
+            [
+              "гнев",
+              "злость",
+              "ярость"
+            ],
+            [
+              "раздражение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.166Z"
+    },
+    {
+      "words": [
+        {
+          "word": "retrieve",
+          "transcription": "rɪ'triːv",
+          "translations": [
+            [
+              "отыскать",
+              "вернуть себе"
+            ],
+            [
+              "взять обратно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.183Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fidget",
+          "translations": [
+            [
+              "беспокойство"
+            ],
+            [
+              "волнение"
+            ],
+            [
+              "тревога"
+            ],
+            [
+              "нетерпение"
+            ],
+            [
+              "суетливые"
+            ],
+            [
+              "нервозные движения"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-03T16:13:28.891Z"
+    },
+    {
+      "words": [
+        {
+          "word": "middleware",
+          "translations": [
+            [
+              "промежуточное программное обеспечение"
+            ],
+            [
+              "программное обеспечение для обмена данными"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.943Z"
+    },
+    {
+      "words": [
+        {
+          "word": "jealousy",
+          "translations": [
+            [
+              "зависть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.462Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hesitate",
+          "transcription": "'hezɪteɪt",
+          "translations": [
+            [
+              "колебаться"
+            ],
+            [
+              "сомневаться",
+              "не решаться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.698Z"
+    },
+    {
+      "words": [
+        {
+          "word": "despise",
+          "transcription": "dɪ'spaɪz",
+          "translations": [
+            [
+              "презирать",
+              "относиться с презрением"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.054Z"
+    },
+    {
+      "words": [
+        {
+          "word": "apologize",
+          "transcription": "ə'pɔləʤaɪz",
+          "translations": [
+            [
+              "приносить официальные извинения"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.655Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fascinating",
+          "transcription": "'fæsɪneɪtɪŋ",
+          "translations": [
+            [
+              "обворожительный",
+              "очаровательный",
+              "пленительный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.176Z"
+    },
+    {
+      "words": [
+        {
+          "word": "eye",
+          "translations": [
+            [
+              "следить",
+              "наблюдать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.816Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sting",
+          "transcription": "stɪŋ",
+          "translations": [
+            [
+              "жало"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.443Z"
+    },
+    {
+      "words": [
+        {
+          "word": "smoulder",
+          "translations": [
+            [
+              "медленно гореть (без огня)",
+              "тлеть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.090Z"
+    },
+    {
+      "words": [
+        {
+          "word": "How on earth?",
+          "translations": [
+            [
+              "Каким же образом?"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.856Z"
+    },
+    {
+      "words": [
+        {
+          "word": "enormous",
+          "transcription": "ɪ'nɔːməs",
+          "translations": [
+            [
+              "громадный"
+            ],
+            [
+              "гигантский",
+              "обширный",
+              "огромный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.523Z"
+    },
+    {
+      "words": [
+        {
+          "word": "by means of",
+          "translations": [
+            [
+              "посредством"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.320Z"
+    },
+    {
+      "words": [
+        {
+          "word": "distract",
+          "transcription": "dɪ'strækt",
+          "translations": [
+            [
+              "отвлекать",
+              "уводить в сторону"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.235Z"
+    },
+    {
+      "words": [
+        {
+          "word": "to wake with a start",
+          "translations": [
+            [
+              "вздрогнуть и проснуться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.818Z"
+    },
+    {
+      "words": [
+        {
+          "word": "carpet",
+          "translations": [
+            [
+              "ковёр"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.109Z"
+    },
+    {
+      "words": [
+        {
+          "word": "alarmingly",
+          "transcription": "ə'lɑːmɪŋlɪ",
+          "translations": [
+            [
+              "тревожно"
+            ],
+            [
+              "опасно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.039Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cheapen",
+          "transcription": "'ʧiːp(ə)n",
+          "translations": [
+            [
+              "снижать цену или стоимость"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.579Z"
+    },
+    {
+      "words": [
+        {
+          "word": "jig",
+          "transcription": "ʤɪg",
+          "translations": [
+            [
+              "джига",
+              "жига (танец"
+            ],
+            [
+              "музыка к танцу)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.734Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tighten",
+          "transcription": "'taɪt(ə)n",
+          "translations": [
+            [
+              "сжимать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.043Z"
+    },
+    {
+      "words": [
+        {
+          "word": "toneless",
+          "translations": [
+            [
+              "невыразительный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.790Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rant",
+          "translations": [
+            [
+              "говорить напыщенно"
+            ],
+            [
+              "изрекать"
+            ],
+            [
+              "разглагольствовать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.648Z"
+    },
+    {
+      "words": [
+        {
+          "word": "jolt",
+          "transcription": "ʤəult",
+          "translations": [
+            [
+              "толчок"
+            ],
+            [
+              "столкновение",
+              "тряска"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.540Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gratitude",
+          "transcription": "'grætɪt(j)uːd",
+          "translations": [
+            [
+              "благодарность",
+              "признательность"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.815Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tersely",
+          "translations": [
+            [
+              "сжато"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.363Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bubble",
+          "transcription": "'bʌbl",
+          "translations": [
+            [
+              "пузырёк (воздуха или газа)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.282Z"
+    },
+    {
+      "words": [
+        {
+          "word": "basin",
+          "translations": [
+            [
+              "миска",
+              "таз"
+            ],
+            [
+              "чаша"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.262Z"
+    },
+    {
+      "words": [
+        {
+          "word": "among",
+          "transcription": "ə'mʌŋ",
+          "translations": [
+            [
+              "между",
+              "посреди",
+              "среди"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.461Z"
+    },
+    {
+      "words": [
+        {
+          "word": "expendable",
+          "translations": [
+            [
+              "расходуемый"
+            ],
+            [
+              "одноразовый"
+            ],
+            [
+              "одноразового применения"
+            ],
+            [
+              "невозвратный"
+            ],
+            [
+              "потребляемый"
+            ],
+            [
+              "то"
+            ],
+            [
+              "что может быть потрачено"
+            ],
+            [
+              "израсходовано"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-22T07:48:44.705Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tankard",
+          "transcription": "'tæŋkəd",
+          "translations": [
+            [
+              "высокая пивная кружка (часто с крышкой)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.163Z"
+    },
+    {
+      "words": [
+        {
+          "word": "beat",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вбивать (что-л.) в голову (кого-л.)",
+              "заставлять (кого-л.) выучить (что-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.375Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hold on",
+          "translations": [
+            [
+              "не вешать трубку"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.233Z"
+    },
+    {
+      "words": [
+        {
+          "word": "surprisingly",
+          "transcription": "sə'praɪzɪŋlɪ",
+          "translations": [
+            [
+              "удивительно",
+              "поразительно"
+            ],
+            [
+              "неожиданно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.753Z"
+    },
+    {
+      "words": [
+        {
+          "word": "forget-me-not",
+          "transcription": "fə'getmɪnɔt",
+          "translations": [
+            [
+              "незабудка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.288Z"
+    },
+    {
+      "words": [
+        {
+          "word": "worst",
+          "transcription": "wɜːst",
+          "translations": [
+            [
+              ""
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.378Z"
+    },
+    {
+      "words": [
+        {
+          "word": "encounter",
+          "transcription": "ɪn'kauntə",
+          "translations": [
+            [
+              "случайная встреча"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.202Z"
+    },
+    {
+      "words": [
+        {
+          "word": "razor",
+          "transcription": "'reɪzə",
+          "translations": [
+            [
+              "бритва"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.598Z"
+    },
+    {
+      "words": [
+        {
+          "word": "enchant",
+          "transcription": "ɪn'ʧɑːnt",
+          "translations": [
+            [
+              "очаровывать",
+              "приводить в восторг"
+            ],
+            [
+              "восхищать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.407Z"
+    },
+    {
+      "words": [
+        {
+          "word": "come in handy",
+          "translations": [
+            [
+              "пригодиться"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-16T16:39:12.987Z"
+    },
+    {
+      "words": [
+        {
+          "word": "litter",
+          "transcription": "'lɪtə",
+          "translations": [
+            [
+              "разбросанные вещи",
+              "беспорядок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.093Z"
+    },
+    {
+      "words": [
+        {
+          "word": "mild",
+          "transcription": "maɪld",
+          "translations": [
+            [
+              "мягкий",
+              "тихий",
+              "спокойный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.429Z"
+    },
+    {
+      "words": [
+        {
+          "word": "power supply",
+          "translations": [
+            [
+              "электроснабжение",
+              "энергоснабжение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.669Z"
+    },
+    {
+      "words": [
+        {
+          "word": "long",
+          "translations": [
+            [
+              "очень хотеть",
+              "страстно желать (чего-л.)",
+              "испытывать потребность (в чём-л.)",
+              "стремиться (к чему-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.066Z"
+    },
+    {
+      "words": [
+        {
+          "word": "turquoise",
+          "translations": [
+            [
+              "бирюзовый цвет"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.978Z"
+    },
+    {
+      "words": [
+        {
+          "word": "beneficiary",
+          "translations": [
+            [
+              "бенефициар"
+            ],
+            [
+              "получатель"
+            ],
+            [
+              "благополучатель"
+            ],
+            [
+              "выгодополучатель"
+            ],
+            [
+              "бенефициарий"
+            ],
+            [
+              "выгодоприобретатель"
+            ],
+            [
+              "владелец бенефиция"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-03T14:06:12.483Z"
+    },
+    {
+      "words": [
+        {
+          "word": "boom",
+          "translations": [
+            [
+              "рокотать",
+              "громыхать (о выстрелах, колоколе, волнах)"
+            ],
+            [
+              "производить громкий глухой шум"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.580Z"
+    },
+    {
+      "words": [
+        {
+          "word": "save the cheddar",
+          "translations": [
+            [
+              "сэкономить деньги"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-01T07:45:02.997Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slacker",
+          "transcription": "'slækə",
+          "translations": [
+            [
+              "лентяй",
+              "бездельник",
+              "лодырь",
+              "тунеядец",
+              "лежебока"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.840Z"
+    },
+    {
+      "words": [
+        {
+          "word": "celebrity",
+          "translations": [
+            [
+              "знаменитый человек"
+            ],
+            [
+              "знаменитость"
+            ],
+            [
+              "звезда"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.860Z"
+    },
+    {
+      "words": [
+        {
+          "word": "junk food",
+          "translations": [
+            [
+              "низкокачественная пища (богатая калориями, но не имеющая питательной ценности)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.739Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hard-faced",
+          "transcription": "'hɑːdˌfeɪst",
+          "translations": [
+            [
+              "безжалостный",
+              "жестокий",
+              "суровый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.976Z"
+    },
+    {
+      "words": [
+        {
+          "word": "landslide",
+          "translations": [
+            [
+              "обвал"
+            ],
+            [
+              "оползень"
+            ],
+            [
+              "полная победа на выборах"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-23T19:20:26.148Z"
+    },
+    {
+      "words": [
+        {
+          "word": "urgently",
+          "translations": [
+            [
+              "срочно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.655Z"
+    },
+    {
+      "words": [
+        {
+          "word": "plate",
+          "transcription": "pleɪt",
+          "translations": [
+            [
+              "тарелка",
+              "блюдце",
+              "блюдо"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.201Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hereafter",
+          "transcription": "ˌhɪər'ɑːftə",
+          "translations": [
+            [
+              "ниже",
+              "затем",
+              "дальше (в статье, книге)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.905Z"
+    },
+    {
+      "words": [
+        {
+          "word": "barber",
+          "transcription": "'bɑːbə",
+          "translations": [
+            [
+              "парикмахер (мужской)"
+            ],
+            [
+              "цирюльник",
+              "брадобрей"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.780Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fly off",
+          "translations": [
+            [
+              "отскакивать",
+              "отлетать",
+              "поспешно убежать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.456Z"
+    },
+    {
+      "words": [
+        {
+          "word": "unravel",
+          "transcription": "ʌn'ræv(ə)l",
+          "translations": [
+            [
+              "распутывать (нитки и т. п.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.859Z"
+    },
+    {
+      "words": [
+        {
+          "word": "stained",
+          "transcription": "steɪnd",
+          "translations": [
+            [
+              "испачканный",
+              "в пятнах"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.239Z"
+    },
+    {
+      "words": [
+        {
+          "word": "outlaw",
+          "translations": [
+            [
+              "объявлять (кого-л.) вне закона"
+            ],
+            [
+              "изгонять за пределы страны"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.325Z"
+    },
+    {
+      "words": [
+        {
+          "word": "riddle",
+          "transcription": "'rɪdl",
+          "translations": [
+            [
+              "загадка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.889Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hodiernal",
+          "transcription": "ˌhəudɪ'ɜːnəl",
+          "translations": [
+            [
+              "сегодняшний"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.851Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rumple",
+          "transcription": "'rʌmpl",
+          "translations": [
+            [
+              "мять"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.084Z"
+    },
+    {
+      "words": [
+        {
+          "word": "germ",
+          "translations": [
+            [
+              "бактерия",
+              "микроб",
+              "микроорганизм"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.942Z"
+    },
+    {
+      "words": [
+        {
+          "word": "taunt",
+          "transcription": "tɔːnt",
+          "translations": [
+            [
+              "насмешка",
+              "язвительное замечание"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.445Z"
+    },
+    {
+      "words": [
+        {
+          "word": "head cold",
+          "translations": [
+            [
+              "насморк"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.391Z"
+    },
+    {
+      "words": [
+        {
+          "word": "footstool",
+          "transcription": "'futstuːl",
+          "translations": [
+            [
+              "скамеечка для ног"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.082Z"
+    },
+    {
+      "words": [
+        {
+          "word": "carrier pigeon",
+          "transcription": "'kærɪəˌpɪʤən",
+          "translations": [
+            [
+              "почтовый голубь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.851Z"
+    },
+    {
+      "words": [
+        {
+          "word": "swift",
+          "transcription": "swɪft",
+          "translations": [
+            [
+              "быстрый",
+              "скорый",
+              "стремительный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.552Z"
+    },
+    {
+      "words": [
+        {
+          "word": "oaf",
+          "translations": [
+            [
+              "болван",
+              "тупица",
+              "олух"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.120Z"
+    },
+    {
+      "words": [
+        {
+          "word": "trudge",
+          "translations": [
+            [
+              "идти с трудом",
+              "устало тащиться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.230Z"
+    },
+    {
+      "words": [
+        {
+          "word": "synergy",
+          "transcription": "'sɪnəʤɪ",
+          "translations": [
+            [
+              "успешные совместные усилия"
+            ],
+            [
+              "совместная деятельность"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.028Z"
+    },
+    {
+      "words": [
+        {
+          "word": "attainable",
+          "translations": [
+            [
+              "достигаемый"
+            ],
+            [
+              "достижимый"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-31T09:37:03.888Z"
+    },
+    {
+      "words": [
+        {
+          "word": "yellowish",
+          "transcription": "'jeləuɪʃ",
+          "translations": [
+            [
+              "желтоватый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.030Z"
+    },
+    {
+      "words": [
+        {
+          "word": "howl",
+          "transcription": "haul",
+          "translations": [
+            [
+              "выть",
+              "завывать",
+              "стонать (о ветре)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.285Z"
+    },
+    {
+      "words": [
+        {
+          "word": "attain",
+          "translations": [
+            [
+              "достигать"
+            ],
+            [
+              "добиваться"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-16T10:40:50.812Z"
+    },
+    {
+      "words": [
+        {
+          "word": "be on the house",
+          "translations": [
+            [
+              "за счет заведения"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-11T16:44:46.340Z"
+    },
+    {
+      "words": [
+        {
+          "word": "drain out",
+          "translations": [
+            [
+              "заканчиваться",
+              "исчезать",
+              "улетучиваться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.677Z"
+    },
+    {
+      "words": [
+        {
+          "word": "doublet",
+          "translations": [
+            [
+              "род камзола (фасон мужской одежды эпохи Возрождения)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.986Z"
+    },
+    {
+      "words": [
+        {
+          "word": "prevail",
+          "translations": [
+            [
+              "преобладать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-24T17:55:17.505Z"
+    },
+    {
+      "words": [
+        {
+          "word": "travel-worn",
+          "translations": [
+            [
+              "разъезженный (о плохой дороге)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.107Z"
+    },
+    {
+      "words": [
+        {
+          "word": "smugly",
+          "translations": [
+            [
+              "самодовольно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.853Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tear-stained",
+          "transcription": "'tɪəsteɪnd",
+          "translations": [
+            [
+              "со следами слёз",
+              "заплаканный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.236Z"
+    },
+    {
+      "words": [
+        {
+          "word": "yank",
+          "translations": [
+            [
+              "дёрганье",
+              "рывок",
+              "толчок",
+              "резкое движение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.711Z"
+    },
+    {
+      "words": [
+        {
+          "word": "weakness",
+          "transcription": "'wiːknəs",
+          "translations": [
+            [
+              "слабость"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.112Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pipe up",
+          "translations": [
+            [
+              "заговорить высоким голосом"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.686Z"
+    },
+    {
+      "words": [
+        {
+          "word": "miserably",
+          "transcription": "'mɪz(ə)rəblɪ",
+          "translations": [
+            [
+              "несчастно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.232Z"
+    },
+    {
+      "words": [
+        {
+          "word": "big(-)headed",
+          "transcription": "bɪg'hedɪd",
+          "translations": [
+            [
+              "заносчивый",
+              "хвастливый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.710Z"
+    },
+    {
+      "words": [
+        {
+          "word": "portly",
+          "transcription": "'pɔːtlɪ",
+          "translations": [
+            [
+              "дородный",
+              "полный",
+              "тучный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.155Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rasp",
+          "transcription": "rɑːsp",
+          "translations": [
+            [
+              "скрежет"
+            ],
+            [
+              "резкий скрежещущий звук"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.491Z"
+    },
+    {
+      "words": [
+        {
+          "word": "essential",
+          "translations": [
+            [
+              "важнейший"
+            ],
+            [
+              "необходимый"
+            ],
+            [
+              "основной"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.210Z"
+    },
+    {
+      "words": [
+        {
+          "word": "substantial",
+          "translations": [
+            [
+              "питательный (о пище)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.117Z"
+    },
+    {
+      "words": [
+        {
+          "word": "snap",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "выкрикивать",
+              "издавать щелчок"
+            ],
+            [
+              "смыкать челюсти"
+            ],
+            [
+              "ломаться"
+            ],
+            [
+              "хватать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.435Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rely",
+          "translations": [
+            [
+              "зависеть (от чего-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.990Z"
+    },
+    {
+      "words": [
+        {
+          "word": "charity",
+          "translations": [
+            [
+              "благотворительность"
+            ],
+            [
+              "филантропия"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.190Z"
+    },
+    {
+      "words": [
+        {
+          "word": "put it bluntly",
+          "translations": [
+            [
+              "сказать прямо"
+            ],
+            [
+              "без прекрас"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-17T16:37:35.710Z"
+    },
+    {
+      "words": [
+        {
+          "word": "candid",
+          "translations": [
+            [
+              "откровенный",
+              "искренний",
+              "прямой"
+            ],
+            [
+              "чистосердечный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.771Z"
+    },
+    {
+      "words": [
+        {
+          "word": "mod cons",
+          "translations": [
+            [
+              "современные удобства"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-26T09:51:51.908Z"
+    },
+    {
+      "words": [
+        {
+          "word": "creepy",
+          "transcription": "'kriːpɪ",
+          "translations": [
+            [
+              "бросающий в дрожь",
+              "вызывающий страх"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.197Z"
+    },
+    {
+      "words": [
+        {
+          "word": "disguise",
+          "transcription": "dɪs'gaɪz",
+          "translations": [
+            [
+              "изменять внешность",
+              "облик"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.657Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ripping",
+          "transcription": "'rɪpɪŋ",
+          "translations": [
+            [
+              "рвущий",
+              "разрывающий",
+              "разрезающий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.667Z"
+    },
+    {
+      "words": [
+        {
+          "word": "canned goods",
+          "translations": [
+            [
+              "консервы",
+              "консервированные продукты"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.204Z"
+    },
+    {
+      "words": [
+        {
+          "word": "destiny",
+          "transcription": "'destɪnɪ",
+          "translations": [
+            [
+              "рок",
+              "судьба (как высшая сила)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.763Z"
+    },
+    {
+      "words": [
+        {
+          "word": "putrid",
+          "transcription": "'pjuːtrɪd",
+          "translations": [
+            [
+              "гнилой",
+              "прогнивший"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.158Z"
+    },
+    {
+      "words": [
+        {
+          "word": "toil",
+          "transcription": "tɔɪl",
+          "translations": [
+            [
+              "тяжёлый труд"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.176Z"
+    },
+    {
+      "words": [
+        {
+          "word": "withdraw",
+          "translations": [
+            [
+              "отодвигать",
+              "отдёргивать"
+            ],
+            [
+              "отнимать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.340Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hiccup",
+          "transcription": "'hɪkʌp",
+          "translations": [
+            [
+              "икать",
+              "загвостка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2024-12-07T11:19:04.253Z"
+    },
+    {
+      "words": [
+        {
+          "word": "be worth",
+          "translations": [
+            [
+              "стоить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.355Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hinder",
+          "translations": [
+            [
+              "задерживать"
+            ],
+            [
+              "затруднять"
+            ],
+            [
+              "мешать"
+            ],
+            [
+              "препятствовать (чему-л.)"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-11T19:49:36.134Z"
+    },
+    {
+      "words": [
+        {
+          "word": "talking-to",
+          "transcription": "'tɔːkɪŋtuː",
+          "translations": [
+            [
+              "внушение",
+              "выговор"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.811Z"
+    },
+    {
+      "words": [
+        {
+          "word": "blabbing",
+          "transcription": "'blæbɪŋ",
+          "translations": [
+            [
+              "болтливый",
+              "говорливый",
+              "словоохотливый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.300Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slip off",
+          "translations": [
+            [
+              "сбросить (одежду)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.069Z"
+    },
+    {
+      "words": [
+        {
+          "word": "awe",
+          "translations": [
+            [
+              "страх",
+              "трепет",
+              "благоговение",
+              "изумление"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2024-11-29T13:14:36.545Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sobbing",
+          "transcription": "'sɔbɪŋ",
+          "translations": [
+            [
+              "рыдания",
+              "всхлипывания"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.584Z"
+    },
+    {
+      "words": [
+        {
+          "word": "extremely",
+          "transcription": "ɪks'triːmlɪ",
+          "translations": [
+            [
+              "чрезвычайно",
+              "крайне",
+              "в высшей степени"
+            ],
+            [
+              "очень"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.445Z"
+    },
+    {
+      "words": [
+        {
+          "word": "overly",
+          "translations": [
+            [
+              "чрезмерно"
+            ],
+            [
+              "излишне"
+            ],
+            [
+              "избыточно"
+            ],
+            [
+              "слишком"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-23T14:06:41.087Z"
+    },
+    {
+      "words": [
+        {
+          "word": "thinned",
+          "translations": [
+            [
+              "изреженный",
+              "разреженный (напр. о лесе)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.221Z"
+    },
+    {
+      "words": [
+        {
+          "word": "accepted",
+          "transcription": "ək'septɪd",
+          "translations": [
+            [
+              "общепринятый",
+              "обычный",
+              "распространённый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.625Z"
+    },
+    {
+      "words": [
+        {
+          "word": "broad",
+          "transcription": "brɔːd",
+          "translations": [
+            [
+              "широкий"
+            ],
+            [
+              "обширный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.518Z"
+    },
+    {
+      "words": [
+        {
+          "word": "drum",
+          "translations": [
+            [
+              "барабанить",
+              "бить в барабан"
+            ],
+            [
+              "играть на барабане"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.897Z"
+    },
+    {
+      "words": [
+        {
+          "word": "at the sight of",
+          "translations": [
+            [
+              "при виде"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.189Z"
+    },
+    {
+      "words": [
+        {
+          "word": "give a fright",
+          "translations": [
+            [
+              "перепугать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.565Z"
+    },
+    {
+      "words": [
+        {
+          "word": "mint",
+          "translations": [
+            [
+              "продукты (чаще всего сладости)",
+              "приправленные мятой"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.943Z"
+    },
+    {
+      "words": [
+        {
+          "word": "torrent",
+          "transcription": "'tɔr(ə)nt",
+          "translations": [
+            [
+              "стремительный поток"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.474Z"
+    },
+    {
+      "words": [
+        {
+          "word": "out of order",
+          "translations": [
+            [
+              "непригодный",
+              "неподходящий",
+              "неуместный []"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.128Z"
+    },
+    {
+      "words": [
+        {
+          "word": "any old time",
+          "translations": [
+            [
+              "в любое время"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.962Z"
+    },
+    {
+      "words": [
+        {
+          "word": "torch",
+          "transcription": "tɔːʧ",
+          "translations": [
+            [
+              "осветительный прибор",
+              "факел",
+              "фонарь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.214Z"
+    },
+    {
+      "words": [
+        {
+          "word": "get over with",
+          "translations": [
+            [
+              "покончить с (чем-л. неприятным)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.577Z"
+    },
+    {
+      "words": [
+        {
+          "word": "spotty",
+          "translations": [
+            [
+              "прыщавый",
+              "прыщеватый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.177Z"
+    },
+    {
+      "words": [
+        {
+          "word": "lock up",
+          "translations": [
+            [
+              "запирать на ночь (гараж, магазин)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.009Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sensation",
+          "transcription": "sen'seɪʃ(ə)n",
+          "translations": [
+            [
+              "ощущение",
+              "чувство"
+            ],
+            [
+              "восприятие"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.479Z"
+    },
+    {
+      "words": [
+        {
+          "word": "devalue",
+          "translations": [
+            [
+              "обесценивать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-07T12:04:59.723Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fringe",
+          "translations": [
+            [
+              "край",
+              "крайность"
+            ],
+            [
+              "грань",
+              "предел"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.814Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ancient",
+          "transcription": "'eɪn(t)ʃ(ə)nt",
+          "translations": [
+            [
+              "древний"
+            ],
+            [
+              "старинный",
+              "старый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.007Z"
+    },
+    {
+      "words": [
+        {
+          "word": "forcefully",
+          "translations": [
+            [
+              "неистово"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.795Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ride",
+          "transcription": "raɪd",
+          "translations": [
+            [
+              "прогулка",
+              "поездка",
+              "езда (верхом, на машине, на велосипеде и т. п.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.731Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tear out of the room",
+          "translations": [
+            [
+              "вырваться из комнаты"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.813Z"
+    },
+    {
+      "words": [
+        {
+          "word": "drawling",
+          "transcription": "drɔːlɪŋ",
+          "translations": [
+            [
+              "протяжный"
+            ],
+            [
+              "заунывный"
+            ],
+            [
+              "монотонный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.090Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hesitation",
+          "transcription": "ˌhezɪ'teɪʃ(ə)n",
+          "translations": [
+            [
+              "колебание",
+              "сомнение"
+            ],
+            [
+              "неуверенность",
+              "нерешительность"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.649Z"
+    },
+    {
+      "words": [
+        {
+          "word": "not at all",
+          "translations": [
+            [
+              "ничуть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.587Z"
+    },
+    {
+      "words": [
+        {
+          "word": "push off",
+          "translations": [
+            [
+              "отталкиваться",
+              "отплывать (от берега)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.304Z"
+    },
+    {
+      "words": [
+        {
+          "word": "goat",
+          "transcription": "gəut",
+          "translations": [
+            [
+              "козёл"
+            ],
+            [
+              "коза"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.869Z"
+    },
+    {
+      "words": [
+        {
+          "word": "exhibit",
+          "transcription": "ɪg'zɪbɪt",
+          "translations": [
+            [
+              "экспонат (на выставке)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.067Z"
+    },
+    {
+      "words": [
+        {
+          "word": "phrasebook",
+          "transcription": "'freɪzbǔk",
+          "translations": [
+            [
+              "разговорник"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.996Z"
+    },
+    {
+      "words": [
+        {
+          "word": "go off",
+          "translations": [
+            [
+              "выстреливать (об оружии)",
+              "взрываться (о взрывчатке)"
+            ],
+            [
+              "выпалить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.364Z"
+    },
+    {
+      "words": [
+        {
+          "word": "disapprovingly",
+          "transcription": "ˌdɪsə'pruːvɪŋlɪ",
+          "translations": [
+            [
+              "неодобрительно",
+              "осуждающе"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.167Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sincere",
+          "transcription": "sɪn'sɪə",
+          "translations": [
+            [
+              "искренний",
+              "чистосердечный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.981Z"
+    },
+    {
+      "words": [
+        {
+          "word": "savour",
+          "translations": [
+            [
+              "наслаждаться"
+            ],
+            [
+              "смаковать"
+            ],
+            [
+              "иметь привкус или запах"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-21T14:52:30.708Z"
+    },
+    {
+      "words": [
+        {
+          "word": "commonplace",
+          "translations": [
+            [
+              "банальный",
+              "заурядный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.889Z"
+    },
+    {
+      "words": [
+        {
+          "word": "scamper",
+          "transcription": "'skæmpə",
+          "translations": [
+            [
+              "бегать",
+              "носиться",
+              "резво скакать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.171Z"
+    },
+    {
+      "words": [
+        {
+          "word": "blanket",
+          "transcription": "'blæŋkɪt",
+          "translations": [
+            [
+              "шерстяное одеяло"
+            ],
+            [
+              "попона"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.403Z"
+    },
+    {
+      "words": [
+        {
+          "word": "come along",
+          "translations": [
+            [
+              "сопровождать кого-л. / идти с кем-л."
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.352Z"
+    },
+    {
+      "words": [
+        {
+          "word": "impress",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "убеждать (кого-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.653Z"
+    },
+    {
+      "words": [
+        {
+          "word": "livid with terror",
+          "translations": [
+            [
+              "вне себя от ужаса"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.195Z"
+    },
+    {
+      "words": [
+        {
+          "word": "plunderer",
+          "transcription": "'plʌnd(ə)rə",
+          "translations": [
+            [
+              "вор",
+              "грабитель"
+            ],
+            [
+              "мародёр"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.271Z"
+    },
+    {
+      "words": [
+        {
+          "word": "What a waste!",
+          "translations": [
+            [
+              "Какая потеря!"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.134Z"
+    },
+    {
+      "words": [
+        {
+          "word": "be aware",
+          "translations": [
+            [
+              "иметь в виду"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.208Z"
+    },
+    {
+      "words": [
+        {
+          "word": "swell",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "надуваться",
+              "опухать",
+              "раздуваться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.743Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gurgling",
+          "transcription": "'gɜːglɪŋ",
+          "translations": [
+            [
+              "бульканье"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.355Z"
+    },
+    {
+      "words": [
+        {
+          "word": "be in position",
+          "translations": [
+            [
+              "быть в состоянии"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.777Z"
+    },
+    {
+      "words": [
+        {
+          "word": "read up",
+          "translations": [
+            [
+              "специально изучать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.155Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fit in",
+          "translations": [
+            [
+              "приспосабливаться"
+            ],
+            [
+              "приноравливаться"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-28T10:01:55.378Z"
+    },
+    {
+      "words": [
+        {
+          "word": "unafraid",
+          "transcription": "ˌʌnə'freɪd",
+          "translations": [
+            [
+              "бесстрашный",
+              "смелый",
+              "храбрый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.598Z"
+    },
+    {
+      "words": [
+        {
+          "word": "loose",
+          "transcription": "luːs",
+          "partOfSpeech": "adjective",
+          "translations": [
+            [
+              "свободный/ненатянутый"
+            ],
+            [
+              "болтающийся"
+            ],
+            [
+              "неряшливый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.537Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hollow",
+          "translations": [
+            [
+              "впадина",
+              "углубление"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.611Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hubbub",
+          "transcription": "'hʌbʌb",
+          "translations": [
+            [
+              "шум",
+              "гам",
+              "гул"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.244Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rake",
+          "translations": [
+            [
+              "тщательно искать",
+              "прочёсывать"
+            ],
+            [
+              "рыться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.672Z"
+    },
+    {
+      "words": [
+        {
+          "word": "wound",
+          "transcription": "wuːnd",
+          "translations": [
+            [
+              "рана"
+            ],
+            [
+              "ранение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.386Z"
+    },
+    {
+      "words": [
+        {
+          "word": "smear",
+          "translations": [
+            [
+              "марать",
+              "пачкать",
+              "загрязнять",
+              "мазать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.315Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ligament",
+          "translations": [
+            [
+              "связка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.849Z"
+    },
+    {
+      "words": [
+        {
+          "word": "butt in",
+          "translations": [
+            [
+              "встревать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.251Z"
+    },
+    {
+      "words": [
+        {
+          "word": "look forward to",
+          "translations": [
+            [
+              "ожидать с нетерпением"
+            ],
+            [
+              "предвкушать (что-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.599Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cram",
+          "translations": [
+            [
+              "переполнять"
+            ],
+            [
+              "наполнять доверху",
+              "полностью"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.986Z"
+    },
+    {
+      "words": [
+        {
+          "word": "flanked",
+          "translations": [
+            [
+              "прикрытый с фланга"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.678Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tattered",
+          "transcription": "'tætəd",
+          "translations": [
+            [
+              "оборванный",
+              "изорванный",
+              "в лохмотьях"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.748Z"
+    },
+    {
+      "words": [
+        {
+          "word": "broom",
+          "transcription": "bruːm",
+          "translations": [
+            [
+              "веник",
+              "метла"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.361Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fancy",
+          "translations": [
+            [
+              "воображать"
+            ],
+            [
+              "думать"
+            ],
+            [
+              "необычный"
+            ],
+            [
+              "страстно желать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.994Z"
+    },
+    {
+      "words": [
+        {
+          "word": "herbivore",
+          "transcription": "'hɜːbɪvɔː",
+          "translations": [
+            [
+              "травоядное животное"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.487Z"
+    },
+    {
+      "words": [
+        {
+          "word": "curl up",
+          "translations": [
+            [
+              "скручивать",
+              "сморщивать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.413Z"
+    },
+    {
+      "words": [
+        {
+          "word": "wash down",
+          "translations": [
+            [
+              "запивать (еду, лекарство водой, вином и т. п.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.139Z"
+    },
+    {
+      "words": [
+        {
+          "word": "blurt",
+          "transcription": "blɜːt",
+          "translations": [
+            [
+              "сболтнуть",
+              "выпалить"
+            ],
+            [
+              "выдавать",
+              "проговариваться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.344Z"
+    },
+    {
+      "words": [
+        {
+          "word": "crony",
+          "transcription": "'krəunɪ",
+          "translations": [
+            [
+              "близкий",
+              "закадычный друг"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.681Z"
+    },
+    {
+      "words": [
+        {
+          "word": "apprehension",
+          "translations": [
+            [
+              "опасение"
+            ],
+            [
+              "мрачное предчувствие"
+            ],
+            [
+              "понимание"
+            ],
+            [
+              "способность схватывать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-16T10:40:13.016Z"
+    },
+    {
+      "words": [
+        {
+          "word": "jaunty",
+          "transcription": "'ʤɔːntɪ",
+          "translations": [
+            [
+              "бойкий",
+              "весёлый",
+              "живой"
+            ],
+            [
+              "оживлённый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.060Z"
+    },
+    {
+      "words": [
+        {
+          "word": "inhibit",
+          "translations": [
+            [
+              "задерживать"
+            ],
+            [
+              "сдерживать"
+            ],
+            [
+              "препятствовать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-13T14:44:11.087Z"
+    },
+    {
+      "words": [
+        {
+          "word": "disembody",
+          "translations": [
+            [
+              "освобождать",
+              "избавлять (от формы, в которой заключён предмет)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.065Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tutor",
+          "transcription": "'tjuːtə",
+          "translations": [
+            [
+              "домашний учитель",
+              "гувернёр"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.482Z"
+    },
+    {
+      "words": [
+        {
+          "word": "blotch",
+          "translations": [
+            [
+              "прыщ"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.235Z"
+    },
+    {
+      "words": [
+        {
+          "word": "chicken",
+          "translations": [
+            [
+              "струсить",
+              "отступить из трусости"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.074Z"
+    },
+    {
+      "words": [
+        {
+          "word": "shimmer",
+          "transcription": "'ʃɪmə",
+          "translations": [
+            [
+              "мерцать"
+            ],
+            [
+              "блестеть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.839Z"
+    },
+    {
+      "words": [
+        {
+          "word": "instructive",
+          "transcription": "ɪn'strʌktɪv",
+          "translations": [
+            [
+              "поучительный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.634Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fumbling",
+          "translations": [
+            [
+              "несвязная речь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.404Z"
+    },
+    {
+      "words": [
+        {
+          "word": "finite",
+          "transcription": "'faɪnaɪt",
+          "translations": [
+            [
+              "ограниченный",
+              "имеющий предел"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.654Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cumbersome",
+          "translations": [
+            [
+              "громоздкий"
+            ],
+            [
+              "объёмный"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-06T08:04:40.700Z"
+    },
+    {
+      "words": [
+        {
+          "word": "obscure",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "затемнять",
+              "затенять"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.996Z"
+    },
+    {
+      "words": [
+        {
+          "word": "get interested in",
+          "translations": [
+            [
+              "заинтересоваться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.429Z"
+    },
+    {
+      "words": [
+        {
+          "word": "birdcage",
+          "transcription": "'bɜːdkeɪʤ",
+          "translations": [
+            [
+              "клетка (для птиц)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.164Z"
+    },
+    {
+      "words": [
+        {
+          "word": "greet",
+          "transcription": "griːt",
+          "translations": [
+            [
+              "приветствовать"
+            ],
+            [
+              "здороваться",
+              "кланяться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.244Z"
+    },
+    {
+      "words": [
+        {
+          "word": "flock",
+          "translations": [
+            [
+              "стая (птиц)"
+            ],
+            [
+              "отара (овец)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.500Z"
+    },
+    {
+      "words": [
+        {
+          "word": "supervise",
+          "transcription": "'s(j)uːpəvaɪz",
+          "translations": [
+            [
+              "смотреть",
+              "наблюдать (за чем-л.)"
+            ],
+            [
+              "надзирать"
+            ],
+            [
+              "заведовать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.154Z"
+    },
+    {
+      "words": [
+        {
+          "word": "longevity",
+          "translations": [
+            [
+              "долгожительство"
+            ],
+            [
+              "долголетие"
+            ],
+            [
+              "долговечность"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-17T16:29:12.071Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fraud",
+          "transcription": "frɔːd",
+          "translations": [
+            [
+              "обман"
+            ],
+            [
+              "мошенничество",
+              "жульничество"
+            ],
+            [
+              "подделка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.848Z"
+    },
+    {
+      "words": [
+        {
+          "word": "recite",
+          "transcription": "rɪ'saɪt",
+          "translations": [
+            [
+              "повторять вслух по памяти"
+            ],
+            [
+              "цитировать вслух"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.266Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pane",
+          "transcription": "peɪn",
+          "translations": [
+            [
+              "оконное стекло"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.337Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sizzle",
+          "translations": [
+            [
+              "сжигать"
+            ],
+            [
+              "испепелять"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.566Z"
+    },
+    {
+      "words": [
+        {
+          "word": "parlour",
+          "transcription": "'pɑːlə",
+          "translations": [
+            [
+              "гостиная",
+              "общая комната (в квартире)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.491Z"
+    },
+    {
+      "words": [
+        {
+          "word": "speck",
+          "transcription": "spek",
+          "translations": [
+            [
+              "пятно",
+              "пятнышко",
+              "крапинка",
+              "точка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.368Z"
+    },
+    {
+      "words": [
+        {
+          "word": "evoke",
+          "translations": [
+            [
+              "пробуждать (чувства)"
+            ],
+            [
+              "вызывать (воспоминание"
+            ],
+            [
+              "восхищение)"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-16T16:38:47.320Z"
+    },
+    {
+      "words": [
+        {
+          "word": "pincers",
+          "translations": [
+            [
+              "клешни"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.007Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sift",
+          "transcription": "sɪft",
+          "translations": [
+            [
+              "отсеивать",
+              "просеивать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.324Z"
+    },
+    {
+      "words": [
+        {
+          "word": "baggy",
+          "transcription": "'bægɪ",
+          "translations": [
+            [
+              "мешкообразный"
+            ],
+            [
+              "мешковатый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.795Z"
+    },
+    {
+      "words": [
+        {
+          "word": "porcupine",
+          "translations": [
+            [
+              "дикобраз"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.892Z"
+    },
+    {
+      "words": [
+        {
+          "word": "spit",
+          "translations": [
+            [
+              "шипеть",
+              "шкварчать",
+              "брызгаться (жиром)"
+            ],
+            [
+              "плевать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.237Z"
+    },
+    {
+      "words": [
+        {
+          "word": "not unlike",
+          "translations": [
+            [
+              "наподобие",
+              "вроде"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.076Z"
+    },
+    {
+      "words": [
+        {
+          "word": "filibuster",
+          "transcription": "'fɪlɪbʌstə",
+          "translations": [
+            [
+              "пират",
+              "флибустьер"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.338Z"
+    },
+    {
+      "words": [
+        {
+          "word": "beat around the bush",
+          "translations": [
+            [
+              "ходить вокруг да около"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.368Z"
+    },
+    {
+      "words": [
+        {
+          "word": "mausoleum",
+          "translations": [
+            [
+              "мавзолей"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-18T15:12:39.612Z"
+    },
+    {
+      "words": [
+        {
+          "word": "limb",
+          "transcription": "lɪm",
+          "translations": [
+            [
+              "конечность (человека или животного)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.456Z"
+    },
+    {
+      "words": [
+        {
+          "word": "conjure up",
+          "translations": [
+            [
+              "вызывать в воображении"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.342Z"
+    },
+    {
+      "words": [
+        {
+          "word": "care of",
+          "translations": [
+            [
+              "по адресу"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.423Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bench",
+          "transcription": "benʧ",
+          "translations": [
+            [
+              "скамья"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.798Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dormant",
+          "transcription": "'dɔːmənt",
+          "translations": [
+            [
+              "дремлющий",
+              "спящий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.326Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "translations": [
+            [
+              "многоцветье"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.982Z"
+    },
+    {
+      "words": [
+        {
+          "word": "steel",
+          "transcription": "stiːl",
+          "translations": [
+            [
+              "сталь"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.320Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slight",
+          "transcription": "slaɪt",
+          "translations": [
+            [
+              "проявление пренебрежительного равнодушия"
+            ],
+            [
+              "неуважение",
+              "пренебрежение",
+              "игнорирование"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.609Z"
+    },
+    {
+      "words": [
+        {
+          "word": "allegation",
+          "transcription": "ˌælɪ'geɪʃ(ə)n",
+          "translations": [
+            [
+              "голословное утверждение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.511Z"
+    },
+    {
+      "words": [
+        {
+          "word": "roguish",
+          "transcription": "'rəugɪʃ",
+          "translations": [
+            [
+              "жуликоватый",
+              "плутоватый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.716Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bat",
+          "transcription": "bæt",
+          "translations": [
+            [
+              "летучая мышь"
+            ],
+            [
+              "дубина",
+              "палка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.933Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dishonest",
+          "transcription": "dɪs'ɔnɪst",
+          "translations": [
+            [
+              "нечестный"
+            ],
+            [
+              "мошеннический",
+              "непорядочный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:36.876Z"
+    },
+    {
+      "words": [
+        {
+          "word": "savagely",
+          "translations": [
+            [
+              "жестоко",
+              "свирепо",
+              "зло",
+              "беспощадно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.838Z"
+    },
+    {
+      "words": [
+        {
+          "word": "teethe",
+          "transcription": "tiːð",
+          "translations": [
+            [
+              "прорезываться (о зубах)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.636Z"
+    },
+    {
+      "words": [
+        {
+          "word": "crow",
+          "translations": [
+            [
+              "кукарекать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.388Z"
+    },
+    {
+      "words": [
+        {
+          "word": "chopped",
+          "translations": [
+            [
+              "нарубленный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.097Z"
+    },
+    {
+      "words": [
+        {
+          "word": "loom",
+          "translations": [
+            [
+              "виднеться вдали",
+              "неясно вырисовываться"
+            ],
+            [
+              "маячить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.047Z"
+    },
+    {
+      "words": [
+        {
+          "word": "recreation",
+          "transcription": "ˌrɪekrɪ'eɪʃ(ə)n",
+          "translations": [
+            [
+              "отдых"
+            ],
+            [
+              "восстановление здоровья",
+              "душевных и физических сил"
+            ],
+            [
+              "выздоровление"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.928Z"
+    },
+    {
+      "words": [
+        {
+          "word": "yak",
+          "transcription": "jæk",
+          "translations": [
+            [
+              "як"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.070Z"
+    },
+    {
+      "words": [
+        {
+          "word": "wellington",
+          "translations": [
+            [
+              "веллингтон"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.047Z"
+    },
+    {
+      "words": [
+        {
+          "word": "stick",
+          "transcription": "stɪk",
+          "partOfSpeech": "noun",
+          "translations": [
+            [
+              "палка"
+            ],
+            [
+              "прут"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.784Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tenant",
+          "translations": [
+            [
+              "жилец",
+              "житель",
+              "обитатель"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.978Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ignorant",
+          "transcription": "'ɪgn(ə)r(ə)nt",
+          "translations": [
+            [
+              "невежественный",
+              "необразованный",
+              "безграмотный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.642Z"
+    },
+    {
+      "words": [
+        {
+          "word": "distractedly",
+          "transcription": "dɪ'stræktɪdlɪ",
+          "translations": [
+            [
+              "растерянно",
+              "смущённо"
+            ],
+            [
+              "в растерянности",
+              "в смущении",
+              "в смятении"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.050Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tailor",
+          "translations": [
+            [
+              "делать на заказ",
+              "привязывать по месту",
+              "подгонять"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.894Z"
+    },
+    {
+      "words": [
+        {
+          "word": "stalk",
+          "translations": [
+            [
+              "стебель"
+            ],
+            [
+              "черенок"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-20T18:29:59.148Z"
+    },
+    {
+      "words": [
+        {
+          "word": "unfeasible",
+          "translations": [
+            [
+              "невыполнимый"
+            ],
+            [
+              "неосуществимый"
+            ],
+            [
+              "несбыточный"
+            ],
+            [
+              "невозможный"
+            ],
+            [
+              "неправдоподобный"
+            ],
+            [
+              "невероятный"
+            ],
+            [
+              "маловероятный"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-20T19:25:17.962Z"
+    },
+    {
+      "words": [
+        {
+          "word": "risky",
+          "transcription": "'rɪskɪ",
+          "translations": [
+            [
+              "опасный",
+              "рискованный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.926Z"
+    },
+    {
+      "words": [
+        {
+          "word": "retort",
+          "transcription": "rɪ'tɔːt",
+          "translations": [
+            [
+              "возражение"
+            ],
+            [
+              "резкий ответ"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.277Z"
+    },
+    {
+      "words": [
+        {
+          "word": "shelter",
+          "translations": [
+            [
+              "приютить",
+              "дать приют"
+            ],
+            [
+              "укрывать",
+              "служить приютом"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:30.751Z"
+    },
+    {
+      "words": [
+        {
+          "word": "steadily",
+          "translations": [
+            [
+              "неуклонно",
+              "постоянно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.278Z"
+    },
+    {
+      "words": [
+        {
+          "word": "thickly",
+          "translations": [
+            [
+              "густо"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.860Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cotton on",
+          "translations": [
+            [
+              "понимать"
+            ],
+            [
+              "усваивать"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-02-20T19:23:53.552Z"
+    },
+    {
+      "words": [
+        {
+          "word": "leaflet",
+          "transcription": "'liːflət",
+          "translations": [
+            [
+              "листочек",
+              "листик"
+            ],
+            [
+              "молодой лист"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.083Z"
+    },
+    {
+      "words": [
+        {
+          "word": "catastrophe",
+          "transcription": "kə'tæstrəfɪ",
+          "translations": [
+            [
+              "катастрофа",
+              "трагедия"
+            ],
+            [
+              "несчастье",
+              "беда"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.240Z"
+    },
+    {
+      "words": [
+        {
+          "word": "vibrant",
+          "transcription": "'vaɪbrənt",
+          "translations": [
+            [
+              "живой",
+              "энергичный",
+              "вибрирующий",
+              "резонирующий"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2024-11-29T13:12:43.814Z"
+    },
+    {
+      "words": [
+        {
+          "word": "strand",
+          "translations": [
+            [
+              "поставить в затруднительное финансовое положение"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.279Z"
+    },
+    {
+      "words": [
+        {
+          "word": "track",
+          "translations": [
+            [
+              "выслеживать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.296Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fling up",
+          "translations": [
+            [
+              "упускать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.182Z"
+    },
+    {
+      "words": [
+        {
+          "word": "desperate",
+          "transcription": "'desp(ə)rət",
+          "translations": [
+            [
+              "безнадёжный"
+            ],
+            [
+              "бесперспективный"
+            ],
+            [
+              "безысходный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.279Z"
+    },
+    {
+      "words": [
+        {
+          "word": "throw out",
+          "translations": [
+            [
+              "выставить",
+              "выпрямить",
+              "протянуть (ногу, руку)"
+            ],
+            [
+              "выбрасывать (что-л.)"
+            ],
+            [
+              "отказываться (от чего-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:42.331Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gaunt",
+          "transcription": "gɔːnt",
+          "translations": [
+            [
+              "сухопарый"
+            ],
+            [
+              "худой",
+              "костлявый"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.694Z"
+    },
+    {
+      "words": [
+        {
+          "word": "touchdown",
+          "transcription": "'tʌʧdaun",
+          "translations": [
+            [
+              "посадка",
+              "приземление"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.039Z"
+    },
+    {
+      "words": [
+        {
+          "word": "bondage",
+          "transcription": "'bɔndɪʤ",
+          "translations": [
+            [
+              "рабство",
+              "неволя"
+            ],
+            [
+              "крепостное состояние",
+              "крепостное право"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.976Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slope",
+          "translations": [
+            [
+              "клониться"
+            ],
+            [
+              "иметь наклон"
+            ],
+            [
+              "опускаться или подниматься наклонно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:33.989Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ability",
+          "transcription": "ə'bɪlətɪ",
+          "translations": [
+            [
+              "способность",
+              "возможность (делать что-л.)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.245Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ringing",
+          "transcription": "'rɪŋɪŋ",
+          "translations": [
+            [
+              "звон",
+              "трезвон"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:35.945Z"
+    },
+    {
+      "words": [
+        {
+          "word": "scrap",
+          "transcription": "skræp",
+          "translations": [
+            [
+              "клочок",
+              "кусочек",
+              "обрывок",
+              "обрезок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.206Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slip over",
+          "translations": [
+            [
+              "насаживать"
+            ],
+            [
+              "надевать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.313Z"
+    },
+    {
+      "words": [
+        {
+          "word": "recital",
+          "transcription": "rɪ'saɪt(ə)l",
+          "translations": [
+            [
+              "подробное изложение"
+            ],
+            [
+              "перечень",
+              "перечисление"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.561Z"
+    },
+    {
+      "words": [
+        {
+          "word": "flip over",
+          "translations": [
+            [
+              "повалить",
+              "свалить"
+            ],
+            [
+              "перевернуть"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.099Z"
+    },
+    {
+      "words": [
+        {
+          "word": "wiper",
+          "transcription": "'waɪpə",
+          "translations": [
+            [
+              "дворник"
+            ],
+            [
+              "чистильщик"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.437Z"
+    },
+    {
+      "words": [
+        {
+          "word": "guess",
+          "transcription": "ges",
+          "translations": [
+            [
+              "гадать",
+              "догадываться"
+            ],
+            [
+              "пытаться отгадать"
+            ],
+            [
+              "ломать голову"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.020Z"
+    },
+    {
+      "words": [
+        {
+          "word": "significant",
+          "transcription": "sɪg'nɪfɪkənt",
+          "translations": [
+            [
+              "значительный",
+              "важный",
+              "существенный"
+            ],
+            [
+              "знаменательный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.848Z"
+    },
+    {
+      "words": [
+        {
+          "word": "euphoric",
+          "translations": [
+            [
+              "эйфористический"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2024-12-16T11:29:10.374Z"
+    },
+    {
+      "words": [
+        {
+          "word": "newbie",
+          "translations": [
+            [
+              "чайник",
+              "новичок",
+              "\"нуб\" (новый пользователь"
+            ],
+            [
+              "приступающий к освоению тонкостей какой-л. технологии",
+              "преимущественно связанной с компьютерами и интернетом)"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.209Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cub",
+          "translations": [
+            [
+              "детёныш зверя (обычно лисы, волка, медведя)"
+            ],
+            [
+              "щенок"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:43.345Z"
+    },
+    {
+      "words": [
+        {
+          "word": "send out",
+          "translations": [
+            [
+              "выпускать",
+              "испускать"
+            ],
+            [
+              "излучать"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.323Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tip",
+          "translations": [
+            [
+              "опрокидываться"
+            ],
+            [
+              "переворачиваться"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.365Z"
+    },
+    {
+      "words": [
+        {
+          "word": "severe",
+          "transcription": "sɪ'vɪə",
+          "translations": [
+            [
+              "строгий",
+              "суровый"
+            ],
+            [
+              "требовательный"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T18:19:29.431Z"
+    },
+    {
+      "words": [
+        {
+          "word": "canopy",
+          "transcription": "'kænəpɪ",
+          "translations": [
+            [
+              "балдахин"
+            ],
+            [
+              "полог",
+              "навес",
+              "тент"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:41.433Z"
+    },
+    {
+      "words": [
+        {
+          "word": "familiarly",
+          "transcription": "fə'mɪlɪəlɪ",
+          "translations": [
+            [
+              "бесцеремонно"
+            ],
+            [
+              "фамильярно"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:38.079Z"
+    },
+    {
+      "words": [
+        {
+          "word": "turret",
+          "transcription": "'tʌrɪt",
+          "translations": [
+            [
+              "башенка"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:34.495Z"
+    },
+    {
+      "words": [
+        {
+          "word": "vomit",
+          "transcription": "'vɔmɪt",
+          "translations": [
+            [
+              "рвота"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:40.114Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hold over",
+          "translations": [
+            [
+              "откладывать",
+              "медлить"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:39.148Z"
+    },
+    {
+      "words": [
+        {
+          "word": "repertory",
+          "transcription": "'repət(ə)rɪ",
+          "translations": [
+            [
+              "репертуар"
+            ]
+          ]
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:49:37.187Z"
+    },
+    {
+      "words": [
+        {
+          "word": "uninitiated",
+          "translations": [
+            [
+              "непосвящённый"
+            ],
+            [
+              "несведущий"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-03-24T17:41:58.481Z"
+    }
+  ]
+}

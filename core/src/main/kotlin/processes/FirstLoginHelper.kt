@@ -15,9 +15,23 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.FirstLoginHelper")
 
-private const val DEFAULT_TARGET_LANGUAGE = "zh"
+private const val DEFAULT_TARGET_LANGUAGE = "ru"
 private val RESOURCE_DOCUMENTS_BY_LANGUAGE = mapOf(
-    "ru" to listOf("/irregular-verbs-en-ru.json", "/weather-en-ru.json"),
+    "ru" to listOf(
+        "/irregular-verbs-en-ru.json",
+        "/weather-en-ru.json",
+        "/common-words-01-en-ru.json",
+        "/common-words-02-en-ru.json",
+        "/common-words-03-en-ru.json",
+        "/common-words-04-en-ru.json",
+        "/common-words-05-en-ru.json",
+        "/common-words-06-en-ru.json",
+        "/common-words-07-en-ru.json",
+        "/common-words-08-en-ru.json",
+        "/common-words-08-en-ru.json",
+        "/common-words-10-en-ru.json",
+        "/common-words-11-en-ru.json",
+    ),
     "en" to listOf("/weather-zh-en.json"),
     "zh" to listOf("/irregular-verbs-en-zh.json", "/weather-en-zh.json"),
     "es" to listOf("/irregular-verbs-en-es.json", "/weather-en-es.json"),
