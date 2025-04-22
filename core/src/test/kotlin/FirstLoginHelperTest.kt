@@ -26,7 +26,13 @@ internal class FirstLoginHelperTest {
                         mapOf("weather" to "天气"),
                     )
                 ),
-                Arguments.of("en", listOf(mapOf("天气" to "weather"))),
+                Arguments.of(
+                    "en",
+                    listOf(
+                        mapOf("天气" to "weather"),
+                        mapOf("météo" to "weather"),
+                    )
+                ),
                 Arguments.of(
                     "es",
                     listOf(
@@ -293,7 +299,7 @@ internal class FirstLoginHelperTest {
     }
 
     @Test
-    fun `test load builtin documents for default locale(ru)`() {
+    fun `test load builtin documents for default locale (ru)`() {
         val documents = loadBuiltinDocuments("xx").toList()
         Assertions.assertEquals(
             setOf(
