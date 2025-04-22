@@ -68,11 +68,11 @@ async function initKeycloak() {
 }
 
 function getDictionaries(onDone) {
-    // russian language by default
+    const lang = getTargetLanguage();
     const data = {
         'requestId': uuid(),
         'requestType': getAllDictionariesRequestType,
-        'language': "ru"
+        'language': lang
     };
     post(getAllDictionariesURI, data, function (res) {
         if (hasResponseErrors(res)) {
