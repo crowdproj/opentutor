@@ -310,6 +310,7 @@ internal class FirstLoginHelperTest {
                 "Common Words #08",
                 "Common Words #10",
                 "Common Words #11",
+                "Blindsight, Peter Watts",
             ),
             documents.map { it.name }.toSet()
         )

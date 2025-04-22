@@ -31,6 +31,7 @@ private val RESOURCE_DOCUMENTS_BY_LANGUAGE = mapOf(
         "/common-words-08-en-ru.json",
         "/common-words-10-en-ru.json",
         "/common-words-11-en-ru.json",
+        "/blindsight_by_peter_watts.json"
     ),
     "en" to listOf("/weather-zh-en.json"),
     "zh" to listOf("/irregular-verbs-en-zh.json", "/weather-en-zh.json"),
