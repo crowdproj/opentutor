@@ -1,17 +1,17 @@
 {
-  "name": "Weather FR-EN",
+  "name": "Weather AR-EN",
   "sourceLang": {
-    "langId": "fr",
+    "langId": "ar",
     "partsOfSpeech": [
-      "nom",
-      "verbe",
-      "adjectif",
-      "adverbe",
-      "pronom",
-      "préposition",
-      "conjonction",
-      "interjection",
-      "article"
+      "اسم",
+      "فعل",
+      "صفة",
+      "حال",
+      "ضمير",
+      "حرف جر",
+      "أداة ربط",
+      "أداة تعجب",
+      "أداة تعريف"
     ]
   },
   "targetLang": {
@@ -32,505 +32,14 @@
     {
       "words": [
         {
-          "word": "météo",
+          "word": "إعصار",
           "translations": [
             [
-              "weather"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "température",
-          "translations": [
-            [
-              "temperature"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "pluie",
-          "translations": [
-            [
-              "rain"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "neige",
-          "translations": [
-            [
-              "snow"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "vent",
-          "translations": [
-            [
-              "wind"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brouillard",
-          "translations": [
-            [
-              "fog"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête",
-          "translations": [
-            [
-              "storm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "éclair",
-          "translations": [
-            [
-              "lightning"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tonnerre",
-          "translations": [
-            [
-              "thunder"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "nuage",
-          "translations": [
-            [
-              "cloud"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "grêle",
-          "translations": [
-            [
-              "hail"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ensoleillé",
-          "translations": [
-            [
-              "sunny"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "froid",
-          "translations": [
-            [
-              "cold"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "chaud",
-          "translations": [
-            [
-              "hot"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "doux",
-          "translations": [
-            [
-              "warm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brise",
-          "translations": [
-            [
-              "breeze"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "rafale",
-          "translations": [
-            [
-              "flurry",
-              "gust"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "couvert",
-          "translations": [
-            [
-              "overcast"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "humidité",
-          "translations": [
-            [
-              "humidity"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "prévisions météo",
-          "translations": [
-            [
-              "forecast"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "bruine",
-          "translations": [
-            [
-              "drizzle"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "averse",
-          "translations": [
-            [
-              "downpour",
-              "shower"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "chute de neige",
-          "translations": [
-            [
-              "snowfall"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "flocon de neige",
-          "translations": [
-            [
-              "snowflake"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "orageux",
-          "translations": [
-            [
-              "stormy"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "glace",
-          "translations": [
-            [
-              "ice"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "gelée",
-          "translations": [
-            [
-              "frost"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "sécheresse",
-          "translations": [
-            [
-              "drought"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brume",
-          "translations": [
-            [
-              "mist"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "blizzard",
-          "translations": [
-            [
-              "blizzard"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "arc-en-ciel",
-          "translations": [
-            [
-              "rainbow"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "smog",
-          "translations": [
-            [
-              "smog"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "orage de grêle",
-          "translations": [
-            [
-              "hailstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "orage",
-          "translations": [
-            [
-              "thunderstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "cyclone",
-          "translations": [
-            [
-              "cyclone"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ouragan",
-          "translations": [
-            [
+              "cyclone",
               "hurricane"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -538,323 +47,13 @@
     {
       "words": [
         {
-          "word": "tornade",
-          "translations": [
-            [
-              "tornado"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "mousson",
-          "translations": [
-            [
-              "monsoon"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "saison",
-          "translations": [
-            [
-              "season"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "venteux",
-          "translations": [
-            [
-              "windy"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête de neige",
-          "translations": [
-            [
-              "snowstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "canicule",
-          "translations": [
-            [
-              "heatwave"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "évaporation",
-          "translations": [
-            [
-              "evaporation"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "averse soudaine",
-          "translations": [
-            [
-              "cloudburst"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "baromètre",
-          "translations": [
-            [
-              "barometer"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "atmosphère",
-          "translations": [
-            [
-              "atmosphere"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "pression atmosphérique",
-          "translations": [
-            [
-              "air pressure"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "soleil",
-          "translations": [
-            [
-              "sun"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "lumière du soleil",
-          "translations": [
-            [
-              "sunlight"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "lever du soleil",
-          "translations": [
-            [
-              "sunrise"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "coucher du soleil",
-          "translations": [
-            [
-              "sundown",
-              "sunset"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "rayon de soleil",
-          "translations": [
-            [
-              "sunbeam"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "dégagé",
-          "translations": [
-            [
-              "clear"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "visibilité",
-          "translations": [
-            [
-              "visibility"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brouillard blanc",
-          "translations": [
-            [
-              "whiteout"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "flaque",
-          "translations": [
-            [
-              "puddle"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "précipitations",
-          "translations": [
-            [
-              "precipitation",
-              "rainfall"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête de vent",
-          "translations": [
-            [
-              "windstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "direction du vent",
+          "word": "اتجاه الرياح",
           "translations": [
             [
               "wind direction"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -862,97 +61,13 @@
     {
       "words": [
         {
-          "word": "vitesse du vent",
-          "translations": [
-            [
-              "wind speed"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "refroidissement éolien",
-          "translations": [
-            [
-              "wind chill"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "gelant",
-          "translations": [
-            [
-              "freezing"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "dégel",
-          "translations": [
-            [
-              "thaw"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "vapeur",
-          "translations": [
-            [
-              "vapor"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ozone",
-          "translations": [
-            [
-              "ozone"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ultraviolet",
+          "word": "الأشعة فوق البنفسجية",
           "translations": [
             [
               "ultraviolet"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -960,13 +75,13 @@
     {
       "words": [
         {
-          "word": "givre",
+          "word": "الأوزون",
           "translations": [
             [
-              "hoarfrost"
+              "ozone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -974,13 +89,13 @@
     {
       "words": [
         {
-          "word": "partiellement nuageux",
+          "word": "البرودة المحسوسة",
           "translations": [
             [
-              "partly cloudy"
+              "wind chill"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -988,13 +103,13 @@
     {
       "words": [
         {
-          "word": "tempête de verglas",
+          "word": "الرؤية",
           "translations": [
             [
-              "ice storm"
+              "visibility"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1002,69 +117,13 @@
     {
       "words": [
         {
-          "word": "front froid",
-          "translations": [
-            [
-              "cold front"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "front chaud",
-          "translations": [
-            [
-              "warm front"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "carte météorologique",
-          "translations": [
-            [
-              "weather map"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "bulletin météo",
-          "translations": [
-            [
-              "weather report"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "printemps",
+          "word": "الربيع",
           "translations": [
             [
               "spring"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1072,13 +131,13 @@
     {
       "words": [
         {
-          "word": "hiver",
+          "word": "الشتاء",
           "translations": [
             [
               "winter"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1086,13 +145,13 @@
     {
       "words": [
         {
-          "word": "poussière",
+          "word": "الطقس",
           "translations": [
             [
-              "dust"
+              "weather"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1100,13 +159,13 @@
     {
       "words": [
         {
-          "word": "tempête de poussière",
+          "word": "الغلاف الجوي",
           "translations": [
             [
-              "dust storm"
+              "atmosphere"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1114,14 +173,13 @@
     {
       "words": [
         {
-          "word": "neige fondue",
+          "word": "المساء",
           "translations": [
             [
-              "sleet",
-              "slush"
+              "sundown"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1129,13 +187,13 @@
     {
       "words": [
         {
-          "word": "torride",
+          "word": "بارد",
           "translations": [
             [
-              "scorching"
+              "cold"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1143,13 +201,13 @@
     {
       "words": [
         {
-          "word": "frais",
+          "word": "بارد قليلاً",
           "translations": [
             [
               "chilly"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1157,13 +215,13 @@
     {
       "words": [
         {
-          "word": "anticyclone",
+          "word": "بارومتر",
           "translations": [
             [
-              "anticyclone"
+              "barometer"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1171,13 +229,13 @@
     {
       "words": [
         {
-          "word": "condensation",
+          "word": "بخار",
           "translations": [
             [
-              "condensation"
+              "vapor"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1185,13 +243,83 @@
     {
       "words": [
         {
-          "word": "gel",
+          "word": "برق",
+          "translations": [
+            [
+              "lightning"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "بركة ماء",
+          "translations": [
+            [
+              "puddle"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "بَرَد",
+          "translations": [
+            [
+              "hail"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "تبخر",
+          "translations": [
+            [
+              "evaporation"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "تجمد",
+          "translations": [
+            [
+              "freezing"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "تجمّد",
           "translations": [
             [
               "freeze"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1199,13 +327,13 @@
     {
       "words": [
         {
-          "word": "rosée",
+          "word": "تساقط الثلوج",
           "translations": [
             [
-              "dew"
+              "snowfall"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1213,13 +341,13 @@
     {
       "words": [
         {
-          "word": "nuageux",
+          "word": "تقرير الطقس",
           "translations": [
             [
-              "cloudy"
+              "weather report"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1227,13 +355,335 @@
     {
       "words": [
         {
-          "word": "ciel dégagé",
+          "word": "تكثف",
+          "translations": [
+            [
+              "condensation"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "توقعات الطقس",
+          "translations": [
+            [
+              "forecast"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ثلج",
+          "translations": [
+            [
+              "snow"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ثلج ذائب",
+          "translations": [
+            [
+              "slush"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "جبهة باردة",
+          "translations": [
+            [
+              "cold front"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "جبهة دافئة",
+          "translations": [
+            [
+              "warm front"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "جفاف",
+          "translations": [
+            [
+              "drought"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "جليد",
+          "translations": [
+            [
+              "ice"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "حار",
+          "translations": [
+            [
+              "hot"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "خريطة الطقس",
+          "translations": [
+            [
+              "weather map"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "دافئ",
+          "translations": [
+            [
+              "warm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "درجة الحرارة",
+          "translations": [
+            [
+              "temperature"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ذوبان",
+          "translations": [
+            [
+              "thaw"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "رذاذ",
+          "translations": [
+            [
+              "drizzle"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "رطوبة",
+          "translations": [
+            [
+              "humidity"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "رعد",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "رياح",
+          "translations": [
+            [
+              "wind"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "رياح موسمية",
+          "translations": [
+            [
+              "monsoon"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "زخات مطر",
+          "translations": [
+            [
+              "shower"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "زوبعة",
+          "translations": [
+            [
+              "tornado"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "زوبعة ثلجية كثيفة",
+          "translations": [
+            [
+              "whiteout"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "سحابة",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "سرعة الرياح",
+          "translations": [
+            [
+              "wind speed"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "سماء صافية",
           "translations": [
             [
               "clear skies"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1241,13 +691,13 @@
     {
       "words": [
         {
-          "word": "basse pression",
+          "word": "شديد الحرارة",
           "translations": [
             [
-              "low pressure"
+              "scorching"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]
@@ -1255,13 +705,576 @@
     {
       "words": [
         {
-          "word": "haute pression",
+          "word": "شروق الشمس",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "شعاع الشمس",
+          "translations": [
+            [
+              "sunbeam"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "شمس",
+          "translations": [
+            [
+              "sun"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "صافٍ",
+          "translations": [
+            [
+              "clear"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "صقيع",
+          "translations": [
+            [
+              "frost"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ضباب",
+          "translations": [
+            [
+              "fog"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ضباب خفيف",
+          "translations": [
+            [
+              "mist"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ضباب دخاني",
+          "translations": [
+            [
+              "smog"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ضغط الهواء",
+          "translations": [
+            [
+              "air pressure"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ضغط مرتفع",
           "translations": [
             [
               "high pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ضغط منخفض",
+          "translations": [
+            [
+              "low pressure"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ضوء الشمس",
+          "translations": [
+            [
+              "sunlight"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصف",
+          "translations": [
+            [
+              "stormy",
+              "windy"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصفة",
+          "translations": [
+            [
+              "storm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصفة برد",
+          "translations": [
+            [
+              "hailstorm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصفة ترابية",
+          "translations": [
+            [
+              "dust storm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصفة ثلجية",
+          "translations": [
+            [
+              "blizzard",
+              "snowstorm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصفة جليدية",
+          "translations": [
+            [
+              "ice storm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصفة رعدية",
+          "translations": [
+            [
+              "thunderstorm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "عاصفة رياح",
+          "translations": [
+            [
+              "windstorm"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "غائم",
+          "translations": [
+            [
+              "cloudy",
+              "overcast"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "غائم جزئياً",
+          "translations": [
+            [
+              "partly cloudy"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "غبار",
+          "translations": [
+            [
+              "dust"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "غروب الشمس",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "فصل",
+          "translations": [
+            [
+              "season"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "قوس قزح",
+          "translations": [
+            [
+              "rainbow"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "مرتفَع جوي",
+          "translations": [
+            [
+              "anticyclone"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "مشمس",
+          "translations": [
+            [
+              "sunny"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "مطر",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "مطر ثلجي",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "موجة حر",
+          "translations": [
+            [
+              "heatwave"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ندفة ثلج",
+          "translations": [
+            [
+              "snowflake"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ندى",
+          "translations": [
+            [
+              "dew"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ندى متجمد",
+          "translations": [
+            [
+              "hoarfrost"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "نسيم",
+          "translations": [
+            [
+              "breeze"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "هبة ريح",
+          "translations": [
+            [
+              "gust"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "هبّة ثلج",
+          "translations": [
+            [
+              "flurry"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "هطول",
+          "translations": [
+            [
+              "precipitation"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "هطول الأمطار",
+          "translations": [
+            [
+              "rainfall"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "هطول غزير",
+          "translations": [
+            [
+              "downpour"
+            ]
+          ],
+          "partOfSpeech": "اسم",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "هطول مفاجئ",
+          "translations": [
+            [
+              "cloudburst"
+            ]
+          ],
+          "partOfSpeech": "اسم",
           "primary": true
         }
       ]

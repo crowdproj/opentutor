@@ -1,17 +1,17 @@
 {
-  "name": "Weather FR-EN",
+  "name": "Weather ES-EN",
   "sourceLang": {
-    "langId": "fr",
+    "langId": "es",
     "partsOfSpeech": [
-      "nom",
-      "verbe",
-      "adjectif",
-      "adverbe",
-      "pronom",
-      "préposition",
-      "conjonction",
-      "interjection",
-      "article"
+      "sustantivo",
+      "verbo",
+      "adjetivo",
+      "adverbio",
+      "pronombre",
+      "preposición",
+      "conjunción",
+      "interjección",
+      "artículo"
     ]
   },
   "targetLang": {
@@ -32,13 +32,13 @@
     {
       "words": [
         {
-          "word": "météo",
+          "word": "clima",
           "translations": [
             [
               "weather"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -46,13 +46,13 @@
     {
       "words": [
         {
-          "word": "température",
+          "word": "temperatura",
           "translations": [
             [
               "temperature"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -60,13 +60,13 @@
     {
       "words": [
         {
-          "word": "pluie",
+          "word": "lluvia",
           "translations": [
             [
               "rain"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -74,13 +74,13 @@
     {
       "words": [
         {
-          "word": "neige",
+          "word": "nieve",
           "translations": [
             [
               "snow"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -88,13 +88,13 @@
     {
       "words": [
         {
-          "word": "vent",
+          "word": "viento",
           "translations": [
             [
               "wind"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -102,13 +102,13 @@
     {
       "words": [
         {
-          "word": "brouillard",
+          "word": "niebla",
           "translations": [
             [
               "fog"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -116,13 +116,13 @@
     {
       "words": [
         {
-          "word": "tempête",
+          "word": "tormenta",
           "translations": [
             [
               "storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -130,13 +130,13 @@
     {
       "words": [
         {
-          "word": "éclair",
+          "word": "relámpago",
           "translations": [
             [
               "lightning"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -144,13 +144,13 @@
     {
       "words": [
         {
-          "word": "tonnerre",
+          "word": "trueno",
           "translations": [
             [
               "thunder"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -158,13 +158,13 @@
     {
       "words": [
         {
-          "word": "nuage",
+          "word": "nube",
           "translations": [
             [
               "cloud"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -172,13 +172,13 @@
     {
       "words": [
         {
-          "word": "grêle",
+          "word": "granizo",
           "translations": [
             [
               "hail"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -186,13 +186,13 @@
     {
       "words": [
         {
-          "word": "ensoleillé",
+          "word": "soleado",
           "translations": [
             [
               "sunny"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -200,13 +200,13 @@
     {
       "words": [
         {
-          "word": "froid",
+          "word": "frío",
           "translations": [
             [
               "cold"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -214,13 +214,13 @@
     {
       "words": [
         {
-          "word": "chaud",
+          "word": "caliente",
           "translations": [
             [
               "hot"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -228,13 +228,13 @@
     {
       "words": [
         {
-          "word": "doux",
+          "word": "templado",
           "translations": [
             [
               "warm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -242,13 +242,13 @@
     {
       "words": [
         {
-          "word": "brise",
+          "word": "brisa",
           "translations": [
             [
               "breeze"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -256,14 +256,13 @@
     {
       "words": [
         {
-          "word": "rafale",
+          "word": "ráfaga",
           "translations": [
             [
-              "flurry",
               "gust"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -271,13 +270,14 @@
     {
       "words": [
         {
-          "word": "couvert",
+          "word": "nublado",
           "translations": [
             [
+              "cloudy",
               "overcast"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -285,13 +285,13 @@
     {
       "words": [
         {
-          "word": "humidité",
+          "word": "humedad",
           "translations": [
             [
               "humidity"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -299,13 +299,13 @@
     {
       "words": [
         {
-          "word": "prévisions météo",
+          "word": "pronóstico",
           "translations": [
             [
               "forecast"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -313,13 +313,13 @@
     {
       "words": [
         {
-          "word": "bruine",
+          "word": "llovizna",
           "translations": [
             [
               "drizzle"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -327,14 +327,13 @@
     {
       "words": [
         {
-          "word": "averse",
+          "word": "chubasco",
           "translations": [
             [
-              "downpour",
               "shower"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -342,13 +341,13 @@
     {
       "words": [
         {
-          "word": "chute de neige",
+          "word": "nevada",
           "translations": [
             [
               "snowfall"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -356,13 +355,13 @@
     {
       "words": [
         {
-          "word": "flocon de neige",
+          "word": "copo de nieve",
           "translations": [
             [
               "snowflake"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -370,13 +369,13 @@
     {
       "words": [
         {
-          "word": "orageux",
+          "word": "tormentoso",
           "translations": [
             [
               "stormy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -384,13 +383,13 @@
     {
       "words": [
         {
-          "word": "glace",
+          "word": "hielo",
           "translations": [
             [
               "ice"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -398,13 +397,13 @@
     {
       "words": [
         {
-          "word": "gelée",
+          "word": "escarcha",
           "translations": [
             [
               "frost"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -412,13 +411,13 @@
     {
       "words": [
         {
-          "word": "sécheresse",
+          "word": "sequía",
           "translations": [
             [
               "drought"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -426,13 +425,13 @@
     {
       "words": [
         {
-          "word": "brume",
+          "word": "neblina",
           "translations": [
             [
               "mist"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -440,13 +439,13 @@
     {
       "words": [
         {
-          "word": "blizzard",
+          "word": "ventisca",
           "translations": [
             [
               "blizzard"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -454,13 +453,13 @@
     {
       "words": [
         {
-          "word": "arc-en-ciel",
+          "word": "arcoíris",
           "translations": [
             [
               "rainbow"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -474,7 +473,7 @@
               "smog"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -482,13 +481,13 @@
     {
       "words": [
         {
-          "word": "orage de grêle",
+          "word": "tormenta de granizo",
           "translations": [
             [
               "hailstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -496,13 +495,13 @@
     {
       "words": [
         {
-          "word": "orage",
+          "word": "tormenta eléctrica",
           "translations": [
             [
               "thunderstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -510,13 +509,13 @@
     {
       "words": [
         {
-          "word": "cyclone",
+          "word": "ciclón",
           "translations": [
             [
               "cyclone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -524,13 +523,13 @@
     {
       "words": [
         {
-          "word": "ouragan",
+          "word": "huracán",
           "translations": [
             [
               "hurricane"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -538,13 +537,13 @@
     {
       "words": [
         {
-          "word": "tornade",
+          "word": "tornado",
           "translations": [
             [
               "tornado"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -552,13 +551,13 @@
     {
       "words": [
         {
-          "word": "mousson",
+          "word": "monzón",
           "translations": [
             [
               "monsoon"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -566,13 +565,13 @@
     {
       "words": [
         {
-          "word": "saison",
+          "word": "estación",
           "translations": [
             [
               "season"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -580,13 +579,13 @@
     {
       "words": [
         {
-          "word": "venteux",
+          "word": "ventoso",
           "translations": [
             [
               "windy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -594,13 +593,13 @@
     {
       "words": [
         {
-          "word": "tempête de neige",
+          "word": "tormenta de nieve",
           "translations": [
             [
               "snowstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -608,13 +607,13 @@
     {
       "words": [
         {
-          "word": "canicule",
+          "word": "ola de calor",
           "translations": [
             [
               "heatwave"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -622,13 +621,13 @@
     {
       "words": [
         {
-          "word": "évaporation",
+          "word": "evaporación",
           "translations": [
             [
               "evaporation"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -636,13 +635,14 @@
     {
       "words": [
         {
-          "word": "averse soudaine",
+          "word": "aguacero",
           "translations": [
             [
-              "cloudburst"
+              "cloudburst",
+              "downpour"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -650,13 +650,13 @@
     {
       "words": [
         {
-          "word": "baromètre",
+          "word": "barómetro",
           "translations": [
             [
               "barometer"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -664,13 +664,13 @@
     {
       "words": [
         {
-          "word": "atmosphère",
+          "word": "atmósfera",
           "translations": [
             [
               "atmosphere"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -678,13 +678,13 @@
     {
       "words": [
         {
-          "word": "pression atmosphérique",
+          "word": "presión atmosférica",
           "translations": [
             [
               "air pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -692,13 +692,13 @@
     {
       "words": [
         {
-          "word": "soleil",
+          "word": "sol",
           "translations": [
             [
               "sun"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -706,13 +706,13 @@
     {
       "words": [
         {
-          "word": "lumière du soleil",
+          "word": "luz solar",
           "translations": [
             [
               "sunlight"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -720,13 +720,13 @@
     {
       "words": [
         {
-          "word": "lever du soleil",
+          "word": "amanecer",
           "translations": [
             [
               "sunrise"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -734,14 +734,13 @@
     {
       "words": [
         {
-          "word": "coucher du soleil",
+          "word": "atardecer",
           "translations": [
             [
-              "sundown",
               "sunset"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -749,13 +748,27 @@
     {
       "words": [
         {
-          "word": "rayon de soleil",
+          "word": "puesta del sol",
+          "translations": [
+            [
+              "sundown"
+            ]
+          ],
+          "partOfSpeech": "sustantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rayo de sol",
           "translations": [
             [
               "sunbeam"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -763,13 +776,13 @@
     {
       "words": [
         {
-          "word": "dégagé",
+          "word": "despejado",
           "translations": [
             [
               "clear"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -777,13 +790,13 @@
     {
       "words": [
         {
-          "word": "visibilité",
+          "word": "visibilidad",
           "translations": [
             [
               "visibility"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -791,13 +804,13 @@
     {
       "words": [
         {
-          "word": "brouillard blanc",
+          "word": "cortina de nieve",
           "translations": [
             [
               "whiteout"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -805,13 +818,13 @@
     {
       "words": [
         {
-          "word": "flaque",
+          "word": "charco",
           "translations": [
             [
               "puddle"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -819,14 +832,14 @@
     {
       "words": [
         {
-          "word": "précipitations",
+          "word": "precipitación",
           "translations": [
             [
               "precipitation",
               "rainfall"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -834,13 +847,13 @@
     {
       "words": [
         {
-          "word": "tempête de vent",
+          "word": "tormenta de viento",
           "translations": [
             [
               "windstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -848,13 +861,13 @@
     {
       "words": [
         {
-          "word": "direction du vent",
+          "word": "dirección del viento",
           "translations": [
             [
               "wind direction"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -862,13 +875,13 @@
     {
       "words": [
         {
-          "word": "vitesse du vent",
+          "word": "velocidad del viento",
           "translations": [
             [
               "wind speed"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -876,13 +889,13 @@
     {
       "words": [
         {
-          "word": "refroidissement éolien",
+          "word": "sensación térmica",
           "translations": [
             [
               "wind chill"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -890,13 +903,13 @@
     {
       "words": [
         {
-          "word": "gelant",
+          "word": "helado",
           "translations": [
             [
               "freezing"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -904,13 +917,13 @@
     {
       "words": [
         {
-          "word": "dégel",
+          "word": "deshielo",
           "translations": [
             [
               "thaw"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -918,13 +931,13 @@
     {
       "words": [
         {
-          "word": "vapeur",
+          "word": "vapor",
           "translations": [
             [
               "vapor"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -932,13 +945,13 @@
     {
       "words": [
         {
-          "word": "ozone",
+          "word": "ozono",
           "translations": [
             [
               "ozone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -946,13 +959,13 @@
     {
       "words": [
         {
-          "word": "ultraviolet",
+          "word": "ultravioleta",
           "translations": [
             [
               "ultraviolet"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -960,13 +973,13 @@
     {
       "words": [
         {
-          "word": "givre",
+          "word": "escarcha blanca",
           "translations": [
             [
               "hoarfrost"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -974,13 +987,13 @@
     {
       "words": [
         {
-          "word": "partiellement nuageux",
+          "word": "parcialmente nublado",
           "translations": [
             [
               "partly cloudy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -988,13 +1001,13 @@
     {
       "words": [
         {
-          "word": "tempête de verglas",
+          "word": "tormenta de hielo",
           "translations": [
             [
               "ice storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1002,13 +1015,13 @@
     {
       "words": [
         {
-          "word": "front froid",
+          "word": "frente frío",
           "translations": [
             [
               "cold front"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1016,13 +1029,13 @@
     {
       "words": [
         {
-          "word": "front chaud",
+          "word": "frente cálido",
           "translations": [
             [
               "warm front"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1030,13 +1043,13 @@
     {
       "words": [
         {
-          "word": "carte météorologique",
+          "word": "mapa meteorológico",
           "translations": [
             [
               "weather map"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1044,13 +1057,13 @@
     {
       "words": [
         {
-          "word": "bulletin météo",
+          "word": "reporte del clima",
           "translations": [
             [
               "weather report"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1058,13 +1071,13 @@
     {
       "words": [
         {
-          "word": "printemps",
+          "word": "primavera",
           "translations": [
             [
               "spring"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1072,13 +1085,13 @@
     {
       "words": [
         {
-          "word": "hiver",
+          "word": "invierno",
           "translations": [
             [
               "winter"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1086,13 +1099,27 @@
     {
       "words": [
         {
-          "word": "poussière",
+          "word": "ráfaga de nieve",
+          "translations": [
+            [
+              "flurry"
+            ]
+          ],
+          "partOfSpeech": "sustantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "polvo",
           "translations": [
             [
               "dust"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1100,13 +1127,13 @@
     {
       "words": [
         {
-          "word": "tempête de poussière",
+          "word": "tormenta de polvo",
           "translations": [
             [
               "dust storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1114,14 +1141,13 @@
     {
       "words": [
         {
-          "word": "neige fondue",
+          "word": "aguanieve",
           "translations": [
             [
-              "sleet",
               "slush"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1129,13 +1155,27 @@
     {
       "words": [
         {
-          "word": "torride",
+          "word": "granizo líquido",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ],
+          "partOfSpeech": "sustantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "abrasador",
           "translations": [
             [
               "scorching"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1143,13 +1183,13 @@
     {
       "words": [
         {
-          "word": "frais",
+          "word": "fresco",
           "translations": [
             [
               "chilly"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1157,13 +1197,13 @@
     {
       "words": [
         {
-          "word": "anticyclone",
+          "word": "anticiclón",
           "translations": [
             [
               "anticyclone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1171,13 +1211,13 @@
     {
       "words": [
         {
-          "word": "condensation",
+          "word": "condensación",
           "translations": [
             [
               "condensation"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1185,13 +1225,13 @@
     {
       "words": [
         {
-          "word": "gel",
+          "word": "congelación",
           "translations": [
             [
               "freeze"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1199,13 +1239,13 @@
     {
       "words": [
         {
-          "word": "rosée",
+          "word": "rocío",
           "translations": [
             [
               "dew"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1213,27 +1253,13 @@
     {
       "words": [
         {
-          "word": "nuageux",
-          "translations": [
-            [
-              "cloudy"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ciel dégagé",
+          "word": "cielos despejados",
           "translations": [
             [
               "clear skies"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1241,13 +1267,13 @@
     {
       "words": [
         {
-          "word": "basse pression",
+          "word": "baja presión",
           "translations": [
             [
               "low pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]
@@ -1255,13 +1281,13 @@
     {
       "words": [
         {
-          "word": "haute pression",
+          "word": "alta presión",
           "translations": [
             [
               "high pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "sustantivo",
           "primary": true
         }
       ]

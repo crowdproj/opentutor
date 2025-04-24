@@ -27,13 +27,6 @@ internal class FirstLoginHelperTest {
                     )
                 ),
                 Arguments.of(
-                    "en",
-                    listOf(
-                        mapOf("天气" to "weather"),
-                        mapOf("météo" to "weather"),
-                    )
-                ),
-                Arguments.of(
                     "es",
                     listOf(
                         mapOf("be" to "ser", "write" to "escribir"),
@@ -317,6 +310,29 @@ internal class FirstLoginHelperTest {
                 "Common Words #10",
                 "Common Words #11",
                 "Blindsight, Peter Watts",
+            ),
+            documents.map { it.name }.toSet()
+        )
+    }
+
+    @Test
+    fun `test load builtin documents for en`() {
+        val documents = loadBuiltinDocuments("en").toList()
+        Assertions.assertEquals(
+            setOf(
+                "Weather RU-EN",
+                "Weather FR-EN",
+                "Weather DE-EN",
+                "Weather ES-EN",
+                "Weather IT-EN",
+                "Weather PT-EN",
+                "Weather ZH-EN",
+                "Weather JA-EN",
+                "Weather KO-EN",
+                "Weather TR-EN",
+                "Weather PL-EN",
+                "Weather UK-EN",
+                "Weather AR-EN",
             ),
             documents.map { it.name }.toSet()
         )

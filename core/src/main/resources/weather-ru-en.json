@@ -1,0 +1,1161 @@
+{
+  "name": "Weather RU-EN",
+  "sourceLang": {
+    "langId": "ru",
+    "partsOfSpeech": [
+      "существительное",
+      "прилагательное",
+      "числительное",
+      "местоимение",
+      "глагол",
+      "наречие",
+      "причастие",
+      "предлог",
+      "союз",
+      "частица",
+      "междометие"
+    ]
+  },
+  "targetLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "антициклон",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "anticyclone"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:13.978Z"
+    },
+    {
+      "words": [
+        {
+          "word": "атмосфера",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "atmosphere"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:13.990Z"
+    },
+    {
+      "words": [
+        {
+          "word": "атмосферный",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "atmosphere",
+              "atmospheric"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:13.992Z"
+    },
+    {
+      "words": [
+        {
+          "word": "барометр",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:13.994Z"
+    },
+    {
+      "words": [
+        {
+          "word": "безоблачный",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "clear"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:13.996Z"
+    },
+    {
+      "words": [
+        {
+          "word": "бриз",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "breeze"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:13.998Z"
+    },
+    {
+      "words": [
+        {
+          "word": "буран",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.002Z"
+    },
+    {
+      "words": [
+        {
+          "word": "буря",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "gale",
+              "storm",
+              "tempest",
+              "windstorm"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.004Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ветер",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "gale",
+              "wind"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.006Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ветерок",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "breeze"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.008Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ветренный",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "windy"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.011Z"
+    },
+    {
+      "words": [
+        {
+          "word": "влага",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "damp",
+              "humidity"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.014Z"
+    },
+    {
+      "words": [
+        {
+          "word": "влагосодержание",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "humidity"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.018Z"
+    },
+    {
+      "words": [
+        {
+          "word": "влажность",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "damp",
+              "humidity"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.020Z"
+    },
+    {
+      "words": [
+        {
+          "word": "восход",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.025Z"
+    },
+    {
+      "words": [
+        {
+          "word": "вьюга",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.028Z"
+    },
+    {
+      "words": [
+        {
+          "word": "град",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "hail",
+              "hailstorm"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.030Z"
+    },
+    {
+      "words": [
+        {
+          "word": "градина",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "hailstone"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.032Z"
+    },
+    {
+      "words": [
+        {
+          "word": "гроза",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "storm",
+              "thunder",
+              "thunderstorm"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.035Z"
+    },
+    {
+      "words": [
+        {
+          "word": "гром",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.037Z"
+    },
+    {
+      "words": [
+        {
+          "word": "дождь",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.042Z"
+    },
+    {
+      "words": [
+        {
+          "word": "дымка",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "fog",
+              "mist"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.043Z"
+    },
+    {
+      "words": [
+        {
+          "word": "жара",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "heat"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.045Z"
+    },
+    {
+      "words": [
+        {
+          "word": "закат",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.047Z"
+    },
+    {
+      "words": [
+        {
+          "word": "заморозки",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "frost"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.051Z"
+    },
+    {
+      "words": [
+        {
+          "word": "заря",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.053Z"
+    },
+    {
+      "words": [
+        {
+          "word": "засуха",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "drought"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.055Z"
+    },
+    {
+      "words": [
+        {
+          "word": "засушливый",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "drought",
+              "dry"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.059Z"
+    },
+    {
+      "words": [
+        {
+          "word": "зной",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "heat"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.061Z"
+    },
+    {
+      "words": [
+        {
+          "word": "зябко",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.066Z"
+    },
+    {
+      "words": [
+        {
+          "word": "изморось",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "drizzle",
+              "frost"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:26:00.943Z"
+    },
+    {
+      "words": [
+        {
+          "word": "воздух",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "air"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:32:12.291Z"
+    },
+    {
+      "words": [
+        {
+          "word": "иней",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "hoarfrost",
+              "rime"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.073Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ледяной",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "ice"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.083Z"
+    },
+    {
+      "words": [
+        {
+          "word": "литься",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.085Z"
+    },
+    {
+      "words": [
+        {
+          "word": "лёд",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "ice"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.087Z"
+    },
+    {
+      "words": [
+        {
+          "word": "мгла",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "mist",
+              "whiteout"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.089Z"
+    },
+    {
+      "words": [
+        {
+          "word": "метель",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "blizzard",
+              "snowstorm"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.092Z"
+    },
+    {
+      "words": [
+        {
+          "word": "молния",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "lightning",
+              "lightning bolt"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.095Z"
+    },
+    {
+      "words": [
+        {
+          "word": "мороз",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "frost"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.097Z"
+    },
+    {
+      "words": [
+        {
+          "word": "морось",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "drizzle"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.099Z"
+    },
+    {
+      "words": [
+        {
+          "word": "облако",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.106Z"
+    },
+    {
+      "words": [
+        {
+          "word": "облачный",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "cloudy"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.108Z"
+    },
+    {
+      "words": [
+        {
+          "word": "обморожение",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "frostbite"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.110Z"
+    },
+    {
+      "words": [
+        {
+          "word": "осадки",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "precipitation"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.112Z"
+    },
+    {
+      "words": [
+        {
+          "word": "пасмурный",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "cloudy",
+              "overcast"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.118Z"
+    },
+    {
+      "words": [
+        {
+          "word": "перегреться",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "overheat"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.125Z"
+    },
+    {
+      "words": [
+        {
+          "word": "погода",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "weather"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.128Z"
+    },
+    {
+      "words": [
+        {
+          "word": "порыв",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "gust"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.133Z"
+    },
+    {
+      "words": [
+        {
+          "word": "прогноз",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "forecast"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.138Z"
+    },
+    {
+      "words": [
+        {
+          "word": "промозглый",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.143Z"
+    },
+    {
+      "words": [
+        {
+          "word": "пурга",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.145Z"
+    },
+    {
+      "words": [
+        {
+          "word": "радуга",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "rainbow"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.147Z"
+    },
+    {
+      "words": [
+        {
+          "word": "роса",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "dew"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.154Z"
+    },
+    {
+      "words": [
+        {
+          "word": "слякоть",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "slush"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.158Z"
+    },
+    {
+      "words": [
+        {
+          "word": "снег",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "snow"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.162Z"
+    },
+    {
+      "words": [
+        {
+          "word": "снегопад",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "snowfall"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.164Z"
+    },
+    {
+      "words": [
+        {
+          "word": "снежинка",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "snowflake"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.166Z"
+    },
+    {
+      "words": [
+        {
+          "word": "сухость",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "drought"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.167Z"
+    },
+    {
+      "words": [
+        {
+          "word": "сырость",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "damp",
+              "humidity"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.169Z"
+    },
+    {
+      "words": [
+        {
+          "word": "температура",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "temperature"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.171Z"
+    },
+    {
+      "words": [
+        {
+          "word": "тепло",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "heat",
+              "warm"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.173Z"
+    },
+    {
+      "words": [
+        {
+          "word": "торнадо",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "tornado",
+              "twister"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.178Z"
+    },
+    {
+      "words": [
+        {
+          "word": "туман",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "fog",
+              "mist"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.180Z"
+    },
+    {
+      "words": [
+        {
+          "word": "туманный",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "cloudy",
+              "foggy"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.185Z"
+    },
+    {
+      "words": [
+        {
+          "word": "туча",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.186Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ультрафиолет",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "ultraviolet"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.188Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ураган",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "hurricane",
+              "storm",
+              "windstorm"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.191Z"
+    },
+    {
+      "words": [
+        {
+          "word": "холод",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "cold",
+              "frost"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.194Z"
+    },
+    {
+      "words": [
+        {
+          "word": "холодный",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "chilly",
+              "cold",
+              "cool"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.199Z"
+    },
+    {
+      "words": [
+        {
+          "word": "циклон",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "cyclone"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.201Z"
+    },
+    {
+      "words": [
+        {
+          "word": "шквал",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "flurry",
+              "gust",
+              "squall"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.204Z"
+    },
+    {
+      "words": [
+        {
+          "word": "шторм",
+          "partOfSpeech": "существительное",
+          "translations": [
+            [
+              "gale",
+              "storm"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-24T18:18:14.206Z"
+    }
+  ]
+}

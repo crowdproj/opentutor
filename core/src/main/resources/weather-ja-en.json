@@ -1,17 +1,17 @@
 {
-  "name": "Weather FR-EN",
+  "name": "Weather JA-EN",
   "sourceLang": {
-    "langId": "fr",
+    "langId": "ja",
     "partsOfSpeech": [
-      "nom",
-      "verbe",
-      "adjectif",
-      "adverbe",
-      "pronom",
-      "préposition",
-      "conjonction",
-      "interjection",
-      "article"
+      "名詞",
+      "動詞",
+      "形容詞",
+      "副詞",
+      "代名詞",
+      "前置詞",
+      "接続詞",
+      "間投詞",
+      "冠詞"
     ]
   },
   "targetLang": {
@@ -32,223 +32,13 @@
     {
       "words": [
         {
-          "word": "météo",
-          "translations": [
-            [
-              "weather"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "température",
-          "translations": [
-            [
-              "temperature"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "pluie",
-          "translations": [
-            [
-              "rain"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "neige",
-          "translations": [
-            [
-              "snow"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "vent",
-          "translations": [
-            [
-              "wind"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brouillard",
-          "translations": [
-            [
-              "fog"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête",
-          "translations": [
-            [
-              "storm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "éclair",
-          "translations": [
-            [
-              "lightning"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tonnerre",
-          "translations": [
-            [
-              "thunder"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "nuage",
-          "translations": [
-            [
-              "cloud"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "grêle",
-          "translations": [
-            [
-              "hail"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ensoleillé",
-          "translations": [
-            [
-              "sunny"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "froid",
-          "translations": [
-            [
-              "cold"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "chaud",
-          "translations": [
-            [
-              "hot"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "doux",
-          "translations": [
-            [
-              "warm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brise",
+          "word": "そよ風",
           "translations": [
             [
               "breeze"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -256,85 +46,13 @@
     {
       "words": [
         {
-          "word": "rafale",
+          "word": "にわか雨",
           "translations": [
             [
-              "flurry",
-              "gust"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "couvert",
-          "translations": [
-            [
-              "overcast"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "humidité",
-          "translations": [
-            [
-              "humidity"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "prévisions météo",
-          "translations": [
-            [
-              "forecast"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "bruine",
-          "translations": [
-            [
-              "drizzle"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "averse",
-          "translations": [
-            [
-              "downpour",
               "shower"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -342,13 +60,13 @@
     {
       "words": [
         {
-          "word": "chute de neige",
+          "word": "ぬかるみ",
           "translations": [
             [
-              "snowfall"
+              "slush"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -356,743 +74,13 @@
     {
       "words": [
         {
-          "word": "flocon de neige",
-          "translations": [
-            [
-              "snowflake"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "orageux",
-          "translations": [
-            [
-              "stormy"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "glace",
-          "translations": [
-            [
-              "ice"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "gelée",
-          "translations": [
-            [
-              "frost"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "sécheresse",
-          "translations": [
-            [
-              "drought"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brume",
-          "translations": [
-            [
-              "mist"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "blizzard",
-          "translations": [
-            [
-              "blizzard"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "arc-en-ciel",
-          "translations": [
-            [
-              "rainbow"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "smog",
-          "translations": [
-            [
-              "smog"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "orage de grêle",
-          "translations": [
-            [
-              "hailstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "orage",
-          "translations": [
-            [
-              "thunderstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "cyclone",
-          "translations": [
-            [
-              "cyclone"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ouragan",
-          "translations": [
-            [
-              "hurricane"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tornade",
-          "translations": [
-            [
-              "tornado"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "mousson",
-          "translations": [
-            [
-              "monsoon"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "saison",
-          "translations": [
-            [
-              "season"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "venteux",
-          "translations": [
-            [
-              "windy"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête de neige",
-          "translations": [
-            [
-              "snowstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "canicule",
-          "translations": [
-            [
-              "heatwave"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "évaporation",
-          "translations": [
-            [
-              "evaporation"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "averse soudaine",
-          "translations": [
-            [
-              "cloudburst"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "baromètre",
-          "translations": [
-            [
-              "barometer"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "atmosphère",
-          "translations": [
-            [
-              "atmosphere"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "pression atmosphérique",
-          "translations": [
-            [
-              "air pressure"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "soleil",
-          "translations": [
-            [
-              "sun"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "lumière du soleil",
-          "translations": [
-            [
-              "sunlight"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "lever du soleil",
-          "translations": [
-            [
-              "sunrise"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "coucher du soleil",
-          "translations": [
-            [
-              "sundown",
-              "sunset"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "rayon de soleil",
-          "translations": [
-            [
-              "sunbeam"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "dégagé",
-          "translations": [
-            [
-              "clear"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "visibilité",
-          "translations": [
-            [
-              "visibility"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brouillard blanc",
-          "translations": [
-            [
-              "whiteout"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "flaque",
-          "translations": [
-            [
-              "puddle"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "précipitations",
-          "translations": [
-            [
-              "precipitation",
-              "rainfall"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête de vent",
-          "translations": [
-            [
-              "windstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "direction du vent",
-          "translations": [
-            [
-              "wind direction"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "vitesse du vent",
-          "translations": [
-            [
-              "wind speed"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "refroidissement éolien",
-          "translations": [
-            [
-              "wind chill"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "gelant",
-          "translations": [
-            [
-              "freezing"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "dégel",
-          "translations": [
-            [
-              "thaw"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "vapeur",
-          "translations": [
-            [
-              "vapor"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ozone",
-          "translations": [
-            [
-              "ozone"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ultraviolet",
-          "translations": [
-            [
-              "ultraviolet"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "givre",
-          "translations": [
-            [
-              "hoarfrost"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "partiellement nuageux",
-          "translations": [
-            [
-              "partly cloudy"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête de verglas",
-          "translations": [
-            [
-              "ice storm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "front froid",
-          "translations": [
-            [
-              "cold front"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "front chaud",
-          "translations": [
-            [
-              "warm front"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "carte météorologique",
-          "translations": [
-            [
-              "weather map"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "bulletin météo",
-          "translations": [
-            [
-              "weather report"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "printemps",
-          "translations": [
-            [
-              "spring"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "hiver",
-          "translations": [
-            [
-              "winter"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "poussière",
+          "word": "ほこり",
           "translations": [
             [
               "dust"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1100,13 +88,13 @@
     {
       "words": [
         {
-          "word": "tempête de poussière",
+          "word": "みぞれ",
           "translations": [
             [
-              "dust storm"
+              "sleet"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1114,14 +102,13 @@
     {
       "words": [
         {
-          "word": "neige fondue",
+          "word": "もや",
           "translations": [
             [
-              "sleet",
-              "slush"
+              "mist"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1129,13 +116,13 @@
     {
       "words": [
         {
-          "word": "torride",
+          "word": "オゾン",
           "translations": [
             [
-              "scorching"
+              "ozone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1143,13 +130,13 @@
     {
       "words": [
         {
-          "word": "frais",
+          "word": "サイクロン",
           "translations": [
             [
-              "chilly"
+              "cyclone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1157,13 +144,13 @@
     {
       "words": [
         {
-          "word": "anticyclone",
+          "word": "スモッグ",
           "translations": [
             [
-              "anticyclone"
+              "smog"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1171,13 +158,13 @@
     {
       "words": [
         {
-          "word": "condensation",
+          "word": "ハリケーン",
           "translations": [
             [
-              "condensation"
+              "hurricane"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1185,13 +172,13 @@
     {
       "words": [
         {
-          "word": "gel",
+          "word": "ホワイトアウト",
           "translations": [
             [
-              "freeze"
+              "whiteout"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1199,13 +186,13 @@
     {
       "words": [
         {
-          "word": "rosée",
+          "word": "モンスーン",
           "translations": [
             [
-              "dew"
+              "monsoon"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1213,13 +200,13 @@
     {
       "words": [
         {
-          "word": "nuageux",
+          "word": "一部曇り",
           "translations": [
             [
-              "cloudy"
+              "partly cloudy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1227,27 +214,13 @@
     {
       "words": [
         {
-          "word": "ciel dégagé",
-          "translations": [
-            [
-              "clear skies"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "basse pression",
+          "word": "低気圧",
           "translations": [
             [
               "low pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]
@@ -1255,13 +228,1079 @@
     {
       "words": [
         {
-          "word": "haute pression",
+          "word": "体感温度",
           "translations": [
             [
+              "wind chill"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "冬",
+          "translations": [
+            [
+              "winter"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "凍える",
+          "translations": [
+            [
+              "freezing"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "凍結",
+          "translations": [
+            [
+              "freeze"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "凝結",
+          "translations": [
+            [
+              "condensation"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "吹雪",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "土砂降り",
+          "translations": [
+            [
+              "downpour"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "夕暮れ",
+          "translations": [
+            [
+              "sundown"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "大気",
+          "translations": [
+            [
+              "atmosphere"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "天気",
+          "translations": [
+            [
+              "weather"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "天気予報",
+          "translations": [
+            [
+              "forecast"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "天気図",
+          "translations": [
+            [
+              "weather map"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "天気情報",
+          "translations": [
+            [
+              "weather report"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "太陽",
+          "translations": [
+            [
+              "sun"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "季節",
+          "translations": [
+            [
+              "season"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "寒い",
+          "translations": [
+            [
+              "cold"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "寒冷前線",
+          "translations": [
+            [
+              "cold front"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "嵐",
+          "translations": [
+            [
+              "storm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "嵐のような",
+          "translations": [
+            [
+              "stormy"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "干ばつ",
+          "translations": [
+            [
+              "drought"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "快晴",
+          "translations": [
+            [
+              "clear"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "日の出",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "日光",
+          "translations": [
+            [
+              "sunlight"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "日差し",
+          "translations": [
+            [
+              "sunbeam"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "日没",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "春",
+          "translations": [
+            [
+              "spring"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "晴れ",
+          "translations": [
+            [
+              "sunny"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "晴天",
+          "translations": [
+            [
+              "clear skies"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "暑い",
+          "translations": [
+            [
+              "hot"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "暖かい",
+          "translations": [
+            [
+              "warm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "暴風",
+          "translations": [
+            [
+              "windstorm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "曇り",
+          "translations": [
+            [
+              "cloudy",
+              "overcast"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "気圧",
+          "translations": [
+            [
+              "air pressure"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "気圧計",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "気温",
+          "translations": [
+            [
+              "temperature"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "水たまり",
+          "translations": [
+            [
+              "puddle"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "氷",
+          "translations": [
+            [
+              "ice"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "氷嵐",
+          "translations": [
+            [
+              "ice storm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "温暖前線",
+          "translations": [
+            [
+              "warm front"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "湿度",
+          "translations": [
+            [
+              "humidity"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "熱波",
+          "translations": [
+            [
+              "heatwave"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "猛暑",
+          "translations": [
+            [
+              "scorching"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "白霜",
+          "translations": [
+            [
+              "hoarfrost"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "砂嵐",
+          "translations": [
+            [
+              "dust storm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "稲妻",
+          "translations": [
+            [
+              "lightning"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "突風",
+          "translations": [
+            [
+              "gust"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "竜巻",
+          "translations": [
+            [
+              "tornado"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "紫外線",
+          "translations": [
+            [
+              "ultraviolet"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "肌寒い",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "蒸気",
+          "translations": [
+            [
+              "vapor"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "蒸発",
+          "translations": [
+            [
+              "evaporation"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "虹",
+          "translations": [
+            [
+              "rainbow"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "視界",
+          "translations": [
+            [
+              "visibility"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "豪雨",
+          "translations": [
+            [
+              "cloudburst"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "降水",
+          "translations": [
+            [
+              "precipitation"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "降水量",
+          "translations": [
+            [
+              "rainfall"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "降雪",
+          "translations": [
+            [
+              "snowfall"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雨",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雪",
+          "translations": [
+            [
+              "snow"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雪の結晶",
+          "translations": [
+            [
+              "snowflake"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雪の舞い",
+          "translations": [
+            [
+              "flurry"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雪嵐",
+          "translations": [
+            [
+              "snowstorm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雪解け",
+          "translations": [
+            [
+              "thaw"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雲",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雷",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雷雨",
+          "translations": [
+            [
+              "thunderstorm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雹",
+          "translations": [
+            [
+              "hail"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "雹嵐",
+          "translations": [
+            [
+              "hailstorm"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "霜",
+          "translations": [
+            [
+              "frost"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "霧",
+          "translations": [
+            [
+              "fog"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "霧雨",
+          "translations": [
+            [
+              "drizzle"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "露",
+          "translations": [
+            [
+              "dew"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "風",
+          "translations": [
+            [
+              "wind"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "風が強い",
+          "translations": [
+            [
+              "windy"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "風向き",
+          "translations": [
+            [
+              "wind direction"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "風速",
+          "translations": [
+            [
+              "wind speed"
+            ]
+          ],
+          "partOfSpeech": "名詞",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "高気圧",
+          "translations": [
+            [
+              "anticyclone",
               "high pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "名詞",
           "primary": true
         }
       ]

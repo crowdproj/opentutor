@@ -1,17 +1,17 @@
 {
-  "name": "Weather FR-EN",
+  "name": "Weather DE-EN",
   "sourceLang": {
-    "langId": "fr",
+    "langId": "de",
     "partsOfSpeech": [
-      "nom",
-      "verbe",
-      "adjectif",
-      "adverbe",
-      "pronom",
-      "préposition",
-      "conjonction",
-      "interjection",
-      "article"
+      "Nomen",
+      "Verb",
+      "Adjektiv",
+      "Adverb",
+      "Pronomen",
+      "Präposition",
+      "Konjunktion",
+      "Interjektion",
+      "Artikel"
     ]
   },
   "targetLang": {
@@ -32,13 +32,13 @@
     {
       "words": [
         {
-          "word": "météo",
+          "word": "Wetter",
           "translations": [
             [
               "weather"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -46,13 +46,13 @@
     {
       "words": [
         {
-          "word": "température",
+          "word": "Temperatur",
           "translations": [
             [
               "temperature"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -60,13 +60,13 @@
     {
       "words": [
         {
-          "word": "pluie",
+          "word": "Regen",
           "translations": [
             [
               "rain"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -74,13 +74,13 @@
     {
       "words": [
         {
-          "word": "neige",
+          "word": "Schnee",
           "translations": [
             [
               "snow"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -88,13 +88,13 @@
     {
       "words": [
         {
-          "word": "vent",
+          "word": "Wind",
           "translations": [
             [
               "wind"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -102,13 +102,13 @@
     {
       "words": [
         {
-          "word": "brouillard",
+          "word": "Nebel",
           "translations": [
             [
               "fog"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -116,13 +116,14 @@
     {
       "words": [
         {
-          "word": "tempête",
+          "word": "Sturm",
           "translations": [
             [
-              "storm"
+              "storm",
+              "windstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -130,13 +131,13 @@
     {
       "words": [
         {
-          "word": "éclair",
+          "word": "Blitz",
           "translations": [
             [
               "lightning"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -144,13 +145,13 @@
     {
       "words": [
         {
-          "word": "tonnerre",
+          "word": "Donner",
           "translations": [
             [
               "thunder"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -158,13 +159,13 @@
     {
       "words": [
         {
-          "word": "nuage",
+          "word": "Wolke",
           "translations": [
             [
               "cloud"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -172,13 +173,13 @@
     {
       "words": [
         {
-          "word": "grêle",
+          "word": "Hagel",
           "translations": [
             [
               "hail"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -186,13 +187,13 @@
     {
       "words": [
         {
-          "word": "ensoleillé",
+          "word": "sonnig",
           "translations": [
             [
               "sunny"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -200,13 +201,13 @@
     {
       "words": [
         {
-          "word": "froid",
+          "word": "kalt",
           "translations": [
             [
               "cold"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -214,13 +215,13 @@
     {
       "words": [
         {
-          "word": "chaud",
+          "word": "heiß",
           "translations": [
             [
               "hot"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -228,13 +229,13 @@
     {
       "words": [
         {
-          "word": "doux",
+          "word": "warm",
           "translations": [
             [
               "warm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -242,13 +243,13 @@
     {
       "words": [
         {
-          "word": "brise",
+          "word": "Brise",
           "translations": [
             [
               "breeze"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -256,14 +257,13 @@
     {
       "words": [
         {
-          "word": "rafale",
+          "word": "Böe",
           "translations": [
             [
-              "flurry",
               "gust"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -271,13 +271,13 @@
     {
       "words": [
         {
-          "word": "couvert",
+          "word": "bedeckt",
           "translations": [
             [
               "overcast"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -285,13 +285,13 @@
     {
       "words": [
         {
-          "word": "humidité",
+          "word": "Luftfeuchtigkeit",
           "translations": [
             [
               "humidity"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -299,13 +299,13 @@
     {
       "words": [
         {
-          "word": "prévisions météo",
+          "word": "Wettervorhersage",
           "translations": [
             [
               "forecast"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -313,13 +313,13 @@
     {
       "words": [
         {
-          "word": "bruine",
+          "word": "Nieselregen",
           "translations": [
             [
               "drizzle"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -327,14 +327,13 @@
     {
       "words": [
         {
-          "word": "averse",
+          "word": "Regenschauer",
           "translations": [
             [
-              "downpour",
               "shower"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -342,13 +341,13 @@
     {
       "words": [
         {
-          "word": "chute de neige",
+          "word": "Schneefall",
           "translations": [
             [
               "snowfall"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -356,13 +355,13 @@
     {
       "words": [
         {
-          "word": "flocon de neige",
+          "word": "Schneeflocke",
           "translations": [
             [
               "snowflake"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -370,13 +369,13 @@
     {
       "words": [
         {
-          "word": "orageux",
+          "word": "stürmisch",
           "translations": [
             [
               "stormy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -384,13 +383,13 @@
     {
       "words": [
         {
-          "word": "glace",
+          "word": "Eis",
           "translations": [
             [
               "ice"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -398,13 +397,13 @@
     {
       "words": [
         {
-          "word": "gelée",
+          "word": "Frost",
           "translations": [
             [
               "frost"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -412,13 +411,13 @@
     {
       "words": [
         {
-          "word": "sécheresse",
+          "word": "Dürre",
           "translations": [
             [
               "drought"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -426,13 +425,13 @@
     {
       "words": [
         {
-          "word": "brume",
+          "word": "Dunst",
           "translations": [
             [
               "mist"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -440,13 +439,14 @@
     {
       "words": [
         {
-          "word": "blizzard",
+          "word": "Schneesturm",
           "translations": [
             [
-              "blizzard"
+              "blizzard",
+              "snowstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -454,13 +454,13 @@
     {
       "words": [
         {
-          "word": "arc-en-ciel",
+          "word": "Regenbogen",
           "translations": [
             [
               "rainbow"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -468,13 +468,13 @@
     {
       "words": [
         {
-          "word": "smog",
+          "word": "Smog",
           "translations": [
             [
               "smog"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -482,13 +482,13 @@
     {
       "words": [
         {
-          "word": "orage de grêle",
+          "word": "Hagelsturm",
           "translations": [
             [
               "hailstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -496,13 +496,13 @@
     {
       "words": [
         {
-          "word": "orage",
+          "word": "Gewitter",
           "translations": [
             [
               "thunderstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -510,13 +510,13 @@
     {
       "words": [
         {
-          "word": "cyclone",
+          "word": "Zyklon",
           "translations": [
             [
               "cyclone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -524,13 +524,13 @@
     {
       "words": [
         {
-          "word": "ouragan",
+          "word": "Hurrikan",
           "translations": [
             [
               "hurricane"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -538,13 +538,13 @@
     {
       "words": [
         {
-          "word": "tornade",
+          "word": "Tornado",
           "translations": [
             [
               "tornado"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -552,13 +552,13 @@
     {
       "words": [
         {
-          "word": "mousson",
+          "word": "Monsun",
           "translations": [
             [
               "monsoon"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -566,13 +566,13 @@
     {
       "words": [
         {
-          "word": "saison",
+          "word": "Jahreszeit",
           "translations": [
             [
               "season"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -580,13 +580,13 @@
     {
       "words": [
         {
-          "word": "venteux",
+          "word": "windig",
           "translations": [
             [
               "windy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -594,27 +594,13 @@
     {
       "words": [
         {
-          "word": "tempête de neige",
-          "translations": [
-            [
-              "snowstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "canicule",
+          "word": "Hitzewelle",
           "translations": [
             [
               "heatwave"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -622,13 +608,13 @@
     {
       "words": [
         {
-          "word": "évaporation",
+          "word": "Verdunstung",
           "translations": [
             [
               "evaporation"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -636,13 +622,14 @@
     {
       "words": [
         {
-          "word": "averse soudaine",
+          "word": "Wolkenbruch",
           "translations": [
             [
-              "cloudburst"
+              "cloudburst",
+              "downpour"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -650,13 +637,13 @@
     {
       "words": [
         {
-          "word": "baromètre",
+          "word": "Barometer",
           "translations": [
             [
               "barometer"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -664,13 +651,13 @@
     {
       "words": [
         {
-          "word": "atmosphère",
+          "word": "Atmosphäre",
           "translations": [
             [
               "atmosphere"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -678,13 +665,13 @@
     {
       "words": [
         {
-          "word": "pression atmosphérique",
+          "word": "Luftdruck",
           "translations": [
             [
               "air pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -692,13 +679,13 @@
     {
       "words": [
         {
-          "word": "soleil",
+          "word": "Sonne",
           "translations": [
             [
               "sun"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -706,13 +693,13 @@
     {
       "words": [
         {
-          "word": "lumière du soleil",
+          "word": "Sonnenlicht",
           "translations": [
             [
               "sunlight"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -720,13 +707,13 @@
     {
       "words": [
         {
-          "word": "lever du soleil",
+          "word": "Sonnenaufgang",
           "translations": [
             [
               "sunrise"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -734,14 +721,14 @@
     {
       "words": [
         {
-          "word": "coucher du soleil",
+          "word": "Sonnenuntergang",
           "translations": [
             [
               "sundown",
               "sunset"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -749,13 +736,13 @@
     {
       "words": [
         {
-          "word": "rayon de soleil",
+          "word": "Sonnenstrahl",
           "translations": [
             [
               "sunbeam"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -763,13 +750,13 @@
     {
       "words": [
         {
-          "word": "dégagé",
+          "word": "klar",
           "translations": [
             [
               "clear"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -777,13 +764,13 @@
     {
       "words": [
         {
-          "word": "visibilité",
+          "word": "Sichtweite",
           "translations": [
             [
               "visibility"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -791,13 +778,14 @@
     {
       "words": [
         {
-          "word": "brouillard blanc",
+          "word": "Schneegestöber",
           "translations": [
             [
+              "flurry",
               "whiteout"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -805,13 +793,13 @@
     {
       "words": [
         {
-          "word": "flaque",
+          "word": "Pfütze",
           "translations": [
             [
               "puddle"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -819,14 +807,14 @@
     {
       "words": [
         {
-          "word": "précipitations",
+          "word": "Niederschlag",
           "translations": [
             [
               "precipitation",
               "rainfall"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -834,27 +822,13 @@
     {
       "words": [
         {
-          "word": "tempête de vent",
-          "translations": [
-            [
-              "windstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "direction du vent",
+          "word": "Windrichtung",
           "translations": [
             [
               "wind direction"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -862,13 +836,13 @@
     {
       "words": [
         {
-          "word": "vitesse du vent",
+          "word": "Windgeschwindigkeit",
           "translations": [
             [
               "wind speed"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -876,13 +850,13 @@
     {
       "words": [
         {
-          "word": "refroidissement éolien",
+          "word": "gefühlte Temperatur",
           "translations": [
             [
               "wind chill"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -890,13 +864,13 @@
     {
       "words": [
         {
-          "word": "gelant",
+          "word": "frostig",
           "translations": [
             [
               "freezing"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -904,13 +878,13 @@
     {
       "words": [
         {
-          "word": "dégel",
+          "word": "Tauwetter",
           "translations": [
             [
               "thaw"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -918,13 +892,13 @@
     {
       "words": [
         {
-          "word": "vapeur",
+          "word": "Dampf",
           "translations": [
             [
               "vapor"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -932,13 +906,13 @@
     {
       "words": [
         {
-          "word": "ozone",
+          "word": "Ozon",
           "translations": [
             [
               "ozone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -946,13 +920,13 @@
     {
       "words": [
         {
-          "word": "ultraviolet",
+          "word": "ultraviolett",
           "translations": [
             [
               "ultraviolet"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -960,13 +934,13 @@
     {
       "words": [
         {
-          "word": "givre",
+          "word": "Raureif",
           "translations": [
             [
               "hoarfrost"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -974,13 +948,13 @@
     {
       "words": [
         {
-          "word": "partiellement nuageux",
+          "word": "teilweise bewölkt",
           "translations": [
             [
               "partly cloudy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -988,13 +962,13 @@
     {
       "words": [
         {
-          "word": "tempête de verglas",
+          "word": "Eissturm",
           "translations": [
             [
               "ice storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1002,13 +976,13 @@
     {
       "words": [
         {
-          "word": "front froid",
+          "word": "Kaltfront",
           "translations": [
             [
               "cold front"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1016,13 +990,13 @@
     {
       "words": [
         {
-          "word": "front chaud",
+          "word": "Warmfront",
           "translations": [
             [
               "warm front"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1030,13 +1004,13 @@
     {
       "words": [
         {
-          "word": "carte météorologique",
+          "word": "Wetterkarte",
           "translations": [
             [
               "weather map"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1044,13 +1018,13 @@
     {
       "words": [
         {
-          "word": "bulletin météo",
+          "word": "Wetterbericht",
           "translations": [
             [
               "weather report"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1058,13 +1032,13 @@
     {
       "words": [
         {
-          "word": "printemps",
+          "word": "Frühling",
           "translations": [
             [
               "spring"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1072,13 +1046,13 @@
     {
       "words": [
         {
-          "word": "hiver",
+          "word": "Winter",
           "translations": [
             [
               "winter"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1086,13 +1060,13 @@
     {
       "words": [
         {
-          "word": "poussière",
+          "word": "Staub",
           "translations": [
             [
               "dust"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1100,13 +1074,13 @@
     {
       "words": [
         {
-          "word": "tempête de poussière",
+          "word": "Staubsturm",
           "translations": [
             [
               "dust storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1114,14 +1088,13 @@
     {
       "words": [
         {
-          "word": "neige fondue",
+          "word": "Schneematsch",
           "translations": [
             [
-              "sleet",
               "slush"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1129,13 +1102,27 @@
     {
       "words": [
         {
-          "word": "torride",
+          "word": "Schneeregen",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ],
+          "partOfSpeech": "Nomen",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "glühend heiß",
           "translations": [
             [
               "scorching"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1143,13 +1130,13 @@
     {
       "words": [
         {
-          "word": "frais",
+          "word": "kühl",
           "translations": [
             [
               "chilly"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1157,13 +1144,13 @@
     {
       "words": [
         {
-          "word": "anticyclone",
+          "word": "Antizyklon",
           "translations": [
             [
               "anticyclone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1171,13 +1158,13 @@
     {
       "words": [
         {
-          "word": "condensation",
+          "word": "Kondensation",
           "translations": [
             [
               "condensation"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1185,13 +1172,13 @@
     {
       "words": [
         {
-          "word": "gel",
+          "word": "Gefrieren",
           "translations": [
             [
               "freeze"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1199,13 +1186,13 @@
     {
       "words": [
         {
-          "word": "rosée",
+          "word": "Tau",
           "translations": [
             [
               "dew"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1213,13 +1200,13 @@
     {
       "words": [
         {
-          "word": "nuageux",
+          "word": "wolkig",
           "translations": [
             [
               "cloudy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1227,13 +1214,13 @@
     {
       "words": [
         {
-          "word": "ciel dégagé",
+          "word": "klarer Himmel",
           "translations": [
             [
               "clear skies"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1241,13 +1228,13 @@
     {
       "words": [
         {
-          "word": "basse pression",
+          "word": "Tiefdruck",
           "translations": [
             [
               "low pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]
@@ -1255,13 +1242,13 @@
     {
       "words": [
         {
-          "word": "haute pression",
+          "word": "Hochdruck",
           "translations": [
             [
               "high pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "Nomen",
           "primary": true
         }
       ]

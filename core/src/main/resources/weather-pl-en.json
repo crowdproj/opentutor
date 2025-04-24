@@ -1,17 +1,17 @@
 {
-  "name": "Weather FR-EN",
+  "name": "Weather PL-EN",
   "sourceLang": {
-    "langId": "fr",
+    "langId": "pl",
     "partsOfSpeech": [
-      "nom",
-      "verbe",
-      "adjectif",
-      "adverbe",
-      "pronom",
-      "préposition",
-      "conjonction",
-      "interjection",
-      "article"
+      "rzeczownik",
+      "czasownik",
+      "przymiotnik",
+      "przysłówek",
+      "zaimek",
+      "przyimek",
+      "spójnik",
+      "wykrzyknik",
+      "rodzajnik"
     ]
   },
   "targetLang": {
@@ -32,13 +32,13 @@
     {
       "words": [
         {
-          "word": "météo",
+          "word": "antycyklon",
           "translations": [
             [
-              "weather"
+              "anticyclone"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -46,13 +46,13 @@
     {
       "words": [
         {
-          "word": "température",
+          "word": "atmosfera",
           "translations": [
             [
-              "temperature"
+              "atmosphere"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -60,13 +60,13 @@
     {
       "words": [
         {
-          "word": "pluie",
+          "word": "barometr",
           "translations": [
             [
-              "rain"
+              "barometer"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -74,13 +74,13 @@
     {
       "words": [
         {
-          "word": "neige",
+          "word": "bezchmurnie",
           "translations": [
             [
-              "snow"
+              "clear"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -88,167 +88,13 @@
     {
       "words": [
         {
-          "word": "vent",
-          "translations": [
-            [
-              "wind"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brouillard",
-          "translations": [
-            [
-              "fog"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête",
-          "translations": [
-            [
-              "storm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "éclair",
-          "translations": [
-            [
-              "lightning"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tonnerre",
-          "translations": [
-            [
-              "thunder"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "nuage",
-          "translations": [
-            [
-              "cloud"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "grêle",
-          "translations": [
-            [
-              "hail"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ensoleillé",
-          "translations": [
-            [
-              "sunny"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "froid",
-          "translations": [
-            [
-              "cold"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "chaud",
-          "translations": [
-            [
-              "hot"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "doux",
-          "translations": [
-            [
-              "warm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brise",
+          "word": "bryza",
           "translations": [
             [
               "breeze"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -256,14 +102,13 @@
     {
       "words": [
         {
-          "word": "rafale",
+          "word": "burza",
           "translations": [
             [
-              "flurry",
-              "gust"
+              "storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -271,13 +116,13 @@
     {
       "words": [
         {
-          "word": "couvert",
+          "word": "burza gradowa",
           "translations": [
             [
-              "overcast"
+              "hailstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -285,13 +130,13 @@
     {
       "words": [
         {
-          "word": "humidité",
+          "word": "burza lodowa",
           "translations": [
             [
-              "humidity"
+              "ice storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -299,13 +144,13 @@
     {
       "words": [
         {
-          "word": "prévisions météo",
+          "word": "burza piaskowa",
           "translations": [
             [
-              "forecast"
+              "dust storm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -313,13 +158,13 @@
     {
       "words": [
         {
-          "word": "bruine",
+          "word": "burza z piorunami",
           "translations": [
             [
-              "drizzle"
+              "thunderstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -327,56 +172,13 @@
     {
       "words": [
         {
-          "word": "averse",
-          "translations": [
-            [
-              "downpour",
-              "shower"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "chute de neige",
-          "translations": [
-            [
-              "snowfall"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "flocon de neige",
-          "translations": [
-            [
-              "snowflake"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "orageux",
+          "word": "burzowy",
           "translations": [
             [
               "stormy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -384,13 +186,293 @@
     {
       "words": [
         {
-          "word": "glace",
+          "word": "błyskawica",
+          "translations": [
+            [
+              "lightning"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "chmura",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "chłodno",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ciepło",
+          "translations": [
+            [
+              "warm"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ciśnienie atmosferyczne",
+          "translations": [
+            [
+              "air pressure"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "cyklon",
+          "translations": [
+            [
+              "cyclone"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "czyste niebo",
+          "translations": [
+            [
+              "clear skies"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "częściowo pochmurno",
+          "translations": [
+            [
+              "partly cloudy"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "deszcz",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "deszcz ze śniegiem",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fala upałów",
+          "translations": [
+            [
+              "heatwave"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "front chłodny",
+          "translations": [
+            [
+              "cold front"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "front ciepły",
+          "translations": [
+            [
+              "warm front"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gorąco",
+          "translations": [
+            [
+              "hot"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "grad",
+          "translations": [
+            [
+              "hail"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "grzmot",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "huragan",
+          "translations": [
+            [
+              "hurricane"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kałuża",
+          "translations": [
+            [
+              "puddle"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kierunek wiatru",
+          "translations": [
+            [
+              "wind direction"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kondensacja",
+          "translations": [
+            [
+              "condensation"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "lód",
           "translations": [
             [
               "ice"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -398,13 +480,13 @@
     {
       "words": [
         {
-          "word": "gelée",
+          "word": "mapa pogody",
           "translations": [
             [
-              "frost"
+              "weather map"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -412,13 +494,13 @@
     {
       "words": [
         {
-          "word": "sécheresse",
+          "word": "mgła",
           "translations": [
             [
-              "drought"
+              "fog"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -426,13 +508,13 @@
     {
       "words": [
         {
-          "word": "brume",
+          "word": "monsun",
           "translations": [
             [
-              "mist"
+              "monsoon"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -440,13 +522,13 @@
     {
       "words": [
         {
-          "word": "blizzard",
+          "word": "mroźny",
           "translations": [
             [
-              "blizzard"
+              "freezing"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -454,13 +536,307 @@
     {
       "words": [
         {
-          "word": "arc-en-ciel",
+          "word": "mżawka",
           "translations": [
             [
-              "rainbow"
+              "drizzle"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "niskie ciśnienie",
+          "translations": [
+            [
+              "low pressure"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "odwilż",
+          "translations": [
+            [
+              "thaw"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "opad",
+          "translations": [
+            [
+              "precipitation"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "opady deszczu",
+          "translations": [
+            [
+              "rainfall"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "opady śniegu",
+          "translations": [
+            [
+              "snowfall"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ozon",
+          "translations": [
+            [
+              "ozone"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "para",
+          "translations": [
+            [
+              "vapor"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "parowanie",
+          "translations": [
+            [
+              "evaporation"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pochmurnie",
+          "translations": [
+            [
+              "cloudy"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pochmurno",
+          "translations": [
+            [
+              "overcast"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pogoda",
+          "translations": [
+            [
+              "weather"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pora roku",
+          "translations": [
+            [
+              "season"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "poryw wiatru",
+          "translations": [
+            [
+              "gust"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "prognoza",
+          "translations": [
+            [
+              "forecast"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "promień słońca",
+          "translations": [
+            [
+              "sunbeam"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "przelotny deszcz",
+          "translations": [
+            [
+              "shower"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "prędkość wiatru",
+          "translations": [
+            [
+              "wind speed"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pył",
+          "translations": [
+            [
+              "dust"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "płatek śniegu",
+          "translations": [
+            [
+              "snowflake"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "raport pogodowy",
+          "translations": [
+            [
+              "weather report"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rosa",
+          "translations": [
+            [
+              "dew"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -474,7 +850,7 @@
               "smog"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -482,13 +858,13 @@
     {
       "words": [
         {
-          "word": "orage de grêle",
+          "word": "susza",
           "translations": [
             [
-              "hailstorm"
+              "drought"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -496,477 +872,13 @@
     {
       "words": [
         {
-          "word": "orage",
-          "translations": [
-            [
-              "thunderstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "cyclone",
-          "translations": [
-            [
-              "cyclone"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ouragan",
-          "translations": [
-            [
-              "hurricane"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tornade",
-          "translations": [
-            [
-              "tornado"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "mousson",
-          "translations": [
-            [
-              "monsoon"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "saison",
-          "translations": [
-            [
-              "season"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "venteux",
-          "translations": [
-            [
-              "windy"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête de neige",
-          "translations": [
-            [
-              "snowstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "canicule",
-          "translations": [
-            [
-              "heatwave"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "évaporation",
-          "translations": [
-            [
-              "evaporation"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "averse soudaine",
-          "translations": [
-            [
-              "cloudburst"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "baromètre",
-          "translations": [
-            [
-              "barometer"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "atmosphère",
-          "translations": [
-            [
-              "atmosphere"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "pression atmosphérique",
-          "translations": [
-            [
-              "air pressure"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "soleil",
-          "translations": [
-            [
-              "sun"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "lumière du soleil",
-          "translations": [
-            [
-              "sunlight"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "lever du soleil",
-          "translations": [
-            [
-              "sunrise"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "coucher du soleil",
-          "translations": [
-            [
-              "sundown",
-              "sunset"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "rayon de soleil",
-          "translations": [
-            [
-              "sunbeam"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "dégagé",
-          "translations": [
-            [
-              "clear"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "visibilité",
-          "translations": [
-            [
-              "visibility"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "brouillard blanc",
-          "translations": [
-            [
-              "whiteout"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "flaque",
-          "translations": [
-            [
-              "puddle"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "précipitations",
-          "translations": [
-            [
-              "precipitation",
-              "rainfall"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "tempête de vent",
-          "translations": [
-            [
-              "windstorm"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "direction du vent",
-          "translations": [
-            [
-              "wind direction"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "vitesse du vent",
-          "translations": [
-            [
-              "wind speed"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "refroidissement éolien",
-          "translations": [
-            [
-              "wind chill"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "gelant",
-          "translations": [
-            [
-              "freezing"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "dégel",
-          "translations": [
-            [
-              "thaw"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "vapeur",
-          "translations": [
-            [
-              "vapor"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ozone",
-          "translations": [
-            [
-              "ozone"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "ultraviolet",
-          "translations": [
-            [
-              "ultraviolet"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "givre",
+          "word": "szadź",
           "translations": [
             [
               "hoarfrost"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -974,13 +886,13 @@
     {
       "words": [
         {
-          "word": "partiellement nuageux",
+          "word": "szron",
           "translations": [
             [
-              "partly cloudy"
+              "frost"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -988,13 +900,13 @@
     {
       "words": [
         {
-          "word": "tempête de verglas",
+          "word": "słonecznie",
           "translations": [
             [
-              "ice storm"
+              "sunny"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1002,13 +914,13 @@
     {
       "words": [
         {
-          "word": "front froid",
+          "word": "słońce",
           "translations": [
             [
-              "cold front"
+              "sun"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1016,13 +928,13 @@
     {
       "words": [
         {
-          "word": "front chaud",
+          "word": "temperatura",
           "translations": [
             [
-              "warm front"
+              "temperature"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1030,13 +942,13 @@
     {
       "words": [
         {
-          "word": "carte météorologique",
+          "word": "temperatura odczuwalna",
           "translations": [
             [
-              "weather map"
+              "wind chill"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1044,13 +956,13 @@
     {
       "words": [
         {
-          "word": "bulletin météo",
+          "word": "tornado",
           "translations": [
             [
-              "weather report"
+              "tornado"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1058,13 +970,13 @@
     {
       "words": [
         {
-          "word": "printemps",
+          "word": "tęcza",
           "translations": [
             [
-              "spring"
+              "rainbow"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1072,13 +984,13 @@
     {
       "words": [
         {
-          "word": "hiver",
+          "word": "ulewa",
           "translations": [
             [
-              "winter"
+              "cloudburst"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1086,13 +998,13 @@
     {
       "words": [
         {
-          "word": "poussière",
+          "word": "ulewny deszcz",
           "translations": [
             [
-              "dust"
+              "downpour"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1100,13 +1012,13 @@
     {
       "words": [
         {
-          "word": "tempête de poussière",
+          "word": "ultrafiolet",
           "translations": [
             [
-              "dust storm"
+              "ultraviolet"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1114,28 +1026,13 @@
     {
       "words": [
         {
-          "word": "neige fondue",
-          "translations": [
-            [
-              "sleet",
-              "slush"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "torride",
+          "word": "upalny",
           "translations": [
             [
               "scorching"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1143,13 +1040,13 @@
     {
       "words": [
         {
-          "word": "frais",
+          "word": "wiatr",
           "translations": [
             [
-              "chilly"
+              "wind"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1157,13 +1054,13 @@
     {
       "words": [
         {
-          "word": "anticyclone",
+          "word": "wichura",
           "translations": [
             [
-              "anticyclone"
+              "windstorm"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1171,13 +1068,13 @@
     {
       "words": [
         {
-          "word": "condensation",
+          "word": "widoczność",
           "translations": [
             [
-              "condensation"
+              "visibility"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1185,13 +1082,13 @@
     {
       "words": [
         {
-          "word": "gel",
+          "word": "wietrznie",
           "translations": [
             [
-              "freeze"
+              "windy"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1199,13 +1096,13 @@
     {
       "words": [
         {
-          "word": "rosée",
+          "word": "wilgotność",
           "translations": [
             [
-              "dew"
+              "humidity"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1213,13 +1110,13 @@
     {
       "words": [
         {
-          "word": "nuageux",
+          "word": "wiosna",
           "translations": [
             [
-              "cloudy"
+              "spring"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1227,13 +1124,13 @@
     {
       "words": [
         {
-          "word": "ciel dégagé",
+          "word": "wschód słońca",
           "translations": [
             [
-              "clear skies"
+              "sunrise"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
@@ -1241,27 +1138,182 @@
     {
       "words": [
         {
-          "word": "basse pression",
-          "translations": [
-            [
-              "low pressure"
-            ]
-          ],
-          "partOfSpeech": "nom",
-          "primary": true
-        }
-      ]
-    },
-    {
-      "words": [
-        {
-          "word": "haute pression",
+          "word": "wysokie ciśnienie",
           "translations": [
             [
               "high pressure"
             ]
           ],
-          "partOfSpeech": "nom",
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zachód słońca",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zamarzanie",
+          "translations": [
+            [
+              "freeze"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zamglenie",
+          "translations": [
+            [
+              "mist"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zamieć",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zawieja",
+          "translations": [
+            [
+              "flurry"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zima",
+          "translations": [
+            [
+              "winter"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zimno",
+          "translations": [
+            [
+              "cold"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "zmierzch",
+          "translations": [
+            [
+              "sundown"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "śnieg",
+          "translations": [
+            [
+              "snow"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "śnieżna breja",
+          "translations": [
+            [
+              "slush"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "śnieżyca",
+          "translations": [
+            [
+              "snowstorm",
+              "whiteout"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "światło słoneczne",
+          "translations": [
+            [
+              "sunlight"
+            ]
+          ],
+          "partOfSpeech": "rzeczownik",
           "primary": true
         }
       ]
