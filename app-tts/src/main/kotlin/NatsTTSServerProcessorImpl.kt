@@ -1,12 +1,13 @@
 package com.gitlab.sszuev.flashcards.speaker
 
+import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.core.TTSCorProcessor
+import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
 import io.nats.client.Message
-import io.nats.client.Nats
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -28,12 +29,12 @@ class NatsTTSServerProcessorImpl(
         service: TextToSpeechService,
         topic: String = "TTS",
         group: String = "TTS",
-        connectionUrl: String = "nats://localhost:4222",
+        connectionFactory: () -> Connection,
     ) : this(
         topic = topic,
         group = group,
         repository = DirectTTSResourceRepository(service),
-        connectionFactory = { Nats.connectReconnectOnConnect(connectionUrl) },
+        connectionFactory = connectionFactory,
     )
 
     private val run = AtomicBoolean(false)
@@ -49,16 +50,23 @@ class NatsTTSServerProcessorImpl(
     override suspend fun process(coroutineContext: CoroutineContext) {
         val dispatcher = connection.createDispatcher { msg: Message ->
             CoroutineScope(coroutineContext).launch {
-                val context = ttsContextFromByteArray(msg.data)
-                context.repository = repository
-                processor.execute(context)
-                context.errors.forEach {
-                    logger.error("$it")
-                    it.exception?.let { ex ->
-                        logger.error("Exception: ${ex.message}", ex)
+                try {
+                    val context = ttsContextFromByteArray(msg.data)
+                    context.repository = repository
+                    processor.execute(context)
+                    context.errors.forEach {
+                        logger.error("$it")
+                        it.exception?.let { ex ->
+                            logger.error("Exception: ${ex.message}", ex)
+                        }
                     }
+                    connection.publish(msg.replyTo, context.toByteArray())
+                } catch (ex: Exception) {
+                    logger.error("Unexpected error", ex)
+                    val context =
+                        TTSContext().apply { errors += AppError(message = "Unexpected error", exception = ex) }
+                    connection.publish(msg.replyTo, context.toByteArray())
                 }
-                connection.publish(msg.replyTo, context.toByteArray())
             }
         }
         dispatcher.subscribe(topic, group)

@@ -1,6 +1,8 @@
 package com.gitlab.sszuev.flashcards.translation
 
+import com.gitlab.sszuev.flashcards.TranslationContext
 import com.gitlab.sszuev.flashcards.core.TranslationCorProcessor
+import com.gitlab.sszuev.flashcards.model.common.AppError
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import com.gitlab.sszuev.flashcards.utils.translationContextFromByteArray
@@ -37,19 +39,26 @@ class TranslationServerProcessor(
     suspend fun process(coroutineContext: CoroutineContext) {
         val dispatcher = connection.createDispatcher { msg: Message ->
             CoroutineScope(coroutineContext).launch {
-                val context = translationContextFromByteArray(msg.data)
-                if (logger.isDebugEnabled) {
-                    logger.debug("Processing ${context.requestId}")
-                }
-                context.repository = repository
-                corProcessor.execute(context)
-                context.errors.forEach {
-                    logger.error("$it")
-                    it.exception?.let { ex ->
-                        logger.error("Exception: ${ex.message}", ex)
+                try {
+                    val context = translationContextFromByteArray(msg.data)
+                    if (logger.isDebugEnabled) {
+                        logger.debug("Processing ${context.requestId}")
                     }
+                    context.repository = repository
+                    corProcessor.execute(context)
+                    context.errors.forEach {
+                        logger.error("$it")
+                        it.exception?.let { ex ->
+                            logger.error("Exception: ${ex.message}", ex)
+                        }
+                    }
+                    connection.publish(msg.replyTo, context.toByteArray())
+                } catch (ex: Exception) {
+                    logger.error("Unexpected error", ex)
+                    val context =
+                        TranslationContext().apply { errors += AppError(message = "Unexpected error", exception = ex) }
+                    connection.publish(msg.replyTo, context.toByteArray())
                 }
-                connection.publish(msg.replyTo, context.toByteArray())
             }
         }
         dispatcher.subscribe(topic, group)
