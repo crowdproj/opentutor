@@ -25,7 +25,9 @@
       "전치사",
       "접속사",
       "감탄사",
-      "관사"
+      "관사",
+      "수사",
+      "분사"
     ]
   },
   "cards": [
@@ -37,17 +39,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "발생하다"
+              "생기다"
             ]
           ]
         },
         {
-          "word": "arose",
-          "translations": []
+          "word": "arose"
         },
         {
-          "word": "arisen",
-          "translations": []
+          "word": "arisen"
         }
       ],
       "answered": 0
@@ -65,12 +65,10 @@
           ]
         },
         {
-          "word": "awakened | awoke",
-          "translations": []
+          "word": "awakened | awoke"
         },
         {
-          "word": "awakened | awoken",
-          "translations": []
+          "word": "awakened | awoken"
         }
       ],
       "answered": 0
@@ -88,12 +86,10 @@
           ]
         },
         {
-          "word": "backslid",
-          "translations": []
+          "word": "backslid"
         },
         {
-          "word": "backslidden | backslid",
-          "translations": []
+          "word": "backslidden | backslid"
         }
       ],
       "answered": 0
@@ -106,17 +102,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "참다"
+              "출산하다"
             ]
           ]
         },
         {
-          "word": "bore",
-          "translations": []
+          "word": "bore"
         },
         {
-          "word": "born | borne",
-          "translations": []
+          "word": "born | borne"
         }
       ],
       "answered": 0
@@ -129,21 +123,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "이기다"
+              "때리다"
             ]
           ]
         },
         {
-          "word": "beat",
-          "translations": [
-            [
-              "이기다"
-            ]
-          ]
+          "word": "beat"
         },
         {
-          "word": "beaten | beat",
-          "translations": []
+          "word": "beaten | beat"
         }
       ],
       "answered": 0
@@ -156,21 +144,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "되다"
+              "~이 되다"
             ]
           ]
         },
         {
-          "word": "became",
-          "translations": []
+          "word": "became"
         },
         {
-          "word": "become",
-          "translations": [
-            [
-              "되다"
-            ]
-          ]
+          "word": "become"
         }
       ],
       "answered": 0
@@ -188,12 +170,10 @@
           ]
         },
         {
-          "word": "began",
-          "translations": []
+          "word": "began"
         },
         {
-          "word": "begun",
-          "translations": []
+          "word": "begun"
         }
       ],
       "answered": 0
@@ -211,12 +191,10 @@
           ]
         },
         {
-          "word": "bent",
-          "translations": []
+          "word": "bent"
         },
         {
-          "word": "bent",
-          "translations": []
+          "word": "bent"
         }
       ],
       "answered": 0
@@ -234,20 +212,10 @@
           ]
         },
         {
-          "word": "bet",
-          "translations": [
-            [
-              "내기하다"
-            ]
-          ]
+          "word": "bet"
         },
         {
-          "word": "bet",
-          "translations": [
-            [
-              "내기하다"
-            ]
-          ]
+          "word": "bet"
         }
       ],
       "answered": 0
@@ -265,12 +233,10 @@
           ]
         },
         {
-          "word": "bound",
-          "translations": []
+          "word": "bound"
         },
         {
-          "word": "bound",
-          "translations": []
+          "word": "bound"
         }
       ],
       "answered": 0
@@ -288,12 +254,10 @@
           ]
         },
         {
-          "word": "bit",
-          "translations": []
+          "word": "bit"
         },
         {
-          "word": "bitten",
-          "translations": []
+          "word": "bitten"
         }
       ],
       "answered": 0
@@ -311,12 +275,10 @@
           ]
         },
         {
-          "word": "bled",
-          "translations": []
+          "word": "bled"
         },
         {
-          "word": "bled",
-          "translations": []
+          "word": "bled"
         }
       ],
       "answered": 0
@@ -334,12 +296,10 @@
           ]
         },
         {
-          "word": "blew",
-          "translations": []
+          "word": "blew"
         },
         {
-          "word": "blown",
-          "translations": []
+          "word": "blown"
         }
       ],
       "answered": 0
@@ -357,12 +317,10 @@
           ]
         },
         {
-          "word": "broke",
-          "translations": []
+          "word": "broke"
         },
         {
-          "word": "broken",
-          "translations": []
+          "word": "broken"
         }
       ],
       "answered": 0
@@ -373,15 +331,17 @@
           "word": "breed",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "번식하다"
+            ]
+          ]
         },
         {
-          "word": "bred",
-          "translations": []
+          "word": "bred"
         },
         {
-          "word": "bred",
-          "translations": []
+          "word": "bred"
         }
       ],
       "answered": 0
@@ -399,12 +359,10 @@
           ]
         },
         {
-          "word": "brought",
-          "translations": []
+          "word": "brought"
         },
         {
-          "word": "brought",
-          "translations": []
+          "word": "brought"
         }
       ],
       "answered": 0
@@ -415,15 +373,17 @@
           "word": "broadcast",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "방송하다"
+            ]
+          ]
         },
         {
-          "word": "broadcast | broadcasted",
-          "translations": []
+          "word": "broadcast | broadcasted"
         },
         {
-          "word": "broadcast | broadcasted",
-          "translations": []
+          "word": "broadcast | broadcasted"
         }
       ],
       "answered": 0
@@ -434,15 +394,17 @@
           "word": "browbeat",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "협박하다"
+            ]
+          ]
         },
         {
-          "word": "browbeat",
-          "translations": []
+          "word": "browbeat"
         },
         {
-          "word": "browbeaten | browbeat",
-          "translations": []
+          "word": "browbeaten | browbeat"
         }
       ],
       "answered": 0
@@ -455,17 +417,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "짓다"
+              "건설하다"
             ]
           ]
         },
         {
-          "word": "built",
-          "translations": []
+          "word": "built"
         },
         {
-          "word": "built",
-          "translations": []
+          "word": "built"
         }
       ],
       "answered": 0
@@ -483,12 +443,10 @@
           ]
         },
         {
-          "word": "burned | burnt",
-          "translations": []
+          "word": "burned | burnt"
         },
         {
-          "word": "burned | burnt",
-          "translations": []
+          "word": "burned | burnt"
         }
       ],
       "answered": 0
@@ -506,20 +464,10 @@
           ]
         },
         {
-          "word": "burst",
-          "translations": [
-            [
-              "터지다"
-            ]
-          ]
+          "word": "burst"
         },
         {
-          "word": "burst",
-          "translations": [
-            [
-              "터지다"
-            ]
-          ]
+          "word": "burst"
         }
       ],
       "answered": 0
@@ -530,15 +478,17 @@
           "word": "bust",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "흉상"
+            ]
+          ]
         },
         {
-          "word": "busted | bust",
-          "translations": []
+          "word": "busted | bust"
         },
         {
-          "word": "busted | bust",
-          "translations": []
+          "word": "busted | bust"
         }
       ],
       "answered": 0
@@ -551,17 +501,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "사다"
+              "구매하다"
             ]
           ]
         },
         {
-          "word": "bought",
-          "translations": []
+          "word": "bought"
         },
         {
-          "word": "bought",
-          "translations": []
+          "word": "bought"
         }
       ],
       "answered": 0
@@ -572,15 +520,17 @@
           "word": "can",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "~할 수 있다"
+            ]
+          ]
         },
         {
-          "word": "could",
-          "translations": []
+          "word": "could"
         },
         {
-          "word": "could",
-          "translations": []
+          "word": "could"
         }
       ],
       "answered": 0
@@ -591,15 +541,17 @@
           "word": "cast",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "던지다"
+            ]
+          ]
         },
         {
-          "word": "cast",
-          "translations": []
+          "word": "cast"
         },
         {
-          "word": "cast",
-          "translations": []
+          "word": "cast"
         }
       ],
       "answered": 0
@@ -617,12 +569,10 @@
           ]
         },
         {
-          "word": "caught",
-          "translations": []
+          "word": "caught"
         },
         {
-          "word": "caught",
-          "translations": []
+          "word": "caught"
         }
       ],
       "answered": 0
@@ -640,12 +590,10 @@
           ]
         },
         {
-          "word": "chose",
-          "translations": []
+          "word": "chose"
         },
         {
-          "word": "chosen",
-          "translations": []
+          "word": "chosen"
         }
       ],
       "answered": 0
@@ -656,15 +604,17 @@
           "word": "cling",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "달라붙다"
+            ]
+          ]
         },
         {
-          "word": "clung",
-          "translations": []
+          "word": "clung"
         },
         {
-          "word": "clung",
-          "translations": []
+          "word": "clung"
         }
       ],
       "answered": 0
@@ -675,15 +625,17 @@
           "word": "clothe",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "옷을 입히다"
+            ]
+          ]
         },
         {
-          "word": "clothed | clad",
-          "translations": []
+          "word": "clothed | clad"
         },
         {
-          "word": "clothed | clad",
-          "translations": []
+          "word": "clothed | clad"
         }
       ],
       "answered": 0
@@ -701,16 +653,10 @@
           ]
         },
         {
-          "word": "came",
-          "translations": []
+          "word": "came"
         },
         {
-          "word": "come",
-          "translations": [
-            [
-              "오다"
-            ]
-          ]
+          "word": "come"
         }
       ],
       "answered": 0
@@ -728,20 +674,10 @@
           ]
         },
         {
-          "word": "cost",
-          "translations": [
-            [
-              "비용이 들다"
-            ]
-          ]
+          "word": "cost"
         },
         {
-          "word": "cost",
-          "translations": [
-            [
-              "비용이 들다"
-            ]
-          ]
+          "word": "cost"
         }
       ],
       "answered": 0
@@ -752,15 +688,17 @@
           "word": "creep",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "살금살금 걷다"
+            ]
+          ]
         },
         {
-          "word": "crept",
-          "translations": []
+          "word": "crept"
         },
         {
-          "word": "crept",
-          "translations": []
+          "word": "crept"
         }
       ],
       "answered": 0
@@ -778,20 +716,10 @@
           ]
         },
         {
-          "word": "cut",
-          "translations": [
-            [
-              "자르다"
-            ]
-          ]
+          "word": "cut"
         },
         {
-          "word": "cut",
-          "translations": [
-            [
-              "자르다"
-            ]
-          ]
+          "word": "cut"
         }
       ],
       "answered": 0
@@ -809,12 +737,10 @@
           ]
         },
         {
-          "word": "dealt",
-          "translations": []
+          "word": "dealt"
         },
         {
-          "word": "dealt",
-          "translations": []
+          "word": "dealt"
         }
       ],
       "answered": 0
@@ -832,12 +758,10 @@
           ]
         },
         {
-          "word": "dug",
-          "translations": []
+          "word": "dug"
         },
         {
-          "word": "dug",
-          "translations": []
+          "word": "dug"
         }
       ],
       "answered": 0
@@ -848,15 +772,17 @@
           "word": "dive",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "잠수하다"
+            ]
+          ]
         },
         {
-          "word": "dove | dived",
-          "translations": []
+          "word": "dove | dived"
         },
         {
-          "word": "dived",
-          "translations": []
+          "word": "dived"
         }
       ],
       "answered": 0
@@ -874,12 +800,10 @@
           ]
         },
         {
-          "word": "did",
-          "translations": []
+          "word": "did"
         },
         {
-          "word": "done",
-          "translations": []
+          "word": "done"
         }
       ],
       "answered": 0
@@ -897,12 +821,10 @@
           ]
         },
         {
-          "word": "drew",
-          "translations": []
+          "word": "drew"
         },
         {
-          "word": "drawn",
-          "translations": []
+          "word": "drawn"
         }
       ],
       "answered": 0
@@ -920,12 +842,10 @@
           ]
         },
         {
-          "word": "dreamed | dreamt",
-          "translations": []
+          "word": "dreamed | dreamt"
         },
         {
-          "word": "dreamed | dreamt",
-          "translations": []
+          "word": "dreamed | dreamt"
         }
       ],
       "answered": 0
@@ -943,12 +863,10 @@
           ]
         },
         {
-          "word": "drank",
-          "translations": []
+          "word": "drank"
         },
         {
-          "word": "drunk",
-          "translations": []
+          "word": "drunk"
         }
       ],
       "answered": 0
@@ -966,12 +884,10 @@
           ]
         },
         {
-          "word": "drove",
-          "translations": []
+          "word": "drove"
         },
         {
-          "word": "driven",
-          "translations": []
+          "word": "driven"
         }
       ],
       "answered": 0
@@ -982,15 +898,17 @@
           "word": "dwell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "머무르다"
+            ]
+          ]
         },
         {
-          "word": "dwelt | dwelled",
-          "translations": []
+          "word": "dwelt | dwelled"
         },
         {
-          "word": "dwelt | dwelled",
-          "translations": []
+          "word": "dwelt | dwelled"
         }
       ],
       "answered": 0
@@ -1008,12 +926,10 @@
           ]
         },
         {
-          "word": "ate",
-          "translations": []
+          "word": "ate"
         },
         {
-          "word": "eaten",
-          "translations": []
+          "word": "eaten"
         }
       ],
       "answered": 0
@@ -1031,12 +947,10 @@
           ]
         },
         {
-          "word": "fell",
-          "translations": []
+          "word": "fell"
         },
         {
-          "word": "fallen",
-          "translations": []
+          "word": "fallen"
         }
       ],
       "answered": 0
@@ -1054,12 +968,10 @@
           ]
         },
         {
-          "word": "fed",
-          "translations": []
+          "word": "fed"
         },
         {
-          "word": "fed",
-          "translations": []
+          "word": "fed"
         }
       ],
       "answered": 0
@@ -1077,12 +989,10 @@
           ]
         },
         {
-          "word": "felt",
-          "translations": []
+          "word": "felt"
         },
         {
-          "word": "felt",
-          "translations": []
+          "word": "felt"
         }
       ],
       "answered": 0
@@ -1100,12 +1010,10 @@
           ]
         },
         {
-          "word": "fought",
-          "translations": []
+          "word": "fought"
         },
         {
-          "word": "fought",
-          "translations": []
+          "word": "fought"
         }
       ],
       "answered": 0
@@ -1123,12 +1031,10 @@
           ]
         },
         {
-          "word": "found",
-          "translations": []
+          "word": "found"
         },
         {
-          "word": "found",
-          "translations": []
+          "word": "found"
         }
       ],
       "answered": 0
@@ -1139,15 +1045,17 @@
           "word": "fit",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "맞다"
+            ]
+          ]
         },
         {
-          "word": "fit",
-          "translations": []
+          "word": "fit"
         },
         {
-          "word": "fit",
-          "translations": []
+          "word": "fit"
         }
       ],
       "answered": 0
@@ -1158,15 +1066,17 @@
           "word": "flee",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "서두르다"
+            ]
+          ]
         },
         {
-          "word": "fled",
-          "translations": []
+          "word": "fled"
         },
         {
-          "word": "fled",
-          "translations": []
+          "word": "fled"
         }
       ],
       "answered": 0
@@ -1177,15 +1087,17 @@
           "word": "fling",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "시도"
+            ]
+          ]
         },
         {
-          "word": "flung",
-          "translations": []
+          "word": "flung"
         },
         {
-          "word": "flung",
-          "translations": []
+          "word": "flung"
         }
       ],
       "answered": 0
@@ -1203,12 +1115,10 @@
           ]
         },
         {
-          "word": "flew",
-          "translations": []
+          "word": "flew"
         },
         {
-          "word": "flown",
-          "translations": []
+          "word": "flown"
         }
       ],
       "answered": 0
@@ -1219,15 +1129,17 @@
           "word": "forbid",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "금지하다"
+            ]
+          ]
         },
         {
-          "word": "forbade",
-          "translations": []
+          "word": "forbade"
         },
         {
-          "word": "forbidden",
-          "translations": []
+          "word": "forbidden"
         }
       ],
       "answered": 0
@@ -1238,15 +1150,17 @@
           "word": "forecast",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "예측"
+            ]
+          ]
         },
         {
-          "word": "forecast",
-          "translations": []
+          "word": "forecast"
         },
         {
-          "word": "forecast",
-          "translations": []
+          "word": "forecast"
         }
       ],
       "answered": 0
@@ -1257,15 +1171,17 @@
           "word": "foresee",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "예견하다"
+            ]
+          ]
         },
         {
-          "word": "foresaw",
-          "translations": []
+          "word": "foresaw"
         },
         {
-          "word": "foreseen",
-          "translations": []
+          "word": "foreseen"
         }
       ],
       "answered": 0
@@ -1276,15 +1192,17 @@
           "word": "foretell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "예언하다"
+            ]
+          ]
         },
         {
-          "word": "foretold",
-          "translations": []
+          "word": "foretold"
         },
         {
-          "word": "foretold",
-          "translations": []
+          "word": "foretold"
         }
       ],
       "answered": 0
@@ -1302,12 +1220,10 @@
           ]
         },
         {
-          "word": "forgot",
-          "translations": []
+          "word": "forgot"
         },
         {
-          "word": "forgotten",
-          "translations": []
+          "word": "forgotten"
         }
       ],
       "answered": 0
@@ -1325,12 +1241,10 @@
           ]
         },
         {
-          "word": "forgave",
-          "translations": []
+          "word": "forgave"
         },
         {
-          "word": "forgiven",
-          "translations": []
+          "word": "forgiven"
         }
       ],
       "answered": 0
@@ -1341,15 +1255,17 @@
           "word": "forsake",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "버리다"
+            ]
+          ]
         },
         {
-          "word": "forsook",
-          "translations": []
+          "word": "forsook"
         },
         {
-          "word": "forsaken",
-          "translations": []
+          "word": "forsaken"
         }
       ],
       "answered": 0
@@ -1367,12 +1283,10 @@
           ]
         },
         {
-          "word": "froze",
-          "translations": []
+          "word": "froze"
         },
         {
-          "word": "frozen",
-          "translations": []
+          "word": "frozen"
         }
       ],
       "answered": 0
@@ -1390,12 +1304,10 @@
           ]
         },
         {
-          "word": "got",
-          "translations": []
+          "word": "got"
         },
         {
-          "word": "gotten | got",
-          "translations": []
+          "word": "gotten | got"
         }
       ],
       "answered": 0
@@ -1413,12 +1325,10 @@
           ]
         },
         {
-          "word": "gave",
-          "translations": []
+          "word": "gave"
         },
         {
-          "word": "given",
-          "translations": []
+          "word": "given"
         }
       ],
       "answered": 0
@@ -1436,12 +1346,10 @@
           ]
         },
         {
-          "word": "went",
-          "translations": []
+          "word": "went"
         },
         {
-          "word": "gone",
-          "translations": []
+          "word": "gone"
         }
       ],
       "answered": 0
@@ -1452,15 +1360,17 @@
           "word": "grind",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "갈기"
+            ]
+          ]
         },
         {
-          "word": "ground",
-          "translations": []
+          "word": "ground"
         },
         {
-          "word": "ground",
-          "translations": []
+          "word": "ground"
         }
       ],
       "answered": 0
@@ -1478,12 +1388,10 @@
           ]
         },
         {
-          "word": "grew",
-          "translations": []
+          "word": "grew"
         },
         {
-          "word": "grown",
-          "translations": []
+          "word": "grown"
         }
       ],
       "answered": 0
@@ -1496,17 +1404,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "걸다"
+              "매달다"
             ]
           ]
         },
         {
-          "word": "hung | hanged",
-          "translations": []
+          "word": "hung | hanged"
         },
         {
-          "word": "hung | hanged",
-          "translations": []
+          "word": "hung | hanged"
         }
       ],
       "answered": 0
@@ -1524,12 +1430,10 @@
           ]
         },
         {
-          "word": "heard",
-          "translations": []
+          "word": "heard"
         },
         {
-          "word": "heard",
-          "translations": []
+          "word": "heard"
         }
       ],
       "answered": 0
@@ -1540,15 +1444,17 @@
           "word": "hew",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "찍다"
+            ]
+          ]
         },
         {
-          "word": "hewed",
-          "translations": []
+          "word": "hewed"
         },
         {
-          "word": "hewn | hewed",
-          "translations": []
+          "word": "hewn | hewed"
         }
       ],
       "answered": 0
@@ -1566,12 +1472,10 @@
           ]
         },
         {
-          "word": "hid",
-          "translations": []
+          "word": "hid"
         },
         {
-          "word": "hidden",
-          "translations": []
+          "word": "hidden"
         }
       ],
       "answered": 0
@@ -1584,25 +1488,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "치다"
+              "때리다"
             ]
           ]
         },
         {
-          "word": "hit",
-          "translations": [
-            [
-              "치다"
-            ]
-          ]
+          "word": "hit"
         },
         {
-          "word": "hit",
-          "translations": [
-            [
-              "치다"
-            ]
-          ]
+          "word": "hit"
         }
       ],
       "answered": 0
@@ -1620,12 +1514,10 @@
           ]
         },
         {
-          "word": "held",
-          "translations": []
+          "word": "held"
         },
         {
-          "word": "held",
-          "translations": []
+          "word": "held"
         }
       ],
       "answered": 0
@@ -1638,25 +1530,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "다치다"
+              "다치게 하다"
             ]
           ]
         },
         {
-          "word": "hurt",
-          "translations": [
-            [
-              "다치다"
-            ]
-          ]
+          "word": "hurt"
         },
         {
-          "word": "hurt",
-          "translations": [
-            [
-              "다치다"
-            ]
-          ]
+          "word": "hurt"
         }
       ],
       "answered": 0
@@ -1667,15 +1549,17 @@
           "word": "inlay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "박아 넣다"
+            ]
+          ]
         },
         {
-          "word": "inlaid",
-          "translations": []
+          "word": "inlaid"
         },
         {
-          "word": "inlaid",
-          "translations": []
+          "word": "inlaid"
         }
       ],
       "answered": 0
@@ -1686,15 +1570,17 @@
           "word": "input",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "입력"
+            ]
+          ]
         },
         {
-          "word": "input | inputted",
-          "translations": []
+          "word": "input | inputted"
         },
         {
-          "word": "input | inputted",
-          "translations": []
+          "word": "input | inputted"
         }
       ],
       "answered": 0
@@ -1705,15 +1591,17 @@
           "word": "interweave",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "섞어 짜다"
+            ]
+          ]
         },
         {
-          "word": "interwove",
-          "translations": []
+          "word": "interwove"
         },
         {
-          "word": "interwoven",
-          "translations": []
+          "word": "interwoven"
         }
       ],
       "answered": 0
@@ -1731,12 +1619,10 @@
           ]
         },
         {
-          "word": "kept",
-          "translations": []
+          "word": "kept"
         },
         {
-          "word": "kept",
-          "translations": []
+          "word": "kept"
         }
       ],
       "answered": 0
@@ -1747,15 +1633,17 @@
           "word": "kneel",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "무릎을 꿇다"
+            ]
+          ]
         },
         {
-          "word": "knelt | kneeled",
-          "translations": []
+          "word": "knelt | kneeled"
         },
         {
-          "word": "knelt | kneeled",
-          "translations": []
+          "word": "knelt | kneeled"
         }
       ],
       "answered": 0
@@ -1766,15 +1654,17 @@
           "word": "knit",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "뜨다"
+            ]
+          ]
         },
         {
-          "word": "knitted | knit",
-          "translations": []
+          "word": "knitted | knit"
         },
         {
-          "word": "knitted | knit",
-          "translations": []
+          "word": "knitted | knit"
         }
       ],
       "answered": 0
@@ -1787,17 +1677,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "알다"
+              "알다 "
             ]
           ]
         },
         {
-          "word": "knew",
-          "translations": []
+          "word": "knew"
         },
         {
-          "word": "known",
-          "translations": []
+          "word": "known"
         }
       ],
       "answered": 0
@@ -1808,15 +1696,17 @@
           "word": "lay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "놓다"
+            ]
+          ]
         },
         {
-          "word": "laid",
-          "translations": []
+          "word": "laid"
         },
         {
-          "word": "laid",
-          "translations": []
+          "word": "laid"
         }
       ],
       "answered": 0
@@ -1827,15 +1717,17 @@
           "word": "lead",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "이끌다"
+            ]
+          ]
         },
         {
-          "word": "led",
-          "translations": []
+          "word": "led"
         },
         {
-          "word": "led",
-          "translations": []
+          "word": "led"
         }
       ],
       "answered": 0
@@ -1846,15 +1738,17 @@
           "word": "lean",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "기대다"
+            ]
+          ]
         },
         {
-          "word": "leaned | leant",
-          "translations": []
+          "word": "leaned | leant"
         },
         {
-          "word": "leaned | leant",
-          "translations": []
+          "word": "leaned | leant"
         }
       ],
       "answered": 0
@@ -1865,15 +1759,17 @@
           "word": "leap",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "뛰다"
+            ]
+          ]
         },
         {
-          "word": "leaped | leapt",
-          "translations": []
+          "word": "leaped | leapt"
         },
         {
-          "word": "leaped | leapt",
-          "translations": []
+          "word": "leaped | leapt"
         }
       ],
       "answered": 0
@@ -1891,12 +1787,10 @@
           ]
         },
         {
-          "word": "learnt | learned",
-          "translations": []
+          "word": "learnt | learned"
         },
         {
-          "word": "learnt | learned",
-          "translations": []
+          "word": "learnt | learned"
         }
       ],
       "answered": 0
@@ -1914,12 +1808,10 @@
           ]
         },
         {
-          "word": "left",
-          "translations": []
+          "word": "left"
         },
         {
-          "word": "left",
-          "translations": []
+          "word": "left"
         }
       ],
       "answered": 0
@@ -1937,12 +1829,10 @@
           ]
         },
         {
-          "word": "lent",
-          "translations": []
+          "word": "lent"
         },
         {
-          "word": "lent",
-          "translations": []
+          "word": "lent"
         }
       ],
       "answered": 0
@@ -1955,25 +1845,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "허락하다"
+              "시키다"
             ]
           ]
         },
         {
-          "word": "let",
-          "translations": [
-            [
-              "허락하다"
-            ]
-          ]
+          "word": "let"
         },
         {
-          "word": "let",
-          "translations": [
-            [
-              "허락하다"
-            ]
-          ]
+          "word": "let"
         }
       ],
       "answered": 0
@@ -1984,15 +1864,17 @@
           "word": "lie",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "눕다"
+            ]
+          ]
         },
         {
-          "word": "lay",
-          "translations": []
+          "word": "lay"
         },
         {
-          "word": "lain",
-          "translations": []
+          "word": "lain"
         }
       ],
       "answered": 0
@@ -2003,15 +1885,17 @@
           "word": "light",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "불을 붙이다"
+            ]
+          ]
         },
         {
-          "word": "lit | lighted",
-          "translations": []
+          "word": "lit | lighted"
         },
         {
-          "word": "lit | lighted",
-          "translations": []
+          "word": "lit | lighted"
         }
       ],
       "answered": 0
@@ -2029,12 +1913,10 @@
           ]
         },
         {
-          "word": "lost",
-          "translations": []
+          "word": "lost"
         },
         {
-          "word": "lost",
-          "translations": []
+          "word": "lost"
         }
       ],
       "answered": 0
@@ -2052,12 +1934,10 @@
           ]
         },
         {
-          "word": "made",
-          "translations": []
+          "word": "made"
         },
         {
-          "word": "made",
-          "translations": []
+          "word": "made"
         }
       ],
       "answered": 0
@@ -2068,15 +1948,17 @@
           "word": "may",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "5월"
+            ]
+          ]
         },
         {
-          "word": "might",
-          "translations": []
+          "word": "might"
         },
         {
-          "word": "might",
-          "translations": []
+          "word": "might"
         }
       ],
       "answered": 0
@@ -2094,12 +1976,10 @@
           ]
         },
         {
-          "word": "meant",
-          "translations": []
+          "word": "meant"
         },
         {
-          "word": "meant",
-          "translations": []
+          "word": "meant"
         }
       ],
       "answered": 0
@@ -2117,12 +1997,10 @@
           ]
         },
         {
-          "word": "met",
-          "translations": []
+          "word": "met"
         },
         {
-          "word": "met",
-          "translations": []
+          "word": "met"
         }
       ],
       "answered": 0
@@ -2133,15 +2011,17 @@
           "word": "mow",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "베다"
+            ]
+          ]
         },
         {
-          "word": "mowed",
-          "translations": []
+          "word": "mowed"
         },
         {
-          "word": "mowed | mown",
-          "translations": []
+          "word": "mowed | mown"
         }
       ],
       "answered": 0
@@ -2152,15 +2032,17 @@
           "word": "offset",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "오프셋"
+            ]
+          ]
         },
         {
-          "word": "offset",
-          "translations": []
+          "word": "offset"
         },
         {
-          "word": "offset",
-          "translations": []
+          "word": "offset"
         }
       ],
       "answered": 0
@@ -2171,15 +2053,17 @@
           "word": "outbid",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "더 높은 가격을 제시하다"
+            ]
+          ]
         },
         {
-          "word": "outbid",
-          "translations": []
+          "word": "outbid"
         },
         {
-          "word": "outbid",
-          "translations": []
+          "word": "outbid"
         }
       ],
       "answered": 0
@@ -2190,15 +2074,17 @@
           "word": "outdo",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "능가하다"
+            ]
+          ]
         },
         {
-          "word": "outdid",
-          "translations": []
+          "word": "outdid"
         },
         {
-          "word": "outdone",
-          "translations": []
+          "word": "outdone"
         }
       ],
       "answered": 0
@@ -2209,15 +2095,17 @@
           "word": "outfight",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "...와 싸워 이기다"
+            ]
+          ]
         },
         {
-          "word": "outfought",
-          "translations": []
+          "word": "outfought"
         },
         {
-          "word": "outfought",
-          "translations": []
+          "word": "outfought"
         }
       ],
       "answered": 0
@@ -2228,15 +2116,17 @@
           "word": "outgrow",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "지나치게 자라다"
+            ]
+          ]
         },
         {
-          "word": "outgrew",
-          "translations": []
+          "word": "outgrew"
         },
         {
-          "word": "outgrown",
-          "translations": []
+          "word": "outgrown"
         }
       ],
       "answered": 0
@@ -2247,15 +2137,17 @@
           "word": "output",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "산출"
+            ]
+          ]
         },
         {
-          "word": "output | outputted",
-          "translations": []
+          "word": "output | outputted"
         },
         {
-          "word": "output | outputted",
-          "translations": []
+          "word": "output | outputted"
         }
       ],
       "answered": 0
@@ -2266,15 +2158,17 @@
           "word": "outrun",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "달려서 앞서다"
+            ]
+          ]
         },
         {
-          "word": "outran",
-          "translations": []
+          "word": "outran"
         },
         {
-          "word": "outrun",
-          "translations": []
+          "word": "outrun"
         }
       ],
       "answered": 0
@@ -2285,15 +2179,17 @@
           "word": "outsell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "더 많이 팔다"
+            ]
+          ]
         },
         {
-          "word": "outsold",
-          "translations": []
+          "word": "outsold"
         },
         {
-          "word": "outsold",
-          "translations": []
+          "word": "outsold"
         }
       ],
       "answered": 0
@@ -2304,15 +2200,17 @@
           "word": "outshine",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "...보다 밝게 빛나다"
+            ]
+          ]
         },
         {
-          "word": "outshone",
-          "translations": []
+          "word": "outshone"
         },
         {
-          "word": "outshone",
-          "translations": []
+          "word": "outshone"
         }
       ],
       "answered": 0
@@ -2323,15 +2221,17 @@
           "word": "overbid",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "초과 입찰"
+            ]
+          ]
         },
         {
-          "word": "overbid",
-          "translations": []
+          "word": "overbid"
         },
         {
-          "word": "overbid",
-          "translations": []
+          "word": "overbid"
         }
       ],
       "answered": 0
@@ -2342,15 +2242,17 @@
           "word": "overcome",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "극복하다"
+            ]
+          ]
         },
         {
-          "word": "overcame",
-          "translations": []
+          "word": "overcame"
         },
         {
-          "word": "overcome",
-          "translations": []
+          "word": "overcome"
         }
       ],
       "answered": 0
@@ -2361,15 +2263,17 @@
           "word": "overdo",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "지나치게 하다"
+            ]
+          ]
         },
         {
-          "word": "overdid",
-          "translations": []
+          "word": "overdid"
         },
         {
-          "word": "overdone",
-          "translations": []
+          "word": "overdone"
         }
       ],
       "answered": 0
@@ -2380,15 +2284,17 @@
           "word": "overdraw",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "오버드로우"
+            ]
+          ]
         },
         {
-          "word": "overdrew",
-          "translations": []
+          "word": "overdrew"
         },
         {
-          "word": "overdrawn",
-          "translations": []
+          "word": "overdrawn"
         }
       ],
       "answered": 0
@@ -2399,15 +2305,17 @@
           "word": "overeat",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "너무 많이 먹다"
+            ]
+          ]
         },
         {
-          "word": "overate",
-          "translations": []
+          "word": "overate"
         },
         {
-          "word": "overeaten",
-          "translations": []
+          "word": "overeaten"
         }
       ],
       "answered": 0
@@ -2418,15 +2326,17 @@
           "word": "overfly",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "오버플라이"
+            ]
+          ]
         },
         {
-          "word": "overflew",
-          "translations": []
+          "word": "overflew"
         },
         {
-          "word": "overflown",
-          "translations": []
+          "word": "overflown"
         }
       ],
       "answered": 0
@@ -2437,15 +2347,17 @@
           "word": "overhang",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "위에 걸리다"
+            ]
+          ]
         },
         {
-          "word": "overhung",
-          "translations": []
+          "word": "overhung"
         },
         {
-          "word": "overhung",
-          "translations": []
+          "word": "overhung"
         }
       ],
       "answered": 0
@@ -2456,15 +2368,17 @@
           "word": "overhear",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "우연히 듣다"
+            ]
+          ]
         },
         {
-          "word": "overheard",
-          "translations": []
+          "word": "overheard"
         },
         {
-          "word": "overheard",
-          "translations": []
+          "word": "overheard"
         }
       ],
       "answered": 0
@@ -2475,15 +2389,17 @@
           "word": "overlay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "씌우다"
+            ]
+          ]
         },
         {
-          "word": "overlaid",
-          "translations": []
+          "word": "overlaid"
         },
         {
-          "word": "overlaid",
-          "translations": []
+          "word": "overlaid"
         }
       ],
       "answered": 0
@@ -2494,15 +2410,17 @@
           "word": "overpay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "초과 지불하다"
+            ]
+          ]
         },
         {
-          "word": "overpaid",
-          "translations": []
+          "word": "overpaid"
         },
         {
-          "word": "overpaid",
-          "translations": []
+          "word": "overpaid"
         }
       ],
       "answered": 0
@@ -2513,15 +2431,17 @@
           "word": "override",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "보수"
+            ]
+          ]
         },
         {
-          "word": "overrode",
-          "translations": []
+          "word": "overrode"
         },
         {
-          "word": "overridden",
-          "translations": []
+          "word": "overridden"
         }
       ],
       "answered": 0
@@ -2532,15 +2452,17 @@
           "word": "overrun",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "오버런"
+            ]
+          ]
         },
         {
-          "word": "overran",
-          "translations": []
+          "word": "overran"
         },
         {
-          "word": "overrun",
-          "translations": []
+          "word": "overrun"
         }
       ],
       "answered": 0
@@ -2551,15 +2473,17 @@
           "word": "oversee",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "감독하다"
+            ]
+          ]
         },
         {
-          "word": "oversaw",
-          "translations": []
+          "word": "oversaw"
         },
         {
-          "word": "overseen",
-          "translations": []
+          "word": "overseen"
         }
       ],
       "answered": 0
@@ -2570,15 +2494,17 @@
           "word": "overshoot",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "넘겨 쏘다"
+            ]
+          ]
         },
         {
-          "word": "overshot",
-          "translations": []
+          "word": "overshot"
         },
         {
-          "word": "overshot",
-          "translations": []
+          "word": "overshot"
         }
       ],
       "answered": 0
@@ -2589,15 +2515,17 @@
           "word": "oversleep",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "지나치게 자다"
+            ]
+          ]
         },
         {
-          "word": "overslept",
-          "translations": []
+          "word": "overslept"
         },
         {
-          "word": "overslept",
-          "translations": []
+          "word": "overslept"
         }
       ],
       "answered": 0
@@ -2608,15 +2536,17 @@
           "word": "overtake",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "추월하다"
+            ]
+          ]
         },
         {
-          "word": "overtook",
-          "translations": []
+          "word": "overtook"
         },
         {
-          "word": "overtaken",
-          "translations": []
+          "word": "overtaken"
         }
       ],
       "answered": 0
@@ -2627,15 +2557,17 @@
           "word": "overthrow",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "타도"
+            ]
+          ]
         },
         {
-          "word": "overthrew",
-          "translations": []
+          "word": "overthrew"
         },
         {
-          "word": "overthrown",
-          "translations": []
+          "word": "overthrown"
         }
       ],
       "answered": 0
@@ -2646,15 +2578,17 @@
           "word": "partake",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "함께 하다"
+            ]
+          ]
         },
         {
-          "word": "partook",
-          "translations": []
+          "word": "partook"
         },
         {
-          "word": "partaken",
-          "translations": []
+          "word": "partaken"
         }
       ],
       "answered": 0
@@ -2672,12 +2606,10 @@
           ]
         },
         {
-          "word": "paid",
-          "translations": []
+          "word": "paid"
         },
         {
-          "word": "paid",
-          "translations": []
+          "word": "paid"
         }
       ],
       "answered": 0
@@ -2688,15 +2620,17 @@
           "word": "plead",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "변론하다"
+            ]
+          ]
         },
         {
-          "word": "pleaded | pled",
-          "translations": []
+          "word": "pleaded | pled"
         },
         {
-          "word": "pleaded | pled",
-          "translations": []
+          "word": "pleaded | pled"
         }
       ],
       "answered": 0
@@ -2707,15 +2641,17 @@
           "word": "prepay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "선불"
+            ]
+          ]
         },
         {
-          "word": "prepaid",
-          "translations": []
+          "word": "prepaid"
         },
         {
-          "word": "prepaid",
-          "translations": []
+          "word": "prepaid"
         }
       ],
       "answered": 0
@@ -2726,15 +2662,17 @@
           "word": "prove",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "입증하다"
+            ]
+          ]
         },
         {
-          "word": "proved",
-          "translations": []
+          "word": "proved"
         },
         {
-          "word": "proven | proved",
-          "translations": []
+          "word": "proven | proved"
         }
       ],
       "answered": 0
@@ -2752,20 +2690,10 @@
           ]
         },
         {
-          "word": "put",
-          "translations": [
-            [
-              "놓다"
-            ]
-          ]
+          "word": "put"
         },
         {
-          "word": "put",
-          "translations": [
-            [
-              "놓다"
-            ]
-          ]
+          "word": "put"
         }
       ],
       "answered": 0
@@ -2776,15 +2704,17 @@
           "word": "quit",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "그만두다"
+            ]
+          ]
         },
         {
-          "word": "quit | quitted",
-          "translations": []
+          "word": "quit | quitted"
         },
         {
-          "word": "quit | quitted",
-          "translations": []
+          "word": "quit | quitted"
         }
       ],
       "answered": 0
@@ -2802,20 +2732,10 @@
           ]
         },
         {
-          "word": "read",
-          "translations": [
-            [
-              "읽다"
-            ]
-          ]
+          "word": "read"
         },
         {
-          "word": "read",
-          "translations": [
-            [
-              "읽다"
-            ]
-          ]
+          "word": "read"
         }
       ],
       "answered": 0
@@ -2826,15 +2746,17 @@
           "word": "rebind",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "다시 묶다"
+            ]
+          ]
         },
         {
-          "word": "rebound",
-          "translations": []
+          "word": "rebound"
         },
         {
-          "word": "rebound",
-          "translations": []
+          "word": "rebound"
         }
       ],
       "answered": 0
@@ -2845,15 +2767,17 @@
           "word": "rebuild",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "재건하다"
+            ]
+          ]
         },
         {
-          "word": "rebuilt",
-          "translations": []
+          "word": "rebuilt"
         },
         {
-          "word": "rebuilt",
-          "translations": []
+          "word": "rebuilt"
         }
       ],
       "answered": 0
@@ -2864,15 +2788,17 @@
           "word": "recast",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "개주"
+            ]
+          ]
         },
         {
-          "word": "recast",
-          "translations": []
+          "word": "recast"
         },
         {
-          "word": "recast",
-          "translations": []
+          "word": "recast"
         }
       ],
       "answered": 0
@@ -2883,15 +2809,17 @@
           "word": "redo",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "다시 하다"
+            ]
+          ]
         },
         {
-          "word": "redid",
-          "translations": []
+          "word": "redid"
         },
         {
-          "word": "redone",
-          "translations": []
+          "word": "redone"
         }
       ],
       "answered": 0
@@ -2902,15 +2830,17 @@
           "word": "rehear",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "리허설하다"
+            ]
+          ]
         },
         {
-          "word": "reheard",
-          "translations": []
+          "word": "reheard"
         },
         {
-          "word": "reheard",
-          "translations": []
+          "word": "reheard"
         }
       ],
       "answered": 0
@@ -2921,15 +2851,17 @@
           "word": "remake",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "다시 만들다"
+            ]
+          ]
         },
         {
-          "word": "remade",
-          "translations": []
+          "word": "remade"
         },
         {
-          "word": "remade",
-          "translations": []
+          "word": "remade"
         }
       ],
       "answered": 0
@@ -2940,15 +2872,17 @@
           "word": "rend",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "찢다"
+            ]
+          ]
         },
         {
-          "word": "rent",
-          "translations": []
+          "word": "rent"
         },
         {
-          "word": "rent",
-          "translations": []
+          "word": "rent"
         }
       ],
       "answered": 0
@@ -2959,15 +2893,17 @@
           "word": "repay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "갚다"
+            ]
+          ]
         },
         {
-          "word": "repaid",
-          "translations": []
+          "word": "repaid"
         },
         {
-          "word": "repaid",
-          "translations": []
+          "word": "repaid"
         }
       ],
       "answered": 0
@@ -2978,15 +2914,17 @@
           "word": "rerun",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "재방송"
+            ]
+          ]
         },
         {
-          "word": "reran",
-          "translations": []
+          "word": "reran"
         },
         {
-          "word": "rerun",
-          "translations": []
+          "word": "rerun"
         }
       ],
       "answered": 0
@@ -2997,15 +2935,17 @@
           "word": "resell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "재판매하다"
+            ]
+          ]
         },
         {
-          "word": "resold",
-          "translations": []
+          "word": "resold"
         },
         {
-          "word": "resold",
-          "translations": []
+          "word": "resold"
         }
       ],
       "answered": 0
@@ -3016,15 +2956,17 @@
           "word": "reset",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "다시 놓기"
+            ]
+          ]
         },
         {
-          "word": "reset",
-          "translations": []
+          "word": "reset"
         },
         {
-          "word": "reset",
-          "translations": []
+          "word": "reset"
         }
       ],
       "answered": 0
@@ -3035,15 +2977,17 @@
           "word": "resit",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "재시험"
+            ]
+          ]
         },
         {
-          "word": "resat",
-          "translations": []
+          "word": "resat"
         },
         {
-          "word": "resat",
-          "translations": []
+          "word": "resat"
         }
       ],
       "answered": 0
@@ -3054,15 +2998,17 @@
           "word": "retake",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "다시 잡다"
+            ]
+          ]
         },
         {
-          "word": "retook",
-          "translations": []
+          "word": "retook"
         },
         {
-          "word": "retaken",
-          "translations": []
+          "word": "retaken"
         }
       ],
       "answered": 0
@@ -3073,15 +3019,17 @@
           "word": "retell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "다시 말하다"
+            ]
+          ]
         },
         {
-          "word": "retold",
-          "translations": []
+          "word": "retold"
         },
         {
-          "word": "retold",
-          "translations": []
+          "word": "retold"
         }
       ],
       "answered": 0
@@ -3092,15 +3040,17 @@
           "word": "rewrite",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "고쳐 쓰기"
+            ]
+          ]
         },
         {
-          "word": "rewrote",
-          "translations": []
+          "word": "rewrote"
         },
         {
-          "word": "rewritten",
-          "translations": []
+          "word": "rewritten"
         }
       ],
       "answered": 0
@@ -3111,15 +3061,17 @@
           "word": "rid",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "제거하다"
+            ]
+          ]
         },
         {
-          "word": "rid",
-          "translations": []
+          "word": "rid"
         },
         {
-          "word": "rid",
-          "translations": []
+          "word": "rid"
         }
       ],
       "answered": 0
@@ -3137,12 +3089,10 @@
           ]
         },
         {
-          "word": "rode",
-          "translations": []
+          "word": "rode"
         },
         {
-          "word": "ridden",
-          "translations": []
+          "word": "ridden"
         }
       ],
       "answered": 0
@@ -3160,12 +3110,10 @@
           ]
         },
         {
-          "word": "rang",
-          "translations": []
+          "word": "rang"
         },
         {
-          "word": "rung",
-          "translations": []
+          "word": "rung"
         }
       ],
       "answered": 0
@@ -3176,15 +3124,17 @@
           "word": "rise",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "오르다"
+            ]
+          ]
         },
         {
-          "word": "rose",
-          "translations": []
+          "word": "rose"
         },
         {
-          "word": "risen",
-          "translations": []
+          "word": "risen"
         }
       ],
       "answered": 0
@@ -3202,16 +3152,10 @@
           ]
         },
         {
-          "word": "ran",
-          "translations": []
+          "word": "ran"
         },
         {
-          "word": "run",
-          "translations": [
-            [
-              "달리다"
-            ]
-          ]
+          "word": "run"
         }
       ],
       "answered": 0
@@ -3222,15 +3166,17 @@
           "word": "saw",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "봤다"
+            ]
+          ]
         },
         {
-          "word": "sawed",
-          "translations": []
+          "word": "sawed"
         },
         {
-          "word": "sawed | sawn",
-          "translations": []
+          "word": "sawed | sawn"
         }
       ],
       "answered": 0
@@ -3248,12 +3194,10 @@
           ]
         },
         {
-          "word": "said",
-          "translations": []
+          "word": "said"
         },
         {
-          "word": "said",
-          "translations": []
+          "word": "said"
         }
       ],
       "answered": 0
@@ -3271,12 +3215,10 @@
           ]
         },
         {
-          "word": "saw",
-          "translations": []
+          "word": "saw"
         },
         {
-          "word": "seen",
-          "translations": []
+          "word": "seen"
         }
       ],
       "answered": 0
@@ -3287,15 +3229,17 @@
           "word": "seek",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "구하다"
+            ]
+          ]
         },
         {
-          "word": "sought",
-          "translations": []
+          "word": "sought"
         },
         {
-          "word": "sought",
-          "translations": []
+          "word": "sought"
         }
       ],
       "answered": 0
@@ -3313,12 +3257,10 @@
           ]
         },
         {
-          "word": "sold",
-          "translations": []
+          "word": "sold"
         },
         {
-          "word": "sold",
-          "translations": []
+          "word": "sold"
         }
       ],
       "answered": 0
@@ -3336,12 +3278,10 @@
           ]
         },
         {
-          "word": "sent",
-          "translations": []
+          "word": "sent"
         },
         {
-          "word": "sent",
-          "translations": []
+          "word": "sent"
         }
       ],
       "answered": 0
@@ -3354,25 +3294,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "설정하다"
+              "놓다"
             ]
           ]
         },
         {
-          "word": "set",
-          "translations": [
-            [
-              "설정하다"
-            ]
-          ]
+          "word": "set"
         },
         {
-          "word": "set",
-          "translations": [
-            [
-              "설정하다"
-            ]
-          ]
+          "word": "set"
         }
       ],
       "answered": 0
@@ -3383,15 +3313,17 @@
           "word": "sew",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "꿰매다"
+            ]
+          ]
         },
         {
-          "word": "sewed",
-          "translations": []
+          "word": "sewed"
         },
         {
-          "word": "sewn | sewed",
-          "translations": []
+          "word": "sewn | sewed"
         }
       ],
       "answered": 0
@@ -3409,12 +3341,10 @@
           ]
         },
         {
-          "word": "shook",
-          "translations": []
+          "word": "shook"
         },
         {
-          "word": "shaken",
-          "translations": []
+          "word": "shaken"
         }
       ],
       "answered": 0
@@ -3425,15 +3355,17 @@
           "word": "shave",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "깎다"
+            ]
+          ]
         },
         {
-          "word": "shaved",
-          "translations": []
+          "word": "shaved"
         },
         {
-          "word": "shaved | shaven",
-          "translations": []
+          "word": "shaved | shaven"
         }
       ],
       "answered": 0
@@ -3444,15 +3376,17 @@
           "word": "shear",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "전단"
+            ]
+          ]
         },
         {
-          "word": "sheared",
-          "translations": []
+          "word": "sheared"
         },
         {
-          "word": "sheared | shorn",
-          "translations": []
+          "word": "sheared | shorn"
         }
       ],
       "answered": 0
@@ -3463,15 +3397,17 @@
           "word": "shed",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "창고"
+            ]
+          ]
         },
         {
-          "word": "shed",
-          "translations": []
+          "word": "shed"
         },
         {
-          "word": "shed",
-          "translations": []
+          "word": "shed"
         }
       ],
       "answered": 0
@@ -3489,12 +3425,10 @@
           ]
         },
         {
-          "word": "shined | shone",
-          "translations": []
+          "word": "shined | shone"
         },
         {
-          "word": "shined | shone",
-          "translations": []
+          "word": "shined | shone"
         }
       ],
       "answered": 0
@@ -3512,12 +3446,10 @@
           ]
         },
         {
-          "word": "shot",
-          "translations": []
+          "word": "shot"
         },
         {
-          "word": "shot",
-          "translations": []
+          "word": "shot"
         }
       ],
       "answered": 0
@@ -3535,12 +3467,10 @@
           ]
         },
         {
-          "word": "showed",
-          "translations": []
+          "word": "showed"
         },
         {
-          "word": "shown | showed",
-          "translations": []
+          "word": "shown | showed"
         }
       ],
       "answered": 0
@@ -3551,15 +3481,17 @@
           "word": "shrink",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "수축"
+            ]
+          ]
         },
         {
-          "word": "shrank | shrunk",
-          "translations": []
+          "word": "shrank | shrunk"
         },
         {
-          "word": "shrunk",
-          "translations": []
+          "word": "shrunk"
         }
       ],
       "answered": 0
@@ -3577,20 +3509,10 @@
           ]
         },
         {
-          "word": "shut",
-          "translations": [
-            [
-              "닫다"
-            ]
-          ]
+          "word": "shut"
         },
         {
-          "word": "shut",
-          "translations": [
-            [
-              "닫다"
-            ]
-          ]
+          "word": "shut"
         }
       ],
       "answered": 0
@@ -3608,12 +3530,10 @@
           ]
         },
         {
-          "word": "sang",
-          "translations": []
+          "word": "sang"
         },
         {
-          "word": "sung",
-          "translations": []
+          "word": "sung"
         }
       ],
       "answered": 0
@@ -3624,15 +3544,17 @@
           "word": "sink",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "가라앉다"
+            ]
+          ]
         },
         {
-          "word": "sank | sunk",
-          "translations": []
+          "word": "sank | sunk"
         },
         {
-          "word": "sunk",
-          "translations": []
+          "word": "sunk"
         }
       ],
       "answered": 0
@@ -3650,12 +3572,10 @@
           ]
         },
         {
-          "word": "sat",
-          "translations": []
+          "word": "sat"
         },
         {
-          "word": "sat",
-          "translations": []
+          "word": "sat"
         }
       ],
       "answered": 0
@@ -3666,15 +3586,17 @@
           "word": "slay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "몹시 웃기다"
+            ]
+          ]
         },
         {
-          "word": "slew | slayed",
-          "translations": []
+          "word": "slew | slayed"
         },
         {
-          "word": "slain | slayed",
-          "translations": []
+          "word": "slain | slayed"
         }
       ],
       "answered": 0
@@ -3692,12 +3614,10 @@
           ]
         },
         {
-          "word": "slept",
-          "translations": []
+          "word": "slept"
         },
         {
-          "word": "slept",
-          "translations": []
+          "word": "slept"
         }
       ],
       "answered": 0
@@ -3708,15 +3628,17 @@
           "word": "slide",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "슬라이드"
+            ]
+          ]
         },
         {
-          "word": "slid",
-          "translations": []
+          "word": "slid"
         },
         {
-          "word": "slid",
-          "translations": []
+          "word": "slid"
         }
       ],
       "answered": 0
@@ -3727,15 +3649,17 @@
           "word": "sling",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "슬링"
+            ]
+          ]
         },
         {
-          "word": "slung",
-          "translations": []
+          "word": "slung"
         },
         {
-          "word": "slung",
-          "translations": []
+          "word": "slung"
         }
       ],
       "answered": 0
@@ -3746,15 +3670,17 @@
           "word": "slink",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "달 차지 못한 새끼"
+            ]
+          ]
         },
         {
-          "word": "slunk",
-          "translations": []
+          "word": "slunk"
         },
         {
-          "word": "slunk",
-          "translations": []
+          "word": "slunk"
         }
       ],
       "answered": 0
@@ -3765,15 +3691,17 @@
           "word": "slit",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "긴 구멍"
+            ]
+          ]
         },
         {
-          "word": "slit",
-          "translations": []
+          "word": "slit"
         },
         {
-          "word": "slit",
-          "translations": []
+          "word": "slit"
         }
       ],
       "answered": 0
@@ -3784,15 +3712,17 @@
           "word": "smell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "냄새가 나다"
+            ]
+          ]
         },
         {
-          "word": "smelled | smelt",
-          "translations": []
+          "word": "smelled | smelt"
         },
         {
-          "word": "smelled | smelt",
-          "translations": []
+          "word": "smelled | smelt"
         }
       ],
       "answered": 0
@@ -3803,15 +3733,17 @@
           "word": "sow",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "암퇘지"
+            ]
+          ]
         },
         {
-          "word": "sowed",
-          "translations": []
+          "word": "sowed"
         },
         {
-          "word": "sown | sowed",
-          "translations": []
+          "word": "sown | sowed"
         }
       ],
       "answered": 0
@@ -3829,12 +3761,10 @@
           ]
         },
         {
-          "word": "spoke",
-          "translations": []
+          "word": "spoke"
         },
         {
-          "word": "spoken",
-          "translations": []
+          "word": "spoken"
         }
       ],
       "answered": 0
@@ -3845,15 +3775,17 @@
           "word": "speed",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "속도"
+            ]
+          ]
         },
         {
-          "word": "sped | speeded",
-          "translations": []
+          "word": "sped | speeded"
         },
         {
-          "word": "sped | speeded",
-          "translations": []
+          "word": "sped | speeded"
         }
       ],
       "answered": 0
@@ -3864,15 +3796,17 @@
           "word": "spell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "주문"
+            ]
+          ]
         },
         {
-          "word": "spelled | spelt",
-          "translations": []
+          "word": "spelled | spelt"
         },
         {
-          "word": "spelled | spelt",
-          "translations": []
+          "word": "spelled | spelt"
         }
       ],
       "answered": 0
@@ -3885,17 +3819,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "쓰다"
+              "소비하다"
             ]
           ]
         },
         {
-          "word": "spent",
-          "translations": []
+          "word": "spent"
         },
         {
-          "word": "spent",
-          "translations": []
+          "word": "spent"
         }
       ],
       "answered": 0
@@ -3906,15 +3838,17 @@
           "word": "spill",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "엎지르다"
+            ]
+          ]
         },
         {
-          "word": "spilled | spilt",
-          "translations": []
+          "word": "spilled | spilt"
         },
         {
-          "word": "spilled | spilt",
-          "translations": []
+          "word": "spilled | spilt"
         }
       ],
       "answered": 0
@@ -3925,15 +3859,17 @@
           "word": "spin",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "회전"
+            ]
+          ]
         },
         {
-          "word": "spun",
-          "translations": []
+          "word": "spun"
         },
         {
-          "word": "spun",
-          "translations": []
+          "word": "spun"
         }
       ],
       "answered": 0
@@ -3944,15 +3880,17 @@
           "word": "spit",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "침"
+            ]
+          ]
         },
         {
-          "word": "spit | spat",
-          "translations": []
+          "word": "spit | spat"
         },
         {
-          "word": "spit | spat",
-          "translations": []
+          "word": "spit | spat"
         }
       ],
       "answered": 0
@@ -3963,15 +3901,17 @@
           "word": "split",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "나뉘다"
+            ]
+          ]
         },
         {
-          "word": "split",
-          "translations": []
+          "word": "split"
         },
         {
-          "word": "split",
-          "translations": []
+          "word": "split"
         }
       ],
       "answered": 0
@@ -3982,15 +3922,17 @@
           "word": "spoil",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "약탈"
+            ]
+          ]
         },
         {
-          "word": "spoiled | spoilt",
-          "translations": []
+          "word": "spoiled | spoilt"
         },
         {
-          "word": "spoiled | spoilt",
-          "translations": []
+          "word": "spoiled | spoilt"
         }
       ],
       "answered": 0
@@ -4001,15 +3943,17 @@
           "word": "spread",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "확산"
+            ]
+          ]
         },
         {
-          "word": "spread",
-          "translations": []
+          "word": "spread"
         },
         {
-          "word": "spread",
-          "translations": []
+          "word": "spread"
         }
       ],
       "answered": 0
@@ -4020,15 +3964,17 @@
           "word": "spring",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "봄"
+            ]
+          ]
         },
         {
-          "word": "sprang | sprung",
-          "translations": []
+          "word": "sprang | sprung"
         },
         {
-          "word": "sprung",
-          "translations": []
+          "word": "sprung"
         }
       ],
       "answered": 0
@@ -4046,12 +3992,10 @@
           ]
         },
         {
-          "word": "stood",
-          "translations": []
+          "word": "stood"
         },
         {
-          "word": "stood",
-          "translations": []
+          "word": "stood"
         }
       ],
       "answered": 0
@@ -4069,12 +4013,10 @@
           ]
         },
         {
-          "word": "stole",
-          "translations": []
+          "word": "stole"
         },
         {
-          "word": "stolen",
-          "translations": []
+          "word": "stolen"
         }
       ],
       "answered": 0
@@ -4085,15 +4027,17 @@
           "word": "stick",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "막대"
+            ]
+          ]
         },
         {
-          "word": "stuck",
-          "translations": []
+          "word": "stuck"
         },
         {
-          "word": "stuck",
-          "translations": []
+          "word": "stuck"
         }
       ],
       "answered": 0
@@ -4104,15 +4048,17 @@
           "word": "sting",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "찌르기"
+            ]
+          ]
         },
         {
-          "word": "stung",
-          "translations": []
+          "word": "stung"
         },
         {
-          "word": "stung",
-          "translations": []
+          "word": "stung"
         }
       ],
       "answered": 0
@@ -4123,15 +4069,17 @@
           "word": "stink",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "악취"
+            ]
+          ]
         },
         {
-          "word": "stunk | stank",
-          "translations": []
+          "word": "stunk | stank"
         },
         {
-          "word": "stunk",
-          "translations": []
+          "word": "stunk"
         }
       ],
       "answered": 0
@@ -4142,15 +4090,17 @@
           "word": "strew",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "뿌리다"
+            ]
+          ]
         },
         {
-          "word": "strewed",
-          "translations": []
+          "word": "strewed"
         },
         {
-          "word": "strewn | strewed",
-          "translations": []
+          "word": "strewn | strewed"
         }
       ],
       "answered": 0
@@ -4161,15 +4111,17 @@
           "word": "stride",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "보폭"
+            ]
+          ]
         },
         {
-          "word": "strode",
-          "translations": []
+          "word": "strode"
         },
         {
-          "word": "stridden",
-          "translations": []
+          "word": "stridden"
         }
       ],
       "answered": 0
@@ -4180,15 +4132,17 @@
           "word": "strike",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "스트라이크"
+            ]
+          ]
         },
         {
-          "word": "struck",
-          "translations": []
+          "word": "struck"
         },
         {
-          "word": "struck",
-          "translations": []
+          "word": "struck"
         }
       ],
       "answered": 0
@@ -4199,15 +4153,17 @@
           "word": "string",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "끈"
+            ]
+          ]
         },
         {
-          "word": "strung",
-          "translations": []
+          "word": "strung"
         },
         {
-          "word": "strung",
-          "translations": []
+          "word": "strung"
         }
       ],
       "answered": 0
@@ -4218,15 +4174,17 @@
           "word": "strive",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "애쓰다"
+            ]
+          ]
         },
         {
-          "word": "strove | strived",
-          "translations": []
+          "word": "strove | strived"
         },
         {
-          "word": "striven | strived",
-          "translations": []
+          "word": "striven | strived"
         }
       ],
       "answered": 0
@@ -4237,15 +4195,17 @@
           "word": "sublet",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "하위 임대"
+            ]
+          ]
         },
         {
-          "word": "sublet",
-          "translations": []
+          "word": "sublet"
         },
         {
-          "word": "sublet",
-          "translations": []
+          "word": "sublet"
         }
       ],
       "answered": 0
@@ -4256,15 +4216,17 @@
           "word": "swear",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "욕을 하다"
+            ]
+          ]
         },
         {
-          "word": "swore",
-          "translations": []
+          "word": "swore"
         },
         {
-          "word": "sworn",
-          "translations": []
+          "word": "sworn"
         }
       ],
       "answered": 0
@@ -4275,15 +4237,17 @@
           "word": "sweep",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "스위프"
+            ]
+          ]
         },
         {
-          "word": "swept",
-          "translations": []
+          "word": "swept"
         },
         {
-          "word": "swept",
-          "translations": []
+          "word": "swept"
         }
       ],
       "answered": 0
@@ -4294,15 +4258,17 @@
           "word": "swell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "팽창"
+            ]
+          ]
         },
         {
-          "word": "swelled",
-          "translations": []
+          "word": "swelled"
         },
         {
-          "word": "swollen | swelled",
-          "translations": []
+          "word": "swollen | swelled"
         }
       ],
       "answered": 0
@@ -4320,12 +4286,10 @@
           ]
         },
         {
-          "word": "swam",
-          "translations": []
+          "word": "swam"
         },
         {
-          "word": "swum",
-          "translations": []
+          "word": "swum"
         }
       ],
       "answered": 0
@@ -4336,15 +4300,17 @@
           "word": "swing",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "그네"
+            ]
+          ]
         },
         {
-          "word": "swung",
-          "translations": []
+          "word": "swung"
         },
         {
-          "word": "swung",
-          "translations": []
+          "word": "swung"
         }
       ],
       "answered": 0
@@ -4357,17 +4323,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "가지다"
+              "잡다"
             ]
           ]
         },
         {
-          "word": "took",
-          "translations": []
+          "word": "took"
         },
         {
-          "word": "taken",
-          "translations": []
+          "word": "taken"
         }
       ],
       "answered": 0
@@ -4385,12 +4349,10 @@
           ]
         },
         {
-          "word": "taught",
-          "translations": []
+          "word": "taught"
         },
         {
-          "word": "taught",
-          "translations": []
+          "word": "taught"
         }
       ],
       "answered": 0
@@ -4408,12 +4370,10 @@
           ]
         },
         {
-          "word": "tore",
-          "translations": []
+          "word": "tore"
         },
         {
-          "word": "torn",
-          "translations": []
+          "word": "torn"
         }
       ],
       "answered": 0
@@ -4431,12 +4391,10 @@
           ]
         },
         {
-          "word": "told",
-          "translations": []
+          "word": "told"
         },
         {
-          "word": "told",
-          "translations": []
+          "word": "told"
         }
       ],
       "answered": 0
@@ -4454,12 +4412,10 @@
           ]
         },
         {
-          "word": "thought",
-          "translations": []
+          "word": "thought"
         },
         {
-          "word": "thought",
-          "translations": []
+          "word": "thought"
         }
       ],
       "answered": 0
@@ -4477,12 +4433,10 @@
           ]
         },
         {
-          "word": "threw",
-          "translations": []
+          "word": "threw"
         },
         {
-          "word": "thrown",
-          "translations": []
+          "word": "thrown"
         }
       ],
       "answered": 0
@@ -4493,15 +4447,17 @@
           "word": "thrust",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "추력"
+            ]
+          ]
         },
         {
-          "word": "thrust",
-          "translations": []
+          "word": "thrust"
         },
         {
-          "word": "thrust",
-          "translations": []
+          "word": "thrust"
         }
       ],
       "answered": 0
@@ -4512,15 +4468,17 @@
           "word": "tread",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "흘레"
+            ]
+          ]
         },
         {
-          "word": "trod",
-          "translations": []
+          "word": "trod"
         },
         {
-          "word": "trodden | trod",
-          "translations": []
+          "word": "trodden | trod"
         }
       ],
       "answered": 0
@@ -4531,15 +4489,17 @@
           "word": "unbend",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "곧게 펴다"
+            ]
+          ]
         },
         {
-          "word": "unbent",
-          "translations": []
+          "word": "unbent"
         },
         {
-          "word": "unbent",
-          "translations": []
+          "word": "unbent"
         }
       ],
       "answered": 0
@@ -4550,15 +4510,17 @@
           "word": "underbid",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "낮은 가격으로 입찰하다"
+            ]
+          ]
         },
         {
-          "word": "underbid",
-          "translations": []
+          "word": "underbid"
         },
         {
-          "word": "underbid",
-          "translations": []
+          "word": "underbid"
         }
       ],
       "answered": 0
@@ -4569,15 +4531,17 @@
           "word": "undercut",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "언더컷"
+            ]
+          ]
         },
         {
-          "word": "undercut",
-          "translations": []
+          "word": "undercut"
         },
         {
-          "word": "undercut",
-          "translations": []
+          "word": "undercut"
         }
       ],
       "answered": 0
@@ -4588,15 +4552,17 @@
           "word": "undergo",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "받다"
+            ]
+          ]
         },
         {
-          "word": "underwent",
-          "translations": []
+          "word": "underwent"
         },
         {
-          "word": "undergone",
-          "translations": []
+          "word": "undergone"
         }
       ],
       "answered": 0
@@ -4607,15 +4573,17 @@
           "word": "underlie",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "밑에 깔려있다"
+            ]
+          ]
         },
         {
-          "word": "underlay",
-          "translations": []
+          "word": "underlay"
         },
         {
-          "word": "underlain",
-          "translations": []
+          "word": "underlain"
         }
       ],
       "answered": 0
@@ -4626,15 +4594,17 @@
           "word": "underpay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "저임금"
+            ]
+          ]
         },
         {
-          "word": "underpaid",
-          "translations": []
+          "word": "underpaid"
         },
         {
-          "word": "underpaid",
-          "translations": []
+          "word": "underpaid"
         }
       ],
       "answered": 0
@@ -4645,15 +4615,17 @@
           "word": "undersell",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "과소평가하다"
+            ]
+          ]
         },
         {
-          "word": "undersold",
-          "translations": []
+          "word": "undersold"
         },
         {
-          "word": "undersold",
-          "translations": []
+          "word": "undersold"
         }
       ],
       "answered": 0
@@ -4671,12 +4643,10 @@
           ]
         },
         {
-          "word": "understood",
-          "translations": []
+          "word": "understood"
         },
         {
-          "word": "understood",
-          "translations": []
+          "word": "understood"
         }
       ],
       "answered": 0
@@ -4687,15 +4657,17 @@
           "word": "undertake",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "맡다"
+            ]
+          ]
         },
         {
-          "word": "undertook",
-          "translations": []
+          "word": "undertook"
         },
         {
-          "word": "undertaken",
-          "translations": []
+          "word": "undertaken"
         }
       ],
       "answered": 0
@@ -4706,15 +4678,17 @@
           "word": "underwrite",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "인수하다"
+            ]
+          ]
         },
         {
-          "word": "underwrote",
-          "translations": []
+          "word": "underwrote"
         },
         {
-          "word": "underwritten",
-          "translations": []
+          "word": "underwritten"
         }
       ],
       "answered": 0
@@ -4725,15 +4699,17 @@
           "word": "undo",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "끄르다"
+            ]
+          ]
         },
         {
-          "word": "undid",
-          "translations": []
+          "word": "undid"
         },
         {
-          "word": "undone",
-          "translations": []
+          "word": "undone"
         }
       ],
       "answered": 0
@@ -4744,15 +4720,17 @@
           "word": "unfreeze",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "녹이다"
+            ]
+          ]
         },
         {
-          "word": "unfroze",
-          "translations": []
+          "word": "unfroze"
         },
         {
-          "word": "unfrozen",
-          "translations": []
+          "word": "unfrozen"
         }
       ],
       "answered": 0
@@ -4763,15 +4741,17 @@
           "word": "unsay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "말하지 않다"
+            ]
+          ]
         },
         {
-          "word": "unsaid",
-          "translations": []
+          "word": "unsaid"
         },
         {
-          "word": "unsaid",
-          "translations": []
+          "word": "unsaid"
         }
       ],
       "answered": 0
@@ -4782,15 +4762,17 @@
           "word": "unwind",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "풀다"
+            ]
+          ]
         },
         {
-          "word": "unwound",
-          "translations": []
+          "word": "unwound"
         },
         {
-          "word": "unwound",
-          "translations": []
+          "word": "unwound"
         }
       ],
       "answered": 0
@@ -4801,15 +4783,17 @@
           "word": "uphold",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "받치다"
+            ]
+          ]
         },
         {
-          "word": "upheld",
-          "translations": []
+          "word": "upheld"
         },
         {
-          "word": "upheld",
-          "translations": []
+          "word": "upheld"
         }
       ],
       "answered": 0
@@ -4820,15 +4804,17 @@
           "word": "upset",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "속상한"
+            ]
+          ]
         },
         {
-          "word": "upset",
-          "translations": []
+          "word": "upset"
         },
         {
-          "word": "upset",
-          "translations": []
+          "word": "upset"
         }
       ],
       "answered": 0
@@ -4841,17 +4827,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "깨다"
+              "깨우다"
             ]
           ]
         },
         {
-          "word": "woke | waked",
-          "translations": []
+          "word": "woke | waked"
         },
         {
-          "word": "woken | waked",
-          "translations": []
+          "word": "woken | waked"
         }
       ],
       "answered": 0
@@ -4862,15 +4846,17 @@
           "word": "waylay",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "도중에 기다렸다가 불러 세우다"
+            ]
+          ]
         },
         {
-          "word": "waylaid",
-          "translations": []
+          "word": "waylaid"
         },
         {
-          "word": "waylaid",
-          "translations": []
+          "word": "waylaid"
         }
       ],
       "answered": 0
@@ -4888,12 +4874,10 @@
           ]
         },
         {
-          "word": "wore",
-          "translations": []
+          "word": "wore"
         },
         {
-          "word": "worn",
-          "translations": []
+          "word": "worn"
         }
       ],
       "answered": 0
@@ -4904,15 +4888,17 @@
           "word": "weave",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "짜다"
+            ]
+          ]
         },
         {
-          "word": "wove | weaved",
-          "translations": []
+          "word": "wove | weaved"
         },
         {
-          "word": "woven | weaved",
-          "translations": []
+          "word": "woven | weaved"
         }
       ],
       "answered": 0
@@ -4923,15 +4909,17 @@
           "word": "wed",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "결혼하다"
+            ]
+          ]
         },
         {
-          "word": "wed | wedded",
-          "translations": []
+          "word": "wed | wedded"
         },
         {
-          "word": "wed | wedded",
-          "translations": []
+          "word": "wed | wedded"
         }
       ],
       "answered": 0
@@ -4942,15 +4930,17 @@
           "word": "weep",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "울다"
+            ]
+          ]
         },
         {
-          "word": "wept",
-          "translations": []
+          "word": "wept"
         },
         {
-          "word": "wept",
-          "translations": []
+          "word": "wept"
         }
       ],
       "answered": 0
@@ -4961,15 +4951,17 @@
           "word": "wet",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "젖은"
+            ]
+          ]
         },
         {
-          "word": "wet | wetted",
-          "translations": []
+          "word": "wet | wetted"
         },
         {
-          "word": "wet | wetted",
-          "translations": []
+          "word": "wet | wetted"
         }
       ],
       "answered": 0
@@ -4987,12 +4979,10 @@
           ]
         },
         {
-          "word": "won",
-          "translations": []
+          "word": "won"
         },
         {
-          "word": "won",
-          "translations": []
+          "word": "won"
         }
       ],
       "answered": 0
@@ -5003,15 +4993,17 @@
           "word": "wind",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "바람"
+            ]
+          ]
         },
         {
-          "word": "wound",
-          "translations": []
+          "word": "wound"
         },
         {
-          "word": "wound",
-          "translations": []
+          "word": "wound"
         }
       ],
       "answered": 0
@@ -5022,15 +5014,17 @@
           "word": "withdraw",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "철회하다"
+            ]
+          ]
         },
         {
-          "word": "withdrew",
-          "translations": []
+          "word": "withdrew"
         },
         {
-          "word": "withdrawn",
-          "translations": []
+          "word": "withdrawn"
         }
       ],
       "answered": 0
@@ -5041,15 +5035,17 @@
           "word": "withhold",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "억누르다"
+            ]
+          ]
         },
         {
-          "word": "withheld",
-          "translations": []
+          "word": "withheld"
         },
         {
-          "word": "withheld",
-          "translations": []
+          "word": "withheld"
         }
       ],
       "answered": 0
@@ -5060,15 +5056,17 @@
           "word": "withstand",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "버티다"
+            ]
+          ]
         },
         {
-          "word": "withstood",
-          "translations": []
+          "word": "withstood"
         },
         {
-          "word": "withstood",
-          "translations": []
+          "word": "withstood"
         }
       ],
       "answered": 0
@@ -5079,15 +5077,17 @@
           "word": "wring",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "짜다"
+            ]
+          ]
         },
         {
-          "word": "wrung",
-          "translations": []
+          "word": "wrung"
         },
         {
-          "word": "wrung",
-          "translations": []
+          "word": "wrung"
         }
       ],
       "answered": 0
@@ -5105,12 +5105,10 @@
           ]
         },
         {
-          "word": "wrote",
-          "translations": []
+          "word": "wrote"
         },
         {
-          "word": "written",
-          "translations": []
+          "word": "written"
         }
       ],
       "answered": 0
@@ -5121,15 +5119,17 @@
           "word": "be",
           "transcription": "",
           "partOfSpeech": "verb",
-          "translations": []
+          "translations": [
+            [
+              "이다"
+            ]
+          ]
         },
         {
-          "word": "was | were",
-          "translations": []
+          "word": "was | were"
         },
         {
-          "word": "been",
-          "translations": []
+          "word": "been"
         }
       ],
       "answered": 0
@@ -5142,17 +5142,15 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "가지다"
+              "가지고 있다 | 가지고 있다"
             ]
           ]
         },
         {
-          "word": "had",
-          "translations": []
+          "word": "had"
         },
         {
-          "word": "had",
-          "translations": []
+          "word": "had"
         }
       ],
       "answered": 0

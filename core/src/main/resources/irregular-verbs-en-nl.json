@@ -18,16 +18,16 @@
     "langId": "nl",
     "partsOfSpeech": [
       "zelfstandig naamwoord",
-      "bijvoeglijk naamwoord",
-      "telwoord",
-      "voornaamwoord",
       "werkwoord",
+      "bijvoeglijk naamwoord",
       "bijwoord",
-      "deelwoord",
+      "voornaamwoord",
       "voorzetsel",
       "voegwoord",
+      "tussenwerpsel",
       "lidwoord",
-      "tussenwerpsel"
+      "telwoord",
+      "deelwoord"
     ]
   },
   "cards": [
@@ -81,7 +81,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "terugvallen"
+              "terugval"
             ]
           ]
         },
@@ -102,7 +102,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "dragen"
+              "baren"
             ]
           ]
         },
@@ -123,7 +123,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "slaan"
+              "verslaan"
             ]
           ]
         },
@@ -396,7 +396,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "intimideren"
+              "overdonderen"
             ]
           ]
         },
@@ -480,7 +480,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "failliet gaan"
+              "falen"
             ]
           ]
         },
@@ -522,7 +522,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kunnen"
+              "kan"
             ]
           ]
         },
@@ -795,7 +795,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "doen"
+              "Doen"
             ]
           ]
         },
@@ -900,7 +900,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "wonen"
+              "uitweiden"
             ]
           ]
         },
@@ -1047,7 +1047,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "passen"
+              "fit"
             ]
           ]
         },
@@ -1089,7 +1089,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "werpen"
+              "gooien"
             ]
           ]
         },
@@ -1194,7 +1194,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "voorzeggen"
+              "voorspellen"
             ]
           ]
         },
@@ -1257,7 +1257,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "покидать"
+              "verlaten"
             ]
           ]
         },
@@ -1446,7 +1446,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "рубить"
+              "houw"
             ]
           ]
         },
@@ -1488,7 +1488,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "slaan"
+              "hit"
             ]
           ]
         },
@@ -1551,13 +1551,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вкладывать"
-            ],
-            [
-              "вставлять"
-            ],
-            [
-              "выстилать"
+              "inleggen"
             ]
           ]
         },
@@ -1578,7 +1572,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "входить"
+              "invoeren"
             ]
           ]
         },
@@ -1599,13 +1593,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "воткать"
-            ],
-            [
-              "переплетать"
-            ],
-            [
-              "вплетать"
+              "verweven"
             ]
           ]
         },
@@ -1752,10 +1740,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "опираться"
-            ],
-            [
-              "прислоняться"
+              "karig"
             ]
           ]
         },
@@ -1776,10 +1761,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "прыгать"
-            ],
-            [
-              "скакать"
+              "springen"
             ]
           ]
         },
@@ -1821,7 +1803,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "verlaten"
+              "vertrekken"
             ]
           ]
         },
@@ -1968,10 +1950,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "мочь"
-            ],
-            [
-              "иметь возможность"
+              "kunnen"
             ]
           ]
         },
@@ -2055,13 +2034,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "возмещать"
-            ],
-            [
-              "вознаграждать"
-            ],
-            [
-              "компенсировать"
+              "offset"
             ]
           ]
         },
@@ -2082,7 +2055,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перебивать цену"
+              "overboden"
             ]
           ]
         },
@@ -2103,7 +2076,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "превосходить"
+              "overtreffen"
             ]
           ]
         },
@@ -2124,7 +2097,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "побеждать в бою"
+              "in het strijd overwinnen"
             ]
           ]
         },
@@ -2145,7 +2118,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вырастать из"
+              "ontgroeien"
             ]
           ]
         },
@@ -2166,7 +2139,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выходить"
+              "uitvoer"
             ]
           ]
         },
@@ -2187,10 +2160,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перегонять"
-            ],
-            [
-              "опережать"
+              "ontlopen"
             ]
           ]
         },
@@ -2211,7 +2181,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "продавать лучше или дороже"
+              "overtreffen"
             ]
           ]
         },
@@ -2232,7 +2202,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "затмевать"
+              "overtreffen"
             ]
           ]
         },
@@ -2253,7 +2223,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "повелевать"
+              "overbieden"
             ]
           ]
         },
@@ -2274,7 +2244,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "компенсировать"
+              "overwinnen"
             ]
           ]
         },
@@ -2295,7 +2265,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пережари(ва)ть"
+              "overdrijven"
             ]
           ]
         },
@@ -2316,7 +2286,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "превышать"
+              "roodstand"
             ]
           ]
         },
@@ -2337,7 +2307,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "объедаться"
+              "te veel eten"
             ]
           ]
         },
@@ -2358,7 +2328,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перелетать"
+              "overvliegen"
             ]
           ]
         },
@@ -2379,7 +2349,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "нависать"
+              "overhang"
             ]
           ]
         },
@@ -2400,7 +2370,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подслуш(ив)ать"
+              "afluisteren"
             ]
           ]
         },
@@ -2421,7 +2391,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "покры(ва)ть"
+              "overlay"
             ]
           ]
         },
@@ -2442,7 +2412,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "переплачивать"
+              "te veel betalen"
             ]
           ]
         },
@@ -2463,10 +2433,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "отменять"
-            ],
-            [
-              "аннулировать"
+              "overschrijven"
             ]
           ]
         },
@@ -2487,7 +2454,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "переливаться через край"
+              "overschrijding"
             ]
           ]
         },
@@ -2508,7 +2475,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "надзирать за"
+              "toezicht houden"
             ]
           ]
         },
@@ -2529,7 +2496,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "расстрелять"
+              "overschrijding"
             ]
           ]
         },
@@ -2550,10 +2517,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "проспать"
-            ],
-            [
-              "&nbsp;"
+              "te lang slapen"
             ]
           ]
         },
@@ -2574,7 +2538,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "догонять"
+              "inhalen"
             ]
           ]
         },
@@ -2595,7 +2559,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "свергать"
+              "omverwerping"
             ]
           ]
         },
@@ -2616,7 +2580,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "принимать участие"
+              "deelnemen"
             ]
           ]
         },
@@ -2658,7 +2622,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "обращаться к суду"
+              "pleiten"
             ]
           ]
         },
@@ -2679,7 +2643,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "платить вперед"
+              "vooruitbetalen"
             ]
           ]
         },
@@ -2700,7 +2664,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "доказывать"
+              "bewijzen"
             ]
           ]
         },
@@ -2721,7 +2685,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "zetten"
+              "neerzetten"
             ]
           ]
         },
@@ -2742,13 +2706,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выходить"
-            ],
-            [
-              "покидать"
-            ],
-            [
-              "оставлять"
+              "ontslag nemen"
             ]
           ]
         },
@@ -2790,7 +2748,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перевязывать"
+              "opnieuw binden"
             ]
           ]
         },
@@ -2811,7 +2769,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перестроить"
+              "herbouwen"
             ]
           ]
         },
@@ -2832,10 +2790,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "изменять"
-            ],
-            [
-              "перестраивать"
+              "herschikt"
             ]
           ]
         },
@@ -2856,10 +2811,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "делать вновь"
-            ],
-            [
-              "переделывать"
+              "opnieuw doen"
             ]
           ]
         },
@@ -2880,7 +2832,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "слушать вторично"
+              "repeteren"
             ]
           ]
         },
@@ -2901,7 +2853,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "переделывать"
+              "remake"
             ]
           ]
         },
@@ -2922,7 +2874,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "раздирать"
+              "scheuren"
             ]
           ]
         },
@@ -2943,7 +2895,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "отдавать долг"
+              "terugbetalen"
             ]
           ]
         },
@@ -2964,7 +2916,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выполнять повторно"
+              "herhaling"
             ]
           ]
         },
@@ -2985,7 +2937,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перепродавать"
+              "doorverkopen"
             ]
           ]
         },
@@ -3006,7 +2958,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "возвращать"
+              "opnieuw instellen"
             ]
           ]
         },
@@ -3027,7 +2979,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пересиживать"
+              "herexamen"
             ]
           ]
         },
@@ -3048,7 +3000,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "забирать"
+              "herkansing"
             ]
           ]
         },
@@ -3069,7 +3021,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пересказывать"
+              "navertellen"
             ]
           ]
         },
@@ -3090,7 +3042,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перезаписать"
+              "herschrijven"
             ]
           ]
         },
@@ -3111,7 +3063,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "избавлять"
+              "ontdoen"
             ]
           ]
         },
@@ -3153,7 +3105,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "rinkelen"
+              "bellen"
             ]
           ]
         },
@@ -3174,7 +3126,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "stijgen"
+              "opstaan"
             ]
           ]
         },
@@ -3216,7 +3168,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пилить"
+              "zaag"
             ]
           ]
         },
@@ -3321,7 +3273,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "verzenden"
+              "versturen"
             ]
           ]
         },
@@ -3363,7 +3315,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "шить"
+              "naaien"
             ]
           ]
         },
@@ -3405,7 +3357,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "бриться"
+              "scheren"
             ]
           ]
         },
@@ -3426,7 +3378,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "стричь"
+              "afschuiving"
             ]
           ]
         },
@@ -3447,7 +3399,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "проливать"
+              "afwerpen"
             ]
           ]
         },
@@ -3468,13 +3420,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "светить"
-            ],
-            [
-              "сиять"
-            ],
-            [
-              "озарять"
+              "schijnen"
             ]
           ]
         },
@@ -3495,10 +3441,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "стрелять"
-            ],
-            [
-              "давать побеги"
+              "schieten"
             ]
           ]
         },
@@ -3519,7 +3462,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "показывать"
+              "tonen"
             ]
           ]
         },
@@ -3540,10 +3483,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "сокращаться"
-            ],
-            [
-              "сжиматься"
+              "krimpen"
             ]
           ]
         },
@@ -3606,10 +3546,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "тонуть"
-            ],
-            [
-              "погружаться (под воду)"
+              "zinken"
             ]
           ]
         },
@@ -3651,7 +3588,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "убивать"
+              "doden"
             ]
           ]
         },
@@ -3693,7 +3630,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "скользить"
+              "glijden"
             ]
           ]
         },
@@ -3714,10 +3651,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "бросать"
-            ],
-            [
-              "швырять"
+              "slingeren"
             ]
           ]
         },
@@ -3738,10 +3672,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "красться"
-            ],
-            [
-              "идти крадучись"
+              "sluipen"
             ]
           ]
         },
@@ -3762,10 +3693,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "разрезать"
-            ],
-            [
-              "рвать в длину"
+              "snijden"
             ]
           ]
         },
@@ -3786,10 +3714,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пахнуть"
-            ],
-            [
-              "нюхать"
+              "ruiken"
             ]
           ]
         },
@@ -3810,7 +3735,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "сеять"
+              "zaaien"
             ]
           ]
         },
@@ -3852,10 +3777,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ускорять"
-            ],
-            [
-              "спешить"
+              "versnellen"
             ]
           ]
         },
@@ -3876,7 +3798,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "писать или читать по буквам"
+              "spellen"
             ]
           ]
         },
@@ -3897,7 +3819,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "besteden"
+              "uitgeven"
             ]
           ]
         },
@@ -3918,10 +3840,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "проливать"
-            ],
-            [
-              "разливать"
+              "morsen"
             ]
           ]
         },
@@ -3942,7 +3861,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "прясть"
+              "draaien"
             ]
           ]
         },
@@ -3963,7 +3882,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "плевать"
+              "spuwen"
             ]
           ]
         },
@@ -3984,7 +3903,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "расщеплять"
+              "splitsen"
             ]
           ]
         },
@@ -4005,7 +3924,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "портить"
+              "vervuilen"
             ]
           ]
         },
@@ -4026,7 +3945,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "распространиться"
+              "verspreiden"
             ]
           ]
         },
@@ -4047,10 +3966,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вскочить"
-            ],
-            [
-              "возникнуть"
+              "springen"
             ]
           ]
         },
@@ -4113,10 +4029,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "уколоть"
-            ],
-            [
-              "приклеить"
+              "plakken"
             ]
           ]
         },
@@ -4137,7 +4050,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "жалить"
+              "steek"
             ]
           ]
         },
@@ -4158,7 +4071,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вонять"
+              "stinken"
             ]
           ]
         },
@@ -4179,10 +4092,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "усеять"
-            ],
-            [
-              "устлать"
+              "strooien"
             ]
           ]
         },
@@ -4203,10 +4113,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "шагать"
-            ],
-            [
-              "наносить удар"
+              "pas"
             ]
           ]
         },
@@ -4227,13 +4134,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ударить"
-            ],
-            [
-              "бить"
-            ],
-            [
-              "бастовать"
+              "staking"
             ]
           ]
         },
@@ -4254,10 +4155,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "нанизать"
-            ],
-            [
-              "натянуть"
+              "snaar"
             ]
           ]
         },
@@ -4278,7 +4176,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "стараться"
+              "streven"
             ]
           ]
         },
@@ -4299,7 +4197,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "передавать в субаренду"
+              "onderverhuren"
             ]
           ]
         },
@@ -4320,10 +4218,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "клясться"
-            ],
-            [
-              "присягать"
+              "zweren"
             ]
           ]
         },
@@ -4344,13 +4239,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "мести"
-            ],
-            [
-              "подметать"
-            ],
-            [
-              "сметать"
+              "vegen"
             ]
           ]
         },
@@ -4371,7 +4260,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "разбухать"
+              "zwellen"
             ]
           ]
         },
@@ -4413,13 +4302,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "качать"
-            ],
-            [
-              "раскачивать"
-            ],
-            [
-              "вертеть"
+              "schommel"
             ]
           ]
         },
@@ -4482,7 +4365,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "рвать"
+              "traan"
             ]
           ]
         },
@@ -4566,10 +4449,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "колоть"
-            ],
-            [
-              "пронзать"
+              "stoot"
             ]
           ]
         },
@@ -4590,7 +4470,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ступать"
+              "loopvlak"
             ]
           ]
         },
@@ -4611,10 +4491,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выпрямляться"
-            ],
-            [
-              "разгибаться"
+              "ontbuigen"
             ]
           ]
         },
@@ -4635,7 +4512,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "снижать цену"
+              "onderbieden"
             ]
           ]
         },
@@ -4656,7 +4533,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "сбивать цены"
+              "ondersnijding"
             ]
           ]
         },
@@ -4677,10 +4554,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "испытывать"
-            ],
-            [
-              "переносить"
+              "ondergaan"
             ]
           ]
         },
@@ -4701,7 +4575,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "лежать в основе"
+              "onderliggen"
             ]
           ]
         },
@@ -4722,7 +4596,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "оплачивать слишком низко"
+              "onderbetalen"
             ]
           ]
         },
@@ -4743,7 +4617,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "продавать дешевле"
+              "onderbieden"
             ]
           ]
         },
@@ -4785,7 +4659,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "предпринять"
+              "ondernemen"
             ]
           ]
         },
@@ -4806,7 +4680,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подписываться"
+              "onderschrijven"
             ]
           ]
         },
@@ -4827,7 +4701,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "уничтожать сделанное"
+              "ongedaan maken"
             ]
           ]
         },
@@ -4848,7 +4722,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "размораживать"
+              "ontdooien"
             ]
           ]
         },
@@ -4869,7 +4743,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "брать назад свои слова"
+              "herroepen"
             ]
           ]
         },
@@ -4890,7 +4764,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "развертывать"
+              "ontspannen"
             ]
           ]
         },
@@ -4911,7 +4785,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "поддерживать"
+              "handhaven"
             ]
           ]
         },
@@ -4932,7 +4806,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "опрокинуться"
+              "boos"
             ]
           ]
         },
@@ -4974,7 +4848,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подстерегать"
+              "overvallen"
             ]
           ]
         },
@@ -5016,7 +4890,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ткать"
+              "weven"
             ]
           ]
         },
@@ -5037,10 +4911,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "жениться"
-            ],
-            [
-              "выдавать замуж"
+              "trouwen"
             ]
           ]
         },
@@ -5061,7 +4932,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "wenen"
+              "huilen"
             ]
           ]
         },
@@ -5082,10 +4953,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "мочить"
-            ],
-            [
-              "увлажнять"
+              "nat"
             ]
           ]
         },
@@ -5127,7 +4995,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "заводить (механизм)"
+              "wind"
             ]
           ]
         },
@@ -5148,10 +5016,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "взять назад"
-            ],
-            [
-              "отозвать"
+              "terugtrekken"
             ]
           ]
         },
@@ -5172,10 +5037,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "воздерживаться"
-            ],
-            [
-              "отказывать"
+              "achterhouden"
             ]
           ]
         },
@@ -5196,7 +5058,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "противостоять"
+              "weerstaan"
             ]
           ]
         },
@@ -5217,10 +5079,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "скрутить"
-            ],
-            [
-              "сжимать"
+              "wringen"
             ]
           ]
         },
@@ -5283,7 +5142,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "hebben"
+              "hebben | heeft"
             ]
           ]
         },

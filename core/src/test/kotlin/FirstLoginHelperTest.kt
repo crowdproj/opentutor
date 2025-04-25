@@ -48,14 +48,14 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "ja",
                     listOf(
-                        mapOf("be" to "いる", "write" to "書く"),
+                        mapOf("be" to "なれ", "write" to "書く"),
                         mapOf("weather" to "天気"),
                     )
                 ),
                 Arguments.of(
                     "de",
                     listOf(
-                        mapOf("be" to "sein", "write" to "schreiben"),
+                        mapOf("be" to "Sei", "write" to "schreiben"),
                         mapOf("weather" to "Wetter"),
                     )
                 ),
@@ -69,14 +69,14 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "it",
                     listOf(
-                        mapOf("be" to "essere", "write" to "scrivere"),
+                        mapOf("be" to "Essere", "write" to "scrivere"),
                         mapOf("weather" to "tempo"),
                     )
                 ),
                 Arguments.of(
                     "pl",
                     listOf(
-                        mapOf("be" to "być", "write" to "pisać"),
+                        mapOf("be" to "Być", "write" to "pisać"),
                         mapOf("weather" to "pogoda")
                     ),
                 ),
@@ -97,7 +97,7 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "hu",
                     listOf(
-                        mapOf("read" to "olvas", "write" to "ír"),
+                        mapOf("read" to "olvas", "write" to "írj"),
                         mapOf("weather" to "időjárás"),
                     )
                 ),
