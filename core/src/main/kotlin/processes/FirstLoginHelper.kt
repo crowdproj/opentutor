@@ -48,6 +48,7 @@ private val RESOURCE_DOCUMENTS_BY_LANGUAGE = mapOf(
         "/weather-uk-en.json",
         "/weather-ar-en.json",
     ),
+    "uk" to listOf("/irregular-verbs-en-uk.json"),
     "zh" to listOf("/irregular-verbs-en-zh.json", "/weather-en-zh.json"),
     "es" to listOf("/irregular-verbs-en-es.json", "/weather-en-es.json"),
     "pt" to listOf("/irregular-verbs-en-pt.json", "/weather-en-pt.json"),

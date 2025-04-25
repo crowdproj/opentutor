@@ -27,6 +27,11 @@ internal class FirstLoginHelperTest {
                     )
                 ),
                 Arguments.of(
+                    "uk", listOf(
+                        mapOf("be" to "бути", "write" to "писати"),
+                    )
+                ),
+                Arguments.of(
                     "es",
                     listOf(
                         mapOf("be" to "ser", "write" to "escribir"),
