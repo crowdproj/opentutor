@@ -195,7 +195,7 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "bn",
                     listOf(
-                        mapOf("read" to "পড়া", "write" to "লেখা"),
+                        mapOf("read" to "পড়া", "write" to "লিখা"),
                         mapOf("weather" to "আবহাওয়া"),
                     )
                 ),
