@@ -118,7 +118,7 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "bg",
                     listOf(
-                        mapOf("read" to "чета", "write" to "пиша"),
+                        mapOf("read" to "прочети", "write" to "пиша"),
                         mapOf("weather" to "времето"),
                     )
                 ),
@@ -167,7 +167,7 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "et",
                     listOf(
-                        mapOf("read" to "lugeda", "write" to "kirjutada"),
+                        mapOf("read" to "lugema", "write" to "kirjutama"),
                         mapOf("weather" to "ilm"),
                     )
                 ),

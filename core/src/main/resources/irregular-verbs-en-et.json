@@ -18,16 +18,16 @@
     "langId": "et",
     "partsOfSpeech": [
       "nimisõna",
-      "omadussõna",
-      "arvsõna",
-      "asesõna",
       "tegusõna",
+      "omadussõna",
       "määrsõna",
-      "osastav",
+      "asesõna",
       "eessõna",
-      "side",
-      "artikkel",
-      "hüüdsõna"
+      "sidesõna",
+      "hüüdsõna",
+      "määrsõna",
+      "arvsõna",
+      "kesksõna"
     ]
   },
   "cards": [
@@ -39,7 +39,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "tõusta"
+              "tekkida"
             ]
           ]
         },
@@ -60,7 +60,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ärgata"
+              "ärkama"
             ]
           ]
         },
@@ -81,7 +81,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "taganeda"
+              "tagasilöök"
             ]
           ]
         },
@@ -102,7 +102,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kanda"
+              "sünnitama"
             ]
           ]
         },
@@ -123,7 +123,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "lööma"
+              "peksma"
             ]
           ]
         },
@@ -144,7 +144,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "saada"
+              "saama"
             ]
           ]
         },
@@ -186,7 +186,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "painutada"
+              "painutama"
             ]
           ]
         },
@@ -207,7 +207,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "panustada"
+              "kihlvedu sõlmima"
             ]
           ]
         },
@@ -228,7 +228,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "siduda"
+              "siduma"
             ]
           ]
         },
@@ -249,7 +249,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "hammustada"
+              "hammustama"
             ]
           ]
         },
@@ -270,7 +270,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "veritseda"
+              "veritsema"
             ]
           ]
         },
@@ -291,7 +291,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "puhuda"
+              "puhuma"
             ]
           ]
         },
@@ -333,7 +333,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "aretada"
+              "kasvatama"
             ]
           ]
         },
@@ -375,7 +375,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "edastada"
+              "edastama"
             ]
           ]
         },
@@ -396,7 +396,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ähvardada"
+              "hirmutama"
             ]
           ]
         },
@@ -417,7 +417,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ehitada"
+              "ehitama"
             ]
           ]
         },
@@ -438,7 +438,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "põleda"
+              "põlema"
             ]
           ]
         },
@@ -459,7 +459,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "plahvatada"
+              "plahvatama"
             ]
           ]
         },
@@ -480,7 +480,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "purustada"
+              "pankrotistuma"
             ]
           ]
         },
@@ -501,7 +501,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "osta"
+              "ostma"
             ]
           ]
         },
@@ -522,7 +522,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "võida"
+              "saab"
             ]
           ]
         },
@@ -543,7 +543,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "visata"
+              "heitma"
             ]
           ]
         },
@@ -564,7 +564,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "püüda"
+              "püüdma"
             ]
           ]
         },
@@ -585,7 +585,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "valida"
+              "valima"
             ]
           ]
         },
@@ -606,7 +606,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "hoida"
+              "klammerduma"
             ]
           ]
         },
@@ -627,7 +627,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "riietada"
+              "riietama"
             ]
           ]
         },
@@ -648,7 +648,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "tulla"
+              "tulema"
             ]
           ]
         },
@@ -669,7 +669,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "maksta"
+              "maksma"
             ]
           ]
         },
@@ -690,7 +690,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "hiilida"
+              "roomama"
             ]
           ]
         },
@@ -711,7 +711,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "lõigata"
+              "lõikama"
             ]
           ]
         },
@@ -732,7 +732,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "tegeleda"
+              "tegelema"
             ]
           ]
         },
@@ -753,7 +753,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kaevata"
+              "kaevama"
             ]
           ]
         },
@@ -774,7 +774,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "sukelduda"
+              "sukelduma"
             ]
           ]
         },
@@ -795,7 +795,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "teha"
+              "tegema"
             ]
           ]
         },
@@ -816,7 +816,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "joonistada"
+              "joonistama"
             ]
           ]
         },
@@ -837,7 +837,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "unistada"
+              "unistama"
             ]
           ]
         },
@@ -858,7 +858,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "juua"
+              "jooma"
             ]
           ]
         },
@@ -879,7 +879,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "sõita"
+              "sõitma"
             ]
           ]
         },
@@ -900,7 +900,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "elada"
+              "elama"
             ]
           ]
         },
@@ -942,7 +942,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kukkuda"
+              "kukkuma"
             ]
           ]
         },
@@ -963,7 +963,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "toita"
+              "toitma"
             ]
           ]
         },
@@ -984,7 +984,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "tunda"
+              "tundma"
             ]
           ]
         },
@@ -1005,7 +1005,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "võidelda"
+              "võitlema"
             ]
           ]
         },
@@ -1026,7 +1026,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "leida"
+              "leidma"
             ]
           ]
         },
@@ -1047,7 +1047,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "sobida"
+              "sobima"
             ]
           ]
         },
@@ -1089,7 +1089,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "paisata"
+              "paiskama"
             ]
           ]
         },
@@ -1110,7 +1110,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "lennata"
+              "lendama"
             ]
           ]
         },
@@ -1152,7 +1152,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ennustada"
+              "ennustama"
             ]
           ]
         },
@@ -1194,7 +1194,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ennustada"
+              "ennustama"
             ]
           ]
         },
@@ -1215,7 +1215,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "unustada"
+              "unustama"
             ]
           ]
         },
@@ -1236,7 +1236,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "andestada"
+              "andestama"
             ]
           ]
         },
@@ -1257,7 +1257,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "покидать"
+              "hülgama"
             ]
           ]
         },
@@ -1278,7 +1278,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "külmuda"
+              "külmuma"
             ]
           ]
         },
@@ -1299,7 +1299,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "saada"
+              "saama"
             ]
           ]
         },
@@ -1320,7 +1320,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "anda"
+              "andma"
             ]
           ]
         },
@@ -1341,7 +1341,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "minna"
+              "minema"
             ]
           ]
         },
@@ -1362,7 +1362,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "jahvatada"
+              "jahvatama"
             ]
           ]
         },
@@ -1383,7 +1383,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kasvada"
+              "kasvama"
             ]
           ]
         },
@@ -1404,7 +1404,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "riputada"
+              "rippuma"
             ]
           ]
         },
@@ -1425,7 +1425,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kuulda"
+              "kuulma"
             ]
           ]
         },
@@ -1446,7 +1446,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "рубить"
+              "raiuma"
             ]
           ]
         },
@@ -1467,7 +1467,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "peita"
+              "peitma"
             ]
           ]
         },
@@ -1488,7 +1488,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "tabada"
+              "tabama"
             ]
           ]
         },
@@ -1509,7 +1509,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "hoida"
+              "hoidma"
             ]
           ]
         },
@@ -1530,7 +1530,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "haavata"
+              "vigastama"
             ]
           ]
         },
@@ -1551,13 +1551,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вкладывать"
-            ],
-            [
-              "вставлять"
-            ],
-            [
-              "выстилать"
+              "inkrusteering"
             ]
           ]
         },
@@ -1578,7 +1572,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "входить"
+              "sisend"
             ]
           ]
         },
@@ -1599,13 +1593,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "воткать"
-            ],
-            [
-              "переплетать"
-            ],
-            [
-              "вплетать"
+              "põimuma"
             ]
           ]
         },
@@ -1626,7 +1614,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "hoida"
+              "hoidma"
             ]
           ]
         },
@@ -1647,7 +1635,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "põlvili minna"
+              "põlvitama"
             ]
           ]
         },
@@ -1689,7 +1677,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "teada"
+              "teadma"
             ]
           ]
         },
@@ -1710,7 +1698,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "asetada"
+              "asetama"
             ]
           ]
         },
@@ -1731,7 +1719,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "juhatada"
+              "juhtima"
             ]
           ]
         },
@@ -1752,10 +1740,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "опираться"
-            ],
-            [
-              "прислоняться"
+              "lahja"
             ]
           ]
         },
@@ -1776,10 +1761,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "прыгать"
-            ],
-            [
-              "скакать"
+              "hüpe"
             ]
           ]
         },
@@ -1800,7 +1782,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "õppida"
+              "õppima"
             ]
           ]
         },
@@ -1821,7 +1803,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "lahkuda"
+              "lahkuma"
             ]
           ]
         },
@@ -1842,7 +1824,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "laenata"
+              "laenama"
             ]
           ]
         },
@@ -1863,7 +1845,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "lubada"
+              "lubama"
             ]
           ]
         },
@@ -1884,7 +1866,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "lamada"
+              "lamama"
             ]
           ]
         },
@@ -1905,7 +1887,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "süüdata"
+              "süttima"
             ]
           ]
         },
@@ -1926,7 +1908,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kaotada"
+              "kaotama"
             ]
           ]
         },
@@ -1947,7 +1929,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "teha"
+              "tegema"
             ]
           ]
         },
@@ -1968,10 +1950,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "мочь"
-            ],
-            [
-              "иметь возможность"
+              "võib"
             ]
           ]
         },
@@ -1992,7 +1971,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "tähendada"
+              "tähendama"
             ]
           ]
         },
@@ -2013,7 +1992,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kohtuda"
+              "kohtuma"
             ]
           ]
         },
@@ -2055,13 +2034,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "возмещать"
-            ],
-            [
-              "вознаграждать"
-            ],
-            [
-              "компенсировать"
+              "kompenseerida"
             ]
           ]
         },
@@ -2082,7 +2055,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перебивать цену"
+              "üle pakkuma"
             ]
           ]
         },
@@ -2103,7 +2076,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "превосходить"
+              "ületada"
             ]
           ]
         },
@@ -2124,7 +2097,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "побеждать в бою"
+              "kaklus"
             ]
           ]
         },
@@ -2145,7 +2118,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вырастать из"
+              "välja kasvama"
             ]
           ]
         },
@@ -2166,7 +2139,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выходить"
+              "väljund"
             ]
           ]
         },
@@ -2187,10 +2160,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перегонять"
-            ],
-            [
-              "опережать"
+              "ületama"
             ]
           ]
         },
@@ -2211,7 +2181,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "продавать лучше или дороже"
+              "üle müüa"
             ]
           ]
         },
@@ -2232,7 +2202,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "затмевать"
+              "välja paistma"
             ]
           ]
         },
@@ -2253,7 +2223,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "повелевать"
+              "ülepakkumine"
             ]
           ]
         },
@@ -2274,7 +2244,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "компенсировать"
+              "ületada"
             ]
           ]
         },
@@ -2295,7 +2265,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пережари(ва)ть"
+              "üle pingutama"
             ]
           ]
         },
@@ -2316,7 +2286,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "превышать"
+              "üle joonistada"
             ]
           ]
         },
@@ -2337,7 +2307,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "объедаться"
+              "üle sööma"
             ]
           ]
         },
@@ -2358,7 +2328,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перелетать"
+              "üle lennata"
             ]
           ]
         },
@@ -2379,7 +2349,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "нависать"
+              "üleulatuvus"
             ]
           ]
         },
@@ -2400,7 +2370,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подслуш(ив)ать"
+              "pealt kuulata"
             ]
           ]
         },
@@ -2421,7 +2391,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "покры(ва)ть"
+              "ülekate"
             ]
           ]
         },
@@ -2442,7 +2412,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "переплачивать"
+              "üle maksma"
             ]
           ]
         },
@@ -2463,10 +2433,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "отменять"
-            ],
-            [
-              "аннулировать"
+              "alistama"
             ]
           ]
         },
@@ -2487,7 +2454,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "переливаться через край"
+              "ülejooks"
             ]
           ]
         },
@@ -2508,7 +2475,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "надзирать за"
+              "jälgima"
             ]
           ]
         },
@@ -2529,7 +2496,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "расстрелять"
+              "ületada"
             ]
           ]
         },
@@ -2550,10 +2517,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "проспать"
-            ],
-            [
-              "&nbsp;"
+              "üle magada"
             ]
           ]
         },
@@ -2574,7 +2538,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "догонять"
+              "möödasõit"
             ]
           ]
         },
@@ -2595,7 +2559,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "свергать"
+              "kukutada"
             ]
           ]
         },
@@ -2616,7 +2580,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "принимать участие"
+              "osa saama"
             ]
           ]
         },
@@ -2637,7 +2601,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "maksta"
+              "maksma"
             ]
           ]
         },
@@ -2658,7 +2622,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "обращаться к суду"
+              "paluma"
             ]
           ]
         },
@@ -2679,7 +2643,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "платить вперед"
+              "ettemaks"
             ]
           ]
         },
@@ -2700,7 +2664,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "доказывать"
+              "tõestama"
             ]
           ]
         },
@@ -2721,7 +2685,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "panna"
+              "panema"
             ]
           ]
         },
@@ -2742,13 +2706,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выходить"
-            ],
-            [
-              "покидать"
-            ],
-            [
-              "оставлять"
+              "lõpeta"
             ]
           ]
         },
@@ -2769,7 +2727,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "lugeda"
+              "lugema"
             ]
           ]
         },
@@ -2790,7 +2748,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перевязывать"
+              "uuesti siduda"
             ]
           ]
         },
@@ -2811,7 +2769,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перестроить"
+              "ümber ehitada"
             ]
           ]
         },
@@ -2832,10 +2790,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "изменять"
-            ],
-            [
-              "перестраивать"
+              "uuesti sõnastada"
             ]
           ]
         },
@@ -2856,10 +2811,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "делать вновь"
-            ],
-            [
-              "переделывать"
+              "uuesti teha"
             ]
           ]
         },
@@ -2880,7 +2832,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "слушать вторично"
+              "harjutama"
             ]
           ]
         },
@@ -2901,7 +2853,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "переделывать"
+              "ümbertegemine"
             ]
           ]
         },
@@ -2922,7 +2874,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "раздирать"
+              "rend"
             ]
           ]
         },
@@ -2943,7 +2895,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "отдавать долг"
+              "tagasi maksma"
             ]
           ]
         },
@@ -2964,7 +2916,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выполнять повторно"
+              "korrata"
             ]
           ]
         },
@@ -2985,7 +2937,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перепродавать"
+              "edasi müüa"
             ]
           ]
         },
@@ -3006,7 +2958,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "возвращать"
+              "lähtestada"
             ]
           ]
         },
@@ -3027,7 +2979,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пересиживать"
+              "uuesti istuma"
             ]
           ]
         },
@@ -3048,7 +3000,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "забирать"
+              "uuesti võtta"
             ]
           ]
         },
@@ -3069,7 +3021,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пересказывать"
+              "ümber jutustada"
             ]
           ]
         },
@@ -3090,7 +3042,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перезаписать"
+              "ümber kirjutama"
             ]
           ]
         },
@@ -3111,7 +3063,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "избавлять"
+              "vabaneda"
             ]
           ]
         },
@@ -3132,7 +3084,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ratsutada"
+              "ratsutama"
             ]
           ]
         },
@@ -3153,7 +3105,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "heliseda"
+              "helisema"
             ]
           ]
         },
@@ -3174,7 +3126,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "tõusta"
+              "tõusma"
             ]
           ]
         },
@@ -3195,7 +3147,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "joosta"
+              "jooksma"
             ]
           ]
         },
@@ -3216,7 +3168,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пилить"
+              "nägin"
             ]
           ]
         },
@@ -3237,7 +3189,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "öelda"
+              "ütlema"
             ]
           ]
         },
@@ -3258,7 +3210,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "näha"
+              "nägema"
             ]
           ]
         },
@@ -3279,7 +3231,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "otsida"
+              "otsima"
             ]
           ]
         },
@@ -3300,7 +3252,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "müüa"
+              "müüma"
             ]
           ]
         },
@@ -3321,7 +3273,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "saata"
+              "saatma"
             ]
           ]
         },
@@ -3342,7 +3294,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "seadistada"
+              "seadma"
             ]
           ]
         },
@@ -3363,7 +3315,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "шить"
+              "õmblema"
             ]
           ]
         },
@@ -3384,7 +3336,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "raputada"
+              "raputama"
             ]
           ]
         },
@@ -3405,7 +3357,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "бриться"
+              "raseerima"
             ]
           ]
         },
@@ -3426,7 +3378,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "стричь"
+              "lõikamine"
             ]
           ]
         },
@@ -3447,7 +3399,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "проливать"
+              "kuur"
             ]
           ]
         },
@@ -3468,13 +3420,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "светить"
-            ],
-            [
-              "сиять"
-            ],
-            [
-              "озарять"
+              "särama"
             ]
           ]
         },
@@ -3495,10 +3441,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "стрелять"
-            ],
-            [
-              "давать побеги"
+              "tulistama"
             ]
           ]
         },
@@ -3519,7 +3462,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "показывать"
+              "näidata"
             ]
           ]
         },
@@ -3540,10 +3483,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "сокращаться"
-            ],
-            [
-              "сжиматься"
+              "kahanema"
             ]
           ]
         },
@@ -3564,7 +3504,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "sulgeda"
+              "sulgema"
             ]
           ]
         },
@@ -3585,7 +3525,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "laulda"
+              "laulma"
             ]
           ]
         },
@@ -3606,10 +3546,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "тонуть"
-            ],
-            [
-              "погружаться (под воду)"
+              "uppuma"
             ]
           ]
         },
@@ -3630,7 +3567,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "istuda"
+              "istuma"
             ]
           ]
         },
@@ -3651,7 +3588,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "убивать"
+              "tapma"
             ]
           ]
         },
@@ -3672,7 +3609,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "magada"
+              "magama"
             ]
           ]
         },
@@ -3693,7 +3630,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "скользить"
+              "slaidi"
             ]
           ]
         },
@@ -3714,10 +3651,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "бросать"
-            ],
-            [
-              "швырять"
+              "tropp"
             ]
           ]
         },
@@ -3738,10 +3672,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "красться"
-            ],
-            [
-              "идти крадучись"
+              "libisema"
             ]
           ]
         },
@@ -3762,10 +3693,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "разрезать"
-            ],
-            [
-              "рвать в длину"
+              "pilu"
             ]
           ]
         },
@@ -3786,10 +3714,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "пахнуть"
-            ],
-            [
-              "нюхать"
+              "lõhna"
             ]
           ]
         },
@@ -3810,7 +3735,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "сеять"
+              "külvata"
             ]
           ]
         },
@@ -3831,7 +3756,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "rääkida"
+              "rääkima"
             ]
           ]
         },
@@ -3852,10 +3777,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ускорять"
-            ],
-            [
-              "спешить"
+              "kiirust"
             ]
           ]
         },
@@ -3876,7 +3798,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "писать или читать по буквам"
+              "loits"
             ]
           ]
         },
@@ -3897,7 +3819,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kulutada"
+              "kulutama"
             ]
           ]
         },
@@ -3918,10 +3840,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "проливать"
-            ],
-            [
-              "разливать"
+              "lekkima"
             ]
           ]
         },
@@ -3942,7 +3861,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "прясть"
+              "keerutada"
             ]
           ]
         },
@@ -3963,7 +3882,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "плевать"
+              "sülitada"
             ]
           ]
         },
@@ -3984,7 +3903,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "расщеплять"
+              "poolitatud"
             ]
           ]
         },
@@ -4005,7 +3924,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "портить"
+              "rikkuma"
             ]
           ]
         },
@@ -4026,7 +3945,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "распространиться"
+              "levik"
             ]
           ]
         },
@@ -4047,10 +3966,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вскочить"
-            ],
-            [
-              "возникнуть"
+              "kevad"
             ]
           ]
         },
@@ -4071,7 +3987,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "seista"
+              "seisma"
             ]
           ]
         },
@@ -4092,7 +4008,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "varastada"
+              "varastama"
             ]
           ]
         },
@@ -4113,10 +4029,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "уколоть"
-            ],
-            [
-              "приклеить"
+              "kepp"
             ]
           ]
         },
@@ -4137,7 +4050,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "жалить"
+              "kipitama"
             ]
           ]
         },
@@ -4158,7 +4071,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "вонять"
+              "haisema"
             ]
           ]
         },
@@ -4179,10 +4092,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "усеять"
-            ],
-            [
-              "устлать"
+              "puistata"
             ]
           ]
         },
@@ -4203,10 +4113,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "шагать"
-            ],
-            [
-              "наносить удар"
+              "samm"
             ]
           ]
         },
@@ -4227,13 +4134,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ударить"
-            ],
-            [
-              "бить"
-            ],
-            [
-              "бастовать"
+              "streikima"
             ]
           ]
         },
@@ -4254,10 +4155,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "нанизать"
-            ],
-            [
-              "натянуть"
+              "string"
             ]
           ]
         },
@@ -4278,7 +4176,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "стараться"
+              "pingutama"
             ]
           ]
         },
@@ -4299,7 +4197,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "передавать в субаренду"
+              "allüürile"
             ]
           ]
         },
@@ -4320,10 +4218,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "клясться"
-            ],
-            [
-              "присягать"
+              "vannun"
             ]
           ]
         },
@@ -4344,13 +4239,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "мести"
-            ],
-            [
-              "подметать"
-            ],
-            [
-              "сметать"
+              "pühkima"
             ]
           ]
         },
@@ -4371,7 +4260,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "разбухать"
+              "paisuma"
             ]
           ]
         },
@@ -4392,7 +4281,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ujuda"
+              "ujuma"
             ]
           ]
         },
@@ -4413,13 +4302,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "качать"
-            ],
-            [
-              "раскачивать"
-            ],
-            [
-              "вертеть"
+              "kiik"
             ]
           ]
         },
@@ -4440,7 +4323,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "võtta"
+              "võtma"
             ]
           ]
         },
@@ -4461,7 +4344,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "õpetada"
+              "õpetama"
             ]
           ]
         },
@@ -4482,7 +4365,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "рвать"
+              "rebima"
             ]
           ]
         },
@@ -4503,7 +4386,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "jutustada"
+              "rääkima"
             ]
           ]
         },
@@ -4524,7 +4407,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "mõelda"
+              "mõtlema"
             ]
           ]
         },
@@ -4545,7 +4428,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "visata"
+              "viskama"
             ]
           ]
         },
@@ -4566,10 +4449,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "колоть"
-            ],
-            [
-              "пронзать"
+              "tõukejõud"
             ]
           ]
         },
@@ -4590,7 +4470,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ступать"
+              "turvis"
             ]
           ]
         },
@@ -4611,10 +4491,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выпрямляться"
-            ],
-            [
-              "разгибаться"
+              "lahti painutada"
             ]
           ]
         },
@@ -4635,7 +4512,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "снижать цену"
+              "alapakkumine"
             ]
           ]
         },
@@ -4656,7 +4533,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "сбивать цены"
+              "alla lõigatud"
             ]
           ]
         },
@@ -4677,10 +4554,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "испытывать"
-            ],
-            [
-              "переносить"
+              "läbima"
             ]
           ]
         },
@@ -4701,7 +4575,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "лежать в основе"
+              "aluseks"
             ]
           ]
         },
@@ -4722,7 +4596,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "оплачивать слишком низко"
+              "alatasu"
             ]
           ]
         },
@@ -4743,7 +4617,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "продавать дешевле"
+              "alla müüa"
             ]
           ]
         },
@@ -4764,7 +4638,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "mõista"
+              "mõistma"
             ]
           ]
         },
@@ -4785,7 +4659,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "предпринять"
+              "ette võtma"
             ]
           ]
         },
@@ -4806,7 +4680,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подписываться"
+              "allkirjastada"
             ]
           ]
         },
@@ -4827,7 +4701,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "уничтожать сделанное"
+              "tühistada"
             ]
           ]
         },
@@ -4848,7 +4722,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "размораживать"
+              "külmuta lahti"
             ]
           ]
         },
@@ -4869,7 +4743,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "брать назад свои слова"
+              "ütlemata"
             ]
           ]
         },
@@ -4890,7 +4764,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "развертывать"
+              "lõõgastuda"
             ]
           ]
         },
@@ -4911,7 +4785,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "поддерживать"
+              "toetama"
             ]
           ]
         },
@@ -4932,7 +4806,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "опрокинуться"
+              "ärritunud"
             ]
           ]
         },
@@ -4953,7 +4827,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ärgata"
+              "ärkama"
             ]
           ]
         },
@@ -4974,7 +4848,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подстерегать"
+              "teeviis"
             ]
           ]
         },
@@ -4995,7 +4869,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kanda"
+              "kandma"
             ]
           ]
         },
@@ -5016,7 +4890,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "ткать"
+              "kuduma"
             ]
           ]
         },
@@ -5037,10 +4911,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "жениться"
-            ],
-            [
-              "выдавать замуж"
+              "abielluma"
             ]
           ]
         },
@@ -5061,7 +4932,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "nutta"
+              "nutma"
             ]
           ]
         },
@@ -5082,10 +4953,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "мочить"
-            ],
-            [
-              "увлажнять"
+              "märg"
             ]
           ]
         },
@@ -5106,7 +4974,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "võita"
+              "võitma"
             ]
           ]
         },
@@ -5127,7 +4995,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "заводить (механизм)"
+              "tuul"
             ]
           ]
         },
@@ -5148,10 +5016,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "взять назад"
-            ],
-            [
-              "отозвать"
+              "taganema"
             ]
           ]
         },
@@ -5172,10 +5037,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "воздерживаться"
-            ],
-            [
-              "отказывать"
+              "kinni pidama"
             ]
           ]
         },
@@ -5196,7 +5058,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "противостоять"
+              "vastu pidama"
             ]
           ]
         },
@@ -5217,10 +5079,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "скрутить"
-            ],
-            [
-              "сжимать"
+              "väänata"
             ]
           ]
         },
@@ -5241,7 +5100,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "kirjutada"
+              "kirjutama"
             ]
           ]
         },
@@ -5283,7 +5142,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "omada"
+              "on"
             ]
           ]
         },
