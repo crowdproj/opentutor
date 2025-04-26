@@ -25,365 +25,23 @@
       "preposição",
       "conjunção",
       "interjeição",
-      "artigo"
+      "artigo",
+      "numeral",
+      "particípio"
     ]
   },
   "cards": [
     {
       "words": [
         {
-          "word": "atmospheric",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "atmosférico"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "weather",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "tempo"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "snow",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "neve"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "rain",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "chuva"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "wind",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "vento"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "hail",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "granizo"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "thunderstorm",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "tempestade"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "precipitation",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "precipitação"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "thunder",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "trovão"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "lightning",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "raio"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "anticyclone",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "anticiclone"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "atmosphere",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "atmosfera"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "barometer",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "barômetro"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "windy",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "ventoso"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "humidity",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "umidade"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "humid",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "úmido"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "moist",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "úmido"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "damp",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "úmido"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "sunrise",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "nascer do sol"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "degree",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "grau"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "pressure",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "pressão"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "stuffy",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "abafado"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "heat",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "calor"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "hot",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "quente"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "sunset",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "pôr do sol"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
           "word": "frost",
           "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Even his dog refused to go out in such frost.",
+              "translation": "Даже его собака отказалась выходить на улицу в такой мороз."
+            }
+          ],
           "translations": [
             [
               "geada"
@@ -391,405 +49,43 @@
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.699Z"
     },
     {
       "words": [
         {
-          "word": "drizzle",
+          "word": "weather",
           "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "I find warm weather more enjoyable than heat.",
+              "translation": "Для меня тёплая погода приятнее, чем жара."
+            },
+            {
+              "text": "Owing to the bad weather, the match has been postponed.",
+              "translation": "Матч был отложен из-за плохой погоды."
+            }
+          ],
           "translations": [
             [
-              "garoa"
+              "tempo"
             ]
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.714Z"
     },
     {
       "words": [
         {
-          "word": "haze",
+          "word": "thunderstorm",
           "partOfSpeech": "noun",
-          "translations": [
-            [
-              "névoa"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "ice",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "gelo"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "shower",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "chuvisco"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "puddle",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "poça"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "meteorology",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "meteorologia"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "cloudy",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "nublado"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "thaw",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "degelo"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "cool",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "fresco"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "dusty",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "empoeirado"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "rainbow",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "arco-íris"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "fresh",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "fresco"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "slippery",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "escorregadio"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "slush",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "lama"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "smog",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "smog"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "snowfall",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "nevasca"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "sunny",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "ensolarado"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "dry",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "seco"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "wet",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "molhado"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "temperature",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "temperatura"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "warm",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "morno"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "thermometer",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "termômetro"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "fog",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "neblina"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "mist",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "bruma"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "foggy",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "nevoento"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "water",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "água"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "cold",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "frio"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "cyclone",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "ciclone"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "storm",
-          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The thunderstorm in the horror film created a sinister mood.",
+              "translation": "Гроза в фильме ужасов создала зловещую атмосферу."
+            }
+          ],
           "translations": [
             [
               "tempestade"
@@ -797,139 +93,466 @@
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.717Z"
     },
     {
       "words": [
         {
-          "word": "clear",
-          "partOfSpeech": "noun",
-          "translations": [
-            [
-              "claro"
-            ]
-          ]
-        }
-      ],
-      "answered": 0
-    },
-    {
-      "words": [
-        {
-          "word": "sleet",
-          "partOfSpeech": "noun",
+          "word": "hail",
+          "examples": [
+            {
+              "text": "The weather forecast warned against storms with hail."
+            }
+          ],
           "translations": [
             [
               "granizo"
             ]
-          ]
+          ],
+          "primary": true
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.726Z"
     },
     {
       "words": [
         {
-          "word": "cloud",
-          "partOfSpeech": "noun",
+          "word": "lightning",
+          "examples": [
+            {
+              "text": "Lightning struck a tree and it caught fire."
+            }
+          ],
           "translations": [
             [
-              "nuvem"
+              "relâmpago"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.729Z"
+    },
+    {
+      "words": [
+        {
+          "word": "thunder",
+          "examples": [
+            {
+              "text": "We heard a crash of thunder far away."
+            }
+          ],
+          "translations": [
+            [
+              "trovão"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.734Z"
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "examples": [
+            {
+              "text": "The wind blew the leaves across the lawn."
+            },
+            {
+              "text": "A furious wind brought down a tree in our yard."
+            }
+          ],
+          "translations": [
+            [
+              "vento"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.737Z"
+    },
+    {
+      "words": [
+        {
+          "word": "humidity",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Heat and humidity are typical for a tropical climate.",
+              "translation": "Тропическому климату присущи жара и влажность."
+            },
+            {
+              "text": "The plant prefers a high level of humidity.",
+              "translation": "Это растение любит много влаги."
+            },
+            {
+              "text": "The laundry took a long time to dry due to the humidity.",
+              "translation": "Из-за сырости бельё сушилось долго."
+            }
+          ],
+          "translations": [
+            [
+              "umidade"
             ]
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.742Z"
     },
     {
       "words": [
         {
-          "word": "chilly",
-          "partOfSpeech": "noun",
+          "word": "humid",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "The air in the jungle was hot and humid.",
+              "translation": "Воздух в джунглях был жаркий и влажный."
+            }
+          ],
           "translations": [
             [
-              "frio"
+              "úmido"
             ]
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.745Z"
     },
     {
       "words": [
         {
-          "word": "downpour",
-          "partOfSpeech": "noun",
+          "word": "moist",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "The newspaper was moist from the morning dew.",
+              "translation": "От утренней росы газета была влажной."
+            }
+          ],
           "translations": [
             [
-              "chuva forte"
+              "úmido"
             ]
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.749Z"
     },
     {
       "words": [
         {
-          "word": "gale",
-          "partOfSpeech": "noun",
+          "word": "damp",
+          "examples": [
+            {
+              "text": "The grass is often damp in the morning."
+            },
+            {
+              "text": "The ground was damp after the rain."
+            },
+            {
+              "text": "The air filled with the damp of the rain coming in."
+            }
+          ],
           "translations": [
             [
-              "vendaval"
+              "úmido"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.758Z"
+    },
+    {
+      "words": [
+        {
+          "word": "degree",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The temperature rose by a few degrees."
+            }
+          ],
+          "translations": [
+            [
+              "grau"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.762Z"
+    },
+    {
+      "words": [
+        {
+          "word": "drizzle",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Drizzle is common in autumn.",
+              "translation": "Мелкий дождь — частое явление осенью."
+            }
+          ],
+          "translations": [
+            [
+              "garoa"
             ]
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.765Z"
     },
     {
       "words": [
         {
-          "word": "scorching",
-          "partOfSpeech": "noun",
+          "word": "ice",
+          "examples": [
+            {
+              "text": "The river is covered with ice in winter."
+            }
+          ],
           "translations": [
             [
-              "escaldante"
+              "gelo"
             ]
-          ]
+          ],
+          "primary": true
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.772Z"
     },
     {
       "words": [
         {
-          "word": "dust",
-          "partOfSpeech": "noun",
+          "word": "shower",
+          "examples": [
+            {
+              "text": "We are expecting showers and clouds for tomorrow."
+            }
+          ],
           "translations": [
             [
-              "poeira"
+              "aguaceiro"
             ]
-          ]
+          ],
+          "primary": true
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.775Z"
     },
     {
       "words": [
         {
-          "word": "blustery",
-          "partOfSpeech": "noun",
+          "word": "snow",
+          "examples": [
+            {
+              "text": "You rarely see snow in Australia."
+            },
+            {
+              "text": "The mountain peak was covered with snow."
+            },
+            {
+              "text": "The snow cover remained till March."
+            }
+          ],
           "translations": [
             [
-              "tempestuoso"
+              "neve"
             ]
-          ]
+          ],
+          "primary": true
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.777Z"
     },
     {
       "words": [
         {
-          "word": "overcast",
+          "word": "sunset",
+          "examples": [
+            {
+              "text": "After sunset, it gets colder quickly."
+            },
+            {
+              "text": "The purple and red sunset was amazing."
+            }
+          ],
+          "translations": [
+            [
+              "pôr do sol"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.782Z"
+    },
+    {
+      "words": [
+        {
+          "word": "windy",
           "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "When it is windy, I enjoy going surfing."
+            }
+          ],
+          "translations": [
+            [
+              "ventoso"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.785Z"
+    },
+    {
+      "words": [
+        {
+          "word": "meteorology",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Meteorology helps scientists predict natural disasters."
+            }
+          ],
+          "translations": [
+            [
+              "meteorologia"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:27:09.576Z"
+    },
+    {
+      "words": [
+        {
+          "word": "puddle",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "She stepped into a puddle and soaked her shoes."
+            }
+          ],
+          "translations": [
+            [
+              "poça"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:27:35.588Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sunrise",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "We watched the sunrise over the mountains."
+            }
+          ],
+          "translations": [
+            [
+              "nascer do sol"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:29:13.223Z"
+    },
+    {
+      "words": [
+        {
+          "word": "stuffy",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The air was stuffy so I opened a window."
+            },
+            {
+              "text": "I left the stuffy room to have some fresh air."
+            }
+          ],
+          "translations": [
+            [
+              "abafado"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.788Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hot",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "This region has a hot and dry climate."
+            }
+          ],
+          "translations": [
+            [
+              "quente"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.792Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rain",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The big tree sheltered us from the rain."
+            },
+            {
+              "text": "The rain filled the trench with water."
+            }
+          ],
+          "translations": [
+            [
+              "chuva"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.795Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cloudy",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "The sky was grey and cloudy.",
+              "translation": "Небо было серым и облачным."
+            },
+            {
+              "text": "The house was abandoned and looked cloudy.",
+              "translation": "Дом был заброшен и имел мрачный вид."
+            }
+          ],
           "translations": [
             [
               "nublado"
@@ -937,7 +560,1570 @@
           ]
         }
       ],
-      "answered": 0
+      "changedAt": "2025-04-20T16:17:02.798Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dusty",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "I wiped off the dusty shelf with a cloth.",
+              "translation": "Я протёр пыльную полку тряпкой."
+            }
+          ],
+          "translations": [
+            [
+              "empoeirado"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.800Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slippery",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "A wet floor can be very slippery.",
+              "translation": "Влажный пол может быть очень скользким."
+            }
+          ],
+          "translations": [
+            [
+              "escorregadio"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.802Z"
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Smog has become a common phenomenon in big cities.",
+              "translation": "Смог стал привычным явлением в больших городах."
+            }
+          ],
+          "translations": [
+            [
+              "poluição atmosférica"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.807Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sunny",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The weather promises to be sunny this afternoon."
+            },
+            {
+              "text": "The southern side of the hill is always very sunny."
+            }
+          ],
+          "translations": [
+            [
+              "ensolarado"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.815Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dry",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "This region has a hot and dry climate.",
+              "translation": "В этом регионе жаркий и сухой климат."
+            },
+            {
+              "text": "I like drinking wine, preferably dry.",
+              "translation": "Я люблю вино, предпочтительно сухое."
+            },
+            {
+              "text": "Cacti are adapted to a dry climate.",
+              "translation": "Кактусы приспособлены к засушливому климату."
+            }
+          ],
+          "translations": [
+            [
+              "seco"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.817Z"
+    },
+    {
+      "words": [
+        {
+          "word": "temperature",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The temperature rose by a few degrees."
+            },
+            {
+              "text": "The density of water depends on its temperature."
+            }
+          ],
+          "translations": [
+            [
+              "temperatura"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.820Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fog",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The morning fog hides the mountains.",
+              "translation": "Утренний туман скрывает горы."
+            }
+          ],
+          "translations": [
+            [
+              "névoa"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.826Z"
+    },
+    {
+      "words": [
+        {
+          "word": "mist",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The house was barely visible through the mist.",
+              "translation": "Дом был едва виден сквозь туман."
+            }
+          ],
+          "translations": [
+            [
+              "névoa"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.829Z"
+    },
+    {
+      "words": [
+        {
+          "word": "foggy",
+          "partOfSpeech": "adjective",
+          "examples": [
+            {
+              "text": "Visibility is reduced due to the foggy weather.",
+              "translation": "Видимость снижена из-за туманной погоды."
+            }
+          ],
+          "translations": [
+            [
+              "nebuloso"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.831Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cold",
+          "examples": [
+            {
+              "text": "Hot air rises and cold air descends."
+            },
+            {
+              "text": "The cold made me shiver."
+            }
+          ],
+          "translations": [
+            [
+              "frio"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.834Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sleet",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Sleet stuck to the tree branches.",
+              "translation": "На ветви дерева налип мокрый снег."
+            }
+          ],
+          "translations": [
+            [
+              "chuva congelante"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.837Z"
+    },
+    {
+      "words": [
+        {
+          "word": "downpour",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "As the downpour bursted outdoors, I stayed at home.",
+              "translation": "Поскольку на улице начался ливень, я остался дома."
+            },
+            {
+              "text": "They were surprised by the downpour and got completely drenched.",
+              "translation": "Проливной дождь застал их врасплох, и они полностью промокли."
+            }
+          ],
+          "translations": [
+            [
+              "aguaceiro"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.840Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gale",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The fishing boat was caught in a sudden gale."
+            }
+          ],
+          "translations": [
+            [
+              "vendaval"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:26:13.851Z"
+    },
+    {
+      "words": [
+        {
+          "word": "slush",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The sidewalk was covered with dirty slush after the snow melted."
+            }
+          ],
+          "translations": [
+            [
+              "neve derretida"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:28:13.464Z"
+    },
+    {
+      "words": [
+        {
+          "word": "snowfall",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Heavy snowfall caused delays on the roads."
+            }
+          ],
+          "translations": [
+            [
+              "queda de neve"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:28:26.690Z"
+    },
+    {
+      "words": [
+        {
+          "word": "storm",
+          "examples": [
+            {
+              "text": "The weather forecast predicts a heavy storm."
+            },
+            {
+              "text": "A violent storm struck the city last night."
+            },
+            {
+              "text": "The storm blew all the leaves off the tree."
+            },
+            {
+              "text": "A storm may cause accidental blackouts."
+            }
+          ],
+          "translations": [
+            [
+              "tempestade"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.846Z"
+    },
+    {
+      "words": [
+        {
+          "word": "clear",
+          "examples": [
+            {
+              "text": "On a clear night we can see stars."
+            },
+            {
+              "text": "The clear sky promised a good day."
+            },
+            {
+              "text": "The clouds have cleared."
+            }
+          ],
+          "translations": [
+            [
+              "claro"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:17:02.850Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cyclone",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A tropical cyclone is forming over the ocean."
+            }
+          ],
+          "translations": [
+            [
+              "ciclone"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.853Z"
+    },
+    {
+      "words": [
+        {
+          "word": "scorching",
+          "examples": [
+            {
+              "text": "I stayed inside avoiding the scorching sun."
+            }
+          ],
+          "translations": [
+            [
+              "escaldante"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.856Z"
+    },
+    {
+      "words": [
+        {
+          "word": "meteorologist",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Meteorologists are predicting sunny weather for tomorrow.",
+              "translation": "Метеорологи предсказывают на завтра солнечную погоду."
+            }
+          ],
+          "translations": [
+            [
+              "meteorologista"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.864Z"
+    },
+    {
+      "words": [
+        {
+          "word": "blizzard",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Because of the blizzard, we had to stay overnight in a hotel.",
+              "translation": "Из-за метели нам пришлось остаться на ночь в гостинице."
+            },
+            {
+              "text": "The blizzard covered the whole town with snow.",
+              "translation": "Вьюга замела снегом весь город."
+            },
+            {
+              "text": "The blizzard caused many traffic jams.",
+              "translation": "Снежная буря стала причиной множества пробок."
+            }
+          ],
+          "translations": [
+            [
+              "nevasca"
+            ]
+          ]
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.870Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dew",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Dew formed on the grass after a cool night."
+            }
+          ],
+          "translations": [
+            [
+              "orvalho"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:25:50.916Z"
+    },
+    {
+      "words": [
+        {
+          "word": "lightning bolt",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A lightning bolt struck the old tree in the field."
+            }
+          ],
+          "translations": [
+            [
+              "raio"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:26:58.819Z"
+    },
+    {
+      "words": [
+        {
+          "word": "forecast",
+          "examples": [
+            {
+              "text": "According to the forecast, it's going to be cloudy tomorrow."
+            },
+            {
+              "text": "The weather forecast warned against storms with hail."
+            }
+          ],
+          "translations": [
+            [
+              "previsão do tempo"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.889Z"
+    },
+    {
+      "words": [
+        {
+          "word": "breeze",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A light breeze blew from the lake."
+            }
+          ],
+          "translations": [
+            [
+              "brisa"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.897Z"
+    },
+    {
+      "words": [
+        {
+          "word": "overheat",
+          "examples": [
+            {
+              "text": "The cooling system does not let the engine overheat."
+            }
+          ],
+          "translations": [
+            [
+              "superaquecimento"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.908Z"
+    },
+    {
+      "words": [
+        {
+          "word": "chilly",
+          "examples": [
+            {
+              "text": "The weather is chilly tonight."
+            },
+            {
+              "text": "It was a chilly day, so I put on a jacket."
+            }
+          ],
+          "translations": [
+            [
+              "frio"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:17:02.914Z"
+    },
+    {
+      "words": [
+        {
+          "word": "flood",
+          "examples": [
+            {
+              "text": "Dams protect the village by the sea from a flood."
+            },
+            {
+              "text": "The river overflowed and flooded the valley."
+            },
+            {
+              "text": "Heavy rains flooded the valley."
+            }
+          ],
+          "translations": [
+            [
+              "enchente"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.916Z"
+    },
+    {
+      "words": [
+        {
+          "word": "heat",
+          "examples": [
+            {
+              "text": "The heat of the fire warmed my frozen hands."
+            },
+            {
+              "text": "I find warm weather more enjoyable than heat."
+            },
+            {
+              "text": "Everyone sat in the shade because of the heat."
+            },
+            {
+              "text": "The sun heated the rocks on the beach."
+            }
+          ],
+          "translations": [
+            [
+              "aquecer"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.918Z"
+    },
+    {
+      "words": [
+        {
+          "word": "warm",
+          "examples": [
+            {
+              "text": "I find warm weather more enjoyable than heat."
+            },
+            {
+              "text": "In winter, I usually go to warm countries."
+            }
+          ],
+          "translations": [
+            [
+              "agradável"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.926Z"
+    },
+    {
+      "words": [
+        {
+          "word": "water",
+          "examples": [
+            {
+              "text": "The water in the mountain lake was cold and clear."
+            }
+          ],
+          "translations": [
+            [
+              "água"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.929Z"
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "examples": [
+            {
+              "text": "The flower prefers wet climate."
+            },
+            {
+              "text": "These last several weeks have been fairly wet."
+            },
+            {
+              "text": "My raincoat protects me from the wet."
+            }
+          ],
+          "translations": [
+            [
+              "molhado"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.932Z"
+    },
+    {
+      "words": [
+        {
+          "word": "dust",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Dust can be dangerous for highly allergic individuals."
+            }
+          ],
+          "translations": [
+            [
+              "pó"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.935Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fresh",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Fresh water is a finite resource."
+            }
+          ],
+          "translations": [
+            [
+              "fresco"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.938Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cloud",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Clouds are gathering."
+            }
+          ],
+          "translations": [
+            [
+              "nuvem"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.941Z"
+    },
+    {
+      "words": [
+        {
+          "word": "atmosphere",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The atmosphere of our planet is breathable."
+            }
+          ],
+          "translations": [
+            [
+              "atmosfera"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "answered": 0,
+      "changedAt": "2025-04-20T16:17:02.944Z"
+    },
+    {
+      "words": [
+        {
+          "word": "drought",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The region is suffering from its worst drought in 50 years."
+            }
+          ],
+          "translations": [
+            [
+              "seca"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.950Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hailstone",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Some hailstones were as big as golf balls during the storm"
+            }
+          ],
+          "translations": [
+            [
+              "granizo"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.954Z"
+    },
+    {
+      "words": [
+        {
+          "word": "thaw",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Spring thaw flooded the riverbanks."
+            }
+          ],
+          "translations": [
+            [
+              "descongelamento"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.957Z"
+    },
+    {
+      "words": [
+        {
+          "word": "fogbank",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A dense fogbank rolled in from the sea."
+            }
+          ],
+          "translations": [
+            [
+              "banco de neblina"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.960Z"
+    },
+    {
+      "words": [
+        {
+          "word": "air pressure",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Changes in air pressure can signal an approaching storm."
+            }
+          ],
+          "translations": [
+            [
+              "pressão do ar"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:20:27.420Z"
+    },
+    {
+      "words": [
+        {
+          "word": "cool",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The weather was cool and refreshing after the storm."
+            }
+          ],
+          "translations": [
+            [
+              "fresco"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:22:37.517Z"
+    },
+    {
+      "words": [
+        {
+          "word": "climate",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The local climate is mild and rainy throughout the year."
+            }
+          ],
+          "translations": [
+            [
+              "clima"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:25:37.392Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gust",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A powerful gust of wind slammed the door shut."
+            }
+          ],
+          "translations": [
+            [
+              "rajada"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:26:28.088Z"
+    },
+    {
+      "words": [
+        {
+          "word": "sunbeam",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A sunbeam broke through the thick clouds."
+            }
+          ],
+          "translations": [
+            [
+              "raio de sol"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:29:01.651Z"
+    },
+    {
+      "words": [
+        {
+          "word": "windstorm",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The windstorm knocked out power across the town."
+            }
+          ],
+          "translations": [
+            [
+              "tempestade de vento"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:30:03.963Z"
+    },
+    {
+      "words": [
+        {
+          "word": "squall",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A sudden squall hit the coast in the afternoon."
+            }
+          ],
+          "translations": [
+            [
+              "tempestade"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.963Z"
+    },
+    {
+      "words": [
+        {
+          "word": "downburst",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The aircraft encountered a dangerous downburst on landing."
+            }
+          ],
+          "translations": [
+            [
+              "explosão descendente"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.967Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tempest",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A tempest raged through the valley all night."
+            }
+          ],
+          "translations": [
+            [
+              "tempestade"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.970Z"
+    },
+    {
+      "words": [
+        {
+          "word": "glaze",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The road was covered in glaze after the freezing rain."
+            }
+          ],
+          "translations": [
+            [
+              "cobertura de gelo"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.972Z"
+    },
+    {
+      "words": [
+        {
+          "word": "frostbite",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "He suffered frostbite on his fingers after hiking in the cold."
+            }
+          ],
+          "translations": [
+            [
+              "congelamento"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.974Z"
+    },
+    {
+      "words": [
+        {
+          "word": "muggy",
+          "examples": [
+            {
+              "text": "It’s so muggy today, like a steam bath."
+            }
+          ],
+          "translations": [
+            [
+              "abafado"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.977Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rime",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The trees were covered in rime."
+            }
+          ],
+          "translations": [
+            [
+              "rima"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.979Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hurricane",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The hurricane made landfall last night."
+            }
+          ],
+          "translations": [
+            [
+              "furacão"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.982Z"
+    },
+    {
+      "words": [
+        {
+          "word": "twister",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The twister destroyed several barns."
+            }
+          ],
+          "translations": [
+            [
+              "tornado"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.985Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gustnado",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A gustnado swirled across the empty field."
+            }
+          ],
+          "translations": [
+            [
+              "tornado de rajadas"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.987Z"
+    },
+    {
+      "words": [
+        {
+          "word": "whiteout",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Visibility was near zero during the whiteout."
+            }
+          ],
+          "translations": [
+            [
+              "nevasca intensa"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.990Z"
+    },
+    {
+      "words": [
+        {
+          "word": "glimmer",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A glimmer of sun broke through the clouds."
+            }
+          ],
+          "translations": [
+            [
+              "vislumbre"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.992Z"
+    },
+    {
+      "words": [
+        {
+          "word": "gloom",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The morning gloom finally gave way to sunlight."
+            }
+          ],
+          "translations": [
+            [
+              "melancolia"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:02.997Z"
+    },
+    {
+      "words": [
+        {
+          "word": "scorch",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The sun began to scorch the dry fields."
+            }
+          ],
+          "translations": [
+            [
+              "queimar"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:03Z"
+    },
+    {
+      "words": [
+        {
+          "word": "flurry",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A sudden snow flurry covered the ground in minutes."
+            }
+          ],
+          "translations": [
+            [
+              "enxurrada"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:03.003Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hoarfrost",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The trees sparkled with hoarfrost in the morning light."
+            }
+          ],
+          "translations": [
+            [
+              "geada"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:03.007Z"
+    },
+    {
+      "words": [
+        {
+          "word": "tornado",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The tornado destroyed several buildings in its path."
+            }
+          ],
+          "translations": [
+            [
+              "tornado"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:29:37.278Z"
+    },
+    {
+      "words": [
+        {
+          "word": "overcast",
+          "examples": [
+            {
+              "text": "The sky is overcast, and there is a chance of showers."
+            }
+          ],
+          "translations": [
+            [
+              "encoberto"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:17:32.822Z"
+    },
+    {
+      "words": [
+        {
+          "word": "anticyclone",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "An anticyclone brought clear skies to the region."
+            }
+          ],
+          "translations": [
+            [
+              "anticiclone"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:21:37.777Z"
+    },
+    {
+      "words": [
+        {
+          "word": "atmospheric",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The atmospheric conditions were perfect for a thunderstorm."
+            }
+          ],
+          "translations": [
+            [
+              "atmosférico"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:21:50.591Z"
+    },
+    {
+      "words": [
+        {
+          "word": "barometer",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The barometer showed a sudden drop in pressure."
+            }
+          ],
+          "translations": [
+            [
+              "barômetro"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:22:03.066Z"
+    },
+    {
+      "words": [
+        {
+          "word": "hailstorm",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The hailstorm damaged several cars and roofs."
+            }
+          ],
+          "translations": [
+            [
+              "chuva de granizo"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:26:46.728Z"
+    },
+    {
+      "words": [
+        {
+          "word": "precipitation",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The region receives low precipitation during the summer."
+            }
+          ],
+          "translations": [
+            [
+              "precipitação"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:27:21.880Z"
+    },
+    {
+      "words": [
+        {
+          "word": "rainbow",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A rainbow appeared in the sky after the rain stopped."
+            }
+          ],
+          "translations": [
+            [
+              "arco-íris"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:27:48.109Z"
+    },
+    {
+      "words": [
+        {
+          "word": "raindrop",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "A single raindrop fell on the windshield."
+            }
+          ],
+          "translations": [
+            [
+              "gota de chuva"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:27:59.956Z"
+    },
+    {
+      "words": [
+        {
+          "word": "snowflake",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Each snowflake has a unique and delicate shape."
+            }
+          ],
+          "translations": [
+            [
+              "floco de neve"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:28:36.665Z"
+    },
+    {
+      "words": [
+        {
+          "word": "snowstorm",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The snowstorm lasted through the night."
+            }
+          ],
+          "translations": [
+            [
+              "tempestade de neve"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:28:48.630Z"
+    },
+    {
+      "words": [
+        {
+          "word": "thermometer",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "The thermometer showed minus ten degrees Celsius."
+            }
+          ],
+          "translations": [
+            [
+              "termômetro"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:29:26.812Z"
+    },
+    {
+      "words": [
+        {
+          "word": "ultraviolet",
+          "partOfSpeech": "noun",
+          "examples": [
+            {
+              "text": "Use sunscreen to protect your skin from ultraviolet rays."
+            }
+          ],
+          "translations": [
+            [
+              "ultravioleta"
+            ]
+          ],
+          "primary": true
+        }
+      ],
+      "changedAt": "2025-04-20T16:29:51.962Z"
     }
   ]
 }

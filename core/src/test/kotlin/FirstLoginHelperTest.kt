@@ -29,6 +29,7 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "uk", listOf(
                         mapOf("be" to "бути", "write" to "писати"),
+                        mapOf("windy" to "вітряно"),
                     )
                 ),
                 Arguments.of(
@@ -189,7 +190,7 @@ internal class FirstLoginHelperTest {
                     "ar",
                     listOf(
                         mapOf("read" to "يقرأ", "write" to "يكتب"),
-                        mapOf("weather" to "طقس"),
+                        mapOf("weather" to "الطقس"),
                     )
                 ),
                 Arguments.of(
