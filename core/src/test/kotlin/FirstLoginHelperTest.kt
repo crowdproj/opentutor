@@ -120,7 +120,7 @@ internal class FirstLoginHelperTest {
                     "bg",
                     listOf(
                         mapOf("read" to "прочети", "write" to "пиша"),
-                        mapOf("weather" to "времето"),
+                        mapOf("weather" to "време"),
                     )
                 ),
                 Arguments.of(
