@@ -29,7 +29,9 @@ abstract class DbDictionaryRepositoryTest {
                 "preposition",
                 "conjunction",
                 "interjection",
-                "article"
+                "article",
+                "numeral",
+                "participle",
             )
         )
         private val RU = DbLang(

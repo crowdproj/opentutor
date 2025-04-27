@@ -78,7 +78,7 @@ internal fun MemDbCard.toDbCard(): DbCard {
 }
 
 internal fun DbCard.toMemDbCard(): MemDbCard {
-    val dictionaryId = dictionaryId.toLong()
+    val dictionaryId = dictionaryId.takeIf { it.isNotBlank() }?.toLong()
     return MemDbCard(
         id = if (this.cardId.isBlank()) null else this.cardId.toLong(),
         dictionaryId = dictionaryId,
