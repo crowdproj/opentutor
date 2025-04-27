@@ -74,17 +74,17 @@ fun StageResultScreen(
                     .padding(8.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                TableCell(
-                    text = "Word",
+                HeaderTableCell(
+                    text = "WORD",
                     weight = FIRST_COLUMN_WIDTH,
                     containerWidthDp = containerWidthDp
                 )
-                TableCell(
-                    text = "Translation",
+                HeaderTableCell(
+                    text = "TRANSLATION",
                     weight = SECOND_COLUMN_WIDTH,
                     containerWidthDp = containerWidthDp
                 )
-                TableCell(
+                HeaderTableCell(
                     text = "%",
                     weight = THIRD_COLUMN_WIDTH,
                     containerWidthDp = containerWidthDp

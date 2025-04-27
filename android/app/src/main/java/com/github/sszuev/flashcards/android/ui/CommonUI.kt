@@ -130,8 +130,12 @@ fun HeaderTableCell(
         weight = weight,
         containerWidthDp = containerWidthDp,
         onClick = onClick,
-        fontSize = 18.sp,
+        fontSize = 12.sp,
         textColor = Color.Black,
+        softWrap = false,
+        overflow = TextOverflow.Ellipsis,
+        maxLines = 1,
+        fontWeight = FontWeight.W900,
     )
 }
 
@@ -145,11 +149,15 @@ fun TableCell(
     textColor: Color = Color.DarkGray,
     softWrap: Boolean = true,
     onClick: (() -> Unit)? = null,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    fontWeight: FontWeight = FontWeight.Bold,
+    padding: Dp = 1.dp,
 ) {
     Box(
         modifier = Modifier
             .width(((containerWidthDp * weight) / 100f))
-            .padding(4.dp)
+            .padding(padding)
             .let {
                 if (onClick != null) {
                     it.clickable { onClick() }
@@ -165,6 +173,9 @@ fun TableCell(
             textColor = textColor,
             fontSize = fontSize,
             softWrap = softWrap,
+            overflow = overflow,
+            maxLines = maxLines,
+            fontWeight = fontWeight,
         )
     }
 }
@@ -355,17 +366,20 @@ fun TableCellText(
     textColor: Color = Color.DarkGray,
     innerPadding: Dp = 2.dp,
     softWrap: Boolean = true,
+    overflow: TextOverflow = TextOverflow.Clip,
+    maxLines: Int = Int.MAX_VALUE,
+    fontWeight: FontWeight = FontWeight.Bold,
 ) {
     Box(modifier = Modifier.padding(innerPadding)) {
         Text(
             text = text,
             textAlign = TextAlign.Start,
-            maxLines = Int.MAX_VALUE,
-            overflow = TextOverflow.Clip,
+            maxLines = maxLines,
+            overflow = overflow,
             softWrap = softWrap,
             lineHeight = lineHeight,
             style = MaterialTheme.typography.bodyLarge.copy(
-                fontWeight = FontWeight.Bold,
+                fontWeight = fontWeight,
                 color = textColor,
                 fontSize = fontSize,
                 letterSpacing = 0.5.sp,
