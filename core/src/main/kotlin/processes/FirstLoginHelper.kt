@@ -6,7 +6,6 @@ import com.gitlab.sszuev.flashcards.core.mappers.dictionary
 import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DocumentEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
@@ -124,11 +123,10 @@ internal fun DictionaryContext.populateBuiltinDictionaries(language: String) {
 
     documents.forEach { document ->
         val dictionary = document.dictionary.copy(userId = userId).toDbDictionary()
-        logger.info("Create dictionary '${dictionary.name}'")
-        val id = DictionaryId(this.repositories.dictionaryRepository.createDictionary(dictionary).dictionaryId)
-        val cards = document.cards.asSequence().map { it.copy(dictionaryId = id) }.map { it.toDbCard() }.toList()
-        logger.info("Dictionary '${dictionary.name}': id = $id, cards = ${cards.size}")
-        this.repositories.cardRepository.createCards(cards)
+        val cards = document.cards.asSequence().map { it.toDbCard() }.toList()
+        logger.info("Create document '${dictionary.name}'")
+        val id = this.repositories.documentRepository.save(dictionary, cards)
+        logger.info("Document '${dictionary.name}' was created: id = $id, cards = ${cards.size}")
     }
 }
 

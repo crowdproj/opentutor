@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.dictionaries
 import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbDictionaryRepository
+import com.gitlab.sszuev.flashcards.dbpg.PgDbDocumentRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbUserRepository
 import io.nats.client.Nats
 import io.nats.client.Options
@@ -19,6 +20,7 @@ fun main() {
             cardRepository = PgDbCardRepository().also { it.connect() },
             dictionaryRepository = PgDbDictionaryRepository().also { it.connect() },
             userRepository = PgDbUserRepository().also { it.connect() },
+            documentRepository = PgDbDocumentRepository().also { it.connect() },
         ),
         topic = DictionariesServerSettings.topic,
         group = DictionariesServerSettings.group,

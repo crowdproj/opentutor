@@ -3,6 +3,7 @@ package com.gitlab.sszuev.flashcards.services
 import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.dbmem.MemDbCardRepository
 import com.gitlab.sszuev.flashcards.dbmem.MemDbDictionaryRepository
+import com.gitlab.sszuev.flashcards.dbmem.MemDbDocumentRepository
 import com.gitlab.sszuev.flashcards.dbmem.MemDbUserRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
 import com.gitlab.sszuev.flashcards.speaker.createDirectTTSResourceRepository
@@ -14,6 +15,7 @@ val localDbRepositories: DbRepositories by lazy {
         cardRepository = MemDbCardRepository(),
         dictionaryRepository = MemDbDictionaryRepository(),
         userRepository = MemDbUserRepository(),
+        documentRepository = MemDbDocumentRepository(),
     )
 }
 

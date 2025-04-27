@@ -6,7 +6,7 @@ package com.gitlab.sszuev.flashcards.repositories
 interface DbDocumentRepository {
 
     /**
-     * Saves a document: dictionary with its cards.
+     * Saves a document (= dictionary with its cards).
      * @param dictionary [DbDictionary]
      * @param cards List<[DbCard]>
      * @return dictionary ID

@@ -29,12 +29,20 @@ class MemDbDocumentRepository(
         val changedAt = systemNow()
         val dictionaryId =
             checkNotNull(database.saveDictionary(dictionary.toMemDbDictionary().copy(changedAt = changedAt)).id)
+        val cardIds = mutableSetOf<Long>()
         try {
-            cards.forEach {
-                database.saveCard(it.toMemDbCard().copy(id = null, changedAt = changedAt, dictionaryId = dictionaryId))
+            cards.forEach { card ->
+                database.saveCard(
+                    card.toMemDbCard().copy(id = null, changedAt = changedAt, dictionaryId = dictionaryId)
+                ).id?.let {
+                    cardIds.add(it)
+                }
             }
         } catch (ex: Exception) {
             logger.error("Error during saving cards for dictionary-id=$dictionaryId", ex)
+            cardIds.forEach {
+                database.deleteCardById(it)
+            }
             database.deleteDictionaryById(dictionaryId)
             throw ex
         }
