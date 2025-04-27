@@ -1,0 +1,1283 @@
+{
+  "name": "Weather UK-EN",
+  "sourceLang": {
+    "langId": "uk",
+    "partsOfSpeech": [
+      "іменник",
+      "дієслово",
+      "прикметник",
+      "прислівник",
+      "займенник",
+      "прийменник",
+      "сполучник",
+      "вигук",
+      "артикль"
+    ]
+  },
+  "targetLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "антициклон",
+          "translations": [
+            [
+              "anticyclone"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "атмосфера",
+          "translations": [
+            [
+              "atmosphere"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "атмосферний тиск",
+          "translations": [
+            [
+              "air pressure"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "барометр",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "блискавка",
+          "translations": [
+            [
+              "lightning"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "буревій",
+          "translations": [
+            [
+              "windstorm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "буревійний",
+          "translations": [
+            [
+              "stormy"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "буря",
+          "translations": [
+            [
+              "storm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "буря з градом",
+          "translations": [
+            [
+              "hailstorm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "веселка",
+          "translations": [
+            [
+              "rainbow"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "весна",
+          "translations": [
+            [
+              "spring"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "видимість",
+          "translations": [
+            [
+              "visibility"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "випаровування",
+          "translations": [
+            [
+              "evaporation"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "високий тиск",
+          "translations": [
+            [
+              "high pressure"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "вологість",
+          "translations": [
+            [
+              "humidity"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "відлига",
+          "translations": [
+            [
+              "thaw"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "вітер",
+          "translations": [
+            [
+              "wind"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "вітряно",
+          "translations": [
+            [
+              "windy"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "град",
+          "translations": [
+            [
+              "hail"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "гроза",
+          "translations": [
+            [
+              "thunderstorm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "грім",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "дощ",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "завірюха",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "замерзання",
+          "translations": [
+            [
+              "freeze"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "заметіль",
+          "translations": [
+            [
+              "whiteout"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "захід сонця",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "зима",
+          "translations": [
+            [
+              "winter"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "злива",
+          "translations": [
+            [
+              "cloudburst",
+              "downpour",
+              "shower"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "калюжа",
+          "translations": [
+            [
+              "puddle"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "карта погоди",
+          "translations": [
+            [
+              "weather map"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "конденсація",
+          "translations": [
+            [
+              "condensation"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "крижаний шторм",
+          "translations": [
+            [
+              "ice storm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "легкий вітерець",
+          "translations": [
+            [
+              "breeze"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "лід",
+          "translations": [
+            [
+              "ice"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "мокрий сніг",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "морозно",
+          "translations": [
+            [
+              "freezing"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "мряка",
+          "translations": [
+            [
+              "drizzle"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "мусон",
+          "translations": [
+            [
+              "monsoon"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "мінлива хмарність",
+          "translations": [
+            [
+              "partly cloudy"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "напрямок вітру",
+          "translations": [
+            [
+              "wind direction"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "низький тиск",
+          "translations": [
+            [
+              "low pressure"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "озон",
+          "translations": [
+            [
+              "ozone"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "опади",
+          "translations": [
+            [
+              "precipitation",
+              "rainfall"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "пара",
+          "translations": [
+            [
+              "vapor"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "пекучий",
+          "translations": [
+            [
+              "scorching"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "пил",
+          "translations": [
+            [
+              "dust"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "пилова буря",
+          "translations": [
+            [
+              "dust storm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "погода",
+          "translations": [
+            [
+              "weather"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "погодний звіт",
+          "translations": [
+            [
+              "weather report"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "пора року",
+          "translations": [
+            [
+              "season"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "порив вітру",
+          "translations": [
+            [
+              "gust"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "порив снігу",
+          "translations": [
+            [
+              "flurry"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "посуха",
+          "translations": [
+            [
+              "drought"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "похмуро",
+          "translations": [
+            [
+              "overcast"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "прогноз",
+          "translations": [
+            [
+              "forecast"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "промінь сонця",
+          "translations": [
+            [
+              "sunbeam"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "прохолодно",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "роса",
+          "translations": [
+            [
+              "dew"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "слякоть",
+          "translations": [
+            [
+              "slush"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "смеркання",
+          "translations": [
+            [
+              "sundown"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "смог",
+          "translations": [
+            [
+              "smog"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "сніг",
+          "translations": [
+            [
+              "snow"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "снігова буря",
+          "translations": [
+            [
+              "snowstorm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "снігопад",
+          "translations": [
+            [
+              "snowfall"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "сніжинка",
+          "translations": [
+            [
+              "snowflake"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "сонце",
+          "translations": [
+            [
+              "sun"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "сонячне світло",
+          "translations": [
+            [
+              "sunlight"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "сонячно",
+          "translations": [
+            [
+              "sunny"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "спекотна хвиля",
+          "translations": [
+            [
+              "heatwave"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "спекотно",
+          "translations": [
+            [
+              "hot"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "схід сонця",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "температура",
+          "translations": [
+            [
+              "temperature"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "температура за відчуттями",
+          "translations": [
+            [
+              "wind chill"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "теплий фронт",
+          "translations": [
+            [
+              "warm front"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "тепло",
+          "translations": [
+            [
+              "warm"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "торнадо",
+          "translations": [
+            [
+              "tornado"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "туман",
+          "translations": [
+            [
+              "fog"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ультрафіолет",
+          "translations": [
+            [
+              "ultraviolet"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ураган",
+          "translations": [
+            [
+              "hurricane"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "хмара",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "хмарно",
+          "translations": [
+            [
+              "cloudy"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "холодний фронт",
+          "translations": [
+            [
+              "cold front"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "холодно",
+          "translations": [
+            [
+              "cold"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "циклон",
+          "translations": [
+            [
+              "cyclone"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "швидкість вітру",
+          "translations": [
+            [
+              "wind speed"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ясне небо",
+          "translations": [
+            [
+              "clear skies"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ясно",
+          "translations": [
+            [
+              "clear"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "імла",
+          "translations": [
+            [
+              "mist"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "іній",
+          "translations": [
+            [
+              "frost",
+              "hoarfrost"
+            ]
+          ],
+          "partOfSpeech": "іменник",
+          "primary": true
+        }
+      ]
+    }
+  ]
+}

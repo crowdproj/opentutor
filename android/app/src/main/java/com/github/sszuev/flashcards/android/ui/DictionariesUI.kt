@@ -61,11 +61,11 @@ import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 
 private const val tag = "DictionariesUI"
-private const val FIRST_COLUMN_WIDTH = 28
-private const val SECOND_COLUMN_WIDTH = 18
-private const val THIRD_COLUMN_WIDTH = 18
-private const val FOURTH_COLUMN_WIDTH = 18
-private const val FIFTH_COLUMN_WIDTH = 18
+private const val FIRST_COLUMN_WIDTH = 36
+private const val SECOND_COLUMN_WIDTH = 16
+private const val THIRD_COLUMN_WIDTH = 16
+private const val FOURTH_COLUMN_WIDTH = 16
+private const val FIFTH_COLUMN_WIDTH = 16
 
 @Composable
 fun DictionariesScreen(
@@ -289,31 +289,31 @@ fun DictionariesTableHeader(
             .height(60.dp)
     ) {
         HeaderTableCell(
-            text = "Name ${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
+            text = "NAME${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("name") }
         )
         HeaderTableCell(
-            text = "Source ${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
+            text = "SOURCE${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
             weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("sourceLanguage") }
         )
         HeaderTableCell(
-            text = "Target ${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
+            text = "TARGET${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("targetLanguage") }
         )
         HeaderTableCell(
-            text = "Words ${if (currentSortField == "totalWords") if (isAscending) "↑" else "↓" else ""}",
+            text = "WORDS${if (currentSortField == "totalWords") if (isAscending) " ↑" else " ↓" else ""}",
             weight = FOURTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("totalWords") }
         )
         HeaderTableCell(
-            text = "Learned ${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
+            text = "LEARN${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
             weight = FIFTH_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("learnedWords") }

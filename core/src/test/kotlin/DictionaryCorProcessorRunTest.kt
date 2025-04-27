@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.core.normalizers.normalize
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbCardRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDictionaryRepository
+import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbDocumentRepository
 import com.gitlab.sszuev.flashcards.dbcommon.mocks.MockDbUserRepository
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
@@ -17,6 +18,7 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
+import com.gitlab.sszuev.flashcards.repositories.DbDocumentRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -28,7 +30,8 @@ internal class DictionaryCorProcessorRunTest {
         @Suppress("SameParameterValue")
         private fun testContext(
             op: DictionaryOperation,
-            dictionaryRepository: DbDictionaryRepository,
+            dictionaryRepository: DbDictionaryRepository = MockDbDictionaryRepository(),
+            documentRepository: DbDocumentRepository = MockDbDocumentRepository(),
             cardsRepository: DbCardRepository = MockDbCardRepository(),
             userRepository: MockDbUserRepository = MockDbUserRepository(),
         ): DictionaryContext {
@@ -38,6 +41,7 @@ internal class DictionaryCorProcessorRunTest {
                     dictionaryRepository = dictionaryRepository,
                     cardRepository = cardsRepository,
                     userRepository = userRepository,
+                    documentRepository = documentRepository,
                 )
             )
             context.requestAppAuthId = testUserId
@@ -325,29 +329,13 @@ internal class DictionaryCorProcessorRunTest {
         """.trimIndent().toByteArray(Charsets.UTF_16)
         )
         val testDictionary = testDictionaryEntity
-        val testCard = testCardEntity1
 
-        var isCreateDictionaryCalled = false
-        var isCreateCardsCalled = false
-        val dictionaryRepository = MockDbDictionaryRepository(
-            invokeCreateDictionary = {
-                isCreateDictionaryCalled = true
-                if (it.name == "test") {
-                    testDictionary.toDbDictionary()
-                } else {
-                    Assertions.fail()
-                }
-            }
-        )
-        val cardsRepository = MockDbCardRepository(
-            invokeCreateCards = {
-                isCreateCardsCalled = true
-                val cards = it.toList()
-                if (cards.size == 1 &&
-                    cards[0].words.single().word == "test" &&
-                    cards[0].dictionaryId == testDictionary.dictionaryId.asString()
-                ) {
-                    listOf(testCard.toDbCard())
+        var isSaveDocumentCalled = false
+        val documentRepository = MockDbDocumentRepository(
+            invokeSave = { doc, cards ->
+                isSaveDocumentCalled = true
+                if (doc.name == "test") {
+                    testDictionary.dictionaryId.asString()
                 } else {
                     Assertions.fail()
                 }
@@ -356,8 +344,7 @@ internal class DictionaryCorProcessorRunTest {
 
         val context = testContext(
             op = DictionaryOperation.UPLOAD_DICTIONARY,
-            dictionaryRepository = dictionaryRepository,
-            cardsRepository = cardsRepository,
+            documentRepository = documentRepository,
         )
         context.requestDictionaryResourceEntity = testDocument
         context.requestDownloadDocumentType = "xml"
@@ -365,8 +352,7 @@ internal class DictionaryCorProcessorRunTest {
         DictionaryCorProcessor().execute(context)
 
         Assertions.assertTrue(context.errors.isEmpty()) { "errors: ${context.errors}" }
-        Assertions.assertTrue(isCreateDictionaryCalled)
-        Assertions.assertTrue(isCreateCardsCalled)
+        Assertions.assertTrue(isSaveDocumentCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.UPLOAD_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
     }
@@ -404,29 +390,13 @@ internal class DictionaryCorProcessorRunTest {
         """.trimIndent().toByteArray(Charsets.UTF_8)
         )
         val testDictionary = testDictionaryEntity
-        val testCard = testCardEntity1
 
-        var isCreateDictionaryCalled = false
-        var isCreateCardsCalled = false
-        val dictionaryRepository = MockDbDictionaryRepository(
-            invokeCreateDictionary = {
-                isCreateDictionaryCalled = true
-                if (it.name == "test") {
-                    testDictionary.toDbDictionary()
-                } else {
-                    Assertions.fail()
-                }
-            }
-        )
-        val cardsRepository = MockDbCardRepository(
-            invokeCreateCards = {
-                isCreateCardsCalled = true
-                val cards = it.toList()
-                if (cards.size == 1 &&
-                    cards[0].words.single().word == "test" &&
-                    cards[0].dictionaryId == testDictionary.dictionaryId.asString()
-                ) {
-                    listOf(testCard.toDbCard())
+        var isSaveDocumentCalled = false
+        val documentRepository = MockDbDocumentRepository(
+            invokeSave = { doc, cards ->
+                isSaveDocumentCalled = true
+                if (doc.name == "test") {
+                    testDictionary.dictionaryId.asString()
                 } else {
                     Assertions.fail()
                 }
@@ -435,8 +405,7 @@ internal class DictionaryCorProcessorRunTest {
 
         val context = testContext(
             op = DictionaryOperation.UPLOAD_DICTIONARY,
-            dictionaryRepository = dictionaryRepository,
-            cardsRepository = cardsRepository,
+            documentRepository = documentRepository,
         )
         context.requestDictionaryResourceEntity = testDocument
         context.requestDownloadDocumentType = "json"
@@ -444,8 +413,7 @@ internal class DictionaryCorProcessorRunTest {
         DictionaryCorProcessor().execute(context)
 
         Assertions.assertTrue(context.errors.isEmpty()) { "errors: ${context.errors}" }
-        Assertions.assertTrue(isCreateDictionaryCalled)
-        Assertions.assertTrue(isCreateCardsCalled)
+        Assertions.assertTrue(isSaveDocumentCalled)
         Assertions.assertEquals(requestId(DictionaryOperation.UPLOAD_DICTIONARY), context.requestId)
         Assertions.assertEquals(AppStatus.OK, context.status)
     }

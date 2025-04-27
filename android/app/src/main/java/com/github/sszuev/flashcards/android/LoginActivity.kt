@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
+import android.widget.TextView
 import androidx.activity.ComponentActivity
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -17,6 +18,7 @@ import net.openid.appauth.AuthorizationResponse
 import net.openid.appauth.AuthorizationService
 import net.openid.appauth.AuthorizationServiceConfiguration
 import net.openid.appauth.ResponseTypeValues
+import java.util.Locale
 
 class LoginActivity : ComponentActivity() {
 
@@ -31,6 +33,27 @@ class LoginActivity : ComponentActivity() {
         Log.i(tag, "START")
 
         setContentView(R.layout.activity_login)
+
+        val subtitleTextView = findViewById<TextView>(R.id.subtitle)
+
+        val localizedSubtitle = when (Locale.getDefault().language) {
+            "ru" -> "Добро пожаловать в opentutor. Войдите, чтобы сохранить прогресс."
+            "fr" -> "Bienvenue sur opentutor. Connectez-vous pour sauvegarder vos progrès."
+            "de" -> "Willkommen bei opentutor. Melden Sie sich an, um Ihren Fortschritt zu speichern."
+            "es" -> "Bienvenido a opentutor. Inicia sesión para guardar tu progreso."
+            "it" -> "Benvenuto su opentutor. Accedi per salvare i tuoi progressi."
+            "pt" -> "Bem-vindo ao opentutor. Faça login para salvar seu progresso."
+            "zh" -> "欢迎使用 opentutor。请登录以保存您的进度。"
+            "ja" -> "opentutor へようこそ。進捗を保存するにはサインインしてください。"
+            "ko" -> "opentutor에 오신 것을 환영합니다. 진행 상황을 저장하려면 로그인하세요."
+            "tr" -> "opentutor'a hoş geldiniz. İlerlemenizi kaydetmek için giriş yapın."
+            "pl" -> "Witamy w opentutor. Zaloguj się, aby zapisać swoje postępy."
+            "uk" -> "Ласкаво просимо до opentutor. Увійдіть, щоб зберегти свій прогрес."
+            "ar" -> "مرحبًا بك في opentutor. الرجاء تسجيل الدخول لحفظ تقدمك."
+            else -> "Welcome to opentutor. Please sign in to save your progress."
+        }
+
+        subtitleTextView.text = localizedSubtitle
 
         authService = AuthorizationService(this)
 

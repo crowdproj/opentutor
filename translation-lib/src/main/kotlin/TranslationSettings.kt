@@ -13,8 +13,6 @@ object TranslationSettings {
     val getResourceTimeoutMs = conf.get("translation.get-resource-timeout-ms", default = 5000L)
     val httpClientConnectTimeoutMs = conf.get("translation.http-client.connect-timeout-ms", default = 3000L)
     val httpClientRequestTimeoutMs = conf.get("translation.http-client.request-timeout-ms", default = 3000L)
-    val translationServiceLingueeApi =
-        conf.get("translation.service.linguee-api", default = "https://linguee-api.fly.dev/api/v2/translations")
     val translationServiceYandexApi =
         conf.get(
             "translation.service.yandex-api",
@@ -47,7 +45,7 @@ object TranslationSettings {
         } else if (hasGoogleTranslationService) {
             "GOOGLE"
         } else {
-            "LINGUEE"
+            "NULL"
         }
     }
 

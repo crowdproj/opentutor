@@ -105,3 +105,12 @@ function isIntNumber(value, min, max) {
     const number = parseInt(value, 10);
     return number >= min && number <= max;
 }
+
+function getTargetLanguage() {
+    const lang = (navigator.language || navigator.userLanguage || 'ru').toLowerCase();
+    const shortLang = lang.split('-')[0];
+    if (shortLang === 'en') {
+        return 'ru';
+    }
+    return shortLang;
+}

@@ -1,0 +1,5159 @@
+{
+  "name": "Irregular Verbs",
+  "sourceLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "targetLang": {
+    "langId": "uk",
+    "partsOfSpeech": [
+      "іменник",
+      "дієслово",
+      "прикметник",
+      "прислівник",
+      "займенник",
+      "прийменник",
+      "сполучник",
+      "вигук",
+      "артикль",
+      "числівник",
+      "дієприкметник"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "arise",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "виникати"
+            ]
+          ]
+        },
+        {
+          "word": "arose"
+        },
+        {
+          "word": "arisen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "awake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "прокидатися"
+            ]
+          ]
+        },
+        {
+          "word": "awakened | awoke"
+        },
+        {
+          "word": "awakened | awoken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "backslide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "відступати"
+            ]
+          ]
+        },
+        {
+          "word": "backslid"
+        },
+        {
+          "word": "backslidden | backslid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "народжувати"
+            ]
+          ]
+        },
+        {
+          "word": "bore"
+        },
+        {
+          "word": "born | borne"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "beat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "бити"
+            ]
+          ]
+        },
+        {
+          "word": "beat"
+        },
+        {
+          "word": "beaten | beat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "become",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ставати"
+            ]
+          ]
+        },
+        {
+          "word": "became"
+        },
+        {
+          "word": "become"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "begin",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "починати"
+            ]
+          ]
+        },
+        {
+          "word": "began"
+        },
+        {
+          "word": "begun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "гнути"
+            ]
+          ]
+        },
+        {
+          "word": "bent"
+        },
+        {
+          "word": "bent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "битися об заклад"
+            ]
+          ]
+        },
+        {
+          "word": "bet"
+        },
+        {
+          "word": "bet"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "зв'язувати"
+            ]
+          ]
+        },
+        {
+          "word": "bound"
+        },
+        {
+          "word": "bound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "кусати"
+            ]
+          ]
+        },
+        {
+          "word": "bit"
+        },
+        {
+          "word": "bitten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bleed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "кровоточити"
+            ]
+          ]
+        },
+        {
+          "word": "bled"
+        },
+        {
+          "word": "bled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "blow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "дути"
+            ]
+          ]
+        },
+        {
+          "word": "blew"
+        },
+        {
+          "word": "blown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "break",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ламати"
+            ]
+          ]
+        },
+        {
+          "word": "broke"
+        },
+        {
+          "word": "broken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "breed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розводити"
+            ]
+          ]
+        },
+        {
+          "word": "bred"
+        },
+        {
+          "word": "bred"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "приносити"
+            ]
+          ]
+        },
+        {
+          "word": "brought"
+        },
+        {
+          "word": "brought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "broadcast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "транслювати"
+            ]
+          ]
+        },
+        {
+          "word": "broadcast | broadcasted"
+        },
+        {
+          "word": "broadcast | broadcasted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "browbeat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "залякувати"
+            ]
+          ]
+        },
+        {
+          "word": "browbeat"
+        },
+        {
+          "word": "browbeaten | browbeat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "build",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "будувати"
+            ]
+          ]
+        },
+        {
+          "word": "built"
+        },
+        {
+          "word": "built"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "burn",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "горіти"
+            ]
+          ]
+        },
+        {
+          "word": "burned | burnt"
+        },
+        {
+          "word": "burned | burnt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "burst",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вибухати"
+            ]
+          ]
+        },
+        {
+          "word": "burst"
+        },
+        {
+          "word": "burst"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "bust",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "бюст"
+            ]
+          ]
+        },
+        {
+          "word": "busted | bust"
+        },
+        {
+          "word": "busted | bust"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "buy",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "купувати"
+            ]
+          ]
+        },
+        {
+          "word": "bought"
+        },
+        {
+          "word": "bought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "can",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "може"
+            ]
+          ]
+        },
+        {
+          "word": "could"
+        },
+        {
+          "word": "could"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "кидати"
+            ]
+          ]
+        },
+        {
+          "word": "cast"
+        },
+        {
+          "word": "cast"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "catch",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ловити"
+            ]
+          ]
+        },
+        {
+          "word": "caught"
+        },
+        {
+          "word": "caught"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "choose",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вибирати"
+            ]
+          ]
+        },
+        {
+          "word": "chose"
+        },
+        {
+          "word": "chosen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "чіплятися"
+            ]
+          ]
+        },
+        {
+          "word": "clung"
+        },
+        {
+          "word": "clung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "clothe",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "одягати"
+            ]
+          ]
+        },
+        {
+          "word": "clothed | clad"
+        },
+        {
+          "word": "clothed | clad"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "come",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "приходити"
+            ]
+          ]
+        },
+        {
+          "word": "came"
+        },
+        {
+          "word": "come"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cost",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "коштувати"
+            ]
+          ]
+        },
+        {
+          "word": "cost"
+        },
+        {
+          "word": "cost"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "creep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "повзти"
+            ]
+          ]
+        },
+        {
+          "word": "crept"
+        },
+        {
+          "word": "crept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "cut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "різати"
+            ]
+          ]
+        },
+        {
+          "word": "cut"
+        },
+        {
+          "word": "cut"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "deal",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "мати справу"
+            ]
+          ]
+        },
+        {
+          "word": "dealt"
+        },
+        {
+          "word": "dealt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dig",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "копати"
+            ]
+          ]
+        },
+        {
+          "word": "dug"
+        },
+        {
+          "word": "dug"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пірнати"
+            ]
+          ]
+        },
+        {
+          "word": "dove | dived"
+        },
+        {
+          "word": "dived"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "do",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "робити"
+            ]
+          ]
+        },
+        {
+          "word": "did"
+        },
+        {
+          "word": "done"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "draw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "малювати"
+            ]
+          ]
+        },
+        {
+          "word": "drew"
+        },
+        {
+          "word": "drawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dream",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "мріяти"
+            ]
+          ]
+        },
+        {
+          "word": "dreamed | dreamt"
+        },
+        {
+          "word": "dreamed | dreamt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пити"
+            ]
+          ]
+        },
+        {
+          "word": "drank"
+        },
+        {
+          "word": "drunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "drive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "водити"
+            ]
+          ]
+        },
+        {
+          "word": "drove"
+        },
+        {
+          "word": "driven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "dwell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "мешкати"
+            ]
+          ]
+        },
+        {
+          "word": "dwelt | dwelled"
+        },
+        {
+          "word": "dwelt | dwelled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "eat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "їсти"
+            ]
+          ]
+        },
+        {
+          "word": "ate"
+        },
+        {
+          "word": "eaten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fall",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "падати"
+            ]
+          ]
+        },
+        {
+          "word": "fell"
+        },
+        {
+          "word": "fallen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "feed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "годувати"
+            ]
+          ]
+        },
+        {
+          "word": "fed"
+        },
+        {
+          "word": "fed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "feel",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "відчувати"
+            ]
+          ]
+        },
+        {
+          "word": "felt"
+        },
+        {
+          "word": "felt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fight",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "боротися"
+            ]
+          ]
+        },
+        {
+          "word": "fought"
+        },
+        {
+          "word": "fought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "find",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "знаходити"
+            ]
+          ]
+        },
+        {
+          "word": "found"
+        },
+        {
+          "word": "found"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "підходити"
+            ]
+          ]
+        },
+        {
+          "word": "fit"
+        },
+        {
+          "word": "fit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "flee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "тікати"
+            ]
+          ]
+        },
+        {
+          "word": "fled"
+        },
+        {
+          "word": "fled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "швиряти"
+            ]
+          ]
+        },
+        {
+          "word": "flung"
+        },
+        {
+          "word": "flung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "fly",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "літати"
+            ]
+          ]
+        },
+        {
+          "word": "flew"
+        },
+        {
+          "word": "flown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "забороняти"
+            ]
+          ]
+        },
+        {
+          "word": "forbade"
+        },
+        {
+          "word": "forbidden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forecast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "передбачати"
+            ]
+          ]
+        },
+        {
+          "word": "forecast"
+        },
+        {
+          "word": "forecast"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foresee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "передбачати"
+            ]
+          ]
+        },
+        {
+          "word": "foresaw"
+        },
+        {
+          "word": "foreseen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "foretell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "передбачити"
+            ]
+          ]
+        },
+        {
+          "word": "foretold"
+        },
+        {
+          "word": "foretold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forget",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "забувати"
+            ]
+          ]
+        },
+        {
+          "word": "forgot"
+        },
+        {
+          "word": "forgotten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forgive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пробачати"
+            ]
+          ]
+        },
+        {
+          "word": "forgave"
+        },
+        {
+          "word": "forgiven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "forsake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "залишати"
+            ]
+          ]
+        },
+        {
+          "word": "forsook"
+        },
+        {
+          "word": "forsaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "freeze",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "замерзати"
+            ]
+          ]
+        },
+        {
+          "word": "froze"
+        },
+        {
+          "word": "frozen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "get",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "отримувати"
+            ]
+          ]
+        },
+        {
+          "word": "got"
+        },
+        {
+          "word": "gotten | got"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "give",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "давати"
+            ]
+          ]
+        },
+        {
+          "word": "gave"
+        },
+        {
+          "word": "given"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "go",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "йти"
+            ]
+          ]
+        },
+        {
+          "word": "went"
+        },
+        {
+          "word": "gone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "grind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "молоти"
+            ]
+          ]
+        },
+        {
+          "word": "ground"
+        },
+        {
+          "word": "ground"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "grow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "рости"
+            ]
+          ]
+        },
+        {
+          "word": "grew"
+        },
+        {
+          "word": "grown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hang",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "висіти"
+            ]
+          ]
+        },
+        {
+          "word": "hung | hanged"
+        },
+        {
+          "word": "hung | hanged"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "чути"
+            ]
+          ]
+        },
+        {
+          "word": "heard"
+        },
+        {
+          "word": "heard"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "рубати"
+            ]
+          ]
+        },
+        {
+          "word": "hewed"
+        },
+        {
+          "word": "hewn | hewed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ховати"
+            ]
+          ]
+        },
+        {
+          "word": "hid"
+        },
+        {
+          "word": "hidden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ударяти"
+            ]
+          ]
+        },
+        {
+          "word": "hit"
+        },
+        {
+          "word": "hit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "тримати"
+            ]
+          ]
+        },
+        {
+          "word": "held"
+        },
+        {
+          "word": "held"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "hurt",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "завдавати болю"
+            ]
+          ]
+        },
+        {
+          "word": "hurt"
+        },
+        {
+          "word": "hurt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "inlay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "інкрустація"
+            ]
+          ]
+        },
+        {
+          "word": "inlaid"
+        },
+        {
+          "word": "inlaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "input",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "введення"
+            ]
+          ]
+        },
+        {
+          "word": "input | inputted"
+        },
+        {
+          "word": "input | inputted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "interweave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "переплітаються"
+            ]
+          ]
+        },
+        {
+          "word": "interwove"
+        },
+        {
+          "word": "interwoven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "keep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "зберігати"
+            ]
+          ]
+        },
+        {
+          "word": "kept"
+        },
+        {
+          "word": "kept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "kneel",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ставати на коліна"
+            ]
+          ]
+        },
+        {
+          "word": "knelt | kneeled"
+        },
+        {
+          "word": "knelt | kneeled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "knit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "в'язати"
+            ]
+          ]
+        },
+        {
+          "word": "knitted | knit"
+        },
+        {
+          "word": "knitted | knit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "know",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "знати"
+            ]
+          ]
+        },
+        {
+          "word": "knew"
+        },
+        {
+          "word": "known"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "класти"
+            ]
+          ]
+        },
+        {
+          "word": "laid"
+        },
+        {
+          "word": "laid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lead",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вести"
+            ]
+          ]
+        },
+        {
+          "word": "led"
+        },
+        {
+          "word": "led"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lean",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "нахилятися"
+            ]
+          ]
+        },
+        {
+          "word": "leaned | leant"
+        },
+        {
+          "word": "leaned | leant"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "leap",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "стрибати"
+            ]
+          ]
+        },
+        {
+          "word": "leaped | leapt"
+        },
+        {
+          "word": "leaped | leapt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "learn",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вчитися"
+            ]
+          ]
+        },
+        {
+          "word": "learnt | learned"
+        },
+        {
+          "word": "learnt | learned"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "leave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "залишати"
+            ]
+          ]
+        },
+        {
+          "word": "left"
+        },
+        {
+          "word": "left"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "позичати"
+            ]
+          ]
+        },
+        {
+          "word": "lent"
+        },
+        {
+          "word": "lent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "let",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "дозволяти"
+            ]
+          ]
+        },
+        {
+          "word": "let"
+        },
+        {
+          "word": "let"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lie",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "лежати"
+            ]
+          ]
+        },
+        {
+          "word": "lay"
+        },
+        {
+          "word": "lain"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "light",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "запалювати"
+            ]
+          ]
+        },
+        {
+          "word": "lit | lighted"
+        },
+        {
+          "word": "lit | lighted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "lose",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "втрачати"
+            ]
+          ]
+        },
+        {
+          "word": "lost"
+        },
+        {
+          "word": "lost"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "make",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "робити"
+            ]
+          ]
+        },
+        {
+          "word": "made"
+        },
+        {
+          "word": "made"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "may",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "може"
+            ]
+          ]
+        },
+        {
+          "word": "might"
+        },
+        {
+          "word": "might"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mean",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "означати"
+            ]
+          ]
+        },
+        {
+          "word": "meant"
+        },
+        {
+          "word": "meant"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "meet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "зустрічати"
+            ]
+          ]
+        },
+        {
+          "word": "met"
+        },
+        {
+          "word": "met"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "mow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "косити"
+            ]
+          ]
+        },
+        {
+          "word": "mowed"
+        },
+        {
+          "word": "mowed | mown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "offset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "зсув"
+            ]
+          ]
+        },
+        {
+          "word": "offset"
+        },
+        {
+          "word": "offset"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перекупити"
+            ]
+          ]
+        },
+        {
+          "word": "outbid"
+        },
+        {
+          "word": "outbid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outdo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перевершити"
+            ]
+          ]
+        },
+        {
+          "word": "outdid"
+        },
+        {
+          "word": "outdone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outfight",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перебороти"
+            ]
+          ]
+        },
+        {
+          "word": "outfought"
+        },
+        {
+          "word": "outfought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outgrow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "переростати"
+            ]
+          ]
+        },
+        {
+          "word": "outgrew"
+        },
+        {
+          "word": "outgrown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "output",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вихід"
+            ]
+          ]
+        },
+        {
+          "word": "output | outputted"
+        },
+        {
+          "word": "output | outputted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outrun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "випереджати"
+            ]
+          ]
+        },
+        {
+          "word": "outran"
+        },
+        {
+          "word": "outrun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outsell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перевершувати продажі"
+            ]
+          ]
+        },
+        {
+          "word": "outsold"
+        },
+        {
+          "word": "outsold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "outshine",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "затьмарити"
+            ]
+          ]
+        },
+        {
+          "word": "outshone"
+        },
+        {
+          "word": "outshone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "завищена ставка"
+            ]
+          ]
+        },
+        {
+          "word": "overbid"
+        },
+        {
+          "word": "overbid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overcome",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перемагати"
+            ]
+          ]
+        },
+        {
+          "word": "overcame"
+        },
+        {
+          "word": "overcome"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overdo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перестаратися"
+            ]
+          ]
+        },
+        {
+          "word": "overdid"
+        },
+        {
+          "word": "overdone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overdraw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "овердрафт"
+            ]
+          ]
+        },
+        {
+          "word": "overdrew"
+        },
+        {
+          "word": "overdrawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overeat",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "переїдати"
+            ]
+          ]
+        },
+        {
+          "word": "overate"
+        },
+        {
+          "word": "overeaten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overfly",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "облітати"
+            ]
+          ]
+        },
+        {
+          "word": "overflew"
+        },
+        {
+          "word": "overflown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overhang",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "звис"
+            ]
+          ]
+        },
+        {
+          "word": "overhung"
+        },
+        {
+          "word": "overhung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overhear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "підслухати"
+            ]
+          ]
+        },
+        {
+          "word": "overheard"
+        },
+        {
+          "word": "overheard"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overlay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "накладання"
+            ]
+          ]
+        },
+        {
+          "word": "overlaid"
+        },
+        {
+          "word": "overlaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overpay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "переплачувати"
+            ]
+          ]
+        },
+        {
+          "word": "overpaid"
+        },
+        {
+          "word": "overpaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "override",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перевизначити"
+            ]
+          ]
+        },
+        {
+          "word": "overrode"
+        },
+        {
+          "word": "overridden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overrun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перевиконання"
+            ]
+          ]
+        },
+        {
+          "word": "overran"
+        },
+        {
+          "word": "overrun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "oversee",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "наглядати"
+            ]
+          ]
+        },
+        {
+          "word": "oversaw"
+        },
+        {
+          "word": "overseen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overshoot",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перевищення"
+            ]
+          ]
+        },
+        {
+          "word": "overshot"
+        },
+        {
+          "word": "overshot"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "oversleep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "проспати"
+            ]
+          ]
+        },
+        {
+          "word": "overslept"
+        },
+        {
+          "word": "overslept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overtake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "обганяти"
+            ]
+          ]
+        },
+        {
+          "word": "overtook"
+        },
+        {
+          "word": "overtaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "overthrow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "повалення"
+            ]
+          ]
+        },
+        {
+          "word": "overthrew"
+        },
+        {
+          "word": "overthrown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "partake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "брати участь"
+            ]
+          ]
+        },
+        {
+          "word": "partook"
+        },
+        {
+          "word": "partaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "pay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "платити"
+            ]
+          ]
+        },
+        {
+          "word": "paid"
+        },
+        {
+          "word": "paid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "plead",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "виправдовуватися"
+            ]
+          ]
+        },
+        {
+          "word": "pleaded | pled"
+        },
+        {
+          "word": "pleaded | pled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "prepay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "передоплата"
+            ]
+          ]
+        },
+        {
+          "word": "prepaid"
+        },
+        {
+          "word": "prepaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "prove",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "доводити"
+            ]
+          ]
+        },
+        {
+          "word": "proved"
+        },
+        {
+          "word": "proven | proved"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "put",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "класти"
+            ]
+          ]
+        },
+        {
+          "word": "put"
+        },
+        {
+          "word": "put"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "quit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "покидати"
+            ]
+          ]
+        },
+        {
+          "word": "quit | quitted"
+        },
+        {
+          "word": "quit | quitted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "read",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "читати"
+            ]
+          ]
+        },
+        {
+          "word": "read"
+        },
+        {
+          "word": "read"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rebind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "повторно зв'язати"
+            ]
+          ]
+        },
+        {
+          "word": "rebound"
+        },
+        {
+          "word": "rebound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rebuild",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перебудувати"
+            ]
+          ]
+        },
+        {
+          "word": "rebuilt"
+        },
+        {
+          "word": "rebuilt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "recast",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "переробити"
+            ]
+          ]
+        },
+        {
+          "word": "recast"
+        },
+        {
+          "word": "recast"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "redo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "повторити"
+            ]
+          ]
+        },
+        {
+          "word": "redid"
+        },
+        {
+          "word": "redone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rehear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "репетирувати"
+            ]
+          ]
+        },
+        {
+          "word": "reheard"
+        },
+        {
+          "word": "reheard"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "remake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ремейк"
+            ]
+          ]
+        },
+        {
+          "word": "remade"
+        },
+        {
+          "word": "remade"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розривати"
+            ]
+          ]
+        },
+        {
+          "word": "rent"
+        },
+        {
+          "word": "rent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "repay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "погасити"
+            ]
+          ]
+        },
+        {
+          "word": "repaid"
+        },
+        {
+          "word": "repaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rerun",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "повтор"
+            ]
+          ]
+        },
+        {
+          "word": "reran"
+        },
+        {
+          "word": "rerun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "resell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "перепродати"
+            ]
+          ]
+        },
+        {
+          "word": "resold"
+        },
+        {
+          "word": "resold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "reset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "скинути"
+            ]
+          ]
+        },
+        {
+          "word": "reset"
+        },
+        {
+          "word": "reset"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "resit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пересидіти"
+            ]
+          ]
+        },
+        {
+          "word": "resat"
+        },
+        {
+          "word": "resat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "retake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "повторити"
+            ]
+          ]
+        },
+        {
+          "word": "retook"
+        },
+        {
+          "word": "retaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "retell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "переказувати"
+            ]
+          ]
+        },
+        {
+          "word": "retold"
+        },
+        {
+          "word": "retold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rewrite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "переписати"
+            ]
+          ]
+        },
+        {
+          "word": "rewrote"
+        },
+        {
+          "word": "rewritten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "позбавляти"
+            ]
+          ]
+        },
+        {
+          "word": "rid"
+        },
+        {
+          "word": "rid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ride",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "їхати"
+            ]
+          ]
+        },
+        {
+          "word": "rode"
+        },
+        {
+          "word": "ridden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "ring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "дзвонити"
+            ]
+          ]
+        },
+        {
+          "word": "rang"
+        },
+        {
+          "word": "rung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "rise",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "підніматися"
+            ]
+          ]
+        },
+        {
+          "word": "rose"
+        },
+        {
+          "word": "risen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "run",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "бігти"
+            ]
+          ]
+        },
+        {
+          "word": "ran"
+        },
+        {
+          "word": "run"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "saw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пиляти"
+            ]
+          ]
+        },
+        {
+          "word": "sawed"
+        },
+        {
+          "word": "sawed | sawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "say",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "казати"
+            ]
+          ]
+        },
+        {
+          "word": "said"
+        },
+        {
+          "word": "said"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "see",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "бачити"
+            ]
+          ]
+        },
+        {
+          "word": "saw"
+        },
+        {
+          "word": "seen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "seek",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "шукати"
+            ]
+          ]
+        },
+        {
+          "word": "sought"
+        },
+        {
+          "word": "sought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "продавати"
+            ]
+          ]
+        },
+        {
+          "word": "sold"
+        },
+        {
+          "word": "sold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "send",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "відправляти"
+            ]
+          ]
+        },
+        {
+          "word": "sent"
+        },
+        {
+          "word": "sent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "set",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "встановлювати"
+            ]
+          ]
+        },
+        {
+          "word": "set"
+        },
+        {
+          "word": "set"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "шити"
+            ]
+          ]
+        },
+        {
+          "word": "sewed"
+        },
+        {
+          "word": "sewn | sewed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "трясти"
+            ]
+          ]
+        },
+        {
+          "word": "shook"
+        },
+        {
+          "word": "shaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "голитися"
+            ]
+          ]
+        },
+        {
+          "word": "shaved"
+        },
+        {
+          "word": "shaved | shaven"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "зсув"
+            ]
+          ]
+        },
+        {
+          "word": "sheared"
+        },
+        {
+          "word": "sheared | shorn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "проливати"
+            ]
+          ]
+        },
+        {
+          "word": "shed"
+        },
+        {
+          "word": "shed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shine",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "світити"
+            ]
+          ]
+        },
+        {
+          "word": "shined | shone"
+        },
+        {
+          "word": "shined | shone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shoot",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "стріляти"
+            ]
+          ]
+        },
+        {
+          "word": "shot"
+        },
+        {
+          "word": "shot"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "show",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "показувати"
+            ]
+          ]
+        },
+        {
+          "word": "showed"
+        },
+        {
+          "word": "shown | showed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shrink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "зменшуватися"
+            ]
+          ]
+        },
+        {
+          "word": "shrank | shrunk"
+        },
+        {
+          "word": "shrunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "shut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "закривати"
+            ]
+          ]
+        },
+        {
+          "word": "shut"
+        },
+        {
+          "word": "shut"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sing",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "співати"
+            ]
+          ]
+        },
+        {
+          "word": "sang"
+        },
+        {
+          "word": "sung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "тонути"
+            ]
+          ]
+        },
+        {
+          "word": "sank | sunk"
+        },
+        {
+          "word": "sunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "сидіти"
+            ]
+          ]
+        },
+        {
+          "word": "sat"
+        },
+        {
+          "word": "sat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вбивати"
+            ]
+          ]
+        },
+        {
+          "word": "slew | slayed"
+        },
+        {
+          "word": "slain | slayed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sleep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "спати"
+            ]
+          ]
+        },
+        {
+          "word": "slept"
+        },
+        {
+          "word": "slept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slide",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ковзати"
+            ]
+          ]
+        },
+        {
+          "word": "slid"
+        },
+        {
+          "word": "slid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sling",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "метати"
+            ]
+          ]
+        },
+        {
+          "word": "slung"
+        },
+        {
+          "word": "slung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "крастися"
+            ]
+          ]
+        },
+        {
+          "word": "slunk"
+        },
+        {
+          "word": "slunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "slit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "різати"
+            ]
+          ]
+        },
+        {
+          "word": "slit"
+        },
+        {
+          "word": "slit"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "smell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пахнути"
+            ]
+          ]
+        },
+        {
+          "word": "smelled | smelt"
+        },
+        {
+          "word": "smelled | smelt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sow",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "сіяти"
+            ]
+          ]
+        },
+        {
+          "word": "sowed"
+        },
+        {
+          "word": "sown | sowed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "speak",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "говорити"
+            ]
+          ]
+        },
+        {
+          "word": "spoke"
+        },
+        {
+          "word": "spoken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "speed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "прискорювати"
+            ]
+          ]
+        },
+        {
+          "word": "sped | speeded"
+        },
+        {
+          "word": "sped | speeded"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "заклинання"
+            ]
+          ]
+        },
+        {
+          "word": "spelled | spelt"
+        },
+        {
+          "word": "spelled | spelt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "витрачати"
+            ]
+          ]
+        },
+        {
+          "word": "spent"
+        },
+        {
+          "word": "spent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spill",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розливати"
+            ]
+          ]
+        },
+        {
+          "word": "spilled | spilt"
+        },
+        {
+          "word": "spilled | spilt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spin",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "крутити"
+            ]
+          ]
+        },
+        {
+          "word": "spun"
+        },
+        {
+          "word": "spun"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spit",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "плювати"
+            ]
+          ]
+        },
+        {
+          "word": "spit | spat"
+        },
+        {
+          "word": "spit | spat"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "split",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розділяти"
+            ]
+          ]
+        },
+        {
+          "word": "split"
+        },
+        {
+          "word": "split"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spoil",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "псувати"
+            ]
+          ]
+        },
+        {
+          "word": "spoiled | spoilt"
+        },
+        {
+          "word": "spoiled | spoilt"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spread",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "поширювати"
+            ]
+          ]
+        },
+        {
+          "word": "spread"
+        },
+        {
+          "word": "spread"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "spring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "стрибати"
+            ]
+          ]
+        },
+        {
+          "word": "sprang | sprung"
+        },
+        {
+          "word": "sprung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "стояти"
+            ]
+          ]
+        },
+        {
+          "word": "stood"
+        },
+        {
+          "word": "stood"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "steal",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "красти"
+            ]
+          ]
+        },
+        {
+          "word": "stole"
+        },
+        {
+          "word": "stolen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stick",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "приклеювати"
+            ]
+          ]
+        },
+        {
+          "word": "stuck"
+        },
+        {
+          "word": "stuck"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sting",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "жалити"
+            ]
+          ]
+        },
+        {
+          "word": "stung"
+        },
+        {
+          "word": "stung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stink",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "смердіти"
+            ]
+          ]
+        },
+        {
+          "word": "stunk | stank"
+        },
+        {
+          "word": "stunk"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strew",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "посипати"
+            ]
+          ]
+        },
+        {
+          "word": "strewed"
+        },
+        {
+          "word": "strewn | strewed"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "stride",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "крокувати"
+            ]
+          ]
+        },
+        {
+          "word": "strode"
+        },
+        {
+          "word": "stridden"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strike",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вдаряти"
+            ]
+          ]
+        },
+        {
+          "word": "struck"
+        },
+        {
+          "word": "struck"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "string",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "нанизувати"
+            ]
+          ]
+        },
+        {
+          "word": "strung"
+        },
+        {
+          "word": "strung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "strive",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "намагатися"
+            ]
+          ]
+        },
+        {
+          "word": "strove | strived"
+        },
+        {
+          "word": "striven | strived"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sublet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "суборенда"
+            ]
+          ]
+        },
+        {
+          "word": "sublet"
+        },
+        {
+          "word": "sublet"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "присягати"
+            ]
+          ]
+        },
+        {
+          "word": "swore"
+        },
+        {
+          "word": "sworn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "sweep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "підмітати"
+            ]
+          ]
+        },
+        {
+          "word": "swept"
+        },
+        {
+          "word": "swept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "надуватися"
+            ]
+          ]
+        },
+        {
+          "word": "swelled"
+        },
+        {
+          "word": "swollen | swelled"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swim",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "плавати"
+            ]
+          ]
+        },
+        {
+          "word": "swam"
+        },
+        {
+          "word": "swum"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "swing",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "гойдатися"
+            ]
+          ]
+        },
+        {
+          "word": "swung"
+        },
+        {
+          "word": "swung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "take",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "брати"
+            ]
+          ]
+        },
+        {
+          "word": "took"
+        },
+        {
+          "word": "taken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "teach",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вчити"
+            ]
+          ]
+        },
+        {
+          "word": "taught"
+        },
+        {
+          "word": "taught"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "рвати"
+            ]
+          ]
+        },
+        {
+          "word": "tore"
+        },
+        {
+          "word": "torn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розповідати"
+            ]
+          ]
+        },
+        {
+          "word": "told"
+        },
+        {
+          "word": "told"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "think",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "думати"
+            ]
+          ]
+        },
+        {
+          "word": "thought"
+        },
+        {
+          "word": "thought"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "throw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "кидати"
+            ]
+          ]
+        },
+        {
+          "word": "threw"
+        },
+        {
+          "word": "thrown"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "thrust",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "штовхати"
+            ]
+          ]
+        },
+        {
+          "word": "thrust"
+        },
+        {
+          "word": "thrust"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "tread",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ступати"
+            ]
+          ]
+        },
+        {
+          "word": "trod"
+        },
+        {
+          "word": "trodden | trod"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unbend",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розігнути"
+            ]
+          ]
+        },
+        {
+          "word": "unbent"
+        },
+        {
+          "word": "unbent"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underbid",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "занижена ставка"
+            ]
+          ]
+        },
+        {
+          "word": "underbid"
+        },
+        {
+          "word": "underbid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undercut",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "підрізати"
+            ]
+          ]
+        },
+        {
+          "word": "undercut"
+        },
+        {
+          "word": "undercut"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undergo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "пройти"
+            ]
+          ]
+        },
+        {
+          "word": "underwent"
+        },
+        {
+          "word": "undergone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underlie",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "лежать в основі"
+            ]
+          ]
+        },
+        {
+          "word": "underlay"
+        },
+        {
+          "word": "underlain"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underpay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "недоплачувати"
+            ]
+          ]
+        },
+        {
+          "word": "underpaid"
+        },
+        {
+          "word": "underpaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undersell",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "недопродаж"
+            ]
+          ]
+        },
+        {
+          "word": "undersold"
+        },
+        {
+          "word": "undersold"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "understand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розуміти"
+            ]
+          ]
+        },
+        {
+          "word": "understood"
+        },
+        {
+          "word": "understood"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undertake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "взятися"
+            ]
+          ]
+        },
+        {
+          "word": "undertook"
+        },
+        {
+          "word": "undertaken"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "underwrite",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "гарантувати"
+            ]
+          ]
+        },
+        {
+          "word": "underwrote"
+        },
+        {
+          "word": "underwritten"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "undo",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "скасувати"
+            ]
+          ]
+        },
+        {
+          "word": "undid"
+        },
+        {
+          "word": "undone"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unfreeze",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розморозити"
+            ]
+          ]
+        },
+        {
+          "word": "unfroze"
+        },
+        {
+          "word": "unfrozen"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unsay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "не сказати"
+            ]
+          ]
+        },
+        {
+          "word": "unsaid"
+        },
+        {
+          "word": "unsaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "unwind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "розмотати"
+            ]
+          ]
+        },
+        {
+          "word": "unwound"
+        },
+        {
+          "word": "unwound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "uphold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "підтримувати"
+            ]
+          ]
+        },
+        {
+          "word": "upheld"
+        },
+        {
+          "word": "upheld"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "upset",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "засмучувати"
+            ]
+          ]
+        },
+        {
+          "word": "upset"
+        },
+        {
+          "word": "upset"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wake",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "будити"
+            ]
+          ]
+        },
+        {
+          "word": "woke | waked"
+        },
+        {
+          "word": "woken | waked"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "waylay",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "шляховий шлях"
+            ]
+          ]
+        },
+        {
+          "word": "waylaid"
+        },
+        {
+          "word": "waylaid"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wear",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "носити"
+            ]
+          ]
+        },
+        {
+          "word": "wore"
+        },
+        {
+          "word": "worn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weave",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "ткати"
+            ]
+          ]
+        },
+        {
+          "word": "wove | weaved"
+        },
+        {
+          "word": "woven | weaved"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wed",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "одружуватися"
+            ]
+          ]
+        },
+        {
+          "word": "wed | wedded"
+        },
+        {
+          "word": "wed | wedded"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "weep",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "плакати"
+            ]
+          ]
+        },
+        {
+          "word": "wept"
+        },
+        {
+          "word": "wept"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wet",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "мочити"
+            ]
+          ]
+        },
+        {
+          "word": "wet | wetted"
+        },
+        {
+          "word": "wet | wetted"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "win",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "вигравати"
+            ]
+          ]
+        },
+        {
+          "word": "won"
+        },
+        {
+          "word": "won"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wind",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "заводити"
+            ]
+          ]
+        },
+        {
+          "word": "wound"
+        },
+        {
+          "word": "wound"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withdraw",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "відступати"
+            ]
+          ]
+        },
+        {
+          "word": "withdrew"
+        },
+        {
+          "word": "withdrawn"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withhold",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "утримувати"
+            ]
+          ]
+        },
+        {
+          "word": "withheld"
+        },
+        {
+          "word": "withheld"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "withstand",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "витримувати"
+            ]
+          ]
+        },
+        {
+          "word": "withstood"
+        },
+        {
+          "word": "withstood"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "wring",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "викручувати"
+            ]
+          ]
+        },
+        {
+          "word": "wrung"
+        },
+        {
+          "word": "wrung"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "write",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "писати"
+            ]
+          ]
+        },
+        {
+          "word": "wrote"
+        },
+        {
+          "word": "written"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "be",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "бути"
+            ]
+          ]
+        },
+        {
+          "word": "was | were"
+        },
+        {
+          "word": "been"
+        }
+      ],
+      "answered": 0
+    },
+    {
+      "words": [
+        {
+          "word": "have | has",
+          "transcription": "",
+          "partOfSpeech": "verb",
+          "translations": [
+            [
+              "мати | має"
+            ]
+          ]
+        },
+        {
+          "word": "had"
+        },
+        {
+          "word": "had"
+        }
+      ],
+      "answered": 0
+    }
+  ]
+}

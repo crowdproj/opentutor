@@ -92,7 +92,7 @@ internal class NatsTTSServerProcessorImplTest {
             service = service,
             topic = "XXX",
             group = "QQQ",
-            connectionUrl = connectionUrl,
+            connectionFactory = { Nats.connect(connectionUrl) },
         )
 
         TTSServerController(processor).start()
@@ -154,7 +154,7 @@ internal class NatsTTSServerProcessorImplTest {
             service = service,
             topic = "XXX",
             group = "QQQ",
-            connectionUrl = connectionUrl,
+            connectionFactory = { Nats.connect(connectionUrl) },
         )
 
         TTSServerController(processor).start()

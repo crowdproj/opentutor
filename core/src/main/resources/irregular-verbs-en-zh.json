@@ -18,16 +18,16 @@
     "langId": "zh",
     "partsOfSpeech": [
       "名词",
-      "形容词",
-      "数词",
-      "代词",
       "动词",
+      "形容词",
       "副词",
-      "分词",
+      "代词",
       "介词",
       "连词",
-      "助词",
-      "感叹词"
+      "感叹词",
+      "冠词",
+      "数词",
+      "分词"
     ]
   },
   "cards": [
@@ -81,7 +81,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "退步"
+              "倒退"
             ]
           ]
         },
@@ -102,7 +102,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "承受"
+              "生育"
             ]
           ]
         },
@@ -144,7 +144,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "成为"
+              "变成"
             ]
           ]
         },
@@ -480,7 +480,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "破产"
+              "摔碎"
             ]
           ]
         },
@@ -501,7 +501,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "买"
+              "购买"
             ]
           ]
         },
@@ -522,7 +522,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "能够"
+              "能"
             ]
           ]
         },
@@ -711,7 +711,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "切割"
+              "切"
             ]
           ]
         },
@@ -942,7 +942,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "掉落"
+              "跌倒"
             ]
           ]
         },
@@ -963,7 +963,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "喂养"
+              "喂"
             ]
           ]
         },
@@ -1005,7 +1005,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "战斗"
+              "打架"
             ]
           ]
         },
@@ -1047,7 +1047,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "适合"
+              "合身"
             ]
           ]
         },
@@ -1089,7 +1089,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "投掷"
+              "一扔"
             ]
           ]
         },
@@ -1152,7 +1152,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "预测"
+              "预报"
             ]
           ]
         },
@@ -1362,7 +1362,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "磨"
+              "研磨"
             ]
           ]
         },
@@ -1404,7 +1404,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "悬挂"
+              "挂"
             ]
           ]
         },
@@ -1446,7 +1446,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "砍"
+              "槎"
             ]
           ]
         },
@@ -1635,7 +1635,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "跪下"
+              "下跪"
             ]
           ]
         },
@@ -1656,7 +1656,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "编织"
+              "针织"
             ]
           ]
         },
@@ -1761,7 +1761,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "跳跃"
+              "飞跃"
             ]
           ]
         },
@@ -1971,7 +1971,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "意思"
+              "意味着"
             ]
           ]
         },
@@ -2013,7 +2013,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "割草"
+              "刈"
             ]
           ]
         },
@@ -2055,7 +2055,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "出价更高"
+              "出价高于"
             ]
           ]
         },
@@ -2076,7 +2076,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "胜过"
+              "超越"
             ]
           ]
         },
@@ -2097,7 +2097,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "打败"
+              "打赢"
             ]
           ]
         },
@@ -2118,7 +2118,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "长得比…快"
+              "长大"
             ]
           ]
         },
@@ -2160,7 +2160,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "跑赢"
+              "逃脱"
             ]
           ]
         },
@@ -2181,7 +2181,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "畅销"
+              "销量超出"
             ]
           ]
         },
@@ -2223,7 +2223,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "повелевать"
+              "出价过高"
             ]
           ]
         },
@@ -2265,7 +2265,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "做过头"
+              "过度"
             ]
           ]
         },
@@ -2307,7 +2307,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "吃得过多"
+              "吃得过饱"
             ]
           ]
         },
@@ -2370,7 +2370,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "偷听"
+              "无意中听到"
             ]
           ]
         },
@@ -2433,7 +2433,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "推翻"
+              "覆盖"
             ]
           ]
         },
@@ -2454,7 +2454,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "泛滥"
+              "超限"
             ]
           ]
         },
@@ -2496,7 +2496,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "超出"
+              "过冲"
             ]
           ]
         },
@@ -2538,7 +2538,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "赶上"
+              "超过"
             ]
           ]
         },
@@ -2580,7 +2580,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "参与"
+              "参加"
             ]
           ]
         },
@@ -2685,7 +2685,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "放"
+              "放置"
             ]
           ]
         },
@@ -2706,7 +2706,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "退出"
+              "辞职"
             ]
           ]
         },
@@ -2748,7 +2748,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "перевязывать"
+              "重新绑定"
             ]
           ]
         },
@@ -2790,10 +2790,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "изменять"
-            ],
-            [
-              "перестраивать"
+              "重铸"
             ]
           ]
         },
@@ -2835,7 +2832,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "слушать вторично"
+              "再审"
             ]
           ]
         },
@@ -2856,7 +2853,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "重新制作"
+              "翻拍"
             ]
           ]
         },
@@ -3003,7 +3000,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "重新占领"
+              "重拍"
             ]
           ]
         },
@@ -3045,7 +3042,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "重写"
+              "改写"
             ]
           ]
         },
@@ -3108,7 +3105,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "响"
+              "敲响"
             ]
           ]
         },
@@ -3318,7 +3315,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "шить"
+              "缝"
             ]
           ]
         },
@@ -3339,7 +3336,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "摇"
+              "摇动"
             ]
           ]
         },
@@ -3360,7 +3357,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "剃"
+              "刮胡子"
             ]
           ]
         },
@@ -3381,7 +3378,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "修剪"
+              "剪切"
             ]
           ]
         },
@@ -3402,7 +3399,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "脱落"
+              "棚"
             ]
           ]
         },
@@ -3423,7 +3420,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "闪耀"
+              "发光"
             ]
           ]
         },
@@ -3528,7 +3525,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "唱"
+              "唱歌"
             ]
           ]
         },
@@ -3591,7 +3588,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "杀害"
+              "杀死"
             ]
           ]
         },
@@ -3654,7 +3651,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "投掷"
+              "吊带"
             ]
           ]
         },
@@ -3675,10 +3672,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "красться"
-            ],
-            [
-              "идти крадучись"
+              "潜行"
             ]
           ]
         },
@@ -3699,7 +3693,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "撕裂"
+              "狭缝"
             ]
           ]
         },
@@ -3741,7 +3735,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "播种"
+              "母猪"
             ]
           ]
         },
@@ -3783,7 +3777,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "加速"
+              "速度"
             ]
           ]
         },
@@ -3846,7 +3840,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "洒出"
+              "洒"
             ]
           ]
         },
@@ -3867,7 +3861,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "прясть"
+              "旋转"
             ]
           ]
         },
@@ -3888,7 +3882,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "плевать"
+              "吐"
             ]
           ]
         },
@@ -3930,7 +3924,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "портить"
+              "破坏"
             ]
           ]
         },
@@ -3972,7 +3966,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "跳"
+              "春天"
             ]
           ]
         },
@@ -4014,7 +4008,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "偷"
+              "偷窃"
             ]
           ]
         },
@@ -4035,7 +4029,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "粘贴"
+              "戳"
             ]
           ]
         },
@@ -4056,7 +4050,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "刺"
+              "蜇"
             ]
           ]
         },
@@ -4098,10 +4092,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "усеять"
-            ],
-            [
-              "устлать"
+              "肸"
             ]
           ]
         },
@@ -4122,10 +4113,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "шагать"
-            ],
-            [
-              "наносить удар"
+              "步幅"
             ]
           ]
         },
@@ -4146,7 +4134,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "打击"
+              "罢工"
             ]
           ]
         },
@@ -4167,7 +4155,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "串"
+              "细绳"
             ]
           ]
         },
@@ -4209,7 +4197,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "передавать в субаренду"
+              "转租"
             ]
           ]
         },
@@ -4251,7 +4239,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "打扫"
+              "扫"
             ]
           ]
         },
@@ -4440,7 +4428,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "投掷"
+              "扔"
             ]
           ]
         },
@@ -4461,10 +4449,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "колоть"
-            ],
-            [
-              "пронзать"
+              "推力"
             ]
           ]
         },
@@ -4485,7 +4470,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "踩"
+              "踏"
             ]
           ]
         },
@@ -4506,10 +4491,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "выпрямляться"
-            ],
-            [
-              "разгибаться"
+              "伸直"
             ]
           ]
         },
@@ -4530,7 +4512,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "снижать цену"
+              "低于出价"
             ]
           ]
         },
@@ -4551,7 +4533,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "сбивать цены"
+              "底切"
             ]
           ]
         },
@@ -4572,10 +4554,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "испытывать"
-            ],
-            [
-              "переносить"
+              "经历"
             ]
           ]
         },
@@ -4596,7 +4575,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "лежать в основе"
+              "基础"
             ]
           ]
         },
@@ -4617,7 +4596,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "оплачивать слишком низко"
+              "少付工资"
             ]
           ]
         },
@@ -4638,7 +4617,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "продавать дешевле"
+              "抛售"
             ]
           ]
         },
@@ -4701,7 +4680,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подписываться"
+              "包销"
             ]
           ]
         },
@@ -4722,7 +4701,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "уничтожать сделанное"
+              "撤消"
             ]
           ]
         },
@@ -4743,7 +4722,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "размораживать"
+              "解冻"
             ]
           ]
         },
@@ -4764,7 +4743,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "брать назад свои слова"
+              "不说"
             ]
           ]
         },
@@ -4785,7 +4764,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "развертывать"
+              "放松"
             ]
           ]
         },
@@ -4806,7 +4785,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "поддерживать"
+              "坚持"
             ]
           ]
         },
@@ -4827,7 +4806,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "使心烦"
+              "沮丧的"
             ]
           ]
         },
@@ -4869,7 +4848,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "подстерегать"
+              "伏击"
             ]
           ]
         },
@@ -4932,10 +4911,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "жениться"
-            ],
-            [
-              "выдавать замуж"
+              "结婚"
             ]
           ]
         },
@@ -4977,10 +4953,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "мочить"
-            ],
-            [
-              "увлажнять"
+              "湿的"
             ]
           ]
         },
@@ -5022,7 +4995,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "缠绕"
+              "风"
             ]
           ]
         },
@@ -5043,7 +5016,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "撤退"
+              "提取"
             ]
           ]
         },
@@ -5064,7 +5037,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "拒绝"
+              "扣压"
             ]
           ]
         },
@@ -5085,7 +5058,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "抵挡"
+              "经受"
             ]
           ]
         },
@@ -5106,10 +5079,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "скрутить"
-            ],
-            [
-              "сжимать"
+              "拧"
             ]
           ]
         },
@@ -5172,7 +5142,7 @@
           "partOfSpeech": "verb",
           "translations": [
             [
-              "有"
+              "有 | 有"
             ]
           ]
         },

@@ -223,45 +223,31 @@ fun ChainDSL<DictionaryContext>.processUploadDictionary() = worker {
         val userId = this.normalizedRequestAppAuthId
         when (this.normalizedRequestDownloadDocumentType) {
             "xml" -> {
-                try {
-                    val document = createReader().parse(this.requestDictionaryResourceEntity.data)
-                    val dictionary = this.repositories.dictionaryRepository
-                        .createDictionary(
-                            document.toDictionaryEntity().normalize().copy(userId = userId).toDbDictionary()
-                        )
-                        .toDictionaryEntity(config).normalize()
-                    val cards = document.cards.asSequence()
-                        .map { it.toCardEntity(this.config) }
-                        .map { it.copy(dictionaryId = dictionary.dictionaryId) }
-                        .map { it.toDbCard() }
-                        .toList()
-                    if (cards.isNotEmpty()) {
-                        this.repositories.cardRepository.createCards(cards)
-                    }
-                    this.responseDictionaryEntity = dictionary
-                } catch (ex: Exception) {
-                    handleThrowable(DictionaryOperation.UPLOAD_DICTIONARY, ex)
-                }
+                val xmlDocument = createReader().parse(this.requestDictionaryResourceEntity.data)
+                val dbDictionary = xmlDocument.toDictionaryEntity().normalize().copy(userId = userId).toDbDictionary()
+                val dbCards = xmlDocument.cards.asSequence()
+                    .map { it.toCardEntity(this.config) }
+                    .map { it.toDbCard() }
+                    .toList()
+                val dictionaryId = this.repositories.documentRepository.save(
+                    dictionary = dbDictionary,
+                    cards = dbCards,
+                )
+                this.responseDictionaryEntity =
+                    dbDictionary.toDictionaryEntity(config).copy(dictionaryId = DictionaryId(dictionaryId))
             }
 
             "json" -> {
-                try {
-                    val document =
-                        documentEntityFromJson(this.requestDictionaryResourceEntity.data.toString(Charsets.UTF_8))
-                    val dictionary = this.repositories.dictionaryRepository
-                        .createDictionary(
-                            document.dictionary.normalize().copy(userId = userId).toDbDictionary()
-                        )
-                        .toDictionaryEntity(config).normalize()
-                    val cards =
-                        document.cards.map { it.copy(dictionaryId = dictionary.dictionaryId) }.map { it.toDbCard() }
-                    if (cards.isNotEmpty()) {
-                        this.repositories.cardRepository.createCards(cards)
-                    }
-                    this.responseDictionaryEntity = dictionary
-                } catch (ex: Exception) {
-                    handleThrowable(DictionaryOperation.UPLOAD_DICTIONARY, ex)
-                }
+                val jsonDocument =
+                    documentEntityFromJson(this.requestDictionaryResourceEntity.data.toString(Charsets.UTF_8))
+                val dbDictionary = jsonDocument.dictionary.normalize().copy(userId = userId).toDbDictionary()
+                val dbCards = jsonDocument.cards.map { it.toDbCard() }
+                val dictionaryId = this.repositories.documentRepository.save(
+                    dictionary = dbDictionary,
+                    cards = dbCards,
+                )
+                this.responseDictionaryEntity =
+                    dbDictionary.toDictionaryEntity(config).copy(dictionaryId = DictionaryId(dictionaryId))
             }
 
             else -> {

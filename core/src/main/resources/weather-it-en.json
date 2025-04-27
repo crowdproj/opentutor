@@ -1,0 +1,1322 @@
+{
+  "name": "Weather IT-EN",
+  "sourceLang": {
+    "langId": "it",
+    "partsOfSpeech": [
+      "sostantivo",
+      "verbo",
+      "aggettivo",
+      "avverbio",
+      "pronome",
+      "preposizione",
+      "congiunzione",
+      "interiezione",
+      "articolo"
+    ]
+  },
+  "targetLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "acquazzone",
+          "translations": [
+            [
+              "downpour"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "alba",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "alta pressione",
+          "translations": [
+            [
+              "high pressure"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "anticiclone",
+          "translations": [
+            [
+              "anticyclone"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "arcobaleno",
+          "translations": [
+            [
+              "rainbow"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "atmosfera",
+          "translations": [
+            [
+              "atmosphere"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "barometro",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "bassa pressione",
+          "translations": [
+            [
+              "low pressure"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "bollettino meteorologico",
+          "translations": [
+            [
+              "weather report"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "brezza",
+          "translations": [
+            [
+              "breeze"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "brina",
+          "translations": [
+            [
+              "frost",
+              "hoarfrost"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "bufera",
+          "translations": [
+            [
+              "flurry"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "bufera di neve",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "calar del sole",
+          "translations": [
+            [
+              "sundown"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "caldo",
+          "translations": [
+            [
+              "hot"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "cappa di neve",
+          "translations": [
+            [
+              "whiteout"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ciclone",
+          "translations": [
+            [
+              "cyclone"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "cieli sereni",
+          "translations": [
+            [
+              "clear skies"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "condensazione",
+          "translations": [
+            [
+              "condensation"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "congelamento",
+          "translations": [
+            [
+              "freeze"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "coperto",
+          "translations": [
+            [
+              "overcast"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "direzione del vento",
+          "translations": [
+            [
+              "wind direction"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "disgelo",
+          "translations": [
+            [
+              "thaw"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "evaporazione",
+          "translations": [
+            [
+              "evaporation"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fiocco di neve",
+          "translations": [
+            [
+              "snowflake"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "foschia",
+          "translations": [
+            [
+              "mist"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "freddo",
+          "translations": [
+            [
+              "cold"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "freddo percepito",
+          "translations": [
+            [
+              "wind chill"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fresco",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fronte caldo",
+          "translations": [
+            [
+              "warm front"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fronte freddo",
+          "translations": [
+            [
+              "cold front"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fulmine",
+          "translations": [
+            [
+              "lightning"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gelido",
+          "translations": [
+            [
+              "freezing"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ghiaccio",
+          "translations": [
+            [
+              "ice"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "grandine",
+          "translations": [
+            [
+              "hail"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "inverno",
+          "translations": [
+            [
+              "winter"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "luce solare",
+          "translations": [
+            [
+              "sunlight"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "mappa meteorologica",
+          "translations": [
+            [
+              "weather map"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "mite",
+          "translations": [
+            [
+              "warm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "monsone",
+          "translations": [
+            [
+              "monsoon"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "nebbia",
+          "translations": [
+            [
+              "fog"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "neve",
+          "translations": [
+            [
+              "snow"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "neve bagnata",
+          "translations": [
+            [
+              "slush"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "nevicata",
+          "translations": [
+            [
+              "snowfall"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "nevischio",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "nubifragio",
+          "translations": [
+            [
+              "cloudburst"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "nuvola",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "nuvoloso",
+          "translations": [
+            [
+              "cloudy"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ondata di calore",
+          "translations": [
+            [
+              "heatwave"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ozono",
+          "translations": [
+            [
+              "ozone"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "parzialmente nuvoloso",
+          "translations": [
+            [
+              "partly cloudy"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pioggerella",
+          "translations": [
+            [
+              "drizzle"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pioggia",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "piovosità",
+          "translations": [
+            [
+              "rainfall"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "polvere",
+          "translations": [
+            [
+              "dust"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pozzanghera",
+          "translations": [
+            [
+              "puddle"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "precipitazioni",
+          "translations": [
+            [
+              "precipitation"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pressione atmosferica",
+          "translations": [
+            [
+              "air pressure"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "previsione",
+          "translations": [
+            [
+              "forecast"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "primavera",
+          "translations": [
+            [
+              "spring"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "raffica",
+          "translations": [
+            [
+              "gust"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "raggio di sole",
+          "translations": [
+            [
+              "sunbeam"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rovente",
+          "translations": [
+            [
+              "scorching"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rovescio",
+          "translations": [
+            [
+              "shower"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rugiada",
+          "translations": [
+            [
+              "dew"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sereno",
+          "translations": [
+            [
+              "clear"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "siccità",
+          "translations": [
+            [
+              "drought"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "smog",
+          "translations": [
+            [
+              "smog"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sole",
+          "translations": [
+            [
+              "sun"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "soleggiato",
+          "translations": [
+            [
+              "sunny"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "stagione",
+          "translations": [
+            [
+              "season"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "temperatura",
+          "translations": [
+            [
+              "temperature"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tempesta",
+          "translations": [
+            [
+              "storm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tempesta di ghiaccio",
+          "translations": [
+            [
+              "ice storm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tempesta di grandine",
+          "translations": [
+            [
+              "hailstorm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tempesta di sabbia",
+          "translations": [
+            [
+              "dust storm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tempesta di vento",
+          "translations": [
+            [
+              "windstorm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tempestoso",
+          "translations": [
+            [
+              "stormy"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tempo",
+          "translations": [
+            [
+              "weather"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "temporale",
+          "translations": [
+            [
+              "thunderstorm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tormenta",
+          "translations": [
+            [
+              "snowstorm"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tornado",
+          "translations": [
+            [
+              "tornado"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tramonto",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tuono",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ultravioletto",
+          "translations": [
+            [
+              "ultraviolet"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "umidità",
+          "translations": [
+            [
+              "humidity"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "uragano",
+          "translations": [
+            [
+              "hurricane"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "vapore",
+          "translations": [
+            [
+              "vapor"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "velocità del vento",
+          "translations": [
+            [
+              "wind speed"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "vento",
+          "translations": [
+            [
+              "wind"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ventoso",
+          "translations": [
+            [
+              "windy"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "visibilità",
+          "translations": [
+            [
+              "visibility"
+            ]
+          ],
+          "partOfSpeech": "sostantivo",
+          "primary": true
+        }
+      ]
+    }
+  ]
+}

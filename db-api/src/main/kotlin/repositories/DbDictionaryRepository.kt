@@ -19,13 +19,13 @@ interface DbDictionaryRepository {
 
     /**
      * Creates dictionary.
-     * @throws IllegalArgumentException if the specified dictionary has illegal structure
+     * @throws IllegalArgumentException if the specified dictionary has an illegal structure
      */
     fun createDictionary(entity: DbDictionary): DbDictionary
 
     /**
      * Updates dictionary.
-     * @throws IllegalArgumentException if the specified dictionary has illegal structure
+     * @throws IllegalArgumentException if the specified dictionary has an illegal structure
      * @throws DbDataException dictionary not found.
      */
     fun updateDictionary(entity: DbDictionary): DbDictionary

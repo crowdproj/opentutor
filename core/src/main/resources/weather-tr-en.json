@@ -1,0 +1,1309 @@
+{
+  "name": "Weather TR-EN",
+  "sourceLang": {
+    "langId": "tr",
+    "partsOfSpeech": [
+      "isim",
+      "fiil",
+      "sıfat",
+      "zarf",
+      "zamir",
+      "edat",
+      "bağlaç",
+      "ünlem",
+      "tanımlık"
+    ]
+  },
+  "targetLang": {
+    "langId": "en",
+    "partsOfSpeech": [
+      "noun",
+      "verb",
+      "adjective",
+      "adverb",
+      "pronoun",
+      "preposition",
+      "conjunction",
+      "interjection",
+      "article"
+    ]
+  },
+  "cards": [
+    {
+      "words": [
+        {
+          "word": "akşam",
+          "translations": [
+            [
+              "sundown"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "alçak basınç",
+          "translations": [
+            [
+              "low pressure"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ani sağanak",
+          "translations": [
+            [
+              "cloudburst"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "atmosfer",
+          "translations": [
+            [
+              "atmosphere"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "açık",
+          "translations": [
+            [
+              "clear"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "açık gökyüzü",
+          "translations": [
+            [
+              "clear skies"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "barometre",
+          "translations": [
+            [
+              "barometer"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "beyaz kırağı",
+          "translations": [
+            [
+              "hoarfrost"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "buhar",
+          "translations": [
+            [
+              "vapor"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "buharlaşma",
+          "translations": [
+            [
+              "evaporation"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "bulut",
+          "translations": [
+            [
+              "cloud"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "bulutlu",
+          "translations": [
+            [
+              "cloudy"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "buz",
+          "translations": [
+            [
+              "ice"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "buz fırtınası",
+          "translations": [
+            [
+              "ice storm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "dolu",
+          "translations": [
+            [
+              "hail"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "dolu fırtınası",
+          "translations": [
+            [
+              "hailstorm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "don",
+          "translations": [
+            [
+              "freeze"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "donma",
+          "translations": [
+            [
+              "freezing"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "erime",
+          "translations": [
+            [
+              "thaw"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "esinti",
+          "translations": [
+            [
+              "breeze"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fırtına",
+          "translations": [
+            [
+              "storm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "fırtınalı",
+          "translations": [
+            [
+              "stormy"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gök gürültülü fırtına",
+          "translations": [
+            [
+              "thunderstorm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gök gürültüsü",
+          "translations": [
+            [
+              "thunder"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gökkuşağı",
+          "translations": [
+            [
+              "rainbow"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "görüş mesafesi",
+          "translations": [
+            [
+              "visibility"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gün batımı",
+          "translations": [
+            [
+              "sunset"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gün doğumu",
+          "translations": [
+            [
+              "sunrise"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "gün ışığı",
+          "translations": [
+            [
+              "sunlight"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "güneş",
+          "translations": [
+            [
+              "sun"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "güneş ışını",
+          "translations": [
+            [
+              "sunbeam"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "güneşli",
+          "translations": [
+            [
+              "sunny"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "hava",
+          "translations": [
+            [
+              "weather"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "hava basıncı",
+          "translations": [
+            [
+              "air pressure"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "hava durumu raporu",
+          "translations": [
+            [
+              "weather report"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "hava haritası",
+          "translations": [
+            [
+              "weather map"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "hava tahmini",
+          "translations": [
+            [
+              "forecast"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "hissedilen sıcaklık",
+          "translations": [
+            [
+              "wind chill"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "hortum",
+          "translations": [
+            [
+              "hurricane"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ilkbahar",
+          "translations": [
+            [
+              "spring"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kapalı",
+          "translations": [
+            [
+              "overcast"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kar",
+          "translations": [
+            [
+              "snow"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kar fırtınası",
+          "translations": [
+            [
+              "snowstorm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kar tanesi",
+          "translations": [
+            [
+              "snowflake"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kar yağışı",
+          "translations": [
+            [
+              "snowfall"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kar çarpıntısı",
+          "translations": [
+            [
+              "flurry"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kasırga",
+          "translations": [
+            [
+              "cyclone"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kuraklık",
+          "translations": [
+            [
+              "drought"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kırağı",
+          "translations": [
+            [
+              "frost"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "kış",
+          "translations": [
+            [
+              "winter"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "mevsim",
+          "translations": [
+            [
+              "season"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "morötesi",
+          "translations": [
+            [
+              "ultraviolet"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "muson",
+          "translations": [
+            [
+              "monsoon"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "nem",
+          "translations": [
+            [
+              "humidity"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ozon",
+          "translations": [
+            [
+              "ozone"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "parçalı bulutlu",
+          "translations": [
+            [
+              "partly cloudy"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "pus",
+          "translations": [
+            [
+              "mist"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rüzgar",
+          "translations": [
+            [
+              "wind"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rüzgar fırtınası",
+          "translations": [
+            [
+              "windstorm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rüzgar hızı",
+          "translations": [
+            [
+              "wind speed"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rüzgar yönü",
+          "translations": [
+            [
+              "wind direction"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "rüzgarlı",
+          "translations": [
+            [
+              "windy"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sağanak",
+          "translations": [
+            [
+              "shower"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "serin",
+          "translations": [
+            [
+              "chilly"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sis",
+          "translations": [
+            [
+              "fog"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sisli hava",
+          "translations": [
+            [
+              "smog"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "soğuk",
+          "translations": [
+            [
+              "cold"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "soğuk cephe",
+          "translations": [
+            [
+              "cold front"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "su birikintisi",
+          "translations": [
+            [
+              "puddle"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sulu kar",
+          "translations": [
+            [
+              "sleet"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sıcak",
+          "translations": [
+            [
+              "hot"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sıcak hava dalgası",
+          "translations": [
+            [
+              "heatwave"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "sıcaklık",
+          "translations": [
+            [
+              "temperature"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tipi",
+          "translations": [
+            [
+              "blizzard"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "tornado",
+          "translations": [
+            [
+              "tornado"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "toz",
+          "translations": [
+            [
+              "dust"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "toz fırtınası",
+          "translations": [
+            [
+              "dust storm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "yakıcı sıcak",
+          "translations": [
+            [
+              "scorching"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "yağmur",
+          "translations": [
+            [
+              "rain"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "yağış",
+          "translations": [
+            [
+              "precipitation",
+              "rainfall"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "yoğun kar",
+          "translations": [
+            [
+              "whiteout"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "yoğunlaşma",
+          "translations": [
+            [
+              "condensation"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "yüksek basınç",
+          "translations": [
+            [
+              "anticyclone",
+              "high pressure"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "çamur",
+          "translations": [
+            [
+              "slush"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "çiseleyen yağmur",
+          "translations": [
+            [
+              "drizzle"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "çiy",
+          "translations": [
+            [
+              "dew"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ılık",
+          "translations": [
+            [
+              "warm"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "ılık cephe",
+          "translations": [
+            [
+              "warm front"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "şiddetli rüzgar",
+          "translations": [
+            [
+              "gust"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "şiddetli yağmur",
+          "translations": [
+            [
+              "downpour"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    },
+    {
+      "words": [
+        {
+          "word": "şimşek",
+          "translations": [
+            [
+              "lightning"
+            ]
+          ],
+          "partOfSpeech": "isim",
+          "primary": true
+        }
+      ]
+    }
+  ]
+}

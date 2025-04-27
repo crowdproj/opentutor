@@ -18,21 +18,20 @@ internal class FirstLoginHelperTest {
     companion object {
 
         @JvmStatic
-        private fun builtIntVocabularies(): List<Arguments> {
+        private fun builtInDictionaries(): List<Arguments> {
             return listOf(
-                Arguments.of(
-                    "xx", listOf(
-                        mapOf("be" to "是", "write" to "写"),
-                        mapOf("weather" to "天气"),
-                    )
-                ), // unknown locale => en->zh
                 Arguments.of(
                     "zh", listOf(
                         mapOf("be" to "是", "write" to "写"),
                         mapOf("weather" to "天气"),
                     )
                 ),
-                Arguments.of("en", listOf(mapOf("天气" to "weather"))),
+                Arguments.of(
+                    "uk", listOf(
+                        mapOf("be" to "бути", "write" to "писати"),
+                        mapOf("windy" to "вітряно"),
+                    )
+                ),
                 Arguments.of(
                     "es",
                     listOf(
@@ -50,14 +49,14 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "ja",
                     listOf(
-                        mapOf("be" to "いる", "write" to "書く"),
+                        mapOf("be" to "なれ", "write" to "書く"),
                         mapOf("weather" to "天気"),
                     )
                 ),
                 Arguments.of(
                     "de",
                     listOf(
-                        mapOf("be" to "sein", "write" to "schreiben"),
+                        mapOf("be" to "Sei", "write" to "schreiben"),
                         mapOf("weather" to "Wetter"),
                     )
                 ),
@@ -71,14 +70,14 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "it",
                     listOf(
-                        mapOf("be" to "essere", "write" to "scrivere"),
+                        mapOf("be" to "Essere", "write" to "scrivere"),
                         mapOf("weather" to "tempo"),
                     )
                 ),
                 Arguments.of(
                     "pl",
                     listOf(
-                        mapOf("be" to "być", "write" to "pisać"),
+                        mapOf("be" to "Być", "write" to "pisać"),
                         mapOf("weather" to "pogoda")
                     ),
                 ),
@@ -99,7 +98,7 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "hu",
                     listOf(
-                        mapOf("read" to "olvas", "write" to "ír"),
+                        mapOf("read" to "olvas", "write" to "írj"),
                         mapOf("weather" to "időjárás"),
                     )
                 ),
@@ -120,8 +119,8 @@ internal class FirstLoginHelperTest {
                 Arguments.of(
                     "bg",
                     listOf(
-                        mapOf("read" to "чета", "write" to "пиша"),
-                        mapOf("weather" to "времето"),
+                        mapOf("read" to "прочети", "write" to "пиша"),
+                        mapOf("weather" to "време"),
                     )
                 ),
                 Arguments.of(
@@ -152,91 +151,106 @@ internal class FirstLoginHelperTest {
                         mapOf("weather" to "oras"),
                     )
                 ),
-                Arguments.of("lv",
+                Arguments.of(
+                    "lv",
                     listOf(
                         mapOf("read" to "lasīt", "write" to "rakstīt"),
                         mapOf("weather" to "laikapstākļi"),
                     )
                 ),
-                Arguments.of("sl",
+                Arguments.of(
+                    "sl",
                     listOf(
                         mapOf("read" to "brati", "write" to "pisati"),
                         mapOf("weather" to "vreme"),
                     )
                 ),
-                Arguments.of("et",
+                Arguments.of(
+                    "et",
                     listOf(
-                        mapOf("read" to "lugeda", "write" to "kirjutada"),
+                        mapOf("read" to "lugema", "write" to "kirjutama"),
                         mapOf("weather" to "ilm"),
                     )
                 ),
-                Arguments.of("mt",
+                Arguments.of(
+                    "mt",
                     listOf(
                         mapOf("read" to "taqra", "write" to "tikteb"),
                         mapOf("weather" to "temp"),
                     )
                 ),
-                Arguments.of("hi",
+                Arguments.of(
+                    "hi",
                     listOf(
                         mapOf("read" to "पढ़ना", "write" to "लिखना"),
                         mapOf("weather" to "मौसम"),
                     )
                 ),
-                Arguments.of("ar",
+                Arguments.of(
+                    "ar",
                     listOf(
                         mapOf("read" to "يقرأ", "write" to "يكتب"),
-                        mapOf("weather" to "طقس"),
+                        mapOf("weather" to "الطقس"),
                     )
                 ),
-                Arguments.of("bn",
+                Arguments.of(
+                    "bn",
                     listOf(
-                        mapOf("read" to "পড়া", "write" to "লেখা"),
+                        mapOf("read" to "পড়া", "write" to "লিখা"),
                         mapOf("weather" to "আবহাওয়া"),
                     )
                 ),
-                Arguments.of("pa",
+                Arguments.of(
+                    "pa",
                     listOf(
                         mapOf("read" to "ਪੜ੍ਹਨਾ", "write" to "ਲਿਖਣਾ"),
                         mapOf("weather" to "ਮੌਸਮ"),
                     )
                 ),
-                Arguments.of("vi",
+                Arguments.of(
+                    "vi",
                     listOf(
                         mapOf("read" to "đọc", "write" to "viết"),
                         mapOf("weather" to "thời tiết"),
                     )
                 ),
-                Arguments.of("mr",
+                Arguments.of(
+                    "mr",
                     listOf(
                         mapOf("read" to "वाचणे", "write" to "लिहिणे"),
                         mapOf("weather" to "हवामान"),
                     )
                 ),
-                Arguments.of("te",
+                Arguments.of(
+                    "te",
                     listOf(
                         mapOf("read" to "చదవు", "write" to "రాయు"),
                         mapOf("weather" to "వాతావరణం"),
                     )
                 ),
-                Arguments.of("jv",
+                Arguments.of(
+                    "jv",
                     listOf(
                         mapOf("read" to "maca", "write" to "nulis"),
                         mapOf("weather" to "cuaca"),
                     )
                 ),
-                Arguments.of("ko",
+                Arguments.of(
+                    "ko",
                     listOf(
                         mapOf("read" to "읽다", "write" to "쓰다"),
                         mapOf("weather" to "날씨"),
                     )
                 ),
-                Arguments.of("ta",
+                Arguments.of(
+                    "ta",
                     listOf(
                         mapOf("read" to "படி", "write" to "எழுது"),
                         mapOf("weather" to "வானிலை"),
                     )
                 ),
-                Arguments.of("tr",
+                Arguments.of(
+                    "tr",
                     listOf(
                         mapOf("read" to "okumak", "write" to "yazmak"),
                         mapOf("weather" to "hava durumu"),
@@ -283,8 +297,55 @@ internal class FirstLoginHelperTest {
         Assertions.assertEquals(1, data.size)
     }
 
+    @Test
+    fun `test load builtin documents for default locale (ru)`() {
+        val documents = loadBuiltinDocuments("xx").toList()
+        Assertions.assertEquals(
+            setOf(
+                "Irregular Verbs",
+                "Weather",
+                "Common Words #01",
+                "Common Words #02",
+                "Common Words #03",
+                "Common Words #04",
+                "Common Words #05",
+                "Common Words #06",
+                "Common Words #07",
+                "Common Words #08",
+                "Common Words #08",
+                "Common Words #10",
+                "Common Words #11",
+                "Blindsight, Peter Watts",
+            ),
+            documents.map { it.name }.toSet()
+        )
+    }
+
+    @Test
+    fun `test load builtin documents for en`() {
+        val documents = loadBuiltinDocuments("en").toList()
+        Assertions.assertEquals(
+            setOf(
+                "Weather RU-EN",
+                "Weather FR-EN",
+                "Weather DE-EN",
+                "Weather ES-EN",
+                "Weather IT-EN",
+                "Weather PT-EN",
+                "Weather ZH-EN",
+                "Weather JA-EN",
+                "Weather KO-EN",
+                "Weather TR-EN",
+                "Weather PL-EN",
+                "Weather UK-EN",
+                "Weather AR-EN",
+            ),
+            documents.map { it.name }.toSet()
+        )
+    }
+
     @ParameterizedTest
-    @MethodSource(value = ["builtIntVocabularies"])
+    @MethodSource(value = ["builtInDictionaries"])
     fun `test load builtin documents`(locale: String, given: List<Map<String, String>>) {
         val documents = loadBuiltinDocuments(locale).toList()
         Assertions.assertEquals(documents.size, given.size)

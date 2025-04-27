@@ -6,7 +6,6 @@ import com.gitlab.sszuev.flashcards.core.mappers.dictionary
 import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.core.mappers.toDbDictionary
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
-import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DocumentEntity
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
@@ -15,10 +14,40 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.FirstLoginHelper")
 
-private const val DEFAULT_TARGET_LANGUAGE = "zh"
+private const val DEFAULT_TARGET_LANGUAGE = "ru"
 private val RESOURCE_DOCUMENTS_BY_LANGUAGE = mapOf(
-    "ru" to listOf("/irregular-verbs-en-ru.json", "/weather-en-ru.json"),
-    "en" to listOf("/weather-zh-en.json"),
+    "ru" to listOf(
+        "/irregular-verbs-en-ru.json",
+        "/weather-en-ru.json",
+        "/common-words-01-en-ru.json",
+        "/common-words-02-en-ru.json",
+        "/common-words-03-en-ru.json",
+        "/common-words-04-en-ru.json",
+        "/common-words-05-en-ru.json",
+        "/common-words-06-en-ru.json",
+        "/common-words-07-en-ru.json",
+        "/common-words-08-en-ru.json",
+        "/common-words-08-en-ru.json",
+        "/common-words-10-en-ru.json",
+        "/common-words-11-en-ru.json",
+        "/blindsight_by_peter_watts.json",
+    ),
+    "en" to listOf(
+        "/weather-zh-en.json",
+        "/weather-fr-en.json",
+        "/weather-ru-en.json",
+        "/weather-de-en.json",
+        "/weather-es-en.json",
+        "/weather-it-en.json",
+        "/weather-pt-en.json",
+        "/weather-ja-en.json",
+        "/weather-ko-en.json",
+        "/weather-tr-en.json",
+        "/weather-pl-en.json",
+        "/weather-uk-en.json",
+        "/weather-ar-en.json",
+    ),
+    "uk" to listOf("/irregular-verbs-en-uk.json", "/weather-en-uk.json"),
     "zh" to listOf("/irregular-verbs-en-zh.json", "/weather-en-zh.json"),
     "es" to listOf("/irregular-verbs-en-es.json", "/weather-en-es.json"),
     "pt" to listOf("/irregular-verbs-en-pt.json", "/weather-en-pt.json"),
@@ -94,11 +123,10 @@ internal fun DictionaryContext.populateBuiltinDictionaries(language: String) {
 
     documents.forEach { document ->
         val dictionary = document.dictionary.copy(userId = userId).toDbDictionary()
-        logger.info("Create dictionary '${dictionary.name}'")
-        val id = DictionaryId(this.repositories.dictionaryRepository.createDictionary(dictionary).dictionaryId)
-        val cards = document.cards.asSequence().map { it.copy(dictionaryId = id) }.map { it.toDbCard() }.toList()
-        logger.info("Dictionary '${dictionary.name}': id = $id, cards = ${cards.size}")
-        this.repositories.cardRepository.createCards(cards)
+        val cards = document.cards.asSequence().map { it.toDbCard() }.toList()
+        logger.info("Create document '${dictionary.name}'")
+        val id = this.repositories.documentRepository.save(dictionary, cards)
+        logger.info("Document '${dictionary.name}' was created: id = $id, cards = ${cards.size}")
     }
 }
 

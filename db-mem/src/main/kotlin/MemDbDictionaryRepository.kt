@@ -19,7 +19,7 @@ class MemDbDictionaryRepository(
 
     override fun createDictionary(entity: DbDictionary): DbDictionary {
         if (entity.dictionaryId.isNotBlank()) {
-            throw IllegalArgumentException("The specified dictionary has id id = ${entity.dictionaryId}")
+            throw IllegalArgumentException("The specified dictionary has id = ${entity.dictionaryId}")
         }
         return database.saveDictionary(entity.toMemDbDictionary().copy(changedAt = systemNow())).toDbDictionary()
     }

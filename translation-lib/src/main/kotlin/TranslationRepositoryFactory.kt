@@ -1,5 +1,6 @@
 package com.gitlab.sszuev.flashcards.translation.impl
 
+import com.gitlab.sszuev.flashcards.translation.api.NoOpTranslationRepository
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 
 fun createTranslationRepository(): TranslationRepository {
@@ -16,6 +17,6 @@ fun createTranslationRepository(): TranslationRepository {
     } else if (hasYandexTranslationService) {
         YandexTranslationRepository()
     } else {
-        LingueeTranslationRepository()
+        NoOpTranslationRepository
     }
 }

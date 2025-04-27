@@ -170,7 +170,9 @@ internal class DictionaryControllerRunTest {
                 "preposition",
                 "conjunction",
                 "interjection",
-                "article"
+                "article",
+                "numeral",
+                "participle",
             ), res.dictionary!!.partsOfSpeech
         )
     }

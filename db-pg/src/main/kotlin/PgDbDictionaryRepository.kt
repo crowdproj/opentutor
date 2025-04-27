@@ -40,7 +40,7 @@ class PgDbDictionaryRepository(
 
     override fun createDictionary(entity: DbDictionary): DbDictionary = connection.execute {
         if (entity.dictionaryId.isNotBlank()) {
-            throw IllegalArgumentException("The specified dictionary has id id = ${entity.dictionaryId}")
+            throw IllegalArgumentException("The specified dictionary has id = ${entity.dictionaryId}")
         }
         val timestamp = systemNow()
         val dictionaryId = Dictionaries.insertAndGetId {

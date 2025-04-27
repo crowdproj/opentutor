@@ -315,19 +315,19 @@ fun CardsTableHeader(
             .height(60.dp)
     ) {
         HeaderTableCell(
-            text = "Word ${if (currentSortField == "word") if (isAscending) "↑" else "↓" else ""}",
+            text = "WORD${if (currentSortField == "word") if (isAscending) "↑" else "↓" else ""}",
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("word") }
         )
         HeaderTableCell(
-            text = "Translation ${if (currentSortField == "translation") if (isAscending) "↑" else "↓" else ""}",
+            text = "TRANSLATION${if (currentSortField == "translation") if (isAscending) "↑" else "↓" else ""}",
             weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("translation") }
         )
         HeaderTableCell(
-            text = "% ${if (currentSortField == "status") if (isAscending) "↑" else "↓" else ""}",
+            text = "%${if (currentSortField == "status") if (isAscending) "↑" else "↓" else ""}",
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("status") }

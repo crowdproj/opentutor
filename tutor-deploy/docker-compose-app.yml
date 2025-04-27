@@ -103,17 +103,6 @@ services:
     networks:
       - flashcards-net
 
-  flashcards-linguee-api:
-    image: "sszuev/linguee-api:latest"
-    restart: unless-stopped
-    healthcheck:
-      test: [ "CMD-SHELL", "test -f /tmp/healthcheck-done || (curl -f 'http://localhost:8000/api/v2/translations?src=en&dst=ru&query=health' && touch /tmp/healthcheck-done)" ]
-      interval: 1m
-      timeout: 10s
-      retries: 3
-    networks:
-      - flashcards-net
-
   flashcards-tts-server:
     image: sszuev/open-tutor-tts-server:2.0.1-snapshot
     restart: unless-stopped
@@ -189,11 +178,8 @@ services:
     depends_on:
       flashcards-nats:
         condition: service_healthy
-      flashcards-linguee-api:
-        condition: service_healthy
     environment:
       TRANSLATION_SERVER_NATS_HOST: "flashcards-nats"
-      TRANSLATION_SERVICE_LINGUEE_API: "http://flashcards-linguee-api:8000/api/v2/translations"
       TRANSLATION_SERVICE_YANDEX_KEY: "${TRANSLATION_SERVICE_YANDEX_KEY}"
 
   flashcards-app:
