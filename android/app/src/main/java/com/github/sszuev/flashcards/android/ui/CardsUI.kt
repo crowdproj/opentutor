@@ -349,7 +349,7 @@ fun CardsTableRow(
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Black)
-            .background(if (isSelected) Color.Green else Color.Transparent)
+            .background(if (isSelected) SELECTED_ROW_COLOR else Color.Transparent)
             .clickable {
                 onSelect()
             }

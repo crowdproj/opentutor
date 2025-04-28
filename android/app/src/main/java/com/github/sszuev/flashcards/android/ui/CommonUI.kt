@@ -71,6 +71,8 @@ import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.username
 
+val SELECTED_ROW_COLOR = Color(0xFF90CAF9)
+
 @Composable
 fun TopBar(
     onSignOut: () -> Unit,

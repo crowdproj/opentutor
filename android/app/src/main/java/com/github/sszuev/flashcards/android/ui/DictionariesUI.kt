@@ -333,7 +333,7 @@ fun DictionariesTableRow(
         modifier = Modifier
             .fillMaxWidth()
             .border(1.dp, Color.Black)
-            .background(if (isSelected) Color.Green else Color.Transparent)
+            .background(if (isSelected) SELECTED_ROW_COLOR else Color.Transparent)
             .combinedClickable(
                 onClick = {
                     onSelect(!isSelected)
