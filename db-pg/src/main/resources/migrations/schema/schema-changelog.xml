@@ -13,5 +13,13 @@
         <sqlFile relativeToChangelogFile="true" path="002-add-users-details.sql"/>
         <comment>Add users#details column</comment>
     </changeSet>
+    <changeSet id="003" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="003-change-cards-dictionaries-fk.sql"/>
+        <comment>Add 'ON DELETE CASCADE' to fk_cards_dictionaries_id</comment>
+    </changeSet>
+    <changeSet id="004" author="sszuev">
+        <sqlFile relativeToChangelogFile="true" path="004-add-dictionaries-users-fk.sql"/>
+        <comment>Add fk_dictionaries_users_id</comment>
+    </changeSet>
 
 </databaseChangeLog>

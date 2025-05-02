@@ -117,7 +117,7 @@ abstract class DbDictionaryRepositoryTest {
             name = "test-dictionary",
             sourceLang = RU,
             targetLang = EN,
-            userId = "42",
+            userId = USER_ID,
             dictionaryId = "",
             details = mapOf("A" to 42, "B" to false),
         )
@@ -136,7 +136,7 @@ abstract class DbDictionaryRepositoryTest {
             name = "Weather-2",
             sourceLang = RU,
             targetLang = EN,
-            userId = "42",
+            userId = USER_ID,
             dictionaryId = "2",
             details = mapOf("A" to 42, "B" to false),
         )

@@ -7,6 +7,8 @@ import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDocumentRepository
 import com.gitlab.sszuev.flashcards.repositories.DbLang
+import com.gitlab.sszuev.flashcards.repositories.DbUser
+import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -15,10 +17,13 @@ abstract class DbDocumentRepositoryTest {
     abstract val documentRepository: DbDocumentRepository
     abstract val dictionaryRepository: DbDictionaryRepository
     abstract val cardRepository: DbCardRepository
+    abstract val userRepository: DbUserRepository
 
     companion object {
 
         private const val USER_ID = "00000000-0000-0000-0000-000000000000"
+
+        private val user = DbUser(USER_ID)
 
         private val EN = DbLang(
             langId = "en",
@@ -92,6 +97,8 @@ abstract class DbDocumentRepositoryTest {
 
     @Test
     fun `test save document`() {
+        userRepository.createUser(user)
+
         val id = documentRepository.save(dictionary, listOf(testCardEntity1, testCardEntity2))
         Assertions.assertTrue(id.isNotBlank())
         val foundDictionary = dictionaryRepository.findDictionaryById(id)

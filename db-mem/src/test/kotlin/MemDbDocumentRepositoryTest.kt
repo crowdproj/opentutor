@@ -4,6 +4,7 @@ import com.gitlab.sszuev.flashcards.dbcommon.DbDocumentRepositoryTest
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDocumentRepository
+import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 
 class MemDbDocumentRepositoryTest : DbDocumentRepositoryTest() {
     override val documentRepository: DbDocumentRepository =
@@ -12,4 +13,6 @@ class MemDbDocumentRepositoryTest : DbDocumentRepositoryTest() {
         MemDbDictionaryRepository(dbConfig = MemDbConfig(dataLocation = "classpath:/db-mem-test-data"))
     override val cardRepository: DbCardRepository =
         MemDbCardRepository(dbConfig = MemDbConfig(dataLocation = "classpath:/db-mem-test-data"))
+    override val userRepository: DbUserRepository =
+        MemDbUserRepository(dbConfig = MemDbConfig(dataLocation = "classpath:/db-mem-test-data"))
 }
