@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker
 
-interface ResourceCache {
+interface TTSResourceCache {
 
     fun get(id: String): ByteArray?
 

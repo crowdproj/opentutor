@@ -16,7 +16,7 @@ fun main() {
     )
     val processor = NatsTTSServerProcessorImpl(
         service = createTTSService(
-            cache = RedisResourceCache(redis.stringToByteArrayCommands),
+            cache = RedisTTSResourceCache(redis.stringToByteArrayCommands),
             onGetResource = { onGetResource(redis.stringToStringCommands) },
         ),
         topic = natsConfig.topic,
