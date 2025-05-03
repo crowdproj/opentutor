@@ -180,6 +180,7 @@ services:
         condition: service_healthy
     environment:
       TRANSLATION_SERVER_NATS_HOST: "flashcards-nats"
+      TRANSLATION_SERVER_REDIS_HOST: "flashcards-redis"
       TRANSLATION_SERVICE_YANDEX_KEY: "${TRANSLATION_SERVICE_YANDEX_KEY}"
 
   flashcards-app:

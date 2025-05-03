@@ -10,9 +10,15 @@ import kotlin.concurrent.thread
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.translation.TranslationServerMain")
 
 fun main() {
+    val redisConfig = TranslationRedisConfig()
+    val redis = TranslationRedisConnectionFactory(
+        connectionUrl = redisConfig.url,
+    )
     val connectionUrl = "nats://${TranslationServerSettings.host}:${TranslationServerSettings.port}"
     val processor = TranslationServerProcessor(
-        repository = createTranslationRepository(),
+        repository = createTranslationRepository(
+            cache = RedisTranslationCache(redis.stringToStringCommands),
+        ),
         topic = TranslationServerSettings.topic,
         group = TranslationServerSettings.group,
         connectionFactory = {
@@ -29,8 +35,9 @@ fun main() {
         }
     )
     Runtime.getRuntime().addShutdownHook(thread(start = false) {
-        logger.info("Close connection on shutdown.")
+        logger.info("Close connections on shutdown.")
         processor.close()
+        redis.close()
     })
     logger.info("Start processing.")
     TranslationServerController(processor).start()
