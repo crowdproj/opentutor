@@ -21,6 +21,7 @@ dependencies {
     val mockkVersion: String by project
     val typesafeConfigVersion: String by project
     val lettuceVersion: String by project
+    val kotlinxSerializationVersion: String by project
 
     implementation(project(":translation-api"))
     implementation(project(":translation-lib"))
@@ -32,6 +33,7 @@ dependencies {
     implementation("io.lettuce:lettuce-core:$lettuceVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
     implementation("com.typesafe:config:$typesafeConfigVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:${kotlinxSerializationVersion}")
 
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
@@ -50,8 +52,10 @@ tasks.test {
 tasks.dockerCreateDockerfile {
     arg("TRANSLATION_SERVICE_YANDEX_KEY")
     arg("TRANSLATION_SERVER_NATS_HOST")
+    arg("TRANSLATION_SERVER_REDIS_HOST")
     environmentVariable("TRANSLATION_SERVICE_YANDEX_KEY", "\${TRANSLATION_SERVICE_YANDEX_KEY}")
     environmentVariable("TRANSLATION_SERVER_NATS_HOST", "\${TRANSLATION_SERVER_NATS_HOST}")
+    environmentVariable("TRANSLATION_SERVER_REDIS_HOST", "\${TRANSLATION_SERVER_REDIS_HOST}")
 }
 
 docker {

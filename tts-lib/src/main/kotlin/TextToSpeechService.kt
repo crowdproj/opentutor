@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.speaker
 
-import com.gitlab.sszuev.flashcards.speaker.impl.CaffeineResourceCache
+import com.gitlab.sszuev.flashcards.speaker.impl.CaffeineTTSResourceCache
 import com.gitlab.sszuev.flashcards.speaker.impl.CombinedTextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.impl.EspeakNgTestToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.impl.GoogleTextToSpeechService
@@ -37,7 +37,7 @@ interface TextToSpeechService {
  * Creates a [TextToSpeechService].
  */
 fun createTTSService(
-    cache: ResourceCache = CaffeineResourceCache(),
+    cache: TTSResourceCache = CaffeineTTSResourceCache(),
     onGetResource: () -> Unit = {}
 ): TextToSpeechService {
     if (TextToSpeechService::class.java.getResource("/google-key.json") != null) {

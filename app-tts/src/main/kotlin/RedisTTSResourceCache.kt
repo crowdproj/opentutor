@@ -3,11 +3,11 @@ package com.gitlab.sszuev.flashcards.speaker
 import io.lettuce.core.api.sync.RedisCommands
 import org.slf4j.LoggerFactory
 
-private val logger = LoggerFactory.getLogger(RedisResourceCache::class.java)
+private val logger = LoggerFactory.getLogger(RedisTTSResourceCache::class.java)
 
-class RedisResourceCache(
+class RedisTTSResourceCache(
     private val commands: RedisCommands<String, ByteArray>
-) : ResourceCache {
+) : TTSResourceCache {
 
     override fun get(id: String): ByteArray? = try {
         commands.get(id)

@@ -10,13 +10,13 @@ private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.speak
 
 fun main() {
     val natsConfig = NatsConfig()
-    val redisConfig = RedisConfig()
-    val redis = RedisConnectionFactory(
+    val redisConfig = TTSRedisConfig()
+    val redis = TTSRedisConnectionFactory(
         connectionUrl = redisConfig.url,
     )
     val processor = NatsTTSServerProcessorImpl(
         service = createTTSService(
-            cache = RedisResourceCache(redis.stringToByteArrayCommands),
+            cache = RedisTTSResourceCache(redis.stringToByteArrayCommands),
             onGetResource = { onGetResource(redis.stringToStringCommands) },
         ),
         topic = natsConfig.topic,

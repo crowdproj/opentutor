@@ -6,8 +6,8 @@ import io.lettuce.core.codec.ByteArrayCodec
 import io.lettuce.core.codec.RedisCodec
 import io.lettuce.core.codec.StringCodec
 
-class RedisConnectionFactory(
-    connectionUrl: String = "redis://localhost:6379",
+class TTSRedisConnectionFactory(
+    connectionUrl: String = "redis://localhost:6379/0",
 ) : AutoCloseable {
 
     private val client by lazy {
