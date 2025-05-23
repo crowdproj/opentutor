@@ -3,7 +3,7 @@
 
     <color name="splash_bg">#FFBB86FC</color>
 
-    <style name="Theme.FlashcardsAndroid" parent="android:Theme.Material.Light.NoActionBar" />
+    <style name="Theme.FlashcardsAndroid" parent="Theme.MaterialComponents.Light.NoActionBar" />
 
     <style name="Theme.App.Splash" parent="Theme.SplashScreen">
         <item name="android:windowSplashScreenAnimatedIcon" tools:ignore="NewApi">@mipmap/ic_launcher</item>

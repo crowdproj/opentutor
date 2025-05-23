@@ -11,7 +11,10 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.core.content.edit
+import androidx.core.graphics.toColorInt
 import androidx.core.net.toUri
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationRequest
 import net.openid.appauth.AuthorizationResponse
@@ -32,27 +35,45 @@ class LoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.i(tag, "START")
 
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        @Suppress("DEPRECATION")
+        window.statusBarColor = "#E3F2FD".toColorInt()
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
+
         setContentView(R.layout.activity_login)
 
+        val titleTextView = findViewById<TextView>(R.id.title)
         val subtitleTextView = findViewById<TextView>(R.id.subtitle)
 
-        val localizedSubtitle = when (Locale.getDefault().language) {
-            "ru" -> "Добро пожаловать в opentutor. Войдите, чтобы сохранить прогресс."
-            "fr" -> "Bienvenue sur opentutor. Connectez-vous pour sauvegarder vos progrès."
-            "de" -> "Willkommen bei opentutor. Melden Sie sich an, um Ihren Fortschritt zu speichern."
-            "es" -> "Bienvenido a opentutor. Inicia sesión para guardar tu progreso."
-            "it" -> "Benvenuto su opentutor. Accedi per salvare i tuoi progressi."
-            "pt" -> "Bem-vindo ao opentutor. Faça login para salvar seu progresso."
-            "zh" -> "欢迎使用 opentutor。请登录以保存您的进度。"
-            "ja" -> "opentutor へようこそ。進捗を保存するにはサインインしてください。"
-            "ko" -> "opentutor에 오신 것을 환영합니다. 진행 상황을 저장하려면 로그인하세요."
-            "tr" -> "opentutor'a hoş geldiniz. İlerlemenizi kaydetmek için giriş yapın."
-            "pl" -> "Witamy w opentutor. Zaloguj się, aby zapisać swoje postępy."
-            "uk" -> "Ласкаво просимо до opentutor. Увійдіть, щоб зберегти свій прогрес."
-            "ar" -> "مرحبًا بك في opentutor. الرجاء تسجيل الدخول لحفظ تقدمك."
-            else -> "Welcome to opentutor. Please sign in to save your progress."
+        val language = Locale.getDefault().language
+
+        val (localizedTitle, localizedSubtitle) = when (language) {
+            "zh" -> "欢迎使用 opentutor" to "请登录以保存您的进度。"
+            "hi" -> "opentutor में आपका स्वागत है" to "अपनी प्रगति सहेजने के लिए साइन इन करें।"
+            "es" -> "Bienvenido a opentutor" to "Inicia sesión para guardar tu progreso."
+            "fr" -> "Bienvenue sur opentutor" to "Connectez-vous pour sauvegarder vos progrès."
+            "ar" -> "مرحبًا بك في opentutor" to "الرجاء تسجيل الدخول لحفظ تقدمك."
+            "bn" -> "opentutor-এ স্বাগতম" to "আপনার অগ্রগতি সংরক্ষণ করতে সাইন ইন করুন।"
+            "pt" -> "Bem-vindo ao opentutor" to "Faça login para salvar seu progresso."
+            "ru" -> "Добро пожаловать в opentutor" to "Войдите, чтобы сохранить прогресс."
+            "ur" -> "opentutor میں خوش آمدید" to "براہ کرم اپنے پیش رفت کو محفوظ کرنے کے لیے سائن ان کریں۔"
+            "id" -> "Selamat datang di opentutor" to "Silakan masuk untuk menyimpan progres Anda."
+            "de" -> "Willkommen bei opentutor" to "Melden Sie sich an, um Ihren Fortschritt zu speichern."
+            "ja" -> "opentutor へようこそ" to "進捗を保存するにはサインインしてください。"
+            "tr" -> "opentutor'a hoş geldiniz" to "İlerlemenizi kaydetmek için giriş yapın."
+            "vi" -> "Chào mừng đến với opentutor" to "Vui lòng đăng nhập để lưu tiến trình của bạn."
+            "ko" -> "opentutor에 오신 것을 환영합니다" to "진행 상황을 저장하려면 로그인하세요."
+            "fa" -> "به opentutor خوش آمدید" to "لطفاً برای ذخیره پیشرفت خود وارد شوید."
+            "sw" -> "Karibu kwenye opentutor" to "Tafadhali ingia ili kuhifadhi maendeleo yako."
+            "ta" -> "opentutor-க்கு வரவேற்கிறோம்" to "உங்கள் முன்னேற்றத்தை சேமிக்க உள்நுழைக."
+            "mr" -> "opentutor मध्ये आपले स्वागत आहे" to "आपली प्रगती जतन करण्यासाठी कृपया साइन इन करा."
+            "it" -> "Benvenuto su opentutor" to "Accedi per salvare i tuoi progressi."
+            "pl" -> "Witamy w opentutor" to "Zaloguj się, aby zapisać swoje postępy."
+            "uk" -> "Ласкаво просимо до opentutor" to "Увійдіть, щоб зберегти свій прогрес."
+            else -> "Welcome to opentutor" to "Please sign in to save your progress."
         }
 
+        titleTextView.text = localizedTitle
         subtitleTextView.text = localizedSubtitle
 
         authService = AuthorizationService(this)

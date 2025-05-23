@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -9,6 +10,8 @@ import androidx.activity.viewModels
 import androidx.compose.material3.MaterialTheme
 import androidx.core.content.edit
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import com.github.sszuev.flashcards.android.models.CardsViewModel
@@ -75,6 +78,11 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         setTheme(R.style.Theme_FlashcardsAndroid)
+
+        WindowCompat.setDecorFitsSystemWindows(window, true)
+        @Suppress("DEPRECATION")
+        window.statusBarColor = Color.WHITE
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
 
         val prefs = getSharedPreferences("auth", MODE_PRIVATE)
         val accessToken = prefs.getString("access_token", null)
