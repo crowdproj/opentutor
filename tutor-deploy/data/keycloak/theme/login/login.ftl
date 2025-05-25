@@ -70,19 +70,22 @@
         </#if>
 
         <#if social.providers?? && social.providers?size gt 0>
-            <div class="text-center mb-4">
-                <a id="social-google" href="${p.loginUrl}" style="display: inline-block;">
-                    <img src="${url.resourcesPath}/img/google-logo.svg"
-                         alt="Sign in with Google"
-                         style="height: 48px;">
-                </a>
-            </div>
+            <#list social.providers as p>
+                <#if p.alias == "google">
+                    <div class="text-center mb-4">
+                        <a id="social-google" href="${p.loginUrl}" style="display: inline-block;">
+                            <img src="${url.resourcesPath}/img/google-logo.svg"
+                                 alt="Sign in with Google" style="height: 48px;">
+                        </a>
+                    </div>
 
-            <div class="d-flex align-items-center my-3">
-                <hr class="flex-grow-1">
-                <span class="px-2 text-muted">or</span>
-                <hr class="flex-grow-1">
-            </div>
+                    <div class="d-flex align-items-center my-3">
+                        <hr class="flex-grow-1">
+                        <span class="px-2 text-muted">or</span>
+                        <hr class="flex-grow-1">
+                    </div>
+                </#if>
+            </#list>
         </#if>
 
         <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
