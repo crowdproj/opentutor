@@ -71,11 +71,11 @@
 
         <#if social.providers?? && social.providers?size gt 0>
             <div class="text-center mb-4">
-                <#list social.providers as p>
-                    <a id="social-${p.alias}" class="btn btn-outline-secondary w-100 my-2 google-button" href="${p.loginUrl}">
-                        <img src="${url.resourcesPath}/img/google-logo.svg" alt="Google logo"> Sign in with Google
-                    </a>
-                </#list>
+                <a id="social-google" href="${p.loginUrl}" style="display: inline-block;">
+                    <img src="${url.resourcesPath}/img/google-logo.svg"
+                         alt="Sign in with Google"
+                         style="height: 48px;">
+                </a>
             </div>
 
             <div class="d-flex align-items-center my-3">
