@@ -28,10 +28,6 @@
             margin-bottom: 10px;
         }
 
-        .login-header h1 {
-            font-size: 1.5rem;
-        }
-
         .footer {
             text-align: center;
             margin-top: 20px;
@@ -47,6 +43,16 @@
         .footer a:hover {
             text-decoration: underline;
         }
+
+        #kc-registration-container {
+            margin-top: 10px;
+        }
+
+        .google-button img {
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 8px;
+        }
     </style>
 </head>
 <body class="bg-light">
@@ -56,25 +62,39 @@
             <img src="${url.resourcesPath}/img/logo.png" alt="Logo">
             <h1>Sign in to opentutor</h1>
         </div>
+
         <#if message?has_content>
             <div class="alert alert-danger" role="alert">
                 ${message.summary!?no_esc}
             </div>
         </#if>
-        <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}"
-              method="post">
+
+        <#if social.providers?? && social.providers?size gt 0>
+            <div class="text-center mb-4">
+                <#list social.providers as p>
+                    <a id="social-${p.alias}" class="btn btn-outline-secondary w-100 my-2 google-button" href="${p.loginUrl}">
+                        <img src="${url.resourcesPath}/img/google-logo.svg" alt="Google logo"> Sign in with Google
+                    </a>
+                </#list>
+            </div>
+
+            <div class="d-flex align-items-center my-3">
+                <hr class="flex-grow-1">
+                <span class="px-2 text-muted">or</span>
+                <hr class="flex-grow-1">
+            </div>
+        </#if>
+
+        <form id="kc-form-login" onsubmit="login.disabled = true; return true;" action="${url.loginAction}" method="post">
             <div class="mb-3">
                 <label for="username" class="form-label">Email</label>
-                <input tabindex="2" id="username" class="form-control" name="username" type="text" autofocus
-                       autocomplete="username" aria-invalid="false">
+                <input tabindex="2" id="username" class="form-control" name="username" type="text" autofocus autocomplete="username">
             </div>
             <div class="mb-3">
                 <label for="password" class="form-label">Password</label>
                 <div class="input-group">
-                    <input tabindex="3" id="password" class="form-control" name="password" type="password"
-                           autocomplete="current-password" aria-invalid="false">
-                    <button class="btn btn-outline-secondary" type="button" aria-label="Show password"
-                            aria-controls="password" id="toggle-password">
+                    <input tabindex="3" id="password" class="form-control" name="password" type="password" autocomplete="current-password">
+                    <button class="btn btn-outline-secondary" type="button" aria-label="Show password" aria-controls="password" id="toggle-password">
                         <i class="bi bi-eye" aria-hidden="true"></i>
                     </button>
                 </div>
@@ -91,30 +111,21 @@
                 <input tabindex="7" class="btn btn-primary" name="login" id="kc-login" type="submit" value="Sign In">
             </div>
         </form>
-        <div class="text-center mt-3">
-            <hr>
-            <h2>Or sign in with</h2>
-            <#if social.providers?? && social.providers?size gt 0>
-                <#list social.providers as p>
-                    <a id="social-${p.alias}" class="btn btn-outline-secondary w-100 my-2" type="button"
-                       href="${p.loginUrl}">
-                        <i class="bi bi-google"></i> ${p.displayName}
-                    </a>
-                </#list>
-            </#if>
-            <div id="kc-registration-container">
-                <span>New user? <a tabindex="8" href="${url.registrationUrl}">Register</a></span>
-            </div>
+
+        <div class="text-center" id="kc-registration-container">
+            <span>New user? <a tabindex="8" href="${url.registrationUrl}">Register</a></span>
         </div>
     </div>
 </div>
+
 <div class="footer">
     <a href="https://github.com/crowdproj/opentutor" target="_blank">https://github.com/crowdproj/opentutor</a> &bull;
     &copy; 2024 sszuev
 </div>
+
 <script src="${url.resourcesPath}/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.getElementById('toggle-password').addEventListener('click', function (e) {
+    document.getElementById('toggle-password').addEventListener('click', function () {
         const passwordInput = document.getElementById('password');
         const icon = this.querySelector('i');
         if (passwordInput.type === 'password') {

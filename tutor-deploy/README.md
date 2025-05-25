@@ -13,7 +13,6 @@ The directory contains docker-composer files allowing to set up environment.
 - flashcards-dictionaries-server
 - flashcards-settings-server
 - flashcards-translation-server
-- flashcards-linguee-api (for local run and testing only)
 - flashcards-app
 
 [docker-compose-elk-stack.yml](docker-compose-elk-stack.yml):
