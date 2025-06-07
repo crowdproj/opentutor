@@ -80,6 +80,19 @@ fun StageShowScreen(
             )
             deckLoaded.value = true
         }
+
+        // for stage options:
+        val shouldLoadAdditionalDeck = settings.stageOptionsSourceLangToTargetLang ||
+                settings.stageOptionsTargetLangToSourceLang
+
+        if (shouldLoadAdditionalDeck && !tutorViewModel.isAdditionalDeckLoaded) {
+            val rightCardsSize =
+                settings.numberOfWordsPerStage * (settings.stageOptionsNumberOfVariants - 1)
+            tutorViewModel.loadAdditionalCardDeck(
+                dictionaryIds = dictionariesViewModel.selectedDictionaryIds.value,
+                length = rightCardsSize
+            )
+        }
     }
 
     if (isLoading) {

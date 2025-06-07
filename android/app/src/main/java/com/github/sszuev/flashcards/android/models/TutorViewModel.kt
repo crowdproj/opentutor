@@ -34,7 +34,7 @@ class TutorViewModel(
     private val _wrongAnsweredCardDeckIds = mutableStateOf<Set<String>>(emptySet())
     val wrongAnsweredCardDeckIds: State<Set<String>> = _wrongAnsweredCardDeckIds
     private val _answeredCardDeckIds = mutableStateOf<Set<String>>(emptySet())
-    private val _isAdditionalCardsDeckLoading = mutableStateOf(true)
+    private val _isAdditionalCardsDeckLoading = mutableStateOf(false)
     val isAdditionalCardsDeckLoading: State<Boolean> = _isAdditionalCardsDeckLoading
     private val _additionalCardsDeck = mutableStateOf<List<CardEntity>>(emptyList())
     val additionalCardsDeck: State<List<CardEntity>> = _additionalCardsDeck
@@ -114,6 +114,7 @@ class TutorViewModel(
                     _errorMessage.value = "No cards available in the selected dictionaries."
                 }
                 _additionalCardsDeck.value = cards
+                _isAdditionalDeckLoaded.value = true
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
@@ -163,7 +164,19 @@ class TutorViewModel(
     fun generateOptionsCardsMap(numberOfVariants: Int) {
         val leftCards = stageOptionsLeftCards.value
         val rightCards = additionalCardsDeck.value
-        if (stageOptionsCardsMap.value.isNotEmpty() || leftCards.isEmpty() || rightCards.size < leftCards.size) {
+        if (stageOptionsCardsMap.value.isNotEmpty()) {
+            Log.d(
+                tag,
+                "Options map has already been initialized: map=${stageOptionsCardsMap.value.size}, " +
+                        "left=${leftCards.size}, right=${rightCards.size}"
+            )
+            return
+        }
+        if (leftCards.isEmpty() || rightCards.size < leftCards.size) {
+            Log.w(
+                tag, "Can't generate options map: map=${stageOptionsCardsMap.value.size}, " +
+                        "left=${leftCards.size}, right=${rightCards.size}"
+            )
             return
         }
 
@@ -189,10 +202,6 @@ class TutorViewModel(
         _isStageOptionsInitialized.value = false
 
         _isAdditionalDeckLoaded.value = false
-    }
-
-    fun markAdditionalDeckLoaded() {
-        _isAdditionalDeckLoaded.value = true
     }
 
     fun markDeckCardAsKnow(

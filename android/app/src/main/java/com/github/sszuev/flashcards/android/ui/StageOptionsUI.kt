@@ -123,34 +123,12 @@ fun OptionsPanel(
         numberOfWordsPerStage = settings.numberOfWordsPerStage,
     )
 
-    val hasPlayedAudio = rememberSaveable { mutableStateOf(false) }
-    if (direct && !hasPlayedAudio.value && tutorViewModel.isAdditionalDeckLoaded) {
-        tutorViewModel.stageOptionsCurrentCard.value?.let { first ->
-            LaunchedEffect(first.cardId) {
-                ttsViewModel.loadAndPlayAudio(first)
-                ttsViewModel.waitForAudionProcessing(checkNotNull(first.cardId))
-                hasPlayedAudio.value = true
-            }
-        }
-    }
-
     if (tutorViewModel.stageOptionsLeftCards.value.isEmpty()) {
         Log.d(tag, "onNextStage: stageOptionsLeftCards is empty")
         onNextStage()
         return
     }
 
-    LaunchedEffect(Unit) {
-        if (!tutorViewModel.isAdditionalDeckLoaded) {
-            val rightCardsSize =
-                tutorViewModel.stageOptionsLeftCards.value.size * (settings.stageOptionsNumberOfVariants - 1)
-            tutorViewModel.loadAdditionalCardDeck(
-                dictionaryIds = dictionariesViewModel.selectedDictionaryIds.value,
-                length = rightCardsSize
-            )
-            tutorViewModel.markAdditionalDeckLoaded()
-        }
-    }
     if (tutorViewModel.isAdditionalCardsDeckLoading.value) {
         Box(
             modifier = Modifier.fillMaxSize(),
@@ -159,6 +137,22 @@ fun OptionsPanel(
             CircularProgressIndicator()
         }
         return
+    }
+    Log.d(
+        tag,
+        "Additional Card Deck :: " +
+                "${tutorViewModel.additionalCardsDeck.value.map { it.cardId + ":" + it.word }}"
+    )
+
+    val hasPlayedAudio = rememberSaveable { mutableStateOf(false) }
+    if (direct && !hasPlayedAudio.value) {
+        tutorViewModel.stageOptionsCurrentCard.value?.let { first ->
+            LaunchedEffect(first.cardId) {
+                ttsViewModel.loadAndPlayAudio(first)
+                ttsViewModel.waitForAudionProcessing(checkNotNull(first.cardId))
+                hasPlayedAudio.value = true
+            }
+        }
     }
 
     val errorMessage = tutorViewModel.errorMessage.value
@@ -173,6 +167,7 @@ fun OptionsPanel(
         return
     }
 
+    Log.d(tag, "Generate OptionsCardsMap")
     tutorViewModel.generateOptionsCardsMap(settings.stageOptionsNumberOfVariants)
 
     val currentCard = tutorViewModel.stageOptionsCurrentCard
