@@ -1,10 +1,10 @@
 [versions]
 # https://developer.android.com/build/releases/gradle-plugin
-agpVersion = "8.9.0"
+agpVersion = "8.10.1"
 # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-kotlinVersion = "2.1.10"
+kotlinVersion = "2.1.21"
 # https://mvnrepository.com/artifact/androidx.core/core-ktx
-coreKtxVersion = "1.15.0"
+coreKtxVersion = "1.16.0"
 # https://mvnrepository.com/artifact/junit/junit
 junit4Version = "4.13.2"
 # https://mvnrepository.com/artifact/androidx.test.ext/junit
@@ -12,13 +12,13 @@ androidJunitVersion = "1.2.1"
 # https://mvnrepository.com/artifact/androidx.test.espresso/espresso-core
 espressoCoreVersion = "3.6.1"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-ktx
-lifecycleRuntimeKtxVersion = "2.8.7"
+lifecycleRuntimeKtxVersion = "2.9.1"
 # https://mvnrepository.com/artifact/androidx.activity/activity-compose
 activityComposeVersion = "1.10.1"
 # https://mvnrepository.com/artifact/androidx.compose/compose-bom
-composeBomVersion = "2025.03.00"
+composeBomVersion = "2025.06.00"
 # https://mvnrepository.com/artifact/androidx.navigation/navigation-compose
-composeNavigationVersion = "2.8.9"
+composeNavigationVersion = "2.9.0"
 # https://mvnrepository.com/artifact/io.ktor/ktor-client-android
 ktorVersion = "3.1.1"
 # https://mvnrepository.com/artifact/net.openid/appauth
@@ -30,7 +30,7 @@ browserVersion = "1.8.0"
 # https://mvnrepository.com/artifact/androidx.constraintlayout/constraintlayout
 constraintlayoutVersion = "2.2.1"
 # https://mvnrepository.com/artifact/androidx.media3/media3-exoplayer
-media3Version = "1.5.1"
+media3Version = "1.7.1"
 # https://mvnrepository.com/artifact/androidx.test.uiautomator/uiautomator
 uiautomatorVersion = "2.3.0"
 # https://mvnrepository.com/artifact/androidx.test/rules

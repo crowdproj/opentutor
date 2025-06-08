@@ -29,8 +29,8 @@ android {
         applicationId = "com.github.sszuev.flashcards.android"
         minSdk = 26
         targetSdk = 34
-        versionCode = 3
-        versionName = "1.2"
+        versionCode = 4
+        versionName = "1.2 beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.github.sszuev.flashcards.android"
