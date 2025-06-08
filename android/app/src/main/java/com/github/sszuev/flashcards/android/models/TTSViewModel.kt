@@ -119,7 +119,6 @@ class TTSViewModel(
         } catch (e: InvalidTokenException) {
             signOut()
         } catch (e: ApiResponseException) {
-            // TODO: handle use case when lang is not supported by TTS service
             _audioResources.putNullable(cardId, null)
             Log.e(tag, "Failed to load audio", e)
         } catch (e: Exception) {
@@ -226,7 +225,7 @@ class TTSViewModel(
         }
     }
 
-    suspend fun waitForAudionProcessing(cardId: String) {
+    suspend fun waitForAudioProcessing(cardId: String) {
         withTimeout(AUDIO_PROCESSING_MAX_DELAY_MS) {
             while (isAudioProcessing(cardId)) {
                 delay(100)

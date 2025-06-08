@@ -178,6 +178,7 @@ fun TableCell(
             overflow = overflow,
             maxLines = maxLines,
             fontWeight = fontWeight,
+            innerPadding = 0.dp,
         )
     }
 }
@@ -192,13 +193,14 @@ fun TableCellWithPopup(
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
     onShortClick: () -> Unit = {},
+    padding: Dp = 1.dp,
 ) {
     var isPopupVisible by rememberSaveable { mutableStateOf(false) }
 
     Box(
         modifier = Modifier
             .width((containerWidthDp * weight / 100f))
-            .padding(vertical = 4.dp, horizontal = 8.dp)
+            .padding(padding)
             .pointerInput(Unit) {
                 detectTapGestures(
                     onTap = {
@@ -216,6 +218,7 @@ fun TableCellWithPopup(
             lineHeight = lineHeight,
             textColor = textColor,
             fontSize = fontSize,
+            innerPadding = 0.dp,
         )
         if (isPopupVisible) {
             TablePopup(

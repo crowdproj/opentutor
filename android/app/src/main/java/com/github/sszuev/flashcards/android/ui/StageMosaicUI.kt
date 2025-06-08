@@ -165,7 +165,7 @@ fun MosaicPanels(
                 if (match()) {
                     isCorrectAnswerProcessing.value = true
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                    ttsViewModel.waitForAudionProcessing(checkNotNull(cardId))
+                    ttsViewModel.waitForAudioProcessing(checkNotNull(cardId))
                     tutorViewModel.stageMosaicLeftCards.value =
                         leftCards.value.filter { it.cardId != cardId }
                     tutorViewModel.stageMosaicRightCards.value =
@@ -186,7 +186,7 @@ fun MosaicPanels(
                 } else {
                     Log.i(tag, "Wrong answer for card $cardId(${card.word})")
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                    ttsViewModel.waitForAudionProcessing(cardId!!)
+                    ttsViewModel.waitForAudioProcessing(cardId!!)
                     tutorViewModel.markDeckCardAsWrong(cardId)
                 }
 

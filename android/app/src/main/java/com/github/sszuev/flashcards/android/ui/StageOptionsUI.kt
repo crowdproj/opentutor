@@ -149,7 +149,7 @@ fun OptionsPanel(
         tutorViewModel.stageOptionsCurrentCard.value?.let { first ->
             LaunchedEffect(first.cardId) {
                 ttsViewModel.loadAndPlayAudio(first)
-                ttsViewModel.waitForAudionProcessing(checkNotNull(first.cardId))
+                ttsViewModel.waitForAudioProcessing(checkNotNull(first.cardId))
                 hasPlayedAudio.value = true
             }
         }
@@ -216,7 +216,7 @@ fun OptionsPanel(
                         "reverse: playing audio for: [${selectedItem.cardId}: ${selectedItem.word}]"
                     )
                     ttsViewModel.loadAndPlayAudio(selectedItem)
-                    ttsViewModel.waitForAudionProcessing(checkNotNull(selectedItem.cardId))
+                    ttsViewModel.waitForAudioProcessing(checkNotNull(selectedItem.cardId))
                 } else {
                     delay(STAGE_OPTIONS_CELL_DELAY_MS)
                 }
@@ -256,7 +256,7 @@ fun OptionsPanel(
                             "direct: playing audio for: [${cardId}: ${nextCard.word}]"
                         )
                         ttsViewModel.loadAndPlayAudio(nextCard)
-                        ttsViewModel.waitForAudionProcessing(cardId)
+                        ttsViewModel.waitForAudioProcessing(cardId)
                     }
                 } else {
                     val cardId = checkNotNull(currentCard.value?.cardId)
