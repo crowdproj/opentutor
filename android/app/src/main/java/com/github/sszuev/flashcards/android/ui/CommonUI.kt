@@ -401,6 +401,10 @@ fun ToolbarButton(
     enabled: Boolean = true,
     onClick: () -> Unit,
 ) {
+    if (containerWidthDp <= 0.dp) {
+        return
+    }
+    val buttonWidth = (containerWidthDp * weight / 100f).coerceAtLeast(64.dp)
     Box(
         modifier = Modifier
             .padding(1.dp)
@@ -409,16 +413,18 @@ fun ToolbarButton(
                 shape = MaterialTheme.shapes.small
             )
             .clickable(enabled = enabled) { onClick() }
-            .width(((containerWidthDp * weight) / 100f)),
+            .width(buttonWidth),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = label,
             color = if (enabled) MaterialTheme.colorScheme.background else Color.Black,
-            maxLines = Int.MAX_VALUE,
-            overflow = TextOverflow.Visible,
+            maxLines = 1,
+            softWrap = false,
+            overflow = TextOverflow.Ellipsis,
             textAlign = TextAlign.Center,
             lineHeight = 46.sp,
+            modifier = Modifier.padding(horizontal = 8.dp)
         )
     }
 }
