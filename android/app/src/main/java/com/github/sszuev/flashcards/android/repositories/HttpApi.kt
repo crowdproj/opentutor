@@ -47,10 +47,12 @@ suspend inline fun <reified T> authPost(
                 Log.d("HttpApi", "second attempt succeeds")
                 res
             }
+
             HttpStatusCode.BadRequest -> {
                 Log.w("HttpApi", "400 Bad Request: ${e.response}")
                 throw InvalidTokenException("Session expired. Please log in again.", e)
             }
+
             else -> {
                 throw e
             }
@@ -113,17 +115,26 @@ fun Exception.toClientException(): Exception {
     return when (this) {
         is UnknownHostException -> {
             Log.e("HttpApi", "Network error: server unavailable", this)
-            ServerUnavailableException("Server is unreachable. Check your connection.", this)
+            ServerUnavailableException(
+                "Server is unreachable. Check your connection, then press HOME to refresh the page.",
+                this
+            )
         }
 
         is SocketTimeoutException,
         is ConnectTimeoutException,
         is HttpRequestTimeoutException -> {
             Log.e("HttpApi", "Timeout", this)
-            ServerUnavailableException("Server is taking too long to respond.", this)
+            ServerUnavailableException(
+                "Server is taking too long to respond. Press HOME to refresh the page.",
+                this
+            )
         }
 
-        else -> UnknownConnectionException("Something went wrong.", this)
+        else -> UnknownConnectionException(
+            "Something went wrong. Press HOME to refresh the page.",
+            this
+        )
     }
 }
 

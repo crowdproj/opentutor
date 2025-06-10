@@ -1,5 +1,6 @@
 package com.github.sszuev.flashcards.android.repositories
 
+import android.util.Log
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -22,15 +23,17 @@ internal interface BaseResponse {
 
 internal fun handleErrors(container: BaseResponse) {
     if (container.errors?.isNotEmpty() == true) {
-        val error = ApiResponseException(
+        val error = RuntimeException(
             "ERRORS:\n${
                 checkNotNull(container.errors)
                     .map { it.message }
                     .joinToString(separator = "\n")
             }"
         )
-        throw error
+        Log.e("Repositories", "Server error.", error)
+        throw ApiResponseException("Server error. Press HOME to refresh the page.", error)
     }
 }
 
-class ApiResponseException(message: String) : IllegalStateException(message)
+class ApiResponseException(message: String, cause: Throwable?) :
+    IllegalStateException(message, cause)

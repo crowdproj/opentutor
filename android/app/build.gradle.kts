@@ -29,8 +29,8 @@ android {
         applicationId = "com.github.sszuev.flashcards.android"
         minSdk = 26
         targetSdk = 34
-        versionCode = 4
-        versionName = "1.2 beta"
+        versionCode = 6
+        versionName = "1.3 beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         manifestPlaceholders["appAuthRedirectScheme"] = "com.github.sszuev.flashcards.android"
@@ -83,6 +83,7 @@ dependencies {
     implementation(libs.androidx.media3)
     implementation(libs.ktor.client.android)
     implementation(libs.ktor.client.content.negotiation)
+    implementation(libs.ktor.client.logging)
     implementation(libs.ktor.serialization.kotlinx.json)
     implementation(libs.androidx.constraintlayout)
     implementation(libs.openid)
