@@ -1,6 +1,5 @@
 package com.github.sszuev.flashcards.android.ui
 
-import android.util.Log
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -40,8 +39,6 @@ import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.models.TutorViewModel
 import com.github.sszuev.flashcards.android.utils.translationAsString
 
-private const val tag = "StageShowUI"
-
 @Composable
 fun StageShowScreen(
     dictionariesViewModel: DictionariesViewModel,
@@ -63,7 +60,7 @@ fun StageShowScreen(
 
     val cards = tutorViewModel.cardsDeck.value
     val isLoading = tutorViewModel.isCardsDeckLoading.value
-    val errorMessage = tutorViewModel.errorMessage.value
+
     val settings = checkNotNull(settingsViewModel.settings.value)
 
     val deckLoaded = rememberSaveable { mutableStateOf(false) }
@@ -99,6 +96,12 @@ fun StageShowScreen(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
+        return
+    }
+
+    val errorMessage = tutorViewModel.errorMessage.value
+    if (!errorMessage.isNullOrBlank()) {
+        ErrorMessageBox(errorMessage)
         return
     }
 
@@ -145,11 +148,6 @@ fun StageShowScreen(
         ) {
 
             StageHeader("SHOW")
-
-            if (errorMessage != null) {
-                Log.e(tag, errorMessage)
-                return
-            }
 
             if (currentCard == null) {
                 return

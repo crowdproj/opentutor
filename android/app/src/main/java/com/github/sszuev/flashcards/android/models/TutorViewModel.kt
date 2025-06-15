@@ -210,7 +210,6 @@ class TutorViewModel(
         _answeredCardDeckIds.value = emptySet()
         _wrongAnsweredCardDeckIds.value = emptySet()
         _stageShowCurrentDeckCardIndex.intValue = 0
-        _errorMessage.value = null
         _isCardsDeckLoading.value = true
         _isAdditionalCardsDeckLoading.value = false
         _isAdditionalDeckLoaded.value = false
