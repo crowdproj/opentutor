@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.ui
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -72,6 +73,8 @@ import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.utils.username
 
 val SELECTED_ROW_COLOR = Color(0xFF90CAF9)
+
+private const val tag = "CommonUI"
 
 @Composable
 fun TopBar(
@@ -635,6 +638,7 @@ fun ErrorMessageBox(errorMessage: String?) {
     if (errorMessage.isNullOrEmpty()) {
         return
     }
+    Log.e(tag, errorMessage)
     Column(
         modifier = Modifier.fillMaxWidth()
     ) {

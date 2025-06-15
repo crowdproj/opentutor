@@ -50,7 +50,6 @@ class CardsViewModel(
             _cards.value.singleOrNull { it.cardId == _selectedCardId.value }
         }
 
-
     fun loadCards(dictionaryId: String) {
         viewModelScope.launch {
             Log.d(tag, "load cards for dictionary = $dictionaryId")

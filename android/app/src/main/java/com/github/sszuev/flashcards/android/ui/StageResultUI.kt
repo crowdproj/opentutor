@@ -60,6 +60,12 @@ fun StageResultScreen(
         onHomeClick()
     }
 
+    val errorMessage = tutorViewModel.errorMessage.value
+    if (!errorMessage.isNullOrBlank()) {
+        ErrorMessageBox(errorMessage)
+        return
+    }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
