@@ -3,9 +3,10 @@
 A simple open-source kotlin-ktor web-application for compiling custom dictionaries and learning foreign words through
 flashcards.
 
-It is available via [https://opentutor.zapto.org](https://opentutor.zapto.org) ;
-also, as an apk android file (see [releases](https://github.com/crowdproj/opentutor/releases))
-and as a standalone docker image
+It is available via [https://opentutor.zapto.org](https://opentutor.zapto.org) (web)
+and in [Google Play Store](https://play.google.com/store/apps/details?id=com.github.sszuev.flashcards.android)
+(android);
+also, as a standalone docker image
 (see [docker-hub](https://hub.docker.com/repository/docker/sszuev/open-tutor-standalone/)).
 
 #### Edit dictionaries:
