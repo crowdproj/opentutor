@@ -189,7 +189,7 @@ class TutorViewModel(
         stageOptionsCardsMap.value = map
     }
 
-    fun clearFlashcardsSessionState() {
+    fun clearMosaicAndOptionsState() {
         stageMosaicLeftCards.value = emptyList()
         stageMosaicRightCards.value = emptyList()
         stageMosaicSelectedLeftCardId.value = null
@@ -202,6 +202,33 @@ class TutorViewModel(
         _isStageOptionsInitialized.value = false
 
         _isAdditionalDeckLoaded.value = false
+    }
+
+    fun resetSession() {
+        _cardsDeck.value = emptyList()
+        _additionalCardsDeck.value = emptyList()
+        _answeredCardDeckIds.value = emptySet()
+        _wrongAnsweredCardDeckIds.value = emptySet()
+        _stageShowCurrentDeckCardIndex.intValue = 0
+        _errorMessage.value = null
+        _isCardsDeckLoading.value = true
+        _isAdditionalCardsDeckLoading.value = false
+        _isAdditionalDeckLoaded.value = false
+
+        // Stage Mosaic
+        stageMosaicLeftCards.value = emptyList()
+        stageMosaicRightCards.value = emptyList()
+        stageMosaicSelectedLeftCardId.value = null
+        stageMosaicSelectedRightCardId.value = null
+        _isStageMosaicInitialized.value = false
+
+        // Stage Options
+        stageOptionsLeftCards.value = emptyList()
+        stageOptionsCardsMap.value = emptyMap()
+        stageOptionsCurrentCard.value = null
+        stageOptionsSelectedOption.value = null
+        stageOptionsIsCorrect.value = null
+        _isStageOptionsInitialized.value = false
     }
 
     fun markDeckCardAsKnow(

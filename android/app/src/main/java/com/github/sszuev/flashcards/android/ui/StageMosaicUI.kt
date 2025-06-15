@@ -73,7 +73,7 @@ fun StageMosaicScreen(
         if (!isNavigatingToNextStage.value && tutorViewModel.stageMosaicLeftCards.value.isEmpty()) {
             Log.d(tag, "StageMosaic is empty, going to next stage")
             isNavigatingToNextStage.value = true
-            tutorViewModel.clearFlashcardsSessionState()
+            tutorViewModel.clearMosaicAndOptionsState()
             onNextStage()
         }
     }
@@ -195,7 +195,7 @@ fun MosaicPanels(
 
                 if (tutorViewModel.stageMosaicLeftCards.value.isEmpty()) {
                     Log.i(tag, "All left cards are matched. Moving to the next stage.")
-                    tutorViewModel.clearFlashcardsSessionState()
+                    tutorViewModel.clearMosaicAndOptionsState()
                     onNextStage()
                 } else {
                     Log.d(

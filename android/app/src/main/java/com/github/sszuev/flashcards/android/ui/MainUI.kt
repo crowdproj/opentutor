@@ -93,6 +93,7 @@ fun MainNavigation(
                             dictionariesViewModel = dictionariesViewModel,
                             settingsViewModel = settingsViewModel,
                             cardsViewModel = cardsViewModel,
+                            tutorViewModel = tutorViewModel,
                         )
                     }
                     composable("cards/{dictionaryId}") { backStackEntry ->
@@ -123,7 +124,6 @@ fun MainNavigation(
                         composable(stage) {
                             when (stage) {
                                 "StageShow" -> {
-                                    tutorViewModel.clearFlashcardsSessionState()
                                     StageShowScreen(
                                         dictionariesViewModel = dictionariesViewModel,
                                         cardsViewModel = cardsViewModel,

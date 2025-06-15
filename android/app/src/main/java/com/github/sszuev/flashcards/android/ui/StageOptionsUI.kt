@@ -99,7 +99,7 @@ fun OptionsPanel(
             !isNavigatingToNextStage.value
         ) {
             isNavigatingToNextStage.value = true
-            tutorViewModel.clearFlashcardsSessionState()
+            tutorViewModel.clearMosaicAndOptionsState()
             onNextStage()
         }
     }
@@ -196,7 +196,7 @@ fun OptionsPanel(
         isNavigatingToNextStage.value = true
         selectedOption.value = null
         isCorrect.value = null
-        tutorViewModel.clearFlashcardsSessionState()
+        tutorViewModel.clearMosaicAndOptionsState()
     }
 
     fun onOptionSelected(selectedItem: CardEntity) {

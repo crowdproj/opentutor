@@ -59,6 +59,7 @@ import com.github.sszuev.flashcards.android.entities.SettingsEntity
 import com.github.sszuev.flashcards.android.models.CardsViewModel
 import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
+import com.github.sszuev.flashcards.android.models.TutorViewModel
 
 private const val tag = "DictionariesUI"
 private const val FIRST_COLUMN_WIDTH = 36
@@ -74,6 +75,7 @@ fun DictionariesScreen(
     dictionariesViewModel: DictionariesViewModel,
     settingsViewModel: SettingsViewModel,
     cardsViewModel: CardsViewModel,
+    tutorViewModel: TutorViewModel,
 ) {
     BackHandler {
         onHomeClick()
@@ -122,6 +124,7 @@ fun DictionariesScreen(
             },
             onRunClick = {
                 if (selectedDictionaryIds.value.isNotEmpty()) {
+                    tutorViewModel.resetSession()
                     navController.navigate("StageShow")
                 }
             },
