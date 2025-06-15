@@ -148,7 +148,7 @@ class MainActivity : ComponentActivity() {
         }
 
         try {
-            val response: HttpResponse = httpClient.get(logoutUrl) {
+            val response: HttpResponse = defaultHttpClient.get(logoutUrl) {
                 url {
                     parameters.appendAll(params)
                 }

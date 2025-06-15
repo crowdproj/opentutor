@@ -15,7 +15,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
 
-val httpClient: HttpClient = HttpClient(Android) {
+val defaultHttpClient: HttpClient = HttpClient(Android) {
     install(HttpTimeout) {
         requestTimeoutMillis = 10_000
         connectTimeoutMillis = 3_000
@@ -36,6 +36,29 @@ val httpClient: HttpClient = HttpClient(Android) {
             }
         }
         exponentialDelay()
+    }
+    if (BuildConfig.DEBUG) {
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    Log.d("HTTP", message)
+                }
+            }
+            level = LogLevel.ALL
+        }
+    }
+    expectSuccess = true
+
+    install(ContentNegotiation) {
+        json(Json { ignoreUnknownKeys = true })
+    }
+}
+
+val lightHttpClient: HttpClient = HttpClient(Android) {
+    install(HttpTimeout) {
+        requestTimeoutMillis = 3_000
+        connectTimeoutMillis = 1_500
+        socketTimeoutMillis = 2_500
     }
     if (BuildConfig.DEBUG) {
         install(Logging) {

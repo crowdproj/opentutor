@@ -15,7 +15,7 @@ class TTSRepository(
         val requestId = UUID.randomUUID().toString()
         Log.d(tag, "Get all dictionaries with requestId=$requestId")
         val container =
-            authPost<GetAudioResponse>("$serverUri/v1/api/sounds/get") {
+            authPost<GetAudioResponse>(url = "$serverUri/v1/api/sounds/get", withRetry = false) {
                 setBody(
                     GetAudioRequest(
                         requestType = "getAudio",

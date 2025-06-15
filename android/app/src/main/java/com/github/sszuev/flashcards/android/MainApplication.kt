@@ -5,6 +5,7 @@ import android.app.Application
 class MainApplication : Application() {
     override fun onTerminate() {
         super.onTerminate()
-        httpClient.close()
+        defaultHttpClient.close()
+        lightHttpClient.close()
     }
 }

@@ -5,7 +5,8 @@ import android.util.Log
 import androidx.core.content.edit
 import com.github.sszuev.flashcards.android.AppConfig
 import com.github.sszuev.flashcards.android.AppContextProvider
-import com.github.sszuev.flashcards.android.httpClient
+import com.github.sszuev.flashcards.android.defaultHttpClient
+import com.github.sszuev.flashcards.android.lightHttpClient
 import io.ktor.client.call.body
 import io.ktor.client.network.sockets.ConnectTimeoutException
 import io.ktor.client.network.sockets.SocketTimeoutException
@@ -23,12 +24,14 @@ import java.net.UnknownHostException
 
 suspend inline fun <reified T> authPost(
     url: String,
+    withRetry: Boolean = true,
     crossinline configureRequest: HttpRequestBuilder.() -> Unit,
 ): T {
     Log.d("HttpApi", "POST :: <$url>")
     var token = getAccessToken()
     return try {
-        httpClient.post(url) {
+        val client = if (withRetry) defaultHttpClient else lightHttpClient
+        client.post(url) {
             headers.append("Authorization", "Bearer $token")
             contentType(ContentType.Application.Json)
             configureRequest()
@@ -39,7 +42,7 @@ suspend inline fun <reified T> authPost(
                 Log.d("HttpApi", "Received 401. Attempting to refresh token.")
                 refreshToken()
                 token = getAccessToken()
-                val res: T = httpClient.post(url) {
+                val res: T = defaultHttpClient.post(url) {
                     headers.append("Authorization", "Bearer $token")
                     contentType(ContentType.Application.Json)
                     configureRequest()
@@ -75,7 +78,7 @@ suspend fun refreshToken() {
         ?: throw IllegalStateException("Refresh token is missing")
 
     val response: TokenResponse = try {
-        httpClient.post("${AppConfig.serverUri}/realms/flashcards-realm/protocol/openid-connect/token") {
+        defaultHttpClient.post("${AppConfig.serverUri}/realms/flashcards-realm/protocol/openid-connect/token") {
             contentType(ContentType.Application.FormUrlEncoded)
             setBody(
                 listOf(
