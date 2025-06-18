@@ -16,6 +16,7 @@ object DictionariesServerSettings {
     val password = conf.get(key = "dictionaries-server.nats.password", default = "dev")
     val topic = conf.get(key = "dictionaries-server.nats.topic", default = "DICTIONARIES")
     val group = conf.get(key = "dictionaries-server.nats.group", default = "DICTIONARIES")
+    val parallelism = conf.get(key = "dictionaries-server.nats.parallelism", default = 3)
 
     init {
         logger.info(printDetails())
@@ -30,6 +31,7 @@ object DictionariesServerSettings {
             |nats-password                  = ***           
             |nats-topic                     = $topic
             |nats-group                     = $group
+            |parallelism                    = $parallelism
             """.replaceIndentByMargin("\t")
     }
 }

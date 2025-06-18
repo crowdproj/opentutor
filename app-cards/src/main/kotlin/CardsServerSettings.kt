@@ -31,7 +31,7 @@ object CardsServerSettings {
             |nats-password                  = ***           
             |nats-topic                     = $topic
             |nats-group                     = $group
-            |nats-parallelism               = $parallelism
+            |parallelism                    = $parallelism
             """.replaceIndentByMargin("\t")
     }
 }

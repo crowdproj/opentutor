@@ -5,6 +5,7 @@ import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.domain.SettingsEntity
 import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
+import com.gitlab.sszuev.flashcards.nats.NatsServerProcessor
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
 import com.gitlab.sszuev.flashcards.utils.settingsContextFromByteArray
@@ -80,14 +81,17 @@ internal class SettingsServerProcessorTest {
             userRepository.findOrCreateUser(testUserId)
         } returns testDbUser
 
-        val processor = SettingsServerProcessor(
-            repositories = repositories,
+        val processor = NatsServerProcessor(
             topic = "XXX",
             group = "QQQ",
-            connectionFactory = { Nats.connect(connectionUrl) },
+            connection = Nats.connect(connectionUrl),
+            parallelism = 8,
+            messageHandler = SettingsMessageHandler(
+                repositories
+            )
         )
 
-        SettingsServerController(processor).start()
+        processor.process()
         while (!processor.ready()) {
             Thread.sleep(100)
         }

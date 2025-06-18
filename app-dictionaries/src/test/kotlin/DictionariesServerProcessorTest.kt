@@ -8,6 +8,7 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
+import com.gitlab.sszuev.flashcards.nats.NatsServerProcessor
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDictionaryRepository
 import com.gitlab.sszuev.flashcards.repositories.DbLang
@@ -85,14 +86,15 @@ class DictionariesServerProcessorTest {
             dictionaryRepository.createDictionary(any())
         } returns testDbDictionary
 
-        val processor = DictionariesServerProcessor(
-            repositories = repositories,
+        val processor = NatsServerProcessor(
             topic = "XXX",
             group = "QQQ",
-            connectionFactory = { Nats.connect(connectionUrl) },
+            parallelism = 6,
+            connection = Nats.connect(connectionUrl),
+            messageHandler = DictionariesMessageHandler(repositories),
         )
+        processor.process()
 
-        DictionariesServerController(processor).start()
         while (!processor.ready()) {
             Thread.sleep(100)
         }
