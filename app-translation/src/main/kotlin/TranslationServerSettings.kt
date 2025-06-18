@@ -18,6 +18,7 @@ object TranslationServerSettings {
     val redisPort = conf.get(key = "translation-server.redis.port", default = 6379)
     val topic = conf.get(key = "translation-server.nats.topic", default = "TRANSLATION")
     val group = conf.get(key = "translation-server.nats.group", default = "TRANSLATION")
+    val parallelism = conf.get(key = "translation-server.nats.parallelism", default = 8)
 
     init {
         logger.info(printDetails())
@@ -34,6 +35,7 @@ object TranslationServerSettings {
             |nats-group                     = $group
             |redis-host                     = $redisHost
             |redis-port                     = $redisPort
+            |parallelism                    = $parallelism
             """.replaceIndentByMargin("\t")
     }
 }

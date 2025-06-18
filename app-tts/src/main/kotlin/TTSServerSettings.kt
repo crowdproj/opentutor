@@ -18,6 +18,7 @@ object TTSServerSettings {
     val password = conf.get(key = "tts-server.nats.password", default = "dev")
     val topic = conf.get(key = "tts-server.nats.topic", default = "TTS")
     val group = conf.get(key = "tts-server.nats.group", default = "TTS")
+    val parallelism = conf.get(key = "tts-server.nats.parallelism", default = 8)
 
     init {
         logger.info(printDetails())
@@ -34,6 +35,7 @@ object TTSServerSettings {
             |nats-group                     = $group
             |redis-host                     = $redisHost
             |redis-port                     = $redisPort
+            |parallelism                    = $parallelism
             """.replaceIndentByMargin("\t")
     }
 }
