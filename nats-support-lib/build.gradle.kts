@@ -1,0 +1,16 @@
+plugins {
+    kotlin("jvm")
+}
+
+group = rootProject.group
+version = rootProject.version
+
+dependencies {
+    val kotlinCoroutinesVersion: String by project
+    val natsVersion: String by project
+    val slf4jVersion: String by project
+
+    implementation("io.nats:jnats:$natsVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutinesVersion")
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+}

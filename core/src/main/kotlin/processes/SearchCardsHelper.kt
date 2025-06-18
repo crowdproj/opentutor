@@ -13,7 +13,7 @@ private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.
 /**
  * oldest cards go first
  */
-private val oldestFirstComparator: Comparator<CardEntity> = Comparator<CardEntity> { left, right ->
+private val oldestFirstComparator: Comparator<CardEntity> = Comparator { left, right ->
     left.changedAt.compareTo(right.changedAt)
 }
 

@@ -14,8 +14,9 @@ object CardsServerSettings {
     val port = conf.get(key = "cards-server.nats.port", default = 4222)
     val user = conf.get(key = "cards-server.nats.user", default = "dev")
     val password = conf.get(key = "cards-server.nats.password", default = "dev")
-    val topic = conf.get(key = "cards-server.nats.topic", default = "TTS")
-    val group = conf.get(key = "cards-server.nats.group", default = "TTS")
+    val topic = conf.get(key = "cards-server.nats.topic", default = "CARDS")
+    val group = conf.get(key = "cards-server.nats.group", default = "CARDS")
+    val parallelism = conf.get(key = "cards-server.nats.parallelism", default = 6)
 
     init {
         logger.info(printDetails())
@@ -30,6 +31,7 @@ object CardsServerSettings {
             |nats-password                  = ***           
             |nats-topic                     = $topic
             |nats-group                     = $group
+            |nats-parallelism               = $parallelism
             """.replaceIndentByMargin("\t")
     }
 }

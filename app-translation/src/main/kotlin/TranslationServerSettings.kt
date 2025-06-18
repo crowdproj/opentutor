@@ -16,8 +16,8 @@ object TranslationServerSettings {
     val password = conf.get(key = "translation-server.nats.password", default = "dev")
     val redisHost = conf.get(key = "translation-server.redis.host", default = "localhost")
     val redisPort = conf.get(key = "translation-server.redis.port", default = 6379)
-    val topic = conf.get(key = "translation-server.nats.topic", default = "SETTINGS")
-    val group = conf.get(key = "translation-server.nats.group", default = "SETTINGS")
+    val topic = conf.get(key = "translation-server.nats.topic", default = "TRANSLATION")
+    val group = conf.get(key = "translation-server.nats.group", default = "TRANSLATION")
 
     init {
         logger.info(printDetails())
