@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.services.local
 import com.gitlab.sszuev.flashcards.SettingsContext
 import com.gitlab.sszuev.flashcards.core.SettingsCorProcessor
 import com.gitlab.sszuev.flashcards.services.SettingsService
-import com.gitlab.sszuev.flashcards.services.localDbRepositories
 
 class LocalSettingsService : SettingsService {
     private val processor = SettingsCorProcessor()

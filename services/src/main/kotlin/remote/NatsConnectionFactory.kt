@@ -1,8 +1,11 @@
-package com.gitlab.sszuev.flashcards.services
+package com.gitlab.sszuev.flashcards.services.remote
 
+import com.gitlab.sszuev.flashcards.services.ServicesConfig
 import io.nats.client.Connection
 import io.nats.client.Nats
+import io.nats.client.Options
 import org.slf4j.LoggerFactory
+import java.time.Duration
 import kotlin.concurrent.thread
 
 object NatsConnectionFactory {
@@ -26,6 +29,15 @@ object NatsConnectionFactory {
         if (logger.isDebugEnabled) {
             logger.debug("NATS URL:: $url")
         }
-        return Nats.connectReconnectOnConnect(url)
+        val options = Options.Builder()
+            .server(url)
+            .maxReconnects(-1)
+            .reconnectWait(Duration.ofSeconds(2))
+            .pingInterval(Duration.ofSeconds(10))
+            .connectionListener { conn, event ->
+                logger.warn("NATS event: $event | Status: ${conn.status}")
+            }
+            .build()
+        return Nats.connect(options)
     }
 }

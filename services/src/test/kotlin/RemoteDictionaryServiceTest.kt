@@ -89,7 +89,8 @@ internal class RemoteDictionaryServiceTest {
         val service = RemoteDictionaryService(
             topic = topic,
             requestTimeoutInMillis = 2000L,
-        ) { Nats.connect(connectionUrl) }
+            connection = Nats.connect(connectionUrl)
+        )
 
         val res1 = service.getAllDictionaries(DictionaryContext().also { it.requestAppAuthId = testUser1 })
         Assertions.assertEquals(listOf(testDictionary1), res1.responseDictionaryEntityList)

@@ -1,4 +1,4 @@
-package com.gitlab.sszuev.flashcards.services
+package com.gitlab.sszuev.flashcards.services.local
 
 import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.dbmem.MemDbCardRepository

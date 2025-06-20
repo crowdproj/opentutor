@@ -28,7 +28,7 @@ class YandexTranslationRepository(
             logger.error("targetLang: $dst is not supported")
             return emptyList()
         }
-        logger.info("[YANDEX-TRANSLATION] ::: [${SUPPORTED_LANGS[sourceLang]} -> ${SUPPORTED_LANGS[targetLang]}] '$word'")
+        logger.info("[YANDEX-TRANSLATION] ::: [${SUPPORTED_LANGUAGES[sourceLang]} -> ${SUPPORTED_LANGUAGES[targetLang]}] '$word'")
         return try {
             withTimeout(config.getResourceTimeoutMs) {
                 fetchResource(word, "$src-$dst").toTWords()
@@ -63,7 +63,7 @@ class YandexTranslationRepository(
             "uk" to setOf("ru")
         )
 
-        val SUPPORTED_LANGS = mapOf(
+        val SUPPORTED_LANGUAGES = mapOf(
             "de" to "German",
             "en" to "English",
             "es" to "Spanish",

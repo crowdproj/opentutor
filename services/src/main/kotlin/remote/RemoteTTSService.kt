@@ -1,7 +1,6 @@
 package com.gitlab.sszuev.flashcards.services.remote
 
 import com.gitlab.sszuev.flashcards.TTSContext
-import com.gitlab.sszuev.flashcards.services.NatsConnectionFactory
 import com.gitlab.sszuev.flashcards.services.ServicesConfig
 import com.gitlab.sszuev.flashcards.services.TTSService
 import com.gitlab.sszuev.flashcards.utils.toByteArray
@@ -15,21 +14,13 @@ import java.time.temporal.ChronoUnit
 class RemoteTTSService(
     private val topic: String,
     private val requestTimeoutInMillis: Long,
-    connectionFactory: () -> Connection,
+    private val connection: Connection,
 ) : TTSService {
     constructor() : this(
         topic = ServicesConfig.ttsNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
-        connectionFactory = { NatsConnectionFactory.connection }
+        connection = NatsConnectionFactory.connection,
     )
-
-    private val connection: Connection by lazy {
-        connectionFactory().also {
-            check(it.status == Connection.Status.CONNECTED) {
-                "connection status: ${it.status}"
-            }
-        }
-    }
 
     override suspend fun getResource(context: TTSContext) = context.exec()
 
