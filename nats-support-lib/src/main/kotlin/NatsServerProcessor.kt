@@ -102,7 +102,11 @@ suspend fun runProcessing(
         .reconnectWait(Duration.ofSeconds(2))
         .pingInterval(Duration.ofSeconds(10))
         .connectionListener { conn, event ->
-            logger.warn("NATS event: $event | Status: ${conn.status}")
+            if (event == ConnectionListener.Events.CONNECTED) {
+                logger.info("$event | Status: ${conn.status}")
+            } else {
+                logger.warn("$event | Status: ${conn.status}")
+            }
             if (event == ConnectionListener.Events.RECONNECTED || event == ConnectionListener.Events.RESUBSCRIBED) {
                 logger.info(">>> Triggering re-subscription to NATS topic after $event")
                 processor.subscribe()
