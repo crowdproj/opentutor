@@ -72,6 +72,11 @@ services:
     depends_on:
       flashcards-keycloak:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/15001; echo -e \"GET /ready HTTP/1.1\\r\\nHost: localhost\\r\\nConnection: close\\r\\n\\r\\n\" >&3; head -n 10 <&3 | grep \"200 OK\"'" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   flashcards-nats:
     image: nats:2.10.14-alpine
