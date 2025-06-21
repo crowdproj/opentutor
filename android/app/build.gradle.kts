@@ -29,7 +29,7 @@ android {
         applicationId = "com.github.sszuev.flashcards.android"
         minSdk = 26
         targetSdk = 34
-        versionCode = 7
+        versionCode = 8
         versionName = "1.4 beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
