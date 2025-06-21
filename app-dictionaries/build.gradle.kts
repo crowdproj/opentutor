@@ -25,6 +25,7 @@ dependencies {
     implementation(project(":db-pg"))
     implementation(project(":common"))
     implementation(project(":core"))
+    implementation(project(":nats-support-lib"))
     implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")

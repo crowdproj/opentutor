@@ -93,7 +93,8 @@ internal class RemoteTTSServiceTest {
         val service = RemoteTTSService(
             topic = topic,
             requestTimeoutInMillis = 2000L,
-        ) { Nats.connect(connectionUrl) }
+            connection = Nats.connect(connectionUrl)
+        )
 
         val res1 = service.getResource(TTSContext().also { it.requestTTSResourceGet = testRequest1 })
         Assertions.assertEquals(testDataEntity1, res1.responseTTSResourceEntity)

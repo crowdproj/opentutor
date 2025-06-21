@@ -89,7 +89,8 @@ internal class RemoteCardServiceTest {
         val service = RemoteCardService(
             topic = topic,
             requestTimeoutInMillis = 2000L,
-        ) { Nats.connect(connectionUrl) }
+            connection = Nats.connect(connectionUrl)
+        )
 
         val res1 = service.getCard(CardContext().also { it.requestCardEntityId = CardId(testEntityId1) })
         Assertions.assertEquals(testEntity1, res1.responseCardEntity)

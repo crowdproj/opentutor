@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
+import com.gitlab.sszuev.flashcards.nats.NatsServerProcessor
 import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 import com.gitlab.sszuev.flashcards.utils.toByteArray
@@ -76,14 +77,15 @@ internal class TranslationServerProcessorTest {
         } returns listOf(testTranslationEntity)
 
 
-        val processor = TranslationServerProcessor(
-            repository = translationRepository,
+        val processor = NatsServerProcessor(
             topic = "XXX",
             group = "QQQ",
-            connectionFactory = { Nats.connect(connectionUrl) },
+            parallelism = 8,
+            connection = Nats.connect(connectionUrl),
+            messageHandler = TranslationMessageHandler(translationRepository)
         )
 
-        TranslationServerController(processor).start()
+        processor.process()
         while (!processor.ready()) {
             Thread.sleep(100)
         }

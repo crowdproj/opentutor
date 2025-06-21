@@ -6,6 +6,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
+import com.gitlab.sszuev.flashcards.nats.NatsServerProcessor
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
@@ -108,14 +109,15 @@ class CardsServerProcessorTest {
             dictionaryRepository.findDictionaryById(testDictionaryId)
         } returns testDbDictionary
 
-        val processor = CardsServerProcessor(
-            repositories = repositories,
+        val processor = NatsServerProcessor(
             topic = "XXX",
             group = "QQQ",
-            connectionFactory = { Nats.connect(connectionUrl) },
+            connection = Nats.connect(connectionUrl),
+            parallelism = 8,
+            messageHandler = CardsMessageHandler(repositories)
         )
 
-        CardsServerController(processor).start()
+        processor.process()
         while (!processor.ready()) {
             Thread.sleep(100)
         }

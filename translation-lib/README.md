@@ -1,3 +1,3 @@
 ### flashcard-kt ::: translation-lib
 
-Currently, it is based on https://github.com/imankulov/linguee-api 
+Contains clients for Google and Yandex translate services.

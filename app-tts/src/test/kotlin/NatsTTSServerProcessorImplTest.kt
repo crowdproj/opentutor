@@ -7,6 +7,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
+import com.gitlab.sszuev.flashcards.nats.NatsServerProcessor
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.mockk.coEvery
@@ -88,14 +89,17 @@ internal class NatsTTSServerProcessorImplTest {
             service.getResource(testRequestId2)
         } returns testResponseBody2
 
-        val processor = NatsTTSServerProcessorImpl(
-            service = service,
+        val processor = NatsServerProcessor(
             topic = "XXX",
             group = "QQQ",
-            connectionFactory = { Nats.connect(connectionUrl) },
+            parallelism = 8,
+            connection = Nats.connect(connectionUrl),
+            messageHandler = TTSMessageHandler(
+                repository = DirectTTSResourceRepository(service)
+            )
         )
 
-        TTSServerController(processor).start()
+        processor.process()
         while (!processor.ready()) {
             Thread.sleep(100)
         }
@@ -150,14 +154,17 @@ internal class NatsTTSServerProcessorImplTest {
         coEvery {
             service.getResource(testRequestId)
         } throws IllegalStateException("expected error")
-        val processor = NatsTTSServerProcessorImpl(
-            service = service,
+        val processor = NatsServerProcessor(
             topic = "XXX",
             group = "QQQ",
-            connectionFactory = { Nats.connect(connectionUrl) },
+            parallelism = 8,
+            connection = Nats.connect(connectionUrl),
+            messageHandler = TTSMessageHandler(
+                repository = DirectTTSResourceRepository(service)
+            )
         )
 
-        TTSServerController(processor).start()
+        processor.process()
         while (!processor.ready()) {
             Thread.sleep(100)
         }

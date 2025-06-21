@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.services.local
 import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.core.TTSCorProcessor
 import com.gitlab.sszuev.flashcards.services.TTSService
-import com.gitlab.sszuev.flashcards.services.localTTSRepository
 
 class LocalTTSService : TTSService {
     private val processor = TTSCorProcessor()

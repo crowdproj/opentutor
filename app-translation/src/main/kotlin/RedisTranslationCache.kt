@@ -13,7 +13,6 @@ class RedisTranslationCache(
     private val commands: RedisCommands<String, String>,
 ) : TranslationCache {
 
-
     val json = Json {
         encodeDefaults = false
         ignoreUnknownKeys = true

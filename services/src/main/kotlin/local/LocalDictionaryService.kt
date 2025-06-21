@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.services.local
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.core.DictionaryCorProcessor
 import com.gitlab.sszuev.flashcards.services.DictionaryService
-import com.gitlab.sszuev.flashcards.services.localDbRepositories
 
 class LocalDictionaryService : DictionaryService {
     private val processor = DictionaryCorProcessor()

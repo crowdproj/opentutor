@@ -2,34 +2,21 @@ package com.gitlab.sszuev.flashcards.services.remote
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
 import com.gitlab.sszuev.flashcards.services.DictionaryService
-import com.gitlab.sszuev.flashcards.services.NatsConnectionFactory
 import com.gitlab.sszuev.flashcards.services.ServicesConfig
 import com.gitlab.sszuev.flashcards.utils.dictionaryContextFromByteArray
 import com.gitlab.sszuev.flashcards.utils.toByteArray
 import io.nats.client.Connection
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
-import java.time.Duration
-import java.time.temporal.ChronoUnit
 
 class RemoteDictionaryService(
     private val topic: String,
     private val requestTimeoutInMillis: Long,
-    connectionFactory: () -> Connection,
+    private val connection: Connection,
 ) : DictionaryService {
     constructor() : this(
         topic = ServicesConfig.dictionariesNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
-        connectionFactory = { NatsConnectionFactory.connection }
+        connection = NatsConnectionFactory.connection
     )
-
-    private val connection: Connection by lazy {
-        connectionFactory().also {
-            check(it.status == Connection.Status.CONNECTED) {
-                "connection status: ${it.status}"
-            }
-        }
-    }
 
     override suspend fun getAllDictionaries(context: DictionaryContext): DictionaryContext = context.exec()
     override suspend fun createDictionary(context: DictionaryContext): DictionaryContext = context.exec()
@@ -39,13 +26,11 @@ class RemoteDictionaryService(
     override suspend fun uploadDictionary(context: DictionaryContext): DictionaryContext = context.exec()
 
     private suspend fun DictionaryContext.exec(): DictionaryContext {
-        val answer = withContext(Dispatchers.IO) {
-            connection.request(
-                /* subject = */ topic,
-                /* body = */ this@exec.toByteArray(),
-                /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
-            )
-        }
+        val answer = connection.requestWithRetry(
+            topic = topic,
+            data = this@exec.toByteArray(),
+            requestTimeoutInMillis = requestTimeoutInMillis,
+        )
         val res = dictionaryContextFromByteArray(answer.data)
         res.copyTo(this)
         return this

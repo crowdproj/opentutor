@@ -3,7 +3,6 @@ package com.gitlab.sszuev.flashcards.services.local
 import com.gitlab.sszuev.flashcards.CardContext
 import com.gitlab.sszuev.flashcards.core.CardCorProcessor
 import com.gitlab.sszuev.flashcards.services.CardService
-import com.gitlab.sszuev.flashcards.services.localDbRepositories
 
 class LocalCardService : CardService {
     private val processor = CardCorProcessor()
