@@ -38,21 +38,21 @@ class PgDbConnector(config: PgDbConfig) {
         }
     }
 
-    private val connection: Database = Database.connect(
+    val database: Database = Database.connect(
         datasource = dataSource,
         databaseConfig = databaseConfig,
     )
 
     companion object {
-        private val connections = ConcurrentHashMap<PgDbConfig, Database>()
+        private val connectors = ConcurrentHashMap<PgDbConfig, PgDbConnector>()
 
         /**
-         * Connection pool.
+         * Returns connector.
          * @param [config][PgDbConfig]
-         * @return [Database] - dedicated connection for the given configuration
+         * @return [PgDbConnector] - dedicated connector for the given configuration
          */
-        fun connection(config: PgDbConfig): Database {
-            return connections.computeIfAbsent(config) { PgDbConnector(config).connection }
+        fun connector(config: PgDbConfig): PgDbConnector {
+            return connectors.computeIfAbsent(config) { PgDbConnector(config) }
         }
     }
 }
