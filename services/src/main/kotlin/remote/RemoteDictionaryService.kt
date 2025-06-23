@@ -15,7 +15,7 @@ class RemoteDictionaryService(
     constructor() : this(
         topic = ServicesConfig.dictionariesNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
-        connection = NatsConnectionFactory.connection
+        connection = NatsConnector.connection
     )
 
     override suspend fun getAllDictionaries(context: DictionaryContext): DictionaryContext = context.exec()

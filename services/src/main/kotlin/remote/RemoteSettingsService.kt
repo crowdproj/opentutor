@@ -15,7 +15,7 @@ class RemoteSettingsService(
     constructor() : this(
         topic = ServicesConfig.settingsNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
-        connection = NatsConnectionFactory.connection
+        connection = NatsConnector.connection
     )
 
     override suspend fun getSettings(context: SettingsContext): SettingsContext = context.exec()
