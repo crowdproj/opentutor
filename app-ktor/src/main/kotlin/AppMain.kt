@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
+import com.gitlab.sszuev.flashcards.api.controllers.health
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
 import com.gitlab.sszuev.flashcards.api.settingsApiV1
 import com.gitlab.sszuev.flashcards.api.translationApiV1
@@ -107,6 +108,7 @@ fun Application.module(
     val ttsService = ttsService(runConfig)
     val translationService = translationService(runConfig)
     val settingsService = settingsService(runConfig)
+    val healthService = healthService(runConfig)
 
     val keycloakProvider = OAuthServerSettings.OAuth2ServerSettings(
         name = "keycloak",
@@ -231,6 +233,9 @@ fun Application.module(
                     }
                 }
             }
+            health(
+                service = healthService
+            )
         } else {
             cardApiV1(
                 service = cardService,
@@ -251,6 +256,9 @@ fun Application.module(
             settingsApiV1(
                 service = settingsService,
                 contextConfig = contextConfig,
+            )
+            health(
+                service = healthService
             )
             get("/") {
                 call.respond(thymeleafContent(tutorConfig, keycloakConfig, null))

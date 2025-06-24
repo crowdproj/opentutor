@@ -59,7 +59,7 @@ internal fun CardContext.findCardDeck(dictionaries: Map<DictionaryId, Dictionary
     if (!this.normalizedRequestCardFilter.random && this.normalizedRequestCardFilter.length > 0) {
         val res = selectedCards.take(this.normalizedRequestCardFilter.length).toList()
         if (logger.isDebugEnabled) {
-            logger.debug("Search cards response: {}", res)
+            logger.debug("Search cards response: {} cards", res.size)
         }
         return res
     }
@@ -75,7 +75,7 @@ internal fun CardContext.findCardDeck(dictionaries: Map<DictionaryId, Dictionary
         }
     }
     if (logger.isDebugEnabled) {
-        logger.debug("Search cards response: {}", res)
+        logger.debug("Search cards response: {} cards", res.size)
     }
     return res
 }

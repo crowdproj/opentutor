@@ -3,10 +3,14 @@ package com.gitlab.sszuev.flashcards.api.controllers
 import com.gitlab.sszuev.flashcards.config.ContextConfig
 import com.gitlab.sszuev.flashcards.services.CardService
 import com.gitlab.sszuev.flashcards.services.DictionaryService
+import com.gitlab.sszuev.flashcards.services.HealthService
 import com.gitlab.sszuev.flashcards.services.SettingsService
 import com.gitlab.sszuev.flashcards.services.TTSService
 import com.gitlab.sszuev.flashcards.services.TranslationService
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.response.respondText
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.server.routing.route
 
@@ -103,6 +107,16 @@ fun Route.settings(
         }
         post("update") {
             call.updateSettings(service, contextConfig)
+        }
+    }
+}
+
+fun Route.health(service: HealthService) {
+    get("health") {
+        if (service.ping()) {
+            call.respondText("OK", status = HttpStatusCode.OK)
+        } else {
+            call.respondText("Unhealthy", status = HttpStatusCode.ServiceUnavailable)
         }
     }
 }
