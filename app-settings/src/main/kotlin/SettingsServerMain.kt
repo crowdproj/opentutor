@@ -4,9 +4,9 @@ import com.gitlab.sszuev.flashcards.DbRepositories
 import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbUserRepository
-import com.gitlab.sszuev.flashcards.nats.runProcessing
+import com.gitlab.sszuev.flashcards.nats.runApp
 
-suspend fun main() = runProcessing(
+suspend fun main() = runApp(
     connectionUrl = "nats://${SettingsServerSettings.host}:${SettingsServerSettings.port}",
     topic = SettingsServerSettings.topic,
     group = SettingsServerSettings.group,
