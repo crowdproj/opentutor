@@ -26,7 +26,7 @@ dependencies {
     implementation(project(":tts-lib"))
     implementation(project(":common"))
     implementation(project(":core"))
-    implementation(project(":nats-support-lib"))
+    implementation(project(":app-support-lib"))
     implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")
