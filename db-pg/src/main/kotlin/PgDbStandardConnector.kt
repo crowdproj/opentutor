@@ -10,10 +10,9 @@ import liquibase.database.jvm.JdbcConnection
 import liquibase.resource.ClassLoaderResourceAccessor
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig
-import java.sql.Connection
 import java.util.concurrent.ConcurrentHashMap
 
-class PgDbConnector(config: PgDbConfig) {
+class PgDbStandardConnector(config: PgDbConfig) {
 
     private val databaseConfig: DatabaseConfig = DatabaseConfig { }
 
@@ -44,18 +43,16 @@ class PgDbConnector(config: PgDbConfig) {
         databaseConfig = databaseConfig,
     )
 
-    fun connection(): Connection = dataSource.connection
-
     companion object {
-        private val connectors = ConcurrentHashMap<PgDbConfig, PgDbConnector>()
+        private val connectors = ConcurrentHashMap<PgDbConfig, PgDbStandardConnector>()
 
         /**
          * Returns connector.
          * @param [config][PgDbConfig]
-         * @return [PgDbConnector] - dedicated connector for the given configuration
+         * @return [PgDbStandardConnector] - dedicated connector for the given configuration
          */
-        fun connector(config: PgDbConfig): PgDbConnector {
-            return connectors.computeIfAbsent(config) { PgDbConnector(config) }
+        fun connector(config: PgDbConfig): PgDbStandardConnector {
+            return connectors.computeIfAbsent(config) { PgDbStandardConnector(config) }
         }
     }
 }

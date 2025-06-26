@@ -4,7 +4,7 @@ class PgDbHealthRepository(dbConfig: PgDbConfig = PgDbConfig.DEFAULT) {
     private val connector by lazy {
         // lazy, to avoid initialization error when there is no real pg-database
         // and memory-storage is used instead
-        PgDbConnector.connector(dbConfig)
+        PgDbHealthConnector.connector(dbConfig)
     }
 
     fun ping() = try {
