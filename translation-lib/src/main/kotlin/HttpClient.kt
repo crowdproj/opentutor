@@ -11,7 +11,10 @@ import kotlin.concurrent.thread
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.translation.impl.HttpClient")
 
 val defaultHttpClient = HttpClient {
-    install(HttpTimeout)
+    install(HttpTimeout) {
+        requestTimeoutMillis = TranslationSettings.httpClientRequestTimeoutMs
+        connectTimeoutMillis = TranslationSettings.httpClientConnectTimeoutMs
+    }
     expectSuccess = true
 
     install(ContentNegotiation) {
@@ -19,7 +22,7 @@ val defaultHttpClient = HttpClient {
     }
 }.also {
     Runtime.getRuntime().addShutdownHook(thread(start = false) {
-        logger.info("Close connection on shutdown.")
+        logger.info("Close http connection on shutdown.")
         it.close()
     })
 }

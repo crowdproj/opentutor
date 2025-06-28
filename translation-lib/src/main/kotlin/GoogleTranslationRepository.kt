@@ -3,52 +3,64 @@ package com.gitlab.sszuev.flashcards.translation.impl
 import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
 import com.google.auth.oauth2.ServiceAccountCredentials
+import com.google.cloud.http.HttpTransportOptions
 import com.google.cloud.translate.Translate.TranslateOption
 import com.google.cloud.translate.TranslateOptions
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
+import java.util.Locale
 
 private val logger = LoggerFactory.getLogger(GoogleTranslationRepository::class.java)
 
 class GoogleTranslationRepository(
-    private val config: TranslationConfig = TranslationConfig(),
+    config: TranslationConfig = TranslationConfig(),
 ) : TranslationRepository {
 
     private val credentials = GoogleTranslationRepository::class.java.getResourceAsStream("/google-key.json")
         ?: throw IllegalStateException("Unable to obtain google key json")
 
+    private val httpTransportOptions: HttpTransportOptions = HttpTransportOptions.newBuilder()
+        .setConnectTimeout(config.httpClientConnectTimeoutMs.toInt())
+        .setReadTimeout(config.httpClientRequestTimeoutMs.toInt())
+        .build()
+
     private val translate = TranslateOptions.newBuilder()
         .setCredentials(ServiceAccountCredentials.fromStream(credentials))
+        .setTransportOptions(httpTransportOptions)
         .build()
         .service
 
-    override suspend fun fetch(sourceLang: String, targetLang: String, word: String): List<TranslationEntity> {
-        if (sourceLang !in SUPPORTED_LANGS.keys) {
-            throw IllegalArgumentException("Invalid source lang: '$sourceLang'")
-        }
-        if (targetLang !in SUPPORTED_LANGS.keys) {
-            throw IllegalArgumentException("Invalid target lang: '$targetLang'")
-        }
-        if (word.isBlank()) {
-            throw IllegalArgumentException("Word is required")
-        }
-        logger.info("[GOOGLE-TRANSLATION] ::: [${SUPPORTED_LANGS[sourceLang]} -> ${SUPPORTED_LANGS[targetLang]}] '$word'")
+    override suspend fun fetch(sourceLang: String, targetLang: String, word: String): List<TranslationEntity> =
+        withContext(Dispatchers.IO) {
+            require(word.isNotBlank())
+            require(sourceLang.isNotBlank())
+            require(targetLang.isNotBlank())
+            val src = sourceLang.trim().lowercase(Locale.ROOT)
+            val dst = targetLang.trim().lowercase(Locale.ROOT)
+            if (src !in SUPPORTED_LANGS.keys) {
+                logger.error("sourceLang: $src is not supported")
+                return@withContext emptyList()
+            }
+            if (dst !in SUPPORTED_LANGS.keys) {
+                logger.error("targetLang: $dst is not supported")
+                return@withContext emptyList()
+            }
+            logger.info("[GOOGLE-TRANSLATION] ::: [${SUPPORTED_LANGS[src]} -> ${SUPPORTED_LANGS[dst]}] '$word'")
 
-        return try {
-            withTimeout(config.getResourceTimeoutMs) {
+            try {
                 val result = translate.translate(
                     word,
-                    TranslateOption.sourceLanguage(sourceLang),
-                    TranslateOption.targetLanguage(targetLang),
+                    TranslateOption.sourceLanguage(src),
+                    TranslateOption.targetLanguage(dst),
                     TranslateOption.format("text")
                 )
                 listOf(TranslationEntity(word = word, translations = listOf(listOf(result.translatedText))))
+            } catch (ex: Exception) {
+                logger.error("[GOOGLE-TRANSLATION][(${src} -> ${dst}):$word], error: ${ex.message}", ex)
+                throw ex
             }
-        } catch (ex: Exception) {
-            logger.error("::[GOOGLE-TRANSLATION][(${sourceLang} -> ${targetLang}):$word], error: ${ex.message}", ex)
-            throw ex
         }
-    }
 
     companion object {
         val SUPPORTED_LANGS = mapOf(

@@ -11,7 +11,8 @@ import io.ktor.client.request.parameter
 import io.ktor.client.statement.readRawBytes
 import io.ktor.http.HttpHeaders
 import io.ktor.http.URLProtocol
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger(VoicerssTextToSpeechService::class.java)
@@ -35,24 +36,22 @@ class VoicerssTextToSpeechService(
         }
     }
 
-    override suspend fun getResource(id: String, vararg args: String): ByteArray? {
-        val langToWord = resourceIdMapper(id) ?: return null
-        val lang = languageByTag(langToWord.first) ?: return null
+    override suspend fun getResource(id: String, vararg args: String): ByteArray? = withContext(Dispatchers.IO) {
+        val langToWord = resourceIdMapper(id) ?: return@withContext null
+        val lang = languageByTag(langToWord.first) ?: return@withContext null
         val word = langToWord.second
         logger.info("::[VOICERSS]$lang:::'$word'")
-        return try {
-            withTimeout(config.getResourceTimeoutMs) {
-                val res = readBytes(lang, word)
-                if (logger.isDebugEnabled) {
-                    logger.debug("Received data size: {}", res.size)
-                }
-                if (res.size < 200) {
-                    // Possible error: "ERROR: The subscription is expired or requests count limitation is exceeded!"
-                    logger.error("The data array is too small (size=${res.size}): '${res.toString(Charsets.UTF_8)}'")
-                    null
-                } else {
-                    res
-                }
+        try {
+            val res = readBytes(lang, word)
+            if (logger.isDebugEnabled) {
+                logger.debug("Received data size: {}", res.size)
+            }
+            if (res.size < 200) {
+                // Possible error: "ERROR: The subscription is expired or requests count limitation is exceeded!"
+                logger.error("The data array is too small (size=${res.size}): '${res.toString(Charsets.UTF_8)}'")
+                null
+            } else {
+                res
             }
         } catch (ex: Exception) {
             logger.error("::[VOICERSS] Can't get resource for [${lang}:$word]")

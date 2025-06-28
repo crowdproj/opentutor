@@ -79,13 +79,17 @@ application {
     mainClass.set("com.gitlab.sszuev.flashcards.AppMainKt")
 }
 
-tasks.register("createTagFile") {
+val createTagFile = tasks.register("createTagFile") {
     val rootDir = project(":app-main").projectDir
     val projectTagFile = Paths.get("$rootDir/project-tag.env")
     val tag = project.version.toString().lowercase()
     val projectTagFileContent = "PROJECT_TAG=$tag"
     println(projectTagFileContent)
     Files.writeString(projectTagFile, projectTagFileContent)
+}
+
+tasks.named("build") {
+    dependsOn(createTagFile)
 }
 
 tasks.dockerCreateDockerfile {

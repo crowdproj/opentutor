@@ -18,7 +18,7 @@ class RemoteTTSService(
 ) : TTSService {
     constructor() : this(
         topic = ServicesConfig.ttsNatsTopic,
-        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
+        requestTimeoutInMillis = ServicesConfig.fastRequestTimeoutInMilliseconds,
         connection = NatsConnector.connection,
     )
 

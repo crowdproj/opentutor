@@ -27,7 +27,7 @@ class TranslationMessageHandler(private val repository: TranslationRepository) :
             context.errors.forEach {
                 logger.error("$it")
                 it.exception?.let { ex ->
-                    logger.error("Exception: ${ex.message}", ex)
+                    logger.error("Processing exception ::: ${ex.message}", ex)
                 }
             }
             connection.publish(msg.replyTo, context.toByteArray())
@@ -36,6 +36,9 @@ class TranslationMessageHandler(private val repository: TranslationRepository) :
             val context =
                 TranslationContext().apply { errors += AppError(message = "Unexpected error", exception = ex) }
             connection.publish(msg.replyTo, context.toByteArray())
+        }
+        if (logger.isDebugEnabled) {
+            logger.debug("Message sent (subject = ${msg.replyTo})")
         }
     }
 }

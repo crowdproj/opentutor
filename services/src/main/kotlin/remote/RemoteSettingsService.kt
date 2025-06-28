@@ -14,7 +14,7 @@ class RemoteSettingsService(
 ) : SettingsService {
     constructor() : this(
         topic = ServicesConfig.settingsNatsTopic,
-        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
+        requestTimeoutInMillis = ServicesConfig.mainRequestTimeoutInMilliseconds,
         connection = NatsConnector.connection
     )
 
