@@ -1,6 +1,6 @@
 package com.gitlab.sszuev.flashcards.translation
 
-import com.gitlab.sszuev.flashcards.nats.runProcessing
+import com.gitlab.sszuev.flashcards.nats.runApp
 import com.gitlab.sszuev.flashcards.translation.impl.createTranslationRepository
 
 suspend fun main() {
@@ -8,11 +8,12 @@ suspend fun main() {
     val redis = TranslationRedisConnectionFactory(
         connectionUrl = redisConfig.url,
     )
-    runProcessing(
+    runApp(
         connectionUrl = "nats://${TranslationServerSettings.host}:${TranslationServerSettings.port}",
         topic = TranslationServerSettings.topic,
         group = TranslationServerSettings.group,
         parallelism = TranslationServerSettings.parallelism,
+        withDbHealthCheck = false,
         messageHandler = TranslationMessageHandler(
             createTranslationRepository(
                 cache = RedisTranslationCache(redis.stringToStringCommands),

@@ -5,13 +5,14 @@ import com.gitlab.sszuev.flashcards.dbpg.PgDbCardRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbDictionaryRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbDocumentRepository
 import com.gitlab.sszuev.flashcards.dbpg.PgDbUserRepository
-import com.gitlab.sszuev.flashcards.nats.runProcessing
+import com.gitlab.sszuev.flashcards.nats.runApp
 
-suspend fun main() = runProcessing(
+suspend fun main() = runApp(
     connectionUrl = "nats://${DictionariesServerSettings.host}:${DictionariesServerSettings.port}",
     topic = DictionariesServerSettings.topic,
     group = DictionariesServerSettings.group,
     parallelism = DictionariesServerSettings.parallelism,
+    withDbHealthCheck = true,
     messageHandler = DictionariesMessageHandler(
         repositories = DbRepositories(
             cardRepository = PgDbCardRepository().also { it.connect() },

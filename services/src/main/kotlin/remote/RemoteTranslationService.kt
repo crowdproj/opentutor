@@ -19,7 +19,7 @@ class RemoteTranslationService(
     constructor() : this(
         topic = ServicesConfig.translationNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
-        connection = NatsConnectionFactory.connection,
+        connection = NatsConnector.connection,
     )
 
     override suspend fun fetchTranslation(context: TranslationContext): TranslationContext = context.exec()

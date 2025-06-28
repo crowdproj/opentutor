@@ -40,7 +40,7 @@ call gradle dockerBuildImage
 cd ../app-translation
 call gradle dockerBuildImage
 
-cd ../app-ktor
+cd ../app-main
 call gradle dockerBuildImage
 
 cd ../tutor-deploy

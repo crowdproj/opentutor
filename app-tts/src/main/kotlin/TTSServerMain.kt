@@ -1,17 +1,18 @@
 package com.gitlab.sszuev.flashcards.speaker
 
-import com.gitlab.sszuev.flashcards.nats.runProcessing
+import com.gitlab.sszuev.flashcards.nats.runApp
 
 suspend fun main() {
     val redisConfig = TTSRedisConfig()
     val redis = TTSRedisConnectionFactory(
         connectionUrl = redisConfig.url,
     )
-    runProcessing(
+    runApp(
         connectionUrl = "nats://${TTSServerSettings.natsHost}:${TTSServerSettings.natsPort}",
         topic = TTSServerSettings.topic,
         group = TTSServerSettings.group,
         parallelism = TTSServerSettings.parallelism,
+        withDbHealthCheck = false,
         messageHandler = TTSMessageHandler(
             repository = DirectTTSResourceRepository(
                 service = createTTSService(

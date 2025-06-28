@@ -1,11 +1,10 @@
 package com.gitlab.sszuev.flashcards
 
-import io.ktor.client.request.*
-import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.response.*
-import io.ktor.server.routing.*
-import io.ktor.server.testing.*
+import io.ktor.client.request.get
+import io.ktor.http.HttpStatusCode
+import io.ktor.server.response.respond
+import io.ktor.server.routing.get
+import io.ktor.server.testing.testApplication
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 

@@ -12,7 +12,7 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.DatabaseConfig
 import java.util.concurrent.ConcurrentHashMap
 
-class PgDbConnector(config: PgDbConfig) {
+class PgDbStandardConnector(config: PgDbConfig) {
 
     private val databaseConfig: DatabaseConfig = DatabaseConfig { }
 
@@ -38,21 +38,21 @@ class PgDbConnector(config: PgDbConfig) {
         }
     }
 
-    private val connection: Database = Database.connect(
+    val database: Database = Database.connect(
         datasource = dataSource,
         databaseConfig = databaseConfig,
     )
 
     companion object {
-        private val connections = ConcurrentHashMap<PgDbConfig, Database>()
+        private val connectors = ConcurrentHashMap<PgDbConfig, PgDbStandardConnector>()
 
         /**
-         * Connection pool.
+         * Returns connector.
          * @param [config][PgDbConfig]
-         * @return [Database] - dedicated connection for the given configuration
+         * @return [PgDbStandardConnector] - dedicated connector for the given configuration
          */
-        fun connection(config: PgDbConfig): Database {
-            return connections.computeIfAbsent(config) { PgDbConnector(config).connection }
+        fun connector(config: PgDbConfig): PgDbStandardConnector {
+            return connectors.computeIfAbsent(config) { PgDbStandardConnector(config) }
         }
     }
 }

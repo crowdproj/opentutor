@@ -79,8 +79,8 @@ application {
     mainClass.set("com.gitlab.sszuev.flashcards.AppMainKt")
 }
 
-tasks.create("createTagFile") {
-    val rootDir = project(":app-ktor").projectDir
+tasks.register("createTagFile") {
+    val rootDir = project(":app-main").projectDir
     val projectTagFile = Paths.get("$rootDir/project-tag.env")
     val tag = project.version.toString().lowercase()
     val projectTagFileContent = "PROJECT_TAG=$tag"
@@ -92,6 +92,7 @@ tasks.dockerCreateDockerfile {
     if (System.getProperty("standalone") != null) {
         copyFile("./resources/data/dictionaries.csv", "/app/userdata/dictionaries.csv")
         copyFile("./resources/data/cards.csv", "/app/userdata/cards.csv")
+        copyFile("./resources/data/users.csv", "/app/userdata/users.csv")
     } else {
         arg("CLIENT_NATS_HOST")
         arg("KEYCLOAK_AUTHORIZE_ADDRESS")
@@ -119,11 +120,11 @@ docker {
     val javaArgs = mutableListOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
     if (System.getProperty("standalone") == null) {
         imageName = "sszuev/open-tutor"
-        baseImageName = "sszuev/ubuntu-jammy-openjdk-17-espeak-ng"
+        baseImageName = "sszuev/openjdk-23-curl:1.0"
     } else {
         println("Build standalone image")
         imageName = "sszuev/open-tutor-standalone"
-        baseImageName = "openjdk:23-jdk-slim"
+        baseImageName = "sszuev/openjdk-23-curl-espeak-ng:1.0"
         // for standalone app, use special (builtin) user uuid & builtin user data (located in /app/userdata)
         javaArgs.add("-DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6")
         javaArgs.add("-DRUN_MODE=test")
@@ -134,7 +135,7 @@ docker {
         baseImage.set(baseImageName)
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         ports.set(listOf(8080))
-        images.set(listOf("$imageName:$tag", "$imageName:latest"))
+        images.set(listOf("$imageName:$tag"))
         jvmArgs.set(javaArgs)
     }
 }

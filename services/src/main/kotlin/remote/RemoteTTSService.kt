@@ -19,7 +19,7 @@ class RemoteTTSService(
     constructor() : this(
         topic = ServicesConfig.ttsNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
-        connection = NatsConnectionFactory.connection,
+        connection = NatsConnector.connection,
     )
 
     override suspend fun getResource(context: TTSContext) = context.exec()

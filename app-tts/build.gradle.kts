@@ -26,7 +26,12 @@ dependencies {
     implementation(project(":tts-lib"))
     implementation(project(":common"))
     implementation(project(":core"))
-    implementation(project(":nats-support-lib"))
+    implementation(project(":app-support-lib")) {
+        exclude(group = "org.postgresql", module = "postgresql")
+        exclude(group = "org.liquibase", module = "liquibase-core")
+        exclude(group = "com.zaxxer", module = "HikariCP")
+        exclude(group = "org.jetbrains.exposed")
+    }
     implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")
@@ -63,7 +68,7 @@ docker {
     val javaArgs = listOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
     javaApplication {
         mainClassName.set(application.mainClass.get())
-        baseImage.set("sszuev/ubuntu-jammy-openjdk-17-espeak-ng")
+        baseImage.set("sszuev/openjdk-23-curl-espeak-ng:1.0")
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         images.set(listOf("$imageName:$tag"))
         jvmArgs.set(javaArgs)

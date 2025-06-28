@@ -15,7 +15,7 @@ class RemoteCardService(
     constructor() : this(
         topic = ServicesConfig.cardsNatsTopic,
         requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
-        connection = NatsConnectionFactory.connection,
+        connection = NatsConnector.connection,
     )
 
     override suspend fun createCard(context: CardContext): CardContext = context.exec()
