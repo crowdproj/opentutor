@@ -25,7 +25,7 @@ also, as a standalone docker image
 
 #### Build and run:
 
-- for standalone version see [app-ktor/README](./app-ktor/README.md)
+- for standalone version see [app-main/README](./app-main/README.md)
 - for prod version see [tutor-deploy/README](./tutor-deploy/README.md)
 
 #### License & Privacy Policy:

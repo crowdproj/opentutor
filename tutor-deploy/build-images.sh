@@ -33,6 +33,6 @@ cd ../app-settings
 gradle dockerBuildImage
 cd ../app-translation
 gradle dockerBuildImage
-cd ../app-ktor
+cd ../app-main
 gradle dockerBuildImage
 cd ../tutor-deploy

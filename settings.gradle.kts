@@ -19,7 +19,7 @@ plugins {
 include("openapi")
 include("common")
 include("mappers")
-include("app-ktor")
+include("app-main")
 include("app-tts")
 include("app-cards")
 include("app-dictionaries")

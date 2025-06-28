@@ -1,4 +1,4 @@
-### flashcard-kt ::: app-ktor
+### flashcard-kt ::: app-main
 
 The ktor-based web-application for composing custom dictionaries and learning words via flashcards.
 
@@ -64,7 +64,7 @@ Where
 - `-DKEYCLOAK_DEBUG_AUTH=c9a414f5-3f75-4494-b664-f4c8b33ff4e6` - backdoor to turn off authorization
 - `-DVOICERSS_KEY=<your-key>` - if not specified, sample data or espeak-ng (if installed) will be used
 - `-DDATA_DIRECTORY=<directory-with-dictionaries>` - if not specified, dictionaries are taken from class-path
-  (`app-ktor/src/main/resources/data`, read-only access).
+  (`app-main/src/main/resources/data`, read-only access).
 - `-DAPP_LOG_LEVEL=debug` app log level (console)
 
 #### After build and run, the application will be available via http://localhost:8080
