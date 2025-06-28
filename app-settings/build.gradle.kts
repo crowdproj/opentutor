@@ -63,7 +63,7 @@ docker {
     val javaArgs = listOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
     javaApplication {
         mainClassName.set(application.mainClass.get())
-        baseImage.set("openjdk:23-jdk-slim")
+        baseImage.set("sszuev/openjdk-23-curl:1.0")
         maintainer.set("https://github.com/sszuev (sss.zuev@gmail.com)")
         images.set(listOf("$imageName:$tag"))
         jvmArgs.set(javaArgs)
