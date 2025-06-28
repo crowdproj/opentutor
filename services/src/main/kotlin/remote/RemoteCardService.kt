@@ -14,7 +14,7 @@ class RemoteCardService(
 ) : CardService {
     constructor() : this(
         topic = ServicesConfig.cardsNatsTopic,
-        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
+        requestTimeoutInMillis = ServicesConfig.mainRequestTimeoutInMilliseconds,
         connection = NatsConnector.connection,
     )
 

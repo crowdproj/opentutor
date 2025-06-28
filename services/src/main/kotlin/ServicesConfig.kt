@@ -10,7 +10,11 @@ object ServicesConfig {
 
     private val conf: Config = ConfigFactory.load()
 
-    val requestTimeoutInMilliseconds = conf.get(key = "client.nats.request-timeout-in-ms", default = 5000L)
+    // cards. dictionaries, settings
+    val mainRequestTimeoutInMilliseconds = conf.get(key = "client.nats.main-request-timeout-in-ms", default = 9_900L)
+
+    // ttl, translation
+    val fastRequestTimeoutInMilliseconds = conf.get(key = "client.nats.fast-request-timeout-in-ms", default = 2_900L)
     val natsHost = conf.get(key = "client.nats.host", default = "localhost")
     val natsPort = conf.get(key = "client.nats.port", default = 4222)
     val natsUser = conf.get(key = "client.nats.user", default = "dev")
@@ -37,7 +41,8 @@ object ServicesConfig {
             |nats-topic-dictionaries    = $dictionariesNatsTopic
             |nats-topic-settings        = $settingsNatsTopic
             |nats-topic-translation     = $translationNatsTopic
-            |nats-request-timeout-ms    = $requestTimeoutInMilliseconds
+            |nats-request-timeout-1-ms  = $mainRequestTimeoutInMilliseconds
+            |nats-request-timeout-2-ms  = $fastRequestTimeoutInMilliseconds
             """.replaceIndentByMargin("\t")
     }
 }

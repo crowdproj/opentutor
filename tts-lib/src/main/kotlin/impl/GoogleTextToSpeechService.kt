@@ -22,10 +22,10 @@ class GoogleTextToSpeechService(
     config: TTSConfig = TTSConfig(),
 ) : TextToSpeechService {
 
+    private val timeoutMs = config.getResourceTimeoutMs
+
     private val credentials = GoogleTextToSpeechService::class.java.getResourceAsStream("/google-key.json")
         ?: throw IllegalStateException("Unable to obtain google key json")
-
-    private val timeoutMs = config.getResourceTimeoutMs
 
     private val settings = TextToSpeechSettings.newBuilder()
         .setCredentialsProvider { ServiceAccountCredentials.fromStream(credentials) }

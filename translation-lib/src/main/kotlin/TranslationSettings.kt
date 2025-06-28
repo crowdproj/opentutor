@@ -10,9 +10,8 @@ object TranslationSettings {
 
     private val conf: Config = ConfigFactory.load()
 
-    val getResourceTimeoutMs = conf.get("translation.get-resource-timeout-ms", default = 5000L)
-    val httpClientConnectTimeoutMs = conf.get("translation.http-client.connect-timeout-ms", default = 3000L)
-    val httpClientRequestTimeoutMs = conf.get("translation.http-client.request-timeout-ms", default = 3000L)
+    val httpClientConnectTimeoutMs = conf.get("translation.http-client.connect-timeout-ms", default = 2000L)
+    val httpClientRequestTimeoutMs = conf.get("translation.http-client.request-timeout-ms", default = 2000L)
     val translationServiceYandexApi =
         conf.get(
             "translation.service.yandex-api",
@@ -27,7 +26,6 @@ object TranslationSettings {
     private fun printDetails(): String {
         return """
             |
-            |get-resource-timeout-ms        = $getResourceTimeoutMs
             |http-client-connect-timeout-ms = $httpClientConnectTimeoutMs
             |http-client-request-timeout-ms = $httpClientRequestTimeoutMs
             |translation-service            = ${whichService()}

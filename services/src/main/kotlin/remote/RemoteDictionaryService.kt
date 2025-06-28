@@ -14,7 +14,7 @@ class RemoteDictionaryService(
 ) : DictionaryService {
     constructor() : this(
         topic = ServicesConfig.dictionariesNatsTopic,
-        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
+        requestTimeoutInMillis = ServicesConfig.mainRequestTimeoutInMilliseconds,
         connection = NatsConnector.connection
     )
 

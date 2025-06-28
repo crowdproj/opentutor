@@ -13,8 +13,8 @@ object TTSSettings {
 
     val localDataDirectory = conf.get("tts.local.data-directory", default = "classpath:/data")
     val getResourceTimeoutMs = conf.get("tts.get-resource-timeout-ms", default = 2000L)
-    val httpClientConnectTimeoutMs = conf.get("tts.http-client.connect-timeout-ms", default = 3000L)
-    val httpClientRequestTimeoutMs = conf.get("tts.http-client.request-timeout-ms", default = 3000L)
+    val httpClientConnectTimeoutMs = conf.get("tts.http-client.connect-timeout-ms", default = 2000L)
+    val httpClientRequestTimeoutMs = conf.get("tts.http-client.request-timeout-ms", default = 2000L)
     val ttsServiceVoicerssApi = conf.get("tts.service.voicerss.api", "api.voicerss.org")
     val ttsServiceVoicerssKey = conf.get("tts.service.voicerss.key", "secret")
     val ttsServiceVoicerssFormat = conf.get("tts.service.voicerss.format", "8khz_8bit_mono")

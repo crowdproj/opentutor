@@ -18,7 +18,7 @@ class RemoteTranslationService(
 ) : TranslationService {
     constructor() : this(
         topic = ServicesConfig.translationNatsTopic,
-        requestTimeoutInMillis = ServicesConfig.requestTimeoutInMilliseconds,
+        requestTimeoutInMillis = ServicesConfig.fastRequestTimeoutInMilliseconds,
         connection = NatsConnector.connection,
     )
 

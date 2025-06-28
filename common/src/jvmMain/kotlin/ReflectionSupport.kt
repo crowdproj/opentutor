@@ -4,6 +4,6 @@ internal actual fun createThrowable(kClassQualifiedName: String, message: String
     val clazz = Class.forName(kClassQualifiedName)
     val constructor = clazz.getConstructor(String::class.java)
     constructor.newInstance(message) as Throwable
-} catch (e: Exception) {
+} catch (_: Exception) {
     Throwable("$kClassQualifiedName:::$message")
 }
