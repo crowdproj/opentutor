@@ -25,7 +25,7 @@ For more details see [tutor-deploy dir](../tutor-deploy/README.md).
 ```shell
 $ docker pull sszuev/open-tutor-standalone:latest
 $ docker rm -v open-tutor-app
-$ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:latest
+$ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:2.0.1-snapshot
 ```
 
 #### build and run standalone application using docker & gradle:
@@ -33,7 +33,7 @@ $ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:lat
 $ docker rm -v open-tutor-app
 $ docker rmi sszuev/open-tutor-standalone:latest
 $ gradle clean build dockerBuildImage -Dstandalone=true
-$ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:latest  
+$ docker run --name open-tutor-app -p 8080:8080 sszuev/open-tutor-standalone:2.0.1-snapshot
 ```
 
 #### build and run prod application using docker & gradle:
