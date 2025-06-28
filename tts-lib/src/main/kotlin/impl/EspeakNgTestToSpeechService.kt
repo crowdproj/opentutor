@@ -3,7 +3,8 @@ package com.gitlab.sszuev.flashcards.speaker.impl
 import com.gitlab.sszuev.flashcards.speaker.TTSConfig
 import com.gitlab.sszuev.flashcards.speaker.TextToSpeechService
 import com.gitlab.sszuev.flashcards.speaker.toResourcePath
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.TimeoutException
@@ -60,26 +61,24 @@ class EspeakNgTestToSpeechService(
         }
     }
 
-    override suspend fun getResource(id: String, vararg args: String): ByteArray? {
-        val langToWord = resourceIdMapper(id) ?: return null
-        val lang = languageByTag(langToWord.first) ?: return null
+    override suspend fun getResource(id: String, vararg args: String): ByteArray? = withContext(Dispatchers.IO) {
+        val langToWord = resourceIdMapper(id) ?: return@withContext null
+        val lang = languageByTag(langToWord.first) ?: return@withContext null
         val word = langToWord.second
         logger.info("::[ESPEAK-NG]$lang:::'$word'")
         val processBuilder =
             ProcessBuilder("/bin/bash", "-c", """espeak-ng -v $lang '$word' --stdout""")
-        return try {
-            withTimeout(config.getResourceTimeoutMs) {
-                val s = System.currentTimeMillis()
-                val process = processBuilder.start()
-                val e = System.currentTimeMillis()
-                val res = process.inputStream.use { it.readAllBytes() }
-                val restTimeout = config.getResourceTimeoutMs - (e - s) - 100
-                if (!process.waitFor(restTimeout, TimeUnit.MILLISECONDS)) {
-                    process.destroy()
-                    throw TimeoutException("Process timed out ($restTimeout ms)")
-                }
-                res
+        try {
+            val s = System.currentTimeMillis()
+            val process = processBuilder.start()
+            val e = System.currentTimeMillis()
+            val res = process.inputStream.use { it.readAllBytes() }
+            val restTimeout = config.getResourceTimeoutMs - (e - s) - 100
+            if (!process.waitFor(restTimeout, TimeUnit.MILLISECONDS)) {
+                process.destroy()
+                throw TimeoutException("Process timed out ($restTimeout ms)")
             }
+            res
         } catch (ex: Exception) {
             logger.error("::[ESPEAK-NG] Can't get resource for [${lang}:$word]")
             throw ex

@@ -10,56 +10,76 @@ import com.google.cloud.texttospeech.v1.SynthesisInput
 import com.google.cloud.texttospeech.v1.TextToSpeechClient
 import com.google.cloud.texttospeech.v1.TextToSpeechSettings
 import com.google.cloud.texttospeech.v1.VoiceSelectionParams
-import kotlinx.coroutines.withTimeout
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.slf4j.LoggerFactory
+import org.threeten.bp.Duration
 
 private val logger = LoggerFactory.getLogger(GoogleTextToSpeechService::class.java)
 
 class GoogleTextToSpeechService(
     private val resourceIdMapper: (String) -> Pair<String, String>? = { toResourcePath(it) },
-    private val config: TTSConfig = TTSConfig(),
+    config: TTSConfig = TTSConfig(),
 ) : TextToSpeechService {
 
     private val credentials = GoogleTextToSpeechService::class.java.getResourceAsStream("/google-key.json")
         ?: throw IllegalStateException("Unable to obtain google key json")
 
+    private val timeoutMs = config.getResourceTimeoutMs
+
     private val settings = TextToSpeechSettings.newBuilder()
-        .setCredentialsProvider {
-            ServiceAccountCredentials.fromStream(credentials)
+        .setCredentialsProvider { ServiceAccountCredentials.fromStream(credentials) }
+        .apply {
+            this.synthesizeSpeechSettings().retrySettings =
+                this.synthesizeSpeechSettings()
+                    .retrySettings
+                    .toBuilder()
+                    .setTotalTimeout(Duration.ofMillis(timeoutMs))
+                    .setInitialRpcTimeout(Duration.ofMillis(timeoutMs))
+                    .setMaxRpcTimeout(Duration.ofMillis(timeoutMs))
+                    .setMaxAttempts(1)
+                    .build()
         }
         .build()
 
-    private val client = TextToSpeechClient.create(settings)
+    private val client = TextToSpeechClient.create(settings).also {
+        Runtime.getRuntime().addShutdownHook(Thread {
+            try {
+                logger.info("::[GOOGLE-TTS] Close on shutdown")
+                it.close()
+            } catch (ex: Exception) {
+                logger.warn("::[GOOGLE-TTS] Failed to close TextToSpeechClient", ex)
+            }
+        })
+    }
 
-    override suspend fun getResource(id: String, vararg args: String): ByteArray? {
+    override suspend fun getResource(id: String, vararg args: String): ByteArray? = withContext(Dispatchers.IO) {
         logger.debug("::[GOOGLE-TTS] id=$id")
         val langToWord = resourceIdMapper(id) ?: run {
             logger.error("::[GOOGLE-TTS] wrong id: $id")
-            return null
+            return@withContext null
         }
         val lang = languagesJavaTagToGoogleTag[langToWord.first]?.get(0) ?: run {
             logger.error("::[GOOGLE-TTS] can't determine google language for ${langToWord.first}")
-            return null
+            return@withContext null
         }
         val word = langToWord.second
         logger.info("::[GOOGLE-TTS] $lang [${languagesGoogleTagToName[lang]}] ::: '$word'")
 
-        return try {
-            withTimeout(config.getResourceTimeoutMs) {
-                val input = SynthesisInput.newBuilder().setText(word).build()
+        try {
+            val input = SynthesisInput.newBuilder().setText(word).build()
 
-                val voice = VoiceSelectionParams.newBuilder()
-                    .setLanguageCode(lang)
-                    .build()
+            val voice = VoiceSelectionParams.newBuilder()
+                .setLanguageCode(lang)
+                .build()
 
-                val audioConfig = AudioConfig.newBuilder()
-                    .setAudioEncoding(AudioEncoding.MP3)
-                    .build()
+            val audioConfig = AudioConfig.newBuilder()
+                .setAudioEncoding(AudioEncoding.MP3)
+                .build()
 
-                val response = client.synthesizeSpeech(input, voice, audioConfig)
-                val audioBytes = response.audioContent
-                audioBytes.toByteArray()
-            }
+            val response = client.synthesizeSpeech(input, voice, audioConfig)
+            val audioBytes = response.audioContent
+            audioBytes.toByteArray()
         } catch (ex: Exception) {
             logger.error("::[GOOGLE-TTS] Can't get resource for [${lang}:$word]")
             throw ex
