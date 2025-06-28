@@ -122,6 +122,12 @@ services:
       TTS_SERVER_NATS_HOST: "flashcards-nats"
       TTS_SERVER_REDIS_HOST: "flashcards-redis"
       TTS_SERVICE_VOICERSS_KEY: "${TTS_SERVICE_VOICERSS_KEY}"
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   flashcards-cards-server:
     image: sszuev/open-tutor-cards-server:2.0.1-snapshot
@@ -138,6 +144,12 @@ services:
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   flashcards-dictionaries-server:
     image: sszuev/open-tutor-dictionaries-server:2.0.1-snapshot
@@ -156,6 +168,12 @@ services:
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   flashcards-settings-server:
     image: sszuev/open-tutor-settings-server:2.0.1-snapshot
@@ -174,6 +192,12 @@ services:
       DB_PG_URL: "jdbc:postgresql://flashcards-db:5432/flashcards"
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   flashcards-translation-server:
     image: sszuev/open-tutor-translation-server:2.0.1-snapshot
@@ -187,6 +211,12 @@ services:
       TRANSLATION_SERVER_NATS_HOST: "flashcards-nats"
       TRANSLATION_SERVER_REDIS_HOST: "flashcards-redis"
       TRANSLATION_SERVICE_YANDEX_KEY: "${TRANSLATION_SERVICE_YANDEX_KEY}"
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
 
   flashcards-app:
     image: sszuev/open-tutor:2.0.1-snapshot
@@ -209,3 +239,9 @@ services:
       DB_PG_USER: ${POSTGRES_DEFAULT_USER}
       DB_PG_PWD: ${POSTGRES_DEFAULT_PASS}
       PORT: 8080
+    healthcheck:
+      test: [ "CMD", "curl", "--fail", "--silent", "--show-error", "http://localhost:8080/health" ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
