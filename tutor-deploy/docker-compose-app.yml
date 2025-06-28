@@ -3,7 +3,7 @@ networks:
 
 services:
   flashcards-db:
-    image: postgres:16.2-alpine
+    image: postgres:16.9-alpine
     restart: unless-stopped
     networks:
       - flashcards-net
@@ -58,7 +58,7 @@ services:
     user: root
 
   flashcards-envoy:
-    image: envoyproxy/envoy:v1.29.0
+    image: envoyproxy/envoy:v1.33-latest
     restart: unless-stopped
     volumes:
       - "${DATA_DIR}/envoy/envoy.yaml:/etc/envoy/envoy.yaml"
@@ -79,7 +79,7 @@ services:
       retries: 5
 
   flashcards-nats:
-    image: nats:2.10.14-alpine
+    image: nats:2.11.5-alpine
     restart: unless-stopped
     volumes:
       - "${DATA_DIR}/nats/nats-config.conf:/etc/nats/nats-config.conf"
@@ -94,7 +94,7 @@ services:
     command: [ "-c", "/etc/nats/nats-config.conf" ]
 
   flashcards-redis:
-    image: "redis:7.4.0"
+    image: redis:8.0.2
     restart: unless-stopped
     volumes:
       - "${DATA_DIR}/redis:/data"
