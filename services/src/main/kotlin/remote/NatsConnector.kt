@@ -62,9 +62,6 @@ object NatsConnector {
 
     fun ping(): Boolean {
         return try {
-            if (logger.isDebugEnabled) {
-                logger.debug("Nats status = ${connection.status}")
-            }
             when (connection.status) {
                 Connection.Status.CONNECTED -> true
 

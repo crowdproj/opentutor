@@ -10,6 +10,7 @@ suspend fun main() = runApp(
     topic = CardsServerSettings.topic,
     group = CardsServerSettings.group,
     parallelism = CardsServerSettings.parallelism,
+    withDbHealthCheck = true,
     messageHandler = CardsMessageHandler(
         repositories = DbRepositories(
             cardRepository = PgDbCardRepository().apply { connect() },

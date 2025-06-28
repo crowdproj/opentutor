@@ -11,6 +11,7 @@ suspend fun main() = runApp(
     topic = SettingsServerSettings.topic,
     group = SettingsServerSettings.group,
     parallelism = SettingsServerSettings.parallelism,
+    withDbHealthCheck = true,
     messageHandler = SettingsMessageHandler(
         DbRepositories(
             cardRepository = PgDbCardRepository().also { it.connect() },

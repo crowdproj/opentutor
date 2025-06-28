@@ -19,8 +19,6 @@ import kotlin.concurrent.thread
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.nats.AppRunnerKt")
 
-private val dbHealthRepository = PgDbHealthRepository()
-
 private val natsUnhealthySince = AtomicReference<Instant?>(null)
 
 suspend fun runApp(
@@ -28,6 +26,7 @@ suspend fun runApp(
     topic: String,
     group: String,
     parallelism: Int,
+    withDbHealthCheck: Boolean,
     messageHandler: MessageHandler,
     onShutdown: () -> Unit = {},
 ) {
@@ -82,14 +81,24 @@ suspend fun runApp(
 
     // Health server
     embeddedServer(Netty, port = 8080) {
+        val dbHealthRepository = PgDbHealthRepository()
         routing {
             get("/health") {
-                val db = dbHealthRepository.ping().also {
-                    logger.info("DB ::: ${if (it) "UP" else "DOWN"}")
+                val db = if (withDbHealthCheck) {
+                    dbHealthRepository.ping().also {
+                        if (logger.isDebugEnabled) {
+                            logger.debug("DB ::: ${if (it) "UP" else "DOWN"}")
+                        }
+                    }
+                } else {
+                    true
                 }
                 val nats = connection.ping().also {
-                    logger.info("NATS ::: ${if (it) "UP" else "DOWN"}")
+                    if (logger.isDebugEnabled) {
+                        logger.debug("NATS ::: ${if (it) "UP" else "DOWN"}")
+                    }
                 }
+                db && nats
                 if (db && nats) {
                     call.respondText("OK", status = HttpStatusCode.OK)
                 } else {
@@ -110,9 +119,6 @@ suspend fun runApp(
 
 private fun Connection.ping(): Boolean {
     return try {
-        if (logger.isDebugEnabled) {
-            logger.debug("Nats status = ${this.status}")
-        }
         when (this.status) {
             Connection.Status.CONNECTED -> true
 

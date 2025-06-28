@@ -27,7 +27,12 @@ dependencies {
     implementation(project(":translation-lib"))
     implementation(project(":common"))
     implementation(project(":core"))
-    implementation(project(":app-support-lib"))
+    implementation(project(":app-support-lib")) {
+        exclude(group = "org.postgresql", module = "postgresql")
+        exclude(group = "org.liquibase", module = "liquibase-core")
+        exclude(group = "com.zaxxer", module = "HikariCP")
+        exclude(group = "org.jetbrains.exposed")
+    }
     implementation(project(":utilities"))
 
     implementation("io.nats:jnats:$natsVersion")

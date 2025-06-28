@@ -12,6 +12,7 @@ suspend fun main() {
         topic = TTSServerSettings.topic,
         group = TTSServerSettings.group,
         parallelism = TTSServerSettings.parallelism,
+        withDbHealthCheck = false,
         messageHandler = TTSMessageHandler(
             repository = DirectTTSResourceRepository(
                 service = createTTSService(

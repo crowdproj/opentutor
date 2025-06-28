@@ -9,8 +9,9 @@ class RemoteHealthService(
 ) : HealthService {
 
     override fun ping(): Boolean = NatsConnector.ping().also {
-        if (logger.isDebugEnabled)
+        if (logger.isDebugEnabled) {
             logger.debug("NATS ::: ${if (it) "UP" else "DOWN"}")
+        }
     }
 
 }

@@ -12,6 +12,7 @@ suspend fun main() = runApp(
     topic = DictionariesServerSettings.topic,
     group = DictionariesServerSettings.group,
     parallelism = DictionariesServerSettings.parallelism,
+    withDbHealthCheck = true,
     messageHandler = DictionariesMessageHandler(
         repositories = DbRepositories(
             cardRepository = PgDbCardRepository().also { it.connect() },

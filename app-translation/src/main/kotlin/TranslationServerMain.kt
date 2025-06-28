@@ -13,6 +13,7 @@ suspend fun main() {
         topic = TranslationServerSettings.topic,
         group = TranslationServerSettings.group,
         parallelism = TranslationServerSettings.parallelism,
+        withDbHealthCheck = false,
         messageHandler = TranslationMessageHandler(
             createTranslationRepository(
                 cache = RedisTranslationCache(redis.stringToStringCommands),
