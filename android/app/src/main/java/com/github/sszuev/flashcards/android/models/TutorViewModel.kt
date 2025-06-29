@@ -84,7 +84,7 @@ class TutorViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to load cards deck: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to load cards deck. Press HOME to refresh the page."
                 Log.e(tag, "Failed to load cards deck", e)
             } finally {
                 _isCardsDeckLoading.value = false
@@ -118,7 +118,7 @@ class TutorViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to load cards deck: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to load cards deck. Press HOME to refresh the page."
                 Log.e(tag, "Failed to load additional cards deck", e)
             } finally {
                 _isAdditionalCardsDeckLoading.value = false

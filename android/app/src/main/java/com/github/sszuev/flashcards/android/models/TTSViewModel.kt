@@ -122,7 +122,7 @@ class TTSViewModel(
             _audioResources.putNullable(cardId, null)
             Log.e(tag, "Failed to load audio", e)
         } catch (e: Exception) {
-            _errorMessage.value = "Failed to load audio: ${e.localizedMessage}"
+            _errorMessage.value = "Failed to load audio. Press HOME to refresh the page."
             Log.e(tag, "Failed to load audio", e)
         } finally {
             _isAudioLoading.remove(cardId)

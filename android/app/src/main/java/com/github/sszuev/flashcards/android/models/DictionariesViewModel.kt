@@ -87,7 +87,7 @@ class DictionariesViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to load dictionaries: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to load dictionaries. Press HOME to refresh the page."
                 Log.e(tag, "Failed to load dictionaries", e)
             } finally {
                 _isDictionariesLoading.value = false
@@ -116,7 +116,7 @@ class DictionariesViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to update dictionary: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to update dictionary. Press HOME to refresh the page."
                 Log.e(tag, "Failed to update dictionary", e)
             } finally {
                 _isUpdateInProgress.value = false
@@ -141,7 +141,7 @@ class DictionariesViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to create dictionary: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to create dictionary. Press HOME to refresh the page."
                 Log.e(tag, "Failed to create dictionary", e)
             } finally {
                 _isCreateInProgress.value = false
@@ -167,7 +167,7 @@ class DictionariesViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to delete dictionary: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to delete dictionary. Press HOME to refresh the page."
                 Log.e(tag, "Failed to delete dictionary", e)
             } finally {
                 _isDeleteInProgress.value = false

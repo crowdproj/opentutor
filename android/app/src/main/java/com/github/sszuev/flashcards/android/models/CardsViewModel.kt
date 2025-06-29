@@ -67,7 +67,7 @@ class CardsViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to load cards: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to load cards. Press HOME to refresh the page."
                 Log.e(tag, "Failed to load cards", e)
             } finally {
                 _isCardsLoading.value = false
@@ -95,7 +95,7 @@ class CardsViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to update card: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to update card. Press HOME to refresh the page."
                 Log.e(tag, "Failed to load cards", e)
             } finally {
                 _isCardUpdating.value = false
@@ -119,7 +119,7 @@ class CardsViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to create card: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to create card. Press HOME to refresh the page."
                 Log.e(tag, "Failed to create card", e)
             } finally {
                 _isCardCreating.value = false
@@ -150,7 +150,7 @@ class CardsViewModel(
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value =
-                    "Failed to fetch card data for word '$word': ${e.localizedMessage}"
+                    "Failed to fetch card data for word '$word'. Press HOME to refresh the page."
                 Log.e(tag, "Failed to fetch card data", e)
             } finally {
                 _isCardFetching.value = false
@@ -176,7 +176,7 @@ class CardsViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to delete card: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to delete card. Press HOME to refresh the page."
                 Log.e(tag, "Failed to delete card", e)
             } finally {
                 _isCardDeleting.value = false
@@ -204,7 +204,7 @@ class CardsViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to delete card: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to delete card. Press HOME to refresh the page."
                 Log.e(tag, "Failed to delete card", e)
             } finally {
                 _isCardResetting.value = false

@@ -45,7 +45,7 @@ class SettingsViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to get settings: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to get settings. Press HOME to refresh the page."
                 Log.e(tag, "Failed to get settings", e)
             } finally {
                 _isLoadSettingsInProgress.value = false
@@ -66,7 +66,7 @@ class SettingsViewModel(
             } catch (e: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value = "Failed to save settings: ${e.localizedMessage}"
+                _errorMessage.value = "Failed to save settings. Press HOME to refresh the page."
                 Log.e(tag, "Failed to save settings", e)
             } finally {
                 _isSaveSettingsInProgress.value = false
