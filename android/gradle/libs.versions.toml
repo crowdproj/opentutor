@@ -1,8 +1,8 @@
 [versions]
 # https://developer.android.com/build/releases/gradle-plugin
-agpVersion = "8.10.1"
+agpVersion = "8.11.0"
 # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-kotlinVersion = "2.1.21"
+kotlinVersion = "2.2.0"
 # https://mvnrepository.com/artifact/androidx.core/core-ktx
 coreKtxVersion = "1.16.0"
 # https://mvnrepository.com/artifact/junit/junit
@@ -16,7 +16,7 @@ lifecycleRuntimeKtxVersion = "2.9.1"
 # https://mvnrepository.com/artifact/androidx.activity/activity-compose
 activityComposeVersion = "1.10.1"
 # https://mvnrepository.com/artifact/androidx.compose/compose-bom
-composeBomVersion = "2025.06.00"
+composeBomVersion = "2025.06.01"
 # https://mvnrepository.com/artifact/androidx.navigation/navigation-compose
 composeNavigationVersion = "2.9.0"
 # https://mvnrepository.com/artifact/io.ktor/ktor-client-android

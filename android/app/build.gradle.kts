@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
@@ -18,7 +19,7 @@ val testKeycloakPass = localProps.getProperty("TEST_KEYCLOAK_PASSWORD") ?: "***"
 
 android {
     namespace = "com.github.sszuev.flashcards.android"
-    compileSdk = 35
+    compileSdk = 36
 
     buildFeatures {
         buildConfig = true
@@ -28,7 +29,7 @@ android {
     defaultConfig {
         applicationId = "com.github.sszuev.flashcards.android"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 8
         versionName = "1.4 beta"
 
@@ -62,8 +63,10 @@ android {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_11)
+        }
     }
 }
 
