@@ -27,7 +27,7 @@ suspend inline fun <reified T> authPost(
     withRetry: Boolean = true,
     crossinline configureRequest: HttpRequestBuilder.() -> Unit,
 ): T {
-    Log.d("HttpApi", "POST :: <$url>")
+    Log.d("HttpApi", "POST :: <$url> -- START")
     var token = getAccessToken()
     return try {
         val client = if (withRetry) defaultHttpClient else lightHttpClient
@@ -62,6 +62,8 @@ suspend inline fun <reified T> authPost(
         }
     } catch (e: Exception) {
         throw e.toClientException()
+    } finally {
+        Log.d("HttpApi", "POST :: <$url> -- END")
     }
 }
 

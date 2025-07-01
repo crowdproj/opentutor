@@ -17,8 +17,8 @@ import kotlin.coroutines.cancellation.CancellationException
 
 val defaultHttpClient: HttpClient = HttpClient(Android) {
     install(HttpTimeout) {
-        requestTimeoutMillis = 10_000
-        connectTimeoutMillis = 3_000
+        requestTimeoutMillis = 20_500
+        connectTimeoutMillis = 5_000
         socketTimeoutMillis = 4_000
     }
     install(HttpRequestRetry) {
@@ -56,7 +56,7 @@ val defaultHttpClient: HttpClient = HttpClient(Android) {
 
 val lightHttpClient: HttpClient = HttpClient(Android) {
     install(HttpTimeout) {
-        requestTimeoutMillis = 3_000
+        requestTimeoutMillis = 3_100
         connectTimeoutMillis = 1_500
         socketTimeoutMillis = 2_500
     }
