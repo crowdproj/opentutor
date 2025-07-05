@@ -345,7 +345,7 @@ fun CardsTableHeader(
     HorizontalDivider(
         thickness = 5.dp,
         color = Color(0xFFDDDDDD),
-        modifier = Modifier.padding(horizontal = 8.dp)
+        modifier = Modifier
     )
 }
 
