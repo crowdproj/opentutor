@@ -25,12 +25,16 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
@@ -54,6 +58,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.github.sszuev.flashcards.android.entities.CardEntity
@@ -311,28 +317,36 @@ fun CardsTableHeader(
     Row(
         modifier = Modifier
             .background(Color.LightGray)
-            .border(1.dp, Color.Black)
-            .height(60.dp)
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .fillMaxWidth(),
     ) {
         HeaderTableCell(
-            text = "WORD${if (currentSortField == "word") if (isAscending) "↑" else "↓" else ""}",
+            text = "WORD${if (currentSortField == "word") if (isAscending) "▲" else "▼" else ""}",
             weight = FIRST_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
+            fontWeight = FontWeight.Medium,
             onClick = { onSort("word") }
         )
         HeaderTableCell(
-            text = "TRANSLATION${if (currentSortField == "translation") if (isAscending) "↑" else "↓" else ""}",
+            text = "TRANSLATION${if (currentSortField == "translation") if (isAscending) "▲" else "▼" else ""}",
             weight = SECOND_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
+            fontWeight = FontWeight.Medium,
             onClick = { onSort("translation") }
         )
         HeaderTableCell(
-            text = "%${if (currentSortField == "status") if (isAscending) "↑" else "↓" else ""}",
+            text = "%${if (currentSortField == "status") if (isAscending) "▲" else "▼" else ""}",
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
+            fontWeight = FontWeight.Medium,
             onClick = { onSort("status") }
         )
     }
+    HorizontalDivider(
+        thickness = 5.dp,
+        color = Color(0xFFDDDDDD),
+        modifier = Modifier.padding(horizontal = 8.dp)
+    )
 }
 
 @Composable
@@ -345,40 +359,52 @@ fun CardsTableRow(
 ) {
     val percentage =
         (100.0 * card.answered / numberOfRightAnswers).takeIf { it < 100 }?.toInt() ?: 100
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, Color.Black)
-            .background(if (isSelected) SELECTED_ROW_COLOR else Color.Transparent)
-            .clickable {
-                onSelect()
-            }
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        TableCell(
-            text = card.word,
-            weight = FIRST_COLUMN_WIDTH,
-            containerWidthDp = containerWidthDp
-        )
-        if (isTextShort(card.translationAsString)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(if (isSelected) SELECTED_ROW_COLOR else Color.Transparent)
+                .clickable {
+                    onSelect()
+                }
+        ) {
             TableCell(
-                text = card.translationAsString,
-                weight = SECOND_COLUMN_WIDTH,
+                text = card.word,
+                weight = FIRST_COLUMN_WIDTH,
+                fontWeight = FontWeight.Normal,
                 containerWidthDp = containerWidthDp
             )
-        } else {
-            TableCellWithPopup(
-                shortText = shortText(card.translationAsString),
-                fullText = card.translationAsString,
-                weight = SECOND_COLUMN_WIDTH,
+            if (isTextShort(card.translationAsString)) {
+                TableCell(
+                    text = card.translationAsString,
+                    weight = SECOND_COLUMN_WIDTH,
+                    fontWeight = FontWeight.Normal,
+                    containerWidthDp = containerWidthDp
+                )
+            } else {
+                TableCellWithPopup(
+                    shortText = shortText(card.translationAsString),
+                    fullText = card.translationAsString,
+                    fontWeight = FontWeight.Normal,
+                    weight = SECOND_COLUMN_WIDTH,
+                    containerWidthDp = containerWidthDp,
+                    onShortClick = onSelect,
+                )
+            }
+            TableCell(
+                text = percentage.toString(),
+                fontWeight = FontWeight.Normal,
+                weight = THIRD_COLUMN_WIDTH,
                 containerWidthDp = containerWidthDp,
-                onShortClick = onSelect,
+                textAlign = TextAlign.Right,
             )
         }
-        TableCell(
-            text = percentage.toString(),
-            weight = THIRD_COLUMN_WIDTH,
-            containerWidthDp = containerWidthDp,
-        )
     }
 }
 

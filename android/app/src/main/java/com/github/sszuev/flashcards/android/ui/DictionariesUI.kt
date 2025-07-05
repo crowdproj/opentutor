@@ -3,9 +3,7 @@ package com.github.sszuev.flashcards.android.ui
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -25,10 +23,14 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -49,6 +51,8 @@ import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -62,11 +66,11 @@ import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TutorViewModel
 
 private const val tag = "DictionariesUI"
-private const val FIRST_COLUMN_WIDTH = 36
+private const val FIRST_COLUMN_WIDTH = 34
 private const val SECOND_COLUMN_WIDTH = 16
 private const val THIRD_COLUMN_WIDTH = 16
 private const val FOURTH_COLUMN_WIDTH = 16
-private const val FIFTH_COLUMN_WIDTH = 16
+private const val FIFTH_COLUMN_WIDTH = 18
 
 @Composable
 fun DictionariesScreen(
@@ -288,43 +292,52 @@ fun DictionariesTableHeader(
     Row(
         modifier = Modifier
             .background(Color.LightGray)
-            .border(1.dp, Color.Black)
-            .height(60.dp)
+            .padding(horizontal = 8.dp, vertical = 4.dp)
+            .fillMaxWidth(),
     ) {
         HeaderTableCell(
-            text = "NAME${if (currentSortField == "name") if (isAscending) "↑" else "↓" else ""}",
+            text = "NAME${if (currentSortField == "name") if (isAscending) "▲" else "▼" else ""}",
             weight = FIRST_COLUMN_WIDTH,
+            fontWeight = FontWeight.Medium,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("name") }
         )
         HeaderTableCell(
-            text = "SOURCE${if (currentSortField == "sourceLanguage") if (isAscending) "↑" else "↓" else ""}",
+            text = "SOURCE${if (currentSortField == "sourceLanguage") if (isAscending) "▲" else "▼" else ""}",
             weight = SECOND_COLUMN_WIDTH,
+            fontWeight = FontWeight.Medium,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("sourceLanguage") }
         )
         HeaderTableCell(
-            text = "TARGET${if (currentSortField == "targetLanguage") if (isAscending) "↑" else "↓" else ""}",
+            text = "TARGET${if (currentSortField == "targetLanguage") if (isAscending) "▲" else "▼" else ""}",
             weight = THIRD_COLUMN_WIDTH,
+            fontWeight = FontWeight.Medium,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("targetLanguage") }
         )
         HeaderTableCell(
-            text = "WORDS${if (currentSortField == "totalWords") if (isAscending) " ↑" else " ↓" else ""}",
+            text = "WORDS${if (currentSortField == "totalWords") if (isAscending) "▲" else "▼" else ""}",
             weight = FOURTH_COLUMN_WIDTH,
+            fontWeight = FontWeight.Medium,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("totalWords") }
         )
         HeaderTableCell(
-            text = "LEARN${if (currentSortField == "learnedWords") if (isAscending) "↑" else "↓" else ""}",
+            text = "LEARN${if (currentSortField == "learnedWords") if (isAscending) "▲" else "▼" else ""}",
             weight = FIFTH_COLUMN_WIDTH,
+            fontWeight = FontWeight.Medium,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("learnedWords") }
         )
     }
+    HorizontalDivider(
+        thickness = 5.dp,
+        color = Color(0xFFDDDDDD),
+        modifier = Modifier.padding(horizontal = 8.dp)
+    )
 }
 
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun DictionariesTableRow(
     dictionary: DictionaryEntity,
@@ -332,28 +345,35 @@ fun DictionariesTableRow(
     isSelected: Boolean,
     onSelect: (Boolean) -> Unit,
 ) {
-    Row(
+    Card(
         modifier = Modifier
             .fillMaxWidth()
-            .border(1.dp, Color.Black)
-            .background(if (isSelected) SELECTED_ROW_COLOR else Color.Transparent)
-            .combinedClickable(
-                onClick = {
-                    onSelect(!isSelected)
-                },
-                onLongClick = {
-                    onSelect(true)
-                }
-            )
+            .padding(horizontal = 8.dp, vertical = 4.dp),
+        shape = RoundedCornerShape(8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ) {
-        DictionariesTableRow(
-            first = dictionary.name,
-            second = dictionary.sourceLanguage,
-            third = dictionary.targetLanguage,
-            fourth = dictionary.totalWords.toString(),
-            fifth = dictionary.learnedWords.toString(),
-            containerWidthDp = containerWidthDp,
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(if (isSelected) SELECTED_ROW_COLOR else Color.Transparent)
+                .combinedClickable(
+                    onClick = {
+                        onSelect(!isSelected)
+                    },
+                    onLongClick = {
+                        onSelect(true)
+                    }
+                )
+        ) {
+            DictionariesTableRow(
+                first = dictionary.name,
+                second = dictionary.sourceLanguage,
+                third = dictionary.targetLanguage,
+                fourth = dictionary.totalWords.toString(),
+                fifth = dictionary.learnedWords.toString(),
+                containerWidthDp = containerWidthDp,
+            )
+        }
     }
 }
 
@@ -369,27 +389,34 @@ fun DictionariesTableRow(
     TableCell(
         text = first,
         weight = FIRST_COLUMN_WIDTH,
+        fontWeight = FontWeight.Normal,
         containerWidthDp = containerWidthDp,
     )
     TableCell(
         text = second,
         weight = SECOND_COLUMN_WIDTH,
+        fontWeight = FontWeight.Normal,
         containerWidthDp = containerWidthDp,
     )
     TableCell(
         text = third,
         weight = THIRD_COLUMN_WIDTH,
+        fontWeight = FontWeight.Normal,
         containerWidthDp = containerWidthDp,
     )
     TableCell(
         text = fourth,
         weight = FOURTH_COLUMN_WIDTH,
+        fontWeight = FontWeight.Normal,
         containerWidthDp = containerWidthDp,
+        textAlign = TextAlign.Right,
     )
     TableCell(
         text = fifth,
         weight = FIFTH_COLUMN_WIDTH,
+        fontWeight = FontWeight.Normal,
         containerWidthDp = containerWidthDp,
+        textAlign = TextAlign.Right,
     )
 }
 

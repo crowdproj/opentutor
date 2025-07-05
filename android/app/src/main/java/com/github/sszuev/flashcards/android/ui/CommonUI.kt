@@ -128,6 +128,9 @@ fun HeaderTableCell(
     text: String,
     weight: Int,
     containerWidthDp: Dp,
+    fontSize: TextUnit = 12.sp,
+    fontWeight: FontWeight = FontWeight.W900,
+    textAlign: TextAlign = TextAlign.Start,
     onClick: (() -> Unit)? = null,
 ) {
     TableCell(
@@ -135,12 +138,13 @@ fun HeaderTableCell(
         weight = weight,
         containerWidthDp = containerWidthDp,
         onClick = onClick,
-        fontSize = 12.sp,
+        fontSize = fontSize,
         textColor = Color.Black,
         softWrap = false,
         overflow = TextOverflow.Ellipsis,
         maxLines = 1,
-        fontWeight = FontWeight.W900,
+        fontWeight = fontWeight,
+        textAlign = textAlign,
     )
 }
 
@@ -148,6 +152,7 @@ fun HeaderTableCell(
 fun TableCell(
     text: String,
     weight: Int,
+    textAlign: TextAlign = TextAlign.Start,
     containerWidthDp: Dp,
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
@@ -181,6 +186,7 @@ fun TableCell(
             overflow = overflow,
             maxLines = maxLines,
             fontWeight = fontWeight,
+            textAlign = textAlign,
             innerPadding = 0.dp,
         )
     }
@@ -192,7 +198,9 @@ fun TableCellWithPopup(
     fullText: String,
     weight: Int,
     containerWidthDp: Dp,
+    textAlign: TextAlign = TextAlign.Start,
     fontSize: TextUnit = 20.sp,
+    fontWeight: FontWeight = FontWeight.Bold,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
     onShortClick: () -> Unit = {},
@@ -221,6 +229,8 @@ fun TableCellWithPopup(
             lineHeight = lineHeight,
             textColor = textColor,
             fontSize = fontSize,
+            fontWeight = fontWeight,
+            textAlign = textAlign,
             innerPadding = 0.dp,
         )
         if (isPopupVisible) {
@@ -239,6 +249,7 @@ fun TableCellSelectable(
     text: String,
     isSelected: Boolean,
     onSelect: () -> Unit,
+    textAlign: TextAlign = TextAlign.Start,
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
@@ -260,6 +271,7 @@ fun TableCellSelectable(
             fontSize = fontSize,
             lineHeight = lineHeight,
             textColor = textColor,
+            textAlign = textAlign,
             innerPadding = 8.dp,
         )
     }
@@ -271,6 +283,7 @@ fun TableCellSelectableWithPopup(
     fullText: String,
     isSelected: Boolean,
     onSelect: () -> Unit,
+    textAlign: TextAlign = TextAlign.Start,
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
@@ -299,6 +312,7 @@ fun TableCellSelectableWithPopup(
             fontSize = fontSize,
             lineHeight = lineHeight,
             textColor = textColor,
+            textAlign = textAlign,
             innerPadding = 8.dp,
         )
 
@@ -369,6 +383,7 @@ fun TablePopup(
 @Composable
 fun TableCellText(
     text: String,
+    textAlign: TextAlign = TextAlign.Start,
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
     textColor: Color = Color.DarkGray,
@@ -378,10 +393,19 @@ fun TableCellText(
     maxLines: Int = Int.MAX_VALUE,
     fontWeight: FontWeight = FontWeight.Bold,
 ) {
-    Box(modifier = Modifier.padding(innerPadding)) {
+    val alignment = when (textAlign) {
+        TextAlign.Right -> Alignment.CenterEnd
+        TextAlign.Center -> Alignment.Center
+        else -> Alignment.CenterStart
+    }
+    Box(
+        modifier = Modifier
+            .padding(innerPadding)
+            .fillMaxWidth(), contentAlignment = alignment
+    ) {
         Text(
             text = text,
-            textAlign = TextAlign.Start,
+            textAlign = textAlign,
             maxLines = maxLines,
             overflow = overflow,
             softWrap = softWrap,
