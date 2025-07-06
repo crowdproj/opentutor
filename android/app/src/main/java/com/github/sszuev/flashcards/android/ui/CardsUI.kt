@@ -338,6 +338,7 @@ fun CardsTableHeader(
             text = "%${if (currentSortField == "status") if (isAscending) "▲" else "▼" else ""}",
             weight = THIRD_COLUMN_WIDTH,
             containerWidthDp = containerWidthDp,
+            textAlign = TextAlign.Right,
             fontWeight = FontWeight.Medium,
             onClick = { onSort("status") }
         )

@@ -320,6 +320,7 @@ fun DictionariesTableHeader(
             text = "WORDS${if (currentSortField == "totalWords") if (isAscending) "▲" else "▼" else ""}",
             weight = FOURTH_COLUMN_WIDTH,
             fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Right,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("totalWords") }
         )
@@ -327,6 +328,7 @@ fun DictionariesTableHeader(
             text = "LEARN${if (currentSortField == "learnedWords") if (isAscending) "▲" else "▼" else ""}",
             weight = FIFTH_COLUMN_WIDTH,
             fontWeight = FontWeight.Medium,
+            textAlign = TextAlign.Right,
             containerWidthDp = containerWidthDp,
             onClick = { onSort("learnedWords") }
         )
