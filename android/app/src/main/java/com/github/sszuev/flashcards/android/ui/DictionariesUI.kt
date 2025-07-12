@@ -391,7 +391,7 @@ fun DictionariesTableRow(
     TableCell(
         text = first,
         weight = FIRST_COLUMN_WIDTH,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         containerWidthDp = containerWidthDp,
     )
     TableCell(

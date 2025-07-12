@@ -327,6 +327,22 @@ fun TableCellSelectableWithPopup(
     }
 }
 
+@Composable
+fun TableCellWithContent(
+    weight: Int,
+    containerWidthDp: Dp,
+    contentAlignment: Alignment = Alignment.TopStart,
+    content: @Composable () -> Unit,
+) {
+    Box(
+        modifier = Modifier
+            .width((containerWidthDp * weight / 100f))
+            .padding(1.dp),
+        contentAlignment = contentAlignment
+    ) {
+        content()
+    }
+}
 
 @Composable
 fun TablePopup(
@@ -383,6 +399,7 @@ fun TablePopup(
 @Composable
 fun TableCellText(
     text: String,
+    modifier: Modifier = Modifier,
     textAlign: TextAlign = TextAlign.Start,
     fontSize: TextUnit = 20.sp,
     lineHeight: TextUnit = 40.sp,
@@ -399,7 +416,7 @@ fun TableCellText(
         else -> Alignment.CenterStart
     }
     Box(
-        modifier = Modifier
+        modifier = modifier
             .padding(innerPadding)
             .fillMaxWidth(), contentAlignment = alignment
     ) {

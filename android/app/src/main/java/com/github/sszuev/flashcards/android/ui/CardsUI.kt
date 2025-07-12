@@ -378,7 +378,7 @@ fun CardsTableRow(
             TableCell(
                 text = card.word,
                 weight = FIRST_COLUMN_WIDTH,
-                fontWeight = FontWeight.Normal,
+                fontWeight = FontWeight.Bold,
                 containerWidthDp = containerWidthDp
             )
             if (isTextShort(card.translationAsString)) {
