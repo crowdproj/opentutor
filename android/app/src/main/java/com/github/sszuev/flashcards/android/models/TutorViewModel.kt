@@ -238,6 +238,7 @@ class TutorViewModel(
         var card = checkNotNull(_cardsDeck.value.singleOrNull { it.cardId == cardId }) {
             "Can't find deck card = $cardId"
         }
+        Log.d(tag, "Mark card '${card.word}' ($cardId) as wrong.")
         val answered = _answeredCardDeckIds.value.toMutableSet()
         answered.add(cardId)
         _answeredCardDeckIds.value = answered
@@ -252,35 +253,47 @@ class TutorViewModel(
     fun updateDeckCard(
         cardId: String,
         numberOfRightAnswers: Int,
+        wrong: Boolean,
         updateCard: (CardEntity) -> Unit,
     ) {
-        var card = checkNotNull(_cardsDeck.value.singleOrNull { it.cardId == cardId }) {
+        val card = checkNotNull(_cardsDeck.value.singleOrNull { it.cardId == cardId }) {
             "Can't find deck card = $cardId"
         }
-        val answered = _answeredCardDeckIds.value.toMutableSet()
-        answered.add(cardId)
-        _answeredCardDeckIds.value = answered
-        card = if (!_wrongAnsweredCardDeckIds.value.contains(cardId)) {
-            card.copy(answered = card.answered + 1)
-        } else if (card.answered >= numberOfRightAnswers) {
-            card.copy(answered = numberOfRightAnswers - 1)
-        } else {
-            return
-        }
-        updateCard(card)
-        val cardsDeck = _cardsDeck.value.toMutableList()
-        val index = cardsDeck.indexOfFirst { it.cardId == cardId }
-        cardsDeck[index] = card
-        _cardsDeck.value = cardsDeck
-    }
 
-    fun markDeckCardAsWrong(cardId: String) {
         val answered = _answeredCardDeckIds.value.toMutableSet()
         answered.add(cardId)
         _answeredCardDeckIds.value = answered
-        val ids = _wrongAnsweredCardDeckIds.value.toMutableSet()
-        ids.add(cardId)
-        _wrongAnsweredCardDeckIds.value = ids
+
+        if (wrong) {
+            Log.d(tag, "Mark card '${card.word}' ($cardId) as wrong")
+            val ids = _wrongAnsweredCardDeckIds.value.toMutableSet()
+            ids.add(cardId)
+            _wrongAnsweredCardDeckIds.value = ids
+        }
+        val newCard = if (_wrongAnsweredCardDeckIds.value.contains(cardId)) {
+            if (card.answered >= numberOfRightAnswers) {
+                card.copy(answered = numberOfRightAnswers - 1)
+            } else {
+                card
+            }
+        } else {
+            if (card.answered >= numberOfRightAnswers - 1) {
+                card.copy(answered = numberOfRightAnswers)
+            } else {
+                card.copy(answered = card.answered + 1)
+            }
+        }
+        if (newCard.answered != card.answered) {
+            Log.d(
+                tag, "Update card '${card.word}' ($cardId) => " +
+                        "answered = ${newCard.answered} (wrong = $wrong)"
+            )
+            updateCard(newCard)
+            val cardsDeck = _cardsDeck.value.toMutableList()
+            val index = cardsDeck.indexOfFirst { it.cardId == cardId }
+            cardsDeck[index] = newCard
+            _cardsDeck.value = cardsDeck
+        }
     }
 
     fun greenDeckCards(numberOfRightAnswers: (CardEntity) -> Int): List<CardEntity> {

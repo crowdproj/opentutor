@@ -145,15 +145,21 @@ fun WritingPanels(
     fun checkAnswer(userInput: String): Boolean {
         val expected = if (direct) card.translation else wordAsList(card.word)
         val res = correctAnswerIndexOf(expected, userInput)
+        val cardId = checkNotNull(card.cardId)
+        val dictionary = dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
         return if (res == -1) {
-            tutorViewModel.markDeckCardAsWrong(checkNotNull(card.cardId))
-            false
-        } else {
-            val cardId = checkNotNull(card.cardId)
-            val dictionary = dictionariesViewModel.dictionaryById(checkNotNull(card.dictionaryId))
             tutorViewModel.updateDeckCard(
                 cardId = cardId,
                 numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                wrong = true,
+                updateCard = { cardsViewModel.updateCard(it) }
+            )
+            false
+        } else {
+            tutorViewModel.updateDeckCard(
+                cardId = cardId,
+                numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                wrong = false,
                 updateCard = { cardsViewModel.updateCard(it) }
             )
             true

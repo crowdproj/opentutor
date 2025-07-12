@@ -248,6 +248,7 @@ fun OptionsPanel(
                     tutorViewModel.updateDeckCard(
                         cardId = cardId,
                         numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                        wrong = false,
                         updateCard = { cardsViewModel.updateCard(it) }
                     )
                     if (direct) {
@@ -259,11 +260,19 @@ fun OptionsPanel(
                         ttsViewModel.waitForAudioProcessing(cardId)
                     }
                 } else {
-                    val cardId = checkNotNull(currentCard.value?.cardId)
+                    val card = checkNotNull(currentCard.value)
+                    val cardId = checkNotNull(card.cardId)
                     Log.i(tag, "Wrong answer for card $cardId")
+                    val dictionaryId = checkNotNull(card.dictionaryId)
+                    val dictionary = dictionariesViewModel.dictionaryById(dictionaryId)
                     selectedOption.value = null
                     isCorrect.value = null
-                    tutorViewModel.markDeckCardAsWrong(cardId)
+                    tutorViewModel.updateDeckCard(
+                        cardId = cardId,
+                        numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                        wrong = true,
+                        updateCard = { cardsViewModel.updateCard(it) }
+                    )
                 }
                 selectedOption.value = null
                 isCorrect.value = null

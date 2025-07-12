@@ -160,7 +160,8 @@ fun MosaicPanels(
 
                 val card = if (direct) leftItem else rightItem
                 val cardId = card.cardId
-                val dictionary = dictionariesViewModel.dictionaryById(leftItem.dictionaryId!!)
+                val dictionary =
+                    dictionariesViewModel.dictionaryById(checkNotNull(leftItem.dictionaryId))
 
                 if (match()) {
                     isCorrectAnswerProcessing.value = true
@@ -180,6 +181,7 @@ fun MosaicPanels(
                     tutorViewModel.updateDeckCard(
                         cardId = cardId,
                         numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                        wrong = false,
                         updateCard = { cardsViewModel.updateCard(it) }
                     )
                     isCorrectAnswerProcessing.value = false
@@ -187,7 +189,12 @@ fun MosaicPanels(
                     Log.i(tag, "Wrong answer for card $cardId(${card.word})")
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
                     ttsViewModel.waitForAudioProcessing(cardId!!)
-                    tutorViewModel.markDeckCardAsWrong(cardId)
+                    tutorViewModel.updateDeckCard(
+                        cardId = cardId,
+                        numberOfRightAnswers = dictionary.numberOfRightAnswers,
+                        wrong = true,
+                        updateCard = { cardsViewModel.updateCard(it) }
+                    )
                 }
 
                 selectedLeftId.value = null

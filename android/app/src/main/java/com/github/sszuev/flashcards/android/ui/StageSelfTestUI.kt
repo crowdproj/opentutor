@@ -130,18 +130,15 @@ fun SelfTestPanels(
         }
     }
     fun onNextCard(result: Boolean) {
-        if (result) {
-            val cardId = checkNotNull(currentCard.cardId)
-            val dictionary =
-                dictionariesViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
-            tutorViewModel.updateDeckCard(
-                cardId = cardId,
-                numberOfRightAnswers = dictionary.numberOfRightAnswers,
-                updateCard = { cardsViewModel.updateCard(it) }
-            )
-        } else {
-            tutorViewModel.markDeckCardAsWrong(checkNotNull(currentCard.cardId))
-        }
+        val cardId = checkNotNull(currentCard.cardId)
+        val dictionary =
+            dictionariesViewModel.dictionaryById(checkNotNull(currentCard.dictionaryId))
+        tutorViewModel.updateDeckCard(
+            cardId = cardId,
+            numberOfRightAnswers = dictionary.numberOfRightAnswers,
+            wrong = !result,
+            updateCard = { cardsViewModel.updateCard(it) },
+        )
 
         currentIndex.intValue++
 

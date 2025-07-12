@@ -214,7 +214,7 @@ fun CardItemRow(
                 containerWidthDp = containerWidthDp
             )
             TableCell(
-                text = "${((100.0 * card.answered) / dictionaryNumberOfRightAnswers(card)).toInt()}",
+                text = "${(100.0 * card.answered / dictionaryNumberOfRightAnswers(card)).toInt()}",
                 weight = THIRD_COLUMN_WIDTH,
                 containerWidthDp = containerWidthDp,
                 fontWeight = FontWeight.Normal,
