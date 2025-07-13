@@ -47,7 +47,7 @@ fun StageMosaicScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageMosaic")
-    if (tutorViewModel.cardsDeck.value.isEmpty()) {
+    if (tutorViewModel.cardsDeck.value.size < 2) {
         onNextStage()
         return
     }

@@ -55,7 +55,7 @@ fun StageOptionsScreen(
     direction: Boolean = true,
 ) {
     Log.d(tag, "StageOptions")
-    if (tutorViewModel.cardsDeck.value.isEmpty()) {
+    if (tutorViewModel.cardsDeck.value.size < 2) {
         onNextStage()
         return
     }
