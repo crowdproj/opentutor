@@ -84,7 +84,7 @@
         android:id="@+id/footer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="v1.4 beta – Jun 2025\nhttps://opentutor.zapto.org\nhttps://github.com/crowdproj/opentutor\n© 2024 sszuev"
+        android:text="v1.5 beta – Jun 2025\nhttps://opentutor.zapto.org\nhttps://github.com/crowdproj/opentutor\n© 2024 sszuev"
         android:textSize="12sp"
         android:textColor="#777777"
         android:gravity="center"
