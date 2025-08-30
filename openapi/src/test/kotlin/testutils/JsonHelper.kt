@@ -10,7 +10,7 @@ import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
  * System-wide mapper.
  */
 private val jacksonMapper = ObjectMapper()
-    .setSerializationInclusion(JsonInclude.Include.NON_NULL)
+    .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
     .registerModule(JavaTimeModule())
 
 internal fun serialize(response: Any): String = jacksonMapper.writeValueAsString(response)

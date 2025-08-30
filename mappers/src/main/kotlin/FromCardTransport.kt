@@ -23,8 +23,9 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toKotlinInstant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.time.toKotlinInstant
 
 fun CardContext.fromCardTransport(request: BaseRequest) = when (request) {
     is GetCardRequest -> fromGetCardRequest(request)
@@ -89,6 +90,7 @@ fun CardContext.fromResetAllCardsRequest(request: ResetAllCardsRequest) {
     this.requestDictionaryId = toDictionaryId(request.dictionaryId)
 }
 
+@OptIn(ExperimentalTime::class)
 private fun CardResource.toCardEntity(): CardEntity = CardEntity(
     cardId = toCardId(this.cardId),
     dictionaryId = toDictionaryId(this.dictionaryId),

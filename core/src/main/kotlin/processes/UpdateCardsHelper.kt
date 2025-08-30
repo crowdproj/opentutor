@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
@@ -6,6 +8,7 @@ import com.gitlab.sszuev.flashcards.core.mappers.toDbCard
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
+import kotlin.time.ExperimentalTime
 
 internal fun CardContext.learnCards(
     foundCards: Iterable<CardEntity>,

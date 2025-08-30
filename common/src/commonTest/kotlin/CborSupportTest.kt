@@ -14,7 +14,9 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class CborSupportTest {
 
     @Test

@@ -22,8 +22,11 @@ import com.gitlab.sszuev.flashcards.repositories.DbDocumentRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class DictionaryCorProcessorRunTest {
+    @OptIn(ExperimentalTime::class)
     companion object {
         private val testUserId = testDictionaryEntity.userId
 
@@ -332,7 +335,7 @@ internal class DictionaryCorProcessorRunTest {
 
         var isSaveDocumentCalled = false
         val documentRepository = MockDbDocumentRepository(
-            invokeSave = { doc, cards ->
+            invokeSave = { doc, _ ->
                 isSaveDocumentCalled = true
                 if (doc.name == "test") {
                     testDictionary.dictionaryId.asString()
@@ -393,7 +396,7 @@ internal class DictionaryCorProcessorRunTest {
 
         var isSaveDocumentCalled = false
         val documentRepository = MockDbDocumentRepository(
-            invokeSave = { doc, cards ->
+            invokeSave = { doc, _ ->
                 isSaveDocumentCalled = true
                 if (doc.name == "test") {
                     testDictionary.dictionaryId.asString()

@@ -32,7 +32,7 @@ class RemoteTTSService(
                 /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
             )
         }
-        val res = ttsContextFromByteArray(answer.data)
+        val res = ttsContextFromByteArray(answer!!.data)
         res.copyTo(this)
         return this
     }

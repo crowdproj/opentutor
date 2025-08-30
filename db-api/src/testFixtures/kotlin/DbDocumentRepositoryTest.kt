@@ -9,16 +9,19 @@ import com.gitlab.sszuev.flashcards.repositories.DbDocumentRepository
 import com.gitlab.sszuev.flashcards.repositories.DbLang
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 abstract class DbDocumentRepositoryTest {
     abstract val documentRepository: DbDocumentRepository
     abstract val dictionaryRepository: DbDictionaryRepository
     abstract val cardRepository: DbCardRepository
     abstract val userRepository: DbUserRepository
 
+    @OptIn(ExperimentalTime::class)
     companion object {
 
         private const val USER_ID = "00000000-0000-0000-0000-000000000000"

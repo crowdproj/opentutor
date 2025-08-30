@@ -20,8 +20,9 @@ import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import kotlinx.datetime.toJavaInstant
 import java.time.ZoneOffset
+import kotlin.time.ExperimentalTime
+import kotlin.time.toJavaInstant
 
 fun CardContext.toCardResponse(): BaseResponse = when (val op = this.operation) {
     CardOperation.GET_ALL_CARDS -> this.toGetAllCardsResponse()
@@ -97,6 +98,7 @@ fun CardContext.toResetAllCardsResponse() = ResetAllCardsResponse(
     errors = this.errors.toErrorResourceList(),
 )
 
+@OptIn(ExperimentalTime::class)
 internal fun CardEntity.toCardResource(): CardResource? {
     if (this == CardEntity.EMPTY) {
         return null

@@ -10,11 +10,13 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
 import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import kotlinx.datetime.Clock
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.selectAll
 import org.jetbrains.exposed.sql.update
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class PgDbUserRepository(
     dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
 ) : DbUserRepository {

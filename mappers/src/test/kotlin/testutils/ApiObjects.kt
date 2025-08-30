@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.mappers.v1.testutils
 
 import com.gitlab.sszuev.flashcards.api.v1.models.CardResource
@@ -15,11 +17,12 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
-import kotlinx.datetime.Instant
-import kotlinx.datetime.toJavaInstant
-import kotlinx.datetime.toKotlinInstant
 import org.junit.jupiter.api.Assertions
 import java.time.ZoneOffset
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
+import kotlin.time.toJavaInstant
+import kotlin.time.toKotlinInstant
 
 
 internal fun assertDictionary(expected: DictionaryEntity, actual: DictionaryResource) {

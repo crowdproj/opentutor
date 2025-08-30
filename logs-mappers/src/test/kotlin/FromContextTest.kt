@@ -21,7 +21,10 @@ import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class FromContextTest {
 
     companion object {
@@ -91,7 +94,7 @@ internal class FromContextTest {
                 )
             ),
             stats = mapOf(Stage.SELF_TEST to 42),
-            details = mapOf("a" to 42L, "b" to listOf(42), "c" to kotlinx.datetime.Clock.System.now()),
+            details = mapOf("a" to 42L, "b" to listOf(42), "c" to Clock.System.now()),
         )
         context.responseCardEntity = CardEntity(
             cardId = CardId("response-card-id"),

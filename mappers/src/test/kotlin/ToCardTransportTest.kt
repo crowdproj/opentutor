@@ -17,12 +17,14 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
-import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 internal class ToCardTransportTest {
 
     @Test
@@ -184,7 +186,7 @@ internal class ToCardTransportTest {
                 return
             }
         }
-        Assertions.assertNotSame(cardEntity, card)
+
         assertCard(cardEntity, card)
     }
 

@@ -1,6 +1,7 @@
 package com.gitlab.sszuev.flashcards.repositories
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 interface DbUserRepository {
 
@@ -10,6 +11,7 @@ interface DbUserRepository {
 
     fun updateUser(user: DbUser): DbUser
 
+    @ExperimentalTime
     fun findOrCreateUser(id: String, details: Map<String, Any> = emptyMap(), onCreate: () -> Unit = {}): DbUser {
         val found = findByUserId(id)
         if (found != null) {
@@ -20,6 +22,7 @@ interface DbUserRepository {
         return res
     }
 
+    @OptIn(ExperimentalTime::class)
     fun addUserDetails(id: String, newDetails: Map<String, Any>): DbUser {
         val found = findByUserId(id) ?: throw IllegalStateException()
         val mergedDetails = found.details + newDetails

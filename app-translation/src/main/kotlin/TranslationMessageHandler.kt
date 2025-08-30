@@ -10,9 +10,11 @@ import com.gitlab.sszuev.flashcards.utils.translationContextFromByteArray
 import io.nats.client.Connection
 import io.nats.client.Message
 import org.slf4j.LoggerFactory
+import kotlin.time.ExperimentalTime
 
 private val logger = LoggerFactory.getLogger(TranslationMessageHandler::class.java)
 
+@OptIn(ExperimentalTime::class)
 class TranslationMessageHandler(private val repository: TranslationRepository) : MessageHandler {
     private val corProcessor = TranslationCorProcessor()
 

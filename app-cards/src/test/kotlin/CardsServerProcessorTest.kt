@@ -18,7 +18,6 @@ import io.mockk.mockk
 import io.nats.client.Connection
 import io.nats.client.Nats
 import kotlinx.coroutines.runBlocking
-import kotlinx.datetime.Instant
 import org.junit.jupiter.api.AfterAll
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions
@@ -33,6 +32,8 @@ import org.testcontainers.utility.DockerImageName
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 @Timeout(value = 60, unit = TimeUnit.SECONDS)
 @Testcontainers
@@ -64,6 +65,7 @@ class CardsServerProcessorTest {
         connection.close()
     }
 
+    @OptIn(ExperimentalTime::class)
     @Test
     fun `test get card success`() = runBlocking {
         val testCardId = "42"
@@ -130,7 +132,7 @@ class CardsServerProcessorTest {
             /* body = */ context.toByteArray(),
             /* timeout = */ Duration.of(42, ChronoUnit.SECONDS)
         )
-        val res = cardContextFromByteArray(answer.data)
+        val res = cardContextFromByteArray(answer!!.data)
 
         Assertions.assertTrue(res.errors.isEmpty())
         Assertions.assertEquals(testCardId, res.responseCardEntity.cardId.asString())

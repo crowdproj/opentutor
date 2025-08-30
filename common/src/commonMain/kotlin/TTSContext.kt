@@ -11,10 +11,12 @@ import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.repositories.NoOpTTSResourceRepository
 import com.gitlab.sszuev.flashcards.repositories.TTSResourceRepository
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class TTSContext(
     override val operation: TTSOperation = TTSOperation.NONE,

@@ -31,7 +31,9 @@ import org.testcontainers.utility.DockerImageName
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Timeout(value = 60, unit = TimeUnit.SECONDS)
 @Testcontainers
 internal class TranslationServerProcessorTest {
@@ -102,7 +104,7 @@ internal class TranslationServerProcessorTest {
             /* body = */ context.toByteArray(),
             /* timeout = */ Duration.of(42, ChronoUnit.SECONDS)
         )
-        val res = translationContextFromByteArray(answer.data)
+        val res = translationContextFromByteArray(answer!!.data)
 
         Assertions.assertTrue(res.errors.isEmpty())
         Assertions.assertEquals(

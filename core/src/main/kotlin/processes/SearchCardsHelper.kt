@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.CardContext
@@ -7,6 +9,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import org.slf4j.LoggerFactory
+import kotlin.time.ExperimentalTime
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.SearchCardsHelper")
 

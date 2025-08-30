@@ -11,7 +11,8 @@ import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransport
 import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.services.TTSService
 import io.ktor.server.application.ApplicationCall
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.TTSController")
 
@@ -24,6 +25,7 @@ suspend fun ApplicationCall.getResource(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     operation: TTSOperation,
     logger: ExtLogger,

@@ -4,7 +4,6 @@ import com.gitlab.sszuev.flashcards.TTSContext
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
 import com.gitlab.sszuev.flashcards.model.common.AppRequestId
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
-import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
@@ -16,9 +15,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
 @ExperimentalCoroutinesApi
 internal class TTSCorProcessorRunTest {
+    @OptIn(ExperimentalTime::class)
     companion object {
 
         private fun testContext(repository: TTSResourceRepository): TTSContext {

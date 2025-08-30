@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.core.normalizers
 
 import com.gitlab.sszuev.flashcards.CardContext
@@ -25,6 +27,7 @@ import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSOperation
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceGet
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
+import kotlin.time.ExperimentalTime
 
 fun ChainDSL<DictionaryContext>.normalizers(operation: DictionaryOperation) = worker(
     name = "Make a normalized copy of ${operation.name.lowercase()} params"

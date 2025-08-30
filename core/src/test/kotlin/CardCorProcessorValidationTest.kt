@@ -16,18 +16,21 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.params.ParameterizedInvocationConstants
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.EnumSource
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.UUID
+import kotlin.time.ExperimentalTime
 
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalTime::class)
 internal class CardCorProcessorValidationTest {
 
+    @OptIn(ExperimentalTime::class)
     companion object {
         private const val PARAMETERIZED_TEST_NAME =
-            "test: ${ParameterizedTest.INDEX_PLACEHOLDER}: \"${ParameterizedTest.ARGUMENTS_WITH_NAMES_PLACEHOLDER}\""
+            "test: ${ParameterizedInvocationConstants.INDEX_PLACEHOLDER}: \"${ParameterizedInvocationConstants.ARGUMENTS_WITH_NAMES_PLACEHOLDER}\""
         private val processor = CardCorProcessor()
         private val requestId = UUID.randomUUID().toString()
         private val testCard = testCardEntity1.copy()

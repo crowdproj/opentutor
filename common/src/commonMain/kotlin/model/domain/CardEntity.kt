@@ -2,10 +2,12 @@ package com.gitlab.sszuev.flashcards.model.domain
 
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.utils.MapStringAnySerializer
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Polymorphic
 import kotlinx.serialization.Serializable
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class CardEntity(
     val cardId: CardId = CardId.NONE,

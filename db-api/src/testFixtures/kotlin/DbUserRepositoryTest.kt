@@ -2,11 +2,13 @@ package com.gitlab.sszuev.flashcards.dbcommon
 
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import kotlinx.datetime.Clock
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 abstract class DbUserRepositoryTest {
     abstract val repository: DbUserRepository
 

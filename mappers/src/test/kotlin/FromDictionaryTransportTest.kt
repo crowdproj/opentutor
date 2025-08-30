@@ -11,7 +11,9 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class FromDictionaryTransportTest {
 
     companion object {

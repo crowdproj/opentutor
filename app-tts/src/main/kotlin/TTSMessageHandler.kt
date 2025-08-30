@@ -10,9 +10,11 @@ import com.gitlab.sszuev.flashcards.utils.ttsContextFromByteArray
 import io.nats.client.Connection
 import io.nats.client.Message
 import org.slf4j.LoggerFactory
+import kotlin.time.ExperimentalTime
 
 private val logger = LoggerFactory.getLogger(TTSMessageHandler::class.java)
 
+@OptIn(ExperimentalTime::class)
 class TTSMessageHandler(
     private val repository: TTSResourceRepository
 ) : MessageHandler {

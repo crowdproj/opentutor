@@ -2,7 +2,8 @@ package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 class MemDbUserRepository(
     dbConfig: MemDbConfig = MemDbConfig(),
@@ -14,6 +15,7 @@ class MemDbUserRepository(
         return database.findUserById(id)?.toDbUser()
     }
 
+    @OptIn(ExperimentalTime::class)
     override fun createUser(user: DbUser): DbUser {
         val new = user.copy(createdAt = Clock.System.now())
         database.saveUser(new.toMemDbUser())

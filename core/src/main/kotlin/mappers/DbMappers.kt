@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.core.mappers
 
 import com.gitlab.sszuev.flashcards.AppConfig
@@ -15,6 +17,7 @@ import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
+import kotlin.time.ExperimentalTime
 
 internal fun CardEntity.toDbCard() = DbCard(
     cardId = this.cardId.asString(),

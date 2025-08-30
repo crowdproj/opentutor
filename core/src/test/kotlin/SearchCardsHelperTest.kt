@@ -5,7 +5,9 @@ import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class SearchCardsHelperTest {
 
     @Test

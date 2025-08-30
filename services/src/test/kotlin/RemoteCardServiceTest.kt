@@ -21,7 +21,9 @@ import org.testcontainers.junit.jupiter.Container
 import org.testcontainers.junit.jupiter.Testcontainers
 import org.testcontainers.utility.DockerImageName
 import java.util.concurrent.TimeUnit
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Timeout(value = 60, unit = TimeUnit.SECONDS)
 @Testcontainers
 internal class RemoteCardServiceTest {

@@ -11,10 +11,12 @@ import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
 import com.gitlab.sszuev.flashcards.translation.api.NoOpTranslationRepository
 import com.gitlab.sszuev.flashcards.translation.api.TranslationRepository
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class TranslationContext(
     override val operation: TranslationOperation = TranslationOperation.NONE,

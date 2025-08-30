@@ -11,9 +11,12 @@ import com.gitlab.sszuev.flashcards.repositories.DbUser
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class SettingsCorProcessorRunTest {
 
+    @OptIn(ExperimentalTime::class)
     companion object {
 
         @Suppress("SameParameterValue")

@@ -18,7 +18,9 @@ import io.ktor.server.routing.route
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class TranslationControllerMockTest {
 
     @Test

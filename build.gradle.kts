@@ -1,3 +1,7 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     kotlin("jvm") apply false
     id("org.jetbrains.kotlin.plugin.serialization") apply false
@@ -16,14 +20,28 @@ subprojects {
     group = rootProject.group
     version = rootProject.version
 
-    tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions {
-            jvmTarget = "17"
+
+    tasks.withType<KotlinCompile>().configureEach {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
         }
     }
 
-    tasks.withType<JavaCompile> {
-        sourceCompatibility = "17"
-        targetCompatibility = "17"
+    plugins.withId("org.jetbrains.kotlin.jvm") {
+        extensions.configure<KotlinJvmProjectExtension> {
+            jvmToolchain(17)
+            compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+        }
+
+        val junitVersion: String by project
+        dependencies {
+            add("testImplementation", platform("org.junit:junit-bom:$junitVersion"))
+            add("testRuntimeOnly", "org.junit.platform:junit-platform-launcher")
+        }
+
+        tasks.withType<Test>().configureEach {
+            useJUnitPlatform()
+        }
     }
+
 }

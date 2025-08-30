@@ -12,7 +12,8 @@ import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransport
 import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
 import com.gitlab.sszuev.flashcards.services.SettingsService
 import io.ktor.server.application.ApplicationCall
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.SettingsController")
 
@@ -42,6 +43,7 @@ suspend fun ApplicationCall.updateSettings(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     operation: SettingsOperation,
     logger: ExtLogger,

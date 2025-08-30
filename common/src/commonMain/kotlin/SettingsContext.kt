@@ -8,10 +8,12 @@ import com.gitlab.sszuev.flashcards.model.common.AppStatus
 import com.gitlab.sszuev.flashcards.model.common.NONE
 import com.gitlab.sszuev.flashcards.model.domain.SettingsEntity
 import com.gitlab.sszuev.flashcards.model.domain.SettingsOperation
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class SettingsContext(
     override val operation: SettingsOperation = SettingsOperation.NONE,

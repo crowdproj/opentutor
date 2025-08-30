@@ -7,7 +7,7 @@ import com.fasterxml.jackson.module.kotlin.KotlinModule
 
 
 private val mapper = ObjectMapper()
-    .setSerializationInclusion(JsonInclude.Include.NON_EMPTY)
+    .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
     .registerModule(KotlinModule.Builder().build())
 
 private val cardWordsTypeReference: TypeReference<List<CommonWordDto>> =

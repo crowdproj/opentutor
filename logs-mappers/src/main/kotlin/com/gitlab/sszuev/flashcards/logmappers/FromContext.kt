@@ -26,10 +26,11 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
-import kotlinx.datetime.toJavaInstant
 import java.time.Instant
 import java.time.ZoneOffset
 import java.util.UUID
+import kotlin.time.ExperimentalTime
+import kotlin.time.toJavaInstant
 
 fun AppContext.toLogResource(logId: String) = LogResource(
     source = "flashcards",
@@ -67,6 +68,7 @@ private fun CardContext.toLog() = CardsLogResource(
     responseCards = this.responseCardEntityList.takeIf { it.isNotEmpty() }?.map { it.toLog() },
 )
 
+@OptIn(ExperimentalTime::class)
 private fun CardEntity.toLog(): CardLogResource = CardLogResource(
     cardId = this.cardId.takeIf { it != CardId.NONE }?.asString(),
     dictionaryId = this.dictionaryId.asString(),

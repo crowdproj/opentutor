@@ -26,8 +26,11 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.EnumSource
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class CardCorProcessorRunTest {
+    @OptIn(ExperimentalTime::class)
     companion object {
         private val testUserId = testDictionaryEntity.userId
 

@@ -10,10 +10,12 @@ import com.gitlab.sszuev.flashcards.model.domain.DictionaryEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryOperation
 import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class DictionaryContext(
     override val operation: DictionaryOperation = DictionaryOperation.NONE,

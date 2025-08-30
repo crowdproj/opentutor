@@ -10,9 +10,11 @@ import com.gitlab.sszuev.flashcards.utils.toByteArray
 import io.nats.client.Connection
 import io.nats.client.Message
 import org.slf4j.LoggerFactory
+import kotlin.time.ExperimentalTime
 
 private val logger = LoggerFactory.getLogger(SettingsMessageHandler::class.java)
 
+@OptIn(ExperimentalTime::class)
 class SettingsMessageHandler(private val repositories: DbRepositories) : MessageHandler {
     private val corProcessor = SettingsCorProcessor()
 

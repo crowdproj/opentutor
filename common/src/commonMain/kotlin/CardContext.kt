@@ -12,13 +12,15 @@ import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 import com.gitlab.sszuev.flashcards.model.domain.CardOperation
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
-import kotlinx.datetime.Instant
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.Transient
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Represents request context for card operations.
  */
+@OptIn(ExperimentalTime::class)
 @Serializable
 data class CardContext(
     override val operation: CardOperation = CardOperation.NONE,

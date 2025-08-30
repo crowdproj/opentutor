@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.core.processes
 
 import com.gitlab.sszuev.flashcards.DictionaryContext
@@ -22,6 +24,7 @@ import com.gitlab.sszuev.flashcards.model.domain.ResourceEntity
 import com.gitlab.sszuev.flashcards.utils.documentEntityFromJson
 import com.gitlab.sszuev.flashcards.utils.toJsonString
 import org.slf4j.LoggerFactory
+import kotlin.time.ExperimentalTime
 
 private val logger = LoggerFactory.getLogger("com.gitlab.sszuev.flashcards.core.processes.DictionaryProcessWorkersKt")
 

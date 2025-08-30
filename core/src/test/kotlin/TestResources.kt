@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.core
 
 import com.gitlab.sszuev.flashcards.model.common.AppAuthId
@@ -11,6 +13,7 @@ import com.gitlab.sszuev.flashcards.model.domain.LangEntity
 import com.gitlab.sszuev.flashcards.model.domain.LangId
 import com.gitlab.sszuev.flashcards.model.domain.Stage
 import com.gitlab.sszuev.flashcards.model.domain.TTSResourceId
+import kotlin.time.ExperimentalTime
 
 val testDictionaryEntity = DictionaryEntity(
     dictionaryId = DictionaryId(42.toString()),

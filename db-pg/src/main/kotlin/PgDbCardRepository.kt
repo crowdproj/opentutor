@@ -17,7 +17,9 @@ import org.jetbrains.exposed.sql.count
 import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.statements.BatchUpdateStatement
 import org.jetbrains.exposed.sql.transactions.TransactionManager
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
 ) : DbCardRepository {

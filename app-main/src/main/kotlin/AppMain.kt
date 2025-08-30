@@ -170,7 +170,7 @@ fun Application.module(
             disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             enable(SerializationFeature.INDENT_OUTPUT)
             writerWithDefaultPrettyPrinter()
-            setSerializationInclusion(JsonInclude.Include.NON_NULL)
+            setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
             registerModule(JavaTimeModule())
         }
     }

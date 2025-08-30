@@ -32,7 +32,7 @@ class RemoteTranslationService(
                 /* timeout = */ Duration.of(requestTimeoutInMillis, ChronoUnit.MILLIS),
             )
         }
-        val res = translationContextFromByteArray(answer.data)
+        val res = translationContextFromByteArray(answer!!.data)
         res.copyTo(this)
         return this
     }

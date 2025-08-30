@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.dbpg
 
 import com.gitlab.sszuev.flashcards.asKotlin
@@ -20,6 +22,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbLang
 import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
 import org.jetbrains.exposed.dao.id.EntityID
 import java.time.LocalDateTime
+import kotlin.time.ExperimentalTime
 
 internal fun PgDbDictionary.toDbDictionary(): DbDictionary = DbDictionary(
     dictionaryId = this.id.value.toString(),

@@ -1,5 +1,7 @@
 package com.gitlab.sszuev.flashcards.dbpg
 
-import kotlinx.datetime.Instant
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
+@OptIn(ExperimentalTime::class)
 fun Instant.truncateToMills(): Instant = Instant.fromEpochMilliseconds(toEpochMilliseconds())

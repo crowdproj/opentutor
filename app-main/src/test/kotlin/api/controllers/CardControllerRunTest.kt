@@ -39,7 +39,9 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 internal class CardControllerRunTest {
 

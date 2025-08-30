@@ -1,9 +1,12 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.core.mappers
 
 import com.gitlab.sszuev.flashcards.model.domain.CardEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordEntity
 import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.translation.api.TranslationEntity
+import kotlin.time.ExperimentalTime
 
 
 internal fun List<TranslationEntity>.toCardEntity() = CardEntity(

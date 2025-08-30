@@ -10,8 +10,11 @@ import com.gitlab.sszuev.flashcards.model.domain.CardWordExampleEntity
 import com.gitlab.sszuev.flashcards.model.domain.DictionaryId
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class DocMappersTest {
+    @OptIn(ExperimentalTime::class)
     companion object {
         private val testDocumentCard = DocumentCard(
             text = "snowfall",

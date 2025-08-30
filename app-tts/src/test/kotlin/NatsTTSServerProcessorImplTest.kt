@@ -30,7 +30,9 @@ import org.testcontainers.utility.DockerImageName
 import java.time.Duration
 import java.time.temporal.ChronoUnit
 import java.util.concurrent.TimeUnit
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 @Timeout(value = 60, unit = TimeUnit.SECONDS)
 @Testcontainers
 internal class NatsTTSServerProcessorImplTest {
@@ -112,7 +114,7 @@ internal class NatsTTSServerProcessorImplTest {
             /* body = */ context1.toByteArray(),
             /* timeout = */ Duration.of(42, ChronoUnit.SECONDS)
         )
-        val res1 = ttsContextFromByteArray(answer1.data)
+        val res1 = ttsContextFromByteArray(answer1!!.data)
         Assertions.assertEquals(
             testResponseEntity1,
             res1.responseTTSResourceEntity
@@ -126,7 +128,7 @@ internal class NatsTTSServerProcessorImplTest {
             /* body = */ context2.toByteArray(),
             /* timeout = */ Duration.of(42, ChronoUnit.SECONDS)
         )
-        val res2 = ttsContextFromByteArray(answer2.data)
+        val res2 = ttsContextFromByteArray(answer2!!.data)
         Assertions.assertEquals(
             testResponseEntity2,
             res2.responseTTSResourceEntity
@@ -173,7 +175,7 @@ internal class NatsTTSServerProcessorImplTest {
         }
         val answer =
             connection.request("XXX", context.toByteArray(), Duration.of(42, ChronoUnit.SECONDS))
-        val res = ttsContextFromByteArray(answer.data)
+        val res = ttsContextFromByteArray(answer!!.data)
         res.errors.forEach {
             println(it)
         }

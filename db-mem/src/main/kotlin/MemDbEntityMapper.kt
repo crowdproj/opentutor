@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalTime::class)
+
 package com.gitlab.sszuev.flashcards.dbmem
 
 import com.gitlab.sszuev.flashcards.asJava
@@ -25,6 +27,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
+import kotlin.time.ExperimentalTime
 
 internal fun MemDbDictionary.detailsAsJsonString(): String {
     return CommonDictionaryDetailsDto(this.details.toMutableMap()).toJsonString()

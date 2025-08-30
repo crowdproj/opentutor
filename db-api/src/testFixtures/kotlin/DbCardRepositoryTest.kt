@@ -7,7 +7,6 @@ import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.systemNow
-import kotlinx.datetime.Instant
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertNotEquals
@@ -19,15 +18,19 @@ import org.junit.jupiter.api.MethodOrderer
 import org.junit.jupiter.api.Order
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.TestMethodOrder
+import kotlin.time.ExperimentalTime
+import kotlin.time.Instant
 
 /**
  * Note: all implementations must have the same ids in tests for the same entities to have deterministic behavior.
  */
+@OptIn(ExperimentalTime::class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation::class)
 abstract class DbCardRepositoryTest {
 
     abstract val repository: DbCardRepository
 
+    @OptIn(ExperimentalTime::class)
     companion object {
 
         private val drawCardEntity = DbCard(

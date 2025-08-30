@@ -15,8 +15,11 @@ import com.gitlab.sszuev.flashcards.translation.impl.MockTranslationRepository
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
+import kotlin.time.ExperimentalTime
 
+@OptIn(ExperimentalTime::class)
 internal class TranslationCorProcessorRunTest {
+    @OptIn(ExperimentalTime::class)
     companion object {
 
         private fun testContext(repository: TranslationRepository): TranslationContext {

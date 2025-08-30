@@ -11,7 +11,8 @@ import com.gitlab.sszuev.flashcards.mappers.v1.fromUserTransport
 import com.gitlab.sszuev.flashcards.model.domain.TranslationOperation
 import com.gitlab.sszuev.flashcards.services.TranslationService
 import io.ktor.server.application.ApplicationCall
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
+import kotlin.time.ExperimentalTime
 
 private val logger: ExtLogger = logger("com.gitlab.sszuev.flashcards.api.controllers.TranslationController")
 
@@ -24,6 +25,7 @@ suspend fun ApplicationCall.fetchTranslation(
     }
 }
 
+@OptIn(ExperimentalTime::class)
 private suspend inline fun <reified R : BaseRequest> ApplicationCall.execute(
     operation: TranslationOperation,
     logger: ExtLogger,
