@@ -121,7 +121,7 @@ docker {
     val imageName: String
     val baseImageName: String
     val tag = project.version.toString().lowercase()
-    val javaArgs = mutableListOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
+    val javaArgs = mutableListOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=info")
     if (System.getProperty("standalone") == null) {
         imageName = "sszuev/open-tutor"
         baseImageName = "sszuev/openjdk-23-curl:1.0"

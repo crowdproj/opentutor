@@ -67,7 +67,7 @@ tasks.dockerCreateDockerfile {
 docker {
     val imageName = "sszuev/open-tutor-translation-server"
     val tag = project.version.toString().lowercase()
-    val javaArgs = listOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=debug")
+    val javaArgs = listOf("-Xms256m", "-Xmx512m", "-DAPP_LOG_LEVEL=info")
     javaApplication {
         mainClassName.set(application.mainClass.get())
         baseImage.set("sszuev/openjdk-23-curl:1.0")
