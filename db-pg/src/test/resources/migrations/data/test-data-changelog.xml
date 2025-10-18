@@ -18,12 +18,14 @@
                   schemaName="public"
                   tableName="users"
                   usePreparedStatements="true">
+            <column header="created_at" type="DATE"/>
         </loadData>
         <loadData file="001-02-test-dictionaries.csv"
                   relativeToChangelogFile="true"
                   schemaName="public"
                   tableName="dictionaries"
                   usePreparedStatements="true">
+            <column header="changed_at" type="DATE"/>
         </loadData>
         <loadData file="001-02-test-cards.csv"
                   relativeToChangelogFile="true"
@@ -33,6 +35,7 @@
             <column name="text" type="string"/>
             <column name="transcription" type="string"/>
             <column name="details" type="string"/>
+            <column header="changed_at" type="DATE"/>
         </loadData>
     </changeSet>
 
