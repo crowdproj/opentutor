@@ -5,10 +5,6 @@ import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.RSAKeyProvider
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.controllers.health
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
@@ -24,11 +20,11 @@ import com.gitlab.sszuev.flashcards.logslib.logger
 import com.gitlab.sszuev.flashcards.services.LANGUAGES
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
+import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.resources.Resource
-import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.ApplicationCallPipeline
@@ -166,13 +162,7 @@ fun Application.module(
     }
 
     install(ContentNegotiation) {
-        jackson {
-            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            enable(SerializationFeature.INDENT_OUTPUT)
-            writerWithDefaultPrettyPrinter()
-            setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
-            registerModule(JavaTimeModule())
-        }
+        register(ContentType.Application.Json, JacksonConverter())
     }
 
     install(CallLogging) {

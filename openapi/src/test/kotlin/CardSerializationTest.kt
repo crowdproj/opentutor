@@ -94,7 +94,7 @@ internal class CardSerializationTest {
               "B": 3
             },
             "answered": 42,
-            "changedAt": -60830251080.000000000
+            "changedAt": "0042-05-14T04:02:00Z"
           }
         """.normalize()
 
@@ -163,7 +163,7 @@ internal class CardSerializationTest {
                   "B": 3
                 },
                 "answered": 42,
-                "changedAt": -60830251080.000000000
+                "changedAt": "0042-05-14T04:02:00Z"
               }
             }
         """.normalize(), json

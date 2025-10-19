@@ -33,7 +33,6 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-cio-jvm:$ktorVersion")
-    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
 
     implementation("io.ktor:ktor-server-call-logging:$ktorVersion")
@@ -55,12 +54,14 @@ dependencies {
     implementation("io.ktor:ktor-server-thymeleaf:$ktorVersion")
     implementation("io.ktor:ktor-server-webjars:$ktorVersion")
 
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    implementation("tools.jackson.core:jackson-databind:${jacksonVersion}")
+    implementation("tools.jackson.module:jackson-module-kotlin:${jacksonVersion}")
 
     implementation("com.github.danielwegener:logback-kafka-appender:$logbackKafkaVersion")
     implementation("org.codehaus.janino:janino:$janinoVersion")
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
 
+    testImplementation("io.ktor:ktor-client-logging:${ktorVersion}")
     testImplementation(project(":db-mem"))
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")

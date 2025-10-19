@@ -3,12 +3,12 @@ package com.gitlab.sszuev.flashcards
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logger
+import io.ktor.client.plugins.logging.Logging
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -17,7 +17,6 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import io.ktor.serialization.jackson.jackson
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
@@ -82,11 +81,12 @@ fun HttpRequestBuilder.auth(
 
 fun ApplicationTestBuilder.testClient() = createClient {
     install(ContentNegotiation) {
-        jackson {
-            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            enable(SerializationFeature.INDENT_OUTPUT)
-            writerWithDefaultPrettyPrinter()
-            registerModule(JavaTimeModule())
+        register(ContentType.Application.Json, JacksonConverter())
+    }
+    install(Logging) {
+        level = LogLevel.BODY
+        logger = object : Logger {
+            override fun log(message: String) = println("CLIENT> $message")
         }
     }
 }

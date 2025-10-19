@@ -9,9 +9,10 @@ version = rootProject.version
 dependencies {
     val jacksonVersion: String by project
     val junitVersion: String by project
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation(platform("tools.jackson:jackson-bom:$jacksonVersion"))
+    implementation("com.fasterxml.jackson.core:jackson-annotations")
 
-    testImplementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    testImplementation("tools.jackson.core:jackson-databind")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
 }
@@ -22,7 +23,7 @@ tasks.test {
 
 sourceSets {
     main {
-        java.srcDir("$buildDir/generate-resources/main/src/main/kotlin")
+        java.srcDir(layout.buildDirectory.dir("generate-resources/main/src/main/kotlin"))
     }
 }
 

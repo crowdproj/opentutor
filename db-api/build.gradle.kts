@@ -13,8 +13,8 @@ dependencies {
     val kotlinDatetimeVersion: String by project
 
     implementation("org.slf4j:slf4j-api:$slf4jVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
+    implementation("tools.jackson.core:jackson-databind:$jacksonVersion")
+    implementation("tools.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-datetime:$kotlinDatetimeVersion")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")

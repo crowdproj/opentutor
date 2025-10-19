@@ -1,14 +1,17 @@
 package com.gitlab.sszuev.flashcards.common
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
+import tools.jackson.core.type.TypeReference
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
 
 
-private val mapper = ObjectMapper()
-    .setDefaultPropertyInclusion(JsonInclude.Include.NON_EMPTY)
-    .registerModule(KotlinModule.Builder().build())
+private val mapper = JsonMapper.builder()
+    .addModule(KotlinModule.Builder().build())
+    .changeDefaultPropertyInclusion { incl ->
+        incl.withValueInclusion(JsonInclude.Include.NON_EMPTY)
+    }
+    .build()
 
 private val cardWordsTypeReference: TypeReference<List<CommonWordDto>> =
     object : TypeReference<List<CommonWordDto>>() {}

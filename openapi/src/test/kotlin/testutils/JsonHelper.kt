@@ -1,17 +1,21 @@
 package com.gitlab.sszuev.flashcards.api.testutils
 
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseRequest
 import com.gitlab.sszuev.flashcards.api.v1.models.BaseResponse
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.json.JsonMapper
+import tools.jackson.module.kotlin.KotlinModule
 
 /**
  * System-wide mapper.
  */
-private val jacksonMapper = ObjectMapper()
-    .setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
-    .registerModule(JavaTimeModule())
+
+private val jacksonMapper = JsonMapper.builder()
+    .addModule(KotlinModule.Builder().build())
+    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
+    .changeDefaultPropertyInclusion { it.withValueInclusion(JsonInclude.Include.NON_NULL) }
+    .build()
 
 internal fun serialize(response: Any): String = jacksonMapper.writeValueAsString(response)
 
