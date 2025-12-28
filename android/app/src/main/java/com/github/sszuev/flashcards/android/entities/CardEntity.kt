@@ -6,6 +6,6 @@ data class CardEntity (
     val word: String,
     val translation: List<String>,
     val answered: Int,
-    val examples: List<String>,
+    val examples: List<Pair<String, String?>>,
     val audioId: String,
 )

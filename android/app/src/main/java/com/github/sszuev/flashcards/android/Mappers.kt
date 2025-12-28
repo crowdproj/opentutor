@@ -37,7 +37,10 @@ fun CardResource.toCardEntity(): CardEntity {
         word = primary?.word ?: "",
         translation = primary?.translations?.flatten() ?: emptyList(),
         answered = answered ?: 0,
-        examples = primary?.examples?.mapNotNull { it.example } ?: emptyList(),
+        examples = primary?.examples?.mapNotNull {
+            val example = it.example ?: return@mapNotNull null
+            example to it.translation
+        } ?: emptyList(),
         audioId = primary?.sound ?: "",
     )
 }
@@ -45,7 +48,8 @@ fun CardResource.toCardEntity(): CardEntity {
 fun CardEntity.toCardResource(): CardResource {
     val examples = this.examples.map {
         CardWordExampleResource(
-            example = it
+            example = it.first,
+            translation = it.second
         )
     }
     val word = CardWordResource(

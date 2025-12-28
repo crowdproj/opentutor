@@ -37,6 +37,7 @@ import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.models.TutorViewModel
+import com.github.sszuev.flashcards.android.utils.exampleAsString
 import com.github.sszuev.flashcards.android.utils.translationAsString
 
 @Composable
@@ -203,7 +204,7 @@ fun StageShowScreen(
 
             currentCard.examples.forEach { example ->
                 Text(
-                    text = example,
+                    text = exampleAsString(example),
                     style = MaterialTheme.typography.bodyMedium,
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 2.dp)
@@ -247,7 +248,10 @@ private fun StageShowBottomToolbar(
             .fillMaxWidth()
             .background(Color.Gray)
             .padding(8.dp)
-            .onSizeChanged { size -> containerWidthPx = size.width },
+            .onSizeChanged { size ->
+                @Suppress("AssignedValueIsNeverRead")
+                containerWidthPx = size.width
+            },
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
