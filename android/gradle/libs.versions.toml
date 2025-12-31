@@ -1,42 +1,42 @@
 [versions]
 # https://developer.android.com/build/releases/gradle-plugin
-agpVersion = "8.11.1"
+agpVersion = "8.13.2"
 # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-kotlinVersion = "2.2.0"
+kotlinVersion = "2.3.0"
 # https://mvnrepository.com/artifact/androidx.core/core-ktx
-coreKtxVersion = "1.16.0"
+coreKtxVersion = "1.17.0"
 # https://mvnrepository.com/artifact/junit/junit
 junit4Version = "4.13.2"
 # https://mvnrepository.com/artifact/androidx.test.ext/junit
-androidJunitVersion = "1.2.1"
+androidJunitVersion = "1.3.0"
 # https://mvnrepository.com/artifact/androidx.test.espresso/espresso-core
-espressoCoreVersion = "3.6.1"
+espressoCoreVersion = "3.7.0"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-ktx
-lifecycleRuntimeKtxVersion = "2.9.1"
+lifecycleRuntimeKtxVersion = "2.10.0"
 # https://mvnrepository.com/artifact/androidx.activity/activity-compose
-activityComposeVersion = "1.10.1"
+activityComposeVersion = "1.12.2"
 # https://mvnrepository.com/artifact/androidx.compose/compose-bom
-composeBomVersion = "2025.06.01"
+composeBomVersion = "2025.12.01"
 # https://mvnrepository.com/artifact/androidx.navigation/navigation-compose
-composeNavigationVersion = "2.9.1"
+composeNavigationVersion = "2.9.6"
 # https://mvnrepository.com/artifact/io.ktor/ktor-client-android
-ktorVersion = "3.2.1"
+ktorVersion = "3.3.3"
 # https://mvnrepository.com/artifact/net.openid/appauth
 openIdVersion = "0.11.1"
 # https://mvnrepository.com/artifact/androidx.core/core-splashscreen
-splashscreenVersion = "1.0.1"
+splashscreenVersion = "1.2.0"
 # https://mvnrepository.com/artifact/androidx.browser/browser
-browserVersion = "1.8.0"
+browserVersion = "1.9.0"
 # https://mvnrepository.com/artifact/androidx.constraintlayout/constraintlayout
 constraintlayoutVersion = "2.2.1"
 # https://mvnrepository.com/artifact/androidx.media3/media3-exoplayer
-media3Version = "1.7.1"
+media3Version = "1.9.0"
 # https://mvnrepository.com/artifact/androidx.test.uiautomator/uiautomator
 uiautomatorVersion = "2.3.0"
 # https://mvnrepository.com/artifact/androidx.test/rules
-testRulesVersion = "1.6.1"
+testRulesVersion = "1.7.0"
 # https://mvnrepository.com/artifact/com.google.android.material/material
-androidMaterialVersion = "1.12.0"
+androidMaterialVersion = "1.13.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtxVersion" }
