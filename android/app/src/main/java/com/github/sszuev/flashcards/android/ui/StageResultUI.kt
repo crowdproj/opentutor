@@ -2,10 +2,7 @@ package com.github.sszuev.flashcards.android.ui
 
 import android.util.Log
 import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -82,16 +79,17 @@ fun StageResultScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .onSizeChanged { size -> containerWidthPx = size.width }
+            .onSizeChanged { size ->
+                @Suppress("AssignedValueIsNeverRead")
+                containerWidthPx = size.width
+            }
     ) {
         Column {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
                     .background(Color.LightGray)
-                    .border(BorderStroke(1.dp, Color.Gray))
-                    .padding(8.dp),
-                horizontalArrangement = Arrangement.SpaceBetween
+                    .padding(horizontal = 8.dp, vertical = 4.dp)
+                    .fillMaxWidth(),
             ) {
                 HeaderTableCell(
                     text = "WORD",
@@ -125,8 +123,6 @@ fun StageResultScreen(
             FadeLazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 8.dp)
-                    .border(BorderStroke(1.dp, Color.Gray))
             ) {
 
                 items(greenCards) { card ->
@@ -175,8 +171,7 @@ fun CardItemRow(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .border(BorderStroke(1.dp, Color.Gray))
-                .padding(horizontal = 4.dp, vertical = 6.dp),
+                .background(Color.Transparent)
         ) {
             TableCellWithContent(
                 weight = FIRST_COLUMN_WIDTH,
