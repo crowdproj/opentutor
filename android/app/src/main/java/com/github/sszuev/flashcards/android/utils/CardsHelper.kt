@@ -50,24 +50,26 @@ fun wordAsList(word: String) = listOf(word.trim())
 fun normalizeWord(word: String) = word.replace("\n", "").trim()
 
 fun correctAnswerIndexOf(samples: List<String>, input: String): Int {
-    val txt = input.trim()
+    val txt = input.normalize()
     if (txt.length < STAGE_WRITING_PREFIX_LENGTH) {
         samples.forEachIndexed { index, tr ->
-            if (tr.trim().equals(txt, true)) {
+            if (tr.normalize() == txt) {
                 return index
             }
         }
         return -1
     }
     samples.forEachIndexed { index, tr ->
-        if (tr.trim()
-                .startsWith(txt.take(max(txt.length, STAGE_WRITING_PREFIX_LENGTH)), true)
+        if (tr.normalize()
+                .startsWith(txt.take(max(txt.length, STAGE_WRITING_PREFIX_LENGTH)))
         ) {
             return index
         }
     }
     return -1
 }
+
+private fun String.normalize() = trim().lowercase().replace("ё", "е")
 
 val CardEntity.translationAsString
     get() = translation.joinToString(", ")
