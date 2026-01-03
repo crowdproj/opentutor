@@ -116,7 +116,7 @@ class TTSViewModel(
             if (resource != null) {
                 onLoaded()
             }
-        } catch (e: InvalidTokenException) {
+        } catch (_: InvalidTokenException) {
             signOut()
         } catch (e: ApiResponseException) {
             _audioResources.putNullable(cardId, null)

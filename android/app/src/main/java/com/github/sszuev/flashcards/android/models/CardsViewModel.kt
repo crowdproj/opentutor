@@ -1,6 +1,7 @@
 package com.github.sszuev.flashcards.android.models
 
 import android.util.Log
+import android.util.LruCache
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -45,6 +46,8 @@ class CardsViewModel(
     private val _isCardDeleting = mutableStateOf(true)
     private val _isCardResetting = mutableStateOf(true)
 
+    private val fetchedCardsCache = LruCache<Triple<String, String, String>, CardEntity>(1024)
+
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
             _cards.value.singleOrNull { it.cardId == _selectedCardId.value }
@@ -57,14 +60,14 @@ class CardsViewModel(
             _errorMessage.value = null
             _cards.value = emptyList()
             try {
-                withContext(Dispatchers.IO) {
-                    _cards.value = cardsRepository
+                _cards.value = withContext(Dispatchers.IO) {
+                    cardsRepository
                         .getAll(dictionaryId)
                         .map { it.toCardEntity() }
                         .sortedBy { it.word }
                 }
                 _selectedCardId.value = null
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load cards. Press HOME to refresh the page."
@@ -92,7 +95,7 @@ class CardsViewModel(
                     }
                 }
                 _cards.value = cards
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to update card. Press HOME to refresh the page."
@@ -116,7 +119,7 @@ class CardsViewModel(
                 cards.add(res.toCardEntity())
                 _cards.value = cards
                 _selectedCardId.value = res.cardId
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to create card. Press HOME to refresh the page."
@@ -133,6 +136,13 @@ class CardsViewModel(
             _isCardFetching.value = false
             return
         }
+        val cardKey = Triple(word, sourceLang, targetLang)
+        val card = fetchedCardsCache.get(cardKey)
+        if (card != null) {
+            _fetchedCard.value = card
+            _isCardFetching.value = false
+            return
+        }
         viewModelScope.launch {
             Log.d(tag, "Fetch card data ['$word'; $sourceLang -> $targetLang]")
             _isCardFetching.value = true
@@ -146,7 +156,8 @@ class CardsViewModel(
                     )
                 }.toCardEntity()
                 _fetchedCard.value = fetched
-            } catch (e: InvalidTokenException) {
+                fetchedCardsCache.put(cardKey, fetched)
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value =
@@ -173,7 +184,7 @@ class CardsViewModel(
                 if (_selectedCardId.value == cardId) {
                     _selectedCardId.value = null
                 }
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to delete card. Press HOME to refresh the page."
@@ -201,7 +212,7 @@ class CardsViewModel(
                     }
                 }
                 _cards.value = cards
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to delete card. Press HOME to refresh the page."

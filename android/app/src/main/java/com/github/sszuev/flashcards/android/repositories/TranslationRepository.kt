@@ -27,11 +27,14 @@ class TranslationRepository(
                 )
             }
         if (container.errors?.isNotEmpty() == true) {
-            Log.e(tag,
+            Log.e(
+                tag,
                 "ERRORS::${
-                    checkNotNull(container.errors)
-                        .map { it.message }
-                        .joinToString(separator = "' ", prefix = "'", postfix = "'")
+                    checkNotNull(container.errors).joinToString(
+                        separator = "' ",
+                        prefix = "'",
+                        postfix = "'"
+                    ) { it.message ?: "unknown error" }
                 }"
             )
         }

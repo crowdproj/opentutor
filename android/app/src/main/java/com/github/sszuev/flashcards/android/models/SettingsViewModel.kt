@@ -42,7 +42,7 @@ class SettingsViewModel(
                     repository.get()
                 }.toSettingsEntity()
                 _settings.value = settings
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to get settings. Press HOME to refresh the page."
@@ -63,7 +63,7 @@ class SettingsViewModel(
                     repository.update(settingsEntity.toSettingsResource())
                 }
                 _settings.value = settingsEntity
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to save settings. Press HOME to refresh the page."

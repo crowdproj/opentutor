@@ -84,7 +84,7 @@ class DictionariesViewModel(
                         .sortedBy { it.name }
                 }
                 _selectedDictionaryIds.value = emptySet()
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load dictionaries. Press HOME to refresh the page."
@@ -113,7 +113,7 @@ class DictionariesViewModel(
                     }
                 }
                 _dictionaries.value = dictionaries
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to update dictionary. Press HOME to refresh the page."
@@ -138,7 +138,7 @@ class DictionariesViewModel(
                 _dictionaries.value = dictionaries
 
                 selectLast(checkNotNull(res.dictionaryId))
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to create dictionary. Press HOME to refresh the page."
@@ -164,7 +164,7 @@ class DictionariesViewModel(
                 val selectedDictionariesIds = _selectedDictionaryIds.value.toMutableSet()
                 selectedDictionariesIds.removeIf { dictionaryId == it }
                 _selectedDictionaryIds.value = selectedDictionariesIds
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to delete dictionary. Press HOME to refresh the page."

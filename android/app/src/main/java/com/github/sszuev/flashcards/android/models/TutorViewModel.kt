@@ -81,7 +81,7 @@ class TutorViewModel(
                 }
                 onComplete(cards)
                 _cardsDeck.value = cards
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load cards deck. Press HOME to refresh the page."
@@ -115,7 +115,7 @@ class TutorViewModel(
                 }
                 _additionalCardsDeck.value = cards
                 _isAdditionalDeckLoaded.value = true
-            } catch (e: InvalidTokenException) {
+            } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
                 _errorMessage.value = "Failed to load cards deck. Press HOME to refresh the page."
