@@ -225,7 +225,10 @@ fun DictionaryTable(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .onSizeChanged { size -> containerWidthPx = size.width }
+            .onSizeChanged { size ->
+                @Suppress("AssignedValueIsNeverRead")
+                containerWidthPx = size.width
+            }
     ) {
         if (containerWidthDp <= 0.dp) {
             return@Box
@@ -442,7 +445,10 @@ fun DictionariesBottomToolbar(
             .fillMaxWidth()
             .background(Color.Gray)
             .padding(8.dp)
-            .onSizeChanged { size -> containerWidthPx = size.width },
+            .onSizeChanged { size ->
+                @Suppress("AssignedValueIsNeverRead")
+                containerWidthPx = size.width
+            },
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

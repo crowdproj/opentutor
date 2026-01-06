@@ -70,6 +70,7 @@ import com.github.sszuev.flashcards.android.utils.audioResource
 import com.github.sszuev.flashcards.android.utils.examplesAsList
 import com.github.sszuev.flashcards.android.utils.examplesAsString
 import com.github.sszuev.flashcards.android.utils.isTextShort
+import com.github.sszuev.flashcards.android.utils.normalize
 import com.github.sszuev.flashcards.android.utils.normalizeWord
 import com.github.sszuev.flashcards.android.utils.shortText
 import com.github.sszuev.flashcards.android.utils.translationAsString
@@ -655,7 +656,7 @@ fun AddCardDialog(
         viewModel.fetchCard(initialWord, sourceLang, targetLang)
     }
 
-    val fetchedCard = viewModel.fetchedCard.value
+    val fetchedCard = viewModel.fetchedCard.value?.normalize()
     LaunchedEffect(fetchedCard) {
         fetchedCard?.let { fetched ->
             if (word == initialWord) word = fetched.word

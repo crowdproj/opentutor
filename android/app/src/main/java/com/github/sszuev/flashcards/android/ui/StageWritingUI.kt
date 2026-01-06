@@ -131,13 +131,12 @@ fun WritingPanels(
 
     var isEditable by rememberSaveable { mutableStateOf(true) }
     var inputText by rememberSaveable { mutableStateOf("") }
-    var isCorrect by rememberSaveable { mutableStateOf(false) }
 
     val hasPlayedAudio = rememberSaveable(card.cardId) { mutableStateOf(false) }
     if (direct && !hasPlayedAudio.value) {
         LaunchedEffect(card.cardId) {
             Log.d(tag, "Playing audio for: ${card.word}")
-            ttsViewModel.loadAndPlayAudio(card)
+            ttsViewModel.loadAndPlayAudio(card.audioId)
             hasPlayedAudio.value = true
         }
     }
@@ -305,7 +304,7 @@ fun WritingPanels(
                     buttonsEnabled = buttonsEnabled && inputText.isNotBlank(),
                     isEditable = isEditable,
                     onTest = {
-                        isCorrect = checkAnswer(inputText)
+                        checkAnswer(inputText)
                         isEditable = false
                         buttonsEnabled = false
                         tutorViewModel.viewModelScope.launch {
@@ -313,7 +312,7 @@ fun WritingPanels(
                             buttonsEnabled = true
                         }
                         if (!direct) {
-                            ttsViewModel.loadAndPlayAudio(card)
+                            ttsViewModel.loadAndPlayAudio(card.audioId)
                         }
                     },
                     onNext = {
@@ -346,7 +345,10 @@ private fun StageWritingBottomToolbar(
                 .fillMaxWidth()
                 .background(Color.Gray)
                 .padding(8.dp)
-                .onSizeChanged { size -> containerWidthPx = size.width },
+                .onSizeChanged { size ->
+                    @Suppress("AssignedValueIsNeverRead")
+                    containerWidthPx = size.width
+                },
             verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {

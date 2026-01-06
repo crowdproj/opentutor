@@ -3,19 +3,27 @@ package com.github.sszuev.flashcards.android.ui
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MenuDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -27,18 +35,27 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import com.github.sszuev.flashcards.android.models.CardsViewModel
 import com.github.sszuev.flashcards.android.models.DictionariesViewModel
 import com.github.sszuev.flashcards.android.models.SettingsViewModel
 import com.github.sszuev.flashcards.android.models.TTSViewModel
 import com.github.sszuev.flashcards.android.models.TutorViewModel
-import com.github.sszuev.flashcards.android.utils.exampleAsString
+import com.github.sszuev.flashcards.android.utils.normalize
+import com.github.sszuev.flashcards.android.utils.splitToTokenChunks
 import com.github.sszuev.flashcards.android.utils.translationAsString
+
 
 @Composable
 fun StageShowScreen(
@@ -72,7 +89,7 @@ fun StageShowScreen(
                 length = settings.stageShowNumberOfWords,
                 onComplete = {
                     it.firstOrNull()?.let { card ->
-                        ttsViewModel.loadAndPlayAudio(card)
+                        ttsViewModel.loadAndPlayAudio(card.audioId)
                     }
                 }
             )
@@ -133,7 +150,7 @@ fun StageShowScreen(
 
         if (nextCard != null) {
             currentCardId.value = nextCard.cardId
-            ttsViewModel.loadAndPlayAudio(nextCard)
+            ttsViewModel.loadAndPlayAudio(nextCard.audioId)
         } else {
             currentCardId.value = null
             onNextStage()
@@ -202,18 +219,26 @@ fun StageShowScreen(
                 )
             }
 
-            currentCard.examples.forEach { example ->
-                Text(
-                    text = exampleAsString(example),
-                    style = MaterialTheme.typography.bodyMedium,
+            var openTokenId by remember { mutableStateOf<String?>(null) }
+
+            currentCard.examples.forEachIndexed { lineIndex, example ->
+                UnderlinedTokensSingleLineWithPopup(
+                    text = example.first,
+                    sourceLang = dictionary.sourceLanguage,
+                    targetLang = dictionary.targetLanguage,
+                    cardsViewModel = cardsViewModel,
+                    ttsViewModel = ttsViewModel,
+                    openTokenId = openTokenId,
+                    onOpenToken = { openTokenId = it },
+                    onClose = { openTokenId = null },
+                    lineId = "ex:$lineIndex",
                     modifier = Modifier
                         .padding(horizontal = 16.dp, vertical = 2.dp)
-                        .align(Alignment.Start)
                 )
             }
         }
 
-        val enabled = !ttsViewModel.isAudioProcessing(checkNotNull(currentCard?.cardId))
+        val enabled = !ttsViewModel.isAudioProcessing(checkNotNull(currentCard).audioId)
 
         val alpha by animateFloatAsState(if (enabled) 1f else 0.5f)
 
@@ -276,4 +301,198 @@ private fun StageShowBottomToolbar(
             )
         }
     }
+}
+
+@Composable
+fun UnderlinedTokensSingleLineWithPopup(
+    text: String,
+    sourceLang: String,
+    targetLang: String,
+    cardsViewModel: CardsViewModel,
+    ttsViewModel: TTSViewModel,
+
+    openTokenId: String?,
+    onOpenToken: (String) -> Unit,
+    onClose: () -> Unit,
+
+    lineId: String,
+    modifier: Modifier = Modifier,
+) {
+    val (chunks, tail) = remember(text) {
+        text.splitToTokenChunks()
+    }
+
+    FlowRow(
+        modifier = modifier,
+        horizontalArrangement = Arrangement.spacedBy(0.dp),
+        verticalArrangement = Arrangement.spacedBy(2.dp),
+    ) {
+        chunks.forEachIndexed { idx, ch ->
+            val tokenId = "$lineId:$idx"
+
+            Box {
+                Text(
+                    text = buildAnnotatedString {
+                        append(ch.leading)
+                        withStyle(
+                            SpanStyle(
+                                textDecoration = TextDecoration.Underline,
+                                fontWeight = FontWeight.Medium,
+                            )
+                        ) {
+                            append(ch.tokenDisplay)
+                        }
+                        append(ch.attached)
+                    },
+                    style = MaterialTheme.typography.bodyMedium,
+                    modifier = Modifier.noRippleClickable {
+                        if (openTokenId == tokenId) {
+                            onClose()
+                        } else {
+                            onOpenToken(tokenId)
+                            cardsViewModel.fetchCard(ch.tokenQuery, sourceLang, targetLang)
+                            // если хочешь сразу и tts (обычно нет): ttsViewModel....
+                        }
+                    }
+                )
+
+                DropdownMenu(
+                    expanded = openTokenId == tokenId,
+                    onDismissRequest = {
+                        // критично: не даём “старому” меню закрыть “новое”
+                        if (openTokenId == tokenId) onClose()
+                    },
+                    properties = PopupProperties(focusable = false)
+                ) {
+                    TokenPopupItemWithFetch(
+                        token = ch.tokenQuery,
+                        sourceLang = sourceLang,
+                        targetLang = targetLang,
+                        cardsViewModel = cardsViewModel,
+                        ttsViewModel = ttsViewModel,
+                    )
+                }
+            }
+        }
+
+        if (tail.isNotEmpty()) {
+            Text(
+                text = tail,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+    }
+}
+
+@Composable
+private fun TokenPopupItemWithFetch(
+    token: String,
+    sourceLang: String,
+    targetLang: String,
+    cardsViewModel: CardsViewModel,
+    ttsViewModel: TTSViewModel,
+) {
+    val activeKey by cardsViewModel.activeFetchKey
+    val fetchedKey by cardsViewModel.fetchedCardKey
+    val fetched by cardsViewModel.fetchedCard
+    val isFetching by cardsViewModel.isCardFetching
+
+    val key = remember(token, sourceLang, targetLang) {
+        Triple(token.trim(), sourceLang, targetLang)
+    }
+
+    val isMineActive = activeKey == key
+    val hasDataForThis = fetchedKey == key && fetched != null
+
+    val itemColors = MenuDefaults.itemColors(
+        disabledTextColor = MaterialTheme.colorScheme.onSurface,
+        disabledLeadingIconColor = MaterialTheme.colorScheme.onSurface,
+        disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
+    )
+
+    when {
+        hasDataForThis -> {
+            val card = checkNotNull(fetched).normalize()
+
+            val safeCard = remember(card, key) {
+                if (card.cardId != null) card
+                else card.copy(cardId = "tok:${key.first}:${key.second}:${key.third}")
+            }
+
+            DropdownMenuItem(
+                enabled = false,
+                colors = itemColors,
+                onClick = {},
+                text = {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = safeCard.word,
+                            modifier = Modifier.weight(1f),
+                            fontWeight = FontWeight.SemiBold,
+                            style = MaterialTheme.typography.bodyLarge
+                        )
+                        AudioPlayerIcon(
+                            ttsViewModel = ttsViewModel,
+                            card = safeCard,
+                            size = 20.dp,
+                        )
+                    }
+                },
+            )
+
+            DropdownMenuItem(
+                enabled = false,
+                colors = itemColors,
+                text = {
+                    Text(
+                        text = safeCard.translationAsString,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                },
+                onClick = {}
+            )
+        }
+
+        isMineActive && isFetching -> {
+            DropdownMenuItem(
+                enabled = false,
+                colors = itemColors,
+                text = {
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        CircularProgressIndicator(strokeWidth = 2.dp)
+                        Spacer(Modifier.width(10.dp))
+                        Text("Loading…", style = MaterialTheme.typography.bodyMedium)
+                    }
+                },
+                onClick = {}
+            )
+        }
+
+        isMineActive -> {
+            DropdownMenuItem(
+                enabled = false,
+                colors = itemColors,
+                text = {
+                    Text(
+                        text = "No data for: ${token.trim()}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+                },
+                onClick = {}
+            )
+        }
+
+        else -> Unit
+    }
+}
+
+fun Modifier.noRippleClickable(onClick: () -> Unit): Modifier = composed {
+    clickable(
+        indication = null,
+        interactionSource = remember { MutableInteractionSource() },
+        onClick = onClick
+    )
 }

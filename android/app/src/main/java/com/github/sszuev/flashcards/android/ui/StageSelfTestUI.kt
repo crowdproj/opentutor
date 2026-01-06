@@ -125,7 +125,7 @@ fun SelfTestPanels(
     if (direct && !hasPlayedAudio.value) {
         LaunchedEffect(currentCard.cardId) {
             Log.d(tag, "Playing audio for: ${currentCard.word}")
-            ttsViewModel.loadAndPlayAudio(currentCard)
+            ttsViewModel.loadAndPlayAudio(currentCard.audioId)
             hasPlayedAudio.value = true
         }
     }
@@ -241,7 +241,7 @@ fun SelfTestPanels(
                             buttonsEnabled = true
                             if (!direct) {
                                 Log.d(tag, "Playing audio for: ${currentCard.word}")
-                                ttsViewModel.loadAndPlayAudio(currentCard)
+                                ttsViewModel.loadAndPlayAudio(currentCard.audioId)
                             }
                         },
                     contentAlignment = Alignment.Center
@@ -292,7 +292,10 @@ private fun StageSelfTestBottomToolbar(
             .fillMaxWidth()
             .background(Color.Gray)
             .padding(8.dp)
-            .onSizeChanged { size -> containerWidthPx = size.width },
+            .onSizeChanged { size ->
+                @Suppress("AssignedValueIsNeverRead")
+                containerWidthPx = size.width
+            },
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {

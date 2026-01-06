@@ -12,7 +12,6 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.exoplayer.ExoPlayer
 import com.github.sszuev.flashcards.android.AUDIO_PROCESSING_MAX_DELAY_MS
-import com.github.sszuev.flashcards.android.entities.CardEntity
 import com.github.sszuev.flashcards.android.repositories.ApiResponseException
 import com.github.sszuev.flashcards.android.repositories.InvalidTokenException
 import com.github.sszuev.flashcards.android.repositories.TTSRepository
@@ -69,42 +68,41 @@ class TTSViewModel(
         }
     }
 
-    fun invalidate(cardId: String) {
-        _audioResources.remove(cardId)
+    fun invalidate(audioId: String) {
+        _audioResources.remove(audioId)
     }
 
-    fun loadAndPlayAudio(card: CardEntity) {
-        val cardId = checkNotNull(card.cardId)
-        if (isAudioPlaying(cardId)) {
+    fun loadAndPlayAudio(audioId: String) {
+        if (isAudioPlaying(audioId)) {
             Log.d(
                 tag,
-                "loadAndPlayAudion: audio is already playing for [cardId = $cardId (${card.word})]"
+                "loadAndPlayAudion: audio is already playing for [audioId = $audioId]"
             )
             return
         }
-        if (isAudioLoaded(cardId)) {
-            playAudio(card)
+        if (isAudioLoaded(audioId)) {
+            playAudio(audioId)
         } else {
-            loadAudio(cardId, card.audioId) {
-                playAudio(card)
+            loadAudio(audioId = audioId, audioResourceId = audioId) {
+                playAudio(audioId)
             }
         }
     }
 
-    private fun loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
-        if (_audioResources.hasKeyAndValue(cardId)) {
+    private fun loadAudio(audioId: String, audioResourceId: String, onLoaded: () -> Unit) {
+        if (_audioResources.hasKeyAndValue(audioId)) {
             onLoaded()
             return
         }
         viewModelScope.launch {
-            _loadAudio(cardId, audioResourceId, onLoaded)
+            _loadAudio(audioId, audioResourceId, onLoaded)
         }
     }
 
     @Suppress("FunctionName")
-    private suspend fun _loadAudio(cardId: String, audioResourceId: String, onLoaded: () -> Unit) {
-        Log.d(tag, "load audio for card = $cardId")
-        _isAudioLoading[cardId] = true
+    private suspend fun _loadAudio(audioId: String, audioResourceId: String, onLoaded: () -> Unit) {
+        Log.d(tag, "load audio for card = $audioId")
+        _isAudioLoading[audioId] = true
         _errorMessage.value = null
         val lang = langFromAudioResource(audioResourceId)
         val word = wordFromAudioResource(audioResourceId)
@@ -112,41 +110,40 @@ class TTSViewModel(
             val resource = withContext(Dispatchers.IO) {
                 ttsRepository.get(lang, word)
             }
-            _audioResources.putNullable(cardId, resource)
+            _audioResources.putNullable(audioId, resource)
             if (resource != null) {
                 onLoaded()
             }
         } catch (_: InvalidTokenException) {
             signOut()
         } catch (e: ApiResponseException) {
-            _audioResources.putNullable(cardId, null)
+            _audioResources.putNullable(audioId, null)
             Log.e(tag, "Failed to load audio", e)
         } catch (e: Exception) {
             _errorMessage.value = "Failed to load audio. Press HOME to refresh the page."
             Log.e(tag, "Failed to load audio", e)
         } finally {
-            _isAudioLoading.remove(cardId)
+            _isAudioLoading.remove(audioId)
         }
     }
 
-    private fun playAudio(card: CardEntity) {
-        val cardId = checkNotNull(card.cardId)
+    private fun playAudio(audioId: String) {
 
-        val audioData = _audioResources.getNullable(cardId)
+        val audioData = _audioResources.getNullable(audioId)
         if (audioData == null) {
-            Log.d(tag, "playAudion: no audio data for [cardId = $cardId (${card.word})]")
+            Log.d(tag, "playAudion: no audio data for [audioId = $audioId]")
             return
         }
 
-        if (setAudioIsPlaying(cardId)) {
-            Log.d(tag, "playAudion: audio is already playing for [cardId = $cardId (${card.word})]")
+        if (setAudioIsPlaying(audioId)) {
+            Log.d(tag, "playAudion: audio is already playing for [audioId = $audioId]")
             return
         }
 
         viewModelScope.launch(Dispatchers.IO) {
             var tempFile: Path? = null
             try {
-                val tmpFileName = card.audioId
+                val tmpFileName = audioId
                     .replace(":", "-")
                     .replace(" ", "")
                     .replace(",", "-")
@@ -154,7 +151,7 @@ class TTSViewModel(
                     Files.createTempFile("temp-audio-$tmpFileName-", ".mp3")
                 Log.d(
                     tag,
-                    "playAudion: create temp file $tempFile for [cardId = $cardId (${card.word})]"
+                    "playAudion: create temp file $tempFile for [audioId = $audioId]"
                 )
                 tempFile.outputStream().use {
                     it.write(audioData)
@@ -172,85 +169,85 @@ class TTSViewModel(
                         addListener(object : Player.Listener {
                             override fun onPlaybackStateChanged(playbackState: Int) {
                                 if (playbackState == Player.STATE_ENDED) {
-                                    _isAudioPlaying[cardId] = false
+                                    _isAudioPlaying[audioId] = false
                                     Log.d(
                                         tag,
-                                        "playAudio: playback completed [cardId = $cardId (${card.word})]"
+                                        "playAudio: playback completed [audioId = $audioId]"
                                     )
-                                    this@apply.onFinish(cardId, tempFile)
+                                    this@apply.onFinish(audioId, tempFile)
                                 }
                             }
 
                             override fun onPlayerError(error: PlaybackException) {
                                 Log.e(
                                     tag,
-                                    "playAudio: error occurred [cardId = $cardId (${card.word})]: ${error.message}",
+                                    "playAudio: error occurred [audioId = $audioId]: ${error.message}",
                                     error
                                 )
-                                this@apply.onFinish(cardId, tempFile)
+                                this@apply.onFinish(audioId, tempFile)
                             }
                         })
 
-                        activeMediaPlayers[cardId] = this
-                        Log.d(tag, "playAudio: start playing [cardId = $cardId (${card.word})]")
+                        activeMediaPlayers[audioId] = this
+                        Log.d(tag, "playAudio: start playing [audioId = $audioId]")
                         play()
                     }
                 }
             } catch (e: Exception) {
                 Log.e(
                     tag,
-                    "playAudion: failed [cardId = $cardId (${card.word})]: ${e.localizedMessage}",
+                    "playAudion: failed [audioId = $audioId]: ${e.localizedMessage}",
                     e
                 )
-                releaseAudioResources(cardId, tempFile)
+                releaseAudioResources(audioId, tempFile)
             }
         }
     }
 
-    private fun ExoPlayer.onFinish(cardId: String, tempFile: Path?) {
+    private fun ExoPlayer.onFinish(audioId: String, tempFile: Path?) {
         try {
             release()
         } catch (_: Exception) {
         }
-        releaseAudioResources(cardId, tempFile)
+        releaseAudioResources(audioId, tempFile)
     }
 
-    private fun releaseAudioResources(cardId: String, tempFile: Path?) {
+    private fun releaseAudioResources(audioId: String, tempFile: Path?) {
         viewModelScope.launch(Dispatchers.Main) {
-            activeMediaPlayers.remove(cardId)
-            _isAudioPlaying.remove(cardId)
+            activeMediaPlayers.remove(audioId)
+            _isAudioPlaying.remove(audioId)
         }
         viewModelScope.launch(Dispatchers.IO) {
             tempFile?.deleteIfExists()
         }
     }
 
-    suspend fun waitForAudioProcessing(cardId: String) {
+    suspend fun waitForAudioProcessing(audioId: String) {
         withTimeout(AUDIO_PROCESSING_MAX_DELAY_MS) {
-            while (isAudioProcessing(cardId)) {
+            while (isAudioProcessing(audioId)) {
                 delay(100)
             }
         }
     }
 
-    fun isAudioProcessing(cardId: String): Boolean {
-        return isAudioLoading(cardId) || isAudioPlaying(cardId)
+    fun isAudioProcessing(audioId: String): Boolean {
+        return isAudioLoading(audioId) || isAudioPlaying(audioId)
     }
 
-    private fun isAudioPlaying(cardId: String): Boolean {
-        return _isAudioPlaying[cardId] ?: false
+    private fun isAudioPlaying(audioId: String): Boolean {
+        return _isAudioPlaying[audioId] ?: false
     }
 
-    private fun setAudioIsPlaying(cardId: String): Boolean {
-        return _isAudioPlaying.putIfAbsent(cardId, true) == true
+    private fun setAudioIsPlaying(audioId: String): Boolean {
+        return _isAudioPlaying.putIfAbsent(audioId, true) == true
     }
 
-    private fun isAudioLoaded(cardId: String): Boolean {
-        return _audioResources.hasKey(cardId)
+    private fun isAudioLoaded(audioId: String): Boolean {
+        return _audioResources.hasKey(audioId)
     }
 
-    fun isAudioLoading(cardId: String): Boolean {
-        return _isAudioLoading[cardId] ?: false
+    fun isAudioLoading(audioId: String): Boolean {
+        return _isAudioLoading[audioId] ?: false
     }
 
 }

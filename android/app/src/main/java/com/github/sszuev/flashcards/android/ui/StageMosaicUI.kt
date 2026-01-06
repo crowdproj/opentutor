@@ -166,7 +166,7 @@ fun MosaicPanels(
                 if (match()) {
                     isCorrectAnswerProcessing.value = true
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                    ttsViewModel.waitForAudioProcessing(checkNotNull(cardId))
+                    ttsViewModel.waitForAudioProcessing(card.audioId)
                     tutorViewModel.stageMosaicLeftCards.value =
                         leftCards.value.filter { it.cardId != cardId }
                     tutorViewModel.stageMosaicRightCards.value =
@@ -179,7 +179,7 @@ fun MosaicPanels(
                                 if (wrongAnyway) ", but it is already marked as wrong" else ""
                     )
                     tutorViewModel.updateDeckCard(
-                        cardId = cardId,
+                        cardId = checkNotNull(cardId),
                         numberOfRightAnswers = dictionary.numberOfRightAnswers,
                         wrong = false,
                         updateCard = { cardsViewModel.updateCard(it) }
@@ -188,9 +188,9 @@ fun MosaicPanels(
                 } else {
                     Log.i(tag, "Wrong answer for card $cardId(${card.word})")
                     delay(STAGE_MOSAIC_CELL_DELAY_MS)
-                    ttsViewModel.waitForAudioProcessing(cardId!!)
+                    ttsViewModel.waitForAudioProcessing(card.audioId)
                     tutorViewModel.updateDeckCard(
-                        cardId = cardId,
+                        cardId = checkNotNull(cardId),
                         numberOfRightAnswers = dictionary.numberOfRightAnswers,
                         wrong = true,
                         updateCard = { cardsViewModel.updateCard(it) }
@@ -234,7 +234,7 @@ fun MosaicPanels(
                 val border = color(item.cardId, selectedRightId.value)
                 val onClick = {
                     if (direct) {
-                        ttsViewModel.loadAndPlayAudio(item)
+                        ttsViewModel.loadAndPlayAudio(item.audioId)
                     }
                     selectedLeftId.value = item.cardId
                     onSelectItem()
@@ -268,7 +268,7 @@ fun MosaicPanels(
                 val border = color(selectedLeftId.value, item.cardId)
                 val onClick = {
                     if (!direct) {
-                        ttsViewModel.loadAndPlayAudio(item)
+                        ttsViewModel.loadAndPlayAudio(item.audioId)
                     }
                     selectedRightId.value = item.cardId
                     onSelectItem()

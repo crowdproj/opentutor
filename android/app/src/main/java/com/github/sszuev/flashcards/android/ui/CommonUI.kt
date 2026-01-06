@@ -575,18 +575,22 @@ fun AudioPlayerIcon(
     size: Dp = 24.dp,
     @SuppressLint("ModifierParameter") modifier: Modifier = Modifier
 ) {
-    val cardId = checkNotNull(card.cardId)
+    val cardId = card.audioId.takeIf { it.isNotBlank() }
+    if (cardId == null) {
+        Log.w(tag, "No audionId for $cardId, ${card.word}")
+        return
+    }
 
-    val enabled = !(ttsViewModel.isAudioProcessing(cardId))
+    val enabled = !(ttsViewModel.isAudioProcessing(card.audioId))
 
     IconButton(
         onClick = {
-            ttsViewModel.loadAndPlayAudio(card)
+            ttsViewModel.loadAndPlayAudio(card.audioId)
         },
         enabled = enabled,
         modifier = modifier.padding(start = 8.dp)
     ) {
-        if (ttsViewModel.isAudioLoading(cardId)) {
+        if (ttsViewModel.isAudioLoading(card.audioId)) {
             CircularProgressIndicator(modifier = Modifier.size(size))
         } else {
             Icon(

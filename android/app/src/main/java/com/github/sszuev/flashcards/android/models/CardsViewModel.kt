@@ -14,8 +14,10 @@ import com.github.sszuev.flashcards.android.toCardEntity
 import com.github.sszuev.flashcards.android.toCardResource
 import com.github.sszuev.flashcards.android.utils.translationAsString
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlin.coroutines.cancellation.CancellationException
 
 class CardsViewModel(
     private val cardsRepository: CardsRepository,
@@ -48,6 +50,14 @@ class CardsViewModel(
 
     private val fetchedCardsCache = LruCache<Triple<String, String, String>, CardEntity>(1024)
 
+    // last-click-wins:
+    private var fetchJob: Job? = null
+    private var fetchGen: Long = 0
+    private val _activeFetchKey = mutableStateOf<Triple<String, String, String>?>(null)
+    val activeFetchKey: State<Triple<String, String, String>?> get() = _activeFetchKey
+    private val _fetchedCardKey = mutableStateOf<Triple<String, String, String>?>(null)
+    val fetchedCardKey: State<Triple<String, String, String>?> get() = _fetchedCardKey
+
     val selectedCard: CardEntity?
         get() = if (_selectedCardId.value == null) null else {
             _cards.value.singleOrNull { it.cardId == _selectedCardId.value }
@@ -55,7 +65,7 @@ class CardsViewModel(
 
     fun loadCards(dictionaryId: String) {
         viewModelScope.launch {
-            Log.d(tag, "load cards for dictionary = $dictionaryId")
+            Log.i(tag, "load cards for dictionary = $dictionaryId")
             _isCardsLoading.value = true
             _errorMessage.value = null
             _cards.value = emptyList()
@@ -80,7 +90,7 @@ class CardsViewModel(
 
     fun updateCard(card: CardEntity) {
         viewModelScope.launch {
-            Log.d(tag, "Update card with id = ${card.cardId}")
+            Log.i(tag, "Update card with id = ${card.cardId}")
             _isCardUpdating.value = true
             _errorMessage.value = null
             try {
@@ -108,7 +118,7 @@ class CardsViewModel(
 
     fun createCard(card: CardEntity) {
         viewModelScope.launch {
-            Log.d(tag, "create card")
+            Log.i(tag, "create card")
             _isCardCreating.value = true
             _errorMessage.value = null
             try {
@@ -131,47 +141,72 @@ class CardsViewModel(
     }
 
     fun fetchCard(word: String, sourceLang: String, targetLang: String) {
-        if (word.isBlank()) {
-            _fetchedCard.value = null
+        val w = word.trim()
+        if (w.isBlank()) {
+            clearFetchedCard()
+            return
+        }
+
+        val key = Triple(w, sourceLang, targetLang)
+
+        _activeFetchKey.value = key
+        _errorMessage.value = null
+
+        _fetchedCard.value = null
+        _fetchedCardKey.value = null
+
+        // last-click-wins
+        val myGen = ++fetchGen
+
+        fetchJob?.cancel()
+        fetchJob = null
+
+        // cache hit — мгновенно отдаём
+        fetchedCardsCache.get(key)?.let { cached ->
+            _fetchedCard.value = cached
+            _fetchedCardKey.value = key
             _isCardFetching.value = false
             return
         }
-        val cardKey = Triple(word, sourceLang, targetLang)
-        val card = fetchedCardsCache.get(cardKey)
-        if (card != null) {
-            _fetchedCard.value = card
-            _isCardFetching.value = false
-            return
-        }
-        viewModelScope.launch {
-            Log.d(tag, "Fetch card data ['$word'; $sourceLang -> $targetLang]")
+
+        fetchJob = viewModelScope.launch {
+            Log.i(tag, "Fetch card data ['$w'; $sourceLang -> $targetLang]")
             _isCardFetching.value = true
-            _errorMessage.value = null
             try {
                 val fetched = withContext(Dispatchers.IO) {
                     translationRepository.fetch(
-                        query = word,
+                        query = w,
                         sourceLang = sourceLang,
                         targetLang = targetLang,
                     )
                 }.toCardEntity()
+
+                if (myGen != fetchGen) return@launch
+                if (_activeFetchKey.value != key) return@launch
+
                 _fetchedCard.value = fetched
-                fetchedCardsCache.put(cardKey, fetched)
+                _fetchedCardKey.value = key
+                fetchedCardsCache.put(key, fetched)
+            } catch (_: CancellationException) {
             } catch (_: InvalidTokenException) {
                 signOut()
             } catch (e: Exception) {
-                _errorMessage.value =
-                    "Failed to fetch card data for word '$word'. Press HOME to refresh the page."
+                if (myGen == fetchGen && _activeFetchKey.value == key) {
+                    _errorMessage.value =
+                        "Failed to fetch card data for word '$w'. Press HOME to refresh the page."
+                }
                 Log.e(tag, "Failed to fetch card data", e)
             } finally {
-                _isCardFetching.value = false
+                if (myGen == fetchGen && _activeFetchKey.value == key) {
+                    _isCardFetching.value = false
+                }
             }
         }
     }
 
     fun deleteCard(cardId: String) {
         viewModelScope.launch {
-            Log.d(tag, "delete card")
+            Log.i(tag, "delete card")
             _isCardDeleting.value = true
             _errorMessage.value = null
             try {
@@ -197,7 +232,7 @@ class CardsViewModel(
 
     fun resetCard(cardId: String) {
         viewModelScope.launch {
-            Log.d(tag, "reset card $cardId")
+            Log.i(tag, "reset card $cardId")
             _isCardResetting.value = true
             _errorMessage.value = null
             try {
@@ -232,7 +267,14 @@ class CardsViewModel(
     }
 
     fun clearFetchedCard() {
+        fetchJob?.cancel()
+        fetchJob = null
+
+        fetchGen++
+        _activeFetchKey.value = null
+        _fetchedCardKey.value = null
         _fetchedCard.value = null
+        _isCardFetching.value = false
     }
 
     fun numberOfKnownCards(numberOfRightAnswers: Int): Int =

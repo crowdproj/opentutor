@@ -73,3 +73,68 @@ private fun String.normalize() = trim().lowercase().replace("ё", "е")
 
 val CardEntity.translationAsString
     get() = translation.joinToString(", ")
+
+fun CardEntity.normalize(): CardEntity {
+    val audioIdParts = this.audioId.split(":")
+    val audioId = if (audioIdParts.isEmpty()) {
+        ""
+    } else {
+        audioIdParts[0] + ":" + audioIdParts[1].split(",").map { it.trim() }.distinct()
+            .joinToString(",")
+    }
+    return copy(
+        word = this.word.split(",").map { it.trim() }.distinct().joinToString(", "),
+        translation = this.translation.distinct(),
+        audioId = audioId,
+    )
+}
+
+private val WORD_RE = Regex("""\p{L}+(?:[’'\-]\p{L}+)*""") // буквы + (апостроф/дефис внутри)
+
+data class TokenChunk(
+    val leading: String,
+    val tokenDisplay: String,
+    val tokenQuery: String,
+    val attached: String,
+)
+
+fun String.splitToTokenChunks(): Pair<List<TokenChunk>, String> {
+    val matches = WORD_RE.findAll(this).toList()
+    if (matches.isEmpty()) return emptyList<TokenChunk>() to this
+
+    val chunks = ArrayList<TokenChunk>(matches.size)
+
+    var carry = substring(0, matches.first().range.first)
+
+    for (i in matches.indices) {
+        val m = matches[i]
+        val tokenDisplay = m.value
+        val tokenQuery = tokenDisplay.trim().lowercase()
+
+        val wordEnd = m.range.last + 1
+        val nextStart = if (i + 1 < matches.size) matches[i + 1].range.first else length
+
+        val between = substring(wordEnd, nextStart)
+        val attached = between.takeWhile { !it.isWhitespace() }
+        val nextCarry = between.drop(attached.length)
+
+        val soundable = tokenDisplay.any { it.isLetter() } && tokenQuery.isNotBlank()
+
+        if (soundable) {
+            chunks += TokenChunk(
+                leading = carry,
+                tokenDisplay = tokenDisplay,
+                tokenQuery = tokenQuery,
+                attached = attached,
+            )
+        } else {
+            carry += tokenDisplay + attached
+        }
+
+        carry = nextCarry
+    }
+
+    val tail = carry
+    return chunks to tail
+}
+
