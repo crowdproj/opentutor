@@ -23,14 +23,14 @@ subprojects {
 
     tasks.withType<KotlinCompile>().configureEach {
         compilerOptions {
-            jvmTarget.set(JvmTarget.JVM_17)
+            jvmTarget.set(JvmTarget.JVM_21)
         }
     }
 
     plugins.withId("org.jetbrains.kotlin.jvm") {
         extensions.configure<KotlinJvmProjectExtension> {
-            jvmToolchain(17)
-            compilerOptions { jvmTarget.set(JvmTarget.JVM_17) }
+            jvmToolchain(21)
+            compilerOptions { jvmTarget.set(JvmTarget.JVM_21) }
         }
 
         val junitVersion: String by project

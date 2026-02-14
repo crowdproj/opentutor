@@ -10,9 +10,10 @@ import com.gitlab.sszuev.flashcards.dbpg.dao.PgDbUser
 import com.gitlab.sszuev.flashcards.dbpg.dao.Users
 import com.gitlab.sszuev.flashcards.repositories.DbUser
 import com.gitlab.sszuev.flashcards.repositories.DbUserRepository
-import org.jetbrains.exposed.sql.insert
-import org.jetbrains.exposed.sql.selectAll
-import org.jetbrains.exposed.sql.update
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.jdbc.insert
+import org.jetbrains.exposed.v1.jdbc.selectAll
+import org.jetbrains.exposed.v1.jdbc.update
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime
 
@@ -70,8 +71,8 @@ class PgDbUserRepository(
     override fun findOrCreateUser(id: String, details: Map<String, Any>, onCreate: () -> Unit): DbUser =
         connection.execute {
             val existingUser = Users.selectAll().where { Users.id eq id }
-                    .forUpdate()
-                    .singleOrNull()
+                .forUpdate()
+                .singleOrNull()
 
             if (existingUser != null) {
                 return@execute DbUser(
@@ -97,8 +98,8 @@ class PgDbUserRepository(
 
     override fun addUserDetails(id: String, newDetails: Map<String, Any>): DbUser = connection.execute {
         val existingUser = Users.selectAll().where { Users.id eq id }
-                .forUpdate()
-                .singleOrNull() ?: throw IllegalStateException("User $id not found")
+            .forUpdate()
+            .singleOrNull() ?: throw IllegalStateException("User $id not found")
 
         val currentDetails = parseUserDetailsJson(existingUser[Users.details])
         val updatedDetails = currentDetails + newDetails

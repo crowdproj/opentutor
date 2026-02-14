@@ -1,13 +1,13 @@
 package com.gitlab.sszuev.flashcards.dbpg.dao
 
-import org.jetbrains.exposed.dao.id.EntityID
-import org.jetbrains.exposed.dao.id.IdTable
-import org.jetbrains.exposed.sql.Column
-import org.jetbrains.exposed.sql.ColumnType
-import org.jetbrains.exposed.sql.Table
-import org.jetbrains.exposed.sql.javatime.datetime
+import org.jetbrains.exposed.v1.core.Column
+import org.jetbrains.exposed.v1.core.ColumnType
+import org.jetbrains.exposed.v1.core.Table
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
+import org.jetbrains.exposed.v1.core.dao.id.IdTable
+import org.jetbrains.exposed.v1.core.statements.api.RowApi
+import org.jetbrains.exposed.v1.javatime.datetime
 import org.postgresql.util.PGobject
-import java.sql.ResultSet
 import java.time.LocalDateTime
 
 object Users : IdTable<String>(name = "users") {
@@ -68,5 +68,5 @@ class JsonColumnType(private val sqlType: String) : ColumnType<String>(false) {
         return res
     }
 
-    override fun readObject(rs: ResultSet, index: Int): Any? = rs.getString(index)
+    override fun readObject(rs: RowApi, index: Int): Any? = rs.getString(index)
 }

@@ -8,14 +8,15 @@ import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbDocumentRepository
 import com.gitlab.sszuev.flashcards.systemNow
-import org.jetbrains.exposed.sql.batchInsert
-import org.jetbrains.exposed.sql.insertAndGetId
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.batchInsert
+import org.jetbrains.exposed.v1.jdbc.insertAndGetId
 
 class PgDbDocumentRepository(
     dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
 ) : DbDocumentRepository {
 
-    private val connection by lazy {
+    private val connection: Database by lazy {
         // lazy, to avoid initialization error when there is no real pg-database
         // and memory-storage is used instead
         PgDbStandardConnector.connector(dbConfig).database

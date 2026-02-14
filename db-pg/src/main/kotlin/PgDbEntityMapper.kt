@@ -20,7 +20,7 @@ import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbDictionary
 import com.gitlab.sszuev.flashcards.repositories.DbLang
 import com.gitlab.sszuev.flashcards.repositories.LanguageRepository
-import org.jetbrains.exposed.dao.id.EntityID
+import org.jetbrains.exposed.v1.core.dao.id.EntityID
 import java.time.LocalDateTime
 import kotlin.time.ExperimentalTime
 

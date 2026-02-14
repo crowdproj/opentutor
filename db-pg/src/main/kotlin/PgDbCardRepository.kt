@@ -11,19 +11,24 @@ import com.gitlab.sszuev.flashcards.repositories.DbCard
 import com.gitlab.sszuev.flashcards.repositories.DbCardRepository
 import com.gitlab.sszuev.flashcards.repositories.DbDataException
 import com.gitlab.sszuev.flashcards.systemNow
-import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
-import org.jetbrains.exposed.sql.and
-import org.jetbrains.exposed.sql.count
-import org.jetbrains.exposed.sql.deleteWhere
-import org.jetbrains.exposed.sql.statements.BatchUpdateStatement
-import org.jetbrains.exposed.sql.transactions.TransactionManager
+import org.jetbrains.exposed.v1.core.and
+import org.jetbrains.exposed.v1.core.count
+import org.jetbrains.exposed.v1.core.eq
+import org.jetbrains.exposed.v1.core.greaterEq
+import org.jetbrains.exposed.v1.core.inList
+import org.jetbrains.exposed.v1.core.statements.BatchUpdateStatement
+import org.jetbrains.exposed.v1.jdbc.Database
+import org.jetbrains.exposed.v1.jdbc.deleteWhere
+import org.jetbrains.exposed.v1.jdbc.select
+import org.jetbrains.exposed.v1.jdbc.statements.toExecutable
+import org.jetbrains.exposed.v1.jdbc.transactions.TransactionManager
 import kotlin.time.ExperimentalTime
 
 @OptIn(ExperimentalTime::class)
 class PgDbCardRepository(
     dbConfig: PgDbConfig = PgDbConfig.DEFAULT,
 ) : DbCardRepository {
-    private val connection by lazy {
+    private val connection: Database by lazy {
         // lazy, to avoid initialization error when there is no real pg-database
         // and memory-storage is used instead
         PgDbStandardConnector.connector(dbConfig).database
@@ -96,7 +101,7 @@ class PgDbCardRepository(
     override fun updateCards(cardEntities: Iterable<DbCard>): List<DbCard> = connection.execute {
         val res = mutableListOf<DbCard>()
         val timestamp = systemNow()
-        BatchUpdateStatement(Cards).apply {
+        val stmt = BatchUpdateStatement(Cards).apply {
             cardEntities.onEach {
                 validateCardEntityForUpdate(it)
                 addBatch(it.cardId.toCardsId())
@@ -108,8 +113,8 @@ class PgDbCardRepository(
             }.forEach {
                 res.add(it.copy(changedAt = timestamp.asKotlin()))
             }
-            execute(TransactionManager.current())
         }
+        stmt.toExecutable().execute(TransactionManager.current())
         res
     }
 
