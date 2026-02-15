@@ -76,7 +76,7 @@ val CardEntity.translationAsString
 
 fun CardEntity.normalize(): CardEntity {
     val audioIdParts = this.audioId.split(":")
-    val audioId = if (audioIdParts.isEmpty()) {
+    val audioId = if (audioIdParts.size < 2) {
         ""
     } else {
         audioIdParts[0] + ":" + audioIdParts[1].split(",").map { it.trim() }.distinct()
