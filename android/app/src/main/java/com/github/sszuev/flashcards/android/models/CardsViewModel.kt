@@ -169,9 +169,10 @@ class CardsViewModel(
             return
         }
 
+        _isCardFetching.value = true
+
         fetchJob = viewModelScope.launch {
             Log.i(tag, "Fetch card data ['$w'; $sourceLang -> $targetLang]")
-            _isCardFetching.value = true
             try {
                 val fetched = withContext(Dispatchers.IO) {
                     translationRepository.fetch(
@@ -192,6 +193,8 @@ class CardsViewModel(
                 signOut()
             } catch (e: Exception) {
                 if (myGen == fetchGen && _activeFetchKey.value == key) {
+                    _fetchedCard.value = null
+                    _fetchedCardKey.value = key
                     _errorMessage.value =
                         "Failed to fetch card data for word '$w'. Press HOME to refresh the page."
                 }

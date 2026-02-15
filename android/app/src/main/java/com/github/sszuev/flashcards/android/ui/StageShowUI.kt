@@ -370,6 +370,7 @@ fun UnderlinedTokensSingleLineWithPopup(
                         targetLang = targetLang,
                         cardsViewModel = cardsViewModel,
                         ttsViewModel = ttsViewModel,
+                        onClose = onClose,
                     )
                 }
             }
@@ -391,6 +392,7 @@ private fun TokenPopupItemWithFetch(
     targetLang: String,
     cardsViewModel: CardsViewModel,
     ttsViewModel: TTSViewModel,
+    onClose: () -> Unit,
 ) {
     val activeKey by cardsViewModel.activeFetchKey
     val fetchedKey by cardsViewModel.fetchedCardKey
@@ -402,7 +404,12 @@ private fun TokenPopupItemWithFetch(
     }
 
     val isMineActive = activeKey == key
-    val hasDataForThis = fetchedKey == key && fetched != null
+
+    val normalized = fetched?.normalize()
+    val hasMeaningfulData =
+        normalized != null && (normalized.word.isNotBlank() || normalized.translationAsString.isNotBlank())
+
+    val hasDataForThis = fetchedKey == key && hasMeaningfulData
 
     val itemColors = MenuDefaults.itemColors(
         disabledTextColor = MaterialTheme.colorScheme.onSurface,
@@ -410,13 +417,21 @@ private fun TokenPopupItemWithFetch(
         disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
     )
 
+    val shouldCloseNoData = isMineActive && !isFetching && !hasDataForThis
+    LaunchedEffect(shouldCloseNoData) {
+        if (shouldCloseNoData) onClose()
+    }
+
+    val showSpinner = !hasDataForThis && (isFetching || isMineActive || fetchedKey == null)
+
     when {
         hasDataForThis -> {
-            val card = checkNotNull(fetched).normalize()
+            val card0 = checkNotNull(normalized)
 
-            val safeCard = remember(card, key) {
-                if (card.cardId != null) card
-                else card.copy(cardId = "tok:${key.first}:${key.second}:${key.third}")
+            // AudioPlayerIcon требует cardId != null -> подстрахуем
+            val safeCard = remember(card0, key) {
+                if (card0.cardId != null) card0
+                else card0.copy(cardId = "tok:${key.first}:${key.second}:${key.third}")
             }
 
             DropdownMenuItem(
@@ -446,46 +461,39 @@ private fun TokenPopupItemWithFetch(
             DropdownMenuItem(
                 enabled = false,
                 colors = itemColors,
+                onClick = {},
                 text = {
                     Text(
                         text = safeCard.translationAsString,
                         style = MaterialTheme.typography.bodyLarge
                     )
-                },
-                onClick = {}
+                }
             )
         }
 
-        isMineActive && isFetching -> {
+        showSpinner -> {
             DropdownMenuItem(
                 enabled = false,
                 colors = itemColors,
+                onClick = {},
                 text = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         CircularProgressIndicator(strokeWidth = 2.dp)
                         Spacer(Modifier.width(10.dp))
                         Text("Loading…", style = MaterialTheme.typography.bodyMedium)
                     }
-                },
-                onClick = {}
+                }
             )
         }
 
-        isMineActive -> {
+        else -> {
             DropdownMenuItem(
                 enabled = false,
                 colors = itemColors,
-                text = {
-                    Text(
-                        text = "No data for: ${token.trim()}",
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                },
-                onClick = {}
+                onClick = {},
+                text = { Text("Loading…", style = MaterialTheme.typography.bodyMedium) }
             )
         }
-
-        else -> Unit
     }
 }
 
