@@ -185,6 +185,15 @@ class CardsViewModel(
                 if (myGen != fetchGen) return@launch
                 if (_activeFetchKey.value != key) return@launch
 
+                val meaningful =
+                    fetched.word.isNotBlank() || fetched.translationAsString.isNotBlank()
+
+                if (!meaningful) {
+                    _fetchedCard.value = null
+                    _fetchedCardKey.value = key
+                    return@launch
+                }
+
                 _fetchedCard.value = fetched
                 _fetchedCardKey.value = key
                 fetchedCardsCache.put(key, fetched)

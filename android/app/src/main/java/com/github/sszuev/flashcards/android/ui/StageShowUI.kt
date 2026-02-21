@@ -351,7 +351,6 @@ fun UnderlinedTokensSingleLineWithPopup(
                         } else {
                             onOpenToken(tokenId)
                             cardsViewModel.fetchCard(ch.tokenQuery, sourceLang, targetLang)
-                            // если хочешь сразу и tts (обычно нет): ttsViewModel....
                         }
                     }
                 )
@@ -359,7 +358,6 @@ fun UnderlinedTokensSingleLineWithPopup(
                 DropdownMenu(
                     expanded = openTokenId == tokenId,
                     onDismissRequest = {
-                        // критично: не даём “старому” меню закрыть “новое”
                         if (openTokenId == tokenId) onClose()
                     },
                     properties = PopupProperties(focusable = false)
@@ -370,6 +368,7 @@ fun UnderlinedTokensSingleLineWithPopup(
                         targetLang = targetLang,
                         cardsViewModel = cardsViewModel,
                         ttsViewModel = ttsViewModel,
+                        isOpen = openTokenId == tokenId,
                         onClose = onClose,
                     )
                 }
@@ -392,6 +391,7 @@ private fun TokenPopupItemWithFetch(
     targetLang: String,
     cardsViewModel: CardsViewModel,
     ttsViewModel: TTSViewModel,
+    isOpen: Boolean,
     onClose: () -> Unit,
 ) {
     val activeKey by cardsViewModel.activeFetchKey
@@ -406,10 +406,20 @@ private fun TokenPopupItemWithFetch(
     val isMineActive = activeKey == key
 
     val normalized = fetched?.normalize()
-    val hasMeaningfulData =
-        normalized != null && (normalized.word.isNotBlank() || normalized.translationAsString.isNotBlank())
+    val hasDataForThis = fetchedKey == key && normalized != null
 
-    val hasDataForThis = fetchedKey == key && hasMeaningfulData
+    val finishedNoDataForThis = fetchedKey == key && !isFetching && fetched == null
+
+    LaunchedEffect(isOpen, finishedNoDataForThis) {
+        if (isOpen && finishedNoDataForThis) onClose()
+    }
+
+    var opening by remember(key) { mutableStateOf(false) }
+    LaunchedEffect(isOpen) { opening = isOpen }
+    LaunchedEffect(isOpen, isMineActive, isFetching, hasDataForThis) {
+        if (!isOpen) opening = false
+        else if (isMineActive || isFetching || hasDataForThis) opening = false
+    }
 
     val itemColors = MenuDefaults.itemColors(
         disabledTextColor = MaterialTheme.colorScheme.onSurface,
@@ -417,18 +427,12 @@ private fun TokenPopupItemWithFetch(
         disabledTrailingIconColor = MaterialTheme.colorScheme.onSurface,
     )
 
-    val shouldCloseNoData = isMineActive && !isFetching && !hasDataForThis
-    LaunchedEffect(shouldCloseNoData) {
-        if (shouldCloseNoData) onClose()
-    }
-
-    val showSpinner = !hasDataForThis && (isFetching || isMineActive || fetchedKey == null)
+    val showSpinner = isOpen && !hasDataForThis && (opening || (isMineActive && isFetching))
 
     when {
         hasDataForThis -> {
             val card0 = checkNotNull(normalized)
 
-            // AudioPlayerIcon требует cardId != null -> подстрахуем
             val safeCard = remember(card0, key) {
                 if (card0.cardId != null) card0
                 else card0.copy(cardId = "tok:${key.first}:${key.second}:${key.third}")
@@ -483,6 +487,15 @@ private fun TokenPopupItemWithFetch(
                         Text("Loading…", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
+            )
+        }
+
+        finishedNoDataForThis -> {
+            DropdownMenuItem(
+                enabled = false,
+                colors = itemColors,
+                onClick = {},
+                text = { Text("No data", style = MaterialTheme.typography.bodyMedium) }
             )
         }
 
