@@ -23,7 +23,7 @@ import com.gitlab.sszuev.flashcards.logslib.ExtLogger
 import com.gitlab.sszuev.flashcards.logslib.logger
 import com.gitlab.sszuev.flashcards.services.LANGUAGES
 import io.ktor.client.HttpClient
-import io.ktor.client.engine.apache.Apache
+import io.ktor.client.engine.apache5.Apache5
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -70,7 +70,7 @@ import kotlinx.html.p
 import kotlinx.html.title
 import org.slf4j.event.Level
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
-import java.net.URL
+import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
@@ -150,7 +150,7 @@ fun Application.module(
     if (runConfig.auth.isBlank()) {
         install(Authentication) {
             oauth("keycloakOAuth") {
-                client = HttpClient(Apache)
+                client = HttpClient(Apache5)
                 providerLookup = { keycloakProvider }
                 urlProvider = { keycloakConfig.redirectAddress }
             }
@@ -272,7 +272,9 @@ internal fun makeJwtVerifier(jwkUrl: String, issuer: String): JWTVerifier =
 
 internal fun makeJwtAlgorithm(jwkUrl: String): Algorithm {
     val jwkProvider =
-        JwkProviderBuilder(URL(jwkUrl)).cached(/* cacheSize = */ 10,/* expiresIn = */ 24,/* unit = */ TimeUnit.HOURS
+        JwkProviderBuilder(URI(jwkUrl).toURL()).cached(/* cacheSize = */ 10,/* expiresIn = */
+            24,/* unit = */
+            TimeUnit.HOURS
         ).rateLimited(/* bucketSize = */ 100,/* refillRate = */ 1,/* unit = */ TimeUnit.MINUTES
         ).build()
 
