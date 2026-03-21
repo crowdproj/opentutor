@@ -69,7 +69,8 @@ suspend inline fun <reified T> authPost(
 
 fun getAccessToken(): String {
     val prefs = AppContextProvider.getContext().getSharedPreferences("auth", Context.MODE_PRIVATE)
-    return prefs.getString("access_token", "")
+    return prefs.getString("access_token", null)
+        ?.takeIf { it.isNotBlank() }
         ?: throw IllegalStateException("Access token is missing")
 }
 
@@ -77,6 +78,7 @@ suspend fun refreshToken() {
     Log.d("HttpApi", "Refreshing access token")
     val prefs = AppContextProvider.getContext().getSharedPreferences("auth", Context.MODE_PRIVATE)
     val refreshToken = prefs.getString("refresh_token", null)
+        ?.takeIf { it.isNotBlank() }
         ?: throw IllegalStateException("Refresh token is missing")
 
     val response: TokenResponse = try {

@@ -115,26 +115,21 @@ class MainActivity : ComponentActivity() {
 
         val idToken = prefs.getString("id_token", null)
 
-        if (idToken != null) {
+        prefs.edit {
+            remove("access_token")
+                .remove("refresh_token")
+                .remove("id_token")
+        }
+        navigateToLogin()
+
+        if (!idToken.isNullOrBlank()) {
             lifecycleScope.launch {
                 withContext(Dispatchers.IO) {
                     performLogoutRequest(idToken)
                 }
-                prefs.edit {
-                    remove("access_token")
-                        .remove("refresh_token")
-                        .remove("id_token")
-                }
-                navigateToLogin()
             }
         } else {
             Log.e(tag, "Unknown id token")
-            prefs.edit {
-                remove("access_token")
-                    .remove("refresh_token")
-                    .remove("id_token")
-            }
-            navigateToLogin()
         }
     }
 
@@ -148,7 +143,7 @@ class MainActivity : ComponentActivity() {
         }
 
         try {
-            val response: HttpResponse = defaultHttpClient.get(logoutUrl) {
+            val response: HttpResponse = lightHttpClient.get(logoutUrl) {
                 url {
                     parameters.appendAll(params)
                 }

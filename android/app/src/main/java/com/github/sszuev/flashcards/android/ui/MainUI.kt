@@ -37,6 +37,7 @@ fun MainNavigation(
     val settingsErrorMessage by settingsViewModel.errorMessage
     val dictionaryErrorMessage by dictionariesViewModel.errorMessage
     val cardsErrorMessage by cardsViewModel.errorMessage
+    val isSettingsLoading by settingsViewModel.isLoadSettingsInProgress
 
     LaunchedEffect(Unit) {
         dictionariesViewModel.loadDictionariesInit(Locale.current.language)
@@ -60,7 +61,10 @@ fun MainNavigation(
             )
 
             settingsErrorMessage?.let {
-                ErrorMessageBox(it)
+                if (dictionaryErrorMessage == null) {
+                    ErrorMessageBox(it)
+                }
+                Log.e(tag, it)
             }
             dictionaryErrorMessage?.let {
                 ErrorMessageBox(it)
@@ -70,13 +74,15 @@ fun MainNavigation(
             }
 
             val settings = settingsViewModel.settings.value
-            if (settings == null) {
+            if (isSettingsLoading) {
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
                     CircularProgressIndicator()
                 }
+            } else if (settings == null) {
+                Log.e(tag, "Settings were not loaded. Press HOME to refresh the page.")
             } else {
                 val stageChain = buildStageChain(settings)
 

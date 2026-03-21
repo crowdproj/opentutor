@@ -20,15 +20,18 @@ class SettingsViewModel(
 ) : ViewModel() {
     private val tag = "SettingsViewModel"
 
-    private val _isLoadSettingsInProgress = mutableStateOf(true)
+    private val _isLoadSettingsInProgress = mutableStateOf(false)
     val isLoadSettingsInProgress: State<Boolean> get() = _isLoadSettingsInProgress
-    private val _isSaveSettingsInProgress = mutableStateOf(true)
+    private val _isSaveSettingsInProgress = mutableStateOf(false)
     private val _errorMessage = mutableStateOf<String?>(null)
     val errorMessage: State<String?> = _errorMessage
     private val _settings = mutableStateOf<SettingsEntity?>(null)
     val settings: State<SettingsEntity?> = _settings
 
     fun loadSettings() {
+        if (_isLoadSettingsInProgress.value) {
+            return
+        }
         if (_settings.value != null) {
             return
         }

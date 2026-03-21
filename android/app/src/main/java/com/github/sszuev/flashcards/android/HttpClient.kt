@@ -16,11 +16,6 @@ import kotlinx.serialization.json.Json
 import kotlin.coroutines.cancellation.CancellationException
 
 val defaultHttpClient: HttpClient = HttpClient(Android) {
-    install(HttpTimeout) {
-        requestTimeoutMillis = 20_500
-        connectTimeoutMillis = 5_000
-        socketTimeoutMillis = 4_000
-    }
     install(HttpRequestRetry) {
         retryOnServerErrors(maxRetries = 4)
         retryOnExceptionIf(maxRetries = 4) { _, cause ->
@@ -36,6 +31,11 @@ val defaultHttpClient: HttpClient = HttpClient(Android) {
             }
         }
         exponentialDelay()
+    }
+    install(HttpTimeout) {
+        requestTimeoutMillis = 20_500
+        connectTimeoutMillis = 5_000
+        socketTimeoutMillis = 4_000
     }
     if (BuildConfig.DEBUG) {
         install(Logging) {
