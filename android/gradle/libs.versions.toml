@@ -1,10 +1,10 @@
 [versions]
 # https://developer.android.com/build/releases/gradle-plugin
-agpVersion = "8.13.2"
+agpVersion = "9.1.0"
 # https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib
-kotlinVersion = "2.3.0"
+kotlinVersion = "2.3.20"
 # https://mvnrepository.com/artifact/androidx.core/core-ktx
-coreKtxVersion = "1.17.0"
+coreKtxVersion = "1.18.0"
 # https://mvnrepository.com/artifact/junit/junit
 junit4Version = "4.13.2"
 # https://mvnrepository.com/artifact/androidx.test.ext/junit
@@ -14,13 +14,13 @@ espressoCoreVersion = "3.7.0"
 # https://mvnrepository.com/artifact/androidx.lifecycle/lifecycle-runtime-ktx
 lifecycleRuntimeKtxVersion = "2.10.0"
 # https://mvnrepository.com/artifact/androidx.activity/activity-compose
-activityComposeVersion = "1.12.2"
+activityComposeVersion = "1.13.0"
 # https://mvnrepository.com/artifact/androidx.compose/compose-bom
-composeBomVersion = "2025.12.01"
+composeBomVersion = "2026.03.00"
 # https://mvnrepository.com/artifact/androidx.navigation/navigation-compose
-composeNavigationVersion = "2.9.6"
+composeNavigationVersion = "2.9.7"
 # https://mvnrepository.com/artifact/io.ktor/ktor-client-android
-ktorVersion = "3.3.3"
+ktorVersion = "3.4.1"
 # https://mvnrepository.com/artifact/net.openid/appauth
 openIdVersion = "0.11.1"
 # https://mvnrepository.com/artifact/androidx.core/core-splashscreen
@@ -30,7 +30,7 @@ browserVersion = "1.9.0"
 # https://mvnrepository.com/artifact/androidx.constraintlayout/constraintlayout
 constraintlayoutVersion = "2.2.1"
 # https://mvnrepository.com/artifact/androidx.media3/media3-exoplayer
-media3Version = "1.9.0"
+media3Version = "1.9.3"
 # https://mvnrepository.com/artifact/androidx.test.uiautomator/uiautomator
 uiautomatorVersion = "2.3.0"
 # https://mvnrepository.com/artifact/androidx.test/rules
@@ -70,6 +70,5 @@ openid = { group = "net.openid", name = "appauth", version.ref = "openIdVersion"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agpVersion" }
-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlinVersion" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlinVersion" }
 kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlinVersion" }
