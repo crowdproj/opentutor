@@ -15,7 +15,6 @@ fun <X> chain(configurer: ChainDSL<X>.() -> Unit): ChainDSL<X> = ChainDSLImpl<X>
  * Creates [Chain]-builder and add it to this [Chain]-builder.
  * @param [configurer] a function to configure fresh instance of [Chain]-builder
  */
-@CorDSL
 fun <X> ChainDSL<X>.chain(configurer: ChainDSL<X>.() -> Unit) {
     add(ChainDSLImpl<X>().apply(configurer))
 }
@@ -24,7 +23,6 @@ fun <X> ChainDSL<X>.chain(configurer: ChainDSL<X>.() -> Unit) {
  * Creates [Worker]-builder and add it to this [Chain]-builder.
  * @param [configurer] a function to configure fresh instance of [Worker]-builder
  */
-@CorDSL
 fun <X> ChainDSL<X>.worker(configurer: WorkerDSL<X>.() -> Unit) {
     add(WorkerDSLImpl<X>().apply(configurer))
 }
@@ -35,7 +33,6 @@ fun <X> ChainDSL<X>.worker(configurer: WorkerDSL<X>.() -> Unit) {
  * @param [description] of the future [Worker]
  * @param [runnable] a function that will be called on [Worker.process] execution
  */
-@CorDSL
 fun <X> ChainDSL<X>.worker(
     name: String,
     description: String = "",

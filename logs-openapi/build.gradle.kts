@@ -22,7 +22,7 @@ tasks.test {
 
 sourceSets {
     main {
-        java.srcDir("$buildDir/generate-resources/main/src/main/kotlin")
+        java.srcDir(layout.buildDirectory.dir("generate-resources/main/src/main/kotlin"))
     }
 }
 

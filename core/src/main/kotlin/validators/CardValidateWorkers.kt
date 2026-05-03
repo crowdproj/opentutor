@@ -11,7 +11,7 @@ import com.gitlab.sszuev.flashcards.model.domain.CardFilter
 import com.gitlab.sszuev.flashcards.model.domain.CardId
 import com.gitlab.sszuev.flashcards.model.domain.CardLearn
 
-fun ChainDSL<CardContext>.validateCardEntityHasValidCardId(getCardEntity: (CardContext) -> CardEntity) = worker {
+fun ChainDSL<CardContext>.validateCardEntityHasValidCardId(getCardEntity: (CardContext) -> CardEntity) = chain {
     validateId("card-id") { getCardEntity(it).cardId }
 }
 
@@ -25,11 +25,11 @@ fun ChainDSL<CardContext>.validateCardEntityHasNoCardId(getEntity: (CardContext)
     }
 }
 
-fun ChainDSL<CardContext>.validateCardEntityDictionaryId(getCardEntity: (CardContext) -> CardEntity) = worker {
+fun ChainDSL<CardContext>.validateCardEntityDictionaryId(getCardEntity: (CardContext) -> CardEntity) = chain {
     validateDictionaryId { getCardEntity(it).dictionaryId }
 }
 
-fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = worker {
+fun ChainDSL<CardContext>.validateCardId(getCardId: (CardContext) -> CardId) = chain {
     validateId("card-id") { getCardId(it) }
 }
 

@@ -64,7 +64,7 @@ class DictionaryCorProcessor {
                 normalizers(DictionaryOperation.DELETE_DICTIONARY)
                 validators(DictionaryOperation.DELETE_DICTIONARY) {
                     validateUserId(DictionaryOperation.DELETE_DICTIONARY)
-                    validateDictionaryId { (it as DictionaryContext).normalizedRequestDictionaryId }
+                    validateDictionaryId { it.normalizedRequestDictionaryId }
                 }
                 runs(DictionaryOperation.DELETE_DICTIONARY) {
                     processDeleteDictionary()
@@ -75,7 +75,7 @@ class DictionaryCorProcessor {
                 normalizers(DictionaryOperation.DOWNLOAD_DICTIONARY)
                 validators(DictionaryOperation.DOWNLOAD_DICTIONARY) {
                     validateUserId(DictionaryOperation.DOWNLOAD_DICTIONARY)
-                    validateDictionaryId { (it as DictionaryContext).normalizedRequestDictionaryId }
+                    validateDictionaryId { it.normalizedRequestDictionaryId }
                 }
                 runs(DictionaryOperation.DOWNLOAD_DICTIONARY) {
                     processDownloadDictionary()

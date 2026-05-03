@@ -105,10 +105,8 @@ internal class CorTest {
                 }
             }
             worker {
-                worker {
-                    process { throw TestException("4") }
-                    onException { this.counter++ }
-                }
+                process { throw TestException("4") }
+                onException { this.counter++ }
             }
             chain {
                 worker {
@@ -171,16 +169,16 @@ internal class CorTest {
                             worker {
                                 process { this.counter++ }
                             }
+                            chain {
+                                worker {
+                                    process {
+                                        this.counter *= 2
+                                    }
+                                }
+                            }
                             worker {
                                 process {
                                     this.counter *= 3
-                                }
-                                chain {
-                                    worker {
-                                        process {
-                                            this.counter *= 2
-                                        }
-                                    }
                                 }
                             }
                         }

@@ -3,10 +3,12 @@ package com.gitlab.sszuev.flashcards.corlib
 @DslMarker
 annotation class CorDSL
 
+@CorDSL
 interface ChainDSL<D> : ExecDSL<D>, HandlerDSL<D> {
     fun add(worker: ExecDSL<D>)
 }
 
+@CorDSL
 interface WorkerDSL<D> : ExecDSL<D>, HandlerDSL<D> {
     fun process(runnable: suspend D.() -> Unit)
 }

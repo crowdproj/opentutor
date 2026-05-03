@@ -7,7 +7,7 @@ import com.gitlab.sszuev.flashcards.model.common.AppContext
 import com.gitlab.sszuev.flashcards.model.common.AppOperation
 import com.gitlab.sszuev.flashcards.model.common.AppStatus
 
-internal inline fun <reified Context : AppContext> ChainDSL<Context>.initContext() = worker {
+internal inline fun <reified Context : AppContext> ChainDSL<Context>.initContext() =
     worker {
         this.name = "start context ${Context::class.java.simpleName}"
         this.description = "prepare generic fields for context ${Context::class.java.simpleName}"
@@ -18,7 +18,6 @@ internal inline fun <reified Context : AppContext> ChainDSL<Context>.initContext
             this.status = AppStatus.RUN
         }
     }
-}
 
 internal fun <Context : AppContext> ChainDSL<Context>.operation(
     operation: AppOperation,

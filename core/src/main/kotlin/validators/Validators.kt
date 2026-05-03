@@ -45,7 +45,8 @@ internal fun AppContext.fail(error: AppError) {
     this.errors.add(error)
 }
 
-internal fun <Context: AppContext> ChainDSL<Context>.validateDictionaryId(getDictionaryId: (Context) -> DictionaryId) = worker {
+internal fun <Context : AppContext> ChainDSL<Context>.validateDictionaryId(getDictionaryId: (Context) -> DictionaryId) =
+    chain {
     validateId("dictionary-id") { getDictionaryId(it) }
 }
 
