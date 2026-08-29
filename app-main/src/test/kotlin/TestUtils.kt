@@ -3,9 +3,6 @@ package com.gitlab.sszuev.flashcards
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.config.KeycloakConfig
 import com.gitlab.sszuev.flashcards.config.RunConfig
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -17,10 +14,12 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.contentType
-import io.ktor.serialization.jackson.jackson
+import io.ktor.serialization.jackson3.jackson
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.SerializationFeature
 import java.util.Base64
 
 private val testKeycloakConfig = KeycloakConfig(
@@ -85,8 +84,6 @@ fun ApplicationTestBuilder.testClient() = createClient {
         jackson {
             disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             enable(SerializationFeature.INDENT_OUTPUT)
-            writerWithDefaultPrettyPrinter()
-            registerModule(JavaTimeModule())
         }
     }
 }

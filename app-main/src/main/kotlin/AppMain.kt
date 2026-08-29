@@ -6,9 +6,6 @@ import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.RSAKeyProvider
 import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.gitlab.sszuev.flashcards.api.cardApiV1
 import com.gitlab.sszuev.flashcards.api.controllers.health
 import com.gitlab.sszuev.flashcards.api.dictionaryApiV1
@@ -28,7 +25,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
 import io.ktor.resources.Resource
-import io.ktor.serialization.jackson.jackson
+import io.ktor.serialization.jackson3.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.ApplicationCallPipeline
@@ -70,6 +67,8 @@ import kotlinx.html.p
 import kotlinx.html.title
 import org.slf4j.event.Level
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver
+import tools.jackson.databind.DeserializationFeature
+import tools.jackson.databind.SerializationFeature
 import java.net.URI
 import java.nio.charset.StandardCharsets
 import java.security.interfaces.RSAPrivateKey
@@ -169,9 +168,10 @@ fun Application.module(
         jackson {
             disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
             enable(SerializationFeature.INDENT_OUTPUT)
-            writerWithDefaultPrettyPrinter()
-            setDefaultPropertyInclusion(JsonInclude.Include.NON_NULL)
-            registerModule(JavaTimeModule())
+            changeDefaultPropertyInclusion {
+                it.withValueInclusion(JsonInclude.Include.NON_NULL)
+                    .withContentInclusion(JsonInclude.Include.NON_NULL)
+            }
         }
     }
 
